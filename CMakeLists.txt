@@ -1,78 +1,46 @@
-cmake_minimum_required (VERSION 3.2)
+cmake_minimum_required (VERSION 3.14)
 Project(jdragon)
 
-link_directories(/usr/local/lib)
-link_libraries(drogon trantor pthread dl)
+set(CMAKE_CXX_STANDARD 17)
 
-IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
-    EXEC_PROGRAM (gcc ARGS "--version | grep '^gcc'|awk '{print $3}' | sed s'/)//g' | sed s'/-.*//g'" OUTPUT_VARIABLE version)
-    MESSAGE(STATUS "This is gcc version:: " ${version})
-    if(version LESS 5.4.0)
-        MESSAGE(STATUS "gcc is too old")
-        stop()
-    elseif(version LESS 7.1.0)
-        set(CMAKE_CXX_STD_FLAGS c++14)
-        MESSAGE(STATUS "c++14")
-    else()
-        set(CMAKE_CXX_STD_FLAGS c++17)
-        MESSAGE(STATUS "c++17")
-    endif()
-else()
-    set(CMAKE_CXX_STD_FLAGS c++17)
-endif()
-
-if(CMAKE_BUILD_TYPE STREQUAL "")
+if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif()
 
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -std=${CMAKE_CXX_STD_FLAGS}")
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall -std=${CMAKE_CXX_STD_FLAGS}")
+set(THREADS_PREFER_PTHREAD_FLAG TRUE)
+find_package(Threads REQUIRED)
+
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall ${CMAKE_CXX_STD_FLAGS}")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall ${CMAKE_CXX_STD_FLAGS}")
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules/)
+find_package(Boost REQUIRED COMPONENTS filesystem date_time system timer )
 
 #jsoncpp
 find_package (Jsoncpp REQUIRED)
-include_directories(${JSONCPP_INCLUDE_DIRS})
-link_libraries(${JSONCPP_LIBRARIES})
+#include_directories(${JSONCPP_INCLUDE_DIRS})
+#link_libraries(${JSONCPP_LIBRARIES})
 
 #uuid
 find_package (UUID REQUIRED)
-include_directories(${UUID_INCLUDE_DIR})
-link_libraries(${UUID_LIBRARIES})
+#include_directories(${UUID_INCLUDE_DIR})
+#link_libraries(${UUID_LIBRARIES})
 
 #OpenSSL
 find_package (OpenSSL)
 if(OpenSSL_FOUND)
-    include_directories(${OPENSSL_INCLUDE_DIR})
-    link_libraries(${OPENSSL_LIBRARIES})
+    list(APPEND _OPTIONAL_LIBS OpenSSL::SSL OpenSSL::Crypto)
 endif()
 
 #zlib
 find_package(ZLIB REQUIRED)
-include_directories(${ZLIB_INCLUDE_DIR})
-link_libraries(${ZLIB_LIBRARIES})
 
 #find postgres
 find_package(PostgreSQL)
 if(PostgreSQL_FOUND)
-include_directories(${PostgreSQL_INCLUDE_DIR})
-link_libraries(${PostgreSQL_LIBRARIES})
+  list(APPEND _OPTIONAL_LIBS PostgreSQL::PostgreSQL)
 endif()
 
-#Find mysql, only mariadb client liberary is supported
-find_package(MySQL)
-if(MYSQL_FOUND)
-    message(STATUS "inc:" ${MYSQL_INCLUDE_DIR})
-    message(STATUS "libs:" ${MYSQL_CLIENT_LIBS})
-    message(STATUS "version:" ${MYSQL_VERSION_STRING})
-    if(MYSQL_VERSION_STRING STREQUAL "")
-        message(STATUS "The mysql in your system is not the mariadb, so we can't use it in drogon")
-    else()
-        message(STATUS "Ok! We find the mariadb!")
-        include_directories(${MYSQL_INCLUDE_DIR})
-        link_libraries(${MYSQL_CLIENT_LIBS})
-    endif()
-endif()
 
 #Find sqlite3.
 find_package (SQLite3)
@@ -103,4 +71,30 @@ foreach(cspFile ${SCP_LIST})
 endforeach()
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+find_package(Qt5 COMPONENTS Core Gui Network Xml Sql REQUIRED)
+
+include_directories("/home/kapili3/k/jewelApp/src")
+find_library(CONN_LIB libjewelconnection HINT /home/kapili3/k/build-jewelApp-Desktop_Qt_5_13_0_GCC_64bit-Debug/src/core/connection)
+find_library(CORE_LIB libjewelcore2 HINT /home/kapili3/k/build-jewelApp-Desktop_Qt_5_13_0_GCC_64bit-Debug/src/core)
 add_executable(jdragon ${SRC_DIR} ${CTL_SRC} ${FILTER_SRC} ${VIEWSRC} ${PLUGIN_SRC} ${MODEL_SRC})
+
+  #  libpqxx::pqxx_shared
+target_link_libraries(jdragon
+  Threads::Threads
+  Qt5::Core
+  Qt5::Gui
+  Qt5::Network
+  Qt5::Xml
+  Qt5::Sql
+  ${CMAKE_DL_LIBS}
+  ${_OPTIONAL_LIBS}
+  ${JSONCPP_LIBRARY}
+  ${UUID_LIBRARY}
+  ZLIB::ZLIB
+  ${CONN_LIB}
+  ${CORE_LIB}
+  # TODO: properly search for them
+  drogon
+  trantor
+  Boost::filesystem
+)
