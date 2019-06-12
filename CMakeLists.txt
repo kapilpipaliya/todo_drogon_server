@@ -73,9 +73,10 @@ endforeach()
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 find_package(Qt5 COMPONENTS Core Gui Network Xml Sql REQUIRED)
 
-include_directories("/home/kapili3/k/jewelApp/src")
-find_library(CONN_LIB libjewelconnection HINT /home/kapili3/k/build-jewelApp-Desktop_Qt_5_13_0_GCC_64bit-Debug/src/core/connection)
-find_library(CORE_LIB libjewelcore2 HINT /home/kapili3/k/build-jewelApp-Desktop_Qt_5_13_0_GCC_64bit-Debug/src/core)
+subdirs(core)
+#include_directories("/home/kapili3/k/jewelApp/src")
+#find_library(CONN_LIB libjewelconnection HINT /home/kapili3/k/build-jewelApp-Desktop_Qt_5_13_0_GCC_64bit-Debug/src/core/connection)
+#find_library(CORE_LIB libjewelcore2 HINT /home/kapili3/k/build-jewelApp-Desktop_Qt_5_13_0_GCC_64bit-Debug/src/core)
 add_executable(jdragon ${SRC_DIR} ${CTL_SRC} ${FILTER_SRC} ${VIEWSRC} ${PLUGIN_SRC} ${MODEL_SRC})
 
   #  libpqxx::pqxx_shared
@@ -91,8 +92,10 @@ target_link_libraries(jdragon
   ${JSONCPP_LIBRARY}
   ${UUID_LIBRARY}
   ZLIB::ZLIB
-  ${CONN_LIB}
-  ${CORE_LIB}
+  #${CONN_LIB}
+  #${CORE_LIB}
+  libjewelconnection
+  libjewelcore2
   # TODO: properly search for them
   drogon
   trantor

@@ -1,27 +1,7 @@
 #include "demo_v1_User.h"
 
 
-#include "core/tables/Accessory.h"
-#include "core/tables/Account.h"
-#include "core/tables/AccountHeading.h"
-#include "core/tables/Color.h"
-#include "core/tables/Entity.h"
-#include "core/tables/GemClarity.h"
-#include "core/tables/GemShape.h"
-#include "core/tables/GemSize.h"
-#include "core/tables/GemType.h"
-#include "core/tables/GlobalSetting.h"
-#include "core/tables/Log.h"
-#include "core/tables/Material.h"
-#include "core/tables/MaterialType.h"
-#include "core/tables/MetalPurity.h"
-#include "core/tables/Order.h"
-#include "core/tables/PartGroup.h"
-#include "core/tables/PartType.h"
-#include "core/tables/Product.h"
-#include "core/tables/RateOn.h"
-#include "core/tables/Sale.h"
-#include "core/tables/Transaction.h"
+#include "core/tables/functions.h"
 
 
 using namespace demo::v1;
@@ -65,16 +45,19 @@ void User::newForm(const HttpRequestPtr &req, std::function<void (const HttpResp
     fflush(stdout);
 
 
-    Accessory a;
-    bool ok = a.insertRow(material_id1, slug1, name1);
+    Table a;
+    accessorySetupQuery(a);
 
     Json::Value ret;
+    /*
+    bool ok = a.insertRow(material_id1, slug1, name1);
     if (!ok) {
         ret["result"]=2;
         ret["error"]=a.insertError;
     } else {
         ret["result"]=1;
     }
+    */
     auto resp=HttpResponse::newHttpJsonResponse(ret);
 //    resp->addHeader("Access-Control-Allow-Origin", "*");
 //    resp->addHeader("Access-Control-Allow-Origin", "*");
@@ -102,8 +85,8 @@ void User::getInfo(const HttpRequestPtr &req,
 
 void User::allAccessory(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
-    Accessory a;
-    a.init();
+    Table a;
+    accessorySetupQuery(a);
     a.saveCache = false;
     a.select();
 
@@ -114,8 +97,8 @@ void User::allAccessory(const HttpRequestPtr &req, std::function<void (const Htt
 
 void User::allAccount(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
-    Account a;
-    a.init();
+    Table a;
+    accountSetupQuery(a);
     a.saveCache = false;
     a.select();
 
@@ -126,8 +109,8 @@ void User::allAccount(const HttpRequestPtr &req, std::function<void (const HttpR
 
 void User::allAccountHeading(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
-    AccountHeading a;
-    a.init();
+    Table a;
+    accountHeadingSetupQuery(a);
     a.saveCache = false;
     a.select();
 
@@ -138,8 +121,8 @@ void User::allAccountHeading(const HttpRequestPtr &req, std::function<void (cons
 
 void User::allColor(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
-    Color a;
-    a.init();
+    Table a;
+    colorSetupQuery(a);
     a.saveCache = false;
     a.select();
 
@@ -151,8 +134,8 @@ void User::allColor(const HttpRequestPtr &req, std::function<void (const HttpRes
 
 void User::allEntity(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
-    Entity a;
-    a.init();
+    Table a;
+    entitySetupQuery(a);
     a.saveCache = false;
     a.select();
 
@@ -163,8 +146,8 @@ void User::allEntity(const HttpRequestPtr &req, std::function<void (const HttpRe
 
 void User::allGemClarity(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
-    GemClarity a;
-    a.init();
+    Table a;
+    gemClaritySetupQuery(a);
     a.saveCache = false;
     a.select();
 
@@ -175,8 +158,8 @@ void User::allGemClarity(const HttpRequestPtr &req, std::function<void (const Ht
 
 void User::allGemShape(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
-    GemShape a;
-    a.init();
+    Table a;
+    gemShapeSetupQuery(a);
     a.saveCache = false;
     a.select();
 
@@ -187,8 +170,8 @@ void User::allGemShape(const HttpRequestPtr &req, std::function<void (const Http
 
 void User::allGemSize(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
-    GemSize a;
-    a.init();
+    Table a;
+    gemSizeSetupQuery(a);
     a.saveCache = false;
     a.select();
 
@@ -199,8 +182,8 @@ void User::allGemSize(const HttpRequestPtr &req, std::function<void (const HttpR
 
 void User::allGemType(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
-    GemType a;
-    a.init();
+    Table a;
+    gemTypeSetupQuery(a);
     a.saveCache = false;
     a.select();
 
@@ -211,8 +194,8 @@ void User::allGemType(const HttpRequestPtr &req, std::function<void (const HttpR
 
 void User::allGlobalSetting(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
-    GlobalSetting a;
-    a.init();
+    Table a;
+    globalSettingSetupQuery(a);
     a.saveCache = false;
     a.select();
 
@@ -223,8 +206,8 @@ void User::allGlobalSetting(const HttpRequestPtr &req, std::function<void (const
 
 void User::allLog(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
-    Log a;
-    a.init();
+    Table a;
+    logSetupQuery(a);
     a.saveCache = false;
     a.select();
 
@@ -235,8 +218,8 @@ void User::allLog(const HttpRequestPtr &req, std::function<void (const HttpRespo
 
 void User::allMaterial(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
-    Material a;
-    a.init();
+    Table a;
+    materialSetupQuery(a);
     a.saveCache = false;
     a.select();
 
@@ -247,8 +230,8 @@ void User::allMaterial(const HttpRequestPtr &req, std::function<void (const Http
 
 void User::allMaterialType(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
-    MaterialType a;
-    a.init();
+    Table a;
+    materialTypeSetupQuery(a);
     a.saveCache = false;
     a.select();
 
@@ -259,8 +242,8 @@ void User::allMaterialType(const HttpRequestPtr &req, std::function<void (const 
 
 void User::allMetalPurity(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
-    MetalPurity a;
-    a.init();
+    Table a;
+    metalPuritySetupQuery(a);
     a.saveCache = false;
     a.select();
 
@@ -271,8 +254,8 @@ void User::allMetalPurity(const HttpRequestPtr &req, std::function<void (const H
 
 void User::allOrder(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
-    Order a;
-    a.init();
+    Table a;
+    orderSetupQuery(a);
     a.saveCache = false;
     a.select();
 
@@ -283,8 +266,8 @@ void User::allOrder(const HttpRequestPtr &req, std::function<void (const HttpRes
 
 void User::allPartGroup(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
-    PartGroup a;
-    a.init();
+    Table a;
+    partGroupSetupQuery(a);
     a.saveCache = false;
     a.select();
 
@@ -295,8 +278,8 @@ void User::allPartGroup(const HttpRequestPtr &req, std::function<void (const Htt
 
 void User::allPartType(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
-    PartType a;
-    a.init();
+    Table a;
+    partTypeSetupQuery(a);
     a.saveCache = false;
     a.select();
 
@@ -307,8 +290,8 @@ void User::allPartType(const HttpRequestPtr &req, std::function<void (const Http
 
 void User::allProduct(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
-    Product a;
-    a.init();
+    Table a;
+    productSetupQuery(a);
     a.saveCache = false;
     a.select();
 
@@ -319,8 +302,8 @@ void User::allProduct(const HttpRequestPtr &req, std::function<void (const HttpR
 
 void User::allRateOn(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
-    RateOn a;
-    a.init();
+    Table a;
+    rateOnSetupQuery(a);
     a.saveCache = false;
     a.select();
 
@@ -331,8 +314,8 @@ void User::allRateOn(const HttpRequestPtr &req, std::function<void (const HttpRe
 
 void User::allSale(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
-    Sale a;
-    a.init();
+    Table a;
+    saleSetupQuery(a);
     a.saveCache = false;
     a.select();
 
@@ -343,8 +326,8 @@ void User::allSale(const HttpRequestPtr &req, std::function<void (const HttpResp
 
 void User::allTransaction(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
-    Transaction a;
-    a.init();
+    Table a;
+    transactionSetupQuery(a);
     a.saveCache = false;
     a.select();
 
