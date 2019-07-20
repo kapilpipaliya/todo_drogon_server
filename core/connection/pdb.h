@@ -5,6 +5,25 @@
 using namespace pqxx;
 #include <string>
 extern connection DD;
+
+enum PG_TYPES {
+    BOOL = 16,
+    //    ByTea = 17,
+    //    Char = 18,
+    INT8 = 20,
+    INT4 = 23,
+    TEXT = 25,
+    JSON = 114,
+    XML = 142,
+    DOUBLE = 701,
+    TIMESTAMP = 1114,
+    ENUM = 64000,
+    //ARRAYINT = 9997, // fix
+    //ARRAYTEXT = 9998, // fix
+    PSJSON = 9999
+};
+
+
 class P_DB
 {
 

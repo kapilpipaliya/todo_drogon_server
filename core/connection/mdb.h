@@ -10,17 +10,6 @@ enum LogMessageType {
     kLogMsg_App,
     kLogMsg_ErrorLog
 };
-enum PG_TYPES {
-    BOOL = 16,
-//    ByTea = 17,
-//    Char = 18,
-    INT8 = 20,
-    INT4 = 23,
-    TEXT = 25,
-    JSON = 114,
-    XML = 142,
-    TIMESTAMP = 1114
-};
 
 class M_DB
 {

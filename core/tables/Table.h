@@ -161,6 +161,8 @@ public:
 
 public slots:
     void updateFilterBase(Json::Value filters);
+    void updateSortBase(Json::Value filters);
+    void updatePaginationBase(Json::Value filters);
     void updateFilter(int column, const QString& whereClause);
 signals:
     void finishedFetch(int fetched_row_begin, int fetched_row_end);

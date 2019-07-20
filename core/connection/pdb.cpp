@@ -6,7 +6,7 @@
 #include <iostream>
 using namespace std;
 
-connection DD("user=postgres dbname=sce_dev");
+connection DD("user=postgres dbname=sce");
 
 P_DB::P_DB()
 {
@@ -21,7 +21,7 @@ P_DB::~P_DB()
 bool P_DB::init()
 {
     try {
-        connection *C = new connection("user=postgres dbname=sce_dev");
+        connection *C = new connection("user=postgres dbname=sce");
         if (C->is_open()) {
             cout << "Opened database successfully: " << C->dbname() << endl;
             return true;

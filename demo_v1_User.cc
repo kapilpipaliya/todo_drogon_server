@@ -2,7 +2,8 @@
 
 
 #include "core/tables/functions.h"
-
+#include <json/json.h>
+#include <pqxx/pqxx>
 
 using namespace demo::v1;
 
@@ -25,18 +26,18 @@ void User::login(const HttpRequestPtr &req,
 
 void User::newForm(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback)
 {
-//    std::unordered_map<std::string, std::string> params = req->parameters();
-//    auto material_id1 = params["material_id"];
-//    auto slug1 = params["slug"];
-//    auto name1 = params["name"];
+    //    std::unordered_map<std::string, std::string> params = req->parameters();
+    //    auto material_id1 = params["material_id"];
+    //    auto slug1 = params["slug"];
+    //    auto name1 = params["name"];
 
-//    fprintf(stderr, "%d %s %s\n", material_id, slug.c_str(), name.c_str());
-//    fflush(stdout);
+    //    fprintf(stderr, "%d %s %s\n", material_id, slug.c_str(), name.c_str());
+    //    fflush(stdout);
 
     auto h = req->headers();
     auto j = req->getJsonObject().get();
-//    auto k = j->toStyledString();
-//    fprintf(stderr, "%s", k.c_str());
+    //    auto k = j->toStyledString();
+    //    fprintf(stderr, "%s", k.c_str());
 
     auto material_id1 = j->get("material_id", 0).asInt();
     auto slug1 = j->get("slug", "").asString();
@@ -46,7 +47,7 @@ void User::newForm(const HttpRequestPtr &req, std::function<void (const HttpResp
 
 
     Table a;
-    accessorySetupQuery(a);
+    query_accessory(a);
 
     Json::Value ret;
     /*
@@ -59,9 +60,9 @@ void User::newForm(const HttpRequestPtr &req, std::function<void (const HttpResp
     }
     */
     auto resp=HttpResponse::newHttpJsonResponse(ret);
-//    resp->addHeader("Access-Control-Allow-Origin", "*");
-//    resp->addHeader("Access-Control-Allow-Origin", "*");
-//    resp->addHeader("Access-Control-Allow-Methods", "['PUT', 'POST']");
+    //    resp->addHeader("Access-Control-Allow-Origin", "*");
+    //    resp->addHeader("Access-Control-Allow-Origin", "*");
+    //    resp->addHeader("Access-Control-Allow-Methods", "['PUT', 'POST']");
     callback(resp);
 }
 
@@ -86,7 +87,7 @@ void User::getInfo(const HttpRequestPtr &req,
 void User::allAccessory(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
     Table a;
-    accessorySetupQuery(a);
+    query_accessory(a);
     a.saveCache = false;
     a.select();
 
@@ -98,7 +99,7 @@ void User::allAccessory(const HttpRequestPtr &req, std::function<void (const Htt
 void User::allAccount(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
     Table a;
-    accountSetupQuery(a);
+    query_account(a);
     a.saveCache = false;
     a.select();
 
@@ -110,7 +111,7 @@ void User::allAccount(const HttpRequestPtr &req, std::function<void (const HttpR
 void User::allAccountHeading(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
     Table a;
-    accountHeadingSetupQuery(a);
+    query_account_heading(a);
     a.saveCache = false;
     a.select();
 
@@ -122,7 +123,7 @@ void User::allAccountHeading(const HttpRequestPtr &req, std::function<void (cons
 void User::allColor(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
     Table a;
-    colorSetupQuery(a);
+    query_tone(a);
     a.saveCache = false;
     a.select();
 
@@ -135,7 +136,7 @@ void User::allColor(const HttpRequestPtr &req, std::function<void (const HttpRes
 void User::allEntity(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
     Table a;
-    entitySetupQuery(a);
+    query_entity(a);
     a.saveCache = false;
     a.select();
 
@@ -147,7 +148,7 @@ void User::allEntity(const HttpRequestPtr &req, std::function<void (const HttpRe
 void User::allGemClarity(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
     Table a;
-    gemClaritySetupQuery(a);
+    query_clarity(a);
     a.saveCache = false;
     a.select();
 
@@ -159,31 +160,7 @@ void User::allGemClarity(const HttpRequestPtr &req, std::function<void (const Ht
 void User::allGemShape(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
     Table a;
-    gemShapeSetupQuery(a);
-    a.saveCache = false;
-    a.select();
-
-    auto resp=HttpResponse::newHttpJsonResponse(a.getJsonData());
-    resp->addHeader("Access-Control-Allow-Origin", "*");
-    callback(resp);
-}
-
-void User::allGemSize(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
-{
-    Table a;
-    gemSizeSetupQuery(a);
-    a.saveCache = false;
-    a.select();
-
-    auto resp=HttpResponse::newHttpJsonResponse(a.getJsonData());
-    resp->addHeader("Access-Control-Allow-Origin", "*");
-    callback(resp);
-}
-
-void User::allGemType(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
-{
-    Table a;
-    gemTypeSetupQuery(a);
+    query_shape(a);
     a.saveCache = false;
     a.select();
 
@@ -195,7 +172,7 @@ void User::allGemType(const HttpRequestPtr &req, std::function<void (const HttpR
 void User::allGlobalSetting(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
     Table a;
-    globalSettingSetupQuery(a);
+    query_global_setting(a);
     a.saveCache = false;
     a.select();
 
@@ -207,7 +184,7 @@ void User::allGlobalSetting(const HttpRequestPtr &req, std::function<void (const
 void User::allLog(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
     Table a;
-    logSetupQuery(a);
+    query_log(a);
     a.saveCache = false;
     a.select();
 
@@ -219,7 +196,7 @@ void User::allLog(const HttpRequestPtr &req, std::function<void (const HttpRespo
 void User::allMaterial(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
     Table a;
-    materialSetupQuery(a);
+    query_metal(a);
     a.saveCache = false;
     a.select();
 
@@ -227,7 +204,7 @@ void User::allMaterial(const HttpRequestPtr &req, std::function<void (const Http
     resp->addHeader("Access-Control-Allow-Origin", "*");
     callback(resp);
 }
-
+/*
 void User::allMaterialType(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
     Table a;
@@ -235,15 +212,15 @@ void User::allMaterialType(const HttpRequestPtr &req, std::function<void (const 
     a.saveCache = false;
     a.select();
 
-    auto resp=HttpResponse::newHttpJsonResponse(a.getJsonData());
-    resp->addHeader("Access-Control-Allow-Origin", "*");
-    callback(resp);
-}
+auto resp=HttpResponse::newHttpJsonResponse(a.getJsonData());
+resp->addHeader("Access-Control-Allow-Origin", "*");
+callback(resp);
+}*/
 
-void User::allMetalPurity(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
+    void User::allMetalPurity(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
     Table a;
-    metalPuritySetupQuery(a);
+    query_purity(a);
     a.saveCache = false;
     a.select();
 
@@ -255,7 +232,7 @@ void User::allMetalPurity(const HttpRequestPtr &req, std::function<void (const H
 void User::allOrder(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
     Table a;
-    orderSetupQuery(a);
+    query_order(a);
     a.saveCache = false;
     a.select();
 
@@ -267,7 +244,7 @@ void User::allOrder(const HttpRequestPtr &req, std::function<void (const HttpRes
 void User::allPartGroup(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
     Table a;
-    partGroupSetupQuery(a);
+    query_part_group(a);
     a.saveCache = false;
     a.select();
 
@@ -279,7 +256,7 @@ void User::allPartGroup(const HttpRequestPtr &req, std::function<void (const Htt
 void User::allPartType(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
     Table a;
-    partTypeSetupQuery(a);
+    query_part_type(a);
     a.saveCache = false;
     a.select();
 
@@ -291,31 +268,21 @@ void User::allPartType(const HttpRequestPtr &req, std::function<void (const Http
 void User::allProduct(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
     Table a;
-    productSetupQuery(a);
+    query_product(a);
     a.saveCache = false;
     a.select();
 
     auto resp=HttpResponse::newHttpJsonResponse(a.getJsonData());
     resp->addHeader("Access-Control-Allow-Origin", "*");
+    resp->addCookie("n", "o");
     callback(resp);
 }
 
-void User::allRateOn(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
-{
-    Table a;
-    rateOnSetupQuery(a);
-    a.saveCache = false;
-    a.select();
-
-    auto resp=HttpResponse::newHttpJsonResponse(a.getJsonData());
-    resp->addHeader("Access-Control-Allow-Origin", "*");
-    callback(resp);
-}
 
 void User::allSale(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
     Table a;
-    saleSetupQuery(a);
+    query_sale(a);
     a.saveCache = false;
     a.select();
 
@@ -327,11 +294,58 @@ void User::allSale(const HttpRequestPtr &req, std::function<void (const HttpResp
 void User::allTransaction(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback) const
 {
     Table a;
-    transactionSetupQuery(a);
+    query_transaction(a);
     a.saveCache = false;
     a.select();
 
     auto resp=HttpResponse::newHttpJsonResponse(a.getJsonData());
     resp->addHeader("Access-Control-Allow-Origin", "*");
     callback(resp);
+}
+
+void User::download(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback)
+{
+    auto id = req->getParameter("path", "AdminMenu5.png");
+//    fprintf(stdout, "%s\n", id.c_str());
+//    fflush(stdout);
+    auto new_path = "/home/kapili3/fileuploads/" + id;
+
+    auto resp = HttpResponse::newFileResponse(new_path, "", CT_IMAGE_PNG);
+    callback(resp);
+}
+
+void User::download_id(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback)
+{
+    auto id = req->getParameter("path", "AdminMenu5.png");
+//    fprintf(stdout, "%s\n", id.c_str());
+//    fflush(stdout);
+
+auto c = req->getCookie("admin");
+    pqxx::work txn{DD};
+    try {
+        auto sql = "SELECT name FROM product.post_attachment where id = $1";
+        pqxx::result x = txn.exec_params(sql, id);
+        if(x.size() != 0) {
+            //         auto new_path = std::string("/home/kapili3/fileuploads/") + x[0][0].c_str();
+            auto resp = HttpResponse::newFileResponse(x[0][0].c_str(), "", CT_IMAGE_PNG);
+            callback(resp);
+        } else {
+            Json::Value ret;
+            ret[0] = "404";
+            Json::Value data;
+            data[0] = 404;
+            data[1] = 0;
+            ret[1] = data;
+            auto resp=HttpResponse::newHttpJsonResponse(data);
+            resp->addCookie("power", "DDD");
+            callback(resp);
+        }
+    } catch (const std::exception &e) {
+        txn.abort();
+        std::cerr << e.what() << std::endl;
+        //simpleJsonResult(event_name, wsConnPtr, false, e.what());
+
+    }
+
+
 }

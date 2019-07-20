@@ -10,6 +10,7 @@ endif()
 set(THREADS_PREFER_PTHREAD_FLAG TRUE)
 find_package(Threads REQUIRED)
 
+remove_definitions(USE_MYSQL)
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall ${CMAKE_CXX_STD_FLAGS}")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall ${CMAKE_CXX_STD_FLAGS}")
 
@@ -40,6 +41,7 @@ find_package(PostgreSQL)
 if(PostgreSQL_FOUND)
   list(APPEND _OPTIONAL_LIBS PostgreSQL::PostgreSQL)
 endif()
+find_package(libpqxx REQUIRED)
 
 
 #Find sqlite3.
@@ -56,6 +58,7 @@ AUX_SOURCE_DIRECTORY(plugins PLUGIN_SRC)
 AUX_SOURCE_DIRECTORY(models MODEL_SRC)
 
 include_directories(/usr/local/include)
+include_directories(/usr/include)
 
 FILE(GLOB SCP_LIST ${CMAKE_CURRENT_SOURCE_DIR}/views/*.csp)
 foreach(cspFile ${SCP_LIST})
@@ -73,7 +76,7 @@ endforeach()
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 find_package(Qt5 COMPONENTS Core Gui Network Xml Sql REQUIRED)
 
-subdirs(core)
+add_subdirectory(core)
 #include_directories("/home/kapili3/k/jewelApp/src")
 #find_library(CONN_LIB libjewelconnection HINT /home/kapili3/k/build-jewelApp-Desktop_Qt_5_13_0_GCC_64bit-Debug/src/core/connection)
 #find_library(CORE_LIB libjewelcore2 HINT /home/kapili3/k/build-jewelApp-Desktop_Qt_5_13_0_GCC_64bit-Debug/src/core)
@@ -94,6 +97,8 @@ target_link_libraries(jdragon
   ZLIB::ZLIB
   #${CONN_LIB}
   #${CORE_LIB}
+  PostgreSQL::PostgreSQL
+  libpqxx::pqxx_shared
   libjewelconnection
   libjewelcore2
   # TODO: properly search for them

@@ -1,24 +1,25 @@
 /* This is a JSON format configuration file
  */
 {
-    /*
+    
     //ssl:The global ssl files setting
     "ssl": {
-        "cert": "../../trantor/trantor/tests/server.pem",
-        "key": "../../trantor/trantor/tests/server.pem"
+        "cert": "../cert/server.pem",
+        "key": "../cert/private.pem"
     },
     "listeners": [
         {
             //address: Ip address,0.0.0.0 by default
             "address": "0.0.0.0",
-            //port: Port number
-            "port": 80,
+            //port: Port number //80
+            "port": 8300,
             //https: If true, use https for security,false by default
             "https": false
         },
         {
             "address": "0.0.0.0",
-            "port": 443,
+            //"port": 443, 
+            "port": 8301, 
             "https": true,
             //cert,key: Cert file path and key file path, empty by default,
             //if empty, use the global setting
@@ -26,7 +27,7 @@
             "key": ""
         }
     ],
-    "db_clients": [
+    /*"db_clients": [
         {
             //name: Name of the client,'default' by default
             //"name":"",

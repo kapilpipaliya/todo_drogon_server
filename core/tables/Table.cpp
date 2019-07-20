@@ -22,8 +22,8 @@ bool Table::select()
 
     auto q = m_query.buildQuery(true);
     // to print out query:
-    //fprintf(stdout, "%s\n", q.c_str());
-    //fflush(stdout);
+    fprintf(stdout, "%s\n", q.c_str());
+    fflush(stdout);
 
     /* temporary
     if(!executeSQL(q)) {
@@ -38,6 +38,7 @@ bool Table::select()
         txn.commit();
     } catch (const std::exception &e) {
         txn.abort();
+        std::cout << "query: " << q << std::endl;
         std::cerr << e.what() << std::endl;
         throw;
 
@@ -242,20 +243,53 @@ QVariant Table::getResult(int row, int column) const
 
 Json::Value Table::getJsonHeaderData()
 {
+    Json::Value ret(Json::arrayValue);
+
     Json::Value jsonHeaderRow(Json::arrayValue);
+    Json::Value jsonFormHeaderRow(Json::arrayValue);
+    Json::Value jsonFormColumnTypesRow(Json::arrayValue);
+    Json::Value jsonFormVisibleColumnsRow(Json::arrayValue);
+    Json::Value jsonFormOffsetColumnsRow(Json::arrayValue);
+    Json::Value jsonFormTooltipOffsetColumnsRow(Json::arrayValue);
+
     for (int c=0; c < m_query.selectedColumns().size(); c++) {
         jsonHeaderRow[c] = getHeaderName(c);
+        auto column = m_query.selectedColumns().at(c);
+        jsonFormColumnTypesRow[c] = column.column_type;
+        jsonFormVisibleColumnsRow[c] = column.isVisible;
+        jsonFormOffsetColumnsRow[c] = column.offset;
+        jsonFormTooltipOffsetColumnsRow[c] = column.tooltipOffset;
+
+        if(column.prefix.empty()) {
+            jsonFormHeaderRow[c] = column.original_column; // can change case
+        } else {
+            if(column.prefix == m_table.as()) {
+                jsonFormHeaderRow[c] = column.selector;
+            } else {
+                jsonFormHeaderRow[c] = column.prefix + "_" + column.selector;
+            }
+        }
     }
-    return jsonHeaderRow;
+    ret.append(jsonHeaderRow);
+    ret.append(jsonFormHeaderRow);
+    ret.append(jsonFormColumnTypesRow);
+    ret.append(jsonFormVisibleColumnsRow);
+    ret.append(jsonFormOffsetColumnsRow);
+    ret.append(jsonFormTooltipOffsetColumnsRow);
+    return ret;
 }
 
 Json::Value Table::getJsonData()
 {
-    Json::Value jresult;
+    Json::Value jresult(Json::arrayValue);
 
     for(int row=0; row<rowCount(); row++) {
         Json::Value jsonRow;
         for(int column=0; column<columnCount(); column++) {
+            if(result[row][column].is_null()) {
+                jsonRow[column] = Json::Value(Json::nullValue);
+                continue;
+            }
             auto ctype = m_query.selectedColumns().at(column).column_type;
             switch (ctype) {
             case PG_TYPES::INT4:
@@ -267,6 +301,46 @@ Json::Value Table::getJsonData()
                 //jsonRow[column] = strbool(row, column);
                 jsonRow[column] = result[row][column].as<bool>();
                 break;
+//          case PG_TYPES::
+            case PG_TYPES::DOUBLE:
+                //jsonRow[column] = strbool(row, column);
+                jsonRow[column] = result[row][column].as<double>();
+                break;
+            /*case PG_TYPES::ARRAYINT: {
+                auto jsonArray = Json::Value(Json::arrayValue);
+                auto ar = result[row][column].as_array();
+                auto jnc = ar.get_next();
+                while (jnc.first != array_parser::done) {
+                    if(jnc.first == array_parser::string_value) {
+                        int myint = stoi(jnc.second);
+                        jsonArray.append(myint);
+                    }
+                    jnc = ar.get_next();
+
+                }
+                jsonRow[column] = jsonArray;
+            }
+            break;
+            case PG_TYPES::ARRAYTEXT: {
+                auto jsonArray = Json::Value(Json::arrayValue);
+                auto ar = result[row][column].as_array();
+                auto jnc = ar.get_next();
+                while (jnc.first != array_parser::done) {
+                    if(jnc.first == array_parser::string_value)
+                        jsonArray.append(jnc.second);
+                    jnc = ar.get_next();
+
+                }
+                jsonRow[column] = jsonArray;
+            }
+            break;*/
+            case PG_TYPES::PSJSON: {
+                Json::Reader reader;
+                Json::Value valin;
+                reader.parse(result[row][column].c_str(),  valin);
+                jsonRow[column] = valin;
+            }
+            break;
             case PG_TYPES::TEXT:
             default:
                 //jsonRow[column] = getValue(row, column);
@@ -437,12 +511,36 @@ void Table::updateFilterBase(Json::Value filters)
         return;
     }
     for (unsigned int i=0; i < filters.size(); i++) {
-        QString whereClause = CondFormat::filterToSqlCondition(QString::fromStdString(filters.get(i, "").asString()), m_encoding);
+        QString whereClause = CondFormat::filterToSqlCondition(QString::fromStdString(filters.get(i, "").asString()), m_query.selectedColumns().at(i).column_type, m_encoding);
         // If the value was set to an empty string remove any filter for this column. Otherwise insert a new filter rule or replace the old one if there is already one
         if(whereClause.isEmpty())
             m_query.where().erase(static_cast<size_t>(i));
         else
             m_query.where()[static_cast<size_t>(i)] = whereClause.toStdString();
+    }
+}
+void Table::updateSortBase(Json::Value filters)
+{
+    if (filters.isNull() || filters.size() == 0 || filters.type() != Json::ValueType::arrayValue) {
+        return;
+    }
+    for (unsigned int i=0; i < filters.size(); i++) {
+        if(filters[i].isNull()) {
+            continue;
+        } else if(filters[i].asInt() == 0) {
+            m_query.orderBy().emplace_back(i, sqlb::Ascending);
+        } else {
+            m_query.orderBy().emplace_back(i, sqlb::Descending);
+        }
+    }
+}
+void Table::updatePaginationBase(Json::Value filters)
+{
+    if (filters.isNull() || filters.size() == 0 || filters.type() != Json::ValueType::arrayValue) {
+        return;
+    }
+    if(!filters[0].isNull()) {
+        m_query.pagination().limit = filters[0].asInt();
     }
 }
 

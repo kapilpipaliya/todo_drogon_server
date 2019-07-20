@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.14.1)
 project(libjewelcore2)
 #set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules/)
-set(CMAKE_MODULE_PATH "/home/kapili3/jdragon/cmake_modules/")
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -37,6 +36,7 @@ set(JEWEL_HDR
     modelenums.h
 
     tables/functions.h
+    tables/savefunctions.h
 )
 
 set(JEWEL_SRC
@@ -54,6 +54,9 @@ set(JEWEL_SRC
     settings.cpp
     dotenvformat.cpp
     ciphersettings.cpp
+
+    tables/functions.cpp
+    tables/savefunctions.cpp
 )
 
 #set(JEWEL_RESOURCES

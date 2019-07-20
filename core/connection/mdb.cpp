@@ -34,7 +34,7 @@ M_DB::~M_DB()
 bool M_DB::init()
 {
     if(!conn || PQstatus(conn) == CONNECTION_BAD) {
-        conn = PQconnectdb("user=postgres dbname=sce_dev");
+        conn = PQconnectdb("user=postgres dbname=sce");
 
         printf("connected to the database\n");
         fflush(stdout);

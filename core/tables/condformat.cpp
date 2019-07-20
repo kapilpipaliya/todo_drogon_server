@@ -8,10 +8,10 @@ CondFormat::CondFormat(const QString& filter, const QColor& foreground, const QC
       m_fgColor(foreground)
 {
     if (!filter.isEmpty())
-        m_sqlCondition = filterToSqlCondition(filter, encoding);
+        m_sqlCondition = filterToSqlCondition(filter, PG_TYPES::TEXT, encoding);
 }
 
-QString CondFormat::filterToSqlCondition(const QString& value, const QString& encoding)
+QString CondFormat::filterToSqlCondition(const QString& value, PG_TYPES column_type, const QString& encoding)
 {
     // Check for any special comparison operators at the beginning of the value string. If there are none default to LIKE.
     QString op = "LIKE";
@@ -36,11 +36,9 @@ QString CondFormat::filterToSqlCondition(const QString& value, const QString& en
     } else {
         val.clear();
         val2.clear();
-        if(value.left(2) == ">=" || value.left(2) == "<=" || value.left(2) == "<>")
-        {
+        if(value.left(2) == ">=" || value.left(2) == "<=" || value.left(2) == "<>") {
             // Check if we're filtering for '<> NULL'. In this case we need a special comparison operator.
-            if(value.left(2) == "<>" && value.mid(2) == "NULL")
-            {
+            if(value.left(2) == "<>" && value.mid(2) == "NULL") {
                 // We are filtering for '<>NULL'. Override the comparison operator to search for NULL values in this column. Also treat search value (NULL) as number,
                 // in order to avoid putting quotes around it.
                 op = "IS NOT";
@@ -52,7 +50,7 @@ QString CondFormat::filterToSqlCondition(const QString& value, const QString& en
                 numeric = true;
                 val = "''";
             } else {
-                value.mid(2).toFloat(&numeric);
+                value.mid(2).toFloat(&numeric); // set numeric
                 op = value.left(2);
                 val = value.mid(2);
             }
@@ -64,48 +62,75 @@ QString CondFormat::filterToSqlCondition(const QString& value, const QString& en
             val = value.mid(1);
 
             // Check if value to compare with is 'NULL'
-            if(val != "NULL")
-            {
+            if(val != "NULL") {
                 // It's not, so just compare normally to the value, whatever it is.
                 op = "=";
             } else {
-                // It is NULL. Override the comparison operator to search for NULL values in this column. Also treat search value (NULL) as number,
+                // It is NULL. Also treat search value (NULL) as number,
                 // in order to avoid putting quotes around it.
                 op = "IS";
                 numeric = true;
+            }
+            if(val != "NULL") {
+                switch (column_type) {
+                case PG_TYPES::INT4:
+                case PG_TYPES::INT8:
+                    val = QString::number(val.toFloat(&numeric));
+                    break;
+                }
             }
         } else if(value.left(1) == "/" && value.right(1) == "/" && value.length() > 2) {
             val = value.mid(1, value.length() - 2);
             op = "REGEXP";
             numeric = false;
         } else {
-            // Keep the default LIKE operator
-
-            // Set the escape character if one has been specified in the settings dialog
-            QString escape_character = Settings::getValue("databrowser", "filter_escape").toString();
-            if(escape_character == "'") escape_character = "''";
-            if(escape_character.length())
-                escape = QString("ESCAPE '%1'").arg(escape_character);
-
-            // Add % wildcards at the start and at the beginning of the filter query, but only if there weren't set any
-            // wildcards manually. The idea is to assume that a user who's just typing characters expects the wildcards to
-            // be added but a user who adds them herself knows what she's doing and doesn't want us to mess up her query.
-            if(!value.contains("%"))
-            {
+            switch (column_type) {
+            case PG_TYPES::INT4:
+            case PG_TYPES::INT8:
                 val = value;
-                val.prepend('%');
-                val.append('%');
+                op = "=";
+                numeric = true;
+                break;
+            case PG_TYPES::ENUM: {
+                if(!value.isEmpty()) { val = "'" + value + "'"; }
+                op = "=";
+                break;
             }
+            case PG_TYPES::TEXT: {
+                // Keep the default LIKE operator
+
+                // Set the escape character if one has been specified in the settings dialog
+                QString escape_character = Settings::getValue("databrowser", "filter_escape").toString();
+                if(escape_character == "'") escape_character = "''";
+                if(escape_character.length())
+                    escape = QString("ESCAPE '%1'").arg(escape_character);
+
+                // Add % wildcards at the start and at the beginning of the filter query, but only if there weren't set any
+                // wildcards manually. The idea is to assume that a user who's just typing characters expects the wildcards to
+                // be added but a user who adds them herself knows what she's doing and doesn't want us to mess up her query.
+                if(!value.contains("%")) {
+                    val = value;
+                    val.prepend('%');
+                    val.append('%');
+                }
+
+                break;
+            }
+            default:
+                val = value;
+            }
+
         }
     }
-    if(val.isEmpty())
-        val = value;
+//    if(val.isEmpty())
+//        val = value;
 
     if(val == "" || val == "%" || val == "%%")
         return QString();
     else {
+
         // Quote and escape value, but only if it's not numeric and not the empty string sequence
-        if(!numeric && val != "''")
+        if(!numeric && val != "''" && column_type == PG_TYPES::TEXT)
             val = QString("'%1'").arg(val.replace("'", "''"));
 
         QString whereClause(op + " " + QString(encodeString(val.toUtf8(), encoding)));
@@ -113,5 +138,6 @@ QString CondFormat::filterToSqlCondition(const QString& value, const QString& en
             whereClause += " AND " + QString(encodeString(val2.toUtf8(), encoding));
         whereClause += " " + escape;
         return whereClause;
+
     }
 }
