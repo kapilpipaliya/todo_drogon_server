@@ -34,7 +34,7 @@ M_DB::~M_DB()
 bool M_DB::init()
 {
     if(!conn || PQstatus(conn) == CONNECTION_BAD) {
-        conn = PQconnectdb("user=postgres dbname=sce");
+        conn = PQconnectdb("user=postgres dbname=susant");
 
         printf("connected to the database\n");
         fflush(stdout);
@@ -220,7 +220,7 @@ char *M_DB::getValue(int rowNumber, int columnNumber)
     // An empty string is returned if the field value is null. See PQgetisnull to distinguish null values from empty-string values.
 }
 
-bool M_DB::getIsNull(int rowNumber, int columnNumber)
+int M_DB::getIsNull(int rowNumber, int columnNumber)
 {
     return PQgetisnull(res, rowNumber, columnNumber);
 }

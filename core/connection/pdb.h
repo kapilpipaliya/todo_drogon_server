@@ -13,7 +13,7 @@ enum PG_TYPES {
     INT8 = 20,
     INT4 = 23,
     TEXT = 25,
-    JSON = 114,
+  //  JSON = 114,
     XML = 142,
     DOUBLE = 701,
     TIMESTAMP = 1114,
@@ -34,22 +34,6 @@ public:
     connection *C;
 public:
     bool init();
-    void close();
-
-//    bool isConnOk();
-//    static int libVersion();
-//    int serverVersion();
-
-    std::string lastErrorMessage;
-
-
-    //Retrieving Query Result Information
-    int rows();
-    int columns();
-    char *columnName(int columnNumber); // Column numbers start at 0
-    int columnNumber(const char *columnName); // -1 is returned if the given name does not match any column.
-    char* getValue(int rowNumber, int columnNumber); // Returns a single field value of one row of a PGresult. Row and column numbers start at 0.
-
 };
 
 #endif // PDB_H

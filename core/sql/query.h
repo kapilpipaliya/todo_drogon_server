@@ -5,7 +5,7 @@
 
 #include <string>
 #include <unordered_map>
-#include <vector>
+#include <utility>
 #include "core/connection/pdb.h"
 /*
  * This file's classes should not talk to database directly
@@ -34,9 +34,9 @@ struct SortedColumn {
     SortDirection direction;
 };
 struct GroupByColumn {
-    GroupByColumn(const std::string &prefix_, const std::string & column_)
-        : prefix(prefix_),
-          column(column_)
+    GroupByColumn(std::string prefix_, std::string  column_)
+        : prefix(std::move(prefix_)),
+          column(std::move(column_))
     {}
 
     bool operator==(const GroupByColumn& rhs) const
@@ -60,17 +60,17 @@ struct SelectedColumn {
     bool isEditable = true;
 };
 struct Join {
-    Join(const std::string& join_type, const sqlb::ObjectIdentifier& table, const std::string& condition)
+    Join(std::string  join_type, sqlb::ObjectIdentifier  table, std::string  condition)
         :
-        m_table(table),
-        join_type(join_type),
-        condition(condition)
+        m_table(std::move(table)),
+        join_type(std::move(join_type)),
+        condition(std::move(condition))
     {}
-    Join(const std::string& join_type, const std::string& lateral, const std::string& condition)
+    Join(std::string  join_type, std::string  lateral, std::string  condition)
         :
-          lateral(lateral),
-          join_type(join_type),
-          condition(condition)
+          lateral(std::move(lateral)),
+          join_type(std::move(join_type)),
+          condition(std::move(condition))
     {}
 
     sqlb::ObjectIdentifier m_table;
@@ -90,9 +90,9 @@ struct Pagination {
 class Query
 {
 public:
-    Query() {}
-    explicit Query(const sqlb::ObjectIdentifier& table) :
-        m_table(table)
+    Query() = default;
+    explicit Query(sqlb::ObjectIdentifier  table) :
+        m_table(std::move(table))
     {}
 
     void clear();

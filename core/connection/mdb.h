@@ -53,7 +53,7 @@ public:
     int colModifier(int columnNumber); // Returns the type modifier of the column associated with the given column number. Column num- bers start at 0. The interpretation of modifier values is type-specific; they typically indicate precision or size limits. The value -1 is used to indicate “no information available”. Most data types do not use modifiers, in which case the value is always -1.
     int colSize(int columnNumber); // Returns the size in bytes of the column associated with the given column number. Column num- bers start at 0. PQfsize returns the space allocated for this column in a database row, in other words the size of the server's internal representation of the data type. (Accordingly, it is not really very useful to clients.) A negative value indicates the data type is variable-length.
     char* getValue(int rowNumber, int columnNumber); // Returns a single field value of one row of a PGresult. Row and column numbers start at 0.
-    bool getIsNull(int rowNumber, int columnNumber); // Tests a field for a null value. Row and column numbers start at 0.
+    int getIsNull(int rowNumber, int columnNumber); // Tests a field for a null value. Row and column numbers start at 0.
     int getLength(int rowNumber, int columnNumber); // Returns the actual length of a field value in bytes. Row and column numbers start at 0.
     void printResult();
     void clearResult();

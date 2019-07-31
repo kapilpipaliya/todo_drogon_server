@@ -41,9 +41,9 @@ std::string escapeIdentifier(const std::string& id)
 
 bool ObjectIdentifier::fromSerialised(const std::string& serialised)
 {
-    auto pos_comma = serialised.find(",");
-    auto pos_colon = serialised.find(":");
-    if(pos_comma == serialised.npos || pos_colon == serialised.npos)
+    auto pos_comma = serialised.find(',');
+    auto pos_colon = serialised.find(':');
+    if(pos_comma == std::string::npos || pos_colon == std::string::npos)
         return false;
 
     size_t size_schema, size_name;

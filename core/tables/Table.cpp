@@ -1,5 +1,6 @@
+#include "../strfns.h"
 #include "Table.h"
-#include "functions.h"
+
 #include <pqxx/pqxx>
 #include <iostream>
 #include "condformat.h"
@@ -503,6 +504,15 @@ void Table::removeCommentsFromQuery(QString &query)
         // Also remove any remaining whitespace at the end of each line
         query.replace(QRegExp("[ \t]+\n"), "\n");
     }
+}
+
+Json::Value Table::getAllData(Json::Value &in)
+{
+    updateFilterBase(in[0]);
+    updateSortBase(in[1]);
+    updatePaginationBase(in[2]);
+    select();
+    return getJsonData();
 }
 
 void Table::updateFilterBase(Json::Value filters)

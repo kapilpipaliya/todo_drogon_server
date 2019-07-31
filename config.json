@@ -4,8 +4,8 @@
     
     //ssl:The global ssl files setting
     "ssl": {
-        "cert": "../cert/server.pem",
-        "key": "../cert/private.pem"
+        "cert": "../cert/kk.pem",
+        "key": "../cert/kk.pem"
     },
     "listeners": [
         {

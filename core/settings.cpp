@@ -32,7 +32,7 @@ void Settings::setValue(const QString& group, const QString& name, const QVarian
 {
     // Sometime the value has to be saved for the current session only but get discarded when the application exits.
     // In order to achieve this this flag can be set which disables the save to disk mechanism and only leaves the save to cache part active.
-    if(dont_save_to_disk == false) {
+    if(!dont_save_to_disk) {
         // Set the group and save the given value
         QSettings settings(QCoreApplication::organizationName(), QCoreApplication::organizationName());
         settings.beginGroup(group);

@@ -538,7 +538,7 @@ bool DBBrowserDB::releaseSavepoint(const QString& pointname)
 {
     if(!isOpen())
         return false;
-    if(savepointList.contains(pointname) == false)
+    if(!savepointList.contains(pointname))
         // If there is no such savepoint in the list,
         // we have already released it, so in this case
         // the operation should be successfull
@@ -559,7 +559,7 @@ bool DBBrowserDB::releaseSavepoint(const QString& pointname)
 
 bool DBBrowserDB::revertToSavepoint(const QString& pointname)
 {
-    if(!isOpen() || savepointList.contains(pointname) == false)
+    if(!isOpen() || !savepointList.contains(pointname))
         return false;
 
     QString query = QString("ROLLBACK TO SAVEPOINT %1;").arg(sqlb::escapeIdentifier(pointname));

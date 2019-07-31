@@ -2,7 +2,7 @@
 #define OBJECTIDENTIFIER_H
 
 #include <string>
-
+#include <utility>
 namespace sqlb {
 
 enum escapeQuoting {
@@ -21,10 +21,10 @@ std::string escapeIdentifier(const std::string& id);
 class ObjectIdentifier
 {
 public:
-    ObjectIdentifier(const std::string& schema, const std::string& name, const std::string& as)
-        : m_schema(schema),
-          m_name(name),
-          m_as(as)
+    ObjectIdentifier(std::string  schema, std::string  name, std::string  as)
+        : m_schema(std::move(schema)),
+          m_name(std::move(name)),
+          m_as(std::move(as))
     {
     }
 

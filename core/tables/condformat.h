@@ -8,8 +8,8 @@
 class CondFormat
 {
 public:
-    CondFormat() {}
-    explicit CondFormat(const QString& filter, const QColor& foreground, const QColor& background, const QString& encoding = QString());
+    CondFormat() = default;
+    explicit CondFormat(const QString& filter, QColor  foreground, QColor  background, const QString& encoding = QString());
 
     static QString filterToSqlCondition(const QString& value, PG_TYPES column_type, const QString& encoding = QString());
 

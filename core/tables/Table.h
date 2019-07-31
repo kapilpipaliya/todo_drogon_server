@@ -145,6 +145,8 @@ public:
 
     // Add quotes to an identifier
     //std::string escapeIdentifier2(const std::string& id);
+
+    Json::Value getAllData(Json::Value &in);
 public:
     pqxx::result result;
 

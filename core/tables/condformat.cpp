@@ -1,11 +1,12 @@
 #include "condformat.h"
+#include <utility>
 #include "core/settings.h"
 #include "data.h"
 
-CondFormat::CondFormat(const QString& filter, const QColor& foreground, const QColor& background, const QString& encoding)
+CondFormat::CondFormat(const QString& filter, QColor  foreground, QColor  background, const QString& encoding)
     : m_filter(filter),
-      m_bgColor(background),
-      m_fgColor(foreground)
+      m_bgColor(std::move(background)),
+      m_fgColor(std::move(foreground))
 {
     if (!filter.isEmpty())
         m_sqlCondition = filterToSqlCondition(filter, PG_TYPES::TEXT, encoding);
@@ -77,12 +78,25 @@ QString CondFormat::filterToSqlCondition(const QString& value, PG_TYPES column_t
                 case PG_TYPES::INT8:
                     val = QString::number(val.toFloat(&numeric));
                     break;
+                case PG_TYPES::PSJSON:
+                    numeric = false;
+                default:
+                    break;
                 }
+
             }
         } else if(value.left(1) == "/" && value.right(1) == "/" && value.length() > 2) {
             val = value.mid(1, value.length() - 2);
             op = "REGEXP";
             numeric = false;
+        } else if(value.left(1) == "{" && value.right(1) == "}") {
+            if(value.length() > 2) {
+                val = "ANY('" + value + "')";
+                op = "=";
+                numeric = true;
+            } else {
+                val = "";
+            }
         } else {
             switch (column_type) {
             case PG_TYPES::INT4:
@@ -130,7 +144,7 @@ QString CondFormat::filterToSqlCondition(const QString& value, PG_TYPES column_t
     else {
 
         // Quote and escape value, but only if it's not numeric and not the empty string sequence
-        if(!numeric && val != "''" && column_type == PG_TYPES::TEXT)
+        if(!numeric && val != "''" && (column_type == PG_TYPES::TEXT || column_type == PG_TYPES::PSJSON))
             val = QString("'%1'").arg(val.replace("'", "''"));
 
         QString whereClause(op + " " + QString(encodeString(val.toUtf8(), encoding)));

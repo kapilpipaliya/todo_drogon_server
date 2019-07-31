@@ -45,12 +45,9 @@ bool isTextOnly(QByteArray data, const QString& encoding, bool quickTest)
 
 bool startsWithBom(const QByteArray& data)
 {
-    if(data.startsWith(bom3) ||
-        data.startsWith(bom2a) || data.startsWith(bom2b) ||
-        data.startsWith(bom4a) || data.startsWith(bom4b))
-        return true;
-    else
-        return false;
+  return data.startsWith(bom3) ||
+         data.startsWith(bom2a) || data.startsWith(bom2b) ||
+         data.startsWith(bom4a) || data.startsWith(bom4b);
 }
 
 QByteArray removeBom(QByteArray& data)

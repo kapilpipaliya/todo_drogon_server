@@ -22,6 +22,17 @@ set(JEWEL_HDR
     tables/Table.h
     tables/condformat.h
     tables/data.h
+    tables/macro.h
+
+    tables/query/accountquery.h
+    tables/query/entityquery.h
+    tables/query/materialquery.h
+    tables/query/menuquery.h
+    tables/query/mfgquery.h
+    tables/query/productquery.h
+    tables/query/settingquery.h
+    tables/query/postquery.h
+
 
 ###    sql/sqlitetypes.h # this file is good and it is in the directory
     sql/query.h
@@ -34,9 +45,19 @@ set(JEWEL_HDR
 
     json.hpp
     modelenums.h
+    tables/jsonfns.h
 
-    tables/functions.h
-    tables/savefunctions.h
+
+    tables/savedel/accountsave.h
+    tables/savedel/entitysave.h
+    tables/savedel/materialsave.h
+    tables/savedel/menusave.h
+    tables/savedel/mfgsave.h
+    tables/savedel/productsave.h
+    tables/savedel/settingsave.h
+    tables/savedel/postsave.h
+
+    strfns.h
 )
 
 set(JEWEL_SRC
@@ -55,8 +76,27 @@ set(JEWEL_SRC
     dotenvformat.cpp
     ciphersettings.cpp
 
-    tables/functions.cpp
-    tables/savefunctions.cpp
+    tables/jsonfns.cpp
+
+    tables/query/accountquery.cpp
+    tables/query/entityquery.cpp
+    tables/query/materialquery.cpp
+    tables/query/menuquery.cpp
+    tables/query/mfgquery.cpp
+    tables/query/productquery.cpp
+    tables/query/settingquery.cpp
+    tables/query/postquery.cpp
+
+    tables/savedel/accountsave.cpp
+    tables/savedel/entitysave.cpp
+    tables/savedel/materialsave.cpp
+    tables/savedel/menusave.cpp
+    tables/savedel/mfgsave.cpp
+    tables/savedel/productsave.cpp
+    tables/savedel/settingsave.cpp
+    tables/savedel/postsave.cpp
+
+    strfns.cpp
 )
 
 #set(JEWEL_RESOURCES

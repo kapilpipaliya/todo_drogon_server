@@ -18,20 +18,20 @@ std::string Query::buildWherePart() const
 {
     std::string where;
 
-    if(m_where.size()) {
+    if(!m_where.empty()) {
         where = "WHERE ";
 
-        for(auto i=m_where.cbegin(); i!=m_where.cend(); ++i) {
+        for(const auto & i : m_where) {
             // I dont know why this lengthy process.
             //            const auto it = findSelectedColumnByName(m_selected_columns.at(i->first).selector);
 
-            std::string column = m_selected_columns.at(i->first).prefix + "." + sqlb::escapeIdentifier(m_selected_columns.at(i->first).selector);
+            std::string column = m_selected_columns.at(i.first).prefix + "." + sqlb::escapeIdentifier(m_selected_columns.at(i.first).selector);
 
             // if findbyname then use it..
 //            if(it != m_selected_columns.cend() && it->selector != column)
 //               column = it->selector;
 
-            where += column + " " + i->second + " AND ";
+            where += column + " " + i.second + " AND ";
         }
 
         // Remove last ' AND '
@@ -103,7 +103,7 @@ std::string Query::buildQuery(bool withRowid) const
     for(const auto& group_by_column : m_group) {
         group_by += group_by_column.prefix + "." + sqlb::escapeIdentifier(group_by_column.column) + " " + ",";
     }
-    if(group_by.size()) {
+    if(!group_by.empty()) {
         group_by.pop_back();
         group_by = "GROUP BY " + group_by;
     }
@@ -117,7 +117,7 @@ std::string Query::buildQuery(bool withRowid) const
                         + (sorted_column.direction == sqlb::Ascending ? "ASC" : "DESC") + ",";
         }
     }
-    if(order_by.size()) {
+    if(!order_by.empty()) {
         order_by.pop_back();
         order_by = "ORDER BY " + order_by;
     }
