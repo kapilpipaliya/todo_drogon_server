@@ -13,7 +13,7 @@
         Json::Value jresult;\
         jresult[0]=event_name;\
         jresult[1]=a.getAllData(in);\
-        wsConnPtr->send(jresult.toStyledString());\
+        return jresult;\
     });
 #define getAllHDataMacro(s, f)\
     fns.emplace("get_" s "_h_data", [](const std::string &event_name, const WebSocketConnectionPtr& wsConnPtr, Json::Value in) {\
@@ -22,7 +22,7 @@
         Json::Value jresult;\
         jresult[0]=event_name;\
         jresult[1]=a.getJsonHeaderData();\
-        wsConnPtr->send(jresult.toStyledString());\
+        return jresult;\
     });
 
 #define getAllTheColumns(s, f)\
@@ -37,21 +37,21 @@
 //----Save Del Macro----
 
 #define saveDel(s)\
-    void save_##s(const std::string &event_name, const WebSocketConnectionPtr& wsConnPtr, Json::Value in);\
-    void delete_##s(const std::string &event_name, const WebSocketConnectionPtr& wsConnPtr, Json::Value in);\
+    Json::Value save_##s(const std::string &event_name, const WebSocketConnectionPtr& wsConnPtr, Json::Value in);\
+    Json::Value delete_##s(const std::string &event_name, const WebSocketConnectionPtr& wsConnPtr, Json::Value in);\
 //For Cpp:
 #define delFn(s, s1)\
-void delete_##s(const std::string &event_name, const WebSocketConnectionPtr& wsConnPtr, Json::Value in)\
+Json::Value delete_##s(const std::string &event_name, const WebSocketConnectionPtr& wsConnPtr, Json::Value in)\
 {\
     pqxx::work txn{DD};\
     try {\
         txn.exec_params("DELETE FROM " s1 " WHERE id = $1", in[0].asInt());\
         txn.commit();\
-        simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");\
+        return simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");\
     } catch (const std::exception &e) {\
         txn.abort();\
         std::cerr << e.what() << std::endl;\
-        simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());\
+        return simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());\
     }\
 }
 
@@ -97,7 +97,7 @@ void save_product_##f(Json::Value &in, pqxx::work &txn, int idv1){\
 }
 
 #define save_table(fn, t, c, i, u, w, ...) \
-void save_##fn(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in)\
+Json::Value save_##fn(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in)\
 {\
     if(in["id"].asInt()) {\
         std::string strSql = "update " t " set (" c ") = ROW(" u ") " w;\
@@ -106,11 +106,11 @@ void save_##fn(const std::string &event_name, const WebSocketConnectionPtr &wsCo
         try {\
             txn.exec_params(strSql, in["id"].asInt(), ##__VA_ARGS__ );\
             txn.commit();\
-            simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");\
+            return simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");\
         } catch (const std::exception &e) {\
             txn.abort();\
             std::cerr << e.what() << std::endl;\
-            simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());\
+            return simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());\
         }\
     } else {\
         std::string strSql = "INSERT INTO " t " (" c ") values(" i ")";\
@@ -119,11 +119,11 @@ void save_##fn(const std::string &event_name, const WebSocketConnectionPtr &wsCo
         try {\
             txn.exec_params( strSql, ##__VA_ARGS__ );\
             txn.commit();\
-            simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");\
+            return simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");\
         } catch (const std::exception &e) {\
             txn.abort();\
             std::cerr << e.what() << std::endl;\
-            simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());\
+            return simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());\
         }\
     }\
 }\

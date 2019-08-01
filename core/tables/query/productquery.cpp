@@ -364,7 +364,7 @@ void query_policy(Table &t) {
 
 //--
 
-void get_product_attachment_data(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
+Json::Value get_product_attachment_data(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
     // send meta_data
     Json::Value ret;
     ret[0] = "take_image_meta";
@@ -399,18 +399,19 @@ void get_product_attachment_data(const std::string &event_name, const WebSocketC
         } else {
             // Fix simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
         }
+        return Json::Value(Json::nullValue);
 
     } catch (const std::exception &e) {
         txn.abort();
         std::cerr << e.what() << std::endl;
         //simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
     }
-
+    return Json::Value(Json::nullValue);
     //get binary data and send.
     //wsConnPtr->send();
 }
 
-void get_product_diamond_price_data(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
+Json::Value get_product_diamond_price_data(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
     Json::Value jresult;
     jresult[0] = event_name;
 
@@ -448,19 +449,21 @@ void get_product_diamond_price_data(const std::string &event_name, const WebSock
             d.append(row);
         }
         jresult[1] = d;
-        wsConnPtr->send(jresult.toStyledString());
         txn.commit();
+        //wsConnPtr->send(jresult.toStyledString());
+        return jresult;
     } catch (const std::exception &e) {
         txn.abort();
         std::cerr << e.what() << std::endl;
         //simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+        return Json::Value(Json::nullValue);
     }
 
     //get binary data and send.
     //wsConnPtr->send();
 }
 
-void get_product_cs_price_data(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
+Json::Value get_product_cs_price_data(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
     Json::Value jresult;
     jresult[0] = event_name;
 
@@ -488,19 +491,21 @@ void get_product_cs_price_data(const std::string &event_name, const WebSocketCon
             d.append(row);
         }
         jresult[1] = d;
-        wsConnPtr->send(jresult.toStyledString());
         txn.commit();
+//        wsConnPtr->send(jresult.toStyledString());
+        return jresult;
     } catch (const std::exception &e) {
         txn.abort();
         std::cerr << e.what() << std::endl;
         //simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+        return Json::Value(Json::nullValue);
     }
 
     //get binary data and send.
     //wsConnPtr->send();
 }
 
-void
+Json::Value
 get_product_category_tree_data(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
     Json::Value jresult;
     jresult[0] = event_name;
@@ -533,12 +538,14 @@ select * ,
             d.append(row);
         }
         jresult[1] = d;
-        wsConnPtr->send(jresult.toStyledString());
         txn.commit();
+//        wsConnPtr->send(jresult.toStyledString());
+        return jresult;
     } catch (const std::exception &e) {
         txn.abort();
         std::cerr << e.what() << std::endl;
         //simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+        return Json::Value(Json::nullValue);
     }
 
     //get binary data and send.

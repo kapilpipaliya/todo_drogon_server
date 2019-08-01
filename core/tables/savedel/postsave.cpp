@@ -4,7 +4,7 @@ delFn(post, "post.post");
 
 delFn(tag, "post.tag");
 
-void save_post(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
+Json::Value save_post(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
     auto post_table = sqlb::ObjectIdentifier("post", "post", "p");
 
     if (in["id"].asInt()) {
@@ -37,11 +37,11 @@ void save_post(const std::string &event_name, const WebSocketConnectionPtr &wsCo
             //save_product_categories(post_category_table, in, txn, post_id);
 
             txn.commit();
-            simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
+            return simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
         } catch (const std::exception &e) {
             txn.abort();
             std::cerr << e.what() << std::endl;
-            simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+            return simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
         }
     } else {
         std::string strSqlPost =
@@ -74,16 +74,16 @@ void save_post(const std::string &event_name, const WebSocketConnectionPtr &wsCo
             //save_product_categories(post_category_table, in, txn, post_id);
 
             txn.commit();
-            simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
+            return simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
         } catch (const std::exception &e) {
             txn.abort();
             std::cerr << e.what() << std::endl;
-            simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+            return simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
         }
     }
 }
 
-void save_tag(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
+Json::Value save_tag(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
     printJson(in);
     auto product_table = sqlb::ObjectIdentifier("post", "tag", "t");
 
@@ -104,11 +104,11 @@ void save_tag(const std::string &event_name, const WebSocketConnectionPtr &wsCon
                             in["description"].asString()
                             );
             txn.commit();
-            simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
+            return simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
         } catch (const std::exception &e) {
             txn.abort();
             std::cerr << e.what() << std::endl;
-            simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+            return simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
         }
     } else {
         std::string strSql = "INSERT INTO %1.%2 (slug, name, description) values($1, $2, $3)";
@@ -124,11 +124,11 @@ void save_tag(const std::string &event_name, const WebSocketConnectionPtr &wsCon
                 in["description"].asString()
                 );
             txn.commit();
-            simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
+            return simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
         } catch (const std::exception &e) {
             txn.abort();
             std::cerr << e.what() << std::endl;
-            simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+            return simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
         }
     }
 }

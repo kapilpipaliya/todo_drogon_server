@@ -21,10 +21,10 @@ void query_certified_by(Table &t);
 void query_policy(Table &t);
 
 
-void get_product_attachment_data(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in);
-void get_product_diamond_price_data(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in);
-void get_product_cs_price_data(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in);
-void get_product_category_tree_data(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in);
+Json::Value get_product_attachment_data(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in);
+Json::Value get_product_diamond_price_data(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in);
+Json::Value get_product_cs_price_data(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in);
+Json::Value get_product_category_tree_data(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in);
 
 
 #endif // PRODUCTQUERY_H

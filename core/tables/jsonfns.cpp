@@ -6,7 +6,7 @@ void printJson(Json::Value & in)
     fflush(stdout);
 }
 
-void simpleJsonSaveResult(const std::string &event_name, const WebSocketConnectionPtr& wsConnPtr, bool ok, const std::string & error)
+Json::Value simpleJsonSaveResult(const std::string &event_name, const WebSocketConnectionPtr& wsConnPtr, bool ok, const std::string & error)
 {
     Json::Value out;
     out[0]=event_name;
@@ -17,7 +17,8 @@ void simpleJsonSaveResult(const std::string &event_name, const WebSocketConnecti
         ret["error"]=error;
     }
     out[1]=ret;
-    wsConnPtr->send(out.toStyledString());
+    //wsConnPtr->send(out.toStyledString());
+    return out;
 }
 
 // ---------

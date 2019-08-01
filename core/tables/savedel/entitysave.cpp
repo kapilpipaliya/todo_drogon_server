@@ -7,18 +7,18 @@ delFn(contact_type, "entity.contact_type");
 delFn(entity_type, "entity.entity_type");
 //delFn(entity, "entity.entity");
 
-void save_address_type(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
+Json::Value save_address_type(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
   if (in["id"].asInt()) {
     std::string strSql = "update entity.address_type set (name) = ROW($2) where id=$1";
     pqxx::work txn{DD};
     try {
       txn.exec_params(strSql, in["id"].asInt(), in["name"].asString());
       txn.commit();
-      simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
+      return simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
     } catch (const std::exception &e) {
       txn.abort();
       std::cerr << e.what() << std::endl;
-      simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+      return simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
     }
   } else {
     std::string strSql = "INSERT INTO entity.address_type (name) values($1)";
@@ -26,27 +26,27 @@ void save_address_type(const std::string &event_name, const WebSocketConnectionP
     try {
       txn.exec_params(strSql, in["name"].asString());
       txn.commit();
-      simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
+      return simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
     } catch (const std::exception &e) {
       txn.abort();
       std::cerr << e.what() << std::endl;
-      simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+      return simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
     }
   }
 }
 
-void save_contact_type(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
+Json::Value save_contact_type(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
   if (in["id"].asInt()) {
     std::string strSql = "update entity.contact_type set (name) = ROW($2) where id=$1";
     pqxx::work txn{DD};
     try {
       txn.exec_params(strSql, in["id"].asInt(), in["name"].asString());
       txn.commit();
-      simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
+      return simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
     } catch (const std::exception &e) {
       txn.abort();
       std::cerr << e.what() << std::endl;
-      simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+      return simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
     }
   } else {
     std::string strSql = "INSERT INTO entity.contact_type (name) values($1)";
@@ -54,27 +54,27 @@ void save_contact_type(const std::string &event_name, const WebSocketConnectionP
     try {
       txn.exec_params(strSql, in["name"].asString());
       txn.commit();
-      simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
+      return simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
     } catch (const std::exception &e) {
       txn.abort();
       std::cerr << e.what() << std::endl;
-      simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+      return simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
     }
   }
 }
 
-void save_entity_type(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
+Json::Value save_entity_type(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
   if (in["id"].asInt()) {
     std::string strSql = "update entity.entity_type set (name) = ROW($2) where id=$1";
     pqxx::work txn{DD};
     try {
       txn.exec_params(strSql, in["id"].asInt(), in["name"].asString());
       txn.commit();
-      simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
+      return simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
     } catch (const std::exception &e) {
       txn.abort();
       std::cerr << e.what() << std::endl;
-      simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+      return simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
     }
   } else {
     std::string strSql = "INSERT INTO entity.entity_type (name) values($1)";
@@ -82,11 +82,11 @@ void save_entity_type(const std::string &event_name, const WebSocketConnectionPt
     try {
       txn.exec_params(strSql, in["name"].asString());
       txn.commit();
-      simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
+      return simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
     } catch (const std::exception &e) {
       txn.abort();
       std::cerr << e.what() << std::endl;
-      simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+      return simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
     }
   }
 }
@@ -146,7 +146,7 @@ void save_Entity_Address(Json::Value &in,
   }
 }
 
-void save_entity(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
+Json::Value save_entity(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
   if (in["id"].asInt()) {
     std::string strSql = "update entity.entity set (  entity_type_id, no, sequence_id, slug, parent_id, legal_name, tax_no, first_name, middle_name, last_name, birth_date, start_date, end_date, salary, rate, active, pay_to_name, threshold, credit_limit, terms, discount, discount_terms, discount_account_id, ar_ap_account_id, cash_account_id, currency_id, price_group_id, tax_included, email)"
                          " = ROW($2, $3, NULLIF($4, 0), $5, NULLIF($6, 0), $7, $8, $9, $10, $11, $12, NULLIF($13, '')::date, NULLIF($14, '')::date, $15, $16, $17, $18, $19, $20, $21, $22, $23, NULLIF($24, 0), NULLIF($25, 0), NULLIF($26, 0), NULLIF($27, 0), NULLIF($28, 0), $29, $30) where id=$1";
@@ -195,11 +195,11 @@ void save_entity(const std::string &event_name, const WebSocketConnectionPtr &ws
       save_Entity_Address(in, txn, entity_id);
 
       txn.commit();
-      simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
+      return simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
     } catch (const std::exception &e) {
       txn.abort();
       std::cerr << e.what() << std::endl;
-      simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+      return simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
     }
   } else {
     std::string strSql = "INSERT INTO entity.entity (  entity_type_id, no, sequence_id, slug, parent_id, legal_name, tax_no, first_name, middle_name, last_name, birth_date, start_date, end_date, salary, rate, active, pay_to_name, threshold, credit_limit, terms, discount, discount_terms, discount_account_id, ar_ap_account_id, cash_account_id, currency_id, price_group_id, tax_included, email) "
@@ -249,16 +249,16 @@ void save_entity(const std::string &event_name, const WebSocketConnectionPtr &ws
 
 
       txn.commit();
-      simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
+      return simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
     } catch (const std::exception &e) {
       txn.abort();
       std::cerr << e.what() << std::endl;
-      simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+      return simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
     }
   }
 }
 
-void delete_entity(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
+Json::Value delete_entity(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
   pqxx::work txn{DD};
   try {
     auto entity_id = in[0].asInt();
@@ -275,10 +275,10 @@ void delete_entity(const std::string &event_name, const WebSocketConnectionPtr &
                     entity_id);   // This cant be deleted easily, set the table where it used null values or deleted user... 2. Also it is used in same entity table too.!
     txn.exec_params(dele("entity.entity", "where id = $1"), entity_id);
     txn.commit();
-    simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
+    return simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
   } catch (const std::exception &e) {
     txn.abort();
     std::cerr << e.what() << std::endl;
-    simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+    return simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
   }
 }

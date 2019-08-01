@@ -5,7 +5,7 @@
 
 using namespace std::literals;
 
-void admin_login(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
+Json::Value admin_login(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
     auto sql = "select e.id from entity.entity e left join entity.entity_user as u on u.entity_id = e.id where e.email = $1 and u.password = $2";
     pqxx::work txn{DD};
     try {
@@ -19,7 +19,7 @@ void admin_login(const std::string &event_name, const WebSocketConnectionPtr &ws
             // To serialize the Json::Value into a Json document, you should use a Json writer, or Json::Value::toStyledString().
             LOG_INFO << j.toStyledString();
             auto rs = txn.exec_params(sqlSession, "admin", j.toStyledString());
-            simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
+            wsConnPtr->send(simpleJsonSaveResult(event_name, wsConnPtr, true, "Done").toStyledString());
 
             // ask to save cookie
             Json::Value value;
@@ -28,34 +28,37 @@ void admin_login(const std::string &event_name, const WebSocketConnectionPtr &ws
             //auto s = get_serial_no();
             cookie_value["admin"] = rs[0][0].as<int>();
             value[1] = cookie_value;
-            wsConnPtr->send(value.toStyledString());
 
             setAdminContext(wsConnPtr, rs[0][0].as<int>());
-
+            wsConnPtr->send(value.toStyledString());
+            txn.commit();
+            return Json::Value(Json::nullValue);
         } else {
-            simpleJsonSaveResult(event_name, wsConnPtr, false, "Error");
+            txn.commit();
+            return simpleJsonSaveResult(event_name, wsConnPtr, false, "Error");
         }
-        txn.commit();
+
     } catch (const std::exception &e) {
         txn.abort();
         std::cerr << e.what() << std::endl;
-        simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+        return simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
     }
 }
 
-void admin_logout(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
+Json::Value admin_logout(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
     deleteAdminSession(wsConnPtr);
-    simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
+    return simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
 }
 
-void is_admin_auth(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
+Json::Value is_admin_auth(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
     Json::Value value;
     value[0] = event_name;
     auto c = getAdminContext(wsConnPtr);
     if (c != 0) { value[1] = true; } else { value[1] = false; }
-    wsConnPtr->send(value.toStyledString());
+    //wsConnPtr->send(value.toStyledString());
+    return value;
 }
-void user_register(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in)
+Json::Value user_register(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in)
 {
     std::string strSql = "INSERT INTO entity.entity ( entity_type_id, no, legal_name, email) values($1, $2, $3, $4) returning id";
     pqxx::work txn{DD};
@@ -67,15 +70,15 @@ void user_register(const std::string &event_name, const WebSocketConnectionPtr &
 
         txn.commit();
         //simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
-        user_login(event_name, wsConnPtr, in);
+        return user_login(event_name, wsConnPtr, in);
     } catch (const std::exception &e) {
         txn.abort();
         std::cerr << e.what() << std::endl;
-        simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+        return simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
     }
 }
 
-void user_login(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
+Json::Value user_login(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
     auto sql = "select e.id from entity.entity e left join entity.entity_user as u on u.entity_id = e.id where e.email = $1 and u.password = $2";
     pqxx::work txn{DD};
     try {
@@ -101,18 +104,19 @@ void user_login(const std::string &event_name, const WebSocketConnectionPtr &wsC
             wsConnPtr->send(value.toStyledString());
 
             setUserContext(wsConnPtr, rs[0][0].as<int>());
+            return Json::Value(Json::nullValue);
 
         } else {
-            simpleJsonSaveResult(event_name, wsConnPtr, false, "Error");
+            return simpleJsonSaveResult(event_name, wsConnPtr, false, "Error");
         }
         txn.commit();
     } catch (const std::exception &e) {
         txn.abort();
         std::cerr << e.what() << std::endl;
-        simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+        return simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
     }
 }
-void user_id(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
+Json::Value user_id(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
     auto c = getUserContext(wsConnPtr);
     if (c != 0) {
         auto sqlSession = "SELECT key, value FROM user1.session where id = $1";
@@ -134,7 +138,8 @@ void user_id(const std::string &event_name, const WebSocketConnectionPtr &wsConn
             bool ok = Json::parseFromStream(rbuilder, txt, &root, &errs);
 
             jresult[1]=root["value"].asInt();
-            wsConnPtr->send(jresult.toStyledString());
+            //wsConnPtr->send(jresult.toStyledString());
+            return jresult;
         } catch (const std::exception &e) {
             txn.abort();
             std::cerr << e.what() << std::endl;
@@ -142,24 +147,26 @@ void user_id(const std::string &event_name, const WebSocketConnectionPtr &wsConn
             Json::Value jresult;
             jresult[0]=event_name;
             jresult[1]=0;
-            wsConnPtr->send(jresult.toStyledString());
+            //wsConnPtr->send(jresult.toStyledString());
+            return jresult;
         }
     }
 }
 
-void user_logout(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
+Json::Value user_logout(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
     deleteuserSession(wsConnPtr);
-    simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
+    return simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
 }
 
-void is_user_auth(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
+Json::Value is_user_auth(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
     Json::Value value;
     value[0] = event_name;
     auto c = getUserContext(wsConnPtr);
     if (c != 0) { value[1] = true; } else { value[1] = false; }
-    wsConnPtr->send(value.toStyledString());
+    //wsConnPtr->send(value.toStyledString());
+    return value;
 }
-void user_checkout(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
+Json::Value user_checkout(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
     auto c = getUserContext(wsConnPtr);
     printJson(in);
     if (c != 0) {
@@ -183,7 +190,8 @@ void user_checkout(const std::string &event_name, const WebSocketConnectionPtr &
 
 
             jresult[1]=root["value"].asInt();
-            wsConnPtr->send(jresult.toStyledString());
+            //wsConnPtr->send(jresult.toStyledString());
+            return jresult;
         } catch (const std::exception &e) {
             txn.abort();
             std::cerr << e.what() << std::endl;
@@ -191,7 +199,8 @@ void user_checkout(const std::string &event_name, const WebSocketConnectionPtr &
             Json::Value jresult;
             jresult[0]=event_name;
             jresult[1]=0;
-            wsConnPtr->send(jresult.toStyledString());
+            //wsConnPtr->send(jresult.toStyledString());
+            return jresult;
         }
     }
 }

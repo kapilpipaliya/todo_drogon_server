@@ -188,7 +188,7 @@ void query_payment_method(Table &t) {
             // sqlb::Join("left", u2, "t.update_user_id = u2.id"),
             };
 }
-void get_setting_thumb_data(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in)
+Json::Value get_setting_thumb_data(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in)
 {
     // send meta_data
     Json::Value ret;
@@ -224,11 +224,12 @@ void get_setting_thumb_data(const std::string &event_name, const WebSocketConnec
         } else {
             // Fix simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
         }
-
+        return Json::Value(Json::nullValue);
     } catch (const std::exception &e) {
         txn.abort();
         std::cerr << e.what() << std::endl;
         //simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+        return Json::Value(Json::nullValue);
     }
 
     //get binary data and send.

@@ -19,5 +19,5 @@ void query_image_collection(Table &t);
 void query_image(Table &t);
 void query_payment_method(Table &t);
 
-void get_setting_thumb_data(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in);
+Json::Value get_setting_thumb_data(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in);
 #endif // SETTINGQUERY_H

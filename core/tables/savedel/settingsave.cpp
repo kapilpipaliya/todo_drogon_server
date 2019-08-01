@@ -17,7 +17,7 @@ delFn(payment_method, "setting.payment_method");
 
 save_table(global_setting, "setting.global_setting", "name", "$1", "$2", "where id=$1", in["name"].asString());
 
-void save_currency(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
+Json::Value save_currency(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
   printJson(in);
   auto metal_purity_table = sqlb::ObjectIdentifier("setting", "currency", "c");
 
@@ -38,11 +38,11 @@ void save_currency(const std::string &event_name, const WebSocketConnectionPtr &
                       in["active"].asBool()
       );
       txn.commit();
-      simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
+      return simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
     } catch (const std::exception &e) {
       txn.abort();
       std::cerr << e.what() << std::endl;
-      simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+      return simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
     }
   } else {
     std::string strSql = "INSERT INTO %1.%2 (slug, name, symbol, rounding, active) values($1, $2, $3, $4, $5)";
@@ -60,11 +60,11 @@ void save_currency(const std::string &event_name, const WebSocketConnectionPtr &
               in["active"].asBool()
       );
       txn.commit();
-      simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
+      return simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
     } catch (const std::exception &e) {
       txn.abort();
       std::cerr << e.what() << std::endl;
-      simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+      return simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
     }
   }
 }
@@ -77,7 +77,7 @@ save_table(support, "setting.support", "name, email, phone, message", "$1, $2, $
 save_table(image_collection, "setting.image_collection", "name", "$1", "$2", "where id=$1", in["name"].asString());
 
 // this is normal images..
-void save_image(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
+Json::Value save_image(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
     printJson(in);
     auto metal_purity_table = sqlb::ObjectIdentifier("setting", "image", "c");
     std::string t = "setting.image";
@@ -101,11 +101,11 @@ void save_image(const std::string &event_name, const WebSocketConnectionPtr &wsC
             }
             txn.commit();
 
-            simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
+            return simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
         } catch (const std::exception &e) {
             txn.abort();
             std::cerr << e.what() << std::endl;
-            simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+            return simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
         }
     } else {
         std::string strSql = "INSERT INTO " + t + " (" + c + ") values(NULLIF($1,0), $2, $3, $4, $5, $6, $7, $8)";
@@ -119,22 +119,22 @@ void save_image(const std::string &event_name, const WebSocketConnectionPtr &wsC
                     txn.exec_params(strSqlTempImageDel, temp_id);
                 }
             } else {
-                simpleJsonSaveResult(event_name, wsConnPtr, false, "Please Upload Image");
+                return simpleJsonSaveResult(event_name, wsConnPtr, false, "Please Upload Image");
             }
 
             txn.commit();
-            simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
+            return simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
         } catch (const std::exception &e) {
             txn.abort();
             std::cerr << e.what() << std::endl;
-            simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+            return simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
         }
     }
 }
 save_table(payment_method, "setting.payment_method", "name, url, description", "$1, $2, $3", "$2, $3, $4", "where id=$1", in["name"].asString(), in["url"].asString(), in["description"].asString())
 
 //----
-void saveImageMeta(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
+Json::Value saveImageMeta(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
   auto c = getAdminContext(wsConnPtr);
 
   auto strSql = ins("user1.temp_image", "session_id, event_name, name, size, type", "$1, $2, $3, $4, $5");
@@ -142,18 +142,18 @@ void saveImageMeta(const std::string &event_name, const WebSocketConnectionPtr &
   try {
     auto r = txn.exec_params(strSql, c, in[0].asString(), in[1].asString(), in[2].asInt64(), in[3].asString());
     txn.commit();
-    simpleJsonSaveResult(event_name, wsConnPtr, true, "done");
+    return simpleJsonSaveResult(event_name, wsConnPtr, true, "done");
   } catch (const std::exception &e) {
     txn.abort();
     std::cerr << e.what() << std::endl;
-    simpleJsonSaveResult(event_name, wsConnPtr, false, "Error");
+    return simpleJsonSaveResult(event_name, wsConnPtr, false, "Error");
   }
 
 
 }
 
 // save image in disk and return temporary id:
-void save_setting_attachment(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, std::string &message) {
+Json::Value save_setting_attachment(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, std::string &message) {
     auto session_id = getAdminContext(wsConnPtr);
     auto strSql = sel("user1.temp_image", "event_name, name, size, type", "where session_id = $1");
     pqxx::work txn{DD};
@@ -208,12 +208,14 @@ void save_setting_attachment(const std::string &event_name, const WebSocketConne
         pqxx::result insert_result = txn.exec_params(strSql, name, size, type);
         jresult[1] = insert_result[0][0].as<int>();
         //jresult[1] = e.what();
-        wsConnPtr->send(jresult.toStyledString());
         txn.commit();
+        //wsConnPtr->send(jresult.toStyledString());
+        return jresult;
 
     } catch (const std::exception &e) {
         txn.abort();
         std::cerr << e.what() << std::endl;
+        return Json::Value(Json::nullValue);
     }
 
 

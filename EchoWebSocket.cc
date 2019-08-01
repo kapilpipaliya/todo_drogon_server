@@ -26,9 +26,9 @@
 
 using namespace std::literals;
 
-std::map<std::string, std::function<void(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr,
+std::map<std::string, std::function<Json::Value(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr,
                                          Json::Value in)> > fns;
-std::map<std::string, std::function<void(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr,
+std::map<std::string, std::function<Json::Value(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr,
                                          std::string &message)> > fns_bin;
 #define a(s) "account_" s
 #define m(s) "material_" s
@@ -125,16 +125,18 @@ void defineFns() {
     fns.emplace("get_setting_thumb_data", get_setting_thumb_data);
 }
 
-void findAndRun(const WebSocketConnectionPtr &wsConnPtr, Json::Value valin){
+Json::Value findAndRun(const WebSocketConnectionPtr &wsConnPtr, Json::Value valin){
     std::regex r("_data\\d*$");
     auto f = fns.find(std::regex_replace(valin[0].asString(), r, "_data"));
     if (f != fns.end()) {
-        f->second(valin[0].asString(), wsConnPtr, valin[1]);
+        //std::printf("%s", valin[0].asString().c_str());
+        //fflush(stdout);
+        return f->second(valin[0].asString(), wsConnPtr, valin[1]);
     } else {
         Json::Value jresult;
         jresult[0] = valin[0].asString();
         jresult[1] = Json::arrayValue;
-        wsConnPtr->send(jresult.toStyledString());
+        return jresult;
     }
 }
 
@@ -155,11 +157,16 @@ void EchoWebSocket::handleNewMessage(const WebSocketConnectionPtr &wsConnPtr, st
                 return wsConnPtr->send("");
             }
             if (valin[0].asString().compare(std::string("batch")) == 0){
+                Json::Value out(Json::arrayValue);
                 for (auto i : valin) {
-                    findAndRun(wsConnPtr, i);
+                    out.append(findAndRun(wsConnPtr, i));
                 }
+                wsConnPtr->send(out.toStyledString());
             } else {
-                findAndRun(wsConnPtr, valin);
+                auto r = findAndRun(wsConnPtr, valin);
+                if(!r.isNull()){
+                    wsConnPtr->send(r.toStyledString());
+                }
             }
             break;
         }
@@ -168,7 +175,8 @@ void EchoWebSocket::handleNewMessage(const WebSocketConnectionPtr &wsConnPtr, st
             auto event_name_meta = getEventName(wsConnPtr);
             auto f = fns_bin.find(std::regex_replace(event_name_meta, r, "_data"));
             if (f != fns_bin.end()) {
-                f->second(event_name_meta, wsConnPtr, message);
+                auto j = f->second(event_name_meta, wsConnPtr, message);
+                wsConnPtr->send(j.toStyledString());
             }
 
             break;

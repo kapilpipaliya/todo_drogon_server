@@ -4,9 +4,9 @@
 #include <vector>
 
 using namespace drogon;
-extern std::map<std::string, std::function<void(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr,
+extern std::map<std::string, std::function<Json::Value(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr,
                                                 Json::Value in)> > fns;
-extern std::map<std::string, std::function<void(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr,
+extern std::map<std::string, std::function<Json::Value(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr,
                                                 std::string &message)> > fns_bin;
 
 static void defineFns();

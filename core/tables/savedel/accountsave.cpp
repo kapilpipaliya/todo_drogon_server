@@ -60,7 +60,7 @@ void save_txn_order_item(Json::Value &in, pqxx::work &txn, int txn_id) {
   }
 }
 
-void save_txn(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
+Json::Value save_txn(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
   if (in["id"].asInt()) {
     std::string strSqlPost =
             "update account.txn set (journal_type_id, party_id, date, description )"
@@ -77,11 +77,11 @@ void save_txn(const std::string &event_name, const WebSocketConnectionPtr &wsCon
       save_txn_order_item(in, txn, txn_id);
 
       txn.commit();
-      simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
+      return simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
     } catch (const std::exception &e) {
       txn.abort();
       std::cerr << e.what() << std::endl;
-      simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+      return simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
     }
   } else {
     std::string strSqlPost =
@@ -101,16 +101,16 @@ void save_txn(const std::string &event_name, const WebSocketConnectionPtr &wsCon
       save_txn_order_item(in, txn, txn_id);
 
       txn.commit();
-      simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
+      return simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
     } catch (const std::exception &e) {
       txn.abort();
       std::cerr << e.what() << std::endl;
-      simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+      return simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
     }
   }
 }
 
-void delete_txn(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
+Json::Value delete_txn(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
   pqxx::work txn{DD};
   try {
     auto txn_del = "DELETE FROM account.txn WHERE id = $1";
@@ -119,11 +119,11 @@ void delete_txn(const std::string &event_name, const WebSocketConnectionPtr &wsC
     txn.exec_params(txn_del, in[0].asInt());
 
     txn.commit();
-    simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
+    return simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
   } catch (const std::exception &e) {
     txn.abort();
     std::cerr << e.what() << std::endl;
-    simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+    return simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
   }
 }
 

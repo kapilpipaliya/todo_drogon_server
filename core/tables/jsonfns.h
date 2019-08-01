@@ -6,7 +6,7 @@
 using namespace drogon;
 
 void printJson(Json::Value & in);
-void simpleJsonSaveResult(const std::string &event_name, const WebSocketConnectionPtr& wsConnPtr, bool ok, const std::string & error);
+Json::Value simpleJsonSaveResult(const std::string &event_name, const WebSocketConnectionPtr& wsConnPtr, bool ok, const std::string & error);
 
 
 
