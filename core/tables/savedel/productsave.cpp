@@ -660,7 +660,7 @@ Json::Value save_product(const std::string &event_name, const WebSocketConnectio
   if (in["id"].asInt()) {
     std::string strSqlPost =
             "update %1.%2 set "
-            "(comment_status, menu_order, post_excerpt, post_content, post_title, post_name, post_password, post_status, post_date, post_type, visibility)"
+            "(comment_status, menu_order, excerpt, content, title, name, password, status, date, type, visibility)"
             " = ROW($2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) where id=$1";
     ReplaceAll2(strSqlPost, "%1", post_table.schema());
     ReplaceAll2(strSqlPost, "%2", post_table.name());
@@ -678,14 +678,14 @@ Json::Value save_product(const std::string &event_name, const WebSocketConnectio
                       in["id"].asInt(),
                       in["comment_status"].asBool(),
                       in["menu_order"].asInt(),
-                      in["post_excerpt"].asString(),
-                      in["post_content"].asString(),
-                      in["post_title"].asString(),
-                      in["post_name"].asString(),
-                      in["post_password"].asString(),
-                      in["post_status"].asString(),
-                      in["post_date"].asString(),
-                      in["post_type"].asString(),
+                      in["excerpt"].asString(),
+                      in["content"].asString(),
+                      in["title"].asString(),
+                      in["name"].asString(),
+                      in["password"].asString(),
+                      in["status"].asString(),
+                      in["date"].asString(),
+                      in["type"].asString(),
                       in["visibility"].asString()
       );
       auto post_id = in["id"].asInt();
@@ -741,7 +741,7 @@ Json::Value save_product(const std::string &event_name, const WebSocketConnectio
   } else {
     std::string strSqlPost =
             "INSERT INTO %1.%2 "
-            "(comment_status, menu_order, post_excerpt, post_content, post_title, post_name, post_password, post_status, post_date, post_type, visibility)"
+            "(comment_status, menu_order, excerpt, content, title, name, password, status, date, type, visibility)"
             " VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)"
             "RETURNING id";
     ReplaceAll2(strSqlPost, "%1", post_table.schema());
@@ -760,14 +760,14 @@ Json::Value save_product(const std::string &event_name, const WebSocketConnectio
               strSqlPost,
               in["comment_status"].asBool(),
               in["menu_order"].asInt(),
-              in["post_excerpt"].asString(),
-              in["post_content"].asString(),
-              in["post_title"].asString(),
-              in["post_name"].asString(),
-              in["post_password"].asString(),
-              in["post_status"].asString(),
-              in["post_date"].asString(),
-              in["post_type"].asString(),
+              in["excerpt"].asString(),
+              in["content"].asString(),
+              in["title"].asString(),
+              in["name"].asString(),
+              in["password"].asString(),
+              in["status"].asString(),
+              in["date"].asString(),
+              in["type"].asString(),
               in["visibility"].asString()
       );
       auto post_id = x[0]["id"].as<int>();

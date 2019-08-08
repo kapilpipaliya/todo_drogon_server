@@ -271,6 +271,7 @@ Json::Value delete_entity(const std::string &event_name, const WebSocketConnecti
     txn.exec_params(dele("entity.entity_image", "where entity_id = $1"), entity_id);
     txn.exec_params(dele("entity.entity_note", "where entity_id = $1"), entity_id);
     txn.exec_params(dele("entity.entity_address", "where entity_id = $1"), entity_id);
+    txn.exec_params("delete from user1.session where value->>'value' = $1;", in[0].asString());
     txn.exec_params(dele("entity.entity_user", "where entity_id = $1"),
                     entity_id);   // This cant be deleted easily, set the table where it used null values or deleted user... 2. Also it is used in same entity table too.!
     txn.exec_params(dele("entity.entity", "where id = $1"), entity_id);

@@ -2,7 +2,7 @@
 #include <boost/filesystem.hpp>
 #include "wsfunctions.h"
 
-delFn(global_setting, "setting.global_setting");
+//delFn(setting, "setting.setting");
 
 delFn(currency, "setting.currency");
 
@@ -15,7 +15,50 @@ delFn(image_collection, "setting.image_collection");
 delFn(image, "setting.image");
 delFn(payment_method, "setting.payment_method");
 
-save_table(global_setting, "setting.global_setting", "name", "$1", "$2", "where id=$1", in["name"].asString());
+Json::Value delete_setting(const std::string &event_name, const WebSocketConnectionPtr& wsConnPtr, Json::Value in)
+{
+    pqxx::work txn{DD};
+    try {\
+        txn.exec_params("DELETE FROM setting.setting WHERE key = $1", in[0].asString());
+        txn.commit();
+        return simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
+    } catch (const std::exception &e) {
+        txn.abort();
+        std::cerr << e.what() << std::endl;
+        return simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+    }
+}
+Json::Value save_setting(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
+    // check if key exist
+    pqxx::work txn{DD};
+    pqxx::result y = txn.exec_params("select key from setting.setting where key = $1", in["key"].asString());
+    txn.commit();
+    if (y.size() != 0) {
+        std::string strSql = "update setting.setting set (value_int, value_num, value_text) = ROW($2, $3, $4) where key=$1";
+        pqxx::work txn{DD};
+        try {
+            txn.exec_params(strSql, in["key"].asString(), in["value_int"].asInt(), in["value_num"].asDouble(), in["value_text"].asString());
+            txn.commit();
+            return simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
+        } catch (const std::exception &e) {
+            txn.abort();
+            std::cerr << e.what() << std::endl;
+            return simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+        }
+    } else {
+        std::string strSql = "INSERT INTO setting.setting (key, value_int, value_num, value_text, setting_type, setting) values($1, $2, $3, $4, $5, $6)";
+        pqxx::work txn{DD};
+        try {
+            txn.exec_params(strSql, in["key"].asString(), in["value_int"].asInt(), in["value_num"].asDouble(), in["value_text"].asString(), in["setting_type"].asString(), in["setting"].toStyledString());
+            txn.commit();
+            return simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
+        } catch (const std::exception &e) {
+            txn.abort();
+            std::cerr << e.what() << std::endl;
+            return simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+        }
+    }
+}
 
 Json::Value save_currency(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
   printJson(in);

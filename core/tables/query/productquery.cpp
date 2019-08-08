@@ -48,18 +48,18 @@ void query_product(Table &t) {
           sqlb::SelectedColumn({"Purchase_Note", "purchase_note", "", "p", PG_TYPES::TEXT, false}),
 
           sqlb::SelectedColumn({"Product Id", "id", "p.id", "p", PG_TYPES::INT8, false}),
-          sqlb::SelectedColumn({"Product_short_description", "post_excerpt", "", "post", PG_TYPES::TEXT, false}),
-          sqlb::SelectedColumn({"Product_Content", "post_content", "", "post", PG_TYPES::TEXT, false}),
+          sqlb::SelectedColumn({"Product_short_description", "excerpt", "", "post", PG_TYPES::TEXT, false}),
+          sqlb::SelectedColumn({"Product_Content", "content", "", "post", PG_TYPES::TEXT, false}),
           sqlb::SelectedColumn({"Menu_Order", "menu_order", "", "post", PG_TYPES::INT8, false}),
-          sqlb::SelectedColumn({"Date", "post_date", "", "post", PG_TYPES::TIMESTAMP, true}),
-          sqlb::SelectedColumn({"Title", "post_title", "", "post", PG_TYPES::TEXT, true}),
-          sqlb::SelectedColumn({"Slug", "post_name", "", "post", PG_TYPES::TEXT, true}),
-          sqlb::SelectedColumn({"Status", "post_status", "", "post", PG_TYPES::ENUM, true}),
+          sqlb::SelectedColumn({"Date", "date", "", "post", PG_TYPES::TIMESTAMP, true}),
+          sqlb::SelectedColumn({"Title", "title", "", "post", PG_TYPES::TEXT, true}),
+          sqlb::SelectedColumn({"Slug", "name", "", "post", PG_TYPES::TEXT, true}),
+          sqlb::SelectedColumn({"Status", "status", "", "post", PG_TYPES::ENUM, true}),
           sqlb::SelectedColumn({"Comment", "comment_status", "", "post", PG_TYPES::BOOL, true}),
-          sqlb::SelectedColumn({"Password", "post_password", "", "post", PG_TYPES::TEXT, false}),
-          sqlb::SelectedColumn({"Modified", "post_modified", "", "post", PG_TYPES::TIMESTAMP, true}),
-          sqlb::SelectedColumn({"Parent", "post_parent", "", "post", PG_TYPES::INT8, true}),
-          sqlb::SelectedColumn({"Post Type", "post_type", "", "post", PG_TYPES::ENUM, true}),
+          sqlb::SelectedColumn({"Password", "password", "", "post", PG_TYPES::TEXT, false}),
+          sqlb::SelectedColumn({"Modified", "modified", "", "post", PG_TYPES::TIMESTAMP, true}),
+          sqlb::SelectedColumn({"Parent", "parent", "", "post", PG_TYPES::INT8, true}),
+          sqlb::SelectedColumn({"Post Type", "type", "", "post", PG_TYPES::ENUM, true}),
           sqlb::SelectedColumn({"MIME Type", "post_mime_type", "", "post", PG_TYPES::ENUM, false}),
           sqlb::SelectedColumn({"Comment Count", "comment_count", "", "post", PG_TYPES::INT8, true}),
 
@@ -134,9 +134,9 @@ void query_product(Table &t) {
   /*
       "id"
 
-      "post_modified"
-      "post_parent"
-      "post_type"
+      "modified"
+      "parent"
+      "type"
       "post_mime_type"
       "comment_count"
       "p_onsale"

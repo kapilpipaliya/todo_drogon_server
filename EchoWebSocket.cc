@@ -84,7 +84,7 @@ void defineFns() {
     CRUD(e("entity"), entity)
 
     // Setting
-    CRUD("setting_global_setting", global_setting)
+    CRUD("setting_setting", setting)
     CRUD("setting_currency", currency)
     CRUD("setting_log", log)
     CRUD("setting_support", support)

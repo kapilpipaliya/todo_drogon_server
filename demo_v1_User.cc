@@ -47,7 +47,7 @@ void User::download(const HttpRequestPtr &req, std::function<void(const HttpResp
 //    fflush(stdout);
     auto new_path = "/home/kapili3/fileuploads/" + id;
 
-    auto resp = HttpResponse::newFileResponse(new_path, "", CT_IMAGE_PNG);
+    auto resp = HttpResponse::newFileResponse(new_path);
     callback(resp);
 }
 
@@ -62,7 +62,7 @@ void User::download_id(const HttpRequestPtr &req, std::function<void(const HttpR
         pqxx::result x = txn.exec_params(sql, id);
         if (!x.empty()) {
             //  auto new_path = std::string("/home/kapili3/fileuploads/") + x[0][0].c_str();
-            auto resp = HttpResponse::newFileResponse(home.string() + "/fileuploads/" + x[0][0].c_str(), "", CT_IMAGE_PNG);
+            auto resp = HttpResponse::newFileResponse(home.string() + "/fileuploads/" + x[0][0].c_str());
             //resp->setExpiredTime(0);
             resp->addHeader("Cache-Control", "max-age=2592000, public");
             callback(resp);
@@ -96,7 +96,7 @@ void User::thumb_id(const HttpRequestPtr &req, std::function<void (const HttpRes
         pqxx::result x = txn.exec_params(sql, id);
         if (!x.empty()) {
             //  auto new_path = std::string("/home/kapili3/fileuploads/") + x[0][0].c_str();
-            auto resp = HttpResponse::newFileResponse(home.string() + "/fileuploads/" + x[0][0].c_str(), "", CT_IMAGE_PNG);
+            auto resp = HttpResponse::newFileResponse(home.string() + "/fileuploads/" + x[0][0].c_str());
             //resp->setExpiredTime(0);
             resp->addHeader("Cache-Control", "max-age=2592000, public");
             callback(resp);

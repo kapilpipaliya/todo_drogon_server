@@ -6,7 +6,7 @@
 
 using namespace drogon;
 
-void query_global_setting(Table &t);
+void query_setting(Table &t);
 
 void query_currency(Table &t);
 

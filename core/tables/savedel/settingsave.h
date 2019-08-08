@@ -12,7 +12,7 @@ using namespace drogon;
 #include "core/sql/query.h"
 
 
-saveDel(global_setting);
+saveDel(setting);
 
 saveDel(currency);
 

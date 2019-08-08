@@ -2,7 +2,9 @@
 #include "core/tables/macro.h"
 #include "core/tables/jsonfns.h"
 #include "core/connection/pdb.h"
-
+#include <algorithm>
+#include <cctype>
+#include <locale>
 using namespace std::literals;
 
 Json::Value admin_login(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
@@ -60,10 +62,21 @@ Json::Value is_admin_auth(const std::string &event_name, const WebSocketConnecti
 }
 Json::Value user_register(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in)
 {
-    std::string strSql = "INSERT INTO entity.entity ( entity_type_id, no, legal_name, email) values($1, $2, $3, $4) returning id";
+    std::string strSql = "INSERT INTO entity.entity ( entity_type_id, no, legal_name, slug, email) values($1, $2, $3, $4, $5) returning id";
     pqxx::work txn{DD};
     try {
-        auto x = txn.exec_params(strSql, 6, "", in["legal_name"].asString(), in["email"].asString() );
+
+
+        std::string data = in["legal_name"].asString();
+        std::transform(data.begin(), data.end(), data.begin(),
+                       [](unsigned char c){ return std::tolower(c); });
+        std::transform(data.begin(), data.end(), data.begin(),
+                       [](unsigned char c){ return std::tolower(c); });
+        std::transform(data.begin(), data.end(), data.begin(), [](char ch) {
+            return ch == ' ' ? '_' : ch;
+        });
+
+        auto x = txn.exec_params(strSql, 6, "", in["legal_name"].asString(), data, in["email"].asString() );
         auto entity_id = x[0][0].as<int>();
         std::string strSqlUser = "INSERT INTO entity.entity_user (entity_id, username, password, password_hash) VALUES ($1, $2, $3, $4)";
         txn.exec_params(strSqlUser, entity_id, in["email"].asString(), in["pass"].asString(), in["pass"].asString());
@@ -92,7 +105,7 @@ Json::Value user_login(const std::string &event_name, const WebSocketConnectionP
             // To serialize the Json::Value into a Json document, you should use a Json writer, or Json::Value::toStyledString().
             LOG_INFO << j.toStyledString();
             auto rs = txn.exec_params(sqlSession, "user", j.toStyledString());
-            simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
+            wsConnPtr->send(simpleJsonSaveResult(event_name, wsConnPtr, true, "Done").toStyledString());
 
             // ask to save cookie
             Json::Value value;
@@ -104,12 +117,14 @@ Json::Value user_login(const std::string &event_name, const WebSocketConnectionP
             wsConnPtr->send(value.toStyledString());
 
             setUserContext(wsConnPtr, rs[0][0].as<int>());
+            txn.commit();
             return Json::Value(Json::nullValue);
 
         } else {
+            txn.commit();
             return simpleJsonSaveResult(event_name, wsConnPtr, false, "Error");
         }
-        txn.commit();
+
     } catch (const std::exception &e) {
         txn.abort();
         std::cerr << e.what() << std::endl;
