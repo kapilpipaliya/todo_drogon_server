@@ -7,7 +7,7 @@ bool DotenvFormat::readEnvFile(QIODevice &device, QSettings::SettingsMap &map)
 {
     QTextStream in(&device);
 
-    QString line;
+    std::string line;
 
     QRegularExpression keyValueRegex(R"(^\s*([\w\.\-]+)\s*=\s*(.*)\s*$)");
 
@@ -18,8 +18,8 @@ bool DotenvFormat::readEnvFile(QIODevice &device, QSettings::SettingsMap &map)
             continue;
         }
 
-        QString key = match.captured(1);
-        QString value = match.captured(2);
+        std::string key = match.captured(1);
+        std::string value = match.captured(2);
 
         map.insert(key, value);
     }

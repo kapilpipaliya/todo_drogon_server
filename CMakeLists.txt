@@ -74,7 +74,7 @@ foreach(cspFile ${SCP_LIST})
 endforeach()
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-find_package(Qt5 COMPONENTS Core Gui Network Xml Sql REQUIRED)
+#find_package(Qt5 COMPONENTS Core Gui Network Xml Sql REQUIRED)
 
 add_subdirectory(core)
 #include_directories("/home/kapili3/k/jewelApp/src")
@@ -85,11 +85,11 @@ add_executable(jdragon ${SRC_DIR} ${CTL_SRC} ${FILTER_SRC} ${VIEWSRC} ${PLUGIN_S
   #  libpqxx::pqxx_shared
 target_link_libraries(jdragon
   Threads::Threads
-  Qt5::Core
-  Qt5::Gui
-  Qt5::Network
-  Qt5::Xml
-  Qt5::Sql
+#  Qt5::Core
+#  Qt5::Gui
+#  Qt5::Network
+#  Qt5::Xml
+#  Qt5::Sql
   ${CMAKE_DL_LIBS}
   ${_OPTIONAL_LIBS}
   ${JSONCPP_LIBRARY}

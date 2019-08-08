@@ -1,6 +1,6 @@
 #include "strfns.h"
 #include <fstream>
-
+/*
 QString rtrimChar(const QString& s, QChar c)
 {
     QString r = s.trimmed();
@@ -8,7 +8,7 @@ QString rtrimChar(const QString& s, QChar c)
         r.chop(1);
     return r;
 }
-
+*/
 std::string rtrimChar(const std::string& s, char c) {
     auto r = trim_copy(s);
     if (r.at(r.size() - 1) == c) {

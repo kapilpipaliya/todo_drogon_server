@@ -1,16 +1,13 @@
 #ifndef TABLE_H
 #define TABLE_H
 
-#include <QObject>
-#include <QMutex>
-
 #include <memory>
 #include <vector>
 
-#include <QModelIndex>
+
 //#include <QVector>
 //#include "RowCache.h"
-#include <QList>
+
 #include "core/connection/mdb.h"
 #include "core/connection/pdb.h"
 #include "core/sql/objectidentifier.h"
@@ -19,21 +16,19 @@
 #include <json/json.h>
 #include <pqxx/pqxx>
 
-class Table : public QObject
+class Table
 {
-    Q_OBJECT
+
 public:
-    explicit Table(QObject *parent = nullptr);
+    explicit Table();
     virtual ~Table();
 
     P_DB *conn;
 
-
     //in the subclass, you actuallly don't need to mark the overriden methods as slots.
-public slots:
-    virtual bool select();
 
 public:
+    virtual bool select();
     //QModelIndex bottom; // rowCount is calculated from this
     // int bottom; // rowCount // start from 0
 
@@ -53,14 +48,14 @@ public:
 
     virtual int columnCount() const;
 
-    virtual QVariant data(int row, int column, int role = Qt::DisplayRole) const;
-    virtual QVariant headerData(int column) const;
-    virtual QMap<int, QVariant> headerData();
+//    virtual QVariant data(int row, int column, int role = Qt::DisplayRole) const;
+//    virtual QVariant headerData(int column) const;
+//    virtual QMap<int, QVariant> headerData();
 
     virtual void clear();
     virtual std::string &lastError() const;
 
-    virtual int fieldIndex(const QString &fieldName) const;
+    virtual int fieldIndex(const std::string &fieldName) const;
 
 
     virtual int columnNumber(const char *columnName);
@@ -69,7 +64,7 @@ public:
 
     virtual bool isEditableColumn(int column) const;
     bool isEditable() const;
-    virtual bool updateAttribute(const QModelIndex &index, const QVariant &value);
+//    virtual bool updateAttribute(const QModelIndex &index, const QVariant &value);
     virtual bool deleteRow(int row); // also update cache. // used in table view
     virtual bool removeRow(const char *id);// used in website
     //virtual bool insertRow(int row) = 0;
@@ -82,7 +77,7 @@ public:
     //    void clearCache();
 
     virtual std::string getHeaderName(const int column) const;
-    QVariant getResult(int row, int column) const;
+//    QVariant getResult(int row, int column) const;
     Json::Value getJsonHeaderData();
     Json::Value getJsonData();
     size_t filterCount() const;
@@ -98,7 +93,7 @@ public:
     void setPseudoPk(std::vector<std::string> pseudoPk);
     bool hasPseudoPk() const;
 
-    bool isBinary(const QModelIndex& index) const;
+//    bool isBinary(const QModelIndex& index) const;
     //std::vector<std::string> pseudoPk() const { return m_query.rowIdColumns(); }
     //sqlb::ForeignKeyClause getForeignKeyClause(int column) const;
     //void addCondFormat(int column, const CondFormat& condFormat);
@@ -141,7 +136,7 @@ public:
 
 
     // Helper function for removing all comments from a SQL query
-    static void removeCommentsFromQuery(QString& query);
+    static void removeCommentsFromQuery(std::string& query);
 
     // Add quotes to an identifier
     //std::string escapeIdentifier2(const std::string& id);
@@ -149,8 +144,6 @@ public:
     Json::Value getAllData(Json::Value &in);
 public:
     pqxx::result result;
-
-    QList<int> m_columns;
 
     sqlb::ObjectIdentifier m_table;
     sqlb::Query m_query;
@@ -161,14 +154,12 @@ public:
 
 
 
-public slots:
+public:
     void updateFilterBase(Json::Value filters);
     void updateSortBase(Json::Value filters);
     void updatePaginationBase(Json::Value filters);
-    void updateFilter(int column, const QString& whereClause);
-signals:
-    void finishedFetch(int fetched_row_begin, int fetched_row_end);
-    void finishedRowCount();
+    void updateFilter(int column, const std::string& whereClause);
+
 private:
     friend class RowLoader;
     class RowLoader * worker;
@@ -183,30 +174,23 @@ private:
 
     /// \param pDb connection to query; if null, obtains it from 'm_db'.
 
-    QByteArray encode(const QByteArray& str) const;
-    QByteArray decode(const QByteArray& str) const;
-
     // Return matching conditional format color or invalid color, otherwise.
     // Only Qt::ForegroundRole and Qt::BackgroundRole are expected in role (Qt::ItemDataRole)
-    //QColor getMatchingCondFormatColor(int column, const QString& value, int role) const;
+    //QColor getMatchingCondFormatColor(int column, const std::string& value, int role) const;
 
 
-    bool nosync_isBinary(const QModelIndex& index) const;
+//    bool nosync_isBinary(const QModelIndex& index) const;
     //    QMap<int, std::vector<CondFormat>> m_mCondFormats;
     std::vector<int> m_vDataTypes;
 
 
-    QString m_encoding;
+    std::string m_encoding;
 
     /**
      * These are used for multi-threaded population of the table
      */
 //    mutable QMutex m_mutexDataCache;
-signals:
-    void statusMessage(std::string &);
-    void layoutChanged();
-    void beginResetModel();
-    void endResetModel();
+
 };
 
 #endif // TABLE_H

@@ -5,7 +5,7 @@
 #include <iostream>
 #include "condformat.h"
 
-Table::Table(QObject *parent) : QObject(parent)
+Table::Table()
 {
 //    dbConnSelect = new M_DB;
     reset();
@@ -89,6 +89,7 @@ static std::string toSuperScript(T number)
     return superScript;
 }
 // used in model
+/*
 QVariant Table::headerData(int column) const // column == section
 {
 
@@ -103,7 +104,7 @@ QVariant Table::headerData(int column) const // column == section
         }
     }
     auto s = getHeaderName(column) + sortIndicator;
-    return QString::fromStdString(s);
+    return std::string::fromStdString(s);
 
 }
 // used in website
@@ -111,11 +112,11 @@ QMap<int, QVariant> Table::headerData()
 {
     QMap<int, QVariant> headers;
     for (int c=0; c < columnCount(); c++) {
-        headers[c] = QString::fromStdString(getHeaderName(c));
+        headers[c] = std::string::fromStdString(getHeaderName(c));
     }
     return headers;
 }
-
+*/
 void Table::clear()
 {
 
@@ -128,7 +129,7 @@ std::string &Table::lastError() const
     return s;
 }
 
-int Table::fieldIndex(const QString &fieldName) const
+int Table::fieldIndex(const std::string &fieldName) const
 {
     //    return rec.indexOf(fieldName);
 }
@@ -184,7 +185,6 @@ std::string Table::getHeaderName(const int column) const
 
 void Table::reset()
 {
-    emit beginResetModel();
     //clearCache();
 
     // Todo manage this in seperate accessorry class.
@@ -194,9 +194,8 @@ void Table::reset()
     //m_vDataTypes.clear();
     //m_mCondFormats.clear();
 
-    emit endResetModel();
 }
-
+/*
 QVariant Table::data(int row, int column, int role) const
 {
     // return cached data, if manually managing cache and cache = true
@@ -205,7 +204,7 @@ QVariant Table::data(int row, int column, int role) const
         return getResult(row, column);
     }
     case Qt::DisplayRole: {
-        QString tableColumnName = columnName(column);
+        std::string tableColumnName = columnName(column);
         // 1.we can disply different text for null field, blob field, also display ... if text > some limit in settings. see sqlitebrowser code...
         // 2.we can also find ForeignKeyConstraintType constraint on field, if it found, its foreignkey.
         // /home/kapili3/k/sqlitebrowser-master/src/sqliteTable.cpp:412
@@ -241,7 +240,7 @@ QVariant Table::getResult(int row, int column) const
         return result[row][column].c_str();
     }
 }
-
+*/
 Json::Value Table::getJsonHeaderData()
 {
     Json::Value ret(Json::arrayValue);
@@ -352,6 +351,7 @@ Json::Value Table::getJsonData()
     }
     return jresult;
 }
+/*
 bool Table::updateAttribute(const QModelIndex &index, const QVariant &value)
 {
     if (!index.isValid() || index.column() >= columnCount() || index.row() >= rowCount())
@@ -372,16 +372,17 @@ bool Table::updateAttribute(const QModelIndex &index, const QVariant &value)
     } else
         values[0] = nullptr; //  «A null pointer in this array means the corresponding parameter is null»
     values[1] = id;
-    /* temporary
+     temporary
     if(!updateConnection.executeSQLParams(strSql, 2, values)) {
         return false;
     } else {
         if(saveCache)
             cache[index.row()][index.column()].setValue(value);
         return true;
-    }*/
+    }
     return  false;
 }
+*/
 void Table::sort(const std::vector<sqlb::SortedColumn> &columns)
 {
     // Don't do anything when the sort order hasn't changed
@@ -392,11 +393,11 @@ void Table::sort(const std::vector<sqlb::SortedColumn> &columns)
     m_query.orderBy() = columns;
 
     // Set the new query (but only if a table has already been set
-    emit beginResetModel();
+
     if(!m_query.table().isEmpty())
         //buildQuery();
         select();
-    emit endResetModel();
+
 }
 // used in table view, cache must be enable to work this:
 bool Table::deleteRow(int row)
@@ -446,14 +447,15 @@ bool Table::removeRow(const char *id)
     return false;
 
 }
-void Table::removeCommentsFromQuery(QString &query)
+/*
+void Table::removeCommentsFromQuery(std::string &query)
 {
     int oldSize = query.size();
 
     // first remove block comments
     {
         QRegExp rxSQL("^((?:(?:[^'/]|/(?![*]))*|'[^']*')*)(/[*](?:[^*]|[*](?!/))*[*]/)(.*)$");	// set up regex to find block comment
-        QString result;
+        std::string result;
 
         while(query.size() != 0) {
             int pos = rxSQL.indexIn(query);
@@ -469,7 +471,7 @@ void Table::removeCommentsFromQuery(QString &query)
     }
 
     // deal with end-of-line comments
-    {
+    {*/
         /* The regular expression for removing end of line comments works like this:
          * ^((?:(?:[^'-]|-(?!-))*|(?:'[^']*'))*)(--.*)$
          * ^                                          $ # anchor beginning and end of string so we use it all
@@ -479,9 +481,9 @@ void Table::removeCommentsFromQuery(QString &query)
          *                        (?:'[^']*')           # a string is a quote, followed by none or more non-quotes, followed by a quote
          *      (?:[^'-]|-(?!-))*                       # non-string is a sequence of characters which aren't quotes or hyphens,
          */
-
+/*
         QRegExp rxSQL("^((?:(?:[^'-]|-(?!-))*|(?:'[^']*'))*)(--[^\\r\\n]*)([\\r\\n]*)(.*)$");	// set up regex to find end-of-line comment
-        QString result;
+        std::string result;
 
         while(query.size() != 0) {
             int pos = rxSQL.indexIn(query);
@@ -505,7 +507,7 @@ void Table::removeCommentsFromQuery(QString &query)
         query.replace(QRegExp("[ \t]+\n"), "\n");
     }
 }
-
+*/
 Json::Value Table::getAllData(Json::Value &in)
 {
     updateFilterBase(in[0]);
@@ -521,12 +523,12 @@ void Table::updateFilterBase(Json::Value filters)
         return;
     }
     for (unsigned int i=0; i < filters.size(); i++) {
-        QString whereClause = CondFormat::filterToSqlCondition(QString::fromStdString(filters.get(i, "").asString()), m_query.selectedColumns().at(i).column_type, m_encoding);
+        std::string whereClause = CondFormat::filterToSqlCondition(filters.get(i, "").asString(), m_query.selectedColumns().at(i).column_type, m_encoding);
         // If the value was set to an empty string remove any filter for this column. Otherwise insert a new filter rule or replace the old one if there is already one
-        if(whereClause.isEmpty())
+        if(whereClause.empty())
             m_query.where().erase(static_cast<size_t>(i));
         else
-            m_query.where()[static_cast<size_t>(i)] = whereClause.toStdString();
+            m_query.where()[static_cast<size_t>(i)] = whereClause;
     }
 }
 void Table::updateSortBase(Json::Value filters)
@@ -565,18 +567,18 @@ bool Table::readingData() const
     return false;
 }
 
-void Table::updateFilter(int column, const QString &whereClause)
+void Table::updateFilter(int column, const std::string &whereClause)
 {
     // If the value was set to an empty string remove any filter for this column. Otherwise insert a new filter rule or replace the old one if there is already one
-    if(whereClause.isEmpty())
+    if(whereClause.empty())
         m_query.where().erase(static_cast<size_t>(column));
     else
-        m_query.where()[static_cast<size_t>(column)] = whereClause.toStdString();
+        m_query.where()[static_cast<size_t>(column)] = whereClause;
     // Build the new query
     //buildQuery();
-    emit beginResetModel();
+
     select();
-    emit endResetModel();
+
 }
 
 void Table::clearCache()
@@ -631,15 +633,7 @@ sqlb::ForeignKeyClause TableModel::getForeignKeyClause(int column) const
     return empty_foreign_key_clause;
 }
 */
-QByteArray Table::encode(const QByteArray& str) const
-{
-    //    return encodeString(str, m_encoding);
-}
 
-QByteArray Table::decode(const QByteArray& str) const
-{
-    //    return decodeString(str, m_encoding);
-}
 void Table::setPseudoPk(std::vector<std::string> pseudoPk)
 {
     if(pseudoPk.empty())
@@ -660,14 +654,15 @@ bool Table::hasPseudoPk() const
 {
     //    return m_query.hasCustomRowIdColumn();
 }
-
+/*
 bool Table::isBinary(const QModelIndex& index) const
 {
     //QMutexLocker lock(&m_mutexDataCache);
     //return nosync_isBinary(index);
     return false;
 }
-
+*/
+/*
 bool Table::nosync_isBinary(const QModelIndex& index) const
 {
     const size_t row = static_cast<size_t>(index.row());
@@ -678,7 +673,7 @@ bool Table::nosync_isBinary(const QModelIndex& index) const
 
     //    return !isTextOnly(cached_row.at(static_cast<size_t>(index.column())), m_encoding, true);
 }
-
+*/
 void Table::triggerCacheLoad (int row) const
 {
     /*

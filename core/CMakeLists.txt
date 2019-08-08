@@ -6,8 +6,6 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 SET(CMAKE_AUTOUIC ON)
 
-find_package(Qt5 COMPONENTS Core Gui REQUIRED)
-
 find_package(PostgreSQL)
 find_package(libpqxx REQUIRED)
 
@@ -21,7 +19,7 @@ set(JEWEL_HDR
 
     tables/Table.h
     tables/condformat.h
-    tables/data.h
+#    tables/data.h
     tables/macro.h
 
     tables/query/accountquery.h
@@ -39,12 +37,11 @@ set(JEWEL_HDR
     sql/objectidentifier.h
 #    csvparser.h
 #    sqlitedb.h not needed use mdb.h
-    settings.h
-    dotenvformat.h
-    ciphersettings.h
+#    settings.h
+#    dotenvformat.h
+#    ciphersettings.h
 
     json.hpp
-    modelenums.h
     tables/jsonfns.h
 
 
@@ -65,16 +62,16 @@ set(JEWEL_SRC
 
     tables/Table.cpp
     tables/condformat.cpp
-    tables/data.cpp
+#    tables/data.cpp
 
 ###    sql/sqlitetypes.cpp
     sql/query.cpp
     sql/objectidentifier.cpp
 #    sqltextedit.cpp
 #    sqlitedb.cpp not needed ufse mdb.cpp
-    settings.cpp
-    dotenvformat.cpp
-    ciphersettings.cpp
+#    settings.cpp
+#    dotenvformat.cpp
+#    ciphersettings.cpp
 
     tables/jsonfns.cpp
 
@@ -118,8 +115,6 @@ install(TARGETS ${PROJECT_NAME} LIBRARY DESTINATION /home/kapili3)
 
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
-    Qt5::Core
-    Qt5::Gui
     PostgreSQL::PostgreSQL
     libpqxx::pqxx_shared
     libjewelconnection

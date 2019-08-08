@@ -1,8 +1,8 @@
 #ifndef STRFNS_H
 #define STRFNS_H
 
+#include <algorithm>
 #include <string>
-#include <QString>
 
 static inline void ReplaceAll2(std::string &str, const std::string& from, const std::string& to)
 {
@@ -57,7 +57,6 @@ static inline std::string trim_copy(std::string s)
     return s;
 }
 
-QString rtrimChar(const QString& s, QChar c);
 std::string rtrimChar(const std::string& s, char c);
 
 std::string read_all(std::ifstream &in);

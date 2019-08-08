@@ -241,7 +241,7 @@ void M_DB::clearResult()
 
 }
 /*
-void M_DB::logSQL(QString statement, LogMessageType msgtype)
+void M_DB::logSQL(std::string statement, LogMessageType msgtype)
 {
     // Remove any leading and trailing spaces, tabs, or line breaks first
     statement = statement.trimmed();
@@ -263,7 +263,7 @@ void M_DB::logSQL(QString statement, LogMessageType msgtype)
 }
 */
 /*
-bool M_DB::loadExtension(const QString &filename)
+bool M_DB::loadExtension(const std::string &filename)
 {
 
 }
@@ -274,8 +274,8 @@ void M_DB::loadExtensionsFromSettings()
     /*
     sqlite3_enable_load_extension(_db, Settings::getValue("extensions", "enable_load_extension").toBool());
 
-    QStringList list = Settings::getValue("extensions", "list").toStringList();
-    for(const QString& ext : list)
+    std::stringList list = Settings::getValue("extensions", "list").toStringList();
+    for(const std::string& ext : list)
     {
         if(loadExtension(ext) == false)
             QMessageBox::warning(nullptr, QApplication::applicationName(), tr("Error loading extension: %1").arg(lastError()));

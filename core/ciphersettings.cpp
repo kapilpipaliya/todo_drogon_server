@@ -17,22 +17,22 @@ void CipherSettings::setKeyFormat(const KeyFormats &value)
     keyFormat = value;
 }
 
-QString CipherSettings::getPassword() const
+std::string CipherSettings::getPassword() const
 {
     if(keyFormat == Passphrase)
     {
-        QString tempPassword = password;
+        std::string tempPassword = password;
 
         tempPassword.replace("'", "''");
 
-        return QString("'%1'").arg(tempPassword);
+        return std::string("'%1'").arg(tempPassword);
     } else {
         // Remove the '0x' part at the beginning
-        return QString("\"x'%1'\"").arg(password.mid(2));
+        return std::string("\"x'%1'\"").arg(password.mid(2));
     }
 }
 
-void CipherSettings::setPassword(const QString &value)
+void CipherSettings::setPassword(const std::string &value)
 {
     password = value;
 }

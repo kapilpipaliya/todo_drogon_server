@@ -59,16 +59,16 @@ public:
     void clearResult();
 
     /// log an SQL statement [thread-safe]
-    //void logSQL(QString statement, LogMessageType msgtype);
+    //void logSQL(std::string statement, LogMessageType msgtype);
 
     // This is possible but require Antlr to gnerate sql, so do it manually now..
-    //QString addRecord(const sqlb::ObjectIdentifier& tablename);
-    //bool deleteRecords(const sqlb::ObjectIdentifier& table, const QStringList& rowids, const sqlb::StringVector& pseudo_pk = {});
-    //bool updateRecord(const sqlb::ObjectIdentifier& table, const std::string& column, const QString& rowid, const QByteArray& value, bool itsBlob, const sqlb::StringVector& pseudo_pk = {});
+    //std::string addRecord(const sqlb::ObjectIdentifier& tablename);
+    //bool deleteRecords(const sqlb::ObjectIdentifier& table, const std::stringList& rowids, const sqlb::StringVector& pseudo_pk = {});
+    //bool updateRecord(const sqlb::ObjectIdentifier& table, const std::string& column, const std::string& rowid, const QByteArray& value, bool itsBlob, const sqlb::StringVector& pseudo_pk = {});
     //bool renameTable(const std::string& schema, const std::string& from_table, const std::string& to_table);
     //bool addColumn(const sqlb::ObjectIdentifier& tablename, const sqlb::Field& field);
 
-    //bool loadExtension(const QString& filename);
+    //bool loadExtension(const std::string& filename);
     void loadExtensionsFromSettings();
     long long strtolong(int rowNumber, int columnNumber);
     double strtoduble(int rowNumber, int columnNumber);
@@ -78,7 +78,7 @@ public:
 
 
 //signals:
-//    void sqlExecuted(QString sql, int msgtype);
+//    void sqlExecuted(std::string sql, int msgtype);
 };
 
 #endif // M_DB_H
