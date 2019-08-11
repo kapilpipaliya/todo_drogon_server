@@ -6,14 +6,67 @@
 #include "wsfunctions.h"
 
 #include "core/tables/macro.h"
-#include "core/tables/query/accountquery.h"
-#include "core/tables/query/entityquery.h"
-#include "core/tables/query/materialquery.h"
-#include "core/tables/query/menuquery.h"
-#include "core/tables/query/mfgquery.h"
-#include "core/tables/query/postquery.h"
-#include "core/tables/query/productquery.h"
-#include "core/tables/query/settingquery.h"
+
+#include "core/tables/service/account/account.h"
+#include "core/tables/service/account/accountheading.h"
+#include "core/tables/service/account/accounttype.h"
+#include "core/tables/service/account/journaltype.h"
+#include "core/tables/service/account/priority.h"
+#include "core/tables/service/account/txn.h"
+
+#include "core/tables/service/material/metal.h"
+#include "core/tables/service/material/purity.h"
+#include "core/tables/service/material/tone.h"
+#include "core/tables/service/material/accessory.h"
+
+#include "core/tables/service/material/clarity.h"
+#include "core/tables/service/material/shape.h"
+#include "core/tables/service/material/dcolor.h"
+#include "core/tables/service/material/cscolor.h"
+#include "core/tables/service/material/cstype.h"
+#include "core/tables/service/material/size.h" // CRUD not required
+#include "core/tables/service/material/dsize.h"
+#include "core/tables/service/material/cssize.h"
+
+#include "core/tables/service/mfg/casting.h"
+#include "core/tables/service/mfg/department.h"
+#include "core/tables/service/mfg/departmenttype.h"
+#include "core/tables/service/mfg/metalissue.h"
+#include "core/tables/service/mfg/mfgtxn.h"
+#include "core/tables/service/mfg/mtransfer.h"
+#include "core/tables/service/mfg/refining.h"
+#include "core/tables/service/mfg/waxsetting.h"
+
+#include "core/tables/service/product/poptions.h" // CRUD not required
+#include "core/tables/service/product/certifiedby.h"
+#include "core/tables/service/product/pcategory.h"
+#include "core/tables/service/product/policy.h"
+#include "core/tables/service/product/product.h"
+#include "core/tables/service/product/pshippingclass.h"
+#include "core/tables/service/product/settingtype.h"
+
+#include "core/tables/service/entity/addresstype.h"
+#include "core/tables/service/entity/contacttype.h"
+#include "core/tables/service/entity/entitytype.h"
+#include "core/tables/service/entity/entity.h"
+
+#include "core/tables/service/menu/node.h"
+#include "core/tables/service/menu/role.h"
+#include "core/tables/service/menu/task.h"
+
+#include "core/tables/service/post/post.h"
+#include "core/tables/service/post/tag.h"
+
+#include "core/tables/service/setting/currency.h"
+#include "core/tables/service/setting/imagecollection.h"
+#include "core/tables/service/setting/image.h"
+#include "core/tables/service/setting/log.h"
+#include "core/tables/service/setting/paymentmethod.h"
+#include "core/tables/service/setting/setting.h"
+#include "core/tables/service/setting/support.h"
+
+
+
 
 #include "core/tables/savedel/accountsave.h"
 #include "core/tables/savedel/entitysave.h"
@@ -24,11 +77,13 @@
 #include "core/tables/savedel/productsave.h"
 #include "core/tables/savedel/settingsave.h"
 
+
+
 using namespace std::literals;
 
-std::map<std::string, std::function<Json::Value(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr,
+std::map<std::string, std::function<Json::Value(const std::string &event1, const std::string &event2, const std::string &no, const WebSocketConnectionPtr &wsConnPtr,
                                          Json::Value in)> > fns;
-std::map<std::string, std::function<Json::Value(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr,
+std::map<std::string, std::function<Json::Value(const std::string &event1, const std::string &event2, const std::string &no, const WebSocketConnectionPtr &wsConnPtr,
                                          std::string &message)> > fns_bin;
 #define a(s) "account_" s
 #define m(s) "material_" s
@@ -39,69 +94,6 @@ std::map<std::string, std::function<Json::Value(const std::string &event_name, c
 void defineFns() {
     //fns.insert(std::pair<std::string, std::function<Json::Value()>>("accessory", accessory));
     //Inserts a new element in the map if its key is unique.
-
-    // Account
-    CRUD(a("account_type"), account_type)
-    CRUD(a("account"), account)
-    CRUD(a("account_heading"), account_heading)
-    CRUD(a("journal_type"), journal_type)
-    CRUD(a("txn"), txn)
-    CRUD(a("priority"), priority)
-    // Branch
-    // Menu
-    CRUD("menu_node", node)
-    CRUD("menu_role", role)
-    CRUD("menu_task", task)
-    // Mfg
-    CRUD("mfg_department_type", department_type)
-    CRUD("mfg_department", department)
-    CRUD("mfg_casting", casting)
-    CRUD("mfg_wax_setting", wax_setting)
-    CRUD("mfg_metal_issue", metal_issue)
-    CRUD("mfg_mfg_txn", mfg_txn)
-    CRUD("mfg_refining", refining)
-    CRUD("mfg_m_transfer", m_transfer)
-    // Payroll
-    // Material (synced)
-    CRUD(m("metal"), metal)
-    CRUD(m("purity"), purity)
-    CRUD(m("tone"), tone)
-    CRUD(m("accessory"), accessory)
-
-    CRUD(m("clarity"), clarity)
-    CRUD(m("shape"), shape)
-    CRUD(m("d_color"), d_color)
-    CRUD(m("cs_color"), cs_color)
-    CRUD(m("cs_type"), cs_type)
-    getAllTheColumns(m("size"), query_size) // CRUD not required
-    CRUD(m("diamond_size"), diamond_size)
-    CRUD(m("color_stone_size"), color_stone_size)
-
-    // Entity
-    CRUD(e("address_type"), address_type)
-    CRUD(e("contact_type"), contact_type)
-    CRUD(e("entity_type"), entity_type)
-    CRUD(e("entity"), entity)
-
-    // Setting
-    CRUD("setting_setting", setting)
-    CRUD("setting_currency", currency)
-    CRUD("setting_log", log)
-    CRUD("setting_support", support)
-    CRUD("setting_image_collection", image_collection)
-    CRUD("setting_image", image)
-    CRUD("setting_payment_method", payment_method)
-    // Part
-    // product:
-    getAllTheColumns(p("option"), query_product_options)
-    CRUD(p("product"), product)
-    CRUD(p("post"), post)
-    CRUD(p("category"), category)
-    CRUD(p("tag"), tag)
-    CRUD(p("shipping_class"), shipping_class)
-    CRUD(p("setting_type"), setting_type)
-    CRUD(p("certified_by"), certified_by)
-    CRUD(p("policy"), policy)
 
     fns.emplace("get_product_attachment_data", get_product_attachment_data);
     fns.emplace("get_product_diamond_price_data", get_product_diamond_price_data);
@@ -126,17 +118,24 @@ void defineFns() {
 }
 
 Json::Value findAndRun(const WebSocketConnectionPtr &wsConnPtr, Json::Value valin){
-    std::regex r("_data\\d*$");
-    auto f = fns.find(std::regex_replace(valin[0].asString(), r, "_data"));
+//    std::regex r("_data\\d*$");
+//    std::regex_replace(valin[0].asString(), r, "_data")
+auto event1 = valin[0].asString();
+auto event2 = valin[1].asString();
+auto no = valin[2].asString();
+auto f = fns.find(event1 + (event2.empty() ? "" : "_") + event2);
     if (f != fns.end()) {
         //std::printf("%s", valin[0].asString().c_str());
         //fflush(stdout);
-        return f->second(valin[0].asString(), wsConnPtr, valin[1]);
+        return f->second(event1, event2, no, wsConnPtr, valin[3]);
     } else {
-        Json::Value jresult;
-        jresult[0] = valin[0].asString();
-        jresult[1] = Json::arrayValue;
-        return jresult;
+//        Json::Value jresult;
+//        jresult[0] = valin[0].asString();
+//        jresult[1] = Json::arrayValue;
+//        jresult[2] = Json::arrayValue;
+//        jresult[3] = Json::arrayValue;
+//        return jresult;
+        return Json::arrayValue;
     }
 }
 
@@ -156,6 +155,79 @@ void EchoWebSocket::handleNewMessage(const WebSocketConnectionPtr &wsConnPtr, st
             if (valin.type() != Json::ValueType::arrayValue) {
                 return wsConnPtr->send("");
             }
+
+            auto event1 = valin[0].asString();
+            auto event2 = valin[1].asString();
+            auto no = valin[2].asString();
+
+            if(false){
+            }
+            REGISTER("account_type", AccountType)
+            REGISTER("account", Account)
+            REGISTER("account_heading", AccountHeading)
+            REGISTER("journal_type", JournalType)
+            REGISTER("txn", Txn)
+            REGISTER("priority", Priority)
+
+            REGISTER("node", Node)
+            REGISTER("role", Role)
+            REGISTER("task", Task)
+
+            REGISTER("department_type", DepartmentType)
+            REGISTER("department", Department)
+            REGISTER("casting", Casting)
+            REGISTER("wax_setting", WaxSetting)
+            REGISTER("metal_issue", MetalIssue)
+            REGISTER("MFG_txn", MfgTxn)
+            REGISTER("refining", Refining)
+            REGISTER("m_transfer", MTransfer)
+
+            REGISTER("metal", Metal)
+            REGISTER("purity", Purity)
+            REGISTER("tone", Tone)
+            REGISTER("accessory", Accessory)
+
+            REGISTER("clarity", Clarity)
+            REGISTER("shape", Shape)
+            REGISTER("d_color", DColor)
+            REGISTER("cs_color", CSColor)
+            REGISTER("cs_type", CSType)
+            REGISTER("size", Size) // CRUD not required
+            REGISTER("d_size", DSize)
+            REGISTER("cs_size", CSSize)
+
+            REGISTER("address_type", AddressType)
+            REGISTER("contact_type", ContactType)
+            REGISTER("entity_type", EntityType)
+            REGISTER("entity", Entity)
+
+            REGISTER("setting", Setting)
+            REGISTER("currency", Currency)
+            REGISTER("log", Log)
+            REGISTER("support", Support)
+            REGISTER("image_collection", ImageCollection)
+            REGISTER("image", Image)
+            REGISTER("payment_method", PaymentMethod)
+
+            REGISTER("option", POption) //CRUD Not required
+            REGISTER("product", Product)
+            REGISTER("post", Post1)
+            REGISTER("category", PCategory)
+            REGISTER("tag", Tag)
+            REGISTER("shipping_class", PShippingClass)
+            REGISTER("setting_type", SettingType)
+            REGISTER("certified_by", CertifiedBy)
+            REGISTER("policy", Policy)
+
+            else {
+                auto r = findAndRun(wsConnPtr, valin);
+                if(!r.isNull()){
+                    wsConnPtr->send(r.toStyledString());
+                }
+            }
+
+
+            /*
             if (valin[0].asString().compare(std::string("batch")) == 0){
                 Json::Value out(Json::arrayValue);
                 for (auto i : valin) {
@@ -168,6 +240,9 @@ void EchoWebSocket::handleNewMessage(const WebSocketConnectionPtr &wsConnPtr, st
                     wsConnPtr->send(r.toStyledString());
                 }
             }
+            */
+
+
             break;
         }
         case WebSocketMessageType::Binary: {
@@ -175,7 +250,7 @@ void EchoWebSocket::handleNewMessage(const WebSocketConnectionPtr &wsConnPtr, st
             auto event_name_meta = getEventName(wsConnPtr);
             auto f = fns_bin.find(std::regex_replace(event_name_meta, r, "_data"));
             if (f != fns_bin.end()) {
-                auto j = f->second(event_name_meta, wsConnPtr, message);
+                auto j = f->second(event_name_meta,"", "", wsConnPtr, message);
                 wsConnPtr->send(j.toStyledString());
             }
 

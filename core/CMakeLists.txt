@@ -10,6 +10,8 @@ find_package (Jsoncpp REQUIRED)
 #find_package(Sqlpp-connector-postgresql)
 #find_package(folly)
 
+
+
 set(JEWEL_HDR
 
 
@@ -17,15 +19,6 @@ set(JEWEL_HDR
     tables/condformat.h
 #    tables/data.h
     tables/macro.h
-
-    tables/query/accountquery.h
-    tables/query/entityquery.h
-    tables/query/materialquery.h
-    tables/query/menuquery.h
-    tables/query/mfgquery.h
-    tables/query/productquery.h
-    tables/query/settingquery.h
-    tables/query/postquery.h
 
 
 ###    sql/sqlitetypes.h # this file is good and it is in the directory
@@ -39,6 +32,7 @@ set(JEWEL_HDR
 
     json.hpp
     tables/jsonfns.h
+
 
 
     tables/savedel/accountsave.h
@@ -71,14 +65,6 @@ set(JEWEL_SRC
 
     tables/jsonfns.cpp
 
-    tables/query/accountquery.cpp
-    tables/query/entityquery.cpp
-    tables/query/materialquery.cpp
-    tables/query/menuquery.cpp
-    tables/query/mfgquery.cpp
-    tables/query/productquery.cpp
-    tables/query/settingquery.cpp
-    tables/query/postquery.cpp
 
     tables/savedel/accountsave.cpp
     tables/savedel/entitysave.cpp
@@ -91,6 +77,15 @@ set(JEWEL_SRC
 
     strfns.cpp
 )
+
+AUX_SOURCE_DIRECTORY(./tables/service/post JEWEL_SRC)
+AUX_SOURCE_DIRECTORY(./tables/service/account JEWEL_SRC)
+AUX_SOURCE_DIRECTORY(./tables/service/entity JEWEL_SRC)
+AUX_SOURCE_DIRECTORY(./tables/service/material JEWEL_SRC)
+AUX_SOURCE_DIRECTORY(./tables/service/menu JEWEL_SRC)
+AUX_SOURCE_DIRECTORY(./tables/service/mfg JEWEL_SRC)
+AUX_SOURCE_DIRECTORY(./tables/service/product JEWEL_SRC)
+AUX_SOURCE_DIRECTORY(./tables/service/setting JEWEL_SRC)
 
 #set(JEWEL_RESOURCES
 #    languages.qrc

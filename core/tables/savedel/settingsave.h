@@ -25,10 +25,10 @@ saveDel(image_collection);
 saveDel(image);
 saveDel(payment_method);
 
-Json::Value saveImageMeta(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in);
+Json::Value saveImageMeta(const std::string &event1, const std::string &event2, const std::string &no, const WebSocketConnectionPtr &wsConnPtr, Json::Value in);
 
 //Binary functin:
-Json::Value save_setting_attachment(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, std::string &message);
+Json::Value save_setting_attachment(const std::string &event1, const std::string &event2, const std::string &no, const WebSocketConnectionPtr &wsConnPtr, std::string &message);
 
 
 #endif // SETTINGSAVE_H

@@ -15,20 +15,20 @@ delFn(image_collection, "setting.image_collection");
 delFn(image, "setting.image");
 delFn(payment_method, "setting.payment_method");
 
-Json::Value delete_setting(const std::string &event_name, const WebSocketConnectionPtr& wsConnPtr, Json::Value in)
+Json::Value delete_setting(const std::string &event1, const std::string &event2, const std::string &no, const WebSocketConnectionPtr& wsConnPtr, Json::Value in)
 {
     pqxx::work txn{DD};
     try {\
         txn.exec_params("DELETE FROM setting.setting WHERE key = $1", in[0].asString());
         txn.commit();
-        return simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
+        return simpleJsonSaveResult(event1, event2, no, wsConnPtr, true, "Done");
     } catch (const std::exception &e) {
         txn.abort();
         std::cerr << e.what() << std::endl;
-        return simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+        return simpleJsonSaveResult(event1, event2, no, wsConnPtr, false, e.what());
     }
 }
-Json::Value save_setting(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
+Json::Value save_setting(const std::string &event1, const std::string &event2, const std::string &no, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
     // check if key exist
     pqxx::work txn{DD};
     pqxx::result y = txn.exec_params("select key from setting.setting where key = $1", in["key"].asString());
@@ -39,11 +39,11 @@ Json::Value save_setting(const std::string &event_name, const WebSocketConnectio
         try {
             txn.exec_params(strSql, in["key"].asString(), in["value_int"].asInt(), in["value_num"].asDouble(), in["value_text"].asString());
             txn.commit();
-            return simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
+            return simpleJsonSaveResult(event1, event2, no, wsConnPtr, true, "Done");
         } catch (const std::exception &e) {
             txn.abort();
             std::cerr << e.what() << std::endl;
-            return simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+            return simpleJsonSaveResult(event1, event2, no, wsConnPtr, false, e.what());
         }
     } else {
         std::string strSql = "INSERT INTO setting.setting (key, value_int, value_num, value_text, setting_type, setting) values($1, $2, $3, $4, $5, $6)";
@@ -51,16 +51,16 @@ Json::Value save_setting(const std::string &event_name, const WebSocketConnectio
         try {
             txn.exec_params(strSql, in["key"].asString(), in["value_int"].asInt(), in["value_num"].asDouble(), in["value_text"].asString(), in["setting_type"].asString(), in["setting"].toStyledString());
             txn.commit();
-            return simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
+            return simpleJsonSaveResult(event1, event2, no, wsConnPtr, true, "Done");
         } catch (const std::exception &e) {
             txn.abort();
             std::cerr << e.what() << std::endl;
-            return simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+            return simpleJsonSaveResult(event1, event2, no, wsConnPtr, false, e.what());
         }
     }
 }
 
-Json::Value save_currency(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
+Json::Value save_currency(const std::string &event1, const std::string &event2, const std::string &no, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
   printJson(in);
   auto metal_purity_table = sqlb::ObjectIdentifier("setting", "currency", "c");
 
@@ -81,11 +81,11 @@ Json::Value save_currency(const std::string &event_name, const WebSocketConnecti
                       in["active"].asBool()
       );
       txn.commit();
-      return simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
+      return simpleJsonSaveResult(event1, event2, no, wsConnPtr, true, "Done");
     } catch (const std::exception &e) {
       txn.abort();
       std::cerr << e.what() << std::endl;
-      return simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+      return simpleJsonSaveResult(event1, event2, no, wsConnPtr, false, e.what());
     }
   } else {
     std::string strSql = "INSERT INTO %1.%2 (slug, name, symbol, rounding, active) values($1, $2, $3, $4, $5)";
@@ -103,11 +103,11 @@ Json::Value save_currency(const std::string &event_name, const WebSocketConnecti
               in["active"].asBool()
       );
       txn.commit();
-      return simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
+      return simpleJsonSaveResult(event1, event2, no, wsConnPtr, true, "Done");
     } catch (const std::exception &e) {
       txn.abort();
       std::cerr << e.what() << std::endl;
-      return simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+      return simpleJsonSaveResult(event1, event2, no, wsConnPtr, false, e.what());
     }
   }
 }
@@ -120,7 +120,7 @@ save_table(support, "setting.support", "name, email, phone, message", "$1, $2, $
 save_table(image_collection, "setting.image_collection", "name", "$1", "$2", "where id=$1", in["name"].asString());
 
 // this is normal images..
-Json::Value save_image(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
+Json::Value save_image(const std::string &event1, const std::string &event2, const std::string &no, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
     printJson(in);
     auto metal_purity_table = sqlb::ObjectIdentifier("setting", "image", "c");
     std::string t = "setting.image";
@@ -144,11 +144,11 @@ Json::Value save_image(const std::string &event_name, const WebSocketConnectionP
             }
             txn.commit();
 
-            return simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
+            return simpleJsonSaveResult(event1, event2, no, wsConnPtr, true, "Done");
         } catch (const std::exception &e) {
             txn.abort();
             std::cerr << e.what() << std::endl;
-            return simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+            return simpleJsonSaveResult(event1, event2, no, wsConnPtr, false, e.what());
         }
     } else {
         std::string strSql = "INSERT INTO " + t + " (" + c + ") values(NULLIF($1,0), $2, $3, $4, $5, $6, $7, $8)";
@@ -162,22 +162,22 @@ Json::Value save_image(const std::string &event_name, const WebSocketConnectionP
                     txn.exec_params(strSqlTempImageDel, temp_id);
                 }
             } else {
-                return simpleJsonSaveResult(event_name, wsConnPtr, false, "Please Upload Image");
+                return simpleJsonSaveResult(event1, event2, no, wsConnPtr, false, "Please Upload Image");
             }
 
             txn.commit();
-            return simpleJsonSaveResult(event_name, wsConnPtr, true, "Done");
+            return simpleJsonSaveResult(event1, event2, no, wsConnPtr, true, "Done");
         } catch (const std::exception &e) {
             txn.abort();
             std::cerr << e.what() << std::endl;
-            return simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+            return simpleJsonSaveResult(event1, event2, no, wsConnPtr, false, e.what());
         }
     }
 }
 save_table(payment_method, "setting.payment_method", "name, url, description", "$1, $2, $3", "$2, $3, $4", "where id=$1", in["name"].asString(), in["url"].asString(), in["description"].asString())
 
 //----
-Json::Value saveImageMeta(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
+Json::Value saveImageMeta(const std::string &event1, const std::string &event2, const std::string &no, const WebSocketConnectionPtr &wsConnPtr, Json::Value in) {
   auto c = getAdminContext(wsConnPtr);
 
   auto strSql = ins("user1.temp_image", "session_id, event_name, name, size, type", "$1, $2, $3, $4, $5");
@@ -185,18 +185,18 @@ Json::Value saveImageMeta(const std::string &event_name, const WebSocketConnecti
   try {
     auto r = txn.exec_params(strSql, c, in[0].asString(), in[1].asString(), in[2].asInt64(), in[3].asString());
     txn.commit();
-    return simpleJsonSaveResult(event_name, wsConnPtr, true, "done");
+    return simpleJsonSaveResult(event1, event2, no, wsConnPtr, true, "done");
   } catch (const std::exception &e) {
     txn.abort();
     std::cerr << e.what() << std::endl;
-    return simpleJsonSaveResult(event_name, wsConnPtr, false, "Error");
+    return simpleJsonSaveResult(event1, event2, no, wsConnPtr, false, "Error");
   }
 
 
 }
 
 // save image in disk and return temporary id:
-Json::Value save_setting_attachment(const std::string &event_name, const WebSocketConnectionPtr &wsConnPtr, std::string &message) {
+Json::Value save_setting_attachment(const std::string &event1, const std::string &event2, const std::string &no, const WebSocketConnectionPtr &wsConnPtr, std::string &message) {
     auto session_id = getAdminContext(wsConnPtr);
     auto strSql = sel("user1.temp_image", "event_name, name, size, type", "where session_id = $1");
     pqxx::work txn{DD};

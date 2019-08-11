@@ -80,7 +80,7 @@ void User::download_id(const HttpRequestPtr &req, std::function<void(const HttpR
     } catch (const std::exception &e) {
         txn.abort();
         std::cerr << e.what() << std::endl;
-        //simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+        //simpleJsonSaveResult(event1, event2, no, wsConnPtr, false, e.what());
     }
 }
 
@@ -114,6 +114,6 @@ void User::thumb_id(const HttpRequestPtr &req, std::function<void (const HttpRes
     } catch (const std::exception &e) {
         txn.abort();
         std::cerr << e.what() << std::endl;
-        //simpleJsonSaveResult(event_name, wsConnPtr, false, e.what());
+        //simpleJsonSaveResult(event1, event2, no, wsConnPtr, false, e.what());
     }
 }
