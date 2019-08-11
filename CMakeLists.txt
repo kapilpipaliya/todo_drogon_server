@@ -17,6 +17,8 @@ set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall ${CMAKE_CXX_STD_FL
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules/)
 find_package(Boost REQUIRED COMPONENTS filesystem date_time system timer )
 
+#include_directories(/usr/local/include/Urho3D/include /usr/local/include/Urho3D/ThirdParty)
+
 #jsoncpp
 find_package (Jsoncpp REQUIRED)
 #include_directories(${JSONCPP_INCLUDE_DIRS})
@@ -90,6 +92,7 @@ target_link_libraries(jdragon
 #  Qt5::Network
 #  Qt5::Xml
 #  Qt5::Sql
+#/usr/local/lib64/Urho3D/libUrho3D.a
   ${CMAKE_DL_LIBS}
   ${_OPTIONAL_LIBS}
   ${JSONCPP_LIBRARY}
@@ -101,7 +104,6 @@ target_link_libraries(jdragon
   libpqxx::pqxx_shared
   libjewelconnection
   libjewelcore2
-  # TODO: properly search for them
   drogon
   trantor
   Boost::filesystem

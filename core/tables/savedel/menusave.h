@@ -11,11 +11,11 @@ using namespace drogon;
 #include "../../strfns.h"
 #include "core/sql/query.h"
 
-saveDel(menu_node);
+saveDel(node);
 
-saveDel(menu_role);
+saveDel(role);
 
-saveDel(menu_task);
+saveDel(task);
 
 
 #endif // MENUSAVE_H

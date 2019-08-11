@@ -49,9 +49,9 @@ void defineFns() {
     CRUD(a("priority"), priority)
     // Branch
     // Menu
-    CRUD("menu_menu_node", menu_node)
-    CRUD("menu_menu_role", menu_role)
-    CRUD("menu_menu_task", menu_task)
+    CRUD("menu_node", node)
+    CRUD("menu_role", role)
+    CRUD("menu_task", task)
     // Mfg
     CRUD("mfg_department_type", department_type)
     CRUD("mfg_department", department)
@@ -203,7 +203,7 @@ void EchoWebSocket::handleNewConnection(const HttpRequestPtr &req, const WebSock
     setAdminContext(wsConnPtr, adminContext);
     auto userContext = generateContext(req, wsConnPtr, "user");
     setUserContext(wsConnPtr, userContext);
-    //    LOG_DEBUG << req->getCookie("admin");
+    // LOG_DEBUG << req->getCookie("admin");
     for (auto i : req->cookies()) {
         printf("%s,%s", i.first.c_str(), i.second.c_str());
         fflush(stdout);

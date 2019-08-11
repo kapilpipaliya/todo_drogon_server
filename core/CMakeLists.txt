@@ -2,10 +2,6 @@ cmake_minimum_required(VERSION 3.14.1)
 project(libjewelcore2)
 #set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules/)
 
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
-SET(CMAKE_AUTOUIC ON)
-
 find_package(PostgreSQL)
 find_package(libpqxx REQUIRED)
 
