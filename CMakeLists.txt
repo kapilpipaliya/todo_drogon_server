@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 3.14)
 Project(jdragon)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)
@@ -39,10 +39,7 @@ endif()
 find_package(ZLIB REQUIRED)
 
 #find postgres
-find_package(PostgreSQL)
-if(PostgreSQL_FOUND)
-  list(APPEND _OPTIONAL_LIBS PostgreSQL::PostgreSQL)
-endif()
+find_package(PostgreSQL REQUIRED)
 find_package(libpqxx REQUIRED)
 
 
@@ -52,6 +49,31 @@ if (SQLITE3_FOUND)
   include_directories(${SQLITE3_INCLUDE_DIRS})
   link_libraries(${SQLITE3_LIBRARIES})
 endif()
+
+# find_package(Boost REQUIRED COMPONENTS chrono filesystem date_time program_options iostreams)
+set (Boost_ARCHITECTURE "-x64")
+# find_package(Boost REQUIRED COMPONENTS filesystem date_time system timer)
+#find_package(cppzmq REQUIRED)
+find_package(PNG REQUIRED)
+find_package(Threads REQUIRED)
+find_package(OpenSSL REQUIRED)
+#find_package(GDAL REQUIRED)
+#find_package(msgpack REQUIRED)
+find_package(fmt REQUIRED)
+
+#find_package(Poco REQUIRED COMPONENTS Foundation JSON Util XML Zip)
+#find_package(TBB REQUIRED)
+#find_package(Angelscript REQUIRED)
+#find_package(easyloggingpp REQUIRED)
+find_package(RapidJSON REQUIRED)
+find_package(Catch2 REQUIRED)
+#find_package(CAF REQUIRED)
+#find_package(HighFive 2.0 REQUIRED)
+#https://abseil.io/docs/cpp/quickstart-cmake
+#git clone https://github.com/abseil/abseil-cpp.git
+# Process Abseil's CMake build system
+#add_subdirectory(abseil-cpp)
+
 
 AUX_SOURCE_DIRECTORY(./ SRC_DIR)
 AUX_SOURCE_DIRECTORY(controllers CTL_SRC)
@@ -107,4 +129,20 @@ target_link_libraries(jdragon
   drogon
   trantor
   Boost::filesystem
+  Catch2::Catch2
+#  absl::strings
+
+
+# clang_flags
+# Boost::timer
+#Poco::Foundation
+# Boost::disable_autolinking
+# Boost::filesystem
+fmt::fmt
+libpqxx::pqxx_shared
+#angelscript
+#TBB::tbb
+#easyloggingpp
+#rapidjson
+
 )

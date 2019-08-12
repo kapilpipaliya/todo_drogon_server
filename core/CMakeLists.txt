@@ -10,15 +10,11 @@ find_package (Jsoncpp REQUIRED)
 #find_package(Sqlpp-connector-postgresql)
 #find_package(folly)
 
-
-
 set(JEWEL_HDR
-
-
-    tables/Table.h
-    tables/condformat.h
-#    tables/data.h
-    tables/macro.h
+    Table.h
+    condformat.h
+#    data.h
+    macro.h
 
 
 ###    sql/sqlitetypes.h # this file is good and it is in the directory
@@ -30,29 +26,15 @@ set(JEWEL_HDR
 #    dotenvformat.h
 #    ciphersettings.h
 
-    json.hpp
-    tables/jsonfns.h
-
-
-
-    tables/savedel/accountsave.h
-    tables/savedel/entitysave.h
-    tables/savedel/materialsave.h
-    tables/savedel/menusave.h
-    tables/savedel/mfgsave.h
-    tables/savedel/productsave.h
-    tables/savedel/settingsave.h
-    tables/savedel/postsave.h
+    jsonfns.h
 
     strfns.h
 )
 
 set(JEWEL_SRC
-
-
-    tables/Table.cpp
-    tables/condformat.cpp
-#    tables/data.cpp
+    Table.cpp
+    condformat.cpp
+#    data.cpp
 
 ###    sql/sqlitetypes.cpp
     sql/query.cpp
@@ -63,29 +45,19 @@ set(JEWEL_SRC
 #    dotenvformat.cpp
 #    ciphersettings.cpp
 
-    tables/jsonfns.cpp
-
-
-    tables/savedel/accountsave.cpp
-    tables/savedel/entitysave.cpp
-    tables/savedel/materialsave.cpp
-    tables/savedel/menusave.cpp
-    tables/savedel/mfgsave.cpp
-    tables/savedel/productsave.cpp
-    tables/savedel/settingsave.cpp
-    tables/savedel/postsave.cpp
+    jsonfns.cpp
 
     strfns.cpp
 )
-
-AUX_SOURCE_DIRECTORY(./tables/service/post JEWEL_SRC)
-AUX_SOURCE_DIRECTORY(./tables/service/account JEWEL_SRC)
-AUX_SOURCE_DIRECTORY(./tables/service/entity JEWEL_SRC)
-AUX_SOURCE_DIRECTORY(./tables/service/material JEWEL_SRC)
-AUX_SOURCE_DIRECTORY(./tables/service/menu JEWEL_SRC)
-AUX_SOURCE_DIRECTORY(./tables/service/mfg JEWEL_SRC)
-AUX_SOURCE_DIRECTORY(./tables/service/product JEWEL_SRC)
-AUX_SOURCE_DIRECTORY(./tables/service/setting JEWEL_SRC)
+AUX_SOURCE_DIRECTORY(./service/auth JEWEL_SRC)
+AUX_SOURCE_DIRECTORY(./service/post JEWEL_SRC)
+AUX_SOURCE_DIRECTORY(./service/account JEWEL_SRC)
+AUX_SOURCE_DIRECTORY(./service/entity JEWEL_SRC)
+AUX_SOURCE_DIRECTORY(./service/material JEWEL_SRC)
+AUX_SOURCE_DIRECTORY(./service/menu JEWEL_SRC)
+AUX_SOURCE_DIRECTORY(./service/mfg JEWEL_SRC)
+AUX_SOURCE_DIRECTORY(./service/product JEWEL_SRC)
+AUX_SOURCE_DIRECTORY(./service/setting JEWEL_SRC)
 
 #set(JEWEL_RESOURCES
 #    languages.qrc

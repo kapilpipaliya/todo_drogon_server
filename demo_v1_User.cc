@@ -1,56 +1,15 @@
 #include "demo_v1_User.h"
-
-
 #include <json/json.h>
 #include <pqxx/pqxx>
 #include "core/connection/pdb.h"
 #include <boost/filesystem.hpp>
-
 using namespace demo::v1;
-
-
-//add definition of your processing function here
-void User::login(const HttpRequestPtr &req,
-                 std::function<void(const HttpResponsePtr &)> &&callback,
-                 std::string &&userId,
-                 const std::string &password) {
-    LOG_DEBUG << "User " << userId << " login";
-    //Authentication algorithm, read database, verify identity, etc...
-    //...
-    Json::Value ret;
-    ret["result"] = "ok";
-    ret["token"] = drogon::utils::getUuid();
-    auto resp = HttpResponse::newHttpJsonResponse(ret);
-    callback(resp);
-}
-
-void User::getInfo(const HttpRequestPtr &req,
-                   std::function<void(const HttpResponsePtr &)> &&callback,
-                   const std::string& userId,
-                   const std::string &token) const {
-    LOG_DEBUG << "User " << userId << " get his information";
-
-    //Verify the validity of the token, etc.
-    //Read the database or cache to get user information
-    Json::Value ret;
-    ret["result"] = "ok";
-    ret["user_name"] = "Jack";
-    ret["user_id"] = userId;
-    ret["gender"] = 1;
-    auto resp = HttpResponse::newHttpJsonResponse(ret);
-    callback(resp);
-}
-
 void User::download(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback) {
     auto id = req->getParameter("path", "AdminMenu5.png");
-//    fprintf(stdout, "%s\n", id.c_str());
-//    fflush(stdout);
     auto new_path = "/home/kapili3/fileuploads/" + id;
-
     auto resp = HttpResponse::newFileResponse(new_path);
     callback(resp);
 }
-
 void User::download_id(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback) {
     auto id = req->getParameter("path", "AdminMenu5.png");
     namespace fs = boost::filesystem;
@@ -80,10 +39,9 @@ void User::download_id(const HttpRequestPtr &req, std::function<void(const HttpR
     } catch (const std::exception &e) {
         txn.abort();
         std::cerr << e.what() << std::endl;
-        //simpleJsonSaveResult(event1, event2, no, wsConnPtr, false, e.what());
+        //simpleJsonSaveResult(event, false, e.what());
     }
 }
-
 void User::thumb_id(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback)
 {
     auto id = req->getParameter("path", "AdminMenu5.png");
@@ -114,6 +72,6 @@ void User::thumb_id(const HttpRequestPtr &req, std::function<void (const HttpRes
     } catch (const std::exception &e) {
         txn.abort();
         std::cerr << e.what() << std::endl;
-        //simpleJsonSaveResult(event1, event2, no, wsConnPtr, false, e.what());
+        //simpleJsonSaveResult(event, false, e.what());
     }
 }
