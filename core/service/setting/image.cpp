@@ -5,8 +5,8 @@
 #include "../auth/auth.h"
 
 #include <drogon/WebSocketController.h>
-using namespace drogon;
-Image::Image(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+
+Image::Image(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
     t.m_table = sqlb::ObjectIdentifier("setting", "image", "a");
 
@@ -70,9 +70,6 @@ Json::Value Image::handleBinaryEvent(Json::Value event, std::string &message)
     }
 }
 
-HEADERDATA(Image)
-ALLDATA(Image)
-delFn(Image)
     // this is normal images..
     Json::Value Image::save( Json::Value event, Json::Value args) {
     printJson(args);

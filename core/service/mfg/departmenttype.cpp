@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-DepartmentType::DepartmentType(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+DepartmentType::DepartmentType(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
     t.m_table = sqlb::ObjectIdentifier("mfg", "department_type", "m");
 
@@ -32,10 +32,6 @@ void DepartmentType::setupTable()
             };
 }
 
-HANDLEEVENT(DepartmentType)
 
-HEADERDATA(DepartmentType)
-ALLDATA(DepartmentType)
-delFn(DepartmentType)
 
 save_table(DepartmentType, "mfg.department_type", "name", "$1", "$2", "where id=$1", args["name"].asString());

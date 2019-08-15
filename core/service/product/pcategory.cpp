@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-PCategory::PCategory(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+PCategory::PCategory(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
     t.m_table = sqlb::ObjectIdentifier("product", "category", "c");
 }
@@ -41,14 +41,6 @@ void PCategory::setupTable()
         sqlb::Join("left", u2, "c.update_user_id = u2.id"),
     };
 }
-
-
-HANDLEEVENT(PCategory)
-
-HEADERDATA(PCategory)
-ALLDATA(PCategory)
-
-delFn(PCategory)
 
 Json::Value PCategory::save( Json::Value event, Json::Value args)
 {

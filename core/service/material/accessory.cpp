@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Accessory::Accessory(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+Accessory::Accessory(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
 
     t.m_table = sqlb::ObjectIdentifier("material", "accessory", "a");
@@ -39,11 +39,7 @@ void Accessory::setupTable()
             };
 }
 
-HANDLEEVENT(Accessory)
 
-HEADERDATA(Accessory)
-ALLDATA(Accessory)
-delFn(Accessory)
 
     Json::Value Accessory::save( Json::Value event, Json::Value args) {
     printJson(args);

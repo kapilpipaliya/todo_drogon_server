@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Size::Size(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+Size::Size(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
     t.m_table = sqlb::ObjectIdentifier("material", "size", "s");
 
@@ -27,11 +27,7 @@ void Size::setupTable()
 
 }
 
-HANDLEEVENT(Size)
 
-HEADERDATA(Size)
-ALLDATA(Size)
-delFn(Size)
 
 save_table(Size, "menu.task", "name", "$1", "$2", "where id=$1", args["name"].asString());
 

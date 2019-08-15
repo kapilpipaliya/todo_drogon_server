@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Txn::Txn(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+Txn::Txn(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
 
     t.m_table = sqlb::ObjectIdentifier("account", "txn", "a");
@@ -87,11 +87,6 @@ Txn::Txn(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
             sqlb::GroupByColumn("u2", "id"),
             };
 }
-
-HANDLEEVENT(Txn)
-
-HEADERDATA(Txn)
-ALLDATA(Txn)
 
 Json::Value Txn::del(const Json::Value event, const Json::Value args) {
     pqxx::work txn{DD};

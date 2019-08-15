@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-CSType::CSType(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+CSType::CSType(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
     t.m_table = sqlb::ObjectIdentifier("material", "cs_type", "ct");
 
@@ -37,10 +37,6 @@ void CSType::setupTable()
 
 }
 
-HANDLEEVENT(CSType)
 
-HEADERDATA(CSType)
-ALLDATA(CSType)
-delFn(CSType)
 
 save_table(CSType, "material.cs_type", "name", "$1", "$2", "where id=$1", args["name"].asString())

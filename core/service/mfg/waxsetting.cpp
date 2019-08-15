@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-WaxSetting::WaxSetting(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+WaxSetting::WaxSetting(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
     t.m_table = sqlb::ObjectIdentifier("mfg", "wax_setting", "m");
 
@@ -47,11 +47,7 @@ void WaxSetting::setupTable()
             };
 }
 
-HANDLEEVENT(WaxSetting)
 
-HEADERDATA(WaxSetting)
-ALLDATA(WaxSetting)
-delFn(WaxSetting)
 
 save_table(WaxSetting, "mfg.wax_setting", "date, department_id, employee_id, description, status_id",
                "$1, $2, $3, $4, $5", "$2, $3, $4, $5, $6", "where id=$1", args["date"].asString(),

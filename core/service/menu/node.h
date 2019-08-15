@@ -1,29 +1,12 @@
 #ifndef NODE_H
 #define NODE_H
-
-#include "core/Table.h"
-#include <json/json.h>
-#include "../../macro.h"
-
-#include <drogon/WebSocketController.h>
-using namespace drogon;
-
-class Node
+#include "../baseservice.h"
+class Node : public BaseService
 {
 public:
     Node(const WebSocketConnectionPtr& wsConnPtr);
-
-    HANDLEEVENTD()
-
 private:
     void setupTable();
-    HEADERDATAD()
-    ALLDATAD()
-    SAVED()
-    DELETED()
-
-    Table t;
-    const WebSocketConnectionPtr& wsConnPtr;
+    Json::Value save(Json::Value event, Json::Value args);
 };
-
 #endif // NODE_H

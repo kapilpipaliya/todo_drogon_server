@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Currency::Currency(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+Currency::Currency(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
     t.m_table = sqlb::ObjectIdentifier("setting", "currency", "c");
 
@@ -33,13 +33,6 @@ void Currency::setupTable()
             };
 
 }
-
-HANDLEEVENT(Currency)
-
-HEADERDATA(Currency)
-ALLDATA(Currency)
-
-delFn(Currency)
 
     Json::Value Currency::save( Json::Value event, Json::Value args) {
     printJson(args);

@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Metal::Metal(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+Metal::Metal(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
     t.m_table = sqlb::ObjectIdentifier("material", "metal", "m");
 
@@ -41,11 +41,7 @@ void Metal::setupTable()
             };
 }
 
-HANDLEEVENT(Metal)
 
-HEADERDATA(Metal)
-ALLDATA(Metal)
-delFn(Metal)
     Json::Value Metal::save( Json::Value event, Json::Value args) {
     printJson(args);
     auto metal_table = sqlb::ObjectIdentifier("material", "metal", "m");

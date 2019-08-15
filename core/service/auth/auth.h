@@ -4,7 +4,6 @@
 
 #include "core/Table.h"
 #include <json/json.h>
-#include "../../macro.h"
 
 #include <drogon/WebSocketController.h>
 using namespace drogon;
@@ -14,7 +13,7 @@ class Auth
 public:
     Auth(const WebSocketConnectionPtr& wsConnPtr);
 
-    HANDLEEVENTD()
+    Json::Value handleEvent(Json::Value event, Json::Value args);
 
 private:
     Json::Value adminLogin(Json::Value event, Json::Value args);

@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Role::Role(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+Role::Role(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
 
     t.m_table = sqlb::ObjectIdentifier("menu", "role", "m");
@@ -41,11 +41,7 @@ void Role::setupTable()
             };
 }
 
-HANDLEEVENT(Role)
 
-HEADERDATA(Role)
-ALLDATA(Role)
-delFn(Role)
 
 save_table(Role, "menu.role", "name", "$1", "$2", "where id=$1", args["name"].asString());
 

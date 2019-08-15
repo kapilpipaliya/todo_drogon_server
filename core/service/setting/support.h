@@ -1,29 +1,15 @@
 #ifndef SUPPORT_H
 #define SUPPORT_H
 
-#include "core/Table.h"
-#include <json/json.h>
-#include "../../macro.h"
+#include "../baseservice.h"
 
-#include <drogon/WebSocketController.h>
-using namespace drogon;
-
-class Support
+class Support : public BaseService
 {
 public:
     Support(const WebSocketConnectionPtr& wsConnPtr);
-
-    HANDLEEVENTD()
-
 private:
     void setupTable();
-    HEADERDATAD()
-    ALLDATAD()
-    SAVED()
-    DELETED()
-
-    Table t;
-    const WebSocketConnectionPtr& wsConnPtr;
+    Json::Value save(Json::Value event, Json::Value args);
 };
 
 #endif // SUPPORT_H

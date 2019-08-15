@@ -3,7 +3,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 using namespace std::literals;
-Auth::Auth(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+Auth::Auth(const WebSocketConnectionPtr& wsConnPtr_): wsConnPtr(wsConnPtr_)
 {
 
 }
@@ -278,7 +278,7 @@ Json::Value Auth::saveImageMeta( Json::Value event, Json::Value args)
 {
     auto c = getAdminContext(wsConnPtr);
 
-    auto strSql = ins("user1.temp_image", "session_id, event, name, size, type", "$1, $2, $3, $4, $5");
+    auto strSql = "INSERT INTO user1.temp_image ( session_id, event, name, size, type ) VALUES( $1, $2, $3, $4, $5 )";
     pqxx::work txn{DD};
     try {
         auto r = txn.exec_params(strSql, c, args[0].toStyledString(), args[1].asString(), args[2].asInt64(), args[3].asString());

@@ -1,29 +1,12 @@
 #ifndef DCOLOR_H
 #define DCOLOR_H
-
-#include "core/Table.h"
-#include <json/json.h>
-#include "../../macro.h"
-
-#include <drogon/WebSocketController.h>
-using namespace drogon;
-
-class DColor
+#include "../baseservice.h"
+class DColor : public BaseService
 {
 public:
     DColor(const WebSocketConnectionPtr& wsConnPtr);
-
-    HANDLEEVENTD()
-
 private:
     void setupTable();
-    HEADERDATAD()
-    ALLDATAD()
-    SAVED()
-    DELETED()
-
-    Table t;
-    const WebSocketConnectionPtr& wsConnPtr;
+    Json::Value save(Json::Value event, Json::Value args);
 };
-
 #endif // DCOLOR_H

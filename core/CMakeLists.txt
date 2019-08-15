@@ -14,8 +14,6 @@ set(JEWEL_HDR
     Table.h
     condformat.h
 #    data.h
-    macro.h
-
 
 ###    sql/sqlitetypes.h # this file is good and it is in the directory
     sql/query.h
@@ -49,6 +47,7 @@ set(JEWEL_SRC
 
     strfns.cpp
 )
+AUX_SOURCE_DIRECTORY(./service JEWEL_SRC)
 AUX_SOURCE_DIRECTORY(./service/auth JEWEL_SRC)
 AUX_SOURCE_DIRECTORY(./service/post JEWEL_SRC)
 AUX_SOURCE_DIRECTORY(./service/account JEWEL_SRC)

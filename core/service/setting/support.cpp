@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Support::Support(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+Support::Support(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
     t.m_table = sqlb::ObjectIdentifier("setting", "support", "a");
 
@@ -35,11 +35,7 @@ void Support::setupTable()
 
 }
 
-HANDLEEVENT(Support)
 
-HEADERDATA(Support)
-ALLDATA(Support)
-delFn(Support)
 
 save_table(Support, "setting.support", "name, email, phone, message", "$1, $2, $3, $4", "$2, $3, $4, $5", "where id=$1",
                args["name"].asString(), args["email"].asString(), args["phone"].asString(), args["message"].asString());

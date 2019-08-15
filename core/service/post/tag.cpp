@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Tag::Tag(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+Tag::Tag(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
     t.m_table = sqlb::ObjectIdentifier("post", "tag", "t");
 
@@ -35,11 +35,7 @@ void Tag::setupTable()
             };
 }
 
-HANDLEEVENT(Tag)
 
-HEADERDATA(Tag)
-ALLDATA(Tag)
-delFn(Tag)
 
     Json::Value Tag::save( Json::Value event, Json::Value args) {
     printJson(args);

@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-MTransfer::MTransfer(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+MTransfer::MTransfer(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
 
     t.m_table = sqlb::ObjectIdentifier("mfg", "m_transfer", "m");
@@ -41,11 +41,7 @@ void MTransfer::setupTable()
             };
 }
 
-HANDLEEVENT(MTransfer)
 
-HEADERDATA(MTransfer)
-ALLDATA(MTransfer)
-delFn(MTransfer)
 
 
 save_table(MTransfer, "mfg.m_transfer", "name", "$1", "$2", "where id=$1", args["name"].asString());

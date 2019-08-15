@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-DSize::DSize(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+DSize::DSize(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
     t.m_table = sqlb::ObjectIdentifier("material", "diamond_size_meta", "sm");
 
@@ -61,11 +61,6 @@ void DSize::setupTable()
             };
 
 }
-
-HANDLEEVENT(DSize)
-
-HEADERDATA(DSize)
-ALLDATA(DSize)
 
 Json::Value DSize::save( Json::Value event, Json::Value args) {
     // also update all the price of products too..

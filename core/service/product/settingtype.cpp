@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-SettingType::SettingType(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+SettingType::SettingType(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
     t.m_table = sqlb::ObjectIdentifier("product", "setting_type", "t");
 
@@ -36,11 +36,7 @@ void SettingType::setupTable()
             };
 }
 
-HANDLEEVENT(SettingType)
 
-HEADERDATA(SettingType)
-ALLDATA(SettingType)
-delFn(SettingType)
     Json::Value SettingType::save( Json::Value event, Json::Value args) {
     printJson(args);
     auto setting_type_table = sqlb::ObjectIdentifier("product", "setting_type", "s");

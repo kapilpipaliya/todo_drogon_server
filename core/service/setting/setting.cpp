@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Setting::Setting(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+Setting::Setting(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
     t.m_table = sqlb::ObjectIdentifier("setting", "setting", "gs");
 
@@ -30,10 +30,6 @@ void Setting::setupTable()
         };
 }
 
-HANDLEEVENT(Setting)
-
-HEADERDATA(Setting)
-ALLDATA(Setting)
 Json::Value Setting::del( Json::Value event, Json::Value args)
 {
     pqxx::work txn{DD};

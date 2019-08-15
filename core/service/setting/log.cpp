@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Log::Log(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+Log::Log(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
     t.m_table = sqlb::ObjectIdentifier("setting", "simple_log", "a");
 
@@ -33,10 +33,6 @@ void Log::setupTable()
             };
 }
 
-HANDLEEVENT(Log)
 
-HEADERDATA(Log)
-ALLDATA(Log)
-delFn(Log)
 
 save_table(Log, "setting.log", "name", "$1", "$2", "where id=$1", args["name"].asString());

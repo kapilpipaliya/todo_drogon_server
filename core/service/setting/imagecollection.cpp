@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-ImageCollection::ImageCollection(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+ImageCollection::ImageCollection(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
     t.m_table = sqlb::ObjectIdentifier("setting", "image_collection", "a");
 
@@ -33,10 +33,6 @@ void ImageCollection::setupTable()
             };
 }
 
-HANDLEEVENT(ImageCollection)
 
-HEADERDATA(ImageCollection)
-ALLDATA(ImageCollection)
-delFn(ImageCollection)
 
 save_table(ImageCollection, "setting.image_collection", "name", "$1", "$2", "where id=$1", args["name"].asString());

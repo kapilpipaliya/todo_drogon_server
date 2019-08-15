@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Node::Node(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+Node::Node(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
 
     t.m_table = sqlb::ObjectIdentifier("menu", "node", "m");
@@ -43,11 +43,7 @@ void Node::setupTable()
             };
 }
 
-HANDLEEVENT(Node)
 
-HEADERDATA(Node)
-ALLDATA(Node)
-delFn(Node)
 
 save_table(Node, "menu.node", "parent_id, rank, slug, label, active, url, web_icon, description, class", "$1,$2,$3,$4,$5,$6,$7,$8,$9", "$2,$3,$4,$5,$6,$7,$8,$9,$10", "where id=$1",
                args["parent_id"].asInt(),

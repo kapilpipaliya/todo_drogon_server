@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Post1::Post1(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+Post1::Post1(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
     t.m_table = sqlb::ObjectIdentifier("post", "post", "post");
 
@@ -32,11 +32,7 @@ void Post1::setupTable()
             };
 }
 
-HANDLEEVENT(Post1)
 
-HEADERDATA(Post1)
-ALLDATA(Post1)
-delFn(Post1)
     Json::Value Post1::save( Json::Value event, Json::Value args) {
     auto post_table = sqlb::ObjectIdentifier("post", "post", "p");
 

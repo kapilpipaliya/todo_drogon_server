@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-AddressType::AddressType(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+AddressType::AddressType(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
 
     t.m_table = sqlb::ObjectIdentifier("entity", "address_type", "a");
@@ -20,11 +20,7 @@ void AddressType::setupTable()
         };
 }
 
-HANDLEEVENT(AddressType)
 
-HEADERDATA(AddressType)
-ALLDATA(AddressType)
-delFn(AddressType)
 
 Json::Value AddressType::save( Json::Value event, Json::Value args) {
 if (args["id"].asInt()) {

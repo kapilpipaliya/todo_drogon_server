@@ -1,29 +1,16 @@
 #ifndef SETTING_H
 #define SETTING_H
 
+#include "../baseservice.h"
 
-#include "core/Table.h"
-#include <json/json.h>
-#include "../../macro.h"
-
-#include <drogon/WebSocketController.h>
-using namespace drogon;
-
-class Setting
+class Setting : public BaseService
 {
 public:
     Setting(const WebSocketConnectionPtr& wsConnPtr);
 
-    HANDLEEVENTD()
-
 private:
     void setupTable();
-    HEADERDATAD()
-    ALLDATAD()
-    SAVED()
-    DELETED()
-
-    Table t;
-    const WebSocketConnectionPtr& wsConnPtr;
+    Json::Value save(Json::Value event, Json::Value args);
+    Json::Value del(Json::Value event, Json::Value args);
 };
 #endif // SETTING_H

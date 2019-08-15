@@ -4,7 +4,7 @@
 
 
 typedef sqlb::SelectedColumn S;
-Entity::Entity(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+Entity::Entity(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
     t.m_table = sqlb::ObjectIdentifier("entity", "entity", "e");
 
@@ -77,11 +77,6 @@ void Entity::setupTable()
         sqlb::GroupByColumn("eu", "id"),
         };
 }
-
-HANDLEEVENT(Entity)
-
-HEADERDATA(Entity)
-ALLDATA(Entity)
 
 void save_Entity_Address(Json::Value &args,
                              pqxx::work &txn,

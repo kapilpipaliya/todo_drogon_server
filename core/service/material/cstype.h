@@ -1,29 +1,12 @@
 #ifndef CSTYPE_H
 #define CSTYPE_H
-
-
-#include "core/Table.h"
-#include <json/json.h>
-#include "../../macro.h"
-
-#include <drogon/WebSocketController.h>
-using namespace drogon;
-
-class CSType
+#include "../baseservice.h"
+class CSType : public BaseService
 {
 public:
     CSType(const WebSocketConnectionPtr& wsConnPtr);
-
-    HANDLEEVENTD()
-
 private:
     void setupTable();
-    HEADERDATAD()
-    ALLDATAD()
-    SAVED()
-    DELETED()
-
-    Table t;
-    const WebSocketConnectionPtr& wsConnPtr;
+    Json::Value save(Json::Value event, Json::Value args);
 };
 #endif // CSTYPE_H

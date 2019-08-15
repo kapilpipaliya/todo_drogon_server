@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-DColor::DColor(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+DColor::DColor(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
 
     t.m_table = sqlb::ObjectIdentifier("material", "diamond_color", "gt");
@@ -35,11 +35,7 @@ void DColor::setupTable()
             };
 }
 
-HANDLEEVENT(DColor)
 
-HEADERDATA(DColor)
-ALLDATA(DColor)
-delFn(DColor)
 
     Json::Value DColor::save( Json::Value event, Json::Value args) {
     printJson(args);

@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Shape::Shape(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+Shape::Shape(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
     t.m_table = sqlb::ObjectIdentifier("material", "shape", "gs");
 
@@ -39,11 +39,7 @@ void Shape::setupTable()
 
 }
 
-HANDLEEVENT(Shape)
 
-HEADERDATA(Shape)
-ALLDATA(Shape)
-delFn(Shape)
 
     Json::Value Shape::save( Json::Value event, Json::Value args) {
     printJson(args);

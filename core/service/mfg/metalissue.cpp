@@ -3,7 +3,7 @@
 #include "../../jsonfns.h"
 
 
-MetalIssue::MetalIssue(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+MetalIssue::MetalIssue(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
 
     t.m_table = sqlb::ObjectIdentifier("mfg", "metal_issue", "m");
@@ -42,11 +42,7 @@ void MetalIssue::setupTable()
             };
 }
 
-HANDLEEVENT(MetalIssue)
 
-HEADERDATA(MetalIssue)
-ALLDATA(MetalIssue)
-delFn(MetalIssue)
 
 
 save_table(MetalIssue, "mfg.metal_issue", "name", "$1", "$2", "where id=$1", args["name"].asString());

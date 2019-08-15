@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-PShippingClass::PShippingClass(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+PShippingClass::PShippingClass(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
 
     t.m_table = sqlb::ObjectIdentifier("product", "shipping_class", "t");
@@ -36,11 +36,7 @@ void PShippingClass::setupTable()
             };
 }
 
-HANDLEEVENT(PShippingClass)
 
-HEADERDATA(PShippingClass)
-ALLDATA(PShippingClass)
-delFn(PShippingClass)
 
     Json::Value PShippingClass::save( Json::Value event, Json::Value args) {
     printJson(args);

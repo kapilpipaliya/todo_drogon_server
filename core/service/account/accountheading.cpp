@@ -1,11 +1,10 @@
 #include "accountheading.h"
 #include "../../strfns.h"
 #include "../../jsonfns.h"
-AccountHeading::AccountHeading(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+AccountHeading::AccountHeading(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
     t.m_table = sqlb::ObjectIdentifier("account", "account_heading", "p");
 }
-
     void AccountHeading::setupTable()
 {
 
@@ -29,14 +28,4 @@ AccountHeading::AccountHeading(const WebSocketConnectionPtr& wsConnPtr): wsConnP
                 //sqlb::Join("left", u2, "a.update_user_id = u2.id"),
                 };
 }
-
-HANDLEEVENT(AccountHeading)
-
-HEADERDATA(AccountHeading)
-ALLDATA(AccountHeading)
-
-delFn(AccountHeading)
-
 save_table(AccountHeading, "account.account_heading", "name", "$1", "$2", "where id=$1", args["name"].asString())
-
-

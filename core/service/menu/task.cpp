@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Task::Task(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+Task::Task(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
 
     t.m_table = sqlb::ObjectIdentifier("menu", "task", "m");
@@ -42,11 +42,7 @@ void Task::setupTable()
             };
 }
 
-HANDLEEVENT(Task)
 
-HEADERDATA(Task)
-ALLDATA(Task)
-delFn(Task)
 
 save_table(Task, "menu.task", "name", "$1", "$2", "where id=$1", args["name"].asString());
 

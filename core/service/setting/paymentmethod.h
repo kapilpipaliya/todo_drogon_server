@@ -1,31 +1,13 @@
 #ifndef PAYMENTMETHOD_H
 #define PAYMENTMETHOD_H
+#include "../baseservice.h"
 
-
-#include "core/Table.h"
-#include <json/json.h>
-#include "../../macro.h"
-
-#include <drogon/WebSocketController.h>
-using namespace drogon;
-
-class PaymentMethod
+class PaymentMethod : public BaseService
 {
 public:
     PaymentMethod(const WebSocketConnectionPtr& wsConnPtr);
-
-    HANDLEEVENTD()
-
 private:
     void setupTable();
-    HEADERDATAD()
-    ALLDATAD()
-    SAVED()
-    DELETED()
-
-    Table t;
-    const WebSocketConnectionPtr& wsConnPtr;
+    Json::Value save(Json::Value event, Json::Value args);
 };
-
-
 #endif // PAYMENTMETHOD_H

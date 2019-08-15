@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Purity::Purity(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+Purity::Purity(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
     t.m_table = sqlb::ObjectIdentifier("material", "purity", "p");
 
@@ -61,10 +61,6 @@ void Purity::setupTable()
         };
 }
 
-HANDLEEVENT(Purity)
-
-HEADERDATA(Purity)
-ALLDATA(Purity)
 void save_purity_metal_(Json::Value &args, pqxx::work &txn, int purity_id, int tone_id) {
     std::string strSqlPostCategories = "SELECT metal_id FROM material.purity_metal where purity_id = $1 and tone_id = $2";
     std::string strSqlPostCategorySimpleFind = "SELECT purity_id, tone_id, metal_id, purity, price FROM material.purity_metal WHERE purity_id = $1 and tone_id = $2 and metal_id = $3";

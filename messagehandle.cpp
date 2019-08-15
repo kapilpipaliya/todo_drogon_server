@@ -1,5 +1,4 @@
 #include "messagehandle.h"
-#include "core/macro.h"
 #include "core/jsonfns.h"
 
 #include "core/service/auth/auth.h"
@@ -63,6 +62,14 @@
 #include "core/service/setting/support.h"
 
 MessageHandle msgHandle; // Global Variable initialise
+
+#define REGISTER(s, T)\
+ else if (in[0][0].asString()==s){\
+T p{wsConnPtr};\
+auto r = p.handleEvent(in[0], in[1]);\
+if(!r.isNull())\
+    return r;\
+}
 
 //https://github.com/gabime/spdlog
 //Very fast, header-only/compiled, C++ logging library.

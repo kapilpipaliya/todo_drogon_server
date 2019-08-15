@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Casting::Casting(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+Casting::Casting(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
     t.m_table = sqlb::ObjectIdentifier("mfg", "casting", "m");
 
@@ -41,10 +41,6 @@ void Casting::setupTable()
             };
 }
 
-HANDLEEVENT(Casting)
 
-HEADERDATA(Casting)
-ALLDATA(Casting)
-delFn(Casting)
 
 save_table(Casting, "mfg.casting", "name", "$1", "$2", "where id=$1", args["name"].asString());

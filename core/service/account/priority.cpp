@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Priority::Priority(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+Priority::Priority(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
     t.m_table = sqlb::ObjectIdentifier("account", "priority", "a");
 
@@ -35,10 +35,4 @@ Priority::Priority(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr
                 sqlb::Join("left", u2, "a.update_user_id = u2.id"),
                 };
 }
-
-HANDLEEVENT(Priority)
-
-HEADERDATA(Priority)
-ALLDATA(Priority)
-delFn(Priority)
 save_table(Priority, "account.priority", "name, url, description", "$1, $2, $3", "$2, $3, $4", "where id=$1", args["name"].asString(), args["url"].asString(), args["description"].asString())

@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Policy::Policy(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+Policy::Policy(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
     t.m_table = sqlb::ObjectIdentifier("product", "policy", "t");
 
@@ -34,10 +34,6 @@ void Policy::setupTable()
             };
 }
 
-HANDLEEVENT(Policy)
 
-HEADERDATA(Policy)
-ALLDATA(Policy)
-delFn(Policy)
 
 save_table(Policy, "product.policy", "name, url, description", "$1, $2, $3", "$2, $3, $4", "where id=$1", args["name"].asString(), args["url"].asString(), args["description"].asString())

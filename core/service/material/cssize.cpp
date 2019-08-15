@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-CSSize::CSSize(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+CSSize::CSSize(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
     t.m_table = sqlb::ObjectIdentifier("material", "color_stone_size_meta", "sm");
 
@@ -55,11 +55,6 @@ void CSSize::setupTable()
             sqlb::Join("left", u2, "sm.update_user_id = u2.id"),
             };
 }
-
-HANDLEEVENT(CSSize)
-
-HEADERDATA(CSSize)
-ALLDATA(CSSize)
 
 Json::Value CSSize::save( Json::Value event, Json::Value args) {
     auto size_table = sqlb::ObjectIdentifier("material", "size", "sh");

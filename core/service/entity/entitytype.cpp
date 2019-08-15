@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-EntityType::EntityType(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+EntityType::EntityType(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
 t.m_table = sqlb::ObjectIdentifier("entity", "entity_type", "a");
 }
@@ -20,11 +20,7 @@ void EntityType::setupTable()
         };
 }
 
-HANDLEEVENT(EntityType)
 
-HEADERDATA(EntityType)
-ALLDATA(EntityType)
-delFn(EntityType)
 Json::Value EntityType::save( Json::Value event, Json::Value args) {
     if (args["id"].asInt()) {
         std::string strSql = "update entity.entity_type set (name) = ROW($2) where id=$1";

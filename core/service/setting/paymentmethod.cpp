@@ -3,7 +3,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-PaymentMethod::PaymentMethod(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+PaymentMethod::PaymentMethod(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
     t.m_table = sqlb::ObjectIdentifier("setting", "payment_method", "t");
 
@@ -35,11 +35,7 @@ void PaymentMethod::setupTable()
             };
 }
 
-HANDLEEVENT(PaymentMethod)
 
-HEADERDATA(PaymentMethod)
-ALLDATA(PaymentMethod)
-delFn(PaymentMethod)
 
 save_table(PaymentMethod, "setting.payment_method", "name, url, description", "$1, $2, $3", "$2, $3, $4", "where id=$1", args["name"].asString(), args["url"].asString(), args["description"].asString())
 

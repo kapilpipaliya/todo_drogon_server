@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-ContactType::ContactType(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+ContactType::ContactType(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
 
     t.m_table = sqlb::ObjectIdentifier("entity", "contact_type", "a");
@@ -20,11 +20,7 @@ void ContactType::setupTable()
         };
 }
 
-HANDLEEVENT(ContactType)
 
-HEADERDATA(ContactType)
-ALLDATA(ContactType)
-delFn(ContactType)
 
 Json::Value ContactType::save( Json::Value event, Json::Value args) {
     if (args["id"].asInt()) {

@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-JournalType::JournalType(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+JournalType::JournalType(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
     t.m_table = sqlb::ObjectIdentifier("account", "journal_type", "a");
 
@@ -34,10 +34,4 @@ JournalType::JournalType(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsC
                 sqlb::Join("left", u2, "a.update_user_id = u2.id"),
                 };
 }
-
-HANDLEEVENT(JournalType)
-
-HEADERDATA(JournalType)
-ALLDATA(JournalType)
-delFn(JournalType)
 save_table(JournalType, "account.journal_type", "name", "$1", "$2", "where id=$1", args["name"].asString())

@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-CSColor::CSColor(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+CSColor::CSColor(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
     t.m_table = sqlb::ObjectIdentifier("material", "cs_color", "gt");
 
@@ -35,11 +35,7 @@ void CSColor::setupTable()
             };
 }
 
-HANDLEEVENT(CSColor)
 
-HEADERDATA(CSColor)
-ALLDATA(CSColor)
-delFn(CSColor)
 
 
     Json::Value CSColor::save( Json::Value event, Json::Value args) {

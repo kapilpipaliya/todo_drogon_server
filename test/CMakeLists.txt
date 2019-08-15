@@ -13,6 +13,9 @@ SET(CMAKE_AUTOUIC ON)
 find_package(Qt5 COMPONENTS Core Gui Widgets Network Xml Sql REQUIRED)
 
 find_package(Catch2 REQUIRED)
+# Profiling the test execution duration
+#https://github.com/catchorg/Catch2/issues/974#issuecomment-319584639
+#https://github.com/catchorg/Catch2/blob/master/docs/reporters.md
 
 set(JEWEL_HDR
   mainwindow.h

@@ -3,9 +3,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-#include <drogon/WebSocketController.h>
-using namespace drogon;
-Product::Product(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+Product::Product(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
     t.m_table = sqlb::ObjectIdentifier("post", "post", "post");
 
@@ -214,8 +212,34 @@ Json::Value Product::handleEvent(Json::Value event, Json::Value args)
     }
 }
 
-HEADERDATA(Product)
-ALLDATA(Product)
+
+#define purejoinTableSave(f, t, inKey, id1, id2)\
+void save_product_##f(Json::Value &args, pqxx::work &txn, int idv1){\
+    std::string strSqlPostCategories = "SELECT " id1 ", " id2 " FROM " t " where " id1 " = $1";\
+    std::string strSqlPostCategorySimpleFind = "SELECT * FROM " t " WHERE " id1 " = $1 and " id2 " = $2";\
+    std::string strSqlPostCategoryDel = "DELETE FROM " t " WHERE " id1 " = $1 and " id2 " = $2";\
+    std::string strSqlPostCategoryInsert = "INSERT INTO " t " (" id1 ", " id2 ") VALUES ($1, $2);";\
+    std::vector<int>inNewTones;\
+    for (auto i : args[ inKey ]) {\
+        if (!i.isNull()) inNewTones.push_back(i.asInt());\
+    }\
+    \
+    pqxx::result all_ct = txn.exec_params(strSqlPostCategories, idv1);\
+    /* For each saved tones, If saved tone not exist in new tones, delete it.*/\
+    for (auto r : all_ct) {\
+        std::vector<int>::iterator it = std::find(inNewTones.begin(), inNewTones.end(), r[1].as<int>());\
+        if (it == inNewTones.end()) {/* Element not Found*/\
+            txn.exec_params(strSqlPostCategoryDel, r[0].as<int>(), r[1].as<int>());\
+        }\
+    }\
+    /* For each new tones, insert it if it not already exist.*/\
+    for (auto x : inNewTones) {\
+        pqxx::result y = txn.exec_params(strSqlPostCategorySimpleFind, idv1, x);\
+        if(y.size() == 0) {\
+            txn.exec_params(strSqlPostCategoryInsert, idv1, x);\
+        }\
+    }\
+}
 
 purejoinTableSave(tones, "product.post_tone", "p_tones_tone_id", "post_id", "tone_id");
 purejoinTableSave(certified_by, "product.post_certified_by", "p_certified_by_certified_by", "post_id", "certified_by_id");

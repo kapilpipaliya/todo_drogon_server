@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-MfgTxn::MfgTxn(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+MfgTxn::MfgTxn(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
     t.m_table = sqlb::ObjectIdentifier("mfg", "mfg_txn", "m");
 
@@ -41,10 +41,6 @@ void MfgTxn::setupTable()
             };
 }
 
-HANDLEEVENT(MfgTxn)
 
-HEADERDATA(MfgTxn)
-ALLDATA(MfgTxn)
-delFn(MfgTxn)
 
 save_table(MfgTxn, "mfg.mfg_txn", "name", "$1", "$2", "where id=$1", args["name"].asString());

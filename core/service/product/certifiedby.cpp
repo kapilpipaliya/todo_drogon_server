@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-CertifiedBy::CertifiedBy(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+CertifiedBy::CertifiedBy(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
 
     t.m_table = sqlb::ObjectIdentifier("product", "certified_by", "t");
@@ -37,11 +37,7 @@ void CertifiedBy::setupTable()
             };
 }
 
-HANDLEEVENT(CertifiedBy)
 
-HEADERDATA(CertifiedBy)
-ALLDATA(CertifiedBy)
-delFn(CertifiedBy)
 
     Json::Value CertifiedBy::save( Json::Value event, Json::Value args) {
     auto setting_type_table = sqlb::ObjectIdentifier("product", "certified_by", "s");

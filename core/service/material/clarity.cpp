@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Clarity::Clarity(const WebSocketConnectionPtr& wsConnPtr): wsConnPtr(wsConnPtr)
+Clarity::Clarity(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
 
     t.m_table = sqlb::ObjectIdentifier("material", "clarity", "g");
@@ -38,11 +38,7 @@ void Clarity::setupTable()
             };
 }
 
-HANDLEEVENT(Clarity)
 
-HEADERDATA(Clarity)
-ALLDATA(Clarity)
-delFn(Clarity)
 
     Json::Value Clarity::save( Json::Value event, Json::Value args) {
     printJson(args);

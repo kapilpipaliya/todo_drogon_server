@@ -1,29 +1,12 @@
 #ifndef MTRANSFER_H
 #define MTRANSFER_H
-
-
-#include "core/Table.h"
-#include <json/json.h>
-#include "../../macro.h"
-
-#include <drogon/WebSocketController.h>
-using namespace drogon;
-
-class MTransfer
+#include "../baseservice.h"
+class MTransfer : public BaseService
 {
 public:
     MTransfer(const WebSocketConnectionPtr& wsConnPtr);
-
-    HANDLEEVENTD()
-
 private:
     void setupTable();
-    HEADERDATAD()
-    ALLDATAD()
-    SAVED()
-    DELETED()
-
-    Table t;
-    const WebSocketConnectionPtr& wsConnPtr;
+    Json::Value save(Json::Value event, Json::Value args);
 };
 #endif // MTRANSFER_H
