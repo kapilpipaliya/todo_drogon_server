@@ -4,7 +4,7 @@
 #include <pqxx/pqxx>
 using namespace pqxx;
 #include <string>
-extern connection DD;
+inline connection DD("user=postgres dbname=susant");
 
 enum PG_TYPES {
     BOOL = 16,

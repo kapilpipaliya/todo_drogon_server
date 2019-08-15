@@ -6,8 +6,6 @@
 #include <iostream>
 using namespace std;
 
-connection DD("user=postgres dbname=susant");
-
 P_DB::P_DB()
 {
     init();

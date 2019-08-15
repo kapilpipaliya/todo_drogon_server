@@ -35,8 +35,8 @@
 //----Save Del Macro----
 
 #define saveDel(s)\
-    Json::Value save_##s(Json::Value in, const WebSocketConnectionPtr& wsConnPtr, Json::Value args);\
-    Json::Value delete_##s(Json::Value in, const WebSocketConnectionPtr& wsConnPtr, Json::Value args);\
+    [[nodiscard]] Json::Value save_##s(Json::Value in, const WebSocketConnectionPtr& wsConnPtr, Json::Value args);\
+    [[nodiscard]] Json::Value delete_##s(Json::Value in, const WebSocketConnectionPtr& wsConnPtr, Json::Value args);\
 //For Cpp:
 #define delFn1(s, s1)\
 Json::Value delete_##s(Json::Value in, const WebSocketConnectionPtr& wsConnPtr, Json::Value args)\
