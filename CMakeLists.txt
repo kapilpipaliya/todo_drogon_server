@@ -66,7 +66,7 @@ find_package(fmt REQUIRED)
 #find_package(Angelscript REQUIRED)
 #find_package(easyloggingpp REQUIRED)
 find_package(RapidJSON REQUIRED)
-find_package(Catch2 REQUIRED)
+
 #find_package(CAF REQUIRED)
 #find_package(HighFive 2.0 REQUIRED)
 #https://abseil.io/docs/cpp/quickstart-cmake
@@ -98,9 +98,10 @@ foreach(cspFile ${SCP_LIST})
 endforeach()
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-#find_package(Qt5 COMPONENTS Core Gui Network Xml Sql REQUIRED)
+
 
 add_subdirectory(core)
+add_subdirectory(test)
 #include_directories("/home/kapili3/k/jewelApp/src")
 #find_library(CONN_LIB libjewelconnection HINT /home/kapili3/k/build-jewelApp-Desktop_Qt_5_13_0_GCC_64bit-Debug/src/core/connection)
 #find_library(CORE_LIB libjewelcore2 HINT /home/kapili3/k/build-jewelApp-Desktop_Qt_5_13_0_GCC_64bit-Debug/src/core)
@@ -109,11 +110,7 @@ add_executable(jdragon ${SRC_DIR} ${CTL_SRC} ${FILTER_SRC} ${VIEWSRC} ${PLUGIN_S
   #  libpqxx::pqxx_shared
 target_link_libraries(jdragon
   Threads::Threads
-#  Qt5::Core
-#  Qt5::Gui
-#  Qt5::Network
-#  Qt5::Xml
-#  Qt5::Sql
+
 #/usr/local/lib64/Urho3D/libUrho3D.a
   ${CMAKE_DL_LIBS}
   ${_OPTIONAL_LIBS}
@@ -129,7 +126,7 @@ target_link_libraries(jdragon
   drogon
   trantor
   Boost::filesystem
-  Catch2::Catch2
+
 #  absl::strings
 
 

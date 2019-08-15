@@ -14,7 +14,6 @@ namespace demo {
                 METHOD_ADD(User::download_id, "/download_id", Get);
                 METHOD_ADD(User::thumb_id, "/thumb_id", Get);
             METHOD_LIST_END
-            //your declaration of processing function maybe like this:
             //void get(const HttpRequestPtr& req,std::function<void (const HttpResponsePtr &)> &&callback,int p1,std::string p2);
             //void your_method_name(const HttpRequestPtr& req,std::function<void (const HttpResponsePtr &)> &&callback,double p1,int p2) const;
             void download(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback);
