@@ -9,27 +9,28 @@ Auth::Auth(const WebSocketConnectionPtr& wsConnPtr_): wsConnPtr(wsConnPtr_)
 }
 
 
-Json::Value Auth::handleEvent(Json::Value event, Json::Value args)
+Json::Value Auth::handleEvent(Json::Value event, int next, Json::Value args)
 {
-    if(event[1].asString()  == "admin_login"){
+    auto event_cmp = event[next].asString();
+    if(event_cmp  == "admin_login"){
         return adminLogin(event, args);
-    } else if (event[1].asString()  == "admin_logout") {
+    } else if (event_cmp  == "admin_logout") {
         return adminLogout(event, args);
-    } else if (event[1].asString()  == "is_admin_auth") {
+    } else if (event_cmp  == "is_admin_auth") {
         return isAdminAuth(event, args);
-    } else if (event[1].asString()  == "user_login") {
+    } else if (event_cmp  == "user_login") {
         return userLogin(event, args);
-    } else if (event[1].asString()  == "user_logout") {
+    } else if (event_cmp  == "user_logout") {
         return userLogout(event, args);
-    } else if (event[1].asString()  == "is_user_auth") {
+    } else if (event_cmp  == "is_user_auth") {
         return isUserAuth(event, args);
-    } else if (event[1].asString()  == "user_register") {
+    } else if (event_cmp  == "user_register") {
         return userRegister(event, args);
-    } else if (event[1].asString()  == "user_id") {
+    } else if (event_cmp  == "user_id") {
         return userId(event, args);
-    } else if (event[1].asString()  == "checkout") {
+    } else if (event_cmp  == "checkout") {
         return checkout(event, args);
-    } else if (event[1].asString()  == "save_image_meta_data") {
+    } else if (event_cmp  == "save_image_meta_data") {
         return saveImageMeta(event, args);
     } else {
         return Json::nullValue;

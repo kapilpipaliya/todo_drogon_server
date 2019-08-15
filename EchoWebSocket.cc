@@ -32,7 +32,7 @@ void EchoWebSocket::handleNewMessage(const WebSocketConnectionPtr &wsConnPtr, st
                             }
                         }
                     }
-                    if(!out.isNull()){
+                    if(!out.empty()){
                         wsConnPtr->send(out.toStyledString());
                     }
                 }

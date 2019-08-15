@@ -5,7 +5,7 @@ class Product : public BaseService
 {
 public:
     Product(const WebSocketConnectionPtr& wsConnPtr);
-    Json::Value handleEvent(Json::Value event, Json::Value args);
+    Json::Value handleEvent(Json::Value event, int next, Json::Value args);
     Json::Value del(Json::Value event, Json::Value args);
 private:
     void setupTable();

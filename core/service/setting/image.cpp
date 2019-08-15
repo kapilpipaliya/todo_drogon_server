@@ -44,26 +44,27 @@ void Image::setupTable()
 };
 }
 
-Json::Value Image::handleEvent(Json::Value event, Json::Value args)
+Json::Value Image::handleEvent(Json::Value event, int next, Json::Value args)
 {
-    if(event[1].asString()  == "data"){
+    auto event_cmp = event[next].asString();
+    if(event_cmp  == "data"){
         return allData(event, args);
-    } else if (event[1].asString()  == "header") {
+    } else if (event_cmp  == "header") {
         return headerData(event, args);
-    } else if (event[1].asString()  == "save") {
+    } else if (event_cmp  == "save") {
         return save(event, args);
-    } else if (event[1].asString()  == "del") {
+    } else if (event_cmp  == "del") {
         return del(event, args);
-    } else if (event[1].asString()  == "thumb_data") {
+    } else if (event_cmp  == "thumb_data") {
         return thumb_data(event, args);
     } else {
         return Json::nullValue;
     }
 }
 
-Json::Value Image::handleBinaryEvent(Json::Value event, std::string &message)
+Json::Value Image::handleBinaryEvent(Json::Value event, int next, std::string &message)
 {
-    if(event[1].asString()  == "save_attachment_data"){
+    if(event[next].asString()  == "save_attachment_data"){
         return save_setting_attachment(event, message);
     } else {
         return Json::nullValue;

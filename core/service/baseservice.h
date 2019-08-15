@@ -22,7 +22,7 @@ class BaseService
 public:
     BaseService(const WebSocketConnectionPtr& wsConnPtr);
     virtual ~BaseService();
-    virtual Json::Value handleEvent(Json::Value event, Json::Value args);
+    virtual Json::Value handleEvent(Json::Value event, int next, Json::Value args);
 
 protected:
     virtual void setupTable() = 0;

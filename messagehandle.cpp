@@ -64,9 +64,9 @@
 MessageHandle msgHandle; // Global Variable initialise
 
 #define REGISTER(s, T)\
- else if (in[0][0].asString()==s){\
+ else if (in[0][1].asString()==s){\
 T p{wsConnPtr};\
-auto r = p.handleEvent(in[0], in[1]);\
+auto r = p.handleEvent(in[0], 2, in[1]);\
 if(!r.isNull())\
     return r;\
 }
@@ -81,69 +81,73 @@ Json::Value MessageHandle::handleTextMessage(const WebSocketConnectionPtr &wsCon
     if (in.type() != Json::ValueType::arrayValue) {
         return Json::arrayValue;
     }
-    if constexpr (false){
+
+    if (in[0][0].asString()=="legacy"){
+        if constexpr (false){
+        }
+        REGISTER("auth", Auth)
+
+        REGISTER("account_type", AccountType)
+        REGISTER("account", Account)
+        REGISTER("account_heading", AccountHeading)
+        REGISTER("journal_type", JournalType)
+        REGISTER("txn", Txn)
+        REGISTER("priority", Priority)
+
+        REGISTER("node", Node)
+        REGISTER("role", Role)
+        REGISTER("task", Task)
+
+        REGISTER("department_type", DepartmentType)
+        REGISTER("department", Department)
+        REGISTER("casting", Casting)
+        REGISTER("wax_setting", WaxSetting)
+        REGISTER("metal_issue", MetalIssue)
+        REGISTER("MFG_txn", MfgTxn)
+        REGISTER("refining", Refining)
+        REGISTER("m_transfer", MTransfer)
+
+        REGISTER("metal", Metal)
+        REGISTER("purity", Purity)
+        REGISTER("tone", Tone)
+        REGISTER("accessory", Accessory)
+
+        REGISTER("clarity", Clarity)
+        REGISTER("shape", Shape)
+        REGISTER("d_color", DColor)
+        REGISTER("cs_color", CSColor)
+        REGISTER("cs_type", CSType)
+        REGISTER("size", Size) // CRUD not required
+        REGISTER("d_size", DSize)
+        REGISTER("cs_size", CSSize)
+
+        REGISTER("address_type", AddressType)
+        REGISTER("contact_type", ContactType)
+        REGISTER("entity_type", EntityType)
+        REGISTER("entity", Entity)
+
+        REGISTER("setting", Setting)
+        REGISTER("currency", Currency)
+        REGISTER("log", Log)
+        REGISTER("support", Support)
+        REGISTER("image_collection", ImageCollection)
+        REGISTER("image", Image)
+        REGISTER("payment_method", PaymentMethod)
+
+        REGISTER("option", POption) //CRUD Not required
+        REGISTER("product", Product)
+        REGISTER("post", Post1)
+        REGISTER("category", PCategory)
+        REGISTER("tag", Tag)
+        REGISTER("shipping_class", PShippingClass)
+        REGISTER("setting_type", SettingType)
+        REGISTER("certified_by", CertifiedBy)
+        REGISTER("policy", Policy)
+        else {
+            return Json::arrayValue;
+        }
     }
-    REGISTER("auth", Auth)
 
-    REGISTER("account_type", AccountType)
-    REGISTER("account", Account)
-    REGISTER("account_heading", AccountHeading)
-    REGISTER("journal_type", JournalType)
-    REGISTER("txn", Txn)
-    REGISTER("priority", Priority)
-
-    REGISTER("node", Node)
-    REGISTER("role", Role)
-    REGISTER("task", Task)
-
-    REGISTER("department_type", DepartmentType)
-    REGISTER("department", Department)
-    REGISTER("casting", Casting)
-    REGISTER("wax_setting", WaxSetting)
-    REGISTER("metal_issue", MetalIssue)
-    REGISTER("MFG_txn", MfgTxn)
-    REGISTER("refining", Refining)
-    REGISTER("m_transfer", MTransfer)
-
-    REGISTER("metal", Metal)
-    REGISTER("purity", Purity)
-    REGISTER("tone", Tone)
-    REGISTER("accessory", Accessory)
-
-    REGISTER("clarity", Clarity)
-    REGISTER("shape", Shape)
-    REGISTER("d_color", DColor)
-    REGISTER("cs_color", CSColor)
-    REGISTER("cs_type", CSType)
-    REGISTER("size", Size) // CRUD not required
-    REGISTER("d_size", DSize)
-    REGISTER("cs_size", CSSize)
-
-    REGISTER("address_type", AddressType)
-    REGISTER("contact_type", ContactType)
-    REGISTER("entity_type", EntityType)
-    REGISTER("entity", Entity)
-
-    REGISTER("setting", Setting)
-    REGISTER("currency", Currency)
-    REGISTER("log", Log)
-    REGISTER("support", Support)
-    REGISTER("image_collection", ImageCollection)
-    REGISTER("image", Image)
-    REGISTER("payment_method", PaymentMethod)
-
-    REGISTER("option", POption) //CRUD Not required
-    REGISTER("product", Product)
-    REGISTER("post", Post1)
-    REGISTER("category", PCategory)
-    REGISTER("tag", Tag)
-    REGISTER("shipping_class", PShippingClass)
-    REGISTER("setting_type", SettingType)
-    REGISTER("certified_by", CertifiedBy)
-    REGISTER("policy", Policy)
-    else {
-        return Json::arrayValue;
-    }
     return Json::arrayValue;
 }
 Json::Value MessageHandle::handleBinaryMessage(const WebSocketConnectionPtr &wsConnPtr, std::string &message)
@@ -167,15 +171,15 @@ Json::Value MessageHandle::handleBinaryMessage(const WebSocketConnectionPtr &wsC
             bool ok = Json::parseFromStream(rbuilder, txt, &event, &errs);
             txn.commit(); //p.handleBinaryEvent creates new transaction.
             if(ok){
-                if constexpr (false){
-                }
-                else if (event[0].asString() == "image") {
-                    Image p{wsConnPtr};
-                    auto res = p.handleBinaryEvent(event, message);
-                    if(!res.isNull()){
-                        return res;
+                 if (event[0].asString()=="legacy"){
+                     if (event[1].asString() == "image") {
+                        Image p{wsConnPtr};
+                        auto res = p.handleBinaryEvent(event, 2, message);
+                        if(!res.isNull()){
+                            return res;
+                        }
                     }
-                }
+                 }
             }
         }
         return Json::nullValue;

@@ -5,8 +5,8 @@ class Image : public BaseService
 {
 public:
     Image(const WebSocketConnectionPtr& wsConnPtr);
-    Json::Value handleEvent(Json::Value event, Json::Value args);
-    Json::Value handleBinaryEvent(Json::Value event, std::string &message);
+    Json::Value handleEvent(Json::Value event, int next, Json::Value args);
+    Json::Value handleBinaryEvent(Json::Value event, int next, std::string &message);
 private:
     void setupTable();
     Json::Value save(Json::Value event, Json::Value args);

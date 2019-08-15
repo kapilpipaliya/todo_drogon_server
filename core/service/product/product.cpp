@@ -189,23 +189,24 @@ void Product::setupTable()
 };
 }
 
-Json::Value Product::handleEvent(Json::Value event, Json::Value args)
+Json::Value Product::handleEvent(Json::Value event, int next, Json::Value args)
 {
-    if(event[1].asString()  == "data"){
+    auto event_cmp = event[next].asString();
+    if(event_cmp  == "data"){
         return allData(event, args);
-    } else if (event[1].asString()  == "header") {
+    } else if (event_cmp  == "header") {
         return headerData(event, args);
-    } else if (event[1].asString()  == "save") {
+    } else if (event_cmp  == "save") {
         return save(event, args);
-    } else if (event[1].asString()  == "del") {
+    } else if (event_cmp  == "del") {
         return del(event, args);
-    } else if (event[1].asString()  == "attachment_data") {
+    } else if (event_cmp  == "attachment_data") {
         return get_product_attachment_data(event, args);
-    } else if (event[1].asString()  == "diamond_price_data") {
+    } else if (event_cmp  == "diamond_price_data") {
         return get_product_diamond_price_data(event, args);
-    } else if (event[1].asString()  == "cs_price_data") {
+    } else if (event_cmp  == "cs_price_data") {
         return get_product_cs_price_data(event, args);
-    } else if (event[1].asString()  == "categorytreedata") {
+    } else if (event_cmp  == "categorytreedata") {
         return get_product_category_tree_data(event, args);
     } else {
         return Json::nullValue;
