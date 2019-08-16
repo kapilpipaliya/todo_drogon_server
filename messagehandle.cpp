@@ -61,8 +61,6 @@
 #include "core/service/setting/setting.h"
 #include "core/service/setting/support.h"
 
-MessageHandle msgHandle; // Global Variable initialise
-
 #define REGISTER(s, T)\
  else if (in[0][1].asString()==s){\
 T p{wsConnPtr};\
@@ -76,8 +74,80 @@ if(!r.isNull())\
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/basic_file_sink.h"
 
-Json::Value MessageHandle::handleTextMessage(const WebSocketConnectionPtr &wsConnPtr, Json::Value in)
+using run_atom = caf::atom_constant<caf::atom("run")>;
+
+MessageHandle::MessageHandle(caf::actor_config &cfg, const WebSocketConnectionPtr &wsConnPtr, std::string &&message, const WebSocketMessageType &type) : caf::blocking_actor(cfg), wsConnPtr(wsConnPtr), message(std::move(message)), type(type)
 {
+    fprintf(stdout, "\nConstructor:\n");
+    fflush(stdout);
+}
+
+MessageHandle::~MessageHandle()
+{
+    fprintf(stdout, "\nDestructor:\n");
+    fflush(stdout);
+}
+void MessageHandle::blocking_run()
+{
+    switch (type) {
+        case WebSocketMessageType::Text: {
+            Json::Value valin;
+            std::stringstream txt;
+            txt << message;
+            Json::CharReaderBuilder rbuilder;
+            rbuilder["collectComments"] = false;
+            std::string errs;
+            bool ok = Json::parseFromStream(rbuilder, txt, &valin, &errs);
+            if(ok){
+                if (valin.isArray()){
+                    fprintf(stdout, "\nJson In: ---- %s\n", valin.toStyledString().c_str());
+                    fflush(stdout);
+
+                    Json::Value out(Json::arrayValue);
+                    for (auto i : valin) {
+                        // printJson(valin);
+                        auto result  = handleTextMessage(i);
+                        for (auto &i : result) {
+                            if(!i.isNull()){
+                                out.append(i);
+                            }
+                        }
+                    }
+                    fprintf(stdout, "%s", out.toStyledString().c_str());
+                    fflush(stdout);
+                    if(!out.empty()){
+                        wsConnPtr->send(out.toStyledString()); // This Sometimes skipped.
+                    }
+                    fprintf(stdout, "\nJson out:\n");
+                    fflush(stdout);
+                }
+            }
+            break;
+        }
+        case WebSocketMessageType::Binary: {
+                 auto result  = handleBinaryMessage(wsConnPtr, message);
+                 if(!result.isNull()){
+                     wsConnPtr->send(result.toStyledString());
+                 }
+            break;
+        }
+        default:
+            break;
+    }
+    fprintf(stdout, "\nI Done:");
+    fflush(stdout);
+}
+
+void MessageHandle::act()
+{
+    blocking_run();
+}
+
+
+Json::Value MessageHandle::handleTextMessage(Json::Value in)
+{
+//    fprintf(stdout, "handle message:   -- %s", in.toStyledString().c_str());
+//    fflush(stdout);
     if (in.type() != Json::ValueType::arrayValue) {
         return Json::arrayValue;
     }

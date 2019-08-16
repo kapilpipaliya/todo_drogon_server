@@ -4,51 +4,15 @@
 #include "core/service/auth/auth.h"
 
 using namespace std::literals;
-
-
-
+EchoWebSocket::EchoWebSocket(): sys(cfg)
+{
+}
 void EchoWebSocket::handleNewMessage(const WebSocketConnectionPtr &wsConnPtr, std::string &&message,
                                    const WebSocketMessageType &type) {
     // fprintf(stdout, "%s\n", message.c_str());
     // fflush(stdout);
-    switch (type) {
-        case WebSocketMessageType::Text: {
-            Json::Value valin;
-            std::stringstream txt;
-            txt << message;
-            Json::CharReaderBuilder rbuilder;
-            rbuilder["collectComments"] = false;
-            std::string errs;
-            bool ok = Json::parseFromStream(rbuilder, txt, &valin, &errs);
-            if(ok){
-                if (valin.isArray()){
-                    Json::Value out(Json::arrayValue);
-                    for (auto i : valin) {
-                        // printJson(valin);
-                        auto result  = msgHandle.handleTextMessage(wsConnPtr, i);
-                        for (auto &i : result) {
-                            if(!i.isNull()){
-                                out.append(i);
-                            }
-                        }
-                    }
-                    if(!out.empty()){
-                        wsConnPtr->send(out.toStyledString());
-                    }
-                }
-            }
-            break;
-        }
-        case WebSocketMessageType::Binary: {
-                 auto result  = msgHandle.handleBinaryMessage(wsConnPtr, message);
-                 if(!result.isNull()){
-                     wsConnPtr->send(result.toStyledString());
-                 }
-            break;
-        }
-        default:
-            break;
-    }
+    caf::scoped_actor self{sys};
+   auto msgHandle = self->spawn<MessageHandle>(wsConnPtr, std::move(message), type);
 }
 void EchoWebSocket::handleNewConnection(const HttpRequestPtr &req, const WebSocketConnectionPtr &wsConnPtr) {
     // save the cookie in contex, because its not available on other handler

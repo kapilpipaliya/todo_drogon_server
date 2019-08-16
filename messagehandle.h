@@ -3,12 +3,25 @@
 #include <json/json.h>
 #include <drogon/WebSocketController.h>
 using namespace drogon;
-class MessageHandle
+
+#include "caf/all.hpp"
+
+class MessageHandle : public caf::blocking_actor
 {
 public:
-    Json::Value handleTextMessage(const WebSocketConnectionPtr &, Json::Value in);
+    MessageHandle(caf:: actor_config& cfg, const WebSocketConnectionPtr &wsConnPtr, std::string &&message,
+                  const WebSocketMessageType &type );
+    ~MessageHandle();
+    Json::Value handleTextMessage(Json::Value in);
     Json::Value handleBinaryMessage(const WebSocketConnectionPtr &, std::string &message);
+    void blocking_run();
 private:
+    const WebSocketConnectionPtr wsConnPtr;
+    Json::Value in;
+    caf:: behavior    run_job; // initial behavior
+    std::string message;
+    const WebSocketMessageType type;
+protected:
+ void act() override;
 };
-extern MessageHandle msgHandle; // global variable
 #endif // MESSAGEHANDLE_H

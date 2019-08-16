@@ -4,10 +4,13 @@
 #include <vector>
 #include "messagehandle.h"
 
+#include "caf/all.hpp"
+
 using namespace drogon;
 
 class EchoWebSocket : public drogon::WebSocketController<EchoWebSocket> {
 public:
+    EchoWebSocket();
     void handleNewMessage(const WebSocketConnectionPtr &,
                                   std::string &&,
                                   const WebSocketMessageType &) override;
@@ -28,5 +31,10 @@ private:
     std::mutex _mapMtx;
 //    var clients = new List<IWebSocketConnection>;
 
+  caf::actor_system_config cfg;
+  caf::actor_system sys;
+
+//  caf::actor_config cfg2;
+//  MessageHandle msgHandle;
 };
 // && - rvalue reference

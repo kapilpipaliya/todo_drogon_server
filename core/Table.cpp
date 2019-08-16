@@ -24,8 +24,8 @@ bool Table::select()
 
     auto q = m_query.buildQuery(true);
     // to print out query:
-    fprintf(stdout, "%s\n", q.c_str());
-    fflush(stdout);
+//    fprintf(stdout, "%s\n", q.c_str());
+//    fflush(stdout);
 
     /* temporary
     if(!executeSQL(q)) {

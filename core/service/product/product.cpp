@@ -1195,6 +1195,8 @@ Json::Value Product::get_product_attachment_data( Json::Value event, Json::Value
                 file.close();
 
                 //std::cout << "the entire file content is in memory";
+                fprintf(stdout, "Binary:   %lu\n",memblock.size());
+                fflush(stdout);
                 wsConnPtr->send(memblock, WebSocketMessageType::Binary); // Note when server not able to send this file, front end crash.
                 //delete[] memblock;
             }

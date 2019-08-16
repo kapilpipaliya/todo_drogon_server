@@ -14,7 +14,7 @@ remove_definitions(USE_MYSQL)
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall ${CMAKE_CXX_STD_FLAGS}")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall ${CMAKE_CXX_STD_FLAGS}")
 
-set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules/)
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules/ /home/kapili3/k/cpp_stuff/actor-framework/cmake/)
 find_package(Boost REQUIRED COMPONENTS filesystem date_time system timer )
 
 #include_directories(/usr/local/include/Urho3D/include /usr/local/include/Urho3D/ThirdParty)
@@ -67,7 +67,7 @@ find_package(fmt REQUIRED)
 #find_package(easyloggingpp REQUIRED)
 find_package(RapidJSON REQUIRED)
 
-#find_package(CAF REQUIRED)
+find_package(CAF COMPONENTS core io REQUIRED)
 #find_package(HighFive 2.0 REQUIRED)
 #https://abseil.io/docs/cpp/quickstart-cmake
 #git clone https://github.com/abseil/abseil-cpp.git
@@ -141,5 +141,5 @@ libpqxx::pqxx_shared
 #TBB::tbb
 #easyloggingpp
 #rapidjson
-
+ ${CAF_LIBRARIES}
 )
