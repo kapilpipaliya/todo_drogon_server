@@ -6,22 +6,22 @@ using namespace drogon;
 
 #include "caf/all.hpp"
 
-class MessageHandle : public caf::blocking_actor
+class MessageHandle : public caf::event_based_actor
 {
 public:
     MessageHandle(caf:: actor_config& cfg, const WebSocketConnectionPtr &wsConnPtr, std::string &&message,
                   const WebSocketMessageType &type );
-    ~MessageHandle();
+    ~MessageHandle() override;
     Json::Value handleTextMessage(Json::Value in);
     Json::Value handleBinaryMessage(const WebSocketConnectionPtr &, std::string &message);
     void blocking_run();
 private:
     const WebSocketConnectionPtr wsConnPtr;
     Json::Value in;
-    caf:: behavior    run_job; // initial behavior
+    caf:: behavior    running_job; // initial behavior
     std::string message;
     const WebSocketMessageType type;
 protected:
- void act() override;
+   caf::behavior make_behavior() override;
 };
 #endif // MESSAGEHANDLE_H

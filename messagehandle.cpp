@@ -1,5 +1,7 @@
 #include "messagehandle.h"
 #include "core/jsonfns.h"
+#include <chrono>
+using std::chrono::seconds;
 
 #include "core/service/auth/auth.h"
 
@@ -76,10 +78,13 @@ if(!r.isNull())\
 
 using run_atom = caf::atom_constant<caf::atom("run")>;
 
-MessageHandle::MessageHandle(caf::actor_config &cfg, const WebSocketConnectionPtr &wsConnPtr, std::string &&message, const WebSocketMessageType &type) : caf::blocking_actor(cfg), wsConnPtr(wsConnPtr), message(std::move(message)), type(type)
+MessageHandle::MessageHandle(caf::actor_config &cfg, const WebSocketConnectionPtr &wsConnPtr, std::string &&message, const WebSocketMessageType &type) : caf::event_based_actor(cfg), wsConnPtr(wsConnPtr), message(std::move(message)), type(type)
 {
-    fprintf(stdout, "\nConstructor:\n");
-    fflush(stdout);
+    running_job.assign(
+      [=, this](run_atom) {
+        blocking_run();
+      }
+    );
 }
 
 MessageHandle::~MessageHandle()
@@ -140,11 +145,19 @@ void MessageHandle::blocking_run()
     fflush(stdout);
 }
 
-void MessageHandle::act()
+caf::behavior MessageHandle::make_behavior()
 {
-    blocking_run();
+    // start runnig
+        send(this, run_atom::value);
+        // also run the job when message arrive for it.
+        return (
+          [=, this](run_atom) {
+            //delayed_send(this,seconds(5), run_atom::value);
+            send(this, run_atom::value);
+            become(running_job);
+          }
+        );
 }
-
 
 Json::Value MessageHandle::handleTextMessage(Json::Value in)
 {
