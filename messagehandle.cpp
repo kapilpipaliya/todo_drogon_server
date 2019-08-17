@@ -98,10 +98,12 @@ void MessageHandle::blocking_run()
             rbuilder["collectComments"] = false;
             std::string errs;
             bool ok = Json::parseFromStream(rbuilder, txt, &valin, &errs);
+//            fprintf(stdout, "\nVery Beginning: ---- %s\n", valin.toStyledString().c_str());
+//            fflush(stdout);
             if(ok){
                 if (valin.isArray()){
-                    fprintf(stdout, "\nJson In: ---- %s\n", valin.toStyledString().c_str());
-                    fflush(stdout);
+//                    fprintf(stdout, "\nJson In: ---- %s\n", valin.toStyledString().c_str());
+//                    fflush(stdout);
 
                     Json::Value out(Json::arrayValue);
                     for (auto i : valin) {
@@ -113,13 +115,13 @@ void MessageHandle::blocking_run()
                             }
                         }
                     }
-                    fprintf(stdout, "%s", out.toStyledString().c_str());
-                    fflush(stdout);
+//                    fprintf(stdout, "%s", out.toStyledString().c_str());
+//                    fflush(stdout);
                     if(!out.empty()){
                         wsConnPtr->send(out.toStyledString()); // This Sometimes skipped.
                     }
-                    fprintf(stdout, "\nJson out:\n");
-                    fflush(stdout);
+//                    fprintf(stdout, "\nJson out:\n");
+//                    fflush(stdout);
                 }
             }
             break;

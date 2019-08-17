@@ -1178,36 +1178,46 @@ Json::Value Product::get_product_attachment_data( Json::Value event, Json::Value
 
     namespace fs = boost::filesystem;
     auto home = fs::path(getenv("HOME"));
-
+    fprintf(stdout, "Binary Requested:");
+    fflush(stdout);
     pqxx::work txn{DD};
     try {
         auto sql = "SELECT name FROM product.post_attachment WHERE id = $1";
         pqxx::result x = txn.exec_params(sql, args.asInt());
-        txn.commit();
+
+        fprintf(stdout, "Binary Requested 001:");
+        fflush(stdout);
         if (x.size() == 1) {
             std::streampos size;
             // http://www.cplusplus.com/doc/tutorial/files/
             // What is the best way to read an entire file into a std::string in C++?
             // https://stackoverflow.com/questions/116038/what-is-the-best-way-to-read-an-entire-file-into-a-stdstring-in-c/116220#116220
             std::ifstream file(home.string() + "/fileuploads/" + x[0][0].c_str(), std::ios::in | std::ios::binary | std::ios::ate);
+            fprintf(stdout, "Binary Requested 002:");
+            fflush(stdout);
             if (file.is_open()) {
                 auto memblock = read_all(file);
                 file.close();
 
                 //std::cout << "the entire file content is in memory";
-                fprintf(stdout, "Binary:   %lu\n",memblock.size());
+                fprintf(stdout, "Binary Request Succed:");
                 fflush(stdout);
                 wsConnPtr->send(memblock, WebSocketMessageType::Binary); // Note when server not able to send this file, front end crash.
                 //delete[] memblock;
             }
         } else {
+            fprintf(stdout, "Binary Request Failed:");
+            fflush(stdout);
             // Fix simpleJsonSaveResult(event, true, "Done");
         }
+        txn.commit();
         return Json::nullValue;
 
     } catch (const std::exception &e) {
         txn.abort();
         std::cerr << e.what() << std::endl;
+        fprintf(stdout, "Binary Request Failed 3:");
+        fflush(stdout);
         //simpleJsonSaveResult(event, false, e.what());
     }
     return Json::Value(Json::nullValue);
@@ -1215,6 +1225,7 @@ Json::Value Product::get_product_attachment_data( Json::Value event, Json::Value
 
 Json::Value Product::get_product_diamond_price_data( Json::Value event, Json::Value args)
 {
+    Json::Value batch;
     Json::Value jresult;
     jresult[0] = event;
 
@@ -1253,7 +1264,8 @@ Json::Value Product::get_product_diamond_price_data( Json::Value event, Json::Va
         }
         jresult[1] = d;
         txn.commit();
-        return jresult;
+        batch[0] = jresult;
+        return batch;
     } catch (const std::exception &e) {
         txn.abort();
         std::cerr << e.what() << std::endl;
@@ -1265,6 +1277,7 @@ Json::Value Product::get_product_diamond_price_data( Json::Value event, Json::Va
 
 Json::Value Product::get_product_cs_price_data( Json::Value event, Json::Value args)
 {
+    Json::Value batch;
     Json::Value jresult;
     jresult[0] = event;
 
@@ -1293,7 +1306,8 @@ Json::Value Product::get_product_cs_price_data( Json::Value event, Json::Value a
         }
         jresult[1] = d;
         txn.commit();
-        return jresult;
+        batch[0] = jresult;
+        return batch;
     } catch (const std::exception &e) {
         txn.abort();
         std::cerr << e.what() << std::endl;
@@ -1305,7 +1319,7 @@ Json::Value Product::get_product_cs_price_data( Json::Value event, Json::Value a
 
 Json::Value Product::get_product_category_tree_data( Json::Value event, Json::Value args)
 {
-    Json::Value ret;
+    Json::Value batch;
     Json::Value jresult;
     jresult[0] = event;
 
@@ -1337,9 +1351,9 @@ select * ,
             d.append(row);
         }
         jresult[1] = d;
-        ret[0] = jresult;
+        batch[0] = jresult;
         txn.commit();
-        return ret;
+        return batch;
     } catch (const std::exception &e) {
         txn.abort();
         std::cerr << e.what() << std::endl;
