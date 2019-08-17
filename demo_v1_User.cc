@@ -1,8 +1,8 @@
 #include "demo_v1_User.h"
-#include <json/json.h>
 #include <pqxx/pqxx>
 #include "core/connection/pdb.h"
 #include <boost/filesystem.hpp>
+#include  "json.hpp"
 using namespace demo::v1;
 void User::download(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback) {
     auto id = req->getParameter("path", "AdminMenu5.png");
@@ -10,8 +10,8 @@ void User::download(const HttpRequestPtr &req, std::function<void(const HttpResp
     auto resp = HttpResponse::newFileResponse(new_path);
     callback(resp);
 }
-void User::download_id(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback) {
-    auto id = req->getParameter("path", "AdminMenu5.png");
+void User::download_id(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback, int id, int version) {
+//    auto id = req->getParameter("path", "default.png"); //?path=
     namespace fs = boost::filesystem;
     auto home = fs::path(getenv("HOME"));
     auto c = req->getCookie("admin");
@@ -26,25 +26,22 @@ void User::download_id(const HttpRequestPtr &req, std::function<void(const HttpR
             resp->addHeader("Cache-Control", "max-age=2592000, public");
             callback(resp);
         } else {
-            Json::Value ret;
-            ret[0] = "404";
-            Json::Value data;
-            data[0] = 404;
-            data[1] = 0;
-            ret[1] = data;
-            auto resp = HttpResponse::newHttpJsonResponse(data);
-            resp->addCookie("power", "DDD");
-            callback(resp);
+            nlohmann:: json j2 = {{"404", {404, 0 } }};
+           auto resp = HttpResponse::newHttpResponse();
+           resp->setBody(j2.dump());
+           callback(resp);
         }
     } catch (const std::exception &e) {
         txn.abort();
         std::cerr << e.what() << std::endl;
-        //simpleJsonSaveResult(event, false, e.what());
+       auto resp = HttpResponse::newHttpResponse();
+       resp->setBody(e.what());
+       callback(resp);
     }
 }
-void User::thumb_id(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback)
+void User::thumb_id(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback, int id, int version)
 {
-    auto id = req->getParameter("path", "AdminMenu5.png");
+    // auto id = req->getParameter("path", "default.png"); //?path=
     namespace fs = boost::filesystem;
     auto home = fs::path(getenv("HOME"));
     auto c = req->getCookie("admin");
@@ -59,19 +56,16 @@ void User::thumb_id(const HttpRequestPtr &req, std::function<void (const HttpRes
             resp->addHeader("Cache-Control", "max-age=2592000, public");
             callback(resp);
         } else {
-            Json::Value ret;
-            ret[0] = "404";
-            Json::Value data;
-            data[0] = 404;
-            data[1] = 0;
-            ret[1] = data;
-            auto resp = HttpResponse::newHttpJsonResponse(data);
-            resp->addCookie("power", "DDD");
-            callback(resp);
+          nlohmann:: json j2 = {{"404", {404, 0 } }};
+         auto resp = HttpResponse::newHttpResponse();
+         resp->setBody(j2.dump());
+         callback(resp);
         }
     } catch (const std::exception &e) {
         txn.abort();
         std::cerr << e.what() << std::endl;
-        //simpleJsonSaveResult(event, false, e.what());
+        auto resp = HttpResponse::newHttpResponse();
+        resp->setBody(e.what());
+        callback(resp);
     }
 }

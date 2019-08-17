@@ -86,7 +86,7 @@ void Product::setupTable()
                 {"Purities", "purity_id_name", "json_agg(distinct purities.name)", "purities", PG_TYPES::PSJSON,
                  true}), // This is to Display on Main Table only.
             sqlb::SelectedColumn({"attachement_id", "attachement_id",
-                                  "json_agg( distinct jsonb_build_array(p_attachments.id, p_attachments.tone_id, 0, p_attachments.main_image))",
+                                  "json_agg( distinct jsonb_build_array(p_attachments.id, p_attachments.tone_id, 0, p_attachments.main_image, version))",
                                   "p_attachments", PG_TYPES::PSJSON, false}),
             sqlb::SelectedColumn({"diamond_size_id", "diamond_size_id",
                                   "json_agg( distinct jsonb_build_array(p_d_size.id, p_d_size.shape_id, p_d_size.color_id, p_d_size.size_id, p_d_size.pcs, p_d_size.setting_type_id, diamond_price.pa))",
@@ -808,7 +808,7 @@ void save_product_Attachments(sqlb::ObjectIdentifier post_attachment_table,
     ReplaceAll2(strSqlPostCategoryInsert, "%2", post_attachment_table.name());
 
     std::string strSqlPostCategoryUpdate = "UPDATE product.post_attachment SET (tone_id, main_image) = ROW($2, $3) WHERE id = $1;";
-    std::string strSqlPostCategoryUpdateAtt = "UPDATE product.post_attachment SET (tone_id, name, size, type, main_image) = ROW($2, $3, $4, $5, $6) WHERE id = $1;";
+    std::string strSqlPostCategoryUpdateAtt = "UPDATE product.post_attachment SET (tone_id, name, size, type, main_image, version) = ROW($2, $3, $4, $5, $6, version + 1) WHERE id = $1;";
 
     std::string strSqlTempImage = "SELECT name, size, type FROM setting.temp_image_id WHERE id = $1";
     std::string strSqlTempImageDel = "DELETE FROM setting.temp_image_id WHERE id = $1";

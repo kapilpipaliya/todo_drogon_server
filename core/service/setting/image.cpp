@@ -27,6 +27,7 @@ void Image::setupTable()
             sqlb::SelectedColumn({"Name", "name", "", "a", PG_TYPES::TEXT, true}),
             sqlb::SelectedColumn({"Size", "size", "", "a", PG_TYPES::INT8, true}),
             sqlb::SelectedColumn({"Type", "type", "", "a", PG_TYPES::TEXT, true}),
+            sqlb::SelectedColumn({"Version", "version", "", "a", PG_TYPES::TEXT, false}),
             //sqlb::SelectedColumn({"Created By", "create_user_id", "", "a", PG_TYPES::INT8, true, 1, 0, false}), sqlb::SelectedColumn({"u1_username", "username", "", "u1", PG_TYPES::TEXT, false, 0, 0, false}),
             //sqlb::SelectedColumn({"Updated By", "update_user_id", "", "a", PG_TYPES::INT8, true, 1, 0, false}), sqlb::SelectedColumn({"u2_username", "username", "", "u2", PG_TYPES::TEXT, false, 0, 0, false}),
             sqlb::SelectedColumn({"Create Time", "inserted_at", "", "a", PG_TYPES::TIMESTAMP, true, 0, 0, false}),
@@ -81,7 +82,7 @@ Json::Value Image::handleBinaryEvent(Json::Value event, int next, std::string &m
     std::string strSqlTempImageDel = "DELETE FROM setting.temp_image_id WHERE id = $1";
 
     if (args["id"].asInt()) {
-        std::string strSql = "update " + t + " set (" + c + ") = ROW(NULLIF($2, 0), $3, $4, $5, $6, $7, $8, $9) where id=$1" ;
+        std::string strSql = "update " + t + " set (" + c + ", version) = ROW(NULLIF($2, 0), $3, $4, $5, $6, $7, $8, $9, version + 1) where id=$1" ;
         pqxx::work txn{DD};
         try {
             auto temp_id = args["temp_id"].asInt();
@@ -92,7 +93,7 @@ Json::Value Image::handleBinaryEvent(Json::Value event, int next, std::string &m
                     txn.exec_params(strSqlTempImageDel, temp_id);
                 }
             } else {
-                txn.exec_params("UPDATE setting.image SET (title, description, url, position) = ROW($2, $3, $4, $5) WHERE id = $1", args["id"].asInt(), args["title"].asString(), args["description"].asString(), args["url"].asString(), args["position"].asInt());
+                txn.exec_params("UPDATE setting.image SET (title, description, url, position, version) = ROW($2, $3, $4, $5, version + 1) WHERE id = $1", args["id"].asInt(), args["title"].asString(), args["description"].asString(), args["url"].asString(), args["position"].asInt());
             }
             txn.commit();
 
