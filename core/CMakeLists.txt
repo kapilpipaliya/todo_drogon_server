@@ -11,8 +11,8 @@ find_package (Jsoncpp REQUIRED)
 #find_package(folly)
 
 set(JEWEL_HDR
-    Table.h
-    condformat.h
+    sql/Table.h
+    sql/condformat.h
 #    data.h
 
 ###    sql/sqlitetypes.h # this file is good and it is in the directory
@@ -30,8 +30,8 @@ set(JEWEL_HDR
 )
 
 set(JEWEL_SRC
-    Table.cpp
-    condformat.cpp
+    sql/Table.cpp
+    sql/condformat.cpp
 #    data.cpp
 
 ###    sql/sqlitetypes.cpp

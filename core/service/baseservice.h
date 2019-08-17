@@ -1,7 +1,7 @@
 #ifndef BASESERVICE_H
 #define BASESERVICE_H
 
-#include "core/Table.h"
+#include "core/sql/Table.h"
 #include <drogon/WebSocketController.h>
 using namespace drogon;
 

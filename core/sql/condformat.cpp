@@ -1,7 +1,7 @@
 #include "condformat.h"
 #include <utility>
 #include <string>
-#include "strfns.h"
+#include "../strfns.h"
 
 CondFormat::CondFormat(const std::string& filter, const std::string& encoding)
     : m_filter(filter)

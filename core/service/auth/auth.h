@@ -2,7 +2,7 @@
 #define AUTH_H
 
 
-#include "core/Table.h"
+#include "core/sql/Table.h"
 #include <json/json.h>
 
 #include <drogon/WebSocketController.h>

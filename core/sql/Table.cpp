@@ -1,4 +1,4 @@
-#include "strfns.h"
+#include "../strfns.h"
 #include "Table.h"
 
 #include <pqxx/pqxx>
