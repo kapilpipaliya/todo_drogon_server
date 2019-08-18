@@ -295,13 +295,6 @@ Json::Value Auth::saveImageMeta( Json::Value event, Json::Value args)
 int generateContext(const HttpRequestPtr &req, const WebSocketConnectionPtr &wsConnPtr, std::string account_type) {
     auto c = req->getCookie(account_type);
     if (c.empty()) {
-        // ask to login
-        Json::Value ret;
-        Json::Value lresult;
-        lresult[0] = "require_login";
-        lresult[1] = Json::arrayValue;
-        ret[0] = lresult;
-        wsConnPtr->send(ret.toStyledString());
         return 0;
     } else {
         auto sqlSession = "SELECT * FROM user1.session where id = $1";

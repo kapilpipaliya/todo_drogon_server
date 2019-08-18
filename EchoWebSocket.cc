@@ -9,8 +9,8 @@ EchoWebSocket::EchoWebSocket(): sys(cfg)
 }
 void EchoWebSocket::handleNewMessage(const WebSocketConnectionPtr &wsConnPtr, std::string &&message,
                                    const WebSocketMessageType &type) {
-    // fprintf(stdout, "%s\n", message.c_str());
-    // fflush(stdout);
+     fprintf(stdout, "%s\n", message.c_str());
+     fflush(stdout);
     caf::scoped_actor self{sys};
    auto msgHandle = self->spawn<MessageHandle>(wsConnPtr, std::move(message), type);
 }

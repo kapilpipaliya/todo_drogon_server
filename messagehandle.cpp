@@ -63,6 +63,8 @@ using std::chrono::seconds;
 #include "core/service/setting/setting.h"
 #include "core/service/setting/support.h"
 
+#include "json.hpp"
+
 #define REGISTER(s, T)\
  else if (in[0][1].asString()==s){\
 T p{wsConnPtr};\
@@ -120,14 +122,23 @@ void MessageHandle::blocking_run()
                             }
                         }
                     }
-//                    fprintf(stdout, "%s", out.toStyledString().c_str());
-//                    fflush(stdout);
+                    // fprintf(stdout, "%s", out.toStyledString().c_str());
+                    // fflush(stdout);
                     if(!out.empty()){
                         wsConnPtr->send(out.toStyledString()); // This Sometimes skipped.
+                    } else {
+                        nlohmann::json j =  "Message cant served: maybe not valid batch: " + message;
+                        wsConnPtr->send(j.dump());
                     }
-//                    fprintf(stdout, "\nJson out:\n");
-//                    fflush(stdout);
+                    // fprintf(stdout, "\nJson out:\n");
+                    // fflush(stdout);
+                } else {
+                     nlohmann::json j =  "Invalid Message only array handled: " + message;
+                    wsConnPtr->send(j.dump());
                 }
+            } else {
+                nlohmann::json j =  "cant parse json reason: " + errs ;
+                wsConnPtr->send(j.dump());
             }
             break;
         }

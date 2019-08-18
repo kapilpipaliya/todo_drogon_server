@@ -14,8 +14,9 @@ public:
     ~MessageHandle() override;
     Json::Value handleTextMessage(Json::Value in);
     Json::Value handleBinaryMessage(const WebSocketConnectionPtr &, std::string &message);
-    void blocking_run();
 private:
+    void blocking_run();
+
     const WebSocketConnectionPtr wsConnPtr;
     Json::Value in;
     caf:: behavior    running_job; // initial behavior

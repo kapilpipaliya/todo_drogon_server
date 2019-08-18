@@ -62,10 +62,10 @@ find_package(OpenSSL REQUIRED)
 find_package(fmt REQUIRED)
 
 #find_package(Poco REQUIRED COMPONENTS Foundation JSON Util XML Zip)
-#find_package(TBB REQUIRED)
+#find_package(TBB REQUIRED) # Intel(R) Threading Building Blocks (Intel TBB)
 #find_package(Angelscript REQUIRED)
 #find_package(easyloggingpp REQUIRED)
-find_package(RapidJSON REQUIRED)
+#find_package(RapidJSON REQUIRED) # no need
 
 find_package(CAF COMPONENTS core io REQUIRED)
 #find_package(HighFive 2.0 REQUIRED)

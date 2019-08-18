@@ -18,6 +18,8 @@ set(JEWEL_HDR
 ###    sql/sqlitetypes.h # this file is good and it is in the directory
     sql/query.h
     sql/objectidentifier.h
+    actor/permission.h
+    actor/validation.h
 #    csvparser.h
 #    sqlitedb.h not needed use mdb.h
 #    settings.h
@@ -33,6 +35,8 @@ set(JEWEL_SRC
     sql/Table.cpp
     sql/condformat.cpp
 #    data.cpp
+actor/permission.cpp
+actor/validation.cpp
 
 ###    sql/sqlitetypes.cpp
     sql/query.cpp
