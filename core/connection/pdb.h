@@ -5,7 +5,7 @@
 using namespace pqxx;
 #include <string>
 inline connection DD("user=postgres dbname=susant");
-
+/*
 enum PG_TYPES {
     BOOL = 16,
     //    ByTea = 17,
@@ -23,7 +23,7 @@ enum PG_TYPES {
     PSJSON = 9999
 };
 
-
+*/
 class P_DB
 {
 

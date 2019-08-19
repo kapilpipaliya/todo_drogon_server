@@ -76,7 +76,7 @@ std::string CondFormat::filterToSqlCondition(const std::string& value, PG_TYPES 
                 switch (column_type) {
                 case PG_TYPES::INT4:
                 case PG_TYPES::INT8:
-                    val = to_string(stof(val,numericp)); // may be risky: https://stackoverflow.com/a/35345427
+                    val = std::to_string(stof(val,numericp)); // may be risky: https://stackoverflow.com/a/35345427
                     break;
                 case PG_TYPES::PSJSON:
                     numeric = false;

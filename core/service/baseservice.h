@@ -3,6 +3,8 @@
 
 #include "core/sql/Table.h"
 #include <drogon/WebSocketController.h>
+#include <pqxx/pqxx>
+#include "core/connection/pdb.h"
 using namespace drogon;
 
 inline std::string ins(std::string t, std::string c, std::string v) { return "INSERT INTO " + t +" (" + c + ") VALUES (" + v + ")"; }

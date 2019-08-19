@@ -1,7 +1,8 @@
 #ifndef CONDFORMAT_H
 #define CONDFORMAT_H
+#include <string>
+#include "query.h"
 
-#include "core/connection/pdb.h"
 // Conditional formatting for given format to table cells based on a specified condition.
 class CondFormat
 {

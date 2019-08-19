@@ -3,8 +3,10 @@
 
 
 #include "core/sql/Table.h"
+#include "core/connection/pdb.h"
 #include <json/json.h>
 
+#include <pqxx/pqxx>
 #include <drogon/WebSocketController.h>
 using namespace drogon;
 

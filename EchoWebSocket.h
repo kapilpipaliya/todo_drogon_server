@@ -8,6 +8,10 @@
 
 using namespace drogon;
 
+using namespace drogon::orm;
+extern DbClientPtr clientPtr;
+
+
 class EchoWebSocket : public drogon::WebSocketController<EchoWebSocket> {
 public:
     EchoWebSocket();
