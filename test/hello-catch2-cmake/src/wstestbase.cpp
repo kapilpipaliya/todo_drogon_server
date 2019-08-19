@@ -3,7 +3,7 @@
 #include <catch2/catch.hpp>
 #include <fmt/format.h>
 
-WSTestBase::WSTestBase() { /*init();*/ }
+WSTestBase::WSTestBase() { /*init();*/ } // should be called after derived class
 WSTestBase::~WSTestBase() {  }
 bool WSTestBase::isOpenSuccess() { return openResult; }
 bool WSTestBase::isTestSuccess() { return testResult; }
@@ -30,6 +30,7 @@ void WSTestBase::init()
     setConnectionClosedHandler();
     connectToServer();
     //ExitAfter5s();
+    //run();
 }
 void WSTestBase::setMessageHandler()
 {

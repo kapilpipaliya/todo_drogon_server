@@ -1,10 +1,17 @@
-#include "login.h"
+#include "gettabledata.h"
 
 #include <catch2/catch.hpp>
 #include  "json.hpp"
+#include <Poco/Format.h>
 using namespace nlohmann;
+using Poco::format;
 
-void LogIn::connectToServer()
+GetTableData::GetTableData(std::string table): table(table)
+{
+
+}
+
+void GetTableData::connectToServer()
 {
     wsPtr->connectToServer(req,
                            [this](ReqResult r,
@@ -14,9 +21,18 @@ void LogIn::connectToServer()
                                {
                                    //
                                    // a JSON value
-                                   json j = R"(
-                                            [[["legacy","auth","admin_login",0],{"email":"kapil.pipaliya@yahoo.com","pass":"3434"}]]
-                                            )"_json;
+                                   auto in = R"(
+                                            [
+                                            [["legacy","auth","admin_login",0],{"email":"kapil.pipaliya@yahoo.com","pass":"3434"}],
+                                            [["legacy","auth","is_admin_auth",0],[[]]],
+                                            [["legacy","%s","header",1000],{}],
+                                            [["legacy","%s","data",1000],[[],[],[0]]]
+                                            ]
+                                            )";
+                                   auto s = format(in, table, table);
+                                    std::cout << s << std::endl;
+                                   auto j = jsonparse(s);
+
                                    wsPtr->getConnection()->send(j.dump());
                                }
                                else
@@ -26,7 +42,7 @@ void LogIn::connectToServer()
                                }
                            });
 }
-void LogIn::setMessageHandler()
+void GetTableData::setMessageHandler()
 {
     wsPtr->setMessageHandler([this](const std::string &message,
                              [[maybe_unused]] const WebSocketClientPtr &wsPtr,
@@ -34,7 +50,7 @@ void LogIn::setMessageHandler()
         if (type == WebSocketMessageType::Text)
         {
             auto j =jsonparse(message);
-            //std::cout << j.dump() << std::endl;
+            std::cout << j.dump() << std::endl;
             // event
             auto e = j[0][0];
             REQUIRE(e[0] == "legacy");
@@ -52,6 +68,29 @@ void LogIn::setMessageHandler()
             REQUIRE(c[3] == 0);
 
             REQUIRE(j[1][1]["admin"].is_number() == true);
+
+            // is_admin_auth == true
+            REQUIRE(j[2][1] == true);
+
+            // header data:
+            auto h = j[3][0];
+            REQUIRE(h[0] == "legacy");
+            REQUIRE(h[1] == table);
+            REQUIRE(h[2] == "header");
+            REQUIRE(h[3] == 1000);
+
+            REQUIRE(j[3][1].size() == 6);
+
+            // table data:
+            auto t = j[4][0];
+            REQUIRE(t[0] == "legacy");
+            REQUIRE(t[1] == table);
+            REQUIRE(t[2] == "data");
+            REQUIRE(t[3] == 1000);
+
+            REQUIRE(j[4][1].size() >= 0);
+
+
             return quit(true);
         } else {
             std::cout << &type;

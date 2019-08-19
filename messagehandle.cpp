@@ -82,6 +82,11 @@ using run_atom = caf::atom_constant<caf::atom("run")>;
 
 MessageHandle::MessageHandle(caf::actor_config &cfg, const WebSocketConnectionPtr &wsConnPtr, std::string &&message, const WebSocketMessageType &type) : caf::event_based_actor(cfg), wsConnPtr(wsConnPtr), message(std::move(message)), type(type)
 {
+    set_error_handler([=]([[maybe_unused]]caf::error& err) {
+        fprintf(stdout, "\nMain Actor Error :\n");
+        fflush(stdout);
+      });
+
     running_job.assign(
       [=, this](run_atom) {
         blocking_run();

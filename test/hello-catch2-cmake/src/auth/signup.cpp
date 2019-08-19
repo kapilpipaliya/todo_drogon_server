@@ -1,10 +1,10 @@
-#include "login.h"
+#include "signup.h"
 
 #include <catch2/catch.hpp>
 #include  "json.hpp"
 using namespace nlohmann;
 
-void LogIn::connectToServer()
+void SignUp::connectToServer()
 {
     wsPtr->connectToServer(req,
                            [this](ReqResult r,
@@ -15,7 +15,7 @@ void LogIn::connectToServer()
                                    //
                                    // a JSON value
                                    json j = R"(
-                                            [[["legacy","auth","admin_login",0],{"email":"kapil.pipaliya@yahoo.com","pass":"3434"}]]
+                                            [[["legacy","auth","admin_SignUp",0],{"email":"kapil.pipaliya@yahoo.com","pass":"3434"}]]
                                             )"_json;
                                    wsPtr->getConnection()->send(j.dump());
                                }
@@ -26,7 +26,7 @@ void LogIn::connectToServer()
                                }
                            });
 }
-void LogIn::setMessageHandler()
+void SignUp::setMessageHandler()
 {
     wsPtr->setMessageHandler([this](const std::string &message,
                              [[maybe_unused]] const WebSocketClientPtr &wsPtr,
@@ -34,12 +34,12 @@ void LogIn::setMessageHandler()
         if (type == WebSocketMessageType::Text)
         {
             auto j =jsonparse(message);
-            //std::cout << j.dump() << std::endl;
+            std::cout << j.dump() << std::endl;
             // event
             auto e = j[0][0];
             REQUIRE(e[0] == "legacy");
             REQUIRE(e[1] == "auth");
-            REQUIRE(e[2] == "admin_login");
+            REQUIRE(e[2] == "admin_SignUp");
             REQUIRE(e[3] == 0);
 
             REQUIRE(j[0][1]["ok"] == true);

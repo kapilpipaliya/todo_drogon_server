@@ -57,9 +57,10 @@ Json::Value Auth::adminLogin( Json::Value event, Json::Value args)
             // ask to save cookie
             Json::Value cookie_result;
             Json::Value cookie_event;
-            cookie_event[0] = "auth";
-            cookie_event[1] = "set_cookie";
-            cookie_event[2] = 0; // must be zero
+            cookie_event[0] = "legacy";
+            cookie_event[1] = "auth";
+            cookie_event[2] = "set_cookie";
+            cookie_event[3] = 0; // must be zero
             cookie_result[0] = cookie_event;
             Json::Value cookie_value;
             //auto s = get_serial_no();
@@ -155,9 +156,10 @@ Json::Value Auth::userLogin( Json::Value event, Json::Value args)
             // ask to save cookie
             Json::Value cookie_result;
             Json::Value cookie_event;
-            cookie_event[0] = "auth";
-            cookie_event[1] = "set_cookie";
-            cookie_event[2] = 0; // must be zero
+            cookie_event[0] = "legacy";
+            cookie_event[1] = "auth";
+            cookie_event[2] = "set_cookie";
+            cookie_event[3] = 0; // must be zero
             cookie_result[0] = cookie_event;
             Json::Value cookie_value;
             //auto s = get_serial_no();

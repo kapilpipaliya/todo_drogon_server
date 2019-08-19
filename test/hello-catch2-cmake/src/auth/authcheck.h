@@ -5,6 +5,7 @@
 
 class AuthCheck: public WSTestBase
 {
+public:
   protected:
   void connectToServer();
   void setMessageHandler();

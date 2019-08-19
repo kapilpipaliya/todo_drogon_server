@@ -14,7 +14,8 @@ void AuthCheck::connectToServer()
                                {
                                    //nlohmann::json j = {{"legacy", "auth", "user_login", 0}}; // srever crash!!
                                    //nlohmann::json j = {{{"legacy", "auth", "user_login", 0}, 1223}}; // 1223  causer execaption on server
-                                   nlohmann::json j = {{{"legacy", "auth", "user_login", 0}, {}}};
+                                   //nlohmann::json j = {{{"legacy", "auth", "user_login", 0}, {}}}; // works
+                                    json j = R"( [[["legacy","auth","is_admin_auth",0],[[]]]] )"_json;
                                    wsPtr->getConnection()->send(j.dump());
                                }
                                else
@@ -38,11 +39,12 @@ void AuthCheck::setMessageHandler()
                // std::cout << j.dump() << std::endl;
                 REQUIRE(j[0][0][0] == "legacy");
                 REQUIRE(j[0][0][1] == "auth");
-                REQUIRE(j[0][0][2] == "user_login");
+                REQUIRE(j[0][0][2] == "is_admin_auth");
                 REQUIRE(j[0][0][3] == 0);
 
-                REQUIRE(j[0][1]["error"] == "Error");
-                REQUIRE(j[0][1]["ok"] == false);
+                REQUIRE(j[0][1] == false);
+                //REQUIRE(j[0][1]["error"] == "Error");
+                //REQUIRE(j[0][1]["ok"] == false);
 
 
             }
