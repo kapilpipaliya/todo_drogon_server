@@ -4,8 +4,16 @@ Project(jdragon)
 set(CMAKE_CXX_STANDARD 20)
 
 if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Debug)
+    set(CMAKE_BUILD_TYPE Release)
 endif()
+
+include(CheckIncludeFileCXX)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+find_package(Drogon CONFIG REQUIRED)
+include_directories(${DROGON_INCLUDE_DIRS})
+#link_libraries(${DROGON_LIBRARIES})
 
 set(THREADS_PREFER_PTHREAD_FLAG TRUE)
 find_package(Threads REQUIRED)
@@ -110,8 +118,6 @@ add_executable(jdragon ${SRC_DIR} ${CTL_SRC} ${FILTER_SRC} ${VIEWSRC} ${PLUGIN_S
   #  libpqxx::pqxx_shared
 target_link_libraries(jdragon
   Threads::Threads
-
-#/usr/local/lib64/Urho3D/libUrho3D.a
   ${CMAKE_DL_LIBS}
   ${_OPTIONAL_LIBS}
   ${JSONCPP_LIBRARY}
@@ -123,13 +129,8 @@ target_link_libraries(jdragon
   libpqxx::pqxx_shared
   libjewelconnection
   libjewelcore2
-  drogon
-  trantor
   Boost::filesystem
-
 #  absl::strings
-
-
 # clang_flags
 # Boost::timer
 #Poco::Foundation
@@ -141,5 +142,6 @@ libpqxx::pqxx_shared
 #TBB::tbb
 #easyloggingpp
 #rapidjson
+${DROGON_LIBRARIES}
  ${CAF_LIBRARIES}
 )

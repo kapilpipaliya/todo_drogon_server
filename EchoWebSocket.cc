@@ -2,6 +2,8 @@
 
 // move this functionality to the class:
 #include "core/service/auth/auth.h"
+using namespace drogon::orm;
+//using namespace drogon_model::postgres;
 
 using namespace std::literals;
 EchoWebSocket::EchoWebSocket(): sys(cfg)
@@ -9,6 +11,9 @@ EchoWebSocket::EchoWebSocket(): sys(cfg)
 }
 void EchoWebSocket::handleNewMessage(const WebSocketConnectionPtr &wsConnPtr, std::string &&message,
                                    const WebSocketMessageType &type) {
+    auto clientPtr = drogon::app().getFastDbClient("sce");
+    fprintf(stdout, "%s\n", clientPtr->connectionInfo().c_str());
+    fflush(stdout);
      fprintf(stdout, "%s\n", message.c_str());
      fflush(stdout);
     caf::scoped_actor self{sys};

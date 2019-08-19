@@ -27,7 +27,7 @@
             "key": ""
         }
     ],
-    /*"db_clients": [
+    "db_clients": [
         {
             //name: Name of the client,'default' by default
             //"name":"",
@@ -40,18 +40,18 @@
             //port: Server port, 5432 by default
             "port": 5432,
             //dbname: Database name
-            "dbname": "test",
+            "dbname": "susant",
             //user: 'postgres' by default
-            "user": "",
+            "user": "postgres",
             //passwd: '' by default
             "passwd": "",
             //is_fast: false by default, if it is true, the client is faster but user can't call
             //any synchronous interface of it.
-            "is_fast": false,
+            "is_fast": true,
             //connection_number: 1 by default, valid only if is_fast is false.
             "connection_number": 1
         }
-    ],*/
+    ],
     "app": {
         //threads_num: The number of IO threads, 1 by default, if the value is set to 0, the number of threads
         //is the number of CPU cores

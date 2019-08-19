@@ -8,8 +8,8 @@
     //port:server port, 5432 by default;
     "port":5432,
     //dbname:Database name;
-    "dbname":"",
-    "user":"",
-    "passwd":"",
+    "dbname":"susant",
+    "user":"postgres",
+    "passwd":"postgres",
     "tables":[]
 }
