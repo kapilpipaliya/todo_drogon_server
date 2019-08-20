@@ -22,7 +22,8 @@ bool Table::select()
 //    fprintf(stdout, "%s\n", q.c_str());
 //    fflush(stdout);
     // crash !! auto clientPtr = drogon::app().getFastDbClient("sce");
-    *clientPtr << q << Mode::NonBlocking >> [this](const Result &r) {
+
+    *clientPtr << q << Mode::Blocking >> [this](const Result &r) {
         result = r;
     } >> [q](const DrogonDbException &e) {
         std::cout << "query: " << q << std::endl;

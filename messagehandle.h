@@ -6,6 +6,22 @@ using namespace drogon;
 
 #include "caf/all.hpp"
 
+class NoCAF {
+public:
+    NoCAF(const WebSocketConnectionPtr &wsConnPtr, std::string &&message,
+                  const WebSocketMessageType &type );
+    //~NoCAF() override;
+    Json::Value handleTextMessage(Json::Value in);
+    Json::Value handleBinaryMessage(const WebSocketConnectionPtr &, std::string &message);
+    void blocking_run();
+private:
+    const WebSocketConnectionPtr wsConnPtr;
+    Json::Value in;
+    std::string message;
+    const WebSocketMessageType type;
+};
+
+
 class MessageHandle : public caf::event_based_actor
 {
 public:

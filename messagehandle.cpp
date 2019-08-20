@@ -293,3 +293,191 @@ Json::Value MessageHandle::handleBinaryMessage(const WebSocketConnectionPtr &wsC
         return jresult;
     }
 }
+
+NoCAF::NoCAF(const WebSocketConnectionPtr &wsConnPtr, std::string &&message, const WebSocketMessageType &type) :
+    wsConnPtr(wsConnPtr), message(std::move(message)), type(type)
+{
+
+}
+
+Json::Value NoCAF::handleTextMessage(Json::Value in)
+{
+    //    fprintf(stdout, "handle message:   -- %s", in.toStyledString().c_str());
+    //    fflush(stdout);
+        if (in.type() != Json::ValueType::arrayValue) {
+            return Json::arrayValue;
+        }
+
+        if (in[0][0].asString()=="legacy"){
+            if constexpr (false){
+            }
+            REGISTER("auth", Auth)
+
+            REGISTER("account_type", AccountType)
+            REGISTER("account", Account)
+            REGISTER("account_heading", AccountHeading)
+            REGISTER("journal_type", JournalType)
+            REGISTER("txn", Txn)
+            REGISTER("priority", Priority)
+
+            REGISTER("node", Node)
+            REGISTER("role", Role)
+            REGISTER("task", Task)
+
+            REGISTER("department_type", DepartmentType)
+            REGISTER("department", Department)
+            REGISTER("casting", Casting)
+            REGISTER("wax_setting", WaxSetting)
+            REGISTER("metal_issue", MetalIssue)
+            REGISTER("MFG_txn", MfgTxn)
+            REGISTER("refining", Refining)
+            REGISTER("m_transfer", MTransfer)
+
+            REGISTER("metal", Metal)
+            REGISTER("purity", Purity)
+            REGISTER("tone", Tone)
+            REGISTER("accessory", Accessory)
+
+            REGISTER("clarity", Clarity)
+            REGISTER("shape", Shape)
+            REGISTER("d_color", DColor)
+            REGISTER("cs_color", CSColor)
+            REGISTER("cs_type", CSType)
+            REGISTER("size", Size) // CRUD not required
+            REGISTER("d_size", DSize)
+            REGISTER("cs_size", CSSize)
+
+            REGISTER("address_type", AddressType)
+            REGISTER("contact_type", ContactType)
+            REGISTER("entity_type", EntityType)
+            REGISTER("entity", Entity)
+
+            REGISTER("setting", Setting)
+            REGISTER("currency", Currency)
+            REGISTER("log", Log)
+            REGISTER("support", Support)
+            REGISTER("image_collection", ImageCollection)
+            REGISTER("image", Image)
+            REGISTER("payment_method", PaymentMethod)
+
+            REGISTER("option", POption) //CRUD Not required
+            REGISTER("product", Product)
+            REGISTER("post", Post1)
+            REGISTER("category", PCategory)
+            REGISTER("tag", Tag)
+            REGISTER("shipping_class", PShippingClass)
+            REGISTER("setting_type", SettingType)
+            REGISTER("certified_by", CertifiedBy)
+            REGISTER("policy", Policy)
+            else {
+                return Json::arrayValue;
+            }
+        }
+
+        return Json::arrayValue;
+}
+
+Json::Value NoCAF::handleBinaryMessage(const WebSocketConnectionPtr &, std::string &message)
+{
+    Json::Value event;
+     pqxx::work txn{DD};
+     try {
+         auto c = getAdminContext(wsConnPtr);
+         auto sqlSession = "SELECT event FROM user1.temp_image where session_id = $1";
+         auto r = txn.exec_params(sqlSession, c);
+
+         if(r.size()!=0){
+
+             // convert this to json
+            //  Json::Value event_json;
+             std::stringstream txt;
+             txt << r[0][0].c_str();
+             Json::CharReaderBuilder rbuilder;
+             rbuilder["collectComments"] = false;
+             std::string errs;
+             bool ok = Json::parseFromStream(rbuilder, txt, &event, &errs);
+             txn.commit(); //p.handleBinaryEvent creates new transaction.
+             if(ok){
+                  if (event[0].asString()=="legacy"){
+                      if (event[1].asString() == "image") {
+                         Image p{wsConnPtr};
+                         auto res = p.handleBinaryEvent(event, 2, message);
+                         if(!res.isNull()){
+                             return res;
+                         }
+                     }
+                  }
+             }
+         }
+         return Json::nullValue;
+     } catch (const std::exception &e) {
+         txn.abort();
+         std::cerr << e.what() << std::endl;
+         Json::Value jresult;
+         jresult[0] = event;
+         jresult[1] = e.what();
+         return jresult;
+     }
+}
+
+void NoCAF::blocking_run()
+{
+    switch (type) {
+        case WebSocketMessageType::Text: {
+            Json::Value valin;
+            std::stringstream txt;
+            txt << message;
+            Json::CharReaderBuilder rbuilder;
+            rbuilder["collectComments"] = false;
+            std::string errs;
+            bool ok = Json::parseFromStream(rbuilder, txt, &valin, &errs);
+//            fprintf(stdout, "\nVery Beginning: ---- %s\n", valin.toStyledString().c_str());
+//            fflush(stdout);
+            if(ok){
+                if (valin.isArray()){
+//                    fprintf(stdout, "\nJson In: ---- %s\n", valin.toStyledString().c_str());
+//                    fflush(stdout);
+
+                    Json::Value out(Json::arrayValue);
+                    for (auto i : valin) {
+                        // printJson(valin);
+                        auto result  = handleTextMessage(i);
+                        for (auto &i : result) {
+                            if(!i.isNull()){
+                                out.append(i);
+                            }
+                        }
+                    }
+                    // fprintf(stdout, "%s", out.toStyledString().c_str());
+                    // fflush(stdout);
+                    if(!out.empty()){
+                        wsConnPtr->send(out.toStyledString()); // This Sometimes skipped.
+                    } else {
+                        nlohmann::json j =  "Message cant served: maybe not valid batch: " + message;
+                        wsConnPtr->send(j.dump());
+                    }
+                    // fprintf(stdout, "\nJson out:\n");
+                    // fflush(stdout);
+                } else {
+                     nlohmann::json j =  "Invalid Message only array handled: " + message;
+                    wsConnPtr->send(j.dump());
+                }
+            } else {
+                nlohmann::json j =  "cant parse json reason: " + errs ;
+                wsConnPtr->send(j.dump());
+            }
+            break;
+        }
+        case WebSocketMessageType::Binary: {
+                 auto result  = handleBinaryMessage(wsConnPtr, message);
+                 if(!result.isNull()){
+                     wsConnPtr->send(result.toStyledString());
+                 }
+            break;
+        }
+        default:
+            break;
+    }
+    fprintf(stdout, "\nI Done:");
+    fflush(stdout);
+}
