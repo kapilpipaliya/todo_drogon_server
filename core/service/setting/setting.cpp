@@ -8,6 +8,22 @@ Setting::Setting(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPt
 
 }
 
+Json::Value Setting::handleEvent(Json::Value event, int next, Json::Value args)
+{
+    auto event_cmp = event[next].asString();
+    if(event_cmp == "data"){
+        return allData(event, args);
+    } else if (event_cmp == "header") {
+        return headerData(event, args);
+    } else if (event_cmp  == "save") {
+        return save(event, args);
+    } else if (event_cmp  == "del") {
+        return del(event, args);
+    } else {
+        return Json::nullValue;
+    }
+}
+
 void Setting::setupTable()
 {
     t.m_query = sqlb::Query(t.m_table);
@@ -30,10 +46,11 @@ void Setting::setupTable()
         };
 }
 
+// where key = $1
 Json::Value Setting::del( Json::Value event, Json::Value args)
 {
     pqxx::work txn{DD};
-    try {\
+    try {
         txn.exec_params("DELETE FROM setting.setting WHERE key = $1", args[0].asString());
         txn.commit();
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;

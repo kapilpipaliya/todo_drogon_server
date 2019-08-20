@@ -38,46 +38,50 @@ void PShippingClass::setupTable()
 
 
 
-    Json::Value PShippingClass::save( Json::Value event, Json::Value args) {
+Json::Value PShippingClass::ins( Json::Value event, Json::Value args) {
+    printJson(args);
+    auto product_table = sqlb::ObjectIdentifier("product", "shipping_class", "s");
+
+    std::string strSql = "INSERT INTO %1.%2 (slug, name, description) values($1, $2, $3)";
+    ReplaceAll2(strSql, "%1", product_table.schema());
+    ReplaceAll2(strSql, "%2", product_table.name());
+
+    pqxx::work txn{DD};
+    try {
+        txn.exec_params(
+            strSql,
+            args["slug"].asString(),
+            args["name"].asString(),
+            args["description"].asString()
+            );
+        txn.commit();
+        Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
+    } catch (const std::exception &e) {
+        txn.abort();
+        std::cerr << e.what() << std::endl;
+        Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
+    }
+}
+Json::Value PShippingClass::upd( Json::Value event, Json::Value args) {
     printJson(args);
     auto product_table = sqlb::ObjectIdentifier("product", "shipping_class", "s");
 
     if (args["id"].asInt()) {
         std::string strSql =
-            "update %1.%2 set "
-            "(slug, name, description)"
-            " = ROW($2, $3, $4) where id=$1";
+                "update %1.%2 set "
+                "(slug, name, description)"
+                " = ROW($2, $3, $4) where id=$1";
         ReplaceAll2(strSql, "%1", product_table.schema());
         ReplaceAll2(strSql, "%2", product_table.name());
 
         pqxx::work txn{DD};
         try {
             txn.exec_params(strSql,
-                            args["id"].asInt(),
-                            args["slug"].asString(),
-                            args["name"].asString(),
-                            args["description"].asString()
-                            );
-            txn.commit();
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
-        } catch (const std::exception &e) {
-            txn.abort();
-            std::cerr << e.what() << std::endl;
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
-        }
-    } else {
-        std::string strSql = "INSERT INTO %1.%2 (slug, name, description) values($1, $2, $3)";
-        ReplaceAll2(strSql, "%1", product_table.schema());
-        ReplaceAll2(strSql, "%2", product_table.name());
-
-        pqxx::work txn{DD};
-        try {
-            txn.exec_params(
-                strSql,
-                args["slug"].asString(),
-                args["name"].asString(),
-                args["description"].asString()
-                );
+                            args["id"].asInt64(),
+                    args["slug"].asString(),
+                    args["name"].asString(),
+                    args["description"].asString()
+                    );
             txn.commit();
             Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {

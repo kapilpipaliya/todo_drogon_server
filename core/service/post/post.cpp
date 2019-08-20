@@ -33,71 +33,74 @@ void Post1::setupTable()
 }
 
 
-    Json::Value Post1::save( Json::Value event, Json::Value args) {
+Json::Value Post1::ins( Json::Value event, Json::Value args) {
+    auto post_table = sqlb::ObjectIdentifier("post", "post", "p");
+
+    std::string strSqlPost =
+        "INSERT INTO %1.%2 "
+        "(comment_status, menu_order, excerpt, content, title, name, password, status, date, type, visibility)"
+        " VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)"
+        "RETURNING id";
+    ReplaceAll2(strSqlPost, "%1", post_table.schema());
+    ReplaceAll2(strSqlPost, "%2", post_table.name());
+
+    pqxx::work txn{DD};
+    try {
+        pqxx::result x = txn.exec_params(
+            strSqlPost,
+            args["comment_status"].asBool(),
+            args["menu_order"].asInt(),
+            args["excerpt"].asString(),
+            args["content"].asString(),
+            args["title"].asString(),
+            args["name"].asString(),
+            args["password"].asString(),
+            args["status"].asString(),
+            args["date"].asString(),
+            args["type"].asString(),
+            args["visibility"].asString()
+            );
+        auto post_id = x[0]["id"].as<int>();
+
+        //product_tags_process(tags_table, post_tag_table, in, txn, post_id);
+        //save_product_categories(post_category_table, in, txn, post_id);
+
+        txn.commit();
+        Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
+    } catch (const std::exception &e) {
+        txn.abort();
+        std::cerr << e.what() << std::endl;
+        Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
+    }
+}
+Json::Value Post1::upd( Json::Value event, Json::Value args) {
     auto post_table = sqlb::ObjectIdentifier("post", "post", "p");
 
     if (args["id"].asInt()) {
         std::string strSqlPost =
-            "update %1.%2 set "
-            "(comment_status, menu_order, excerpt, content, title, name, password, status, date, type, visibility)"
-            " = ROW($2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) where id=$1";
+                "update %1.%2 set "
+                "(comment_status, menu_order, excerpt, content, title, name, password, status, date, type, visibility)"
+                " = ROW($2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) where id=$1";
         ReplaceAll2(strSqlPost, "%1", post_table.schema());
         ReplaceAll2(strSqlPost, "%2", post_table.name());
 
         pqxx::work txn{DD};
         try {
             txn.exec_params(strSqlPost,
-                            args["id"].asInt(),
-                            args["comment_status"].asBool(),
-                            args["menu_order"].asInt(),
-                            args["excerpt"].asString(),
-                            args["content"].asString(),
-                            args["title"].asString(),
-                            args["name"].asString(),
-                            args["password"].asString(),
-                            args["status"].asString(),
-                            args["date"].asString(),
-                            args["type"].asString(),
-                            args["visibility"].asString()
-                            );
+                            args["id"].asInt64(),
+                    args["comment_status"].asBool(),
+                    args["menu_order"].asInt(),
+                    args["excerpt"].asString(),
+                    args["content"].asString(),
+                    args["title"].asString(),
+                    args["name"].asString(),
+                    args["password"].asString(),
+                    args["status"].asString(),
+                    args["date"].asString(),
+                    args["type"].asString(),
+                    args["visibility"].asString()
+                    );
             auto post_id = args["id"].asInt();
-
-            //product_tags_process(tags_table, post_tag_table, in, txn, post_id);
-            //save_product_categories(post_category_table, in, txn, post_id);
-
-            txn.commit();
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
-        } catch (const std::exception &e) {
-            txn.abort();
-            std::cerr << e.what() << std::endl;
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
-        }
-    } else {
-        std::string strSqlPost =
-            "INSERT INTO %1.%2 "
-            "(comment_status, menu_order, excerpt, content, title, name, password, status, date, type, visibility)"
-            " VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)"
-            "RETURNING id";
-        ReplaceAll2(strSqlPost, "%1", post_table.schema());
-        ReplaceAll2(strSqlPost, "%2", post_table.name());
-
-        pqxx::work txn{DD};
-        try {
-            pqxx::result x = txn.exec_params(
-                strSqlPost,
-                args["comment_status"].asBool(),
-                args["menu_order"].asInt(),
-                args["excerpt"].asString(),
-                args["content"].asString(),
-                args["title"].asString(),
-                args["name"].asString(),
-                args["password"].asString(),
-                args["status"].asString(),
-                args["date"].asString(),
-                args["type"].asString(),
-                args["visibility"].asString()
-                );
-            auto post_id = x[0]["id"].as<int>();
 
             //product_tags_process(tags_table, post_tag_table, in, txn, post_id);
             //save_product_categories(post_category_table, in, txn, post_id);

@@ -196,8 +196,10 @@ Json::Value Product::handleEvent(Json::Value event, int next, Json::Value args)
         return allData(event, args);
     } else if (event_cmp  == "header") {
         return headerData(event, args);
-    } else if (event_cmp  == "save") {
-        return save(event, args);
+    } else if (event_cmp  == "ins") {
+        return ins(event, args);
+    } else if (event_cmp  == "upd") {
+        return upd(event, args);
     } else if (event_cmp  == "del") {
         return del(event, args);
     } else if (event_cmp  == "attachment_data") {
@@ -417,14 +419,14 @@ void save_product_clarities(sqlb::ObjectIdentifier post_clarity_table,
 }
 
 void save_purity_tone_(Json::Value &args, pqxx::work &txn, int post_id, int purity_id) {
-    std::string strSqlPostCategories = sel("product.purity_tone", "post_id, purity_id, tone_id",
+    std::string strSqlPostCategories = sel_("product.purity_tone", "post_id, purity_id, tone_id",
                                            "where post_id = $1 and purity_id = $2");
-    std::string strSqlPostCategorySimpleFind = sel("product.purity_tone", "post_id, purity_id, tone_id, weight, price, ismain",
+    std::string strSqlPostCategorySimpleFind = sel_("product.purity_tone", "post_id, purity_id, tone_id, weight, price, ismain",
                                                    "where post_id = $1 and purity_id = $2 and tone_id = $3");
-    std::string strSqlPostCategoryDel = dele("product.purity_tone",
+    std::string strSqlPostCategoryDel = dele_("product.purity_tone",
                                              "where post_id = $1 and purity_id = $2 and tone_id = $3");
-    std::string strSqlPostCategoryInsert = ins("product.purity_tone", "post_id, purity_id, tone_id, weight, price, ismain", "$1, $2, $3, $4, $5, $6");
-    std::string strSqlPostCategoryUpdateAtt = upd("product.purity_tone", "weight, price, ismain", "$4, $5, $6", "where  post_id = $1 and purity_id = $2 and tone_id = $3");
+    std::string strSqlPostCategoryInsert = ins_("product.purity_tone", "post_id, purity_id, tone_id, weight, price, ismain", "$1, $2, $3, $4, $5, $6");
+    std::string strSqlPostCategoryUpdateAtt = upd_("product.purity_tone", "weight, price, ismain", "$4, $5, $6", "where  post_id = $1 and purity_id = $2 and tone_id = $3");
 
     struct PurityTone {
         int post_id;
@@ -485,7 +487,7 @@ void save_product_purities(sqlb::ObjectIdentifier post_purity_table,
     ReplaceAll2(strSqlPostCategoryInsert, "%1", post_purity_table.schema());
     ReplaceAll2(strSqlPostCategoryInsert, "%2", post_purity_table.name());
 
-    auto strSqlPostCategoryUpdateAtt = upd("product.post_purity", "ismain", "$3", "where post_id = $1 and purity_id = $2");
+    auto strSqlPostCategoryUpdateAtt = upd_("product.post_purity", "ismain", "$3", "where post_id = $1 and purity_id = $2");
 
     struct PostPurity {
         int purity_id;
@@ -871,7 +873,103 @@ void save_product_Attachments(sqlb::ObjectIdentifier post_attachment_table,
     }
 }
 
-Json::Value Product::save( Json::Value event, Json::Value args) {
+Json::Value Product::ins( Json::Value event, Json::Value args) {
+    printJson(args);
+    auto product_table = sqlb::ObjectIdentifier("product", "product", "p");
+    auto post_table = sqlb::ObjectIdentifier("post", "post", "p");
+    auto tags_table = sqlb::ObjectIdentifier("post", "tag", "t");
+    auto post_tag_table = sqlb::ObjectIdentifier("post", "post_tag", "pt");
+    auto post_category_table = sqlb::ObjectIdentifier("product", "post_category", "pt");
+    auto post_tone_table = sqlb::ObjectIdentifier("product", "post_tone", "p_tones");
+    auto post_clarity_table = sqlb::ObjectIdentifier("product", "post_clarity", "p_clarity");
+    auto post_purity_table = sqlb::ObjectIdentifier("product", "post_purity", "p_purities");
+    auto post_attachment_table = sqlb::ObjectIdentifier("product", "post_attachment", "p_attachments");
+    auto post_diamond_sizes_table = sqlb::ObjectIdentifier("product", "post_diamond_size", "post_diamond_sizes");
+    auto post_cs_total_table = sqlb::ObjectIdentifier("product", "post_cs_total", "post_cs_total");
+    auto post_certified_by = sqlb::ObjectIdentifier("product", "post_certified_by", "p_certified_by");
+
+    std::string strSqlPost =
+        "INSERT INTO %1.%2 "
+        "(comment_status, menu_order, excerpt, content, title, name, password, status, date, type, visibility)"
+        " VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)"
+        "RETURNING id";
+    ReplaceAll2(strSqlPost, "%1", post_table.schema());
+    ReplaceAll2(strSqlPost, "%2", post_table.name());
+
+    std::string strSqlProduct = "INSERT INTO %1.%2 "
+                                "(post_id, sku, min_price, max_price, weight, length, width, height, manage_stock, featured, stock_quantity, shipping_class_id, catalog_visibility, product_type, backorders, stock_status, virtual, downloadable, purchase_note, low_stock_amount, sold_individually, making_charges, discount_per, volume, purity_id, tone_id)"
+                                " VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, NULLIF($12, 0), $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26)";
+    ReplaceAll2(strSqlProduct, "%1", product_table.schema());
+    ReplaceAll2(strSqlProduct, "%2", product_table.name());
+
+
+    pqxx::work txn{DD};
+    try {
+        pqxx::result x = txn.exec_params(
+            strSqlPost,
+            args["comment_status"].asBool(),
+            args["menu_order"].asInt(),
+            args["excerpt"].asString(),
+            args["content"].asString(),
+            args["title"].asString(),
+            args["name"].asString(),
+            args["password"].asString(),
+            args["status"].asString(),
+            args["date"].asString(),
+            args["type"].asString(),
+            args["visibility"].asString()
+            );
+        auto post_id = x[0]["id"].as<int>();
+
+        txn.exec_params(
+            strSqlProduct,
+            post_id,
+            args["p_sku"].asString(),
+            args["p_min_price"].asFloat(),
+            args["p_max_price"].asFloat(),
+            args["p_weight"].asFloat(),
+            args["p_length"].asFloat(),
+            args["p_width"].asFloat(),
+            args["p_height"].asFloat(),
+            args["p_manage_stock"].asBool(),
+            args["p_featured"].asBool(),
+            args["p_stock_quantity"].asFloat(),
+            args["p_shipping_class_id"].asInt(),
+            args["p_catalog_visibility"].asString(),
+            args["p_product_type"].asString(),
+            args["p_backorders"].asString(),
+            args["p_stock_status"].asString(),
+            args["p_virtual"].asBool(),
+            args["p_downloadable"].asBool(),
+            args["p_purchase_note"].asString(),
+            args["p_low_stock_amount"].asInt(),
+            args["p_sold_individually"].asBool(),
+            args["p_making_charges"].asDouble(),
+            args["p_discount_per"].asDouble(),
+            args["p_volume"].asDouble(),
+            args["p_purity_id"].asInt(),
+            args["p_tone_id"].asInt()
+            );
+        product_tags_process(tags_table, post_tag_table, args, txn, post_id);
+        save_product_categories(post_category_table, args, txn, post_id);
+        save_product_tones(args, txn, post_id);
+        save_product_clarities(post_clarity_table, args, txn, post_id);
+        save_product_purities(post_purity_table, args, txn, post_id);
+        save_product_Attachments(post_attachment_table, args, txn, post_id);
+        save_product_diamond_sizes(post_diamond_sizes_table, args, txn, post_id);
+        save_product_cs_sizes(post_diamond_sizes_table, args, txn, post_id);
+        save_product_cs_total(post_cs_total_table, args, txn, post_id);
+        save_product_certified_by(args, txn, post_id);
+        save_product_policy(args, txn, post_id);
+        txn.commit();
+        Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
+    } catch (const std::exception &e) {
+        txn.abort();
+        std::cerr << e.what() << std::endl;
+        Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
+    }
+}
+Json::Value Product::upd( Json::Value event, Json::Value args) {
     printJson(args);
     auto product_table = sqlb::ObjectIdentifier("product", "product", "p");
     auto post_table = sqlb::ObjectIdentifier("post", "post", "p");
@@ -888,65 +986,65 @@ Json::Value Product::save( Json::Value event, Json::Value args) {
 
     if (args["id"].asInt()) {
         std::string strSqlPost =
-            "update %1.%2 set "
-            "(comment_status, menu_order, excerpt, content, title, name, password, status, date, type, visibility)"
-            " = ROW($2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) where id=$1";
+                "update %1.%2 set "
+                "(comment_status, menu_order, excerpt, content, title, name, password, status, date, type, visibility)"
+                " = ROW($2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) where id=$1";
         ReplaceAll2(strSqlPost, "%1", post_table.schema());
         ReplaceAll2(strSqlPost, "%2", post_table.name());
 
         std::string strSqlProduct =
-            "update %1.%2 set "
-            "(post_id, sku, min_price, max_price, weight, length, width, height, manage_stock, featured, stock_quantity, shipping_class_id, catalog_visibility, product_type, backorders, stock_status, virtual, downloadable, purchase_note, low_stock_amount, sold_individually, making_charges, discount_per, volume, purity_id, tone_id)"
-            " = ROW($2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, NULLIF($13, 0), $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27) where id=$1";
+                "update %1.%2 set "
+                "(post_id, sku, min_price, max_price, weight, length, width, height, manage_stock, featured, stock_quantity, shipping_class_id, catalog_visibility, product_type, backorders, stock_status, virtual, downloadable, purchase_note, low_stock_amount, sold_individually, making_charges, discount_per, volume, purity_id, tone_id)"
+                " = ROW($2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, NULLIF($13, 0), $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27) where id=$1";
         ReplaceAll2(strSqlProduct, "%1", product_table.schema());
         ReplaceAll2(strSqlProduct, "%2", product_table.name());
 
         pqxx::work txn{DD};
         try {
             txn.exec_params(strSqlPost,
-                            args["id"].asInt(),
-                            args["comment_status"].asBool(),
-                            args["menu_order"].asInt(),
-                            args["excerpt"].asString(),
-                            args["content"].asString(),
-                            args["title"].asString(),
-                            args["name"].asString(),
-                            args["password"].asString(),
-                            args["status"].asString(),
-                            args["date"].asString(),
-                            args["type"].asString(),
-                            args["visibility"].asString()
-                            );
+                            args["id"].asInt64(),
+                    args["comment_status"].asBool(),
+                    args["menu_order"].asInt(),
+                    args["excerpt"].asString(),
+                    args["content"].asString(),
+                    args["title"].asString(),
+                    args["name"].asString(),
+                    args["password"].asString(),
+                    args["status"].asString(),
+                    args["date"].asString(),
+                    args["type"].asString(),
+                    args["visibility"].asString()
+                    );
             auto post_id = args["id"].asInt();
             txn.exec_params(strSqlProduct,
                             args["p_id"].asInt(),
-                            post_id,
-                            args["p_sku"].asString(),
-                            args["p_min_price"].asFloat(),
-                            args["p_max_price"].asFloat(),
-                            args["p_weight"].asFloat(),
-                            args["p_length"].asFloat(),
-                            args["p_width"].asFloat(),
-                            args["p_height"].asFloat(),
-                            args["p_manage_stock"].asBool(),
-                            args["p_featured"].asBool(),
-                            args["p_stock_quantity"].asFloat(),
-                            args["p_shipping_class_id"].asInt(),
-                            args["p_catalog_visibility"].asString(),
-                            args["p_product_type"].asString(),
-                            args["p_backorders"].asString(),
-                            args["p_stock_status"].asString(),
-                            args["p_virtual"].asBool(),
-                            args["p_downloadable"].asBool(),
-                            args["p_purchase_note"].asString(),
-                            args["p_low_stock_amount"].asInt(),
-                            args["p_sold_individually"].asBool(),
-                            args["p_making_charges"].asDouble(),
-                            args["p_discount_per"].asDouble(),
-                            args["p_volume"].asDouble(),
-                            args["p_purity_id"].asInt(),
-                            args["p_tone_id"].asInt()
-                            );
+                    post_id,
+                    args["p_sku"].asString(),
+                    args["p_min_price"].asFloat(),
+                    args["p_max_price"].asFloat(),
+                    args["p_weight"].asFloat(),
+                    args["p_length"].asFloat(),
+                    args["p_width"].asFloat(),
+                    args["p_height"].asFloat(),
+                    args["p_manage_stock"].asBool(),
+                    args["p_featured"].asBool(),
+                    args["p_stock_quantity"].asFloat(),
+                    args["p_shipping_class_id"].asInt(),
+                    args["p_catalog_visibility"].asString(),
+                    args["p_product_type"].asString(),
+                    args["p_backorders"].asString(),
+                    args["p_stock_status"].asString(),
+                    args["p_virtual"].asBool(),
+                    args["p_downloadable"].asBool(),
+                    args["p_purchase_note"].asString(),
+                    args["p_low_stock_amount"].asInt(),
+                    args["p_sold_individually"].asBool(),
+                    args["p_making_charges"].asDouble(),
+                    args["p_discount_per"].asDouble(),
+                    args["p_volume"].asDouble(),
+                    args["p_purity_id"].asInt(),
+                    args["p_tone_id"].asInt()
+                    );
 
             product_tags_process(tags_table, post_tag_table, args, txn, post_id);
             save_product_categories(post_category_table, args, txn, post_id);
@@ -960,87 +1058,6 @@ Json::Value Product::save( Json::Value event, Json::Value args) {
             save_product_certified_by(args, txn, post_id);
             save_product_policy(args, txn, post_id);
 
-            txn.commit();
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
-        } catch (const std::exception &e) {
-            txn.abort();
-            std::cerr << e.what() << std::endl;
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
-        }
-    } else {
-        std::string strSqlPost =
-            "INSERT INTO %1.%2 "
-            "(comment_status, menu_order, excerpt, content, title, name, password, status, date, type, visibility)"
-            " VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)"
-            "RETURNING id";
-        ReplaceAll2(strSqlPost, "%1", post_table.schema());
-        ReplaceAll2(strSqlPost, "%2", post_table.name());
-
-        std::string strSqlProduct = "INSERT INTO %1.%2 "
-                                    "(post_id, sku, min_price, max_price, weight, length, width, height, manage_stock, featured, stock_quantity, shipping_class_id, catalog_visibility, product_type, backorders, stock_status, virtual, downloadable, purchase_note, low_stock_amount, sold_individually, making_charges, discount_per, volume, purity_id, tone_id)"
-                                    " VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, NULLIF($12, 0), $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26)";
-        ReplaceAll2(strSqlProduct, "%1", product_table.schema());
-        ReplaceAll2(strSqlProduct, "%2", product_table.name());
-
-
-        pqxx::work txn{DD};
-        try {
-            pqxx::result x = txn.exec_params(
-                strSqlPost,
-                args["comment_status"].asBool(),
-                args["menu_order"].asInt(),
-                args["excerpt"].asString(),
-                args["content"].asString(),
-                args["title"].asString(),
-                args["name"].asString(),
-                args["password"].asString(),
-                args["status"].asString(),
-                args["date"].asString(),
-                args["type"].asString(),
-                args["visibility"].asString()
-                );
-            auto post_id = x[0]["id"].as<int>();
-
-            txn.exec_params(
-                strSqlProduct,
-                post_id,
-                args["p_sku"].asString(),
-                args["p_min_price"].asFloat(),
-                args["p_max_price"].asFloat(),
-                args["p_weight"].asFloat(),
-                args["p_length"].asFloat(),
-                args["p_width"].asFloat(),
-                args["p_height"].asFloat(),
-                args["p_manage_stock"].asBool(),
-                args["p_featured"].asBool(),
-                args["p_stock_quantity"].asFloat(),
-                args["p_shipping_class_id"].asInt(),
-                args["p_catalog_visibility"].asString(),
-                args["p_product_type"].asString(),
-                args["p_backorders"].asString(),
-                args["p_stock_status"].asString(),
-                args["p_virtual"].asBool(),
-                args["p_downloadable"].asBool(),
-                args["p_purchase_note"].asString(),
-                args["p_low_stock_amount"].asInt(),
-                args["p_sold_individually"].asBool(),
-                args["p_making_charges"].asDouble(),
-                args["p_discount_per"].asDouble(),
-                args["p_volume"].asDouble(),
-                args["p_purity_id"].asInt(),
-                args["p_tone_id"].asInt()
-                );
-            product_tags_process(tags_table, post_tag_table, args, txn, post_id);
-            save_product_categories(post_category_table, args, txn, post_id);
-            save_product_tones(args, txn, post_id);
-            save_product_clarities(post_clarity_table, args, txn, post_id);
-            save_product_purities(post_purity_table, args, txn, post_id);
-            save_product_Attachments(post_attachment_table, args, txn, post_id);
-            save_product_diamond_sizes(post_diamond_sizes_table, args, txn, post_id);
-            save_product_cs_sizes(post_diamond_sizes_table, args, txn, post_id);
-            save_product_cs_total(post_cs_total_table, args, txn, post_id);
-            save_product_certified_by(args, txn, post_id);
-            save_product_policy(args, txn, post_id);
             txn.commit();
             Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
@@ -1119,7 +1136,7 @@ Json::Value save_category( Json::Value event, Json::Value args) {
         pqxx::work txn{DD};
         try {
             txn.exec_params(strSql,
-                            args["id"].asInt(),
+                            args["id"].asInt64(),
                             args["slug"].asString(),
                             args["name"].asString(),
                             args["description"].asString(),

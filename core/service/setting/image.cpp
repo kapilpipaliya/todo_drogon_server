@@ -52,8 +52,10 @@ Json::Value Image::handleEvent(Json::Value event, int next, Json::Value args)
         return allData(event, args);
     } else if (event_cmp  == "header") {
         return headerData(event, args);
-    } else if (event_cmp  == "save") {
-        return save(event, args);
+    } else if (event_cmp  == "ins") {
+        return ins(event, args);
+    } else if (event_cmp  == "upd") {
+        return upd(event, args);
     } else if (event_cmp  == "del") {
         return del(event, args);
     } else if (event_cmp  == "thumb_data") {
@@ -72,9 +74,38 @@ Json::Value Image::handleBinaryEvent(Json::Value event, int next, std::string &m
     }
 }
 
-    // this is normal images..
-    Json::Value Image::save( Json::Value event, Json::Value args) {
-    printJson(args);
+// this is normal images..
+Json::Value Image::ins( Json::Value event, Json::Value args) {
+    auto metal_purity_table = sqlb::ObjectIdentifier("setting", "image", "c");
+    std::string t = "setting.image";
+    std::string c = "image_collection_id, name, size, type, title, description, url, position";
+    std::string strSqlTempImage = "SELECT name, size, type FROM setting.temp_image_id WHERE id = $1";
+    std::string strSqlTempImageDel = "DELETE FROM setting.temp_image_id WHERE id = $1";
+
+    std::string strSql = "INSERT INTO " + t + " (" + c + ") values(NULLIF($1,0), $2, $3, $4, $5, $6, $7, $8)";
+    pqxx::work txn{DD};
+    try {
+        auto temp_id = args["temp_id"].asInt();
+        if (temp_id != 0) {
+            pqxx::result z = txn.exec_params(strSqlTempImage, temp_id);
+            if (z.size() == 1) {
+                txn.exec_params(strSql, args["image_collection_id"].asInt(), z[0][0].c_str(), z[0][1].as<int>(),z[0][2].c_str(), args["title"].asString(), args["description"].asString(), args["url"].asString(), args["position"].asInt());
+                txn.exec_params(strSqlTempImageDel, temp_id);
+            }
+        } else {
+            Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, "Please Upload Image"); return ret;
+        }
+
+        txn.commit();
+        Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
+    } catch (const std::exception &e) {
+        txn.abort();
+        std::cerr << e.what() << std::endl;
+        Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
+    }
+}
+// this is normal images..
+Json::Value Image::upd( Json::Value event, Json::Value args) {
     auto metal_purity_table = sqlb::ObjectIdentifier("setting", "image", "c");
     std::string t = "setting.image";
     std::string c = "image_collection_id, name, size, type, title, description, url, position";
@@ -89,36 +120,14 @@ Json::Value Image::handleBinaryEvent(Json::Value event, int next, std::string &m
             if (temp_id != 0) {
                 pqxx::result z = txn.exec_params(strSqlTempImage, temp_id);
                 if (z.size() == 1) {
-                    txn.exec_params(strSql, args["id"].asInt(), args["image_collection_id"].asInt(), z[0][0].c_str(), z[0][1].as<int>(),z[0][2].c_str(), args["title"].asString(), args["description"].asString(), args["url"].asString(), args["position"].asInt());
+                    txn.exec_params(strSql, args["id"].asInt64(), args["image_collection_id"].asInt(), z[0][0].c_str(), z[0][1].as<int>(),z[0][2].c_str(), args["title"].asString(), args["description"].asString(), args["url"].asString(), args["position"].asInt());
                     txn.exec_params(strSqlTempImageDel, temp_id);
                 }
             } else {
-                txn.exec_params("UPDATE setting.image SET (title, description, url, position, version) = ROW($2, $3, $4, $5, version + 1) WHERE id = $1", args["id"].asInt(), args["title"].asString(), args["description"].asString(), args["url"].asString(), args["position"].asInt());
+                txn.exec_params("UPDATE setting.image SET (title, description, url, position, version) = ROW($2, $3, $4, $5, version + 1) WHERE id = $1", args["id"].asInt64(), args["title"].asString(), args["description"].asString(), args["url"].asString(), args["position"].asInt());
             }
             txn.commit();
 
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
-        } catch (const std::exception &e) {
-            txn.abort();
-            std::cerr << e.what() << std::endl;
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
-        }
-    } else {
-        std::string strSql = "INSERT INTO " + t + " (" + c + ") values(NULLIF($1,0), $2, $3, $4, $5, $6, $7, $8)";
-        pqxx::work txn{DD};
-        try {
-            auto temp_id = args["temp_id"].asInt();
-            if (temp_id != 0) {
-                pqxx::result z = txn.exec_params(strSqlTempImage, temp_id);
-                if (z.size() == 1) {
-                    txn.exec_params(strSql, args["image_collection_id"].asInt(), z[0][0].c_str(), z[0][1].as<int>(),z[0][2].c_str(), args["title"].asString(), args["description"].asString(), args["url"].asString(), args["position"].asInt());
-                    txn.exec_params(strSqlTempImageDel, temp_id);
-                }
-            } else {
-                Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, "Please Upload Image"); return ret;
-            }
-
-            txn.commit();
             Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
             txn.abort();
@@ -181,11 +190,11 @@ Json::Value Image::thumb_data( Json::Value event, Json::Value args)
 Json::Value Image::save_setting_attachment(Json::Value event, std::string &message)
 {
     auto session_id = getAdminContext(wsConnPtr);
-    auto strSql = sel("user1.temp_image", "event,  name, size, type", "where session_id = $1");
+    auto strSql = sel_("user1.temp_image", "event,  name, size, type", "where session_id = $1");
     pqxx::work txn{DD};
     try {
         auto r = txn.exec_params(strSql, session_id);
-        txn.exec_params(dele("user1.temp_image", "where session_id = $1"), session_id);
+        txn.exec_params(dele_("user1.temp_image", "where session_id = $1"), session_id);
 
         // check if file exist else rename a file
         // convert this to json

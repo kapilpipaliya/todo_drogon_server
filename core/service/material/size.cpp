@@ -27,7 +27,5 @@ void Size::setupTable()
 
 }
 
-
-
 save_table(Size, "menu.task", "name", "$1", "$2", "where id=$1", args["name"].asString());
 

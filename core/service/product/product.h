@@ -9,7 +9,8 @@ public:
     Json::Value del(Json::Value event, Json::Value args);
 private:
     void setupTable();
-    Json::Value save(Json::Value event, Json::Value args);
+    Json::Value ins(Json::Value event, Json::Value args);
+    Json::Value upd(Json::Value event, Json::Value args);
     Json::Value get_product_attachment_data( Json::Value event, Json::Value args);
     Json::Value get_product_diamond_price_data( Json::Value event, Json::Value args);
     Json::Value get_product_cs_price_data( Json::Value event, Json::Value args);

@@ -56,7 +56,7 @@ void CSSize::setupTable()
             };
 }
 
-Json::Value CSSize::save( Json::Value event, Json::Value args) {
+Json::Value CSSize::ins( Json::Value event, Json::Value args) {
     auto size_table = sqlb::ObjectIdentifier("material", "size", "sh");
     auto size_meta_table = sqlb::ObjectIdentifier("material", "color_stone_size_meta", "sm");
 
@@ -69,14 +69,95 @@ Json::Value CSSize::save( Json::Value event, Json::Value args) {
     std::string strSqlPriceUpdate = "UPDATE product.cs_price SET (weight, total_weight, rate, price) = ROW($2, $3, $4, $5) WHERE cs_id = $1";
 
     auto q = "SELECT  sum(cp.total_weight), sum(cp.price) from product.post_color_stone_size ds LEFT JOIN product.cs_price cp ON (cp.cs_id = ds.id) where ds.post_id = $1";
-    auto pc = upd("product.post_cs_total", "weight, price", "$2, $3", "where post_id = $1");
+    auto pc = upd_("product.post_cs_total", "weight, price", "$2, $3", "where post_id = $1");
+
+    std::string strSql = "INSERT INTO %1.%2 (cs_type_id, shape_id, size_id, weight, currency_id, rate_on_id, rate) values($1, $2, $3, $4, $5, $6, $7)";
+    ReplaceAll2(strSql, "%1", size_meta_table.schema());
+    ReplaceAll2(strSql, "%2", size_meta_table.name());
+
+    pqxx::work txn{DD};
+    try {
+        int size_id;
+        auto r = txn.exec_params(strSqlSizeSel, size_name);
+        if (r.size() == 0) { // insert
+            auto r1 = txn.exec_params(strSqlSizeIns, size_name);
+            size_id = r1[0][0].as<int>();
+        } else {
+            size_id = r[0][0].as<int>();
+        }
+
+
+        txn.exec_params(
+            strSql,
+            args["cs_type_id"].asInt(),
+            args["shape_id"].asInt(),
+            size_id,
+            args["weight"].asDouble(),
+            args["currency_id"].asInt(),
+            args["rate_on_id"].asString(),
+            args["rate"].asDouble()
+            );
+
+
+        //copy
+        // update product weight and price:..
+        struct ProductUpdate {
+            int postId;
+        };
+        std::vector<ProductUpdate> productUpdate;
+
+        auto s = txn.exec_params(strSqlSizeGet, args["cs_type_id"].asInt(), args["shape_id"].asInt(), size_id);
+        for (auto prow : s) {
+            auto w = args["weight"].asDouble();
+            auto rate = args["rate"].asDouble();
+            auto pcs = prow[1].as<int>();
+            txn.exec_params(strSqlPriceUpdate, prow[0].as<int>(), w, w * pcs, rate, pcs * w * rate);
+            std::vector<ProductUpdate>::iterator it = std::find_if(productUpdate.begin(), productUpdate.end(),
+                                                                   [&](ProductUpdate t) {
+                                                                       return t.postId == prow[2].as<int>();
+                                                                   });
+            if (it == productUpdate.end()) {// Element not Found
+                productUpdate.push_back({prow[2].as<int>()});
+            } else {
+
+            }
+        }
+
+        for (auto p : productUpdate) {
+            auto rsum = txn.exec_params(q, p.postId);
+            txn.exec_params(pc, p.postId, rsum[0][0].as<double>(), rsum[0][1].as<double>());
+        }
+
+        txn.commit();
+        Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
+    } catch (const std::exception &e) {
+        txn.abort();
+        std::cerr << e.what() << std::endl;
+        Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
+    }
+}
+
+Json::Value CSSize::upd( Json::Value event, Json::Value args) {
+    auto size_table = sqlb::ObjectIdentifier("material", "size", "sh");
+    auto size_meta_table = sqlb::ObjectIdentifier("material", "color_stone_size_meta", "sm");
+
+    // first insert size then insert on meta ...................
+    auto size_name = args["size_name"].asString();
+    std::string strSqlSizeSel = "SELECT id, name FROM material.size WHERE name = $1";
+    std::string strSqlSizeIns = "INSERT INTO material.size (name) VALUES ($1) RETURNING id";
+
+    std::string strSqlSizeGet = "select cp.cs_id, ds.pcs, ds.post_id from product.cs_price cp left join product.post_color_stone_size ds on ds.id = cp.cs_id where ds.cs_type_id = $1 and ds.shape_id = $2 and ds.size_id = $3;";
+    std::string strSqlPriceUpdate = "UPDATE product.cs_price SET (weight, total_weight, rate, price) = ROW($2, $3, $4, $5) WHERE cs_id = $1";
+
+    auto q = "SELECT  sum(cp.total_weight), sum(cp.price) from product.post_color_stone_size ds LEFT JOIN product.cs_price cp ON (cp.cs_id = ds.id) where ds.post_id = $1";
+    auto pc = upd_("product.post_cs_total", "weight, price", "$2, $3", "where post_id = $1");
 
 
     if (args["id"].asInt()) {
         std::string strSql =
-            "update %1.%2 set "
-            "(cs_type_id, shape_id, size_id, weight, currency_id, rate_on_id, rate)"
-            " = ROW($2, $3, $4, $5, $6, $7, $8) where id=$1";
+                "update %1.%2 set "
+                "(cs_type_id, shape_id, size_id, weight, currency_id, rate_on_id, rate)"
+                " = ROW($2, $3, $4, $5, $6, $7, $8) where id=$1";
         ReplaceAll2(strSql, "%1", size_meta_table.schema());
         ReplaceAll2(strSql, "%2", size_meta_table.name());
 
@@ -100,15 +181,15 @@ Json::Value CSSize::save( Json::Value event, Json::Value args) {
             int old_size_id = old_row[0][0].as<int>();
 
             txn.exec_params(strSql,
-                            args["id"].asInt(),
-                            args["cs_type_id"].asInt(),
-                            args["shape_id"].asInt(),
-                            size_id,
-                            args["weight"].asDouble(),
-                            args["currency_id"].asInt(),
-                            args["rate_on_id"].asString(),
-                            args["rate"].asDouble()
-                            );
+                            args["id"].asInt64(),
+                    args["cs_type_id"].asInt(),
+                    args["shape_id"].asInt(),
+                    size_id,
+                    args["weight"].asDouble(),
+                    args["currency_id"].asInt(),
+                    args["rate_on_id"].asString(),
+                    args["rate"].asDouble()
+                    );
             // If old size count = 0, delete size:
             auto r3 = txn.exec_params(strSqlSizeCount, old_size_id);
             auto r4 = txn.exec_params(strSqlColorSizeCount, old_size_id);
@@ -131,74 +212,8 @@ Json::Value CSSize::save( Json::Value event, Json::Value args) {
                 // Get all post_ids:
                 std::vector<ProductUpdate>::iterator it = std::find_if(productUpdate.begin(), productUpdate.end(),
                                                                        [&](ProductUpdate t) {
-                                                                           return t.postId == prow[2].as<int>();
-                                                                       });
-                if (it == productUpdate.end()) {// Element not Found
-                    productUpdate.push_back({prow[2].as<int>()});
-                } else {
-
-                }
-            }
-
-            for (auto p : productUpdate) {
-                auto rsum = txn.exec_params(q, p.postId);
-                txn.exec_params(pc, p.postId, rsum[0][0].as<double>(), rsum[0][1].as<double>());
-            }
-
-            txn.commit();
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
-        } catch (const std::exception &e) {
-            txn.abort();
-            std::cerr << e.what() << std::endl;
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
-        }
-    } else {
-        std::string strSql = "INSERT INTO %1.%2 (cs_type_id, shape_id, size_id, weight, currency_id, rate_on_id, rate) values($1, $2, $3, $4, $5, $6, $7)";
-        ReplaceAll2(strSql, "%1", size_meta_table.schema());
-        ReplaceAll2(strSql, "%2", size_meta_table.name());
-
-
-        pqxx::work txn{DD};
-        try {
-            int size_id;
-            auto r = txn.exec_params(strSqlSizeSel, size_name);
-            if (r.size() == 0) { // insert
-                auto r1 = txn.exec_params(strSqlSizeIns, size_name);
-                size_id = r1[0][0].as<int>();
-            } else {
-                size_id = r[0][0].as<int>();
-            }
-
-
-            txn.exec_params(
-                strSql,
-                args["cs_type_id"].asInt(),
-                args["shape_id"].asInt(),
-                size_id,
-                args["weight"].asDouble(),
-                args["currency_id"].asInt(),
-                args["rate_on_id"].asString(),
-                args["rate"].asDouble()
-                );
-
-
-            //copy
-            // update product weight and price:..
-            struct ProductUpdate {
-                int postId;
-            };
-            std::vector<ProductUpdate> productUpdate;
-
-            auto s = txn.exec_params(strSqlSizeGet, args["cs_type_id"].asInt(), args["shape_id"].asInt(), size_id);
-            for (auto prow : s) {
-                auto w = args["weight"].asDouble();
-                auto rate = args["rate"].asDouble();
-                auto pcs = prow[1].as<int>();
-                txn.exec_params(strSqlPriceUpdate, prow[0].as<int>(), w, w * pcs, rate, pcs * w * rate);
-                std::vector<ProductUpdate>::iterator it = std::find_if(productUpdate.begin(), productUpdate.end(),
-                                                                       [&](ProductUpdate t) {
-                                                                           return t.postId == prow[2].as<int>();
-                                                                       });
+                        return t.postId == prow[2].as<int>();
+                });
                 if (it == productUpdate.end()) {// Element not Found
                     productUpdate.push_back({prow[2].as<int>()});
                 } else {

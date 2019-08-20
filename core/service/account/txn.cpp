@@ -153,44 +153,45 @@ void save_txn_order_item(Json::Value &args, pqxx::work &txn, int txn_id) {
     }
 }
 
-Json::Value Txn::save( Json::Value event, Json::Value args) {
+Json::Value Txn::ins( Json::Value event, Json::Value args) {
+    std::string strSqlPost =
+        "INSERT INTO account.txn "
+        "(journal_type_id, party_id, date, description )"
+        " VALUES($1, $2, $3, $4)"
+        "RETURNING id";
+
+    pqxx::work txn{DD};
+    try {
+        pqxx::result x =
+            txn.exec_params(strSqlPost,
+                            args["journal_type_id"].asInt(), args["party_id"].asInt(), args["date"].asString(),
+                            args["description"].asString()
+                            );
+        auto txn_id = x[0]["id"].as<int>();
+        save_txn_order_item(args, txn, txn_id);
+
+        txn.commit();
+        Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
+    } catch (const std::exception &e) {
+        txn.abort();
+        std::cerr << e.what() << std::endl;
+        Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
+    }
+}
+Json::Value Txn::upd( Json::Value event, Json::Value args) {
     if (args["id"].asInt()) {
         std::string strSqlPost =
-            "update account.txn set (journal_type_id, party_id, date, description )"
-            " = ROW($2, $3, $4, $5) where id=$1";
+                "update account.txn set (journal_type_id, party_id, date, description )"
+                " = ROW($2, $3, $4, $5) where id=$1";
 
         pqxx::work txn{DD};
         try {
             txn.exec_params(strSqlPost,
-                            args["id"].asInt(),
-                            args["journal_type_id"].asInt(), args["party_id"].asInt(), args["date"].asString(),
-                            args["description"].asString()
-                            );
+                            args["id"].asInt64(),
+                    args["journal_type_id"].asInt(), args["party_id"].asInt(), args["date"].asString(),
+                    args["description"].asString()
+                    );
             auto txn_id = args["id"].asInt();
-            save_txn_order_item(args, txn, txn_id);
-
-            txn.commit();
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
-        } catch (const std::exception &e) {
-            txn.abort();
-            std::cerr << e.what() << std::endl;
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
-        }
-    } else {
-        std::string strSqlPost =
-            "INSERT INTO account.txn "
-            "(journal_type_id, party_id, date, description )"
-            " VALUES($1, $2, $3, $4)"
-            "RETURNING id";
-
-        pqxx::work txn{DD};
-        try {
-            pqxx::result x =
-                txn.exec_params(strSqlPost,
-                                args["journal_type_id"].asInt(), args["party_id"].asInt(), args["date"].asString(),
-                                args["description"].asString()
-                                );
-            auto txn_id = x[0]["id"].as<int>();
             save_txn_order_item(args, txn, txn_id);
 
             txn.commit();

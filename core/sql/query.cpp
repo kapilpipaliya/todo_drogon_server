@@ -41,6 +41,38 @@ std::string Query::buildWherePart() const
     return where;
 }
 
+std::string Query::buildJoinPart() const
+{
+    std::string join;
+    if(m_joins.empty()) {
+        join += "";
+    } else {
+        for(const auto& it : m_joins) {
+            join += it.join_type + " join ";
+            if (it.lateral.empty()){
+                join += it.m_table.toString() + " as " + it.m_table.as();
+            } else {
+                join += it.lateral;
+            }
+            join += + " on " + it.condition + " ";
+        }
+    }
+    return join;
+}
+
+std::string Query::buildGroupByPart() const
+{
+    std::string group_by;
+    for(const auto& group_by_column : m_group) {
+        group_by += group_by_column.prefix + "." + sqlb::escapeIdentifier(group_by_column.column) + " " + ",";
+    }
+    if(!group_by.empty()) {
+        group_by.pop_back();
+        group_by = "GROUP BY " + group_by;
+    }
+    return group_by;
+}
+
 std::string Query::buildQuery(bool withRowid) const
 {
     // Selector and display formats
@@ -79,35 +111,10 @@ std::string Query::buildQuery(bool withRowid) const
         }
         selector.pop_back();
     }
-    // Join
-    std::string join;
-    if(m_joins.empty()) {
-        join += "";
-    } else {
-        for(const auto& it : m_joins) {
-            join += it.join_type + " join ";
-            if (it.lateral.empty()){
-                join += it.m_table.toString() + " as " + it.m_table.as();
-            } else {
-                join += it.lateral;
-            }
-            join += + " on " + it.condition + " ";
-        }
-    }
-
+    std::string join = buildJoinPart();
     // Filter
     std::string where = buildWherePart();
-
-    // Group
-    std::string group_by;
-    for(const auto& group_by_column : m_group) {
-        group_by += group_by_column.prefix + "." + sqlb::escapeIdentifier(group_by_column.column) + " " + ",";
-    }
-    if(!group_by.empty()) {
-        group_by.pop_back();
-        group_by = "GROUP BY " + group_by;
-    }
-
+    std::string group_by = buildGroupByPart();
     // Sorting
     std::string order_by;
     for(const auto& sorted_column : m_sort) {
@@ -121,7 +128,6 @@ std::string Query::buildQuery(bool withRowid) const
         order_by.pop_back();
         order_by = "ORDER BY " + order_by;
     }
-
     //Pagination
     std::string pagination;
     if (m_pagination.limit != 0) pagination += " LIMIT " + std::to_string(m_pagination.limit);
@@ -133,6 +139,16 @@ std::string Query::buildCountQuery() const
 {
     // Build simplest count query for this (filtered) table
     return "SELECT COUNT(*) FROM " + m_table.toString() + " " + buildWherePart();
+}
+
+std::string Query::buildDeleteQuery() const
+{
+    std::string join = buildJoinPart();
+    // Filter
+    std::string where = buildWherePart();
+    std::string group_by = buildGroupByPart();
+
+    return "DELETE FROM " + m_table.toString() + " " + m_table.as() + " " + join + where + " " + group_by;
 }
 
 std::vector<SelectedColumn>::iterator Query::findSelectedColumnByName(const std::string& name)

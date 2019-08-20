@@ -125,7 +125,7 @@ void save_purity_tone_(Json::Value &args, pqxx::work &txn, int purity_id) {
         });
         if (it == inVector.end()) {// Element not Found
             // because when tone_id change it actually inserting new entries..
-            txn.exec_params(dele("material.purity_metal", "where purity_id = $1 and tone_id = $2"), purity_id, r[0].as<int>());
+            txn.exec_params(dele_("material.purity_metal", "where purity_id = $1 and tone_id = $2"), purity_id, r[0].as<int>());
             txn.exec_params(strSqlPostCategoryDel, purity_id, r[0].as<int>());
         }
     }
@@ -144,102 +144,104 @@ void save_purity_tone_(Json::Value &args, pqxx::work &txn, int purity_id) {
     }
 }
 
-Json::Value Purity::save( Json::Value event, Json::Value args) {
-    printJson(args);
+Json::Value Purity::ins( Json::Value event, Json::Value args) {
     auto metal_purity_table = sqlb::ObjectIdentifier("material", "purity", "p");
     auto purity_metal_table = sqlb::ObjectIdentifier("material", "purity_metal", "mp");
 
+    std::string strSql = "INSERT INTO %1.%2 (slug, name, metal_id, purity, price, description) values($1, $2, $3, $4, $5, $6) returning id";
+    ReplaceAll2(strSql, "%1", metal_purity_table.schema());
+    ReplaceAll2(strSql, "%2", metal_purity_table.name());
+
+    pqxx::work txn{DD};
+    try {
+        pqxx::result x = txn.exec_params(
+            strSql,
+            args["slug"].asString(),
+            args["name"].asString(),
+            args["metal_id"].asInt(),
+            args["purity"].asDouble(),
+            args["price"].asDouble(),
+            args["description"].asString()
+            );
+        auto purity_id = x[0]["id"].as<int>();
+        save_purity_tone_(args, txn, purity_id);
+        txn.commit();
+        Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
+    } catch (const std::exception &e) {
+        txn.abort();
+        std::cerr << e.what() << std::endl;
+        Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
+    }
+}
+Json::Value Purity::upd( Json::Value event, Json::Value args) {
+    auto metal_purity_table = sqlb::ObjectIdentifier("material", "purity", "p");
+    auto purity_metal_table = sqlb::ObjectIdentifier("material", "purity_metal", "mp");
 
     if (args["id"].asInt()) {
         std::string strSql =
-            "update %1.%2 set (slug, name, metal_id, purity, price, description) = ROW($2, $3, $4, $5, $6, $7) where id=$1";
+                "update %1.%2 set (slug, name, metal_id, purity, price, description) = ROW($2, $3, $4, $5, $6, $7) where id=$1";
         ReplaceAll2(strSql, "%1", metal_purity_table.schema());
         ReplaceAll2(strSql, "%2", metal_purity_table.name());
 
         pqxx::work txn{DD};
         try {
             txn.exec_params(strSql,
-                            args["id"].asInt(),
-                            args["slug"].asString(),
-                            args["name"].asString(),
-                            args["metal_id"].asInt(),
-                            args["purity"].asDouble(),
-                            args["price"].asDouble(),
-                            args["description"].asString()
-                            );
+                            args["id"].asInt64(),
+                    args["slug"].asString(),
+                    args["name"].asString(),
+                    args["metal_id"].asInt(),
+                    args["purity"].asDouble(),
+                    args["price"].asDouble(),
+                    args["description"].asString()
+                    );
             auto purity_id = args["id"].asInt();
             save_purity_tone_(args, txn, purity_id);
 
             auto pr_update3 = R"(
-update product.product p
-set (volume) = row(
-             p.weight / (
-                        (select SUM(purity.purity * m.specific_density / 100)
-                         FROM material.purity purity left join material.metal m on m.id = purity.metal_id
-                         WHERE purity.id = p.purity_id)
-                                            +
-                        (select SUM(pm.purity * m.specific_density / 100)
-                         FROM material.purity_metal pm left join material.metal m on m.id = pm.metal_id
-                         WHERE pm.purity_id = p.purity_id and pm.tone_id = p.tone_id)
+                              update product.product p
+                              set (volume) = row(
+                              p.weight / (
+                              (select SUM(purity.purity * m.specific_density / 100)
+                              FROM material.purity purity left join material.metal m on m.id = purity.metal_id
+                              WHERE purity.id = p.purity_id)
+                              +
+                              (select SUM(pm.purity * m.specific_density / 100)
+                              FROM material.purity_metal pm left join material.metal m on m.id = pm.metal_id
+                              WHERE pm.purity_id = p.purity_id and pm.tone_id = p.tone_id)
 
-                        )
+                              )
 
-             )
-where
-p.purity_id = $1 returning p.post_id
-)";
+                              )
+                              where
+                              p.purity_id = $1 returning p.post_id
+                              )";
 
             auto product_update = txn.exec_params(pr_update3, args["id"].asInt());
             ids2(product_update, ids);
             auto pr_update4 = R"(
-UPDATE product.purity_tone pt
-SET (weight, price) = row(pr.volume * (sub_q0.sum_val + sub_q.sum_val), pr.volume * (sub_q0.sum_val + sub_q.sum_val) * (mpt.price))
-FROM
-    (
-        select purity.id, (purity.purity * m.specific_density / 100) as sum_val
-             FROM material.purity purity left join material.metal m on m.id = purity.metal_id
-    ) AS sub_q0,
-    (
-        select pm.purity_id, pm.tone_id, SUM(pm.purity * m.specific_density / 100) as sum_val
-             FROM material.purity_metal pm left join material.metal m on m.id = pm.metal_id
-            group by pm.purity_id, pm.tone_id
-    ) AS sub_q, product.product pr, material.purity_tone mpt
-where
-sub_q0.id = pt.purity_id
-and sub_q.purity_id = pt.purity_id and sub_q.tone_id = pt.tone_id
-and pr.post_id = pt.post_id -- to get volume from pr
-and mpt.purity_id = pt.purity_id and mpt.tone_id = pt.tone_id -- to get price from mpt
-and (pt.purity_id = $1 or pt.post_id = ANY($2::bigint[]) )
---returning pt.post_id, pt.purity_id, pt.weight, pt.price
-)";
+                              UPDATE product.purity_tone pt
+                              SET (weight, price) = row(pr.volume * (sub_q0.sum_val + sub_q.sum_val), pr.volume * (sub_q0.sum_val + sub_q.sum_val) * (mpt.price))
+                              FROM
+                              (
+                              select purity.id, (purity.purity * m.specific_density / 100) as sum_val
+                              FROM material.purity purity left join material.metal m on m.id = purity.metal_id
+                              ) AS sub_q0,
+                              (
+                              select pm.purity_id, pm.tone_id, SUM(pm.purity * m.specific_density / 100) as sum_val
+                              FROM material.purity_metal pm left join material.metal m on m.id = pm.metal_id
+                              group by pm.purity_id, pm.tone_id
+                              ) AS sub_q, product.product pr, material.purity_tone mpt
+                              where
+                              sub_q0.id = pt.purity_id
+                              and sub_q.purity_id = pt.purity_id and sub_q.tone_id = pt.tone_id
+                              and pr.post_id = pt.post_id -- to get volume from pr
+                              and mpt.purity_id = pt.purity_id and mpt.tone_id = pt.tone_id -- to get price from mpt
+                              and (pt.purity_id = $1 or pt.post_id = ANY($2::bigint[]) )
+                              --returning pt.post_id, pt.purity_id, pt.weight, pt.price
+                              )";
 
             auto pr = txn.exec_params(pr_update4, purity_id, ids);
 
-            txn.commit();
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
-        } catch (const std::exception &e) {
-            txn.abort();
-            std::cerr << e.what() << std::endl;
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
-        }
-    } else {
-        std::string strSql = "INSERT INTO %1.%2 (slug, name, metal_id, purity, price, description) values($1, $2, $3, $4, $5, $6) returning id";
-        ReplaceAll2(strSql, "%1", metal_purity_table.schema());
-        ReplaceAll2(strSql, "%2", metal_purity_table.name());
-
-        pqxx::work txn{DD};
-        try {
-            pqxx::result x = txn.exec_params(
-                strSql,
-                args["slug"].asString(),
-                args["name"].asString(),
-                args["metal_id"].asInt(),
-                args["purity"].asDouble(),
-                args["price"].asDouble(),
-                args["description"].asString()
-                );
-            auto purity_id = x[0]["id"].as<int>();
-            save_purity_tone_(args, txn, purity_id);
             txn.commit();
             Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {

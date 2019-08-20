@@ -10,7 +10,6 @@ Accessory::Accessory(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsCo
 
 void Accessory::setupTable()
 {
-
     t.m_query = sqlb::Query(t.m_table);
 
         //m_query.setRowIdColumn("id");
@@ -39,46 +38,45 @@ void Accessory::setupTable()
             };
 }
 
+Json::Value Accessory::ins( Json::Value event, Json::Value args) {
+    auto accessory_table = sqlb::ObjectIdentifier("material", "accessory", "t");
+    std::string strSql = "INSERT INTO %1.%2 (slug, name) values($1, $2)";
+    ReplaceAll2(strSql, "%1", accessory_table.schema());
+    ReplaceAll2(strSql, "%2", accessory_table.name());
 
-
-    Json::Value Accessory::save( Json::Value event, Json::Value args) {
-    printJson(args);
+    pqxx::work txn{DD};
+    try {
+        txn.exec_params(
+            strSql,
+            args["slug"].asString(),
+            args["name"].asString()
+            );
+        txn.commit();
+        Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
+    } catch (const std::exception &e) {
+        txn.abort();
+        std::cerr << e.what() << std::endl;
+        Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
+    }
+}
+Json::Value Accessory::upd( Json::Value event, Json::Value args) {
     auto accessory_table = sqlb::ObjectIdentifier("material", "accessory", "t");
 
     if (args["id"].asInt()) {
         std::string strSql =
-            "update %1.%2 set "
-            "(slug, name)"
-            " = ROW($2, $3) where id=$1";
+                "update %1.%2 set "
+                "(slug, name)"
+                " = ROW($2, $3) where id=$1";
         ReplaceAll2(strSql, "%1", accessory_table.schema());
         ReplaceAll2(strSql, "%2", accessory_table.name());
 
         pqxx::work txn{DD};
         try {
             txn.exec_params(strSql,
-                            args["id"].asInt(),
-                            args["slug"].asString(),
-                            args["name"].asString()
-                            );
-            txn.commit();
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
-        } catch (const std::exception &e) {
-            txn.abort();
-            std::cerr << e.what() << std::endl;
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
-        }
-    } else {
-        std::string strSql = "INSERT INTO %1.%2 (slug, name) values($1, $2)";
-        ReplaceAll2(strSql, "%1", accessory_table.schema());
-        ReplaceAll2(strSql, "%2", accessory_table.name());
-
-        pqxx::work txn{DD};
-        try {
-            txn.exec_params(
-                strSql,
-                args["slug"].asString(),
-                args["name"].asString()
-                );
+                            args["id"].asInt64(),
+                    args["slug"].asString(),
+                    args["name"].asString()
+                    );
             txn.commit();
             Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {

@@ -7,7 +7,8 @@ public:
     Entity(const WebSocketConnectionPtr& wsConnPtr);
 private:
     void setupTable();
-    Json::Value save(Json::Value event, Json::Value args);
+    Json::Value ins(Json::Value event, Json::Value args);
+    Json::Value upd(Json::Value event, Json::Value args);
     Json::Value del(Json::Value event, Json::Value args);
 };
 #endif // ENTITY_H

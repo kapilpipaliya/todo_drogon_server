@@ -42,59 +42,63 @@ void PCategory::setupTable()
     };
 }
 
-Json::Value PCategory::save( Json::Value event, Json::Value args)
+Json::Value PCategory::ins( Json::Value event, Json::Value args)
 {
     printJson(args);
     auto product_table = sqlb::ObjectIdentifier("product", "category", "p");
 
+    std::string strSql = "INSERT INTO %1.%2 (slug, name, description, display_type, parent_id, position) values($1, $2, $3, $4, NULLIF($5, 0), $6)";
+    ReplaceAll2(strSql, "%1", product_table.schema());
+    ReplaceAll2(strSql, "%2", product_table.name());
+
+    pqxx::work txn{DD};
+    try {
+        txn.exec_params(
+            strSql,
+            args["slug"].asString(),
+            args["name"].asString(),
+            args["description"].asString(),
+            args["display_type"].asString(),
+            args["parent_id"].asInt(),
+            args["position"].asInt()
+            );
+        txn.commit();
+        Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
+    } catch (const std::exception &e) {
+        txn.abort();
+        std::cerr << e.what() << std::endl;
+        Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
+    }
+
+}
+Json::Value PCategory::upd( Json::Value event, Json::Value args)
+{
+    auto product_table = sqlb::ObjectIdentifier("product", "category", "p");
+
     if (args["id"].asInt()) {
         std::string strSql =
-            "update %1.%2 set "
-            "(slug, name, description, display_type, parent_id, position)"
-            " = ROW($2, $3, $4, $5, NULLIF($6, 0), $7) where id=$1";
+                "update %1.%2 set "
+                "(slug, name, description, display_type, parent_id, position)"
+                " = ROW($2, $3, $4, $5, NULLIF($6, 0), $7) where id=$1";
         ReplaceAll2(strSql, "%1", product_table.schema());
         ReplaceAll2(strSql, "%2", product_table.name());
 
-        pqxx::work txn{DD};
-        try {
-            txn.exec_params(strSql,
-                            args["id"].asInt(),
-                            args["slug"].asString(),
-                            args["name"].asString(),
-                            args["description"].asString(),
-                            args["display_type"].asString(),
-                            args["parent_id"].asInt(),
-                            args["position"].asInt()
-                            );
-            txn.commit();
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
-        } catch (const std::exception &e) {
-            txn.abort();
-            std::cerr << e.what() << std::endl;
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
-        }
-    } else {
-        std::string strSql = "INSERT INTO %1.%2 (slug, name, description, display_type, parent_id, position) values($1, $2, $3, $4, NULLIF($5, 0), $6)";
-        ReplaceAll2(strSql, "%1", product_table.schema());
-        ReplaceAll2(strSql, "%2", product_table.name());
 
-        pqxx::work txn{DD};
         try {
-            txn.exec_params(
-                strSql,
-                args["slug"].asString(),
-                args["name"].asString(),
-                args["description"].asString(),
-                args["display_type"].asString(),
-                args["parent_id"].asInt(),
-                args["position"].asInt()
-                );
-            txn.commit();
+            clientPtr->execSqlSync(strSql,
+                                   args["id"].asInt64(),
+                    args["slug"].asString(),
+                    args["name"].asString(),
+                    args["description"].asString(),
+                    args["display_type"].asString(),
+                    args["parent_id"].asInt(),
+                    args["position"].asInt()
+                    );
+
             Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
-        } catch (const std::exception &e) {
-            txn.abort();
-            std::cerr << e.what() << std::endl;
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
+        } catch (const drogon::orm::DrogonDbException &e) {
+            std::cerr << e.base().what() << std::endl;
+            Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.base().what()); return ret;
         }
     }
 }

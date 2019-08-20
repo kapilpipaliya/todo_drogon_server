@@ -9,7 +9,8 @@ public:
     Json::Value handleBinaryEvent(Json::Value event, int next, std::string &message);
 private:
     void setupTable();
-    Json::Value save(Json::Value event, Json::Value args);
+    Json::Value ins(Json::Value event, Json::Value args);
+    Json::Value upd(Json::Value event, Json::Value args);
     Json::Value thumb_data( Json::Value event, Json::Value args);
     //Binary functin:
     Json::Value save_setting_attachment(Json::Value event, std::string &message);

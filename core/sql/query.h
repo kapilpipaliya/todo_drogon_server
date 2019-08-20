@@ -109,90 +109,41 @@ class Query
 {
 public:
     Query() = default;
-    explicit Query(sqlb::ObjectIdentifier  table) :
-        m_table(std::move(table))
-    {}
+    explicit Query(sqlb::ObjectIdentifier  table) : m_table(std::move(table)) {}
 
     void clear();
     std::string buildQuery(bool withRowid) const;
     std::string buildCountQuery() const;
+    std::string buildDeleteQuery() const;
 
     //void setColumNames(const std::vector<std::string>& column_names) { m_column_names = column_names; }
     //std::vector<std::string> columnNames() const { return m_column_names; }
 
-    void setTable(const sqlb::ObjectIdentifier& table)
-    {
-        m_table = table;
-    }
-    sqlb::ObjectIdentifier table() const
-    {
-        return m_table;
-    }
+    void setTable(const sqlb::ObjectIdentifier& table) { m_table = table; }
+    sqlb::ObjectIdentifier table() const { return m_table; }
 
     //void setRowIdColumns(const std::vector<std::string>& rowids) { m_rowid_columns = rowids; }
     //std::vector<std::string> rowIdColumns() const { return m_rowid_columns; }
     //void setRowIdColumn(const std::string& rowid) { m_rowid_columns = {rowid}; }
     //bool hasCustomRowIdColumn() const { return m_rowid_columns.size() != 1 || (m_rowid_columns.at(0) != "rowid" && m_rowid_columns.at(0) != "_rowid_"); }
 
-    const std::vector<SelectedColumn>& selectedColumns() const
-    {
-        return m_selected_columns;
-    }
-    std::vector<SelectedColumn>& selectedColumns()
-    {
-        return m_selected_columns;
-    }
+    const std::vector<SelectedColumn>& selectedColumns() const { return m_selected_columns; }
+    std::vector<SelectedColumn>& selectedColumns() { return m_selected_columns; }
 
-    std::vector<Join>& joins()
-    {
-        return m_joins;
-    }
+    std::vector<Join>& joins() { return m_joins; }
 
-    const std::unordered_map<size_t, std::string>& where() const
-    {
-        return m_where;
-    }
-    std::unordered_map<size_t, std::string>& where()
-    {
-        return m_where;
-    }
+    const std::unordered_map<size_t, std::string>& where() const { return m_where; }
+    std::unordered_map<size_t, std::string>& where() { return m_where; }
 
-    const std::vector<SortedColumn>& orderBy() const
-    {
-        return m_sort;
-    }
-    std::vector<SortedColumn>& orderBy()
-    {
-        return m_sort;
-    }
-    void setOrderBy(const std::vector<SortedColumn>& columns)
-    {
-        m_sort = columns;
-    }
-    Pagination& pagination()
-    {
-        return m_pagination;
-    }
-    void setPagination(const Pagination &p)
-    {
-        m_pagination = p;
-    }
-    const std::vector<GroupByColumn>& groupBy() const
-    {
-        return m_group;
-    }
-    std::vector<GroupByColumn>& groupBy()
-    {
-        return m_group;
-    }
-    const SubQuery& subquery() const
-    {
-        return m_subquery;
-    }
-    SubQuery& subquery()
-    {
-        return m_subquery;
-    }
+    const std::vector<SortedColumn>& orderBy() const { return m_sort; }
+    std::vector<SortedColumn>& orderBy() { return m_sort; }
+    void setOrderBy(const std::vector<SortedColumn>& columns) { m_sort = columns; }
+    Pagination& pagination() { return m_pagination; }
+    void setPagination(const Pagination &p) { m_pagination = p; }
+    const std::vector<GroupByColumn>& groupBy() const { return m_group; }
+    std::vector<GroupByColumn>& groupBy() { return m_group; }
+    const SubQuery& subquery() const { return m_subquery; }
+    SubQuery& subquery() { return m_subquery; }
 private:
     //std::vector<std::string> m_column_names;
     sqlb::ObjectIdentifier m_table;
@@ -208,6 +159,8 @@ private:
     std::vector<SelectedColumn>::iterator findSelectedColumnByName(const std::string& name);
     std::vector<SelectedColumn>::const_iterator findSelectedColumnByName(const std::string& name) const;
     std::string buildWherePart() const;
+    std::string buildJoinPart() const;
+    std::string buildGroupByPart() const;
 };
 
 }

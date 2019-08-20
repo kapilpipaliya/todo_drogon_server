@@ -34,48 +34,52 @@ void Currency::setupTable()
 
 }
 
-    Json::Value Currency::save( Json::Value event, Json::Value args) {
+Json::Value Currency::ins( Json::Value event, Json::Value args) {
+    printJson(args);
+    auto metal_purity_table = sqlb::ObjectIdentifier("setting", "currency", "c");
+
+    std::string strSql = "INSERT INTO %1.%2 (slug, name, symbol, rounding, active) values($1, $2, $3, $4, $5)";
+    ReplaceAll2(strSql, "%1", metal_purity_table.schema());
+    ReplaceAll2(strSql, "%2", metal_purity_table.name());
+
+    pqxx::work txn{DD};
+    try {
+        txn.exec_params(
+            strSql,
+            args["slug"].asString(),
+            args["name"].asString(),
+            args["symbol"].asString(),
+            args["rounding"].asDouble(),
+            args["active"].asBool()
+            );
+        txn.commit();
+        Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
+    } catch (const std::exception &e) {
+        txn.abort();
+        std::cerr << e.what() << std::endl;
+        Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
+    }
+}
+Json::Value Currency::upd( Json::Value event, Json::Value args) {
     printJson(args);
     auto metal_purity_table = sqlb::ObjectIdentifier("setting", "currency", "c");
 
     if (args["id"].asInt()) {
         std::string strSql =
-            "update %1.%2 set (slug, name, symbol, rounding, active) = ROW($2, $3, $4, $5, $6) where id=$1";
+                "update %1.%2 set (slug, name, symbol, rounding, active) = ROW($2, $3, $4, $5, $6) where id=$1";
         ReplaceAll2(strSql, "%1", metal_purity_table.schema());
         ReplaceAll2(strSql, "%2", metal_purity_table.name());
 
         pqxx::work txn{DD};
         try {
             txn.exec_params(strSql,
-                            args["id"].asInt(),
-                            args["slug"].asString(),
-                            args["name"].asString(),
-                            args["symbol"].asString(),
-                            args["rounding"].asDouble(),
-                            args["active"].asBool()
-                            );
-            txn.commit();
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
-        } catch (const std::exception &e) {
-            txn.abort();
-            std::cerr << e.what() << std::endl;
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
-        }
-    } else {
-        std::string strSql = "INSERT INTO %1.%2 (slug, name, symbol, rounding, active) values($1, $2, $3, $4, $5)";
-        ReplaceAll2(strSql, "%1", metal_purity_table.schema());
-        ReplaceAll2(strSql, "%2", metal_purity_table.name());
-
-        pqxx::work txn{DD};
-        try {
-            txn.exec_params(
-                strSql,
-                args["slug"].asString(),
-                args["name"].asString(),
-                args["symbol"].asString(),
-                args["rounding"].asDouble(),
-                args["active"].asBool()
-                );
+                            args["id"].asInt64(),
+                    args["slug"].asString(),
+                    args["name"].asString(),
+                    args["symbol"].asString(),
+                    args["rounding"].asDouble(),
+                    args["active"].asBool()
+                    );
             txn.commit();
             Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
