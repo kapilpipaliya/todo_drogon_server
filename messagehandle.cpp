@@ -254,23 +254,23 @@ Json::Value MessageHandle::handleTextMessage(Json::Value in)
 Json::Value MessageHandle::handleBinaryMessage(const WebSocketConnectionPtr &wsConnPtr, std::string &message)
 {
    Json::Value event;
-    pqxx::work txn{DD};
+    auto transPtr = clientPtr->newTransaction();
     try {
         auto c = getAdminContext(wsConnPtr);
         auto sqlSession = "SELECT event FROM user1.temp_image where session_id = $1";
-        auto r = txn.exec_params(sqlSession, c);
+        auto r = transPtr->execSqlSync(sqlSession, c);
 
         if(r.size()!=0){
 
             // convert this to json
            //  Json::Value event_json;
             std::stringstream txt;
-            txt << r[0][0].c_str();
+            txt << r[0]["event"].c_str();
             Json::CharReaderBuilder rbuilder;
             rbuilder["collectComments"] = false;
             std::string errs;
             bool ok = Json::parseFromStream(rbuilder, txt, &event, &errs);
-            txn.commit(); //p.handleBinaryEvent creates new transaction.
+             //p.handleBinaryEvent creates new transaction.
             if(ok){
                  if (event[0].asString()=="legacy"){
                      if (event[1].asString() == "image") {
@@ -285,7 +285,7 @@ Json::Value MessageHandle::handleBinaryMessage(const WebSocketConnectionPtr &wsC
         }
         return Json::nullValue;
     } catch (const std::exception &e) {
-        txn.abort();
+        
         std::cerr << e.what() << std::endl;
         Json::Value jresult;
         jresult[0] = event;
@@ -380,23 +380,23 @@ Json::Value NoCAF::handleTextMessage(Json::Value in)
 Json::Value NoCAF::handleBinaryMessage(const WebSocketConnectionPtr &, std::string &message)
 {
     Json::Value event;
-     pqxx::work txn{DD};
+     auto transPtr = clientPtr->newTransaction();
      try {
          auto c = getAdminContext(wsConnPtr);
          auto sqlSession = "SELECT event FROM user1.temp_image where session_id = $1";
-         auto r = txn.exec_params(sqlSession, c);
+         auto r = transPtr->execSqlSync(sqlSession, c);
 
          if(r.size()!=0){
 
              // convert this to json
             //  Json::Value event_json;
              std::stringstream txt;
-             txt << r[0][0].c_str();
+             txt << r[0]["event"].c_str();
              Json::CharReaderBuilder rbuilder;
              rbuilder["collectComments"] = false;
              std::string errs;
              bool ok = Json::parseFromStream(rbuilder, txt, &event, &errs);
-             txn.commit(); //p.handleBinaryEvent creates new transaction.
+              //p.handleBinaryEvent creates new transaction.
              if(ok){
                   if (event[0].asString()=="legacy"){
                       if (event[1].asString() == "image") {
@@ -411,7 +411,7 @@ Json::Value NoCAF::handleBinaryMessage(const WebSocketConnectionPtr &, std::stri
          }
          return Json::nullValue;
      } catch (const std::exception &e) {
-         txn.abort();
+         
          std::cerr << e.what() << std::endl;
          Json::Value jresult;
          jresult[0] = event;

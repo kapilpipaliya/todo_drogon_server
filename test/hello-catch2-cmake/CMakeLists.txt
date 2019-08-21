@@ -5,7 +5,7 @@ find_package(Threads REQUIRED)
 find_package(ZLIB REQUIRED)
 find_package (UUID REQUIRED)
 find_package(PostgreSQL REQUIRED)
-find_package(libpqxx REQUIRED)
+#find_package(libpqxx REQUIRED)
 find_package(Drogon CONFIG REQUIRED)
 include_directories(${DROGON_INCLUDE_DIRS})
 find_package(fmt REQUIRED)
@@ -28,7 +28,7 @@ target_link_libraries(hello-catch2-cmake-test fibonacci Catch2::Catch2
   ZLIB::ZLIB
   ${UUID_LIBRARY}
   PostgreSQL::PostgreSQL
-  libpqxx::pqxx_shared
+#  libpqxx::pqxx_shared
   ${DROGON_LIBRARIES}
   fmt::fmt
   Poco::Foundation

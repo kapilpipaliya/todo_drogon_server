@@ -127,7 +127,7 @@ target_link_libraries(jdragon
   #${CORE_LIB}
   PostgreSQL::PostgreSQL
   libpqxx::pqxx_shared
-  libjewelconnection
+#  libjewelconnection
   libjewelcore2
   Boost::filesystem
 #  absl::strings

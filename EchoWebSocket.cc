@@ -14,10 +14,10 @@ void EchoWebSocket::handleNewMessage(const WebSocketConnectionPtr &wsConnPtr, st
                                    const WebSocketMessageType &type) {
    fprintf(stdout, "%s\n", message.c_str());
    fflush(stdout);
-   //caf::scoped_actor self{sys};
-   //auto msgHandle = self->spawn<MessageHandle>(wsConnPtr, std::move(message), type);
-   NoCAF nocaf{wsConnPtr, std::move(message), type};
-   nocaf.blocking_run();
+   caf::scoped_actor self{sys};
+   auto msgHandle = self->spawn<MessageHandle>(wsConnPtr, std::move(message), type);
+   //NoCAF nocaf{wsConnPtr, std::move(message), type};
+   //nocaf.blocking_run();
 }
 void EchoWebSocket::handleNewConnection(const HttpRequestPtr &req, const WebSocketConnectionPtr &wsConnPtr) {
     clientPtr = drogon::app().getDbClient("sce");

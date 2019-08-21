@@ -1,9 +1,10 @@
 cmake_minimum_required(VERSION 3.15.1)
 project(test1)
 #set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules/)
+set(CMAKE_CXX_STANDARD 20)
 
 find_package(PostgreSQL)
-find_package(libpqxx REQUIRED)
+#find_package(libpqxx REQUIRED)
 
 find_package (Jsoncpp REQUIRED)
 #find_package(folly)
@@ -41,8 +42,8 @@ add_executable(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
     PostgreSQL::PostgreSQL
-    libpqxx::pqxx_shared
-    libjewelconnection
+#    libpqxx::pqxx_shared
+#    libjewelconnection
     ${JSONCPP_LIBRARY}
 #    folly.a
 #    folly
