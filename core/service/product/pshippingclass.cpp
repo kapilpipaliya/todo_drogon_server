@@ -36,58 +36,18 @@ void PShippingClass::setupTable()
             };
 }
 
-
-
-Json::Value PShippingClass::ins( Json::Value event, Json::Value args) {
-    printJson(args);
-    auto product_table = sqlb::ObjectIdentifier("product", "shipping_class", "s");
-
-    std::string strSql = "INSERT INTO %1.%2 (slug, name, description) values($1, $2, $3)";
-    ReplaceAll2(strSql, "%1", product_table.schema());
-    ReplaceAll2(strSql, "%2", product_table.name());
-
-    auto transPtr = clientPtr->newTransaction();
-    try {
-        transPtr->execSqlSync(
-            strSql,
+Json::Value PShippingClass::ins(Json::Value event, Json::Value args)
+{
+    return insBase(event, args, "slug, name, description", "$1, $2, $3",
             args["slug"].asString(),
             args["name"].asString(),
-            args["description"].asString()
-            );
-        
-        Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
-    } catch (const std::exception &e) {
-        
-        std::cerr << e.what() << std::endl;
-        Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
-    }
+            args["description"].asString());
 }
-Json::Value PShippingClass::upd( Json::Value event, Json::Value args) {
-    printJson(args);
-    auto product_table = sqlb::ObjectIdentifier("product", "shipping_class", "s");
 
-    if (args["id"].asInt()) {
-        std::string strSql =
-                "update %1.%2 set "
-                "(slug, name, description)"
-                " = ROW($2, $3, $4) where id=$1";
-        ReplaceAll2(strSql, "%1", product_table.schema());
-        ReplaceAll2(strSql, "%2", product_table.name());
-
-        auto transPtr = clientPtr->newTransaction();
-        try {
-            transPtr->execSqlSync(strSql,
-                            args["id"].asInt64(),
-                    args["slug"].asString(),
-                    args["name"].asString(),
-                    args["description"].asString()
-                    );
-            
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
-        } catch (const std::exception &e) {
-            
-            std::cerr << e.what() << std::endl;
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
-        }
-    }
+Json::Value PShippingClass::upd(Json::Value event, Json::Value args)
+{
+    return updBase(event, args, "slug, name, description", "$1, $2, $3",
+            args[1]["slug"].asString(),
+            args[1]["name"].asString(),
+            args[1]["description"].asString());
 }

@@ -34,58 +34,23 @@ void Currency::setupTable()
 
 }
 
-Json::Value Currency::ins( Json::Value event, Json::Value args) {
-    printJson(args);
-    auto metal_purity_table = sqlb::ObjectIdentifier("setting", "currency", "c");
-
-    std::string strSql = "INSERT INTO %1.%2 (slug, name, symbol, rounding, active) values($1, $2, $3, $4, $5)";
-    ReplaceAll2(strSql, "%1", metal_purity_table.schema());
-    ReplaceAll2(strSql, "%2", metal_purity_table.name());
-
-    auto transPtr = clientPtr->newTransaction();
-    try {
-        transPtr->execSqlSync(
-            strSql,
+Json::Value Currency::ins(Json::Value event, Json::Value args)
+{
+    return insBase(event, args, "slug, name, symbol, rounding, active", "$1, $2, $3, $4, $5",
             args["slug"].asString(),
             args["name"].asString(),
             args["symbol"].asString(),
             args["rounding"].asDouble(),
-            args["active"].asBool()
-            );
-        
-        Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
-    } catch (const std::exception &e) {
-        
-        std::cerr << e.what() << std::endl;
-        Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
-    }
+            args["active"].asBool() );
 }
-Json::Value Currency::upd( Json::Value event, Json::Value args) {
-    printJson(args);
-    auto metal_purity_table = sqlb::ObjectIdentifier("setting", "currency", "c");
 
-    if (args["id"].asInt()) {
-        std::string strSql =
-                "update %1.%2 set (slug, name, symbol, rounding, active) = ROW($2, $3, $4, $5, $6) where id=$1";
-        ReplaceAll2(strSql, "%1", metal_purity_table.schema());
-        ReplaceAll2(strSql, "%2", metal_purity_table.name());
-
-        auto transPtr = clientPtr->newTransaction();
-        try {
-            transPtr->execSqlSync(strSql,
-                            args["id"].asInt64(),
-                    args["slug"].asString(),
-                    args["name"].asString(),
-                    args["symbol"].asString(),
-                    args["rounding"].asDouble(),
-                    args["active"].asBool()
-                    );
-            
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
-        } catch (const std::exception &e) {
-            
-            std::cerr << e.what() << std::endl;
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
-        }
-    }
+Json::Value Currency::upd(Json::Value event, Json::Value args)
+{
+    return updBase(event, args, "slug, name, symbol, rounding, active", "$1, $2, $3, $4, $5",
+                   args[1]["slug"].asString(),
+                   args[1]["name"].asString(),
+                   args[1]["symbol"].asString(),
+                   args[1]["rounding"].asDouble(),
+                   args[1]["active"].asBool()
+            );
 }

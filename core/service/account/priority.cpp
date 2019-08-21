@@ -37,10 +37,10 @@ Priority::Priority(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConn
 }
 Json::Value Priority::ins(Json::Value event, Json::Value args)
 {
-    return insBase(event, args, "name, url, description", "$1, $2, $3",  args["name"].asString(), args["url"].asString(), args["description"].asString() );
+    return insBase(event, args, "rank, slug, name", "$1, $2, $3",  args["rank"].asString(), args["slug"].asString(), args["name"].asString() );
 }
 
 Json::Value Priority::upd(Json::Value event, Json::Value args)
 {
-    return updBase(event, args, "name, url, description", "$1, $2, $3", args[1]["name"].asString(), args[1]["url"].asString(), args["description"].asString());
+    return updBase(event, args, "rank, slug, name", "$1, $2, $3", args[1]["rank"].asString(), args[1]["slug"].asString(), args[1]["name"].asString());
 }

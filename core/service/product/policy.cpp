@@ -41,5 +41,5 @@ Json::Value Policy::ins(Json::Value event, Json::Value args)
 
 Json::Value Policy::upd(Json::Value event, Json::Value args)
 {
-    return updBase(event, args, "name, url, description", "$1, $2, $3", args[1]["name"].asString(), args[1]["url"].asString(), args["description"].asString());
+    return updBase(event, args, "name, url, description", "$1, $2, $3", args[1]["name"].asString(), args[1]["url"].asString(), args[1]["description"].asString());
 }

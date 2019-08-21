@@ -22,27 +22,12 @@ void AddressType::setupTable()
 
 
 
-Json::Value AddressType::ins( Json::Value event, Json::Value args) {
-        std::string strSql = "INSERT INTO entity.address_type (name) values($1)";
-        auto transPtr = clientPtr->newTransaction();
-        try {
-            transPtr->execSqlSync(strSql, args["name"].asString());
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
-        } catch (const std::exception &e) {
-            std::cerr << e.what() << std::endl;
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
-        }
+Json::Value AddressType::ins(Json::Value event, Json::Value args)
+{
+    return insBase(event, args, "name", "$1",  args["name"].asString());
 }
-Json::Value AddressType::upd( Json::Value event, Json::Value args) {
-    if (args["id"].asInt()) {
-        std::string strSql = "update entity.address_type set (name) = ROW($2) where id=$1";
-        auto transPtr = clientPtr->newTransaction();
-        try {
-            transPtr->execSqlSync(strSql, args["id"].asInt64(), args["name"].asString());
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
-        } catch (const std::exception &e) {
-            std::cerr << e.what() << std::endl;
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
-        }
-    }
+
+Json::Value AddressType::upd(Json::Value event, Json::Value args)
+{
+    return updBase(event, args, "name", "$1", args[1]["name"].asString());
 }

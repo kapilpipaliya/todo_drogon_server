@@ -36,56 +36,16 @@ void SettingType::setupTable()
             };
 }
 
-Json::Value SettingType::ins( Json::Value event, Json::Value args) {
-    printJson(args);
-    auto setting_type_table = sqlb::ObjectIdentifier("product", "setting_type", "s");
-
-    std::string strSql = "INSERT INTO %1.%2 (name, description) values($1, $2)";
-    ReplaceAll2(strSql, "%1", setting_type_table.schema());
-    ReplaceAll2(strSql, "%2", setting_type_table.name());
-
-    auto transPtr = clientPtr->newTransaction();
-    try {
-        transPtr->execSqlSync(
-            strSql,
-            //args["slug"].asString(),
+Json::Value SettingType::ins(Json::Value event, Json::Value args)
+{
+    return insBase(event, args, "name, description", "$1, $2",
             args["name"].asString(),
-            args["description"].asString()
-            );
-        
-        Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
-    } catch (const std::exception &e) {
-        
-        std::cerr << e.what() << std::endl;
-        Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
-    }
+            args["description"].asString());
 }
-Json::Value SettingType::upd( Json::Value event, Json::Value args) {
-    printJson(args);
-    auto setting_type_table = sqlb::ObjectIdentifier("product", "setting_type", "s");
 
-    if (args["id"].asInt()) {
-        std::string strSql =
-                "update %1.%2 set "
-                "(name, description)"
-                " = ROW($2, $3) where id=$1";
-        ReplaceAll2(strSql, "%1", setting_type_table.schema());
-        ReplaceAll2(strSql, "%2", setting_type_table.name());
-
-        auto transPtr = clientPtr->newTransaction();
-        try {
-            transPtr->execSqlSync(strSql,
-                            args["id"].asInt64(),
-                    //args["slug"].asString(),
-                    args["name"].asString(),
-                    args["description"].asString()
-                    );
-            
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
-        } catch (const std::exception &e) {
-            
-            std::cerr << e.what() << std::endl;
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
-        }
-    }
+Json::Value SettingType::upd(Json::Value event, Json::Value args)
+{
+    return updBase(event, args, "name, description", "$1, $2",
+            args[1]["name"].asString(),
+            args[1]["description"].asString());
 }

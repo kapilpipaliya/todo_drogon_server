@@ -42,64 +42,25 @@ void PCategory::setupTable()
     };
 }
 
-Json::Value PCategory::ins( Json::Value event, Json::Value args)
+Json::Value PCategory::ins(Json::Value event, Json::Value args)
 {
-    printJson(args);
-    auto product_table = sqlb::ObjectIdentifier("product", "category", "p");
-
-    std::string strSql = "INSERT INTO %1.%2 (slug, name, description, display_type, parent_id, position) values($1, $2, $3, $4, NULLIF($5, 0), $6)";
-    ReplaceAll2(strSql, "%1", product_table.schema());
-    ReplaceAll2(strSql, "%2", product_table.name());
-
-    auto transPtr = clientPtr->newTransaction();
-    try {
-        transPtr->execSqlSync(
-            strSql,
+    return insBase(event, args, "slug, name, description, display_type, parent_id, position", "$1, $2, $3, $4, NULLIF($5, 0), $6",
             args["slug"].asString(),
             args["name"].asString(),
             args["description"].asString(),
             args["display_type"].asString(),
-            args["parent_id"].asInt(),
-            args["position"].asInt()
-            );
-        
-        Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
-    } catch (const std::exception &e) {
-        
-        std::cerr << e.what() << std::endl;
-        Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
-    }
-
+            args["parent_id"].asInt(), // why this ask for asInt()? otherwise error: ERROR:  incorrect binary data format in bind parameter 5
+            args["position"].asInt64() );
 }
-Json::Value PCategory::upd( Json::Value event, Json::Value args)
+
+Json::Value PCategory::upd(Json::Value event, Json::Value args)
 {
-    auto product_table = sqlb::ObjectIdentifier("product", "category", "p");
-
-    if (args["id"].asInt()) {
-        std::string strSql =
-                "update %1.%2 set "
-                "(slug, name, description, display_type, parent_id, position)"
-                " = ROW($2, $3, $4, $5, NULLIF($6, 0), $7) where id=$1";
-        ReplaceAll2(strSql, "%1", product_table.schema());
-        ReplaceAll2(strSql, "%2", product_table.name());
-
-
-        try {
-            clientPtr->execSqlSync(strSql,
-                                   args["id"].asInt64(),
-                    args["slug"].asString(),
-                    args["name"].asString(),
-                    args["description"].asString(),
-                    args["display_type"].asString(),
-                    args["parent_id"].asInt(),
-                    args["position"].asInt()
-                    );
-
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
-        } catch (const drogon::orm::DrogonDbException &e) {
-            std::cerr << e.base().what() << std::endl;
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.base().what()); return ret;
-        }
-    }
+    return updBase(event, args, "slug, name, description, display_type, parent_id, position", "$1, $2, $3, $4, NULLIF($5, 0), $6",
+                   args[1]["slug"].asString(),
+                   args[1]["name"].asString(),
+                   args[1]["description"].asString(),
+                   args[1]["display_type"].asString(),
+                   args[1]["parent_id"].asInt(), // why this ask for asInt()?
+                   args[1]["position"].asInt64());
 }
 

@@ -142,7 +142,7 @@ Json::Value Entity::ins( Json::Value event, Json::Value args) {
                                  args["no"].asString(),
                                  args["sequence_id"].asInt(),
                                  args["slug"].asString(),
-                                 args["parent_id"].asInt(),
+                                 args["parent_id"].asInt64(),
                                  args["legal_name"].asString(),
                                  args["tax_no"].asString(),
                                  args["first_name"].asString(),
@@ -185,7 +185,8 @@ Json::Value Entity::ins( Json::Value event, Json::Value args) {
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
 }
-Json::Value Entity::upd( Json::Value event, Json::Value args) {
+Json::Value Entity::upd( Json::Value event, Json::Value args_) {
+    auto args = args_[1];
     if (args["id"].asInt()) {
         std::string strSql = "update entity.entity set (  entity_type_id, no, sequence_id, slug, parent_id, legal_name, tax_no, first_name, middle_name, last_name, birth_date, start_date, end_date, salary, rate, active, pay_to_name, threshold, credit_limit, terms, discount, discount_terms, discount_account_id, ar_ap_account_id, cash_account_id, currency_id, price_group_id, tax_included, email)"
                              " = ROW($2, $3, NULLIF($4, 0), $5, NULLIF($6, 0), $7, $8, $9, $10, $11, $12, NULLIF($13, '')::date, NULLIF($14, '')::date, $15, $16, $17, $18, $19, $20, $21, $22, $23, NULLIF($24, 0), NULLIF($25, 0), NULLIF($26, 0), NULLIF($27, 0), NULLIF($28, 0), $29, $30) where id=$1";
@@ -197,7 +198,7 @@ Json::Value Entity::upd( Json::Value event, Json::Value args) {
                     args["no"].asString(),
                     args["sequence_id"].asInt(),
                     args["slug"].asString(),
-                    args["parent_id"].asInt(),
+                    args["parent_id"].asInt64(),
                     args["legal_name"].asString(),
                     args["tax_no"].asString(),
                     args["first_name"].asString(),

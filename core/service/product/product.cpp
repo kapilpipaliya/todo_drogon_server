@@ -1141,7 +1141,7 @@ Json::Value save_category( Json::Value event, Json::Value args) {
                             args["name"].asString(),
                             args["description"].asString(),
                             args["display_type"].asString(),
-                            args["parent_id"].asInt(),
+                            args["parent_id"].asInt64(),
                             args["position"].asInt()
                             );
             
@@ -1164,7 +1164,7 @@ Json::Value save_category( Json::Value event, Json::Value args) {
                 args["name"].asString(),
                 args["description"].asString(),
                 args["display_type"].asString(),
-                args["parent_id"].asInt(),
+                args["parent_id"].asInt64(),
                 args["position"].asInt()
                 );
             
