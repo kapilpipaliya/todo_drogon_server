@@ -9,16 +9,15 @@ void User::download(const HttpRequestPtr &req, std::function<void(const HttpResp
     auto resp = HttpResponse::newFileResponse(new_path);
     callback(resp);
 }
-void User::download_id(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback, int id, int version) {
+void User::download_id(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback, long id, int version) {
 //    auto id = req->getParameter("path", "default.png"); //?path=
     namespace fs = boost::filesystem;
     auto home = fs::path(getenv("HOME"));
     auto c = req->getCookie("admin");
     auto clientPtr = drogon::app().getDbClient("sce");
-    auto transPtr = clientPtr->newTransaction();
     try {
         auto sql = "SELECT name FROM product.post_attachment where id = $1";
-        auto x = transPtr->execSqlSync(sql, id);
+        auto x = clientPtr->execSqlSync(sql, id);
         if (!x.empty()) {
             //  auto new_path = std::string("/home/kapili3/fileuploads/") + x[0][0].c_str();
             auto resp = HttpResponse::newFileResponse(home.string() + "/fileuploads/" + x[0]["name"].c_str());
@@ -39,17 +38,16 @@ void User::download_id(const HttpRequestPtr &req, std::function<void(const HttpR
        callback(resp);
     }
 }
-void User::thumb_id(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback, int id, int version)
+void User::thumb_id(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback, long id, int version)
 {
     // auto id = req->getParameter("path", "default.png"); //?path=
     namespace fs = boost::filesystem;
     auto home = fs::path(getenv("HOME"));
     auto c = req->getCookie("admin");
     auto clientPtr = drogon::app().getDbClient("sce");
-    auto transPtr = clientPtr->newTransaction();
     try {
         auto sql = "SELECT name FROM setting.image where id = $1";
-        auto x = transPtr->execSqlSync(sql, id);
+        auto x = clientPtr->execSqlSync(sql, id);
         if (!x.empty()) {
             //  auto new_path = std::string("/home/kapili3/fileuploads/") + x[0][0].c_str();
             auto resp = HttpResponse::newFileResponse(home.string() + "/fileuploads/" + x[0]["name"].c_str());
