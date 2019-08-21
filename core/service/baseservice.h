@@ -55,7 +55,7 @@ protected:
     Json::Value updBase(Json::Value event, Json::Value args, std::string column, std::string values,  Args... args_bind)
     {
         setupTable();
-        t.updateFilterBase(args[0]);
+        t.updateFilterBase(args[1]);
         std::string strSql = t.m_query.buildUpdateQuery( column, values, "");
         try {
             clientPtr->execSqlSync(strSql, args_bind... );

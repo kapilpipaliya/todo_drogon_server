@@ -39,13 +39,13 @@ void SettingType::setupTable()
 Json::Value SettingType::ins(Json::Value event, Json::Value args)
 {
     return insBase(event, args, "name, description", "$1, $2",
-            args["name"].asString(),
-            args["description"].asString());
+            args[0]["name"].asString(),
+            args[0]["description"].asString());
 }
 
 Json::Value SettingType::upd(Json::Value event, Json::Value args)
 {
     return updBase(event, args, "name, description", "$1, $2",
-            args[1]["name"].asString(),
-            args[1]["description"].asString());
+            args[0]["name"].asString(),
+            args[0]["description"].asString());
 }

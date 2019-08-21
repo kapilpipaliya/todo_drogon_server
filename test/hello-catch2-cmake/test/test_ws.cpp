@@ -97,8 +97,8 @@ TEST_CASE("check that all table data are correctly replied","[WSTest]") {
 
 TEST_CASE("insert of ","[WSTest]") {
     SUD("account_type",
-        R"({"name":"name"})",
-        R"([      [null,"=name"]            ,{"name":"name1"}])",
+        R"([{"name":"name"}])",
+        R"([               {"name":"name1"},     [null,"=name"]])",
         R"([[null,"=name1"]])"
         )
 //    SUD("account",
@@ -107,13 +107,13 @@ TEST_CASE("insert of ","[WSTest]") {
 //        R"([[null, null, "=name1"]])"
 //        )
     SUD("account_heading",
-        R"({"name":"name", "accno": 12345})",
-        R"([      [null,null, "=name"]            ,{"name":"name1", "accno": 5555}])",
+        R"([{"name":"name", "accno": 12345}])",
+        R"([               {"name":"name1", "accno": 5555} ,   [null,null, "=name"]   ])",
         R"([[null, null, "=name1"]])"
         )
     SUD("journal_type",
-        R"({"rank": 1234, "name":"name", "description": "Hi whats app"})",
-        R"([      [null,null, "=name"]            ,{"rank": 12345, "name":"name1", "description": "Hi whats app1"}])",
+        R"([{"rank": 1234, "name":"name", "description": "Hi whats app"}])",
+        R"([             {"rank": 12345, "name":"name1", "description": "Hi whats app1"}  , [null,null, "=name"]   ])",
         R"([[null, null, "=name1"]])"
         )
 //    SUD("txn",
@@ -122,19 +122,19 @@ TEST_CASE("insert of ","[WSTest]") {
 //        R"([[null, null, "=name1"]])"
 //        )
     SUD("priority",
-        R"({"rank": 1234, "slug": "slug", "name":"name"})",
-        R"([      [null,null, "=slug"]            ,{"rank": 1234, "slug": "slug1", "name":"name1"}])",
+        R"([{"rank": 1234, "slug": "slug", "name":"name"}])",
+        R"([                {"rank": 1234, "slug": "slug1", "name":"name1"}  ,  [null,null, "=slug"]])",
         R"([[null, null, "=slug1"]])"
         )
 
     SUD("node",
-        R"({
+        R"([{
         "parent_id": 1,
         "rank": 1234,
         "slug": "slug",
         "label":"label"
-        })",
-        R"([      [null,null, null, "=slug"]            ,{"parent_id": 1,"rank": 1234, "slug": "slug1", "label":"label1"}])",
+        }])",
+        R"([              {"parent_id": 1,"rank": 1234, "slug": "slug1", "label":"label1"},  [null,null, null, "=slug"]   ])",
         R"([[null, null, null, "=slug1"]])"
         )
 //    SUD("wax_setting",
@@ -205,18 +205,18 @@ TEST_CASE("insert of ","[WSTest]") {
 //        R"([[null, null, "=name1"]])"
 //        )
 SUD("address_type",
-    R"({"name":"name"})",
-    R"([      [null,"=name"]            ,{"name":"name1"}])",
+    R"([{"name":"name"}])",
+    R"([             {"name":"name1"},   [null,"=name"]   ])",
     R"([[null,"=name1"]])"
     )
 SUD("contact_type",
-    R"({"name":"name"})",
-    R"([      [null,"=name"]            ,{"name":"name1"}])",
+    R"([{"name":"name"}])",
+    R"([                 {"name":"name1"},   [null,"=name"]])",
     R"([[null,"=name1"]])"
     )
 SUD("entity_type",
-    R"({"name":"name"})",
-    R"([      [null,"=name"]            ,{"name":"name1"}])",
+    R"([{"name":"name"}])",
+    R"([               {"name":"name1"},  [null,"=name"]  ])",
     R"([[null,"=name1"]])"
     )
 //    SUD("entity",
@@ -230,34 +230,34 @@ SUD("entity_type",
 //        R"([[null, null, "=name1"]])"
 //        )
     SUD("currency",
-        R"({
+        R"([{
         "slug": "slug1",
         "name":"name",
         "symbol": "123456",
         "rounding": 0.02,
         "active":true
-        })",
-        R"([      [null, "=slug1"]            ,{"slug": "slug2","name":"name1", "symbol": "12345688", "rounding": 0.05, "active": false}])",
+        }])",
+        R"([               {"slug": "slug2","name":"name1", "symbol": "12345688", "rounding": 0.05, "active": false},    [null, "=slug1"]  ])",
         R"([[null, "=slug2"]])"
         )
     SUD("log",
-        R"({"detail":"name"})",
-        R"([      [null,"=name"]            ,{"detail":"name1"}])",
+        R"([{"detail":"name"}])",
+        R"([                {"detail":"name1"}, [null,"=name"]  ])",
         R"([[null,  "=name1"]])"
         )
     SUD("support",
-        R"({
+        R"([{
         "name":"name",
         "email": "123456",
         "phone": "Hi whats app",
         "message": "Hi whats app"
-        })",
-        R"([      [null,"=name"]            ,{"name":"name1", "email": "12345688", "phone": "Hi whats app1", "message":"Hi 2"}])",
+        }])",
+        R"([              {"name":"name1", "email": "12345688", "phone": "Hi whats app1", "message":"Hi 2"}  ,  [null,"=name"]   ])",
         R"([[null, null, "=name1"]])"
         )
 SUD("image_collection",
-    R"({"name":"name"})",
-    R"([      [null,"=name"]            ,{"name":"name1"}])",
+    R"([{"name":"name"}])",
+    R"([            {"name":"name1"}  ,   [null,"=name"]  ])",
     R"([[null,"=name1"]])"
     )
 //    SUD("image",
@@ -266,8 +266,8 @@ SUD("image_collection",
 //        R"([[null, null, "=name1"]])"
 //        )
     SUD("payment_method",
-        R"({"name":"name", "url": "123456", "description": "Hi whats app"})",
-        R"([      [null, "=name"]            ,{"name":"name1", "url": "12345688", "description": "Hi whats app1"}])",
+        R"([{"name":"name", "url": "123456", "description": "Hi whats app"}])",
+        R"([                {"name":"name1", "url": "12345688", "description": "Hi whats app1"}  ,  [null, "=name"]  ])",
         R"([[null, "=name1"]])"
         )
 //    SUD("product",
@@ -281,8 +281,8 @@ SUD("image_collection",
 //        R"([[null, null, "=name1"]])"
 //        )
     SUD("category",
-        R"({"slug":"slug", "name": "name", "description": "Hi whats app", "display_type": "default"})",
-        R"([      [null,null,null, null, null,"=name"]            ,{"slug":"slug1", "name": "name1", "description": "Hi whats app1", "display_type": "default"}])",
+        R"([{"slug":"slug", "name": "name", "description": "Hi whats app", "display_type": "default"}])",
+        R"([              {"slug":"slug1", "name": "name1", "description": "Hi whats app1", "display_type": "default"},   [null,null,null, null, null,"=name"]   ])",
         R"([[null,null,null, null, null,"=name1"]])"
         )
 //    SUD("tag",
@@ -291,24 +291,24 @@ SUD("image_collection",
 //        R"([[null, null, "=name1"]])"
 //        )
     SUD("shipping_class",
-        R"({"slug":"slug", "name": "name", "description": "Hi whats app"})",
-        R"([      [null,"=slug"]            ,{"slug":"slug1", "name": "name1", "description": "Hi whats app1"}])",
+        R"([{"slug":"slug", "name": "name", "description": "Hi whats app"}])",
+        R"([                 {"slug":"slug1", "name": "name1", "description": "Hi whats app1"} ,  [null,"=slug"] ])",
         R"([[null, "=slug1"]])"
         )
     SUD("setting_type",
-        R"({"name":"name", "description": "Hi whats app"})",
-        R"([      [null,"=name"]            ,{"name":"name1", "description": "Hi whats app1"}])",
+        R"([{"name":"name", "description": "Hi whats app"}])",
+        R"([                {"name":"name1", "description": "Hi whats app1"},   [null,"=name"] ])",
         R"([[null, "=name1"]])"
         )
     SUD("certified_by",
-        R"({"slug":"slug","name":"name","title":"title","description":"discription"})",
-        R"([      [null,"=slug",null,null,null]            ,{"slug":"slug1","name":"name1","title":"title1","description":"discription1"}])",
+        R"([{"slug":"slug","name":"name","title":"title","description":"discription"}])",
+        R"([               {"slug":"slug1","name":"name1","title":"title1","description":"discription1"},  [null,"=slug",null,null,null]  ])",
         R"([[null,"=slug1",null,null,null]])"
         )
 
     SUD("policy",
-        R"({"name":"name", "url": "123456", "description": "Hi whats app"})",
-        R"([      [null, "=name"]            ,{"name":"name1", "url": "12345688", "description": "Hi whats app1"}])",
+        R"([{"name":"name", "url": "123456", "description": "Hi whats app"}])",
+        R"([               {"name":"name1", "url": "12345688", "description": "Hi whats app1"}, [null, "=name"]   ])",
         R"([[null, "=name1"]])"
         )
 

@@ -42,10 +42,10 @@ void Department::setupTable()
 
 Json::Value Department::ins(Json::Value event, Json::Value args)
 {
-    return insBase(event, args, "name", "$1",  args["name"].asString() );
+    return insBase(event, args, "name", "$1",  args[0]["name"].asString() );
 }
 
 Json::Value Department::upd(Json::Value event, Json::Value args)
 {
-    return updBase(event, args, "name", "$1", args[1]["name"].asString());
+    return updBase(event, args, "name", "$1", args[0]["name"].asString());
 }

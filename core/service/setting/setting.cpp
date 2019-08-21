@@ -63,13 +63,13 @@ Json::Value Setting::del( Json::Value event, Json::Value args)
 Json::Value Setting::save( Json::Value event, Json::Value args) {
     // check if key exist
     auto transPtr = clientPtr->newTransaction();
-    auto y = transPtr->execSqlSync("select key from setting.setting where key = $1", args["key"].asString());
+    auto y = transPtr->execSqlSync("select key from setting.setting where key = $1", args[0]["key"].asString());
     
     if (y.size() != 0) {
         std::string strSql = "update setting.setting set (value_int, value_num, value_text) = ROW($2, $3, $4) where key=$1";
         auto transPtr = clientPtr->newTransaction();
         try {
-            transPtr->execSqlSync(strSql, args["key"].asString(), args["value_int"].asInt(), args["value_num"].asDouble(), args["value_text"].asString());
+            transPtr->execSqlSync(strSql, args[0]["key"].asString(), args[0]["value_int"].asInt(), args[0]["value_num"].asDouble(), args[0]["value_text"].asString());
             
             Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
@@ -81,7 +81,7 @@ Json::Value Setting::save( Json::Value event, Json::Value args) {
         std::string strSql = "INSERT INTO setting.setting (key, value_int, value_num, value_text, setting_type, setting) values($1, $2, $3, $4, $5, $6)";
         auto transPtr = clientPtr->newTransaction();
         try {
-            transPtr->execSqlSync(strSql, args["key"].asString(), args["value_int"].asInt(), args["value_num"].asDouble(), args["value_text"].asString(), args["setting_type"].asString(), args["setting"].toStyledString());
+            transPtr->execSqlSync(strSql, args[0]["key"].asString(), args[0]["value_int"].asInt(), args[0]["value_num"].asDouble(), args[0]["value_text"].asString(), args[0]["setting_type"].asString(), args[0]["setting"].toStyledString());
             
             Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {

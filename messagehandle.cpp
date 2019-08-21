@@ -132,7 +132,7 @@ void MessageHandle::blocking_run()
                     if(!out.empty()){
                         wsConnPtr->send(out.toStyledString()); // This Sometimes skipped.
                     } else {
-                        nlohmann::json j =  "Message cant served: maybe not valid batch: " + message;
+                        nlohmann::json j =  "Message cant served: maybe not valid events in batch: " + message;
                         wsConnPtr->send(j.dump());
                     }
                     // fprintf(stdout, "\nJson out:\n");
@@ -452,7 +452,7 @@ void NoCAF::blocking_run()
                     if(!out.empty()){
                         wsConnPtr->send(out.toStyledString()); // This Sometimes skipped.
                     } else {
-                        nlohmann::json j =  "Message cant served: maybe not valid batch: " + message;
+                        nlohmann::json j =  "Message cant served: maybe not valid events in batch: " + message;
                         wsConnPtr->send(j.dump());
                     }
                     // fprintf(stdout, "\nJson out:\n");

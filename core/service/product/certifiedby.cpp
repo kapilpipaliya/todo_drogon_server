@@ -37,40 +37,22 @@ void CertifiedBy::setupTable()
             };
 }
 
-Json::Value CertifiedBy::ins( Json::Value event, Json::Value args) {
-    auto strSql = format("INSERT INTO {} (slug, name, title, description) values($1, $2, $3, $4)", t.m_table.toString());
-    try {
-        clientPtr->execSqlSync(
-            strSql,
-            args["slug"].asString(),
-            args["name"].asString(),
-            args["title"].asString(),
-            args["description"].asString()
+Json::Value CertifiedBy::ins(Json::Value event, Json::Value args)
+{
+    return insBase(event, args, "slug, name, title, description", "$1, $2, $3, $4",
+                   args[0]["slug"].asString(),
+                   args[0]["name"].asString(),
+                   args[0]["title"].asString(),
+                   args[0]["description"].asString()
             );
-        Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
-    } catch (const std::exception &e) {
-        std::cerr << e.what() << std::endl;
-        Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
-    }
 }
 
-Json::Value CertifiedBy::upd( Json::Value event, Json::Value args) {
-    setupTable();
-    t.updateFilterBase(args[0]);
-    std::string strSql = t.m_query.buildUpdateQuery( "slug, name, title, description", "$1, $2, $3, $4", "");
-    auto a = args[1];
-    try {
-        clientPtr->execSqlSync(strSql,
-                //a["id"].asInt64(),
-                a["slug"].asString(),
-                a["name"].asString(),
-                a["title"].asString(),
-                a["description"].asString()
-                );
-        Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
-    } catch (const std::exception &e) {
-        std::cerr << e.what() << std::endl;
-        Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
-    }
-
+Json::Value CertifiedBy::upd(Json::Value event, Json::Value args)
+{
+    return updBase(event, args, "slug, name, title, description", "$1, $2, $3, $4",
+                   args[0]["slug"].asString(),
+                   args[0]["name"].asString(),
+                   args[0]["title"].asString(),
+                   args[0]["description"].asString()
+            );
 }

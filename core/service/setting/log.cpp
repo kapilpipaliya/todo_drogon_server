@@ -34,10 +34,10 @@ void Log::setupTable()
 }
 Json::Value Log::ins(Json::Value event, Json::Value args)
 {
-    return insBase(event, args, "detail", "$1",  args["detail"].asString() );
+    return insBase(event, args, "detail", "$1",  args[0]["detail"].asString() );
 }
 
 Json::Value Log::upd(Json::Value event, Json::Value args)
 {
-    return updBase(event, args, "detail", "$1", args[1]["detail"].asString());
+    return updBase(event, args, "detail", "$1", args[0]["detail"].asString());
 }

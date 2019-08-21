@@ -61,7 +61,7 @@ Json::Value CSSize::ins( Json::Value event, Json::Value args) {
     auto size_meta_table = sqlb::ObjectIdentifier("material", "color_stone_size_meta", "sm");
 
     // first insert size then insert on meta ...................
-    auto size_name = args["size_name"].asString();
+    auto size_name = args[0]["size_name"].asString();
     std::string strSqlSizeSel = "SELECT id, name FROM material.size WHERE name = $1";
     std::string strSqlSizeIns = "INSERT INTO material.size (name) VALUES ($1) RETURNING id";
 
@@ -89,13 +89,13 @@ Json::Value CSSize::ins( Json::Value event, Json::Value args) {
 
         transPtr->execSqlSync(
             strSql,
-            args["cs_type_id"].asInt(),
-            args["shape_id"].asInt(),
+            args[0]["cs_type_id"].asInt(),
+            args[0]["shape_id"].asInt(),
             size_id,
-            args["weight"].asDouble(),
-            args["currency_id"].asInt(),
-            args["rate_on_id"].asString(),
-            args["rate"].asDouble()
+            args[0]["weight"].asDouble(),
+            args[0]["currency_id"].asInt(),
+            args[0]["rate_on_id"].asString(),
+            args[0]["rate"].asDouble()
             );
 
 
@@ -106,10 +106,10 @@ Json::Value CSSize::ins( Json::Value event, Json::Value args) {
         };
         std::vector<ProductUpdate> productUpdate;
 
-        auto s = transPtr->execSqlSync(strSqlSizeGet, args["cs_type_id"].asInt(), args["shape_id"].asInt(), size_id);
+        auto s = transPtr->execSqlSync(strSqlSizeGet, args[0]["cs_type_id"].asInt(), args[0]["shape_id"].asInt(), size_id);
         for (auto prow : s) {
-            auto w = args["weight"].asDouble();
-            auto rate = args["rate"].asDouble();
+            auto w = args[0]["weight"].asDouble();
+            auto rate = args[0]["rate"].asDouble();
             auto pcs = prow[1].as<int>();
             transPtr->execSqlSync(strSqlPriceUpdate, prow["cs_id"].as<int>(), w, w * pcs, rate, pcs * w * rate);
             std::vector<ProductUpdate>::iterator it = std::find_if(productUpdate.begin(), productUpdate.end(),
@@ -142,7 +142,7 @@ Json::Value CSSize::upd( Json::Value event, Json::Value args) {
     auto size_meta_table = sqlb::ObjectIdentifier("material", "color_stone_size_meta", "sm");
 
     // first insert size then insert on meta ...................
-    auto size_name = args["size_name"].asString();
+    auto size_name = args[0]["size_name"].asString();
     std::string strSqlSizeSel = "SELECT id, name FROM material.size WHERE name = $1";
     std::string strSqlSizeIns = "INSERT INTO material.size (name) VALUES ($1) RETURNING id";
 
@@ -153,7 +153,7 @@ Json::Value CSSize::upd( Json::Value event, Json::Value args) {
     auto pc = upd_("product.post_cs_total", "weight, price", "$2, $3", "where post_id = $1");
 
 
-    if (args["id"].asInt()) {
+    if (args[0]["id"].asInt()) {
         std::string strSql =
                 "update %1.%2 set "
                 "(cs_type_id, shape_id, size_id, weight, currency_id, rate_on_id, rate)"
@@ -177,18 +177,18 @@ Json::Value CSSize::upd( Json::Value event, Json::Value args) {
                 size_id = r[0]["id"].as<int>();
             }
 
-            auto old_row = transPtr->execSqlSync(strSqlSizeId, args["id"].asInt());
+            auto old_row = transPtr->execSqlSync(strSqlSizeId, args[0]["id"].asInt());
             int old_size_id = old_row[0]["id"].as<int>();
 
             transPtr->execSqlSync(strSql,
-                            args["id"].asInt64(),
-                    args["cs_type_id"].asInt(),
-                    args["shape_id"].asInt(),
+                            args[0]["id"].asInt64(),
+                    args[0]["cs_type_id"].asInt(),
+                    args[0]["shape_id"].asInt(),
                     size_id,
-                    args["weight"].asDouble(),
-                    args["currency_id"].asInt(),
-                    args["rate_on_id"].asString(),
-                    args["rate"].asDouble()
+                    args[0]["weight"].asDouble(),
+                    args[0]["currency_id"].asInt(),
+                    args[0]["rate_on_id"].asString(),
+                    args[0]["rate"].asDouble()
                     );
             // If old size count = 0, delete size:
             auto r3 = transPtr->execSqlSync(strSqlSizeCount, old_size_id);
@@ -203,10 +203,10 @@ Json::Value CSSize::upd( Json::Value event, Json::Value args) {
             };
             std::vector<ProductUpdate> productUpdate;
 
-            auto s = transPtr->execSqlSync(strSqlSizeGet, args["cs_type_id"].asInt(), args["shape_id"].asInt(), size_id);
+            auto s = transPtr->execSqlSync(strSqlSizeGet, args[0]["cs_type_id"].asInt(), args[0]["shape_id"].asInt(), size_id);
             for (auto prow : s) {
-                auto w = args["weight"].asDouble();
-                auto rate = args["rate"].asDouble();
+                auto w = args[0]["weight"].asDouble();
+                auto rate = args[0]["rate"].asDouble();
                 auto pcs = prow[1].as<int>();
                 transPtr->execSqlSync(strSqlPriceUpdate, prow["cs_id"].as<int>(), w, w * pcs, rate, pcs * w * rate);
                 // Get all post_ids:

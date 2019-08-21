@@ -48,8 +48,8 @@ Json::Value Accessory::ins( Json::Value event, Json::Value args) {
     try {
         transPtr->execSqlSync(
             strSql,
-            args["slug"].asString(),
-            args["name"].asString()
+            args[0]["slug"].asString(),
+            args[0]["name"].asString()
             );
 
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
@@ -62,7 +62,7 @@ Json::Value Accessory::ins( Json::Value event, Json::Value args) {
 Json::Value Accessory::upd( Json::Value event, Json::Value args) {
     auto accessory_table = sqlb::ObjectIdentifier("material", "accessory", "t");
 
-    if (args["id"].asInt()) {
+    if (args[0]["id"].asInt()) {
         std::string strSql =
                 "update %1.%2 set "
                 "(slug, name)"
@@ -73,9 +73,9 @@ Json::Value Accessory::upd( Json::Value event, Json::Value args) {
         auto transPtr = clientPtr->newTransaction();
         try {
             transPtr->execSqlSync(strSql,
-                            args["id"].asInt64(),
-                    args["slug"].asString(),
-                    args["name"].asString()
+                            args[0]["id"].asInt64(),
+                    args[0]["slug"].asString(),
+                    args[0]["name"].asString()
                     );
 
             Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;

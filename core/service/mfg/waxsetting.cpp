@@ -50,17 +50,17 @@ void WaxSetting::setupTable()
 Json::Value WaxSetting::ins(Json::Value event, Json::Value args)
 {
     return insBase(event, args, "date, department_id, employee_id, description, status_id", "$1, $2, $3, $4, $5",
-                   args["date"].asString(),
-                                  args["department_id"].asInt(), args["employee_id"].asInt(), args["description"].asString(),
-                                  args["status_id"].asString()
+                   args[0]["date"].asString(),
+                                  args[0]["department_id"].asInt(), args[0]["employee_id"].asInt(), args[0]["description"].asString(),
+                                  args[0]["status_id"].asString()
             );
 }
 
 Json::Value WaxSetting::upd(Json::Value event, Json::Value args)
 {
     return updBase(event, args, "date, department_id, employee_id, description, status_id", "$1, $2, $3, $4, $5",
-                   args["date"].asString(),
-                                  args["department_id"].asInt(), args["employee_id"].asInt(), args["description"].asString(),
-                                  args["status_id"].asString()
+                   args[0]["date"].asString(),
+                                  args[0]["department_id"].asInt(), args[0]["employee_id"].asInt(), args[0]["description"].asString(),
+                                  args[0]["status_id"].asString()
             );
 }

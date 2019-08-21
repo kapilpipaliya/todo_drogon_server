@@ -46,9 +46,9 @@ Json::Value Tag::ins( Json::Value event, Json::Value args) {
     try {
         transPtr->execSqlSync(
             strSql,
-            args["slug"].asString(),
-            args["name"].asString(),
-            args["description"].asString()
+            args[0]["slug"].asString(),
+            args[0]["name"].asString(),
+            args[0]["description"].asString()
             );
         
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
@@ -62,7 +62,7 @@ Json::Value Tag::upd( Json::Value event, Json::Value args) {
     printJson(args);
     auto product_table = sqlb::ObjectIdentifier("post", "tag", "t");
 
-    if (args["id"].asInt()) {
+    if (args[0]["id"].asInt()) {
         std::string strSql =
                 "update %1.%2 set "
                 "(slug, name, description)"
@@ -73,10 +73,10 @@ Json::Value Tag::upd( Json::Value event, Json::Value args) {
         auto transPtr = clientPtr->newTransaction();
         try {
             transPtr->execSqlSync(strSql,
-                            args["id"].asInt64(),
-                    args["slug"].asString(),
-                    args["name"].asString(),
-                    args["description"].asString()
+                            args[0]["id"].asInt64(),
+                    args[0]["slug"].asString(),
+                    args[0]["name"].asString(),
+                    args[0]["description"].asString()
                     );
             
             Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;

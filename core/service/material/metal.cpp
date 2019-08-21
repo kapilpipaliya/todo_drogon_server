@@ -53,11 +53,11 @@ Json::Value Metal::ins( Json::Value event, Json::Value args) {
     try {
         transPtr->execSqlSync(
             strSql,
-            args["slug"].asString(),
-            args["name"].asString(),
-            args["specific_density"].asDouble(),
-            args["price"].asDouble(),
-            args["melting_point_in_c"].asDouble()
+            args[0]["slug"].asString(),
+            args[0]["name"].asString(),
+            args[0]["specific_density"].asDouble(),
+            args[0]["price"].asDouble(),
+            args[0]["melting_point_in_c"].asDouble()
             );
 
         
@@ -71,7 +71,7 @@ Json::Value Metal::ins( Json::Value event, Json::Value args) {
 Json::Value Metal::upd( Json::Value event, Json::Value args) {
     auto metal_table = sqlb::ObjectIdentifier("material", "metal", "m");
 
-    if (args["id"].asInt()) {
+    if (args[0]["id"].asInt()) {
         std::string strSql =
                 "update %1.%2 set "
                 "(slug, name, specific_density, price, melting_point_in_c)"
@@ -82,12 +82,12 @@ Json::Value Metal::upd( Json::Value event, Json::Value args) {
         auto transPtr = clientPtr->newTransaction();
         try {
             transPtr->execSqlSync(strSql,
-                            args["id"].asInt64(),
-                    args["slug"].asString(),
-                    args["name"].asString(),
-                    args["specific_density"].asDouble(),
-                    args["price"].asDouble(),
-                    args["melting_point_in_c"].asDouble()
+                            args[0]["id"].asInt64(),
+                    args[0]["slug"].asString(),
+                    args[0]["name"].asString(),
+                    args[0]["specific_density"].asDouble(),
+                    args[0]["price"].asDouble(),
+                    args[0]["melting_point_in_c"].asDouble()
                     );
             //1 purity_metal
             auto pr_update = R"(
@@ -99,7 +99,7 @@ Json::Value Metal::upd( Json::Value event, Json::Value args) {
                              pm.metal_id = $1
                              returning pm.purity_id;
                              )";
-            auto pr = transPtr->execSqlSync(pr_update, args["id"].asInt());
+            auto pr = transPtr->execSqlSync(pr_update, args[0]["id"].asInt());
 
             ids2(pr, id1)
             //2. purity
@@ -112,7 +112,7 @@ Json::Value Metal::upd( Json::Value event, Json::Value args) {
                                p.metal_id = $1
                                returning p.id;
                                )";
-            auto pr0 = transPtr->execSqlSync(pr_update01, args["id"].asInt());
+            auto pr0 = transPtr->execSqlSync(pr_update01, args[0]["id"].asInt());
             ids2(pr, id2)
             //3. purity_tone
             auto pr_update2 = R"(

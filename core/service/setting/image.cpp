@@ -85,11 +85,11 @@ Json::Value Image::ins( Json::Value event, Json::Value args) {
     std::string strSql = "INSERT INTO " + t + " (" + c + ") values(NULLIF($1,0), $2, $3, $4, $5, $6, $7, $8)";
     auto transPtr = clientPtr->newTransaction();
     try {
-        auto temp_id = args["temp_id"].asInt();
+        auto temp_id = args[0]["temp_id"].asInt();
         if (temp_id != 0) {
             auto z = transPtr->execSqlSync(strSqlTempImage, temp_id);
             if (z.size() == 1) {
-                transPtr->execSqlSync(strSql, args["image_collection_id"].asInt(), z[0]["name"].c_str(), z[0]["size"].as<int>(),z[0]["type"].c_str(), args["title"].asString(), args["description"].asString(), args["url"].asString(), args["position"].asInt());
+                transPtr->execSqlSync(strSql, args[0]["image_collection_id"].asInt(), z[0]["name"].c_str(), z[0]["size"].as<int>(),z[0]["type"].c_str(), args[0]["title"].asString(), args[0]["description"].asString(), args[0]["url"].asString(), args[0]["position"].asInt());
                 transPtr->execSqlSync(strSqlTempImageDel, temp_id);
             }
         } else {
@@ -112,19 +112,19 @@ Json::Value Image::upd( Json::Value event, Json::Value args) {
     std::string strSqlTempImage = "SELECT name, size, type FROM setting.temp_image_id WHERE id = $1";
     std::string strSqlTempImageDel = "DELETE FROM setting.temp_image_id WHERE id = $1";
 
-    if (args["id"].asInt()) {
+    if (args[0]["id"].asInt()) {
         std::string strSql = "update " + t + " set (" + c + ", version) = ROW(NULLIF($2, 0), $3, $4, $5, $6, $7, $8, $9, version + 1) where id=$1" ;
         auto transPtr = clientPtr->newTransaction();
         try {
-            auto temp_id = args["temp_id"].asInt();
+            auto temp_id = args[0]["temp_id"].asInt();
             if (temp_id != 0) {
                 auto z = transPtr->execSqlSync(strSqlTempImage, temp_id);
                 if (z.size() == 1) {
-                    transPtr->execSqlSync(strSql, args["id"].asInt64(), args["image_collection_id"].asInt(), z[0]["name"].c_str(), z[0]["size"].as<int>(),z[0]["type"].c_str(), args["title"].asString(), args["description"].asString(), args["url"].asString(), args["position"].asInt());
+                    transPtr->execSqlSync(strSql, args[0]["id"].asInt64(), args[0]["image_collection_id"].asInt(), z[0]["name"].c_str(), z[0]["size"].as<int>(),z[0]["type"].c_str(), args[0]["title"].asString(), args[0]["description"].asString(), args[0]["url"].asString(), args[0]["position"].asInt());
                     transPtr->execSqlSync(strSqlTempImageDel, temp_id);
                 }
             } else {
-                transPtr->execSqlSync("UPDATE setting.image SET (title, description, url, position, version) = ROW($2, $3, $4, $5, version + 1) WHERE id = $1", args["id"].asInt64(), args["title"].asString(), args["description"].asString(), args["url"].asString(), args["position"].asInt());
+                transPtr->execSqlSync("UPDATE setting.image SET (title, description, url, position, version) = ROW($2, $3, $4, $5, version + 1) WHERE id = $1", args[0]["id"].asInt64(), args[0]["title"].asString(), args[0]["description"].asString(), args[0]["url"].asString(), args[0]["position"].asInt());
             }
             
 

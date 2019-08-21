@@ -48,17 +48,17 @@ Json::Value Post1::ins( Json::Value event, Json::Value args) {
     try {
         auto x = transPtr->execSqlSync(
             strSqlPost,
-            args["comment_status"].asBool(),
-            args["menu_order"].asInt(),
-            args["excerpt"].asString(),
-            args["content"].asString(),
-            args["title"].asString(),
-            args["name"].asString(),
-            args["password"].asString(),
-            args["status"].asString(),
-            args["date"].asString(),
-            args["type"].asString(),
-            args["visibility"].asString()
+            args[0]["comment_status"].asBool(),
+            args[0]["menu_order"].asInt(),
+            args[0]["excerpt"].asString(),
+            args[0]["content"].asString(),
+            args[0]["title"].asString(),
+            args[0]["name"].asString(),
+            args[0]["password"].asString(),
+            args[0]["status"].asString(),
+            args[0]["date"].asString(),
+            args[0]["type"].asString(),
+            args[0]["visibility"].asString()
             );
         auto post_id = x[0]["id"].as<int>();
 
@@ -76,7 +76,7 @@ Json::Value Post1::ins( Json::Value event, Json::Value args) {
 Json::Value Post1::upd( Json::Value event, Json::Value args) {
     auto post_table = sqlb::ObjectIdentifier("post", "post", "p");
 
-    if (args["id"].asInt()) {
+    if (args[0]["id"].asInt()) {
         std::string strSqlPost =
                 "update %1.%2 set "
                 "(comment_status, menu_order, excerpt, content, title, name, password, status, date, type, visibility)"
@@ -87,20 +87,20 @@ Json::Value Post1::upd( Json::Value event, Json::Value args) {
         auto transPtr = clientPtr->newTransaction();
         try {
             transPtr->execSqlSync(strSqlPost,
-                            args["id"].asInt64(),
-                    args["comment_status"].asBool(),
-                    args["menu_order"].asInt(),
-                    args["excerpt"].asString(),
-                    args["content"].asString(),
-                    args["title"].asString(),
-                    args["name"].asString(),
-                    args["password"].asString(),
-                    args["status"].asString(),
-                    args["date"].asString(),
-                    args["type"].asString(),
-                    args["visibility"].asString()
+                            args[0]["id"].asInt64(),
+                    args[0]["comment_status"].asBool(),
+                    args[0]["menu_order"].asInt(),
+                    args[0]["excerpt"].asString(),
+                    args[0]["content"].asString(),
+                    args[0]["title"].asString(),
+                    args[0]["name"].asString(),
+                    args[0]["password"].asString(),
+                    args[0]["status"].asString(),
+                    args[0]["date"].asString(),
+                    args[0]["type"].asString(),
+                    args[0]["visibility"].asString()
                     );
-            auto post_id = args["id"].asInt();
+            auto post_id = args[0]["id"].asInt();
 
             //product_tags_process(tags_table, post_tag_table, in, txn, post_id);
             //save_product_categories(post_category_table, in, txn, post_id);

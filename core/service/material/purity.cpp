@@ -113,7 +113,7 @@ void save_purity_tone_(Json::Value &args, std::shared_ptr<Transaction> transPtr,
         Json::Value j;
     };
     std::vector<PurityTone> inVector;
-    for (auto i : args["pt_purity_tone"]) {
+    for (auto i : args[0]["pt_purity_tone"]) {
         if (!i[0].isNull()) inVector.push_back({i[0].asInt(), i[2].asDouble(), i[1]});
     }
 
@@ -156,12 +156,12 @@ Json::Value Purity::ins( Json::Value event, Json::Value args) {
     try {
         auto x = transPtr->execSqlSync(
             strSql,
-            args["slug"].asString(),
-            args["name"].asString(),
-            args["metal_id"].asInt(),
-            args["purity"].asDouble(),
-            args["price"].asDouble(),
-            args["description"].asString()
+            args[0]["slug"].asString(),
+            args[0]["name"].asString(),
+            args[0]["metal_id"].asInt(),
+            args[0]["purity"].asDouble(),
+            args[0]["price"].asDouble(),
+            args[0]["description"].asString()
             );
         auto purity_id = x[0]["id"].as<int>();
         save_purity_tone_(args, transPtr, purity_id);
@@ -177,7 +177,7 @@ Json::Value Purity::upd( Json::Value event, Json::Value args) {
     auto metal_purity_table = sqlb::ObjectIdentifier("material", "purity", "p");
     auto purity_metal_table = sqlb::ObjectIdentifier("material", "purity_metal", "mp");
 
-    if (args["id"].asInt()) {
+    if (args[0]["id"].asInt()) {
         std::string strSql =
                 "update %1.%2 set (slug, name, metal_id, purity, price, description) = ROW($2, $3, $4, $5, $6, $7) where id=$1";
         ReplaceAll2(strSql, "%1", metal_purity_table.schema());
@@ -186,15 +186,15 @@ Json::Value Purity::upd( Json::Value event, Json::Value args) {
         auto transPtr = clientPtr->newTransaction();
         try {
             transPtr->execSqlSync(strSql,
-                            args["id"].asInt64(),
-                    args["slug"].asString(),
-                    args["name"].asString(),
-                    args["metal_id"].asInt(),
-                    args["purity"].asDouble(),
-                    args["price"].asDouble(),
-                    args["description"].asString()
+                            args[0]["id"].asInt64(),
+                    args[0]["slug"].asString(),
+                    args[0]["name"].asString(),
+                    args[0]["metal_id"].asInt(),
+                    args[0]["purity"].asDouble(),
+                    args[0]["price"].asDouble(),
+                    args[0]["description"].asString()
                     );
-            auto purity_id = args["id"].asInt();
+            auto purity_id = args[0]["id"].asInt();
             save_purity_tone_(args, transPtr, purity_id);
 
             auto pr_update3 = R"(
@@ -216,7 +216,7 @@ Json::Value Purity::upd( Json::Value event, Json::Value args) {
                               p.purity_id = $1 returning p.post_id
                               )";
 
-            auto product_update = transPtr->execSqlSync(pr_update3, args["id"].asInt());
+            auto product_update = transPtr->execSqlSync(pr_update3, args[0]["id"].asInt());
             ids2(product_update, ids);
             auto pr_update4 = R"(
                               UPDATE product.purity_tone pt

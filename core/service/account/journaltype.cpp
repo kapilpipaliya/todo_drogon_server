@@ -36,10 +36,10 @@ JournalType::JournalType(const WebSocketConnectionPtr& wsConnPtr_): BaseService(
 }
 Json::Value JournalType::ins(Json::Value event, Json::Value args)
 {
-    return insBase(event, args, "rank, name, description", "$1, $2, $3", args["rank"].asInt(), args["name"].asString(), args["description"].asString());
+    return insBase(event, args, "rank, name, description", "$1, $2, $3", args[0]["rank"].asInt(), args[0]["name"].asString(), args[0]["description"].asString());
 }
 
 Json::Value JournalType::upd(Json::Value event, Json::Value args)
 {
-    return updBase(event, args, "rank, name, description", "$1, $2, $3", args[1]["rank"].asInt(), args[1]["name"].asString(), args[1]["description"].asString());
+    return updBase(event, args, "rank, name, description", "$1, $2, $3", args[0]["rank"].asInt(), args[0]["name"].asString(), args[0]["description"].asString());
 }

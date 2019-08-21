@@ -120,7 +120,7 @@ void save_txn_order_item(Json::Value &args, std::shared_ptr<Transaction> transPt
         std::string instruction;
     };
     std::vector<OrderItem> newItems; // id Shape	Color	Size	Pcs
-    for (auto i : args["o_i_order_item"]) {
+    for (auto i : args[0]["o_i_order_item"]) {
         if (!i[1].isNull()) { // to pass null row
             newItems.push_back({i[0].asInt(), i[1].asInt(), i[2].asInt(), i[3].asInt(), i[4].asInt(), i[5].asInt(), i[6].asDouble(), i[7].asString()});
         }
@@ -162,8 +162,8 @@ Json::Value Txn::ins( Json::Value event, Json::Value args) {
         auto transPtr = clientPtr->newTransaction();
         auto x =
             transPtr->execSqlSync(strSqlPost,
-                            args["journal_type_id"].asInt(), args["party_id"].asInt(), args["date"].asString(),
-                            args["description"].asString()
+                            args[0]["journal_type_id"].asInt(), args[0]["party_id"].asInt(), args[0]["date"].asString(),
+                            args[0]["description"].asString()
                             );
         auto txn_id = x[0]["id"].as<int>();
         save_txn_order_item(args, transPtr, txn_id);
@@ -175,7 +175,7 @@ Json::Value Txn::ins( Json::Value event, Json::Value args) {
     }
 }
 Json::Value Txn::upd( Json::Value event, Json::Value args) {
-    if (args["id"].asInt()) {
+    if (args[0]["id"].asInt()) {
         std::string strSqlPost =
                 "update account.txn set (journal_type_id, party_id, date, description )"
                 " = ROW($2, $3, $4, $5) where id=$1";
@@ -183,11 +183,11 @@ Json::Value Txn::upd( Json::Value event, Json::Value args) {
         try {
             auto transPtr = clientPtr->newTransaction();
             transPtr->execSqlSync(strSqlPost,
-                            args["id"].asInt64(),
-                    args["journal_type_id"].asInt(), args["party_id"].asInt(), args["date"].asString(),
-                    args["description"].asString()
+                            args[0]["id"].asInt64(),
+                    args[0]["journal_type_id"].asInt(), args[0]["party_id"].asInt(), args[0]["date"].asString(),
+                    args[0]["description"].asString()
                     );
-            auto txn_id = args["id"].asInt();
+            auto txn_id = args[0]["id"].asInt();
             save_txn_order_item(args, transPtr, txn_id);
 
             Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;

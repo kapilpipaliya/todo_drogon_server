@@ -31,10 +31,10 @@ AccountHeading::AccountHeading(const WebSocketConnectionPtr& wsConnPtr_): BaseSe
 }
 Json::Value AccountHeading::ins(Json::Value event, Json::Value args)
 {
-    return insBase(event, args, "name, accno", "$1, $2",  args["name"].asString(), args["accno"].asString());
+    return insBase(event, args, "name, accno", "$1, $2",  args[0]["name"].asString(), args[0]["accno"].asString());
 }
 
 Json::Value AccountHeading::upd(Json::Value event, Json::Value args)
 {
-    return updBase(event, args, "name, accno", "$1, $2", args[1]["name"].asString(), args[1]["accno"].asString());
+    return updBase(event, args, "name, accno", "$1, $2", args[0]["name"].asString(), args[0]["accno"].asString());
 }

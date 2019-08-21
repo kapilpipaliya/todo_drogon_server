@@ -36,10 +36,10 @@ void POption::setupTable()
 
 Json::Value POption::ins(Json::Value event, Json::Value args)
 {
-    return insBase(event, args, "name, value, auoload", "$1, $2, $3",  args["name"].asString(), args["value"].asString(), args["auoload"].asString() );
+    return insBase(event, args, "name, value, auoload", "$1, $2, $3",  args[0]["name"].asString(), args[0]["value"].asString(), args[0]["auoload"].asString() );
 }
 
 Json::Value POption::upd(Json::Value event, Json::Value args)
 {
-    return updBase(event, args, "name, value, auoload", "$1, $2, $3", args[1]["name"].asString(), args[1]["value"].asString(), args["auoload"].asString());
+    return updBase(event, args, "name, value, auoload", "$1, $2, $3", args[0]["name"].asString(), args[0]["value"].asString(), args[0]["auoload"].asString());
 }

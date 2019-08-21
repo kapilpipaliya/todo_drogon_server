@@ -46,28 +46,28 @@ void Node::setupTable()
 Json::Value Node::ins(Json::Value event, Json::Value args)
 {
     return insBase(event, args, "parent_id, rank, slug, label, active, url, web_icon, description, class", "$1,$2,$3,$4,$5,$6,$7,$8,$9",
-            args["parent_id"].asInt64(),
-            args["rank"].asInt(),
-            args["slug"].asString(),
-            args["label"].asString(),
-            args["active"].asBool(),
-            args["url"].asString(),
-            args["web_icon"].asString(),
-            args["description"].asString(),
-            args["class"].asString());
+            args[0]["parent_id"].asInt64(),
+            args[0]["rank"].asInt(),
+            args[0]["slug"].asString(),
+            args[0]["label"].asString(),
+            args[0]["active"].asBool(),
+            args[0]["url"].asString(),
+            args[0]["web_icon"].asString(),
+            args[0]["description"].asString(),
+            args[0]["class"].asString());
 }
 
 Json::Value Node::upd(Json::Value event, Json::Value args)
 {
     return updBase(event, args, "parent_id, rank, slug, label, active, url, web_icon, description, class", "$1,$2,$3,$4,$5,$6,$7,$8,$9",
-                   args[1]["parent_id"].asInt64(),
-                   args[1]["rank"].asInt(),
-                   args[1]["slug"].asString(),
-                   args[1]["label"].asString(),
-                   args[1]["active"].asBool(),
-                   args[1]["url"].asString(),
-                   args[1]["web_icon"].asString(),
-                   args[1]["description"].asString(),
-                   args[1]["class"].asString()
+                   args[0]["parent_id"].asInt64(),
+                   args[0]["rank"].asInt(),
+                   args[0]["slug"].asString(),
+                   args[0]["label"].asString(),
+                   args[0]["active"].asBool(),
+                   args[0]["url"].asString(),
+                   args[0]["web_icon"].asString(),
+                   args[0]["description"].asString(),
+                   args[0]["class"].asString()
             );
 }

@@ -37,10 +37,10 @@ void PaymentMethod::setupTable()
 
 Json::Value PaymentMethod::ins(Json::Value event, Json::Value args)
 {
-    return insBase(event, args, "name, url, description", "$1, $2, $3",  args["name"].asString(), args["url"].asString(), args["description"].asString() );
+    return insBase(event, args, "name, url, description", "$1, $2, $3",  args[0]["name"].asString(), args[0]["url"].asString(), args[0]["description"].asString() );
 }
 
 Json::Value PaymentMethod::upd(Json::Value event, Json::Value args)
 {
-    return updBase(event, args, "name, url, description", "$1, $2, $3", args[1]["name"].asString(), args[1]["url"].asString(), args[1]["description"].asString());
+    return updBase(event, args, "name, url, description", "$1, $2, $3", args[0]["name"].asString(), args[0]["url"].asString(), args[0]["description"].asString());
 }

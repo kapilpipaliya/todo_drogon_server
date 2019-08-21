@@ -45,22 +45,22 @@ void PCategory::setupTable()
 Json::Value PCategory::ins(Json::Value event, Json::Value args)
 {
     return insBase(event, args, "slug, name, description, display_type, parent_id, position", "$1, $2, $3, $4, NULLIF($5, 0), $6",
-            args["slug"].asString(),
-            args["name"].asString(),
-            args["description"].asString(),
-            args["display_type"].asString(),
-            args["parent_id"].asInt(), // why this ask for asInt()? otherwise error: ERROR:  incorrect binary data format in bind parameter 5
-            args["position"].asInt64() );
+            args[0]["slug"].asString(),
+            args[0]["name"].asString(),
+            args[0]["description"].asString(),
+            args[0]["display_type"].asString(),
+            args[0]["parent_id"].asInt(), // why this ask for asInt()? otherwise error: ERROR:  incorrect binary data format in bind parameter 5
+            args[0]["position"].asInt64() );
 }
 
 Json::Value PCategory::upd(Json::Value event, Json::Value args)
 {
     return updBase(event, args, "slug, name, description, display_type, parent_id, position", "$1, $2, $3, $4, NULLIF($5, 0), $6",
-                   args[1]["slug"].asString(),
-                   args[1]["name"].asString(),
-                   args[1]["description"].asString(),
-                   args[1]["display_type"].asString(),
-                   args[1]["parent_id"].asInt(), // why this ask for asInt()?
-                   args[1]["position"].asInt64());
+                   args[0]["slug"].asString(),
+                   args[0]["name"].asString(),
+                   args[0]["description"].asString(),
+                   args[0]["display_type"].asString(),
+                   args[0]["parent_id"].asInt(), // why this ask for asInt()?
+                   args[0]["position"].asInt64());
 }
 

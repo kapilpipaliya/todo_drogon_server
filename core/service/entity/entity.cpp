@@ -101,7 +101,7 @@ void save_Entity_Address(Json::Value &args,
         bool ismain;
     };
     std::vector<EntityAddress> inVector;
-    for (auto i : args["ea_entity_address"]) {    // ea.id, ea.address_type_id, ea.line1, ea.line2, ea.line3, ea.city, ea.state, ea.country, ea.zipcode, ea.phone
+    for (auto i : args[0]["ea_entity_address"]) {    // ea.id, ea.address_type_id, ea.line1, ea.line2, ea.line3, ea.city, ea.state, ea.country, ea.zipcode, ea.phone
         if (!i[1].isNull())
             inVector.push_back(
                 {i[0].asInt(), i[1].asInt(), i[2].asString(), i[3].asString(), i[4].asString(), i[5].asString(),
@@ -138,44 +138,44 @@ Json::Value Entity::ins( Json::Value event, Json::Value args) {
     auto transPtr = clientPtr->newTransaction();
     try {
         auto x = transPtr->execSqlSync(strSql,
-                                 args["entity_type_id"].asInt(),
-                                 args["no"].asString(),
-                                 args["sequence_id"].asInt(),
-                                 args["slug"].asString(),
-                                 args["parent_id"].asInt64(),
-                                 args["legal_name"].asString(),
-                                 args["tax_no"].asString(),
-                                 args["first_name"].asString(),
-                                 args["middle_name"].asString(),
-                                 args["last_name"].asString(),
-                                 args["birth_date"].asString(),
-                                 args["start_date"].asString(),
-                                 args["end_date"].asString(),
-                                 args["salary"].asDouble(),
-                                 args["rate"].asDouble(),
-                                 args["active"].asBool(),
-                                 args["pay_to_name"].asString(),
-                                 args["threshold"].asDouble(),
-                                 args["credit_limit"].asDouble(),
-                                 args["terms"].asInt(),
-                                 args["discount"].asInt(),
-                                 args["discount_terms"].asInt(),
-                                 args["discount_account_id"].asInt(),
-                                 args["ar_ap_account_id"].asInt(),
-                                 args["cash_account_id"].asInt(),
-                                 args["currency_id"].asInt(),
-                                 args["price_group_id"].asInt(),
-                                 args["tax_included"].asBool(),
-                                 args["email"].asString()
-                                 //                            args["create_user_id"].asInt(),
-                                 //                            args["update_user_id"].asInt(),
-                                 //                            args["inserted_at"]          timestamp,
-                                 //                            args["updated_at"]           timestamp,
+                                 args[0]["entity_type_id"].asInt(),
+                                 args[0]["no"].asString(),
+                                 args[0]["sequence_id"].asInt(),
+                                 args[0]["slug"].asString(),
+                                 args[0]["parent_id"].asInt64(),
+                                 args[0]["legal_name"].asString(),
+                                 args[0]["tax_no"].asString(),
+                                 args[0]["first_name"].asString(),
+                                 args[0]["middle_name"].asString(),
+                                 args[0]["last_name"].asString(),
+                                 args[0]["birth_date"].asString(),
+                                 args[0]["start_date"].asString(),
+                                 args[0]["end_date"].asString(),
+                                 args[0]["salary"].asDouble(),
+                                 args[0]["rate"].asDouble(),
+                                 args[0]["active"].asBool(),
+                                 args[0]["pay_to_name"].asString(),
+                                 args[0]["threshold"].asDouble(),
+                                 args[0]["credit_limit"].asDouble(),
+                                 args[0]["terms"].asInt(),
+                                 args[0]["discount"].asInt(),
+                                 args[0]["discount_terms"].asInt(),
+                                 args[0]["discount_account_id"].asInt(),
+                                 args[0]["ar_ap_account_id"].asInt(),
+                                 args[0]["cash_account_id"].asInt(),
+                                 args[0]["currency_id"].asInt(),
+                                 args[0]["price_group_id"].asInt(),
+                                 args[0]["tax_included"].asBool(),
+                                 args[0]["email"].asString()
+                                 //                            args[0]["create_user_id"].asInt(),
+                                 //                            args[0]["update_user_id"].asInt(),
+                                 //                            args[0]["inserted_at"]          timestamp,
+                                 //                            args[0]["updated_at"]           timestamp,
                                  );
         auto entity_id = x[0]["id"].as<int>();
         std::string strSqlUser = "INSERT INTO entity.entity_user (entity_id, username, password, password_hash) VALUES ($1, $2, $3, $4)";
-        transPtr->execSqlSync(strSqlUser, entity_id, args["email"].asString(), args["eu_password"].asString(),
-                        args["eu_password"].asString());
+        transPtr->execSqlSync(strSqlUser, entity_id, args[0]["email"].asString(), args[0]["eu_password"].asString(),
+                        args[0]["eu_password"].asString());
         save_Entity_Address(args, transPtr, entity_id);
 
 
@@ -187,51 +187,51 @@ Json::Value Entity::ins( Json::Value event, Json::Value args) {
 }
 Json::Value Entity::upd( Json::Value event, Json::Value args_) {
     auto args = args_[1];
-    if (args["id"].asInt()) {
+    if (args[0]["id"].asInt()) {
         std::string strSql = "update entity.entity set (  entity_type_id, no, sequence_id, slug, parent_id, legal_name, tax_no, first_name, middle_name, last_name, birth_date, start_date, end_date, salary, rate, active, pay_to_name, threshold, credit_limit, terms, discount, discount_terms, discount_account_id, ar_ap_account_id, cash_account_id, currency_id, price_group_id, tax_included, email)"
                              " = ROW($2, $3, NULLIF($4, 0), $5, NULLIF($6, 0), $7, $8, $9, $10, $11, $12, NULLIF($13, '')::date, NULLIF($14, '')::date, $15, $16, $17, $18, $19, $20, $21, $22, $23, NULLIF($24, 0), NULLIF($25, 0), NULLIF($26, 0), NULLIF($27, 0), NULLIF($28, 0), $29, $30) where id=$1";
         auto transPtr = clientPtr->newTransaction();
         try {
             transPtr->execSqlSync(strSql,
-                            args["id"].asInt64(),
-                    args["entity_type_id"].asInt(),
-                    args["no"].asString(),
-                    args["sequence_id"].asInt(),
-                    args["slug"].asString(),
-                    args["parent_id"].asInt64(),
-                    args["legal_name"].asString(),
-                    args["tax_no"].asString(),
-                    args["first_name"].asString(),
-                    args["middle_name"].asString(),
-                    args["last_name"].asString(),
-                    args["birth_date"].asString(),
-                    args["start_date"].asString(),
-                    args["end_date"].asString(),
-                    args["salary"].asDouble(),
-                    args["rate"].asDouble(),
-                    args["active"].asBool(),
-                    args["pay_to_name"].asString(),
-                    args["threshold"].asDouble(),
-                    args["credit_limit"].asDouble(),
-                    args["terms"].asInt(),
-                    args["discount"].asInt(),
-                    args["discount_terms"].asInt(),
-                    args["discount_account_id"].asInt(),
-                    args["ar_ap_account_id"].asInt(),
-                    args["cash_account_id"].asInt(),
-                    args["currency_id"].asInt(),
-                    args["price_group_id"].asInt(),
-                    args["tax_included"].asBool(),
-                    args["email"].asString()
-                    //                            args["create_user_id"].asInt(),
-                    //                            args["update_user_id"].asInt(),
-                    //                            args["inserted_at"]          timestamp,
-                    //                            args["updated_at"]           timestamp,
+                            args[0]["id"].asInt64(),
+                    args[0]["entity_type_id"].asInt(),
+                    args[0]["no"].asString(),
+                    args[0]["sequence_id"].asInt(),
+                    args[0]["slug"].asString(),
+                    args[0]["parent_id"].asInt64(),
+                    args[0]["legal_name"].asString(),
+                    args[0]["tax_no"].asString(),
+                    args[0]["first_name"].asString(),
+                    args[0]["middle_name"].asString(),
+                    args[0]["last_name"].asString(),
+                    args[0]["birth_date"].asString(),
+                    args[0]["start_date"].asString(),
+                    args[0]["end_date"].asString(),
+                    args[0]["salary"].asDouble(),
+                    args[0]["rate"].asDouble(),
+                    args[0]["active"].asBool(),
+                    args[0]["pay_to_name"].asString(),
+                    args[0]["threshold"].asDouble(),
+                    args[0]["credit_limit"].asDouble(),
+                    args[0]["terms"].asInt(),
+                    args[0]["discount"].asInt(),
+                    args[0]["discount_terms"].asInt(),
+                    args[0]["discount_account_id"].asInt(),
+                    args[0]["ar_ap_account_id"].asInt(),
+                    args[0]["cash_account_id"].asInt(),
+                    args[0]["currency_id"].asInt(),
+                    args[0]["price_group_id"].asInt(),
+                    args[0]["tax_included"].asBool(),
+                    args[0]["email"].asString()
+                    //                            args[0]["create_user_id"].asInt(),
+                    //                            args[0]["update_user_id"].asInt(),
+                    //                            args[0]["inserted_at"]          timestamp,
+                    //                            args[0]["updated_at"]           timestamp,
                     );
-            auto entity_id = args["id"].asInt();
+            auto entity_id = args[0]["id"].asInt();
             std::string strSqlUser = "UPDATE entity.entity_user set (username, password, password_hash) = ROW($2, $3, $4) where entity_id = $1";
-            transPtr->execSqlSync(strSqlUser, entity_id, args["email"].asString(), args["eu_password"].asString(),
-                    args["eu_password"].asString());
+            transPtr->execSqlSync(strSqlUser, entity_id, args[0]["email"].asString(), args[0]["eu_password"].asString(),
+                    args[0]["eu_password"].asString());
             save_Entity_Address(args, transPtr, entity_id);
 
 

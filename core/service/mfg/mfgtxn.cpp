@@ -43,10 +43,10 @@ void MfgTxn::setupTable()
 
 Json::Value MfgTxn::ins(Json::Value event, Json::Value args)
 {
-    return insBase(event, args, "name", "$1",  args["name"].asString() );
+    return insBase(event, args, "name", "$1",  args[0]["name"].asString() );
 }
 
 Json::Value MfgTxn::upd(Json::Value event, Json::Value args)
 {
-    return updBase(event, args, "name", "$1", args[1]["name"].asString());
+    return updBase(event, args, "name", "$1", args[0]["name"].asString());
 }

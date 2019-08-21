@@ -37,20 +37,20 @@ void Currency::setupTable()
 Json::Value Currency::ins(Json::Value event, Json::Value args)
 {
     return insBase(event, args, "slug, name, symbol, rounding, active", "$1, $2, $3, $4, $5",
-            args["slug"].asString(),
-            args["name"].asString(),
-            args["symbol"].asString(),
-            args["rounding"].asDouble(),
-            args["active"].asBool() );
+            args[0]["slug"].asString(),
+            args[0]["name"].asString(),
+            args[0]["symbol"].asString(),
+            args[0]["rounding"].asDouble(),
+            args[0]["active"].asBool() );
 }
 
 Json::Value Currency::upd(Json::Value event, Json::Value args)
 {
     return updBase(event, args, "slug, name, symbol, rounding, active", "$1, $2, $3, $4, $5",
-                   args[1]["slug"].asString(),
-                   args[1]["name"].asString(),
-                   args[1]["symbol"].asString(),
-                   args[1]["rounding"].asDouble(),
-                   args[1]["active"].asBool()
+                   args[0]["slug"].asString(),
+                   args[0]["name"].asString(),
+                   args[0]["symbol"].asString(),
+                   args[0]["rounding"].asDouble(),
+                   args[0]["active"].asBool()
             );
 }

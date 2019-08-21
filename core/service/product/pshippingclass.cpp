@@ -39,15 +39,15 @@ void PShippingClass::setupTable()
 Json::Value PShippingClass::ins(Json::Value event, Json::Value args)
 {
     return insBase(event, args, "slug, name, description", "$1, $2, $3",
-            args["slug"].asString(),
-            args["name"].asString(),
-            args["description"].asString());
+            args[0]["slug"].asString(),
+            args[0]["name"].asString(),
+            args[0]["description"].asString());
 }
 
 Json::Value PShippingClass::upd(Json::Value event, Json::Value args)
 {
     return updBase(event, args, "slug, name, description", "$1, $2, $3",
-            args[1]["slug"].asString(),
-            args[1]["name"].asString(),
-            args[1]["description"].asString());
+            args[0]["slug"].asString(),
+            args[0]["name"].asString(),
+            args[0]["description"].asString());
 }
