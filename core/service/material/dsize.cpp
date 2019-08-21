@@ -156,8 +156,6 @@ Json::Value DSize::upd( Json::Value event, Json::Value args) {
     // also update all the price of products too..
     // also update deleted size price too.
 
-
-
     auto size_table = sqlb::ObjectIdentifier("material", "size", "sh");
     auto size_meta_table = sqlb::ObjectIdentifier("material", "diamond_size_meta", "sm");
 

@@ -39,4 +39,12 @@ Account::Account(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPt
                 };
 }
 
-save_table(Account, "account.account", "name", "$1", "$2", "where id=$1", args["name"].asString())
+    Json::Value Account::ins(Json::Value event, Json::Value args)
+    {
+        return insBase(event, args, "rank, name, description", "$1, $2, $3", args["rank"].asInt(), args["name"].asString(), args["description"].asString());
+    }
+
+    Json::Value Account::upd(Json::Value event, Json::Value args)
+    {
+        return updBase(event, args, "rank, name, description", "$1, $2, $3", args[1]["rank"].asInt(), args[1]["name"].asString(), args[1]["description"].asString());
+    }

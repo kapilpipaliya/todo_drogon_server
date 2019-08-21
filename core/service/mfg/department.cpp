@@ -40,6 +40,12 @@ void Department::setupTable()
             };
 }
 
+Json::Value Department::ins(Json::Value event, Json::Value args)
+{
+    return insBase(event, args, "name", "$1",  args["name"].asString() );
+}
 
-
-save_table(Department, "mfg.department", "name", "$1", "$2", "where id=$1", args["name"].asString());
+Json::Value Department::upd(Json::Value event, Json::Value args)
+{
+    return updBase(event, args, "name", "$1", args[1]["name"].asString());
+}

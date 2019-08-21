@@ -37,6 +37,12 @@ void CSType::setupTable()
 
 }
 
+Json::Value CSType::ins(Json::Value event, Json::Value args)
+{
+    return insBase(event, args, "name", "$1",  args["name"].asString() );
+}
 
-
-save_table(CSType, "material.cs_type", "name", "$1", "$2", "where id=$1", args["name"].asString())
+Json::Value CSType::upd(Json::Value event, Json::Value args)
+{
+    return updBase(event, args, "name", "$1", args[1]["name"].asString());
+}

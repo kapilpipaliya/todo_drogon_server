@@ -31,7 +31,15 @@ AccountType::AccountType(const WebSocketConnectionPtr& wsConnPtr_): BaseService(
             t.m_query.joins() = {
                 sqlb::Join("left", u1, "a.create_user_id = u1.id"),
                 sqlb::Join("left", u2, "a.update_user_id = u2.id"),
-                };
+    };
+    }
+
+Json::Value AccountType::ins(Json::Value event, Json::Value args)
+{
+    return insBase(event, args, "name", "$1",  args["name"].asString());
 }
 
-save_table(AccountType, "account.account_type", "name", "$1", "$2", "where id=$1", args["name"].asString())
+Json::Value AccountType::upd(Json::Value event, Json::Value args)
+{
+    return updBase(event, args, "name", "$1", args[1]["name"].asString());
+}

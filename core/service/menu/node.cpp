@@ -43,16 +43,31 @@ void Node::setupTable()
             };
 }
 
+Json::Value Node::ins(Json::Value event, Json::Value args)
+{
+    return insBase(event, args, "parent_id, rank, slug, label, active, url, web_icon, description, class", "$1,$2,$3,$4,$5,$6,$7,$8,$9",
+            args["parent_id"].asInt(),
+            args["rank"].asInt(),
+            args["slug"].asString(),
+            args["label"].asString(),
+            args["active"].asBool(),
+            args["url"].asString(),
+            args["web_icon"].asString(),
+            args["description"].asString(),
+            args["class"].asString());
+}
 
-
-save_table(Node, "menu.node", "parent_id, rank, slug, label, active, url, web_icon, description, class", "$1,$2,$3,$4,$5,$6,$7,$8,$9", "$2,$3,$4,$5,$6,$7,$8,$9,$10", "where id=$1",
-               args["parent_id"].asInt(),
-               args["rank"].asInt(),
-               args["slug"].asString(),
-               args["label"].asString(),
-               args["active"].asBool(),
-               args["url"].asString(),
-               args["web_icon"].asString(),
-               args["description"].asString(),
-               args["class"].asString()
-               );
+Json::Value Node::upd(Json::Value event, Json::Value args)
+{
+    return updBase(event, args, "parent_id, rank, slug, label, active, url, web_icon, description, class", "$1,$2,$3,$4,$5,$6,$7,$8,$9",
+                   args["parent_id"].asInt(),
+                   args["rank"].asInt(),
+                   args["slug"].asString(),
+                   args["label"].asString(),
+                   args["active"].asBool(),
+                   args["url"].asString(),
+                   args["web_icon"].asString(),
+                   args["description"].asString(),
+                   args["class"].asString()
+            );
+}

@@ -3,15 +3,8 @@
 
 
 BaseService::BaseService(const WebSocketConnectionPtr& wsConnPtr_): wsConnPtr(wsConnPtr_)
-{
-
-}
-
-BaseService::~BaseService()
-{
-
-}
-
+{  }
+BaseService::~BaseService() {  }
 Json::Value BaseService::handleEvent(Json::Value event, int next, Json::Value args)
 {
     auto event_cmp = event[next].asString();
@@ -29,7 +22,6 @@ Json::Value BaseService::handleEvent(Json::Value event, int next, Json::Value ar
         return Json::nullValue;
     }
 }
-
 Json::Value BaseService::headerData(Json::Value event, Json::Value args)
 {
     setupTable();
@@ -39,7 +31,6 @@ Json::Value BaseService::headerData(Json::Value event, Json::Value args)
     Json::Value ret;
     ret[0] = jresult;  return ret;
 }
-
 Json::Value BaseService::allData(Json::Value event, Json::Value args)
 {
     setupTable();

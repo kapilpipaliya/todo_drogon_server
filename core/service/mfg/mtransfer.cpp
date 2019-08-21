@@ -40,8 +40,12 @@ void MTransfer::setupTable()
             sqlb::Join("left", u2, "m.update_user_id = u2.id"),
             };
 }
+Json::Value MTransfer::ins(Json::Value event, Json::Value args)
+{
+    return insBase(event, args, "name", "$1",  args["name"].asString() );
+}
 
-
-
-
-save_table(MTransfer, "mfg.m_transfer", "name", "$1", "$2", "where id=$1", args["name"].asString());
+Json::Value MTransfer::upd(Json::Value event, Json::Value args)
+{
+    return updBase(event, args, "name", "$1", args[1]["name"].asString());
+}

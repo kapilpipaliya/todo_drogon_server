@@ -3,7 +3,7 @@
 #include "../../jsonfns.h"
 AccountHeading::AccountHeading(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 {
-    t.m_table = sqlb::ObjectIdentifier("account", "account_heading", "p");
+    t.m_table = sqlb::ObjectIdentifier("account", "account_heading", "a");
 }
     void AccountHeading::setupTable()
 {
@@ -13,8 +13,9 @@ AccountHeading::AccountHeading(const WebSocketConnectionPtr& wsConnPtr_): BaseSe
 
             //m_query.setRowIdColumn("id");
             t.m_query.selectedColumns() = {
-                sqlb::SelectedColumn({"Id", "id", "", "p", PG_TYPES::INT8, false}),
-
+                sqlb::SelectedColumn({"Id", "id", "", "a", PG_TYPES::INT8, false}),
+                sqlb::SelectedColumn({"Acc No", "accno", "", "a", PG_TYPES::INT8, true}),
+                sqlb::SelectedColumn({"Name", "name", "", "a", PG_TYPES::TEXT, true}),
                 };
 
             //auto pg = sqlb::ObjectIdentifier("part", "part_category", "pg");
@@ -28,4 +29,12 @@ AccountHeading::AccountHeading(const WebSocketConnectionPtr& wsConnPtr_): BaseSe
                 //sqlb::Join("left", u2, "a.update_user_id = u2.id"),
                 };
 }
-save_table(AccountHeading, "account.account_heading", "name", "$1", "$2", "where id=$1", args["name"].asString())
+Json::Value AccountHeading::ins(Json::Value event, Json::Value args)
+{
+    return insBase(event, args, "name, accno", "$1, $2",  args["name"].asString(), args["accno"].asString());
+}
+
+Json::Value AccountHeading::upd(Json::Value event, Json::Value args)
+{
+    return updBase(event, args, "name, accno", "$1, $2", args[1]["name"].asString(), args[1]["accno"].asString());
+}

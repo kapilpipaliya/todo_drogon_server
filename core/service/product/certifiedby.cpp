@@ -37,15 +37,8 @@ void CertifiedBy::setupTable()
             };
 }
 
-
-
 Json::Value CertifiedBy::ins( Json::Value event, Json::Value args) {
-    auto setting_type_table = sqlb::ObjectIdentifier("product", "certified_by", "s");
-
-    std::string strSql = "INSERT INTO %1.%2 (slug, name, title, description) values($1, $2, $3, $4)";
-    ReplaceAll2(strSql, "%1", setting_type_table.schema());
-    ReplaceAll2(strSql, "%2", setting_type_table.name());
-
+    auto strSql = format("INSERT INTO {} (slug, name, title, description) values($1, $2, $3, $4)", t.m_table.toString());
     try {
         clientPtr->execSqlSync(
             strSql,
@@ -59,32 +52,25 @@ Json::Value CertifiedBy::ins( Json::Value event, Json::Value args) {
         std::cerr << e.what() << std::endl;
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
-
 }
 
 Json::Value CertifiedBy::upd( Json::Value event, Json::Value args) {
-    auto setting_type_table = sqlb::ObjectIdentifier("product", "certified_by", "s");
-
-    if (args["id"].asInt()) {
-        std::string strSql =
-                "update %1.%2 set "
-                "(slug, name, title, description)"
-                " = ROW($2, $3, $4, $5) where id=$1";
-        ReplaceAll2(strSql, "%1", setting_type_table.schema());
-        ReplaceAll2(strSql, "%2", setting_type_table.name());
-
-        try {
-            clientPtr->execSqlSync(strSql,
-                                   args["id"].asInt64(),
-                    args["slug"].asString(),
-                    args["name"].asString(),
-                    args["title"].asString(),
-                    args["description"].asString()
-                    );
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
-        } catch (const std::exception &e) {
-            std::cerr << e.what() << std::endl;
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
-        }
+    setupTable();
+    t.updateFilterBase(args[0]);
+    std::string strSql = t.m_query.buildUpdateQuery( "slug, name, title, description", "$1, $2, $3, $4", "");
+    auto a = args[1];
+    try {
+        clientPtr->execSqlSync(strSql,
+                //a["id"].asInt64(),
+                a["slug"].asString(),
+                a["name"].asString(),
+                a["title"].asString(),
+                a["description"].asString()
+                );
+        Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
+    } catch (const std::exception &e) {
+        std::cerr << e.what() << std::endl;
+        Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
+
 }

@@ -32,6 +32,12 @@ void DepartmentType::setupTable()
             };
 }
 
+Json::Value DepartmentType::ins(Json::Value event, Json::Value args)
+{
+    return insBase(event, args, "name", "$1",  args["name"].asString() );
+}
 
-
-save_table(DepartmentType, "mfg.department_type", "name", "$1", "$2", "where id=$1", args["name"].asString());
+Json::Value DepartmentType::upd(Json::Value event, Json::Value args)
+{
+    return updBase(event, args, "name", "$1", args[1]["name"].asString());
+}

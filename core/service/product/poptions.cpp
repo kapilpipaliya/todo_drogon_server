@@ -16,7 +16,7 @@ void POption::setupTable()
         //m_query.setRowIdColumn("id");
         t.m_query.selectedColumns() = {
             sqlb::SelectedColumn({"Id", "id", "", "o", PG_TYPES::INT8, false}),
-            sqlb::SelectedColumn({"Name", "name", "", "o", PG_TYPES::INT4, true}),
+            sqlb::SelectedColumn({"Name", "name", "", "o", PG_TYPES::TEXT, true}),
             sqlb::SelectedColumn({"Value", "value", "", "o", PG_TYPES::TEXT, true}),
             sqlb::SelectedColumn({"Autoload", "autoload", "", "o", PG_TYPES::TEXT, true}),
             //sqlb::SelectedColumn({"Created By", "create_user_id", "", "o", PG_TYPES::INT8, true, 1, 0, false}), sqlb::SelectedColumn({"u1_username", "username", "", "u1", PG_TYPES::TEXT, false, 0, 0, false}),
@@ -34,6 +34,12 @@ void POption::setupTable()
             };
 }
 
+Json::Value POption::ins(Json::Value event, Json::Value args)
+{
+    return insBase(event, args, "name, value, auoload", "$1, $2, $3",  args["name"].asString(), args["value"].asString(), args["auoload"].asString() );
+}
 
-
-save_table(POption, "product.policy", "name, url, description", "$1, $2, $3", "$2, $3, $4", "where id=$1", args["name"].asString(), args["url"].asString(), args["description"].asString())
+Json::Value POption::upd(Json::Value event, Json::Value args)
+{
+    return updBase(event, args, "name, value, auoload", "$1, $2, $3", args[1]["name"].asString(), args[1]["value"].asString(), args["auoload"].asString());
+}
