@@ -89,22 +89,20 @@ Txn::Txn(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
 }
 
 Json::Value Txn::del(const Json::Value event, const Json::Value args) {
-    pqxx::work txn{DD};
+    auto transPtr = clientPtr->newTransaction();
     try {
         auto txn_del = "DELETE FROM account.txn WHERE id = $1";
         auto order_item_del = "DELETE FROM order1.order_item WHERE txn_id = $1";
-        txn.exec_params(order_item_del, args[0].asInt());
-        txn.exec_params(txn_del, args[0].asInt());
+        transPtr->execSqlSync(order_item_del, args[0].asInt());
+        transPtr->execSqlSync(txn_del, args[0].asInt());
 
-        txn.commit();
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
-        txn.abort();
         std::cerr << e.what() << std::endl;
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
 }
-void save_txn_order_item(Json::Value &args, pqxx::work &txn, int txn_id) {
+void save_txn_order_item(Json::Value &args, std::shared_ptr<Transaction> transPtr, int txn_id) {
     std::string strSqlPostCategories = "SELECT id, post_id, pcs, purity_id, tone_id, clarity_id, price, instruction FROM order1.order_item where txn_id = $1";
     std::string strSqlPostCategorySimpleFind = "SELECT id, txn_id, post_id, pcs, purity_id, tone_id, clarity_id, price, instruction FROM order1.order_item WHERE id = $1";
     std::string strSqlPostCategoryDel = "DELETE FROM order1.order_item WHERE id = $1";
@@ -128,26 +126,26 @@ void save_txn_order_item(Json::Value &args, pqxx::work &txn, int txn_id) {
         }
     }
 
-    pqxx::result all_ct = txn.exec_params(strSqlPostCategories, txn_id);
+    auto all_ct = transPtr->execSqlSync(strSqlPostCategories, txn_id);
     // For each saved attachments, If it not exist in new attachments, delete it.
     for (auto r : all_ct) {
         std::vector<OrderItem>::iterator it = std::find_if(newItems.begin(), newItems.end(),
                                                            [&](OrderItem t) {
-                                                               return t.id == r[0].as<int>();
+                                                               return t.id == r["id"].as<int>();
                                                            });
         if (it == newItems.end()) {// Element not Found
-            txn.exec_params("DELETE FROM order1.order_item WHERE id = $1", r[0].as<int>());
-            txn.exec_params(strSqlPostCategoryDel, r[0].as<int>());
+            transPtr->execSqlSync("DELETE FROM order1.order_item WHERE id = $1", r["id"].as<int>());
+            transPtr->execSqlSync(strSqlPostCategoryDel, r["id"].as<int>());
         }
     }
     // For each new attachments, insert it if it not already exist.
     for (auto r : newItems) {
-        pqxx::result y = txn.exec_params(strSqlPostCategorySimpleFind, r.id);
+        auto y = transPtr->execSqlSync(strSqlPostCategorySimpleFind, r.id);
         if (y.size() == 0) { // insert
-            auto i = txn.exec_params(strSqlPostCategoryInsert, txn_id, r.post_id, r.pcs, r.purity_id, r.tone_id, r.clarity_id, r.price, r.instruction);
+            auto i = transPtr->execSqlSync(strSqlPostCategoryInsert, txn_id, r.post_id, r.pcs, r.purity_id, r.tone_id, r.clarity_id, r.price, r.instruction);
         } else { // update
             if (y[0][1].as<int>() != txn_id || y[0][2].as<int>() != r.post_id || y[0][3].as<int>() != r.pcs || y[0][4].as<int>() != r.purity_id || y[0][5].as<int>() != r.tone_id || y[0][6].as<int>() != r.clarity_id || y[0][7].as<double>() != r.price || y[0][8].c_str() != r.instruction) {
-                txn.exec_params(strSqlPostCategoryUpdateAtt, r.id, txn_id,  r.post_id, r.pcs, r.purity_id, r.tone_id, r.clarity_id, r.price, r.instruction);
+                transPtr->execSqlSync(strSqlPostCategoryUpdateAtt, r.id, txn_id,  r.post_id, r.pcs, r.purity_id, r.tone_id, r.clarity_id, r.price, r.instruction);
             }
         }
     }
@@ -160,20 +158,18 @@ Json::Value Txn::ins( Json::Value event, Json::Value args) {
         " VALUES($1, $2, $3, $4)"
         "RETURNING id";
 
-    pqxx::work txn{DD};
     try {
-        pqxx::result x =
-            txn.exec_params(strSqlPost,
+        auto transPtr = clientPtr->newTransaction();
+        auto x =
+            transPtr->execSqlSync(strSqlPost,
                             args["journal_type_id"].asInt(), args["party_id"].asInt(), args["date"].asString(),
                             args["description"].asString()
                             );
         auto txn_id = x[0]["id"].as<int>();
-        save_txn_order_item(args, txn, txn_id);
+        save_txn_order_item(args, transPtr, txn_id);
 
-        txn.commit();
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
-        txn.abort();
         std::cerr << e.what() << std::endl;
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
@@ -184,20 +180,18 @@ Json::Value Txn::upd( Json::Value event, Json::Value args) {
                 "update account.txn set (journal_type_id, party_id, date, description )"
                 " = ROW($2, $3, $4, $5) where id=$1";
 
-        pqxx::work txn{DD};
         try {
-            txn.exec_params(strSqlPost,
+            auto transPtr = clientPtr->newTransaction();
+            transPtr->execSqlSync(strSqlPost,
                             args["id"].asInt64(),
                     args["journal_type_id"].asInt(), args["party_id"].asInt(), args["date"].asString(),
                     args["description"].asString()
                     );
             auto txn_id = args["id"].asInt();
-            save_txn_order_item(args, txn, txn_id);
+            save_txn_order_item(args, transPtr, txn_id);
 
-            txn.commit();
             Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
-            txn.abort();
             std::cerr << e.what() << std::endl;
             Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
         }

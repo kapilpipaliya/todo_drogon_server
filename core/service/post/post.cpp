@@ -44,9 +44,9 @@ Json::Value Post1::ins( Json::Value event, Json::Value args) {
     ReplaceAll2(strSqlPost, "%1", post_table.schema());
     ReplaceAll2(strSqlPost, "%2", post_table.name());
 
-    pqxx::work txn{DD};
+    auto transPtr = clientPtr->newTransaction();
     try {
-        pqxx::result x = txn.exec_params(
+        auto x = transPtr->execSqlSync(
             strSqlPost,
             args["comment_status"].asBool(),
             args["menu_order"].asInt(),
@@ -65,10 +65,10 @@ Json::Value Post1::ins( Json::Value event, Json::Value args) {
         //product_tags_process(tags_table, post_tag_table, in, txn, post_id);
         //save_product_categories(post_category_table, in, txn, post_id);
 
-        txn.commit();
+        
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
-        txn.abort();
+        
         std::cerr << e.what() << std::endl;
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
@@ -84,9 +84,9 @@ Json::Value Post1::upd( Json::Value event, Json::Value args) {
         ReplaceAll2(strSqlPost, "%1", post_table.schema());
         ReplaceAll2(strSqlPost, "%2", post_table.name());
 
-        pqxx::work txn{DD};
+        auto transPtr = clientPtr->newTransaction();
         try {
-            txn.exec_params(strSqlPost,
+            transPtr->execSqlSync(strSqlPost,
                             args["id"].asInt64(),
                     args["comment_status"].asBool(),
                     args["menu_order"].asInt(),
@@ -105,10 +105,10 @@ Json::Value Post1::upd( Json::Value event, Json::Value args) {
             //product_tags_process(tags_table, post_tag_table, in, txn, post_id);
             //save_product_categories(post_category_table, in, txn, post_id);
 
-            txn.commit();
+            
             Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
-            txn.abort();
+            
             std::cerr << e.what() << std::endl;
             Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
         }

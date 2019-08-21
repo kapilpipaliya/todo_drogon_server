@@ -43,17 +43,15 @@ Json::Value BaseService::allData(Json::Value event, Json::Value args)
 
 Json::Value BaseService::del(Json::Value event, Json::Value args)
 {
-    pqxx::work txn{DD};
     try {
+        auto transPtr = clientPtr->newTransaction();
         setupTable();
         t.updateFilterBase(args[0]);
-        txn.exec_params(t.m_query.buildDeleteQuery());
+        transPtr->execSqlSync(t.m_query.buildDeleteQuery());
         // affected rows should be returned too.
-        //txn.exec_params("DELETE FROM " + t.m_table.toDisplayString() + " WHERE id = $1", args[0].asInt());
-        txn.commit();
+        //transPtr->execSqlSync("DELETE FROM " + t.m_table.toDisplayString() + " WHERE id = $1", args[0].asInt());
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
-        txn.abort();
         std::cerr << e.what() << std::endl;
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }

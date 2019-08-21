@@ -77,7 +77,7 @@ Json::Value DSize::ins( Json::Value event, Json::Value args) {
     std::string strSqlSizeGet = "select dp.diamond_id, dp.clarity_id, ds.pcs, ds.post_id from product.diamond_price dp left join product.post_diamond_size ds on ds.id = dp.diamond_id where ds.shape_id = $1 and ds.color_id = $2 and ds.size_id = $3 and dp.clarity_id = $4;";
     std::string strSqlPriceUpdate = "UPDATE product.diamond_price SET (weight, total_weight, rate, price) = ROW($3, $4, $5, $6) WHERE diamond_id = $1 AND clarity_id = $2";
 
-    auto q = "SELECT  sum(dp.total_weight), sum(dp.price) from product.post_diamond_size ds LEFT JOIN product.diamond_price dp ON (dp.diamond_id = ds.id) where ds.post_id = $1 and dp.clarity_id = $2";
+    auto q = "SELECT  sum(dp.total_weight) as sum_weight, sum(dp.price) as sum_price from product.post_diamond_size ds LEFT JOIN product.diamond_price dp ON (dp.diamond_id = ds.id) where ds.post_id = $1 and dp.clarity_id = $2";
     auto pc = upd_("product.post_clarity", "weight, price", "$3, $4", "where post_id = $1 and clarity_id = $2");
 
     std::string strSql = "INSERT INTO %1.%2 (clarity_id, shape_id, color_id, size_id, weight, currency_id, rate_on_id, rate) values($1, $2, $3, $4, $5, $6, $7, $8)";
@@ -85,19 +85,19 @@ Json::Value DSize::ins( Json::Value event, Json::Value args) {
     ReplaceAll2(strSql, "%2", size_meta_table.name());
 
 
-    pqxx::work txn{DD};
+    auto transPtr = clientPtr->newTransaction();
     try {
         int size_id;
-        auto r = txn.exec_params(strSqlSizeSel, size_name);
+        auto r = transPtr->execSqlSync(strSqlSizeSel, size_name);
         if (r.size() == 0) { // insert
-            auto r1 = txn.exec_params(strSqlSizeIns, size_name);
-            size_id = r1[0][0].as<int>();
+            auto r1 = transPtr->execSqlSync(strSqlSizeIns, size_name);
+            size_id = r1[0]["id"].as<int>();
         } else {
-            size_id = r[0][0].as<int>();
+            size_id = r[0]["id"].as<int>();
         }
 
 
-        txn.exec_params(
+        transPtr->execSqlSync(
             strSql,
             args["clarity_id"].asInt(),
             args["shape_id"].asInt(),
@@ -117,13 +117,13 @@ Json::Value DSize::ins( Json::Value event, Json::Value args) {
         };
         std::vector<ProductUpdate> productUpdate;
 
-        auto s = txn.exec_params(strSqlSizeGet, args["shape_id"].asInt(), args["color_id"].asInt(), size_id,
+        auto s = transPtr->execSqlSync(strSqlSizeGet, args["shape_id"].asInt(), args["color_id"].asInt(), size_id,
                                  args["clarity_id"].asInt());
         for (auto prow : s) {
             auto w = args["weight"].asDouble();
             auto rate = args["rate"].asDouble();
             auto pcs = prow[2].as<int>();
-            txn.exec_params(strSqlPriceUpdate, prow[0].as<int>(), prow[1].as<int>(), w, w * pcs, rate,
+            transPtr->execSqlSync(strSqlPriceUpdate, prow["diamond_id"].as<int>(), prow["clarity_id"].as<int>(), w, w * pcs, rate,
                             pcs * w * rate);
             // Get all post_ids:
             std::vector<ProductUpdate>::iterator it = std::find_if(productUpdate.begin(), productUpdate.end(),
@@ -139,15 +139,15 @@ Json::Value DSize::ins( Json::Value event, Json::Value args) {
 
         for (auto p : productUpdate) {
             for (auto c : p.clarityId) {
-                auto rsum = txn.exec_params(q, p.postId, c);
-                txn.exec_params(pc, p.postId, c, rsum[0][0].as<double>(), rsum[0][1].as<double>());
+                auto rsum = transPtr->execSqlSync(q, p.postId, c);
+                transPtr->execSqlSync(pc, p.postId, c, rsum[0]["sum_weight"].as<double>(), rsum[0]["sum_price"].as<double>());
             }
         }
 
-        txn.commit();
+        
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
-        txn.abort();
+        
         std::cerr << e.what() << std::endl;
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
@@ -167,7 +167,7 @@ Json::Value DSize::upd( Json::Value event, Json::Value args) {
     std::string strSqlSizeGet = "select dp.diamond_id, dp.clarity_id, ds.pcs, ds.post_id from product.diamond_price dp left join product.post_diamond_size ds on ds.id = dp.diamond_id where ds.shape_id = $1 and ds.color_id = $2 and ds.size_id = $3 and dp.clarity_id = $4;";
     std::string strSqlPriceUpdate = "UPDATE product.diamond_price SET (weight, total_weight, rate, price) = ROW($3, $4, $5, $6) WHERE diamond_id = $1 AND clarity_id = $2";
 
-    auto q = "SELECT  sum(dp.total_weight), sum(dp.price) from product.post_diamond_size ds LEFT JOIN product.diamond_price dp ON (dp.diamond_id = ds.id) where ds.post_id = $1 and dp.clarity_id = $2";
+    auto q = "SELECT  sum(dp.total_weight) as sum_weight, sum(dp.price) as sum_price from product.post_diamond_size ds LEFT JOIN product.diamond_price dp ON (dp.diamond_id = ds.id) where ds.post_id = $1 and dp.clarity_id = $2";
     auto pc = upd_("product.post_clarity", "weight, price", "$3, $4", "where post_id = $1 and clarity_id = $2");
 
     if (args["id"].asInt()) {
@@ -184,21 +184,21 @@ Json::Value DSize::upd( Json::Value event, Json::Value args) {
         std::string strSqlSizeDel = "DELETE FROM material.size WHERE id = $1";
 
 
-        pqxx::work txn{DD};
+        auto transPtr = clientPtr->newTransaction();
         try {
             int size_id;
-            auto r = txn.exec_params(strSqlSizeSel, size_name);
+            auto r = transPtr->execSqlSync(strSqlSizeSel, size_name);
             if (r.size() == 0) { // insert
-                auto r1 = txn.exec_params(strSqlSizeIns, size_name);
-                size_id = r1[0][0].as<int>();
+                auto r1 = transPtr->execSqlSync(strSqlSizeIns, size_name);
+                size_id = r1[0]["id"].as<int>();
             } else {
-                size_id = r[0][0].as<int>();
+                size_id = r[0]["id"].as<int>();
             }
 
-            auto old_row = txn.exec_params(strSqlSizeId, args["id"].asInt());
-            int old_size_id = old_row[0][0].as<int>();
+            auto old_row = transPtr->execSqlSync(strSqlSizeId, args["id"].asInt());
+            int old_size_id = old_row[0]["id"].as<int>();
 
-            txn.exec_params(strSql,
+            transPtr->execSqlSync(strSql,
                             args["id"].asInt64(),
                     args["clarity_id"].asInt(),
                     args["shape_id"].asInt(),
@@ -210,10 +210,10 @@ Json::Value DSize::upd( Json::Value event, Json::Value args) {
                     args["rate"].asDouble()
                     );
             // If old size count = 0, delete size:
-            auto r3 = txn.exec_params(strSqlSizeCount, old_size_id);
-            auto r4 = txn.exec_params(strSqlColorSizeCount, old_size_id);
-            if (r3[0][0].as<int>() == 0 && r4[0][0].as<int>() == 0) {
-                txn.exec_params(strSqlSizeDel, args["shape_id"].asInt(), args["color_id"].asInt(), size_id,
+            auto r3 = transPtr->execSqlSync(strSqlSizeCount, old_size_id);
+            auto r4 = transPtr->execSqlSync(strSqlColorSizeCount, old_size_id);
+            if (r3[0]["count"].as<int>() == 0 && r4[0]["count"].as<int>() == 0) {
+                transPtr->execSqlSync(strSqlSizeDel, args["shape_id"].asInt(), args["color_id"].asInt(), size_id,
                         args["clarity_id"].asInt());
             }
 
@@ -224,13 +224,13 @@ Json::Value DSize::upd( Json::Value event, Json::Value args) {
             };
             std::vector<ProductUpdate> productUpdate;
 
-            auto s = txn.exec_params(strSqlSizeGet, args["shape_id"].asInt(), args["color_id"].asInt(), size_id,
+            auto s = transPtr->execSqlSync(strSqlSizeGet, args["shape_id"].asInt(), args["color_id"].asInt(), size_id,
                     args["clarity_id"].asInt());
             for (auto prow : s) {
                 auto w = args["weight"].asDouble();
                 auto rate = args["rate"].asDouble();
                 auto pcs = prow[2].as<int>();
-                txn.exec_params(strSqlPriceUpdate, prow[0].as<int>(), prow[1].as<int>(), w, w * pcs, rate,
+                transPtr->execSqlSync(strSqlPriceUpdate, prow["diamond_id"].as<int>(), prow[1].as<int>(), w, w * pcs, rate,
                         pcs * w * rate);
                 std::vector<ProductUpdate>::iterator it = std::find_if(productUpdate.begin(), productUpdate.end(),
                                                                        [&](ProductUpdate t) {
@@ -245,15 +245,15 @@ Json::Value DSize::upd( Json::Value event, Json::Value args) {
 
             for (auto p : productUpdate) {
                 for (auto c : p.clarityId) {
-                    auto rsum = txn.exec_params(q, p.postId, c);
-                    txn.exec_params(pc, p.postId, c, rsum[0][0].as<double>(), rsum[0][1].as<double>());
+                    auto rsum = transPtr->execSqlSync(q, p.postId, c);
+                    transPtr->execSqlSync(pc, p.postId, c, rsum[0]["sum_weight"].as<double>(), rsum[0]["sum_price"].as<double>());
                 }
             }
 
-            txn.commit();
+            
             Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
-            txn.abort();
+            
             std::cerr << e.what() << std::endl;
             Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
         }
@@ -261,26 +261,26 @@ Json::Value DSize::upd( Json::Value event, Json::Value args) {
 }
 
 Json::Value DSize::del( Json::Value event, Json::Value args) {
-    pqxx::work txn{DD};
+    auto transPtr = clientPtr->newTransaction();
     try {
         auto get_row = "SELECT id, size_id FROM material.diamond_size_meta where id = $1";
-        auto r = txn.exec_params(get_row, args[0].asInt());
+        auto r = transPtr->execSqlSync(get_row, args[0].asInt());
 
-        txn.exec_params("DELETE FROM " "material.diamond_size_meta" " WHERE id = $1", args[0].asInt());
+        transPtr->execSqlSync("DELETE FROM " "material.diamond_size_meta" " WHERE id = $1", args[0].asInt());
 
         auto d_size_count = "SELECT count(*) FROM material.diamond_size_meta where size_id = $1";
         auto cs_size_count = "SELECT count(*) FROM material.color_stone_size_meta where size_id = $1";
 
         auto size_id = r[0][1].as<int>();
-        auto c1 = txn.exec_params(d_size_count, size_id);
-        auto c2 = txn.exec_params(cs_size_count, size_id);
-        if (c1[0][0].as<int>() == 0 && c2[0][0].as<int>() == 0) {
-            txn.exec_params("DELETE FROM " "material.size" " WHERE id = $1", size_id);
+        auto c1 = transPtr->execSqlSync(d_size_count, size_id);
+        auto c2 = transPtr->execSqlSync(cs_size_count, size_id);
+        if (c1[0]["count"].as<int>() == 0 && c2[0]["count"].as<int>() == 0) {
+            transPtr->execSqlSync("DELETE FROM " "material.size" " WHERE id = $1", size_id);
         }
-        txn.commit();
+        
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
-        txn.abort();
+        
         std::cerr << e.what() << std::endl;
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }

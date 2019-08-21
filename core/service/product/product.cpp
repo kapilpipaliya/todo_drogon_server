@@ -217,7 +217,7 @@ Json::Value Product::handleEvent(Json::Value event, int next, Json::Value args)
 
 
 #define purejoinTableSave(f, t, inKey, id1, id2)\
-void save_product_##f(Json::Value &args, pqxx::work &txn, int idv1){\
+void save_product_##f(Json::Value &args, std::shared_ptr<Transaction> transPtr, int idv1){\
     std::string strSqlPostCategories = "SELECT " id1 ", " id2 " FROM " t " where " id1 " = $1";\
     std::string strSqlPostCategorySimpleFind = "SELECT * FROM " t " WHERE " id1 " = $1 and " id2 " = $2";\
     std::string strSqlPostCategoryDel = "DELETE FROM " t " WHERE " id1 " = $1 and " id2 " = $2";\
@@ -227,19 +227,19 @@ void save_product_##f(Json::Value &args, pqxx::work &txn, int idv1){\
         if (!i.isNull()) inNewTones.push_back(i.asInt());\
     }\
     \
-    pqxx::result all_ct = txn.exec_params(strSqlPostCategories, idv1);\
+    auto all_ct = transPtr->execSqlSync(strSqlPostCategories, idv1);\
     /* For each saved tones, If saved tone not exist in new tones, delete it.*/\
     for (auto r : all_ct) {\
         std::vector<int>::iterator it = std::find(inNewTones.begin(), inNewTones.end(), r[1].as<int>());\
         if (it == inNewTones.end()) {/* Element not Found*/\
-            txn.exec_params(strSqlPostCategoryDel, r[0].as<int>(), r[1].as<int>());\
+            transPtr->execSqlSync(strSqlPostCategoryDel, r[id1].as<int>(), r[id2].as<int>());\
         }\
     }\
     /* For each new tones, insert it if it not already exist.*/\
     for (auto x : inNewTones) {\
-        pqxx::result y = txn.exec_params(strSqlPostCategorySimpleFind, idv1, x);\
+        auto y = transPtr->execSqlSync(strSqlPostCategorySimpleFind, idv1, x);\
         if(y.size() == 0) {\
-            txn.exec_params(strSqlPostCategoryInsert, idv1, x);\
+            transPtr->execSqlSync(strSqlPostCategoryInsert, idv1, x);\
         }\
     }\
 }
@@ -250,7 +250,7 @@ purejoinTableSave(policy, "product.post_policy", "p_policy_post_policy", "post_i
 void product_tags_process(sqlb::ObjectIdentifier tags_table,
                           sqlb::ObjectIdentifier post_tag_table,
                           Json::Value &args,
-                          pqxx::work &txn,
+                          std::shared_ptr<Transaction> transPtr,
                           int post_id
                           ) {
     std::string strSqlTag = "select id, name FROM %1.%2 where name = $1";
@@ -287,32 +287,32 @@ void product_tags_process(sqlb::ObjectIdentifier tags_table,
     // 1.find a tag, if not exist then insert.
     while (ss >> tag) {
         inNewTagsVector.push_back(tag);
-        pqxx::result x = txn.exec_params(strSqlTag, tag);
+        auto x = transPtr->execSqlSync(strSqlTag, tag);
         if (x.size() == 0) {
-            txn.exec_params(strSqlTagInsert, tag, tag, tag);
+            transPtr->execSqlSync(strSqlTagInsert, tag, tag, tag);
         }
     }
-    pqxx::result all_pt = txn.exec_params(strSqlPostTags, post_id);
+    auto all_pt = transPtr->execSqlSync(strSqlPostTags, post_id);
     // For each saved tags, If saved tag not exist in new tags, delete it.
     for (auto r : all_pt) {
         if (inNewTags.find(r[2].c_str()) == std::string::npos) {
-            txn.exec_params(strSqlPostTagsDel, r[0].as<int>(), r[1].as<int>());
+            transPtr->execSqlSync(strSqlPostTagsDel, r["post_id"].as<int>(), r["tag_id"].as<int>());
         }
     }
     // For each new tags, insert it if it not already exist.
     for (auto r : inNewTagsVector) {
-        pqxx::result x = txn.exec_params(strSqlTag, r);
+        auto x = transPtr->execSqlSync(strSqlTag, r);
 
-        pqxx::result y = txn.exec_params(strSqlPostTagSimpleFind, post_id, x[0]["id"].as<int>());
+        auto y = transPtr->execSqlSync(strSqlPostTagSimpleFind, post_id, x[0]["id"].as<int>());
         if (y.size() == 0) {
-            txn.exec_params(strSqlPostTagsInsert, post_id, x[0][0].as<int>());
+            transPtr->execSqlSync(strSqlPostTagsInsert, post_id, x[0]["id"].as<int>());
         }
     }
 }
 
 void save_product_categories(sqlb::ObjectIdentifier post_category_table,
                              Json::Value &args,
-                             pqxx::work &txn,
+                             std::shared_ptr<Transaction> transPtr,
                              int post_id) {
     std::string strSqlPostCategories = "select post_id, category_id FROM %1.%2 where post_id = $1";
     ReplaceAll2(strSqlPostCategories, "%1", post_category_table.schema());
@@ -336,21 +336,21 @@ void save_product_categories(sqlb::ObjectIdentifier post_category_table,
 
     //std::vector<int>updatedCategories;
 
-    pqxx::result all_ct = txn.exec_params(strSqlPostCategories, post_id);
+    auto all_ct = transPtr->execSqlSync(strSqlPostCategories, post_id);
     // For each saved categories, If saved category not exist in new categories, delete it.
     for (auto r : all_ct) {
         std::vector<int>::iterator it = std::find(inNewCategories.begin(), inNewCategories.end(), r[1].as<int>());
         if (it == inNewCategories.end()) {// Element not Found
-            txn.exec_params(strSqlPostCategoryDel, r[0].as<int>(), r[1].as<int>());
+            transPtr->execSqlSync(strSqlPostCategoryDel, r["post_id"].as<int>(), r[1].as<int>());
             //updatedCategories.push_back(r[1].as<int>());
         }
     }
 
     // For each new categories, insert it if it not already exist.
     for (auto x : inNewCategories) {
-        pqxx::result y = txn.exec_params(strSqlPostCategorySimpleFind, post_id, x);
+        auto y = transPtr->execSqlSync(strSqlPostCategorySimpleFind, post_id, x);
         if (y.size() == 0) {
-            txn.exec_params(strSqlPostCategoryInsert, post_id, x);
+            transPtr->execSqlSync(strSqlPostCategoryInsert, post_id, x);
             //auto it = std::find(inNewCategories.begin(), inNewCategories.end(), x);
             //if (it == inNewCategories.end()) updatedCategories.push_back(x);
         }
@@ -360,7 +360,7 @@ void save_product_categories(sqlb::ObjectIdentifier post_category_table,
 
 void save_product_clarities(sqlb::ObjectIdentifier post_clarity_table,
                             Json::Value &args,
-                            pqxx::work &txn,
+                            std::shared_ptr<Transaction> transPtr,
                             int post_id) {
     std::string strSqlPostCategories = "SELECT clarity_id FROM %1.%2 where post_id = $1";
     ReplaceAll2(strSqlPostCategories, "%1", post_clarity_table.schema());
@@ -394,31 +394,31 @@ void save_product_clarities(sqlb::ObjectIdentifier post_clarity_table,
             inVector.push_back({i[0].asInt(), i[1].asInt(), i[2].asDouble(), i[3].asDouble(), i[4].asBool()});
     }
 
-    pqxx::result all_ct = txn.exec_params(strSqlPostCategories, post_id);
+    auto all_ct = transPtr->execSqlSync(strSqlPostCategories, post_id);
     // For each saved tones, If saved tone not exist in new tones, delete it.
     for (auto r : all_ct) {
         std::vector<PostClarity>::iterator it = std::find_if(inVector.begin(), inVector.end(), [&](PostClarity t) {
-            return t.clarity_id == r[0].as<int>();
+            return t.clarity_id == r["clarity_id"].as<int>();
         });
         if (it == inVector.end()) {// Element not Found
-            txn.exec_params(strSqlPostCategoryDel, post_id, r[0].as<int>());
+            transPtr->execSqlSync(strSqlPostCategoryDel, post_id, r["clarity_id"].as<int>());
         }
     }
     // For each new tones, insert it if it not already exist.
     for (auto r : inVector) {
-        pqxx::result y = txn.exec_params(strSqlPostCategorySimpleFind, post_id, r.clarity_id);
+        auto y = transPtr->execSqlSync(strSqlPostCategorySimpleFind, post_id, r.clarity_id);
         if (y.size() == 0) {
-            txn.exec_params(strSqlPostCategoryInsert, post_id, r.clarity_id, r.pcs, r.weight, r.price, r.ismain);
+            transPtr->execSqlSync(strSqlPostCategoryInsert, post_id, r.clarity_id, r.pcs, r.weight, r.price, r.ismain);
         } else { // update
-            if (y[0][1].as<int>() != r.clarity_id || y[0][2].as<int>() != r.pcs || y[0][3].as<double>() != r.weight ||
-                y[0][4].as<double>() != r.price || y[0][5].as<bool>() != r.ismain) {
-                txn.exec_params(strSqlPostCategoryUpdateAtt, post_id, r.clarity_id, r.pcs, r.weight, r.price, r.ismain);
+            if (y[0]["clarity_id"].as<int>() != r.clarity_id || y[0]['pcs'].as<int>() != r.pcs || y[0]["weight"].as<double>() != r.weight ||
+                y[0]["price"].as<double>() != r.price || y[0]["ismain"].as<bool>() != r.ismain) {
+                transPtr->execSqlSync(strSqlPostCategoryUpdateAtt, post_id, r.clarity_id, r.pcs, r.weight, r.price, r.ismain);
             }
         }
     }
 }
 
-void save_purity_tone_(Json::Value &args, pqxx::work &txn, int post_id, int purity_id) {
+void save_purity_tone_(Json::Value &args, std::shared_ptr<Transaction> transPtr, int post_id, int purity_id) {
     std::string strSqlPostCategories = sel_("product.purity_tone", "post_id, purity_id, tone_id",
                                            "where post_id = $1 and purity_id = $2");
     std::string strSqlPostCategorySimpleFind = sel_("product.purity_tone", "post_id, purity_id, tone_id, weight, price, ismain",
@@ -443,24 +443,24 @@ void save_purity_tone_(Json::Value &args, pqxx::work &txn, int post_id, int puri
         }
     }
 
-    pqxx::result all_ct = txn.exec_params(strSqlPostCategories, post_id, purity_id);
+    auto all_ct = transPtr->execSqlSync(strSqlPostCategories, post_id, purity_id);
     // For each saved attachments, If it not exist in new attachments, delete it.
     for (auto r : all_ct) {
         std::vector<PurityTone>::iterator it = std::find_if(inNewPrice.begin(), inNewPrice.end(), [&](PurityTone t) {
-            return t.post_id == r[0].as<int>() && t.purity_id == r[1].as<int>() && t.tone_id == r[2].as<int>();
+            return t.post_id == r["post_id"].as<int>() && t.purity_id == r["purity_id"].as<int>() && t.tone_id == r['tone_id'].as<int>();
         });
         if (it == inNewPrice.end()) {// Element not Found
-            txn.exec_params(strSqlPostCategoryDel, post_id, r[1].as<int>(), r[2].as<int>());
+            transPtr->execSqlSync(strSqlPostCategoryDel, post_id, r[1].as<int>(), r[2].as<int>());
         }
     }
     // For each new attachments, insert it if it not already exist.
     for (auto r : inNewPrice) {
-        pqxx::result y = txn.exec_params(strSqlPostCategorySimpleFind, r.post_id, r.purity_id, r.tone_id);
+        auto y = transPtr->execSqlSync(strSqlPostCategorySimpleFind, r.post_id, r.purity_id, r.tone_id);
         if (y.size() == 0) { // insert
-            txn.exec_params(strSqlPostCategoryInsert, post_id, r.purity_id, r.tone_id, r.weight, r.price, r.ismain);
+            transPtr->execSqlSync(strSqlPostCategoryInsert, post_id, r.purity_id, r.tone_id, r.weight, r.price, r.ismain);
         } else { // update
-            if(y[0][3].as<double>() != r.weight || y[0][4].as<double>() != r.price || y[0][5].as<bool>() != r.ismain) {
-                txn.exec_params(strSqlPostCategoryUpdateAtt, post_id, r.purity_id, r.tone_id, r.weight, r.price, r.ismain);
+            if(y[0]["weight"].as<double>() != r.weight || y[0]["price"].as<double>() != r.price || y[0]["ismain"].as<bool>() != r.ismain) {
+                transPtr->execSqlSync(strSqlPostCategoryUpdateAtt, post_id, r.purity_id, r.tone_id, r.weight, r.price, r.ismain);
             }
         }
     }
@@ -468,7 +468,7 @@ void save_purity_tone_(Json::Value &args, pqxx::work &txn, int post_id, int puri
 
 void save_product_purities(sqlb::ObjectIdentifier post_purity_table,
                            Json::Value &args,
-                           pqxx::work &txn,
+                           std::shared_ptr<Transaction> transPtr,
                            int post_id) {
     std::string strSqlPostCategories = "SELECT purity_id FROM %1.%2 where post_id = $1";
     ReplaceAll2(strSqlPostCategories, "%1", post_purity_table.schema());
@@ -500,34 +500,34 @@ void save_product_purities(sqlb::ObjectIdentifier post_purity_table,
         if (!i[0].isNull()) inVector.push_back({i[0].asInt(), i[2].asBool(), i[1]});
     }
 
-    pqxx::result all_ct = txn.exec_params(strSqlPostCategories, post_id);
+    auto all_ct = transPtr->execSqlSync(strSqlPostCategories, post_id);
     // For each saved tones, If saved tone not exist in new tones, delete it.
     for (auto r : all_ct) {
         std::vector<PostPurity>::iterator it = std::find_if(inVector.begin(), inVector.end(), [&](PostPurity t) {
-            return t.purity_id == r[0].as<int>();
+            return t.purity_id == r["purity_id"].as<int>();
         });
         if (it == inVector.end()) {// Element not Found
-            txn.exec_params("DELETE FROM product.purity_tone WHERE post_id = $1 and purity_id = $2", post_id,
-                            r[0].as<int>());
-            txn.exec_params(strSqlPostCategoryDel, post_id, r[0].as<int>());
+            transPtr->execSqlSync("DELETE FROM product.purity_tone WHERE post_id = $1 and purity_id = $2", post_id,
+                            r["purity_id"].as<int>());
+            transPtr->execSqlSync(strSqlPostCategoryDel, post_id, r["purity_id"].as<int>());
         }
     }
     // For each new tones, insert it if it not already exist.
     for (auto r : inVector) {
-        pqxx::result y = txn.exec_params(strSqlPostCategorySimpleFind, post_id, r.purity_id);
+        auto y = transPtr->execSqlSync(strSqlPostCategorySimpleFind, post_id, r.purity_id);
         if (y.size() == 0) {
-            txn.exec_params(strSqlPostCategoryInsert, post_id, r.purity_id, r.ismain);
-            save_purity_tone_(r.tones, txn, post_id, r.purity_id);
+            transPtr->execSqlSync(strSqlPostCategoryInsert, post_id, r.purity_id, r.ismain);
+            save_purity_tone_(r.tones, transPtr, post_id, r.purity_id);
         } else { // update
-            if (y[0][0].as<int>() != r.purity_id || y[0][0].as<int>() != r.ismain) {
-                txn.exec_params(strSqlPostCategoryUpdateAtt, post_id, r.purity_id, r.ismain);
+            if (y[0]["purity_id"].as<int>() != r.purity_id || y[0]["ismain"].as<int>() != r.ismain) {
+                transPtr->execSqlSync(strSqlPostCategoryUpdateAtt, post_id, r.purity_id, r.ismain);
             }
-            save_purity_tone_(r.tones, txn, post_id, r.purity_id);
+            save_purity_tone_(r.tones, transPtr, post_id, r.purity_id);
         }
     }
 }
 
-void save_diamond_price(Json::Value &args, pqxx::work &txn, int diamond_id) {
+void save_diamond_price(Json::Value &args, std::shared_ptr<Transaction> transPtr, int diamond_id) {
     std::string strSqlPostCategories = "SELECT diamond_id, clarity_id, weight, total_weight, rate, price FROM product.diamond_price where diamond_id = $1";
     std::string strSqlPostCategorySimpleFind = "SELECT diamond_id, clarity_id, weight, total_weight, rate, price FROM product.diamond_price where diamond_id = $1 and clarity_id = $2";
     std::string strSqlPostCategoryDel = "DELETE FROM product.diamond_price WHERE diamond_id = $1 and clarity_id = $2";
@@ -550,27 +550,27 @@ void save_diamond_price(Json::Value &args, pqxx::work &txn, int diamond_id) {
         }
     }
 
-    pqxx::result all_ct = txn.exec_params(strSqlPostCategories, diamond_id);
+    auto all_ct = transPtr->execSqlSync(strSqlPostCategories, diamond_id);
     // For each saved attachments, If it not exist in new attachments, delete it.
     for (auto r : all_ct) {
         std::vector<DiamondPrice>::iterator it = std::find_if(inNewPrice.begin(), inNewPrice.end(),
                                                               [&](DiamondPrice t) {
-                                                                  return t.diamond_id == r[0].as<int>() &&
+                                                                  return t.diamond_id == r["diamond_id"].as<int>() &&
                                                                       t.clarity_id == r[1].as<int>();
                                                               });
         if (it == inNewPrice.end()) {// Element not Found
-            txn.exec_params(strSqlPostCategoryDel, diamond_id, r[1].as<int>());
+            transPtr->execSqlSync(strSqlPostCategoryDel, diamond_id, r[1].as<int>());
         }
     }
     // For each new attachments, insert it if it not already exist.
     for (auto r : inNewPrice) {
-        pqxx::result y = txn.exec_params(strSqlPostCategorySimpleFind, r.diamond_id, r.clarity_id);
+        auto y = transPtr->execSqlSync(strSqlPostCategorySimpleFind, r.diamond_id, r.clarity_id);
         if (y.size() == 0) { // insert
-            txn.exec_params(strSqlPostCategoryInsert, diamond_id, r.clarity_id, r.weight, r.total_weight, r.rate,
+            transPtr->execSqlSync(strSqlPostCategoryInsert, diamond_id, r.clarity_id, r.weight, r.total_weight, r.rate,
                             r.price);
         } else { // update
             //if(y[0][1].as<int>() != r.shape_id || y[0][2].as<int>() != r.color_id || y[0][3].c_str() != r.dsize || y[0][4].as<int>() != r.pcs || y[0][5].as<double>() != r.price) {
-            txn.exec_params(strSqlPostCategoryUpdateAtt, diamond_id, r.clarity_id, r.weight, r.total_weight, r.rate,
+            transPtr->execSqlSync(strSqlPostCategoryUpdateAtt, diamond_id, r.clarity_id, r.weight, r.total_weight, r.rate,
                             r.price);
             //}
         }
@@ -579,7 +579,7 @@ void save_diamond_price(Json::Value &args, pqxx::work &txn, int diamond_id) {
 
 void save_product_diamond_sizes(sqlb::ObjectIdentifier post_diamond_sizes_table,
                                 Json::Value &args,
-                                pqxx::work &txn,
+                                std::shared_ptr<Transaction> transPtr,
                                 int post_id) {
     std::string strSqlPostCategories = "SELECT id, post_id, shape_id, color_id, size_id, pcs FROM product.post_diamond_size where post_id = $1";
     std::string strSqlPostCategorySimpleFind = "SELECT id, post_id, shape_id, color_id, size_id, pcs, setting_type_id FROM product.post_diamond_size WHERE id = $1";
@@ -604,38 +604,38 @@ void save_product_diamond_sizes(sqlb::ObjectIdentifier post_diamond_sizes_table,
         }
     }
 
-    pqxx::result all_ct = txn.exec_params(strSqlPostCategories, post_id);
+    auto all_ct = transPtr->execSqlSync(strSqlPostCategories, post_id);
     // For each saved attachments, If it not exist in new attachments, delete it.
     for (auto r : all_ct) {
         std::vector<PostDiamondSize>::iterator it = std::find_if(inNewAttachments.begin(), inNewAttachments.end(),
                                                                  [&](PostDiamondSize t) {
-                                                                     return t.id == r[0].as<int>();
+                                                                     return t.id == r["id"].as<int>();
                                                                  });
         if (it == inNewAttachments.end()) {// Element not Found
-            txn.exec_params("DELETE FROM product.diamond_price WHERE diamond_id = $1", r[0].as<int>());
-            txn.exec_params(strSqlPostCategoryDel, r[0].as<int>());
+            transPtr->execSqlSync("DELETE FROM product.diamond_price WHERE diamond_id = $1", r["id"].as<int>());
+            transPtr->execSqlSync(strSqlPostCategoryDel, r["id"].as<int>());
         }
     }
     // For each new attachments, insert it if it not already exist.
     for (auto r : inNewAttachments) {
-        pqxx::result y = txn.exec_params(strSqlPostCategorySimpleFind, r.id);
+        auto y = transPtr->execSqlSync(strSqlPostCategorySimpleFind, r.id);
         if (y.size() == 0) { // insert
-            auto i = txn.exec_params(strSqlPostCategoryInsert, post_id, r.shape_id, r.color_id, r.dsize, r.pcs,
+            auto i = transPtr->execSqlSync(strSqlPostCategoryInsert, post_id, r.shape_id, r.color_id, r.dsize, r.pcs,
                                      r.setting_type_id);
-            save_diamond_price(r.clarity_price, txn, i[0][0].as<int>());
+            save_diamond_price(r.clarity_price, transPtr, i[0]["id"].as<int>());
         } else { // update
-            auto set_id = y[0][6].is_null() ? 0 : y[0][6].as<int>();
-            if (y[0][2].as<int>() != r.shape_id || y[0][3].as<int>() != r.color_id || y[0][4].c_str() != r.dsize ||
-                y[0][5].as<int>() != r.pcs || set_id != r.setting_type_id) {
-                txn.exec_params(strSqlPostCategoryUpdateAtt, r.id, post_id, r.shape_id, r.color_id, r.dsize, r.pcs,
+            auto set_id = y[0]["setting_type_id"].isNull() ? 0 : y[0]["setting_type_id"].as<int>();
+            if (y[0]["shape_id"].as<int>() != r.shape_id || y[0]["color_id"].as<int>() != r.color_id || y[0]["size_id"].c_str() != r.dsize ||
+                y[0]["pcs"].as<int>() != r.pcs || set_id != r.setting_type_id) {
+                transPtr->execSqlSync(strSqlPostCategoryUpdateAtt, r.id, post_id, r.shape_id, r.color_id, r.dsize, r.pcs,
                                 r.setting_type_id);
             }
-            save_diamond_price(r.clarity_price, txn, y[0][0].as<int>());
+            save_diamond_price(r.clarity_price, transPtr, y[0]["id"].as<int>());
         }
     }
 }
 
-void save_cs_price(Json::Value &args, pqxx::work &txn, int cs_id) {
+void save_cs_price(Json::Value &args, std::shared_ptr<Transaction> transPtr, int cs_id) {
     std::string strSqlPostCategories = "SELECT cs_id, weight, total_weight, rate, price FROM product.cs_price where cs_id = $1";
     std::string strSqlPostCategorySimpleFind = "SELECT cs_id, 0, weight, total_weight, rate, price FROM product.cs_price where cs_id = $1";
     std::string strSqlPostCategoryDel = "DELETE FROM product.cs_price WHERE cs_id = $1";
@@ -657,25 +657,25 @@ void save_cs_price(Json::Value &args, pqxx::work &txn, int cs_id) {
         }
     }
 
-    pqxx::result all_ct = txn.exec_params(strSqlPostCategories, cs_id);
+    auto all_ct = transPtr->execSqlSync(strSqlPostCategories, cs_id);
     // For each saved attachments, If it not exist in new attachments, delete it.
     for (auto r : all_ct) {
         std::vector<DiamondPrice>::iterator it = std::find_if(inNewPrice.begin(), inNewPrice.end(),
                                                               [&](DiamondPrice t) {
-                                                                  return t.cs_id == r[0].as<int>();
+                                                                  return t.cs_id == r["cs_id"].as<int>();
                                                               });
         if (it == inNewPrice.end()) {// Element not Found
-            txn.exec_params(strSqlPostCategoryDel, cs_id, r[1].as<int>());
+            transPtr->execSqlSync(strSqlPostCategoryDel, cs_id, r[1].as<int>());
         }
     }
     // For each new attachments, insert it if it not already exist.
     for (auto r : inNewPrice) {
-        pqxx::result y = txn.exec_params(strSqlPostCategorySimpleFind, r.cs_id);
+        auto y = transPtr->execSqlSync(strSqlPostCategorySimpleFind, r.cs_id);
         if (y.size() == 0) { // insert
-            txn.exec_params(strSqlPostCategoryInsert, cs_id, r.weight, r.total_weight, r.rate, r.price);
+            transPtr->execSqlSync(strSqlPostCategoryInsert, cs_id, r.weight, r.total_weight, r.rate, r.price);
         } else { // update
             //if(y[0][1].as<int>() != r.shape_id || y[0][2].as<int>() != r.color_id || y[0][3].c_str() != r.dsize || y[0][4].as<int>() != r.pcs || y[0][5].as<double>() != r.price) {
-            txn.exec_params(strSqlPostCategoryUpdateAtt, cs_id, r.weight, r.total_weight, r.rate, r.price);
+            transPtr->execSqlSync(strSqlPostCategoryUpdateAtt, cs_id, r.weight, r.total_weight, r.rate, r.price);
             //}
         }
     }
@@ -683,7 +683,7 @@ void save_cs_price(Json::Value &args, pqxx::work &txn, int cs_id) {
 
 void save_product_cs_sizes(sqlb::ObjectIdentifier post_color_stone_size_table,
                            Json::Value &args,
-                           pqxx::work &txn,
+                           std::shared_ptr<Transaction> transPtr,
                            int post_id) {
     std::string strSqlPostCategories = "SELECT id, post_id, shape_id, color_id, size_id, pcs FROM product.post_color_stone_size where post_id = $1";
     std::string strSqlPostCategorySimpleFind = "SELECT id, post_id, shape_id, color_id, size_id, pcs, setting_type_id FROM product.post_color_stone_size WHERE id = $1";
@@ -709,40 +709,40 @@ void save_product_cs_sizes(sqlb::ObjectIdentifier post_color_stone_size_table,
         }
     }
 
-    pqxx::result all_ct = txn.exec_params(strSqlPostCategories, post_id);
+    auto all_ct = transPtr->execSqlSync(strSqlPostCategories, post_id);
     // For each saved attachments, If it not exist in new attachments, delete it.
     for (auto r : all_ct) {
         std::vector<PostCSSize>::iterator it = std::find_if(inNewAttachments.begin(), inNewAttachments.end(),
                                                             [&](PostCSSize t) {
-                                                                return t.id == r[0].as<int>();
+                                                                return t.id == r["id"].as<int>();
                                                             });
         if (it == inNewAttachments.end()) {// Element not Found
-            txn.exec_params("DELETE FROM product.cs_price WHERE cs_id = $1", r[0].as<int>());
-            txn.exec_params(strSqlPostCategoryDel, r[0].as<int>());
+            transPtr->execSqlSync("DELETE FROM product.cs_price WHERE cs_id = $1", r["id"].as<int>());
+            transPtr->execSqlSync(strSqlPostCategoryDel, r["id"].as<int>());
         }
     }
     // For each new attachments, insert it if it not already exist.
     for (auto r : inNewAttachments) {
-        pqxx::result y = txn.exec_params(strSqlPostCategorySimpleFind, r.id);
+        auto y = transPtr->execSqlSync(strSqlPostCategorySimpleFind, r.id);
         if (y.size() == 0) { // insert
-            auto i = txn.exec_params(strSqlPostCategoryInsert, post_id, r.cs_type_id, r.shape_id, r.color_id, r.dsize, r.pcs,
+            auto i = transPtr->execSqlSync(strSqlPostCategoryInsert, post_id, r.cs_type_id, r.shape_id, r.color_id, r.dsize, r.pcs,
                                      r.setting_type_id);
-            save_cs_price(r.clarity_price, txn, i[0][0].as<int>());
+            save_cs_price(r.clarity_price, transPtr, i[0]["id"].as<int>());
         } else { // update
-            auto set_id = y[0][6].is_null() ? 0 : y[0][6].as<int>();
+            auto set_id = y[0]["setting_type_id"].isNull() ? 0 : y[0]["setting_type_id"].as<int>();
             if (y[0][2].as<int>() != r.shape_id || y[0][3].as<int>() != r.color_id || y[0][4].c_str() != r.dsize ||
                 y[0][5].as<int>() != r.pcs || set_id != r.setting_type_id) {
-                txn.exec_params(strSqlPostCategoryUpdateAtt, r.id, post_id, r.cs_type_id, r.shape_id, r.color_id, r.dsize, r.pcs,
+                transPtr->execSqlSync(strSqlPostCategoryUpdateAtt, r.id, post_id, r.cs_type_id, r.shape_id, r.color_id, r.dsize, r.pcs,
                                 r.setting_type_id);
             }
-            save_cs_price(r.clarity_price, txn, y[0][0].as<int>());
+            save_cs_price(r.clarity_price, transPtr, y[0]["id"].as<int>());
         }
     }
 }
 
 void save_product_cs_total(sqlb::ObjectIdentifier post_cs_total_table,
                            Json::Value &args,
-                           pqxx::work &txn,
+                           std::shared_ptr<Transaction> transPtr,
                            int post_id) {
     std::string strSqlPostCategories = "SELECT post_id, pcs, weight, price FROM product.post_cs_total where post_id = $1";
     std::string strSqlPostCategorySimpleFind = "SELECT post_id, pcs, weight, price FROM product.post_cs_total WHERE post_id = $1";
@@ -763,26 +763,26 @@ void save_product_cs_total(sqlb::ObjectIdentifier post_cs_total_table,
         }
     }
 
-    pqxx::result all_ct = txn.exec_params(strSqlPostCategories, post_id);
+    auto all_ct = transPtr->execSqlSync(strSqlPostCategories, post_id);
     // For each saved attachments, If it not exist in new attachments, delete it.
     for (auto r : all_ct) {
         std::vector<PostCSTotal>::iterator it = std::find_if(inNewAttachments.begin(), inNewAttachments.end(),
                                                              [&](PostCSTotal t) {
-                                                                 return t.post_id == r[0].as<int>();
+                                                                 return t.post_id == r["post_id"].as<int>();
                                                              });
         if (it == inNewAttachments.end()) {// Element not Found
-            txn.exec_params(strSqlPostCategoryDel, r[0].as<int>());
+            transPtr->execSqlSync(strSqlPostCategoryDel, r["post_id"].as<int>());
         }
     }
     // For each new attachments, insert it if it not already exist.
     for (auto r : inNewAttachments) {
-        pqxx::result y = txn.exec_params(strSqlPostCategorySimpleFind, r.post_id);
+        auto y = transPtr->execSqlSync(strSqlPostCategorySimpleFind, r.post_id);
         if (y.size() == 0) { // insert
-            auto i = txn.exec_params(strSqlPostCategoryInsert, post_id, r.pcs, r.weight, r.price);
+            auto i = transPtr->execSqlSync(strSqlPostCategoryInsert, post_id, r.pcs, r.weight, r.price);
         } else { // update
-            if (y[0][0].as<int>() != r.post_id || y[0][1].as<int>() != r.pcs || y[0][2].as<double>() != r.weight ||
-                y[0][3].as<double>() != r.price) {
-                txn.exec_params(strSqlPostCategoryUpdateAtt, r.post_id, r.pcs, r.weight, r.price);
+            if (y[0]["post_id"].as<int>() != r.post_id || y[0]["pcs"].as<int>() != r.pcs || y[0]["weight"].as<double>() != r.weight ||
+                y[0]["price"].as<double>() != r.price) {
+                transPtr->execSqlSync(strSqlPostCategoryUpdateAtt, r.post_id, r.pcs, r.weight, r.price);
             }
         }
     }
@@ -790,7 +790,7 @@ void save_product_cs_total(sqlb::ObjectIdentifier post_cs_total_table,
 
 void save_product_Attachments(sqlb::ObjectIdentifier post_attachment_table,
                               Json::Value &args,
-                              pqxx::work &txn,
+                              std::shared_ptr<Transaction> transPtr,
                               int post_id) {
     std::string strSqlPostCategories = "SELECT id FROM %1.%2 where post_id = $1";
     ReplaceAll2(strSqlPostCategories, "%1", post_attachment_table.schema());
@@ -829,43 +829,43 @@ void save_product_Attachments(sqlb::ObjectIdentifier post_attachment_table,
         inNewAttachments.push_back({i[0].asInt(), i[1].asInt(), i[2].asInt(), i[3].asBool()});
     }
 
-    pqxx::result all_ct = txn.exec_params(strSqlPostCategories, post_id);
+    auto all_ct = transPtr->execSqlSync(strSqlPostCategories, post_id);
     // For each saved attachments, If it not exist in new attachments, delete it.
     for (auto r : all_ct) {
         std::vector<Attachment>::iterator it = std::find_if(inNewAttachments.begin(), inNewAttachments.end(),
                                                             [&](Attachment t) {
-                                                                return t.id == r[0].as<int>();
+                                                                return t.id == r["id"].as<int>();
                                                             });
         if (it == inNewAttachments.end()) {// Element not Found
-            txn.exec_params(strSqlPostCategoryDel, r[0].as<int>());
+            transPtr->execSqlSync(strSqlPostCategoryDel, r["id"].as<int>());
         }
     }
     // For each new attachments, insert it if it not already exist.
     for (auto r : inNewAttachments) {
-        pqxx::result y = txn.exec_params(strSqlPostCategorySimpleFind, r.id);
+        auto y = transPtr->execSqlSync(strSqlPostCategorySimpleFind, r.id);
         if (y.size() == 0) { // insert
             auto temp_id = r.temp_id;
             if (temp_id != 0) {
-                pqxx::result z = txn.exec_params(strSqlTempImage, temp_id);
+                auto z = transPtr->execSqlSync(strSqlTempImage, temp_id);
                 if (z.size() == 1) {
-                    txn.exec_params(strSqlPostCategoryInsert, post_id, r.tone_id, z[0][0].c_str(), z[0][1].as<int>(),
-                                    z[0][2].c_str(), r.main_image);
-                    txn.exec_params(strSqlTempImageDel, temp_id);
+                    transPtr->execSqlSync(strSqlPostCategoryInsert, post_id, r.tone_id, z[0]["name"].c_str(), z[0]["size"].as<int>(),
+                                    z[0]["type"].c_str(), r.main_image);
+                    transPtr->execSqlSync(strSqlTempImageDel, temp_id);
                 }
             }
         } else { // update
-            if (y[0][2].as<int>() != r.tone_id || y[0][3].as<bool>() != r.main_image ||
+            if (y[0]["tone_id"].as<int>() != r.tone_id || y[0]["main_image"].as<bool>() != r.main_image ||
                 r.temp_id != 0) { // can also update image
                 auto temp_id = r.temp_id;
                 if (temp_id != 0) {
-                    pqxx::result z = txn.exec_params(strSqlTempImage, temp_id);
+                    auto z = transPtr->execSqlSync(strSqlTempImage, temp_id);
                     if (z.size() == 1) {
-                        txn.exec_params(strSqlPostCategoryUpdateAtt, y[0][0].as<int>(), r.tone_id, z[0][0].c_str(),
-                                        z[0][1].as<int>(), z[0][2].c_str(), r.main_image);
-                        txn.exec_params(strSqlTempImageDel, temp_id);
+                        transPtr->execSqlSync(strSqlPostCategoryUpdateAtt, y[0]["name"].as<int>(), r.tone_id, z[0]["size"].c_str(),
+                                        z[0]["type"].as<int>(), z[0][2].c_str(), r.main_image);
+                        transPtr->execSqlSync(strSqlTempImageDel, temp_id);
                     }
                 } else {
-                    txn.exec_params(strSqlPostCategoryUpdate, r.id, r.tone_id, r.main_image);
+                    transPtr->execSqlSync(strSqlPostCategoryUpdate, r.id, r.tone_id, r.main_image);
                 }
 
             }
@@ -903,9 +903,9 @@ Json::Value Product::ins( Json::Value event, Json::Value args) {
     ReplaceAll2(strSqlProduct, "%2", product_table.name());
 
 
-    pqxx::work txn{DD};
+    auto transPtr = clientPtr->newTransaction();
     try {
-        pqxx::result x = txn.exec_params(
+        auto x = transPtr->execSqlSync(
             strSqlPost,
             args["comment_status"].asBool(),
             args["menu_order"].asInt(),
@@ -921,7 +921,7 @@ Json::Value Product::ins( Json::Value event, Json::Value args) {
             );
         auto post_id = x[0]["id"].as<int>();
 
-        txn.exec_params(
+        transPtr->execSqlSync(
             strSqlProduct,
             post_id,
             args["p_sku"].asString(),
@@ -950,21 +950,21 @@ Json::Value Product::ins( Json::Value event, Json::Value args) {
             args["p_purity_id"].asInt(),
             args["p_tone_id"].asInt()
             );
-        product_tags_process(tags_table, post_tag_table, args, txn, post_id);
-        save_product_categories(post_category_table, args, txn, post_id);
-        save_product_tones(args, txn, post_id);
-        save_product_clarities(post_clarity_table, args, txn, post_id);
-        save_product_purities(post_purity_table, args, txn, post_id);
-        save_product_Attachments(post_attachment_table, args, txn, post_id);
-        save_product_diamond_sizes(post_diamond_sizes_table, args, txn, post_id);
-        save_product_cs_sizes(post_diamond_sizes_table, args, txn, post_id);
-        save_product_cs_total(post_cs_total_table, args, txn, post_id);
-        save_product_certified_by(args, txn, post_id);
-        save_product_policy(args, txn, post_id);
-        txn.commit();
+        product_tags_process(tags_table, post_tag_table, args, transPtr, post_id);
+        save_product_categories(post_category_table, args, transPtr, post_id);
+        save_product_tones(args, transPtr, post_id);
+        save_product_clarities(post_clarity_table, args, transPtr, post_id);
+        save_product_purities(post_purity_table, args, transPtr, post_id);
+        save_product_Attachments(post_attachment_table, args, transPtr, post_id);
+        save_product_diamond_sizes(post_diamond_sizes_table, args, transPtr, post_id);
+        save_product_cs_sizes(post_diamond_sizes_table, args, transPtr, post_id);
+        save_product_cs_total(post_cs_total_table, args, transPtr, post_id);
+        save_product_certified_by(args, transPtr, post_id);
+        save_product_policy(args, transPtr, post_id);
+        
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
-        txn.abort();
+        
         std::cerr << e.what() << std::endl;
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
@@ -999,9 +999,9 @@ Json::Value Product::upd( Json::Value event, Json::Value args) {
         ReplaceAll2(strSqlProduct, "%1", product_table.schema());
         ReplaceAll2(strSqlProduct, "%2", product_table.name());
 
-        pqxx::work txn{DD};
+        auto transPtr = clientPtr->newTransaction();
         try {
-            txn.exec_params(strSqlPost,
+            transPtr->execSqlSync(strSqlPost,
                             args["id"].asInt64(),
                     args["comment_status"].asBool(),
                     args["menu_order"].asInt(),
@@ -1016,7 +1016,7 @@ Json::Value Product::upd( Json::Value event, Json::Value args) {
                     args["visibility"].asString()
                     );
             auto post_id = args["id"].asInt();
-            txn.exec_params(strSqlProduct,
+            transPtr->execSqlSync(strSqlProduct,
                             args["p_id"].asInt(),
                     post_id,
                     args["p_sku"].asString(),
@@ -1046,22 +1046,22 @@ Json::Value Product::upd( Json::Value event, Json::Value args) {
                     args["p_tone_id"].asInt()
                     );
 
-            product_tags_process(tags_table, post_tag_table, args, txn, post_id);
-            save_product_categories(post_category_table, args, txn, post_id);
-            save_product_tones(args, txn, post_id);
-            save_product_clarities(post_clarity_table, args, txn, post_id);
-            save_product_purities(post_purity_table, args, txn, post_id);
-            save_product_Attachments(post_attachment_table, args, txn, post_id);
-            save_product_diamond_sizes(post_diamond_sizes_table, args, txn, post_id);
-            save_product_cs_sizes(post_diamond_sizes_table, args, txn, post_id);
-            save_product_cs_total(post_cs_total_table, args, txn, post_id);
-            save_product_certified_by(args, txn, post_id);
-            save_product_policy(args, txn, post_id);
+            product_tags_process(tags_table, post_tag_table, args, transPtr, post_id);
+            save_product_categories(post_category_table, args, transPtr, post_id);
+            save_product_tones(args, transPtr, post_id);
+            save_product_clarities(post_clarity_table, args, transPtr, post_id);
+            save_product_purities(post_purity_table, args, transPtr, post_id);
+            save_product_Attachments(post_attachment_table, args, transPtr, post_id);
+            save_product_diamond_sizes(post_diamond_sizes_table, args, transPtr, post_id);
+            save_product_cs_sizes(post_diamond_sizes_table, args, transPtr, post_id);
+            save_product_cs_total(post_cs_total_table, args, transPtr, post_id);
+            save_product_certified_by(args, transPtr, post_id);
+            save_product_policy(args, transPtr, post_id);
 
-            txn.commit();
+            
             Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
-            txn.abort();
+            
             std::cerr << e.what() << std::endl;
             Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
         }
@@ -1071,7 +1071,7 @@ Json::Value Product::upd( Json::Value event, Json::Value args) {
 Json::Value Product::del( Json::Value event, Json::Value args) {
     printJson(args);
 
-    pqxx::work txn{DD};
+    auto transPtr = clientPtr->newTransaction();
     try {
         auto post_del = "DELETE FROM post.post WHERE id = $1";
         auto product_del = "DELETE FROM product.product WHERE post_id = $1";
@@ -1091,30 +1091,30 @@ Json::Value Product::del( Json::Value event, Json::Value args) {
         auto post_certified_by_del = "DELETE FROM product.post_certified_by WHERE post_id = $1";
         auto post_policy_del = "DELETE FROM product.post_policy WHERE post_id = $1";
 
-        txn.exec_params(post_policy_del, args[0].asInt());
-        txn.exec_params(post_certified_by_del, args[0].asInt());
-        txn.exec_params(post_cs_total_del, args[0].asInt());
-        txn.exec_params(post_cs_price_del, args[0].asInt());
-        txn.exec_params(post_cs_sizes_del, args[0].asInt());
-        txn.exec_params(post_diamond_price_id, args[0].asInt());
-        txn.exec_params(post_diamond_sizes_del, args[0].asInt());
-        txn.exec_params(post_attachment_del, args[0].asInt());
-        txn.exec_params(post_purity_tone_del, args[0].asInt());
-        txn.exec_params(post_purity_del, args[0].asInt());
-        txn.exec_params(post_tone_del, args[0].asInt());
-        txn.exec_params(post_tone_del, args[0].asInt());
-        txn.exec_params(post_clarity_del, args[0].asInt());
-        txn.exec_params(post_category_del, args[0].asInt());
-        txn.exec_params(post_tag_del, args[0].asInt());
-        //txn.exec_params(tags_del, args[0].asInt()); // Fix This. If Tag is not used in any product delete it
-        txn.exec_params(product_del, args[0].asInt());
-        txn.exec_params(post_del, args[0].asInt());
+        transPtr->execSqlSync(post_policy_del, args[0].asInt());
+        transPtr->execSqlSync(post_certified_by_del, args[0].asInt());
+        transPtr->execSqlSync(post_cs_total_del, args[0].asInt());
+        transPtr->execSqlSync(post_cs_price_del, args[0].asInt());
+        transPtr->execSqlSync(post_cs_sizes_del, args[0].asInt());
+        transPtr->execSqlSync(post_diamond_price_id, args[0].asInt());
+        transPtr->execSqlSync(post_diamond_sizes_del, args[0].asInt());
+        transPtr->execSqlSync(post_attachment_del, args[0].asInt());
+        transPtr->execSqlSync(post_purity_tone_del, args[0].asInt());
+        transPtr->execSqlSync(post_purity_del, args[0].asInt());
+        transPtr->execSqlSync(post_tone_del, args[0].asInt());
+        transPtr->execSqlSync(post_tone_del, args[0].asInt());
+        transPtr->execSqlSync(post_clarity_del, args[0].asInt());
+        transPtr->execSqlSync(post_category_del, args[0].asInt());
+        transPtr->execSqlSync(post_tag_del, args[0].asInt());
+        //transPtr->execSqlSync(tags_del, args[0].asInt()); // Fix This. If Tag is not used in any product delete it
+        transPtr->execSqlSync(product_del, args[0].asInt());
+        transPtr->execSqlSync(post_del, args[0].asInt());
 
 
-        txn.commit();
+        
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
-        txn.abort();
+        
         std::cerr << e.what() << std::endl;
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
@@ -1133,9 +1133,9 @@ Json::Value save_category( Json::Value event, Json::Value args) {
         ReplaceAll2(strSql, "%1", product_table.schema());
         ReplaceAll2(strSql, "%2", product_table.name());
 
-        pqxx::work txn{DD};
+        auto transPtr = clientPtr->newTransaction();
         try {
-            txn.exec_params(strSql,
+            transPtr->execSqlSync(strSql,
                             args["id"].asInt64(),
                             args["slug"].asString(),
                             args["name"].asString(),
@@ -1144,10 +1144,10 @@ Json::Value save_category( Json::Value event, Json::Value args) {
                             args["parent_id"].asInt(),
                             args["position"].asInt()
                             );
-            txn.commit();
+            
             Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
-            txn.abort();
+            
             std::cerr << e.what() << std::endl;
             Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
         }
@@ -1156,9 +1156,9 @@ Json::Value save_category( Json::Value event, Json::Value args) {
         ReplaceAll2(strSql, "%1", product_table.schema());
         ReplaceAll2(strSql, "%2", product_table.name());
 
-        pqxx::work txn{DD};
+        auto transPtr = clientPtr->newTransaction();
         try {
-            txn.exec_params(
+            transPtr->execSqlSync(
                 strSql,
                 args["slug"].asString(),
                 args["name"].asString(),
@@ -1167,10 +1167,10 @@ Json::Value save_category( Json::Value event, Json::Value args) {
                 args["parent_id"].asInt(),
                 args["position"].asInt()
                 );
-            txn.commit();
+            
             Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
-            txn.abort();
+            
             std::cerr << e.what() << std::endl;
             Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
         }
@@ -1197,10 +1197,10 @@ Json::Value Product::get_product_attachment_data( Json::Value event, Json::Value
     auto home = fs::path(getenv("HOME"));
     fprintf(stdout, "Binary Requested:");
     fflush(stdout);
-    pqxx::work txn{DD};
+    auto transPtr = clientPtr->newTransaction();
     try {
         auto sql = "SELECT name FROM product.post_attachment WHERE id = $1";
-        pqxx::result x = txn.exec_params(sql, args.asInt());
+        auto x = transPtr->execSqlSync(sql, args.asInt());
 
         fprintf(stdout, "Binary Requested 001:");
         fflush(stdout);
@@ -1209,7 +1209,7 @@ Json::Value Product::get_product_attachment_data( Json::Value event, Json::Value
             // http://www.cplusplus.com/doc/tutorial/files/
             // What is the best way to read an entire file into a std::string in C++?
             // https://stackoverflow.com/questions/116038/what-is-the-best-way-to-read-an-entire-file-into-a-stdstring-in-c/116220#116220
-            std::ifstream file(home.string() + "/fileuploads/" + x[0][0].c_str(), std::ios::in | std::ios::binary | std::ios::ate);
+            std::ifstream file(home.string() + "/fileuploads/" + x[0]["name"].c_str(), std::ios::in | std::ios::binary | std::ios::ate);
             fprintf(stdout, "Binary Requested 002:");
             fflush(stdout);
             if (file.is_open()) {
@@ -1227,11 +1227,11 @@ Json::Value Product::get_product_attachment_data( Json::Value event, Json::Value
             fflush(stdout);
             // Fix simpleJsonSaveResult(event, true, "Done");
         }
-        txn.commit();
+        
         return Json::nullValue;
 
     } catch (const std::exception &e) {
-        txn.abort();
+        
         std::cerr << e.what() << std::endl;
         fprintf(stdout, "Binary Request Failed 3:");
         fflush(stdout);
@@ -1261,30 +1261,30 @@ Json::Value Product::get_product_diamond_price_data( Json::Value event, Json::Va
     if (args[6].size() > 0) s.pop_back();
     s += "}";
 
-    pqxx::work txn{DD};
+    auto transPtr = clientPtr->newTransaction();
     try {
         // You can't use IN (...) with arrays. You need to use an operator (ex: =, >, <, etc) and ANY/ALL
         auto sql = "SELECT clarity_id, weight, rate FROM material.diamond_size_meta WHERE shape_id = $1 AND color_id = $2 AND size_id = $3 AND  clarity_id = ANY($4::bigint[])";
-        pqxx::result x = txn.exec_params(sql, shape, color, size, s);
+        auto x = transPtr->execSqlSync(sql, shape, color, size, s);
 
 
         Json::Value d(Json::arrayValue);
         for (auto r : x) {
             Json::Value row;
-            row[0] = r[0].as<int>();
+            row[0] = r["clarity_id"].as<int>();
             row[1] = "";
-            row[2] = r[1].as<double>();
-            row[3] = r[1].as<double>() * pcs;
-            row[4] = r[2].as<double>();
-            row[5] = r[1].as<double>() * pcs * r[2].as<double>();
+            row[2] = r["weight"].as<double>();
+            row[3] = r["weight"].as<double>() * pcs;
+            row[4] = r["rate"].as<double>();
+            row[5] = r["weight"].as<double>() * pcs * r["rate"].as<double>();
             d.append(row);
         }
         jresult[1] = d;
-        txn.commit();
+        
         batch[0] = jresult;
         return batch;
     } catch (const std::exception &e) {
-        txn.abort();
+        
         std::cerr << e.what() << std::endl;
         //simpleJsonSaveResult(event, false, e.what());
         return Json::Value(Json::nullValue);
@@ -1304,29 +1304,29 @@ Json::Value Product::get_product_cs_price_data( Json::Value event, Json::Value a
     auto size = args[4].asInt();
     auto pcs = args[5].asInt();
 
-    pqxx::work txn{DD};
+    auto transPtr = clientPtr->newTransaction();
     try {
         // You can't use IN (...) with arrays. You need to use an operator (ex: =, >, <, etc) and ANY/ALL
         auto sql = "SELECT weight, rate FROM material.color_stone_size_meta WHERE cs_type_id = $1 and shape_id = $2 AND size_id = $3";
-        pqxx::result x = txn.exec_params(sql, type, shape, size);
+        auto x = transPtr->execSqlSync(sql, type, shape, size);
 
         Json::Value d(Json::arrayValue);
         for (auto r : x) {
             Json::Value row;
             row[0] = 0;
             row[1] = "";
-            row[2] = r[0].as<double>();
-            row[3] = r[0].as<double>() * pcs;
-            row[4] = r[1].as<double>();
-            row[5] = r[0].as<double>() * pcs * r[1].as<double>();
+            row[2] = r["weight"].as<double>();
+            row[3] = r["weight"].as<double>() * pcs;
+            row[4] = r["rate"].as<double>();
+            row[5] = r["weight"].as<double>() * pcs * r["rate"].as<double>();
             d.append(row);
         }
         jresult[1] = d;
-        txn.commit();
+        
         batch[0] = jresult;
         return batch;
     } catch (const std::exception &e) {
-        txn.abort();
+        
         std::cerr << e.what() << std::endl;
         //simpleJsonSaveResult(event, false, e.what());
         return Json::nullValue;
@@ -1345,7 +1345,7 @@ Json::Value Product::get_product_category_tree_data( Json::Value event, Json::Va
     //    auto size = args[3].asInt();
     //    auto pcs = args[4].asInt();
 
-    pqxx::work txn{DD};
+    auto transPtr = clientPtr->newTransaction();
     try {
         auto sql = R"(
 with recursive tree as (
@@ -1358,21 +1358,21 @@ select * ,
        from tree
        ORDER BY tree.position;
 )";
-        pqxx::result x = txn.exec_params(sql);
+        auto x = transPtr->execSqlSync(sql);
 
         Json::Value d(Json::arrayValue);
         for (auto r : x) {
             Json::Value row;
-            row[0] = r[0].as<int>();
-            row[1] = r[5].c_str();
+            row[0] = r["id"].as<int>();
+            row[1] = r['label'].c_str();
             d.append(row);
         }
         jresult[1] = d;
         batch[0] = jresult;
-        txn.commit();
+        
         return batch;
     } catch (const std::exception &e) {
-        txn.abort();
+        
         std::cerr << e.what() << std::endl;
         //simpleJsonSaveResult(event, false, e.what());
         return Json::Value(Json::nullValue);

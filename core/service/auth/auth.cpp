@@ -2,6 +2,8 @@
 
 #include "../../strfns.h"
 #include "../../jsonfns.h"
+#include "../../../EchoWebSocket.h"
+
 using namespace std::literals;
 Auth::Auth(const WebSocketConnectionPtr& wsConnPtr_): wsConnPtr(wsConnPtr_)
 {
@@ -40,18 +42,18 @@ Json::Value Auth::handleEvent(Json::Value event, int next, Json::Value args)
 Json::Value Auth::adminLogin( Json::Value event, Json::Value args)
 {
     auto sql = "select e.id from entity.entity e left join entity.entity_user as u on u.entity_id = e.id where e.email = $1 and u.password = $2";
-    pqxx::work txn{DD};
     try {
-        auto r = txn.exec_params(sql, args["email"].asString(), args["pass"].asString());
+        auto transPtr = clientPtr->newTransaction();
+        auto r = transPtr->execSqlSync(sql, args["email"].asString(), args["pass"].asString());
 
         if (r.size() == 1) {
 
             Json::Value j;
-            j["value"] = r[0][0].as<int>();
+            j["value"] = r[0]["id"].as<int>();
             auto sqlSession = "INSERT INTO user1.session (key, value) VALUES ($1, $2) returning id";
             // To serialize the Json::Value into a Json document, you should use a Json writer, or Json::Value::toStyledString().
             LOG_INFO << j.toStyledString();
-            auto rs = txn.exec_params(sqlSession, "admin", j.toStyledString());
+            auto rs = transPtr->execSqlSync(sqlSession, "admin", j.toStyledString());
             Json::Value login_result = simpleJsonSaveResult(event, true, "Done");
 
             // ask to save cookie
@@ -64,23 +66,20 @@ Json::Value Auth::adminLogin( Json::Value event, Json::Value args)
             cookie_result[0] = cookie_event;
             Json::Value cookie_value;
             //auto s = get_serial_no();
-            cookie_value["admin"] = rs[0][0].as<int>();
+            cookie_value["admin"] = rs[0]["id"].as<int>();
             cookie_result[1] = cookie_value;
 
-            setAdminContext(wsConnPtr, rs[0][0].as<int>());
+            setAdminContext(wsConnPtr, rs[0]["id"].as<int>());
 
-            txn.commit();
             Json::Value final;
             final[0] = login_result;
             final[1] = cookie_result;
             return final;
         } else {
-            txn.commit();
             Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, "Error"); return ret;
         }
 
     } catch (const std::exception &e) {
-        txn.abort();
         std::cerr << e.what() << std::endl;
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
@@ -109,8 +108,8 @@ Json::Value Auth::userRegister( Json::Value event, Json::Value args)
 {
 
     std::string strSql = "INSERT INTO entity.entity ( entity_type_id, no, legal_name, slug, email) values($1, $2, $3, $4, $5) returning id";
-    pqxx::work txn{DD};
     try {
+        auto transPtr = clientPtr->newTransaction();
 
 
         std::string data = args["legal_name"].asString();
@@ -122,16 +121,14 @@ Json::Value Auth::userRegister( Json::Value event, Json::Value args)
             return ch == ' ' ? '_' : ch;
         });
 
-        auto x = txn.exec_params(strSql, 6, "", args["legal_name"].asString(), data, args["email"].asString() );
-        auto entity_id = x[0][0].as<int>();
+        auto x = transPtr->execSqlSync(strSql, 6, "", args["legal_name"].asString(), data, args["email"].asString() );
+        auto entity_id = x[0]["id"].as<int>();
         std::string strSqlUser = "INSERT INTO entity.entity_user (entity_id, username, password, password_hash) VALUES ($1, $2, $3, $4)";
-        txn.exec_params(strSqlUser, entity_id, args["email"].asString(), args["pass"].asString(), args["pass"].asString());
+        transPtr->execSqlSync(strSqlUser, entity_id, args["email"].asString(), args["pass"].asString(), args["pass"].asString());
 
-        txn.commit();
         //simpleJsonSaveResult(event, true, "Done");
         return userLogin(event, args);
     } catch (const std::exception &e) {
-        txn.abort();
         std::cerr << e.what() << std::endl;
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
@@ -139,18 +136,18 @@ Json::Value Auth::userRegister( Json::Value event, Json::Value args)
 Json::Value Auth::userLogin( Json::Value event, Json::Value args)
 {
     auto sql = "select e.id from entity.entity e left join entity.entity_user as u on u.entity_id = e.id where e.email = $1 and u.password = $2";
-    pqxx::work txn{DD};
     try {
-        auto r = txn.exec_params(sql, args["email"].asString(), args["pass"].asString());
+        auto transPtr = clientPtr->newTransaction();
+        auto r = transPtr->execSqlSync(sql, args["email"].asString(), args["pass"].asString());
 
         if (r.size() == 1) {
 
             Json::Value j;
-            j["value"] = r[0][0].as<int>();
+            j["value"] = r[0]["id"].as<int>();
             auto sqlSession = "INSERT INTO user1.session (key, value) VALUES ($1, $2) returning id";
             // To serialize the Json::Value into a Json document, you should use a Json writer, or Json::Value::toStyledString().
             LOG_INFO << j.toStyledString();
-            auto rs = txn.exec_params(sqlSession, "user", j.toStyledString());
+            auto rs = transPtr->execSqlSync(sqlSession, "user", j.toStyledString());
             Json::Value login_result = simpleJsonSaveResult(event, true, "Done");
 
             // ask to save cookie
@@ -163,22 +160,19 @@ Json::Value Auth::userLogin( Json::Value event, Json::Value args)
             cookie_result[0] = cookie_event;
             Json::Value cookie_value;
             //auto s = get_serial_no();
-            cookie_value["user"] = rs[0][0].as<int>();
+            cookie_value["user"] = rs[0]["id"].as<int>();
             cookie_result[1] = cookie_value;
 
-            setUserContext(wsConnPtr, rs[0][0].as<int>());
-            txn.commit();
+            setUserContext(wsConnPtr, rs[0]["id"].as<int>());
             Json::Value final;
             final[0] = login_result;
             final[1] = cookie_result;
             return final;
         } else {
-            txn.commit();
             Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, "Error"); return ret;
         }
 
     } catch (const std::exception &e) {
-        txn.abort();
         std::cerr << e.what() << std::endl;
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
@@ -188,10 +182,9 @@ Json::Value Auth::userId( Json::Value event, Json::Value )
     auto c = getUserContext(wsConnPtr);
     if (c != 0) {
         auto sqlSession = "SELECT key, value FROM user1.session where id = $1";
-        pqxx::work txn{DD};
         try {
-            auto r = txn.exec_params(sqlSession, c);
-            txn.commit();
+            auto transPtr = clientPtr->newTransaction();
+            auto r = transPtr->execSqlSync(sqlSession, c);
             // send id
             //simpleJsonSaveResult(event, true, r[0][1].c_str());
             Json::Value jresult;
@@ -211,7 +204,6 @@ Json::Value Auth::userId( Json::Value event, Json::Value )
             }
             return jresult;
         } catch (const std::exception &e) {
-            txn.abort();
             std::cerr << e.what() << std::endl;
             Json::Value jresult;
             jresult[0]=event;
@@ -242,10 +234,9 @@ Json::Value Auth::checkout( Json::Value event, Json::Value args)
     printJson(args);
     if (c != 0) {
         auto sqlSession = "SELECT key, value FROM user1.session where id = $1";
-        pqxx::work txn{DD};
         try {
-            auto r = txn.exec_params(sqlSession, c);
-            txn.commit();
+            auto transPtr = clientPtr->newTransaction();
+            auto r = transPtr->execSqlSync(sqlSession, c);
             // send id
             Json::Value jresult;
             jresult[0]=event;
@@ -265,7 +256,6 @@ Json::Value Auth::checkout( Json::Value event, Json::Value args)
             jresult[1]=root["value"].asInt();
             return jresult;
         } catch (const std::exception &e) {
-            txn.abort();
             std::cerr << e.what() << std::endl;
             Json::Value jresult;
             jresult[0]=event;
@@ -282,13 +272,11 @@ Json::Value Auth::saveImageMeta( Json::Value event, Json::Value args)
     auto c = getAdminContext(wsConnPtr);
 
     auto strSql = "INSERT INTO user1.temp_image ( session_id, event, name, size, type ) VALUES( $1, $2, $3, $4, $5 )";
-    pqxx::work txn{DD};
     try {
-        auto r = txn.exec_params(strSql, c, args[0].toStyledString(), args[1].asString(), args[2].asInt64(), args[3].asString());
-        txn.commit();
+        auto transPtr = clientPtr->newTransaction();
+        auto r = transPtr->execSqlSync(strSql, c, args[0].toStyledString(), args[1].asString(), args[2].asInt64(), args[3].asString());
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
-        txn.abort();
         std::cerr << e.what() << std::endl;
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, "Error"); return ret;
     }
@@ -300,19 +288,16 @@ int generateContext(const HttpRequestPtr &req, const WebSocketConnectionPtr &wsC
         return 0;
     } else {
         auto sqlSession = "SELECT * FROM user1.session where id = $1";
-        pqxx::work txn{DD};
         try {
-            auto r = txn.exec_params(sqlSession, c);
+            auto transPtr = clientPtr->newTransaction();
+            auto r = transPtr->execSqlSync(sqlSession, c);
             if (r.size() != 0) {
-                auto i = r[0][0].as<int>();
-                txn.commit();
+                auto i = r[0]["id"].as<int>();
                 return i;
             } else {
-                txn.commit();
                 return 0;
             }
         } catch (const std::exception &e) {
-            txn.abort();
             std::cerr << e.what() << std::endl;
             return 0;
         }
@@ -323,13 +308,11 @@ void deleteAdminSession(const WebSocketConnectionPtr &wsConnPtr) {
     auto c = getAdminContext(wsConnPtr);
     if (c != 0) {
         auto sqlSession = "DELETE FROM user1.session where id = $1";
-        pqxx::work txn{DD};
         try {
-            auto r = txn.exec_params(sqlSession, c);
-            txn.commit();
+            auto transPtr = clientPtr->newTransaction();
+            auto r = transPtr->execSqlSync(sqlSession, c);
             setAdminContext(wsConnPtr, 0);
         } catch (const std::exception &e) {
-            txn.abort();
             std::cerr << e.what() << std::endl;
         }
     }
@@ -338,13 +321,11 @@ void deleteuserSession(const WebSocketConnectionPtr &wsConnPtr) {
     auto c = getUserContext(wsConnPtr);
     if (c != 0) {
         auto sqlSession = "DELETE FROM user1.session where id = $1";
-        pqxx::work txn{DD};
         try {
-            auto r = txn.exec_params(sqlSession, c);
-            txn.commit();
+            auto transPtr = clientPtr->newTransaction();
+            auto r = transPtr->execSqlSync(sqlSession, c);
             setUserContext(wsConnPtr, 0);
         } catch (const std::exception &e) {
-            txn.abort();
             std::cerr << e.what() << std::endl;
         }
     }

@@ -49,43 +49,43 @@ void Setting::setupTable()
 // where key = $1
 Json::Value Setting::del( Json::Value event, Json::Value args)
 {
-    pqxx::work txn{DD};
+    auto transPtr = clientPtr->newTransaction();
     try {
-        txn.exec_params("DELETE FROM setting.setting WHERE key = $1", args[0].asString());
-        txn.commit();
+        transPtr->execSqlSync("DELETE FROM setting.setting WHERE key = $1", args[0].asString());
+        
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
-        txn.abort();
+        
         std::cerr << e.what() << std::endl;
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
 }
 Json::Value Setting::save( Json::Value event, Json::Value args) {
     // check if key exist
-    pqxx::work txn{DD};
-    pqxx::result y = txn.exec_params("select key from setting.setting where key = $1", args["key"].asString());
-    txn.commit();
+    auto transPtr = clientPtr->newTransaction();
+    auto y = transPtr->execSqlSync("select key from setting.setting where key = $1", args["key"].asString());
+    
     if (y.size() != 0) {
         std::string strSql = "update setting.setting set (value_int, value_num, value_text) = ROW($2, $3, $4) where key=$1";
-        pqxx::work txn{DD};
+        auto transPtr = clientPtr->newTransaction();
         try {
-            txn.exec_params(strSql, args["key"].asString(), args["value_int"].asInt(), args["value_num"].asDouble(), args["value_text"].asString());
-            txn.commit();
+            transPtr->execSqlSync(strSql, args["key"].asString(), args["value_int"].asInt(), args["value_num"].asDouble(), args["value_text"].asString());
+            
             Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
-            txn.abort();
+            
             std::cerr << e.what() << std::endl;
             Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
         }
     } else {
         std::string strSql = "INSERT INTO setting.setting (key, value_int, value_num, value_text, setting_type, setting) values($1, $2, $3, $4, $5, $6)";
-        pqxx::work txn{DD};
+        auto transPtr = clientPtr->newTransaction();
         try {
-            txn.exec_params(strSql, args["key"].asString(), args["value_int"].asInt(), args["value_num"].asDouble(), args["value_text"].asString(), args["setting_type"].asString(), args["setting"].toStyledString());
-            txn.commit();
+            transPtr->execSqlSync(strSql, args["key"].asString(), args["value_int"].asInt(), args["value_num"].asDouble(), args["value_text"].asString(), args["setting_type"].asString(), args["setting"].toStyledString());
+            
             Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
-            txn.abort();
+            
             std::cerr << e.what() << std::endl;
             Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
         }

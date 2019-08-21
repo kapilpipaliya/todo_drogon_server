@@ -49,9 +49,9 @@ Json::Value Metal::ins( Json::Value event, Json::Value args) {
     ReplaceAll2(strSql, "%1", metal_table.schema());
     ReplaceAll2(strSql, "%2", metal_table.name());
 
-    pqxx::work txn{DD};
+    auto transPtr = clientPtr->newTransaction();
     try {
-        txn.exec_params(
+        transPtr->execSqlSync(
             strSql,
             args["slug"].asString(),
             args["name"].asString(),
@@ -60,10 +60,10 @@ Json::Value Metal::ins( Json::Value event, Json::Value args) {
             args["melting_point_in_c"].asDouble()
             );
 
-        txn.commit();
+        
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
-        txn.abort();
+        
         std::cerr << e.what() << std::endl;
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
@@ -79,9 +79,9 @@ Json::Value Metal::upd( Json::Value event, Json::Value args) {
         ReplaceAll2(strSql, "%1", metal_table.schema());
         ReplaceAll2(strSql, "%2", metal_table.name());
 
-        pqxx::work txn{DD};
+        auto transPtr = clientPtr->newTransaction();
         try {
-            txn.exec_params(strSql,
+            transPtr->execSqlSync(strSql,
                             args["id"].asInt64(),
                     args["slug"].asString(),
                     args["name"].asString(),
@@ -99,9 +99,9 @@ Json::Value Metal::upd( Json::Value event, Json::Value args) {
                              pm.metal_id = $1
                              returning pm.purity_id;
                              )";
-            auto pr = txn.exec_params(pr_update, args["id"].asInt());
+            auto pr = transPtr->execSqlSync(pr_update, args["id"].asInt());
 
-            ids2(pr, id1);
+            ids2(pr, id1)
             //2. purity
             auto pr_update01 = R"(
                                update material.purity p
@@ -112,8 +112,8 @@ Json::Value Metal::upd( Json::Value event, Json::Value args) {
                                p.metal_id = $1
                                returning p.id;
                                )";
-            auto pr0 = txn.exec_params(pr_update01, args["id"].asInt());
-            ids2(pr, id2);
+            auto pr0 = transPtr->execSqlSync(pr_update01, args["id"].asInt());
+            ids2(pr, id2)
             //3. purity_tone
             auto pr_update2 = R"(
                               update material.purity_tone pt
@@ -129,7 +129,7 @@ Json::Value Metal::upd( Json::Value event, Json::Value args) {
                               where
                               pt.purity_id = ANY($1::bigint[]) or pt.purity_id = ANY($2::bigint[])
                               )";
-            auto pr2 = txn.exec_params(pr_update2, id1, id2);
+            auto pr2 = transPtr->execSqlSync(pr_update2, id1, id2);
 
             auto pr_update3 = R"(
                               update product.product p
@@ -149,8 +149,8 @@ Json::Value Metal::upd( Json::Value event, Json::Value args) {
                               where
                               p.purity_id = ANY($1::bigint[]) or p.purity_id = ANY($2::bigint[]) returning p.post_id
                               )";
-            auto product_update = txn.exec_params(pr_update3, id1, id2);
-            ids2(product_update, id3);
+            auto product_update = transPtr->execSqlSync(pr_update3, id1, id2);
+            ids2(product_update, id3)
 
             auto pr_update4 = R"(
                               UPDATE product.purity_tone pt
@@ -175,12 +175,12 @@ Json::Value Metal::upd( Json::Value event, Json::Value args) {
                               )";
 
 
-            auto pr4 = txn.exec_params(pr_update4, id1, id2, id3);
+            auto pr4 = transPtr->execSqlSync(pr_update4, id1, id2, id3);
 
-            txn.commit();
+            
             Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
-            txn.abort();
+            
             std::cerr << e.what() << std::endl;
             Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
         }

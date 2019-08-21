@@ -19,7 +19,7 @@ inline std::string dele_(std::string t, std::string w) { return "DELETE FROM " +
 
 #define ids2(s, array)\
 std::string array = "{";\
-for (auto i : (s)) { array += std::to_string(i[0].as<int>()) + ","; }\
+for (auto i : (s)) { array += std::to_string(i["id"].as<int>()) + ","; }\
 if((s).size() > 0) array.pop_back();\
 array += "}";
 

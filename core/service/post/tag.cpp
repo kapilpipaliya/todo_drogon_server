@@ -42,18 +42,18 @@ Json::Value Tag::ins( Json::Value event, Json::Value args) {
     ReplaceAll2(strSql, "%1", product_table.schema());
     ReplaceAll2(strSql, "%2", product_table.name());
 
-    pqxx::work txn{DD};
+    auto transPtr = clientPtr->newTransaction();
     try {
-        txn.exec_params(
+        transPtr->execSqlSync(
             strSql,
             args["slug"].asString(),
             args["name"].asString(),
             args["description"].asString()
             );
-        txn.commit();
+        
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
-        txn.abort();
+        
         std::cerr << e.what() << std::endl;
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
@@ -70,18 +70,18 @@ Json::Value Tag::upd( Json::Value event, Json::Value args) {
         ReplaceAll2(strSql, "%1", product_table.schema());
         ReplaceAll2(strSql, "%2", product_table.name());
 
-        pqxx::work txn{DD};
+        auto transPtr = clientPtr->newTransaction();
         try {
-            txn.exec_params(strSql,
+            transPtr->execSqlSync(strSql,
                             args["id"].asInt64(),
                     args["slug"].asString(),
                     args["name"].asString(),
                     args["description"].asString()
                     );
-            txn.commit();
+            
             Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
-            txn.abort();
+            
             std::cerr << e.what() << std::endl;
             Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
         }

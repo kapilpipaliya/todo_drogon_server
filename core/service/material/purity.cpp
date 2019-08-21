@@ -61,7 +61,7 @@ void Purity::setupTable()
         };
 }
 
-void save_purity_metal_(Json::Value &args, pqxx::work &txn, int purity_id, int tone_id) {
+void save_purity_metal_(Json::Value &args, std::shared_ptr<Transaction> transPtr, int purity_id, int tone_id) {
     std::string strSqlPostCategories = "SELECT metal_id FROM material.purity_metal where purity_id = $1 and tone_id = $2";
     std::string strSqlPostCategorySimpleFind = "SELECT purity_id, tone_id, metal_id, purity, price FROM material.purity_metal WHERE purity_id = $1 and tone_id = $2 and metal_id = $3";
     std::string strSqlPostCategoryDel = "DELETE FROM material.purity_metal WHERE purity_id = $1 and tone_id = $2 and metal_id = $3";
@@ -78,29 +78,29 @@ void save_purity_metal_(Json::Value &args, pqxx::work &txn, int purity_id, int t
         if (!i[0].isNull()) inVector.push_back({i[0].asInt(), i[1].asDouble(), i[2].asDouble()});
     }
 
-    pqxx::result all_ct = txn.exec_params(strSqlPostCategories, purity_id, tone_id);
+    auto all_ct = transPtr->execSqlSync(strSqlPostCategories, purity_id, tone_id);
     // For each saved tones, If saved tone not exist in new tones, delete it.
     for (auto r : all_ct) {
         std::vector<PriceMetal>::iterator it = std::find_if(inVector.begin(), inVector.end(), [&](PriceMetal t) {
-            return t.metal_id == r[0].as<int>();
+            return t.metal_id == r["metal_id"].as<int>();
         });
         if (it == inVector.end()) {// Element not Found
-            txn.exec_params(strSqlPostCategoryDel, purity_id, tone_id, r[0].as<int>());
+            transPtr->execSqlSync(strSqlPostCategoryDel, purity_id, tone_id, r["metal_id"].as<int>());
         }
     }
     // For each new tones, insert it if it not already exist.
     for (auto r : inVector) {
-        pqxx::result y = txn.exec_params(strSqlPostCategorySimpleFind, purity_id, tone_id, r.metal_id);
+        auto y = transPtr->execSqlSync(strSqlPostCategorySimpleFind, purity_id, tone_id, r.metal_id);
         if (y.size() == 0) {
-            txn.exec_params(strSqlPostCategoryInsert, purity_id, tone_id, r.metal_id, r.purity, r.price);
+            transPtr->execSqlSync(strSqlPostCategoryInsert, purity_id, tone_id, r.metal_id, r.purity, r.price);
         } else { // update
-            if (y[0][2].as<int>() != r.metal_id || y[0][3].as<double>() != r.purity || y[0][4].as<double>() != r.price) {
-                txn.exec_params(strSqlPostCategoryUpdateAtt, purity_id, tone_id, r.metal_id, r.purity, r.price);
+            if (y[0][2].as<int>() != r.metal_id || y[0]["purity"].as<double>() != r.purity || y[0]["price"].as<double>() != r.price) {
+                transPtr->execSqlSync(strSqlPostCategoryUpdateAtt, purity_id, tone_id, r.metal_id, r.purity, r.price);
             }
         }
     }
 }
-void save_purity_tone_(Json::Value &args, pqxx::work &txn, int purity_id) {
+void save_purity_tone_(Json::Value &args, std::shared_ptr<Transaction> transPtr, int purity_id) {
     std::string strSqlPostCategories = "SELECT tone_id FROM material.purity_tone where purity_id = $1";
     std::string strSqlPostCategorySimpleFind = "SELECT purity_id, tone_id, price FROM material.purity_tone WHERE purity_id = $1 and tone_id = $2";
     std::string strSqlPostCategoryDel = "DELETE FROM material.purity_tone WHERE purity_id = $1 and tone_id = $2";
@@ -117,29 +117,29 @@ void save_purity_tone_(Json::Value &args, pqxx::work &txn, int purity_id) {
         if (!i[0].isNull()) inVector.push_back({i[0].asInt(), i[2].asDouble(), i[1]});
     }
 
-    pqxx::result all_ct = txn.exec_params(strSqlPostCategories, purity_id);
+    auto all_ct = transPtr->execSqlSync(strSqlPostCategories, purity_id);
     // For each saved tones, If saved tone not exist in new tones, delete it.
     for (auto r : all_ct) {
         std::vector<PurityTone>::iterator it = std::find_if(inVector.begin(), inVector.end(), [&](PurityTone t) {
-            return t.tone_id == r[0].as<int>();
+            return t.tone_id == r["tone_id"].as<int>();
         });
         if (it == inVector.end()) {// Element not Found
             // because when tone_id change it actually inserting new entries..
-            txn.exec_params(dele_("material.purity_metal", "where purity_id = $1 and tone_id = $2"), purity_id, r[0].as<int>());
-            txn.exec_params(strSqlPostCategoryDel, purity_id, r[0].as<int>());
+            transPtr->execSqlSync(dele_("material.purity_metal", "where purity_id = $1 and tone_id = $2"), purity_id, r["tone_id"].as<int>());
+            transPtr->execSqlSync(strSqlPostCategoryDel, purity_id, r["tone_id"].as<int>());
         }
     }
     // For each new tones, insert it if it not already exist.
     for (auto r : inVector) {
-        pqxx::result y = txn.exec_params(strSqlPostCategorySimpleFind, purity_id, r.tone_id);
+        auto y = transPtr->execSqlSync(strSqlPostCategorySimpleFind, purity_id, r.tone_id);
         if (y.size() == 0) {
-            auto z = txn.exec_params(strSqlPostCategoryInsert, purity_id, r.tone_id, r.price);
-            save_purity_metal_(r.j, txn, z[0][0].as<int>(), z[0][1].as<int>());
+            auto z = transPtr->execSqlSync(strSqlPostCategoryInsert, purity_id, r.tone_id, r.price);
+            save_purity_metal_(r.j, transPtr, z[0]["purity_id"].as<int>(), z[0]["tone_id"].as<int>());
         } else { // update
-            if (y[0][1].as<int>() != r.tone_id || y[0][2].as<double>() != r.price) {
-                txn.exec_params(strSqlPostCategoryUpdateAtt, purity_id, r.tone_id, r.price);
+            if (y[0]["tone_id"].as<int>() != r.tone_id || y[0]["price"].as<double>() != r.price) {
+                transPtr->execSqlSync(strSqlPostCategoryUpdateAtt, purity_id, r.tone_id, r.price);
             }
-            save_purity_metal_(r.j, txn, purity_id, r.tone_id);
+            save_purity_metal_(r.j, transPtr, purity_id, r.tone_id);
         }
     }
 }
@@ -152,9 +152,9 @@ Json::Value Purity::ins( Json::Value event, Json::Value args) {
     ReplaceAll2(strSql, "%1", metal_purity_table.schema());
     ReplaceAll2(strSql, "%2", metal_purity_table.name());
 
-    pqxx::work txn{DD};
+    auto transPtr = clientPtr->newTransaction();
     try {
-        pqxx::result x = txn.exec_params(
+        auto x = transPtr->execSqlSync(
             strSql,
             args["slug"].asString(),
             args["name"].asString(),
@@ -164,11 +164,11 @@ Json::Value Purity::ins( Json::Value event, Json::Value args) {
             args["description"].asString()
             );
         auto purity_id = x[0]["id"].as<int>();
-        save_purity_tone_(args, txn, purity_id);
-        txn.commit();
+        save_purity_tone_(args, transPtr, purity_id);
+        
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
-        txn.abort();
+        
         std::cerr << e.what() << std::endl;
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
@@ -183,9 +183,9 @@ Json::Value Purity::upd( Json::Value event, Json::Value args) {
         ReplaceAll2(strSql, "%1", metal_purity_table.schema());
         ReplaceAll2(strSql, "%2", metal_purity_table.name());
 
-        pqxx::work txn{DD};
+        auto transPtr = clientPtr->newTransaction();
         try {
-            txn.exec_params(strSql,
+            transPtr->execSqlSync(strSql,
                             args["id"].asInt64(),
                     args["slug"].asString(),
                     args["name"].asString(),
@@ -195,7 +195,7 @@ Json::Value Purity::upd( Json::Value event, Json::Value args) {
                     args["description"].asString()
                     );
             auto purity_id = args["id"].asInt();
-            save_purity_tone_(args, txn, purity_id);
+            save_purity_tone_(args, transPtr, purity_id);
 
             auto pr_update3 = R"(
                               update product.product p
@@ -216,7 +216,7 @@ Json::Value Purity::upd( Json::Value event, Json::Value args) {
                               p.purity_id = $1 returning p.post_id
                               )";
 
-            auto product_update = txn.exec_params(pr_update3, args["id"].asInt());
+            auto product_update = transPtr->execSqlSync(pr_update3, args["id"].asInt());
             ids2(product_update, ids);
             auto pr_update4 = R"(
                               UPDATE product.purity_tone pt
@@ -240,12 +240,12 @@ Json::Value Purity::upd( Json::Value event, Json::Value args) {
                               --returning pt.post_id, pt.purity_id, pt.weight, pt.price
                               )";
 
-            auto pr = txn.exec_params(pr_update4, purity_id, ids);
+            auto pr = transPtr->execSqlSync(pr_update4, purity_id, ids);
 
-            txn.commit();
+            
             Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
-            txn.abort();
+            
             std::cerr << e.what() << std::endl;
             Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
         }
@@ -253,15 +253,15 @@ Json::Value Purity::upd( Json::Value event, Json::Value args) {
 }
 
 Json::Value Purity::del( Json::Value event, Json::Value args) {
-    pqxx::work txn{DD};
+    auto transPtr = clientPtr->newTransaction();
     try {
-        txn.exec_params("DELETE FROM " "material.purity_metal" " WHERE purity_id = $1", args[0].asInt());
-        txn.exec_params("DELETE FROM " "material.purity_tone" " WHERE purity_id = $1", args[0].asInt());
-        txn.exec_params("DELETE FROM " "material.purity" " WHERE id = $1", args[0].asInt());
-        txn.commit();
+        transPtr->execSqlSync("DELETE FROM " "material.purity_metal" " WHERE purity_id = $1", args[0].asInt());
+        transPtr->execSqlSync("DELETE FROM " "material.purity_tone" " WHERE purity_id = $1", args[0].asInt());
+        transPtr->execSqlSync("DELETE FROM " "material.purity" " WHERE id = $1", args[0].asInt());
+        
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
-        txn.abort();
+        
         std::cerr << e.what() << std::endl;
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }

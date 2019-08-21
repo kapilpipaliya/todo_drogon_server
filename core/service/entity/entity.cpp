@@ -79,7 +79,7 @@ void Entity::setupTable()
 }
 
 void save_Entity_Address(Json::Value &args,
-                             pqxx::work &txn,
+                             std::shared_ptr<Transaction> transPtr,
                              int entity_id) {
     std::string strSqlPostCategories = "SELECT id FROM entity.entity_address where entity_id = $1";
     std::string strSqlPostCategorySimpleFind = "SELECT address_type_id, line1, line2, line3, city, state, country, zipcode, phone, ismain FROM entity.entity_address WHERE id = $1";
@@ -108,25 +108,25 @@ void save_Entity_Address(Json::Value &args,
                  i[6].asString(), i[7].asString(), i[8].asString(), i[9].asString(), i[10].asBool()});
     }
 
-    pqxx::result all_ct = txn.exec_params(strSqlPostCategories, entity_id);
+    auto all_ct = transPtr->execSqlSync(strSqlPostCategories, entity_id);
     // For each saved tones, If saved tone not exist in new tones, delete it.
     for (auto r : all_ct) {
         std::vector<EntityAddress>::iterator it = std::find_if(inVector.begin(), inVector.end(), [&](EntityAddress t) {
-            return t.id == r[0].as<int>();
+            return t.id == r["id"].as<int>();
         });
         if (it == inVector.end()) {// Element not Found
-            txn.exec_params(strSqlPostCategoryDel, r[0].as<int>());
+            transPtr->execSqlSync(strSqlPostCategoryDel, r["id"].as<int>());
         }
     }
     // For each new tones, insert it if it not already exist.
     for (auto r : inVector) {
-        pqxx::result y = txn.exec_params(strSqlPostCategorySimpleFind, r.id);
+        auto y = transPtr->execSqlSync(strSqlPostCategorySimpleFind, r.id);
         if (y.size() == 0) {
-            txn.exec_params(strSqlPostCategoryInsert, entity_id, r.addess_type_id, r.line1, r.line2, r.line3, r.city,
+            transPtr->execSqlSync(strSqlPostCategoryInsert, entity_id, r.addess_type_id, r.line1, r.line2, r.line3, r.city,
                             r.state, r.country, r.zipcode, r.phone, r.ismain);
         } else { // update
             //if(y[0][0].as<int>() != r.addess_type_id || y[0][2].as<int>() != r.pcs || y[0][3].as<double>() != r.weight || y[0][4].as<double>() != r.price || y[0][5].as<bool>() != r.ismain) {
-            txn.exec_params(strSqlPostCategoryUpdateAtt, r.id, r.addess_type_id, r.line1, r.line2, r.line3, r.city,
+            transPtr->execSqlSync(strSqlPostCategoryUpdateAtt, r.id, r.addess_type_id, r.line1, r.line2, r.line3, r.city,
                             r.state, r.country, r.zipcode, r.phone, r.ismain);
             //}
         }
@@ -135,9 +135,9 @@ void save_Entity_Address(Json::Value &args,
 Json::Value Entity::ins( Json::Value event, Json::Value args) {
     std::string strSql = "INSERT INTO entity.entity (  entity_type_id, no, sequence_id, slug, parent_id, legal_name, tax_no, first_name, middle_name, last_name, birth_date, start_date, end_date, salary, rate, active, pay_to_name, threshold, credit_limit, terms, discount, discount_terms, discount_account_id, ar_ap_account_id, cash_account_id, currency_id, price_group_id, tax_included, email) "
                          "values($1, $2, NULLIF($3, 0), $4, NULLIF($5, 0), $6, $7, $8, $9, $10, $11, NULLIF($12, '')::date, NULLIF($13, '')::date, $14, $15, $16, $17, $18, $19, $20, $21, $22, NULLIF($23, 0), NULLIF($24, 0), NULLIF($25, 0), NULLIF($26, 0), NULLIF($27, 0), $28, $29) returning id";
-    pqxx::work txn{DD};
+    auto transPtr = clientPtr->newTransaction();
     try {
-        auto x = txn.exec_params(strSql,
+        auto x = transPtr->execSqlSync(strSql,
                                  args["entity_type_id"].asInt(),
                                  args["no"].asString(),
                                  args["sequence_id"].asInt(),
@@ -172,17 +172,15 @@ Json::Value Entity::ins( Json::Value event, Json::Value args) {
                                  //                            args["inserted_at"]          timestamp,
                                  //                            args["updated_at"]           timestamp,
                                  );
-        auto entity_id = x[0][0].as<int>();
+        auto entity_id = x[0]["id"].as<int>();
         std::string strSqlUser = "INSERT INTO entity.entity_user (entity_id, username, password, password_hash) VALUES ($1, $2, $3, $4)";
-        txn.exec_params(strSqlUser, entity_id, args["email"].asString(), args["eu_password"].asString(),
+        transPtr->execSqlSync(strSqlUser, entity_id, args["email"].asString(), args["eu_password"].asString(),
                         args["eu_password"].asString());
-        save_Entity_Address(args, txn, entity_id);
+        save_Entity_Address(args, transPtr, entity_id);
 
 
-        txn.commit();
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
-        txn.abort();
         std::cerr << e.what() << std::endl;
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
@@ -191,9 +189,9 @@ Json::Value Entity::upd( Json::Value event, Json::Value args) {
     if (args["id"].asInt()) {
         std::string strSql = "update entity.entity set (  entity_type_id, no, sequence_id, slug, parent_id, legal_name, tax_no, first_name, middle_name, last_name, birth_date, start_date, end_date, salary, rate, active, pay_to_name, threshold, credit_limit, terms, discount, discount_terms, discount_account_id, ar_ap_account_id, cash_account_id, currency_id, price_group_id, tax_included, email)"
                              " = ROW($2, $3, NULLIF($4, 0), $5, NULLIF($6, 0), $7, $8, $9, $10, $11, $12, NULLIF($13, '')::date, NULLIF($14, '')::date, $15, $16, $17, $18, $19, $20, $21, $22, $23, NULLIF($24, 0), NULLIF($25, 0), NULLIF($26, 0), NULLIF($27, 0), NULLIF($28, 0), $29, $30) where id=$1";
-        pqxx::work txn{DD};
+        auto transPtr = clientPtr->newTransaction();
         try {
-            txn.exec_params(strSql,
+            transPtr->execSqlSync(strSql,
                             args["id"].asInt64(),
                     args["entity_type_id"].asInt(),
                     args["no"].asString(),
@@ -231,40 +229,40 @@ Json::Value Entity::upd( Json::Value event, Json::Value args) {
                     );
             auto entity_id = args["id"].asInt();
             std::string strSqlUser = "UPDATE entity.entity_user set (username, password, password_hash) = ROW($2, $3, $4) where entity_id = $1";
-            txn.exec_params(strSqlUser, entity_id, args["email"].asString(), args["eu_password"].asString(),
+            transPtr->execSqlSync(strSqlUser, entity_id, args["email"].asString(), args["eu_password"].asString(),
                     args["eu_password"].asString());
-            save_Entity_Address(args, txn, entity_id);
+            save_Entity_Address(args, transPtr, entity_id);
 
-            txn.commit();
+
             Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
-            txn.abort();
+
             std::cerr << e.what() << std::endl;
             Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
         }
     }
 }
 Json::Value Entity::del( Json::Value event, Json::Value args) {
-    pqxx::work txn{DD};
+    auto transPtr = clientPtr->newTransaction();
     try {
         auto entity_id = args[0].asInt();
-        txn.exec_params(dele_("setting.notification", "where from_entity_id = $1"), entity_id);
-        txn.exec_params(dele_("setting.notification", "where to_entity_id = $1"), entity_id);
+        transPtr->execSqlSync(dele_("setting.notification", "where from_entity_id = $1"), entity_id);
+        transPtr->execSqlSync(dele_("setting.notification", "where to_entity_id = $1"), entity_id);
 
-        txn.exec_params(dele_("entity.entity_bank_account", "where entity_id = $1"), entity_id);
-        txn.exec_params(dele_("entity.entity_contact", "where entity_id = $1"), entity_id);
-        txn.exec_params(dele_("entity.entity_file", "where entity_id = $1"), entity_id);
-        txn.exec_params(dele_("entity.entity_image", "where entity_id = $1"), entity_id);
-        txn.exec_params(dele_("entity.entity_note", "where entity_id = $1"), entity_id);
-        txn.exec_params(dele_("entity.entity_address", "where entity_id = $1"), entity_id);
-        txn.exec_params("delete from user1.session where value->>'value' = $1;", args[0].asString());
-        txn.exec_params(dele_("entity.entity_user", "where entity_id = $1"),
+        transPtr->execSqlSync(dele_("entity.entity_bank_account", "where entity_id = $1"), entity_id);
+        transPtr->execSqlSync(dele_("entity.entity_contact", "where entity_id = $1"), entity_id);
+        transPtr->execSqlSync(dele_("entity.entity_file", "where entity_id = $1"), entity_id);
+        transPtr->execSqlSync(dele_("entity.entity_image", "where entity_id = $1"), entity_id);
+        transPtr->execSqlSync(dele_("entity.entity_note", "where entity_id = $1"), entity_id);
+        transPtr->execSqlSync(dele_("entity.entity_address", "where entity_id = $1"), entity_id);
+        transPtr->execSqlSync("delete from user1.session where value->>'value' = $1;", args[0].asString());
+        transPtr->execSqlSync(dele_("entity.entity_user", "where entity_id = $1"),
                         entity_id);   // This cant be deleted easily, set the table where it used null values or deleted user... 2. Also it is used in same entity table too.!
-        txn.exec_params(dele_("entity.entity", "where id = $1"), entity_id);
-        txn.commit();
+        transPtr->execSqlSync(dele_("entity.entity", "where id = $1"), entity_id);
+
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
-        txn.abort();
+
         std::cerr << e.what() << std::endl;
         Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
