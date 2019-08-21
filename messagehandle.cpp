@@ -254,11 +254,10 @@ Json::Value MessageHandle::handleTextMessage(Json::Value in)
 Json::Value MessageHandle::handleBinaryMessage(const WebSocketConnectionPtr &wsConnPtr, std::string &message)
 {
    Json::Value event;
-    auto transPtr = clientPtr->newTransaction();
     try {
         auto c = getAdminContext(wsConnPtr);
         auto sqlSession = "SELECT event FROM user1.temp_image where session_id = $1";
-        auto r = transPtr->execSqlSync(sqlSession, c);
+        auto r = clientPtr->execSqlSync(sqlSession, c);
 
         if(r.size()!=0){
 

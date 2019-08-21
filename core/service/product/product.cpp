@@ -1364,7 +1364,7 @@ select * ,
         for (auto r : x) {
             Json::Value row;
             row[0] = r["id"].as<int>();
-            row[1] = r['label'].c_str();
+            row[1] = r["label"].c_str();
             d.append(row);
         }
         jresult[1] = d;

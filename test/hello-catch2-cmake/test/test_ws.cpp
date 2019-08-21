@@ -6,6 +6,12 @@
 #include "../src/auth/login.h"
 #include "../src/auth/signup.h"
 #include "../src/auth/gettabledata.h"
+#include "../src/auth/savedelete.h"
+
+//To Benchmark do
+// https://github.com/catchorg/Catch2/blob/master/docs/benchmarks.md
+//BENCHMARK("MY FUNC") { return my_func(); };
+
 
 TEST_CASE("is connection possible","[WSTest]") {
     WSTest w1; w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);
@@ -85,6 +91,225 @@ TEST_CASE("check that all table data are correctly replied","[WSTest]") {
     GetTableD("certified_by")
     GetTableD("policy")
 }
-//To Benchmark do
-// https://github.com/catchorg/Catch2/blob/master/docs/benchmarks.md
-//BENCHMARK("MY FUNC") { return my_func(); };
+
+#define SUD(t, ins, upd, del)\
+{SaveDelete w1{t, ins, upd, del}; w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);}
+
+TEST_CASE("insert of ","[WSTest]") {
+    SUD("account_type",
+        R"({"name":"name"})",
+        R"([      [null,"=name"]            ,{"name":"name1"}])",
+        R"([[null,"=name1"]])"
+        )
+//    SUD("account",
+//        R"({"name":"name", "url": "123456", "description": "Hi whats app"})",
+//        R"([      [null,null, "=name"]            ,{"name":"name1", "url": "12345688", "description": "Hi whats app1"}])",
+//        R"([[null, null, "=name1"]])"
+//        )
+    SUD("account_heading",
+        R"({"name":"name", "accno": 12345})",
+        R"([      [null,null, "=name"]            ,{"name":"name1", "accno": 5555}])",
+        R"([[null, null, "=name1"]])"
+        )
+    SUD("journal_type",
+        R"({"rank": 1234, "name":"name", "description": "Hi whats app"})",
+        R"([      [null,null, "=name"]            ,{"rank": 12345, "name":"name1", "description": "Hi whats app1"}])",
+        R"([[null, null, "=name1"]])"
+        )
+//    SUD("txn",
+//        R"({"rank": 1234, "name":"name", "description": "Hi whats app"})",
+//        R"([      [null,null, "=name"]            ,{"rank": 12345, "name":"name1", "description": "Hi whats app1"}])",
+//        R"([[null, null, "=name1"]])"
+//        )
+    SUD("priority",
+        R"({"rank": 1234, "slug": "slug", "name":"name"})",
+        R"([      [null,null, "=slug"]            ,{"rank": 1234, "slug": "slug1", "name":"name1"}])",
+        R"([[null, null, "=slug1"]])"
+        )
+
+    SUD("node",
+        R"({
+        "parent_id": 1,
+        "rank": 1234,
+        "slug": "slug",
+        "label":"label"
+        })",
+        R"([      [null,null, null, "=slug"]            ,{"parent_id": 1,"rank": 1234, "slug": "slug1", "label":"label1"}])",
+        R"([[null, null, null, "=slug1"]])"
+        )
+//    SUD("wax_setting",
+//        R"({
+//        "name":"name", "url": "123456", "description": "Hi whats app"
+//        })",
+//        R"([      [null,null, "=name"]            ,{"name":"name1", "url": "12345688", "description": "Hi whats app1"}])",
+//        R"([[null, null, "=name1"]])"
+//        )
+//    SUD("metal",
+//        R"({"name":"name", "url": "123456", "description": "Hi whats app"})",
+//        R"([      [null,null, "=name"]            ,{"name":"name1", "url": "12345688", "description": "Hi whats app1"}])",
+//        R"([[null, null, "=name1"]])"
+//        )
+//    SUD("purity",
+//        R"({"name":"name", "url": "123456", "description": "Hi whats app"})",
+//        R"([      [null,null, "=name"]            ,{"name":"name1", "url": "12345688", "description": "Hi whats app1"}])",
+//        R"([[null, null, "=name1"]])"
+//        )
+//    SUD("tone",
+//        R"({"name":"name", "url": "123456", "description": "Hi whats app"})",
+//        R"([      [null,null, "=name"]            ,{"name":"name1", "url": "12345688", "description": "Hi whats app1"}])",
+//        R"([[null, null, "=name1"]])"
+//        )
+//    SUD("accessory",
+//        R"({"name":"name", "url": "123456", "description": "Hi whats app"})",
+//        R"([      [null,null, "=name"]            ,{"name":"name1", "url": "12345688", "description": "Hi whats app1"}])",
+//        R"([[null, null, "=name1"]])"
+//        )
+//    SUD("clarity",
+//        R"({"name":"name", "url": "123456", "description": "Hi whats app"})",
+//        R"([      [null,null, "=name"]            ,{"name":"name1", "url": "12345688", "description": "Hi whats app1"}])",
+//        R"([[null, null, "=name1"]])"
+//        )
+//    SUD("shape",
+//        R"({"name":"name", "url": "123456", "description": "Hi whats app"})",
+//        R"([      [null,null, "=name"]            ,{"name":"name1", "url": "12345688", "description": "Hi whats app1"}])",
+//        R"([[null, null, "=name1"]])"
+//        )
+//    SUD("d_color",
+//        R"({"name":"name", "url": "123456", "description": "Hi whats app"})",
+//        R"([      [null,null, "=name"]            ,{"name":"name1", "url": "12345688", "description": "Hi whats app1"}])",
+//        R"([[null, null, "=name1"]])"
+//        )
+//    SUD("cs_color",
+//        R"({"name":"name", "url": "123456", "description": "Hi whats app"})",
+//        R"([      [null,null, "=name"]            ,{"name":"name1", "url": "12345688", "description": "Hi whats app1"}])",
+//        R"([[null, null, "=name1"]])"
+//        )
+//    SUD("cs_type",
+//        R"({"name":"name", "url": "123456", "description": "Hi whats app"})",
+//        R"([      [null,null, "=name"]            ,{"name":"name1", "url": "12345688", "description": "Hi whats app1"}])",
+//        R"([[null, null, "=name1"]])"
+//        )
+//    SUD("size",
+//        R"({"name":"name", "url": "123456", "description": "Hi whats app"})",
+//        R"([      [null,null, "=name"]            ,{"name":"name1", "url": "12345688", "description": "Hi whats app1"}])",
+//        R"([[null, null, "=name1"]])"
+//        )
+//    SUD("d_size",
+//        R"({"name":"name", "url": "123456", "description": "Hi whats app"})",
+//        R"([      [null,null, "=name"]            ,{"name":"name1", "url": "12345688", "description": "Hi whats app1"}])",
+//        R"([[null, null, "=name1"]])"
+//        )
+//    SUD("cs_size",
+//        R"({"name":"name", "url": "123456", "description": "Hi whats app"})",
+//        R"([      [null,null, "=name"]            ,{"name":"name1", "url": "12345688", "description": "Hi whats app1"}])",
+//        R"([[null, null, "=name1"]])"
+//        )
+SUD("address_type",
+    R"({"name":"name"})",
+    R"([      [null,"=name"]            ,{"name":"name1"}])",
+    R"([[null,"=name1"]])"
+    )
+SUD("contact_type",
+    R"({"name":"name"})",
+    R"([      [null,"=name"]            ,{"name":"name1"}])",
+    R"([[null,"=name1"]])"
+    )
+SUD("entity_type",
+    R"({"name":"name"})",
+    R"([      [null,"=name"]            ,{"name":"name1"}])",
+    R"([[null,"=name1"]])"
+    )
+//    SUD("entity",
+//        R"({"name":"name", "url": "123456", "description": "Hi whats app"})",
+//        R"([      [null,null, "=name"]            ,{"name":"name1", "url": "12345688", "description": "Hi whats app1"}])",
+//        R"([[null, null, "=name1"]])"
+//        )
+//    SUD("setting",
+//        R"({"name":"name", "url": "123456", "description": "Hi whats app"})",
+//        R"([      [null,null, "=name"]            ,{"name":"name1", "url": "12345688", "description": "Hi whats app1"}])",
+//        R"([[null, null, "=name1"]])"
+//        )
+    SUD("currency",
+        R"({
+        "slug": "slug1",
+        "name":"name",
+        "symbol": "123456",
+        "rounding": 0.02,
+        "active":true
+        })",
+        R"([      [null, "=slug1"]            ,{"slug": "slug2","name":"name1", "symbol": "12345688", "rounding": 0.05, "active": false}])",
+        R"([[null, "=slug2"]])"
+        )
+    SUD("log",
+        R"({"detail":"name"})",
+        R"([      [null,"=name"]            ,{"detail":"name1"}])",
+        R"([[null,  "=name1"]])"
+        )
+    SUD("support",
+        R"({
+        "name":"name",
+        "email": "123456",
+        "phone": "Hi whats app",
+        "message": "Hi whats app"
+        })",
+        R"([      [null,"=name"]            ,{"name":"name1", "email": "12345688", "phone": "Hi whats app1", "message":"Hi 2"}])",
+        R"([[null, null, "=name1"]])"
+        )
+SUD("image_collection",
+    R"({"name":"name"})",
+    R"([      [null,"=name"]            ,{"name":"name1"}])",
+    R"([[null,"=name1"]])"
+    )
+//    SUD("image",
+//        R"({"name":"name", "url": "123456", "description": "Hi whats app"})",
+//        R"([      [null,null, "=name"]            ,{"name":"name1", "url": "12345688", "description": "Hi whats app1"}])",
+//        R"([[null, null, "=name1"]])"
+//        )
+    SUD("payment_method",
+        R"({"name":"name", "url": "123456", "description": "Hi whats app"})",
+        R"([      [null, "=name"]            ,{"name":"name1", "url": "12345688", "description": "Hi whats app1"}])",
+        R"([[null, "=name1"]])"
+        )
+//    SUD("product",
+//        R"({"name":"name", "url": "123456", "description": "Hi whats app"})",
+//        R"([      [null,null, "=name"]            ,{"name":"name1", "url": "12345688", "description": "Hi whats app1"}])",
+//        R"([[null, null, "=name1"]])"
+//        )
+//    SUD("post",
+//        R"({"name":"name", "url": "123456", "description": "Hi whats app"})",
+//        R"([      [null,null, "=name"]            ,{"name":"name1", "url": "12345688", "description": "Hi whats app1"}])",
+//        R"([[null, null, "=name1"]])"
+//        )
+    SUD("category",
+        R"({"slug":"slug", "name": "name", "description": "Hi whats app", "display_type": "default"})",
+        R"([      [null,null,null, null, null,"=name"]            ,{"slug":"slug1", "name": "name1", "description": "Hi whats app1", "display_type": "default"}])",
+        R"([[null,null,null, null, null,"=name1"]])"
+        )
+//    SUD("tag",
+//        R"({"name":"name", "url": "123456", "description": "Hi whats app"})",
+//        R"([      [null,null, "=name"]            ,{"name":"name1", "url": "12345688", "description": "Hi whats app1"}])",
+//        R"([[null, null, "=name1"]])"
+//        )
+    SUD("shipping_class",
+        R"({"slug":"slug", "name": "name", "description": "Hi whats app"})",
+        R"([      [null,"=slug"]            ,{"slug":"slug1", "name": "name1", "description": "Hi whats app1"}])",
+        R"([[null, "=slug1"]])"
+        )
+    SUD("setting_type",
+        R"({"name":"name", "description": "Hi whats app"})",
+        R"([      [null,"=name"]            ,{"name":"name1", "description": "Hi whats app1"}])",
+        R"([[null, "=name1"]])"
+        )
+    SUD("certified_by",
+        R"({"slug":"slug","name":"name","title":"title","description":"discription"})",
+        R"([      [null,"=slug",null,null,null]            ,{"slug":"slug1","name":"name1","title":"title1","description":"discription1"}])",
+        R"([[null,"=slug1",null,null,null]])"
+        )
+
+    SUD("policy",
+        R"({"name":"name", "url": "123456", "description": "Hi whats app"})",
+        R"([      [null, "=name"]            ,{"name":"name1", "url": "12345688", "description": "Hi whats app1"}])",
+        R"([[null, "=name1"]])"
+        )
+
+}
