@@ -3,7 +3,7 @@ project(libjewelcore2)
 #set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules/)
 
 find_package(PostgreSQL)
-find_package(libpqxx REQUIRED)
+#find_package(libpqxx REQUIRED)
 
 find_package (Jsoncpp REQUIRED)
 #find_package(Sqlpp11)
@@ -82,10 +82,11 @@ install(TARGETS ${PROJECT_NAME} LIBRARY DESTINATION /home/kapili3)
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
     PostgreSQL::PostgreSQL
-    libpqxx::pqxx_shared
-    libjewelconnection
+#    libpqxx::pqxx_shared
+#    libjewelconnection
     ${JSONCPP_LIBRARY}
 #    folly.a
 #    folly
 )
-add_subdirectory(connection)
+
+#add_subdirectory(connection)

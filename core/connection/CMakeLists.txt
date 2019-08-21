@@ -23,7 +23,7 @@ find_package(PostgreSQL)
 #find_package(Poco REQUIRED COMPONENTS Foundation JSON Util XML Zip)
 #find_package(TBB REQUIRED)
 #find_package(Angelscript REQUIRED)
-find_package(libpqxx REQUIRED)
+#find_package(libpqxx REQUIRED)
 #find_package(easyloggingpp REQUIRED)
 #find_package(RapidJSON REQUIRED)
 

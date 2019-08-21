@@ -3,8 +3,6 @@
 
 #include "core/sql/Table.h"
 #include <drogon/WebSocketController.h>
-#include <pqxx/pqxx>
-#include "core/connection/pdb.h"
 #include "../../EchoWebSocket.h"
 #include <fmt/format.h>
 #include "../jsonfns.h"
