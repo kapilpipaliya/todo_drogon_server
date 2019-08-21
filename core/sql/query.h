@@ -115,6 +115,7 @@ public:
     std::string buildQuery(bool withRowid) const;
     std::string buildCountQuery() const;
     std::string buildDeleteQuery() const;
+    std::string buildUpdateQuery(std::string column, std::string values, std::string where_) const;
 
     //void setColumNames(const std::vector<std::string>& column_names) { m_column_names = column_names; }
     //std::vector<std::string> columnNames() const { return m_column_names; }

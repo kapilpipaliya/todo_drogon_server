@@ -148,7 +148,27 @@ std::string Query::buildDeleteQuery() const
     std::string where = buildWherePart();
     std::string group_by = buildGroupByPart();
 
-    return "DELETE FROM " + m_table.toString() + " " + m_table.as() + " " + join + where + " " + group_by;
+    //return "DELETE FROM " + m_table.toString() + " " + m_table.as() + " " + join + where + " " + group_by;
+    return "DELETE FROM " + m_table.toString() + " " + m_table.as() + " " + where + " " + group_by;
+}
+
+std::string Query::buildUpdateQuery(std::string column, std::string values, std::string where_) const
+{
+    std::string join = buildJoinPart();
+    if(!join.empty()){
+        join = " FROM " + join;
+    }
+    // Filter
+    std::string where{""};
+    if(!where_.empty()) {
+        where = where_;
+    } else {
+        where = buildWherePart();
+    }
+    //if(where.empty()){ throw("can't update all rows.."); }
+    std::string group_by = buildGroupByPart();
+    //return "UPDATE " + m_table.toString() + " " + m_table.as() + " SET (" + column +  ") = ROW(" + values + ") " +  join + where + " " + group_by;
+    return "UPDATE " + m_table.toString() + " " + m_table.as() + " SET (" + column +  ") = ROW(" + values + ") " +   where + " " + group_by;
 }
 
 std::vector<SelectedColumn>::iterator Query::findSelectedColumnByName(const std::string& name)
