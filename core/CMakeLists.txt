@@ -5,7 +5,7 @@ project(libjewelcore2)
 find_package(PostgreSQL)
 #find_package(libpqxx REQUIRED)
 
-find_package (Jsoncpp REQUIRED)
+#find_package (Jsoncpp REQUIRED)
 #find_package(Sqlpp11)
 #find_package(Sqlpp-connector-postgresql)
 #find_package(folly)
@@ -84,7 +84,7 @@ target_link_libraries(${PROJECT_NAME}
     PostgreSQL::PostgreSQL
 #    libpqxx::pqxx_shared
 #    libjewelconnection
-    ${JSONCPP_LIBRARY}
+#    ${JSONCPP_LIBRARY}
 #    folly.a
 #    folly
 )

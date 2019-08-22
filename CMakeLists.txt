@@ -28,7 +28,7 @@ find_package(Boost REQUIRED COMPONENTS filesystem date_time system timer )
 #include_directories(/usr/local/include/Urho3D/include /usr/local/include/Urho3D/ThirdParty)
 
 #jsoncpp
-find_package (Jsoncpp REQUIRED)
+#find_package (Jsoncpp REQUIRED)
 #include_directories(${JSONCPP_INCLUDE_DIRS})
 #link_libraries(${JSONCPP_LIBRARIES})
 
@@ -120,7 +120,7 @@ target_link_libraries(jdragon
   Threads::Threads
   ${CMAKE_DL_LIBS}
   ${_OPTIONAL_LIBS}
-  ${JSONCPP_LIBRARY}
+#  ${JSONCPP_LIBRARY}
   ${UUID_LIBRARY}
   ZLIB::ZLIB
   #${CONN_LIB}

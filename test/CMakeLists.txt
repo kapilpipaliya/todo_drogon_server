@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 20)
 find_package(PostgreSQL)
 #find_package(libpqxx REQUIRED)
 
-find_package (Jsoncpp REQUIRED)
+#find_package (Jsoncpp REQUIRED)
 #find_package(folly)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -44,7 +44,7 @@ target_link_libraries(${PROJECT_NAME}
     PostgreSQL::PostgreSQL
 #    libpqxx::pqxx_shared
 #    libjewelconnection
-    ${JSONCPP_LIBRARY}
+#    ${JSONCPP_LIBRARY}
 #    folly.a
 #    folly
   Qt5::Core
