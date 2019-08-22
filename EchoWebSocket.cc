@@ -7,14 +7,14 @@
 
 using namespace std::literals;
 DbClientPtr clientPtr = nullptr;
-EchoWebSocket::EchoWebSocket(): sys(cfg)
+EchoWebSocket::EchoWebSocket(): sys(cfg), self(sys)
 {
 }
 void EchoWebSocket::handleNewMessage(const WebSocketConnectionPtr &wsConnPtr, std::string &&message,
                                    const WebSocketMessageType &type) {
    fprintf(stdout, "%s\n", message.c_str());
    fflush(stdout);
-   caf::scoped_actor self{sys};
+
    auto msgHandle = self->spawn<MessageHandle>(wsConnPtr, std::move(message), type);
    //NoCAF nocaf{wsConnPtr, std::move(message), type};
    //nocaf.blocking_run();

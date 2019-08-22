@@ -87,6 +87,11 @@ MessageHandle::MessageHandle(caf::actor_config &cfg, const WebSocketConnectionPt
         fflush(stdout);
       });
 
+    //Actors can store a set of callbacks—usually implemented as lambda expressions—using either
+    //behavior or message_handler. The former stores an optional timeout, while the latter is composable.
+
+    /// Describes the behavior of an actor, i.e., provides a message
+    /// handler and an optional timeout.
     running_job.assign(
       [=, this](run_atom) {
         blocking_run();

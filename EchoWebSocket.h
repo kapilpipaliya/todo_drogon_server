@@ -37,6 +37,7 @@ private:
 
   caf::actor_system_config cfg;
   caf::actor_system sys;
+  caf::scoped_actor self;
 
 //  caf::actor_config cfg2;
 //  MessageHandle msgHandle;
