@@ -56,12 +56,12 @@ void CSSize::setupTable()
             };
 }
 
-Json::Value CSSize::ins( Json::Value event, Json::Value args) {
+json CSSize::ins( json event, json args) {
     auto size_table = sqlb::ObjectIdentifier("material", "size", "sh");
     auto size_meta_table = sqlb::ObjectIdentifier("material", "color_stone_size_meta", "sm");
 
     // first insert size then insert on meta ...................
-    auto size_name = args[0]["size_name"].asString();
+    auto size_name = args[0]["size_name"].get<std::string>();
     std::string strSqlSizeSel = "SELECT id, name FROM material.size WHERE name = $1";
     std::string strSqlSizeIns = "INSERT INTO material.size (name) VALUES ($1) RETURNING id";
 
@@ -89,13 +89,13 @@ Json::Value CSSize::ins( Json::Value event, Json::Value args) {
 
         transPtr->execSqlSync(
             strSql,
-            args[0]["cs_type_id"].asInt(),
-            args[0]["shape_id"].asInt(),
+            args[0]["cs_type_id"].get<int>(),
+            args[0]["shape_id"].get<int>(),
             size_id,
-            args[0]["weight"].asDouble(),
-            args[0]["currency_id"].asInt(),
-            args[0]["rate_on_id"].asString(),
-            args[0]["rate"].asDouble()
+            args[0]["weight"].get<float>(),
+            args[0]["currency_id"].get<int>(),
+            args[0]["rate_on_id"].get<std::string>(),
+            args[0]["rate"].get<float>()
             );
 
 
@@ -106,10 +106,10 @@ Json::Value CSSize::ins( Json::Value event, Json::Value args) {
         };
         std::vector<ProductUpdate> productUpdate;
 
-        auto s = transPtr->execSqlSync(strSqlSizeGet, args[0]["cs_type_id"].asInt(), args[0]["shape_id"].asInt(), size_id);
+        auto s = transPtr->execSqlSync(strSqlSizeGet, args[0]["cs_type_id"].get<int>(), args[0]["shape_id"].get<int>(), size_id);
         for (auto prow : s) {
-            auto w = args[0]["weight"].asDouble();
-            auto rate = args[0]["rate"].asDouble();
+            auto w = args[0]["weight"].get<float>();
+            auto rate = args[0]["rate"].get<float>();
             auto pcs = prow[1].as<int>();
             transPtr->execSqlSync(strSqlPriceUpdate, prow["cs_id"].as<int>(), w, w * pcs, rate, pcs * w * rate);
             std::vector<ProductUpdate>::iterator it = std::find_if(productUpdate.begin(), productUpdate.end(),
@@ -129,20 +129,20 @@ Json::Value CSSize::ins( Json::Value event, Json::Value args) {
         }
 
         
-        Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
+        json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
         
         std::cerr << e.what() << std::endl;
-        Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
+        json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
 }
 
-Json::Value CSSize::upd( Json::Value event, Json::Value args) {
+json CSSize::upd( json event, json args) {
     auto size_table = sqlb::ObjectIdentifier("material", "size", "sh");
     auto size_meta_table = sqlb::ObjectIdentifier("material", "color_stone_size_meta", "sm");
 
     // first insert size then insert on meta ...................
-    auto size_name = args[0]["size_name"].asString();
+    auto size_name = args[0]["size_name"].get<std::string>();
     std::string strSqlSizeSel = "SELECT id, name FROM material.size WHERE name = $1";
     std::string strSqlSizeIns = "INSERT INTO material.size (name) VALUES ($1) RETURNING id";
 
@@ -153,7 +153,7 @@ Json::Value CSSize::upd( Json::Value event, Json::Value args) {
     auto pc = upd_("product.post_cs_total", "weight, price", "$2, $3", "where post_id = $1");
 
 
-    if (args[0]["id"].asInt()) {
+    if (args[0]["id"].get<long>()) {
         std::string strSql =
                 "update %1.%2 set "
                 "(cs_type_id, shape_id, size_id, weight, currency_id, rate_on_id, rate)"
@@ -177,18 +177,18 @@ Json::Value CSSize::upd( Json::Value event, Json::Value args) {
                 size_id = r[0]["id"].as<int>();
             }
 
-            auto old_row = transPtr->execSqlSync(strSqlSizeId, args[0]["id"].asInt());
+            auto old_row = transPtr->execSqlSync(strSqlSizeId, args[0]["id"].get<long>());
             int old_size_id = old_row[0]["id"].as<int>();
 
             transPtr->execSqlSync(strSql,
-                            args[0]["id"].asInt64(),
-                    args[0]["cs_type_id"].asInt(),
-                    args[0]["shape_id"].asInt(),
+                            args[0]["id"].get<long>(),
+                    args[0]["cs_type_id"].get<int>(),
+                    args[0]["shape_id"].get<int>(),
                     size_id,
-                    args[0]["weight"].asDouble(),
-                    args[0]["currency_id"].asInt(),
-                    args[0]["rate_on_id"].asString(),
-                    args[0]["rate"].asDouble()
+                    args[0]["weight"].get<float>(),
+                    args[0]["currency_id"].get<int>(),
+                    args[0]["rate_on_id"].get<std::string>(),
+                    args[0]["rate"].get<float>()
                     );
             // If old size count = 0, delete size:
             auto r3 = transPtr->execSqlSync(strSqlSizeCount, old_size_id);
@@ -203,10 +203,10 @@ Json::Value CSSize::upd( Json::Value event, Json::Value args) {
             };
             std::vector<ProductUpdate> productUpdate;
 
-            auto s = transPtr->execSqlSync(strSqlSizeGet, args[0]["cs_type_id"].asInt(), args[0]["shape_id"].asInt(), size_id);
+            auto s = transPtr->execSqlSync(strSqlSizeGet, args[0]["cs_type_id"].get<int>(), args[0]["shape_id"].get<int>(), size_id);
             for (auto prow : s) {
-                auto w = args[0]["weight"].asDouble();
-                auto rate = args[0]["rate"].asDouble();
+                auto w = args[0]["weight"].get<float>();
+                auto rate = args[0]["rate"].get<float>();
                 auto pcs = prow[1].as<int>();
                 transPtr->execSqlSync(strSqlPriceUpdate, prow["cs_id"].as<int>(), w, w * pcs, rate, pcs * w * rate);
                 // Get all post_ids:
@@ -227,22 +227,22 @@ Json::Value CSSize::upd( Json::Value event, Json::Value args) {
             }
 
             
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
+            json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
             
             std::cerr << e.what() << std::endl;
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
+            json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
         }
     }
 }
 
-Json::Value CSSize::del( Json::Value event, Json::Value args) {
+json CSSize::del( json event, json args) {
     auto transPtr = clientPtr->newTransaction();
     try {
         auto get_row = "SELECT id, size_id FROM material.color_stone_size_meta where id = $1";
-        auto r = transPtr->execSqlSync(get_row, args[0].asInt());
+        auto r = transPtr->execSqlSync(get_row, args[0].get<int>());
 
-        transPtr->execSqlSync("DELETE FROM " "material.color_stone_size_meta" " WHERE id = $1", args[0].asInt());
+        transPtr->execSqlSync("DELETE FROM " "material.color_stone_size_meta" " WHERE id = $1", args[0].get<int>());
 
         auto d_size_count = "SELECT count(*) FROM material.diamond_size_meta where size_id = $1";
         auto cs_size_count = "SELECT count(*) FROM material.color_stone_size_meta where size_id = $1";
@@ -254,10 +254,10 @@ Json::Value CSSize::del( Json::Value event, Json::Value args) {
             transPtr->execSqlSync("DELETE FROM " "material.size" " WHERE id = $1", size_id);
         }
         
-        Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
+        json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
         
         std::cerr << e.what() << std::endl;
-        Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
+        json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
 }

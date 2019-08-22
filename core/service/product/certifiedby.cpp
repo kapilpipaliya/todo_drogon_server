@@ -37,22 +37,22 @@ void CertifiedBy::setupTable()
             };
 }
 
-Json::Value CertifiedBy::ins(Json::Value event, Json::Value args)
+json CertifiedBy::ins(json event, json args)
 {
     return insBase(event, args, "slug, name, title, description", "$1, $2, $3, $4",
-                   args[0]["slug"].asString(),
-                   args[0]["name"].asString(),
-                   args[0]["title"].asString(),
-                   args[0]["description"].asString()
+                   args[0]["slug"].get<std::string>(),
+                   args[0]["name"].get<std::string>(),
+                   args[0]["title"].get<std::string>(),
+                   args[0]["description"].get<std::string>()
             );
 }
 
-Json::Value CertifiedBy::upd(Json::Value event, Json::Value args)
+json CertifiedBy::upd(json event, json args)
 {
     return updBase(event, args, "slug, name, title, description", "$1, $2, $3, $4",
-                   args[0]["slug"].asString(),
-                   args[0]["name"].asString(),
-                   args[0]["title"].asString(),
-                   args[0]["description"].asString()
+                   args[0]["slug"].get<std::string>(),
+                   args[0]["name"].get<std::string>(),
+                   args[0]["title"].get<std::string>(),
+                   args[0]["description"].get<std::string>()
             );
 }

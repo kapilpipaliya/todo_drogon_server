@@ -18,7 +18,7 @@ void PCategory::setupTable()
         sqlb::SelectedColumn({"Parent", "parent_id", "", "c", PG_TYPES::INT8, true, 2, 1}),
         sqlb::SelectedColumn({"p_slug", "slug", "", "p", PG_TYPES::TEXT, false, 0, 0, false}),
         sqlb::SelectedColumn({"p_name", "name", "", "p", PG_TYPES::TEXT, false, 0, 0, false}),
-        sqlb::SelectedColumn({"Position", "position", "", "c", PG_TYPES::INT8, true}),
+        sqlb::SelectedColumn({"Position", "position", "", "c", PG_TYPES::INT4, true}),
         sqlb::SelectedColumn({"Name", "name", "", "c", PG_TYPES::TEXT, true}),
         sqlb::SelectedColumn({"Code", "slug", "", "c", PG_TYPES::TEXT, true}),
         sqlb::SelectedColumn({"Description", "description", "", "c", PG_TYPES::TEXT, true}),
@@ -42,25 +42,25 @@ void PCategory::setupTable()
     };
 }
 
-Json::Value PCategory::ins(Json::Value event, Json::Value args)
+json PCategory::ins(json event, json args)
 {
     return insBase(event, args, "slug, name, description, display_type, parent_id, position", "$1, $2, $3, $4, NULLIF($5, 0), $6",
-            args[0]["slug"].asString(),
-            args[0]["name"].asString(),
-            args[0]["description"].asString(),
-            args[0]["display_type"].asString(),
-            args[0]["parent_id"].asInt(), // why this ask for asInt()? otherwise error: ERROR:  incorrect binary data format in bind parameter 5
-            args[0]["position"].asInt64() );
+            args[0]["slug"].get<std::string>(),
+            args[0]["name"].get<std::string>(),
+            args[0]["description"].get<std::string>(),
+            args[0]["display_type"].get<std::string>(),
+            args[0]["parent_id"].get<int>(), // why this ask for get<int>()? otherwise error: ERROR:  incorrect binary data format in bind parameter 5
+            args[0]["position"].get<int>()  );
 }
 
-Json::Value PCategory::upd(Json::Value event, Json::Value args)
+json PCategory::upd(json event, json args)
 {
     return updBase(event, args, "slug, name, description, display_type, parent_id, position", "$1, $2, $3, $4, NULLIF($5, 0), $6",
-                   args[0]["slug"].asString(),
-                   args[0]["name"].asString(),
-                   args[0]["description"].asString(),
-                   args[0]["display_type"].asString(),
-                   args[0]["parent_id"].asInt(), // why this ask for asInt()?
-                   args[0]["position"].asInt64());
+                   args[0]["slug"].get<std::string>(),
+                   args[0]["name"].get<std::string>(),
+                   args[0]["description"].get<std::string>(),
+                   args[0]["display_type"].get<std::string>(),
+                   args[0]["parent_id"].get<int>(), // why this ask for get<int>()?
+                   args[0]["position"].get<int>()  );
 }
 

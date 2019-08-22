@@ -39,12 +39,12 @@ Account::Account(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPt
                 };
 }
 
-    Json::Value Account::ins(Json::Value event, Json::Value args)
+    json Account::ins(json event, json args)
     {
-        return insBase(event, args, "rank, name, description", "$1, $2, $3", args[0]["rank"].asInt(), args[0]["name"].asString(), args[0]["description"].asString());
+        return insBase(event, args, "rank, name, description", "$1, $2, $3", args[0]["rank"].get<int>(), args[0]["name"].get<std::string>(), args[0]["description"].get<std::string>());
     }
 
-    Json::Value Account::upd(Json::Value event, Json::Value args)
+    json Account::upd(json event, json args)
     {
-        return updBase(event, args, "rank, name, description", "$1, $2, $3", args[0]["rank"].asInt(), args[0]["name"].asString(), args[0]["description"].asString());
+        return updBase(event, args, "rank, name, description", "$1, $2, $3", args[0]["rank"].get<int>(), args[0]["name"].get<std::string>(), args[0]["description"].get<std::string>());
     }

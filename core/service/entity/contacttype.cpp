@@ -22,12 +22,12 @@ void ContactType::setupTable()
 
 
 
-Json::Value ContactType::ins(Json::Value event, Json::Value args)
+json ContactType::ins(json event, json args)
 {
-    return insBase(event, args, "name", "$1",  args[0]["name"].asString());
+    return insBase(event, args, "name", "$1",  args[0]["name"].get<std::string>());
 }
 
-Json::Value ContactType::upd(Json::Value event, Json::Value args)
+json ContactType::upd(json event, json args)
 {
-    return updBase(event, args, "name", "$1", args[0]["name"].asString());
+    return updBase(event, args, "name", "$1", args[0]["name"].get<std::string>());
 }

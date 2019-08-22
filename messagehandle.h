@@ -1,6 +1,9 @@
 #ifndef MESSAGEHANDLE_H
 #define MESSAGEHANDLE_H
-#include <json/json.h>
+
+#include  "json.hpp"
+using nlohmann:: json;
+
 #include <drogon/WebSocketController.h>
 using namespace drogon;
 
@@ -11,12 +14,12 @@ public:
     NoCAF(const WebSocketConnectionPtr &wsConnPtr, std::string &&message,
                   const WebSocketMessageType &type );
     //~NoCAF() override;
-    Json::Value handleTextMessage(Json::Value in);
-    Json::Value handleBinaryMessage(const WebSocketConnectionPtr &, std::string &message);
+    json handleTextMessage(json in);
+    json handleBinaryMessage(const WebSocketConnectionPtr &, std::string &message);
     void blocking_run();
 private:
     const WebSocketConnectionPtr wsConnPtr;
-    Json::Value in;
+    json in;
     std::string message;
     const WebSocketMessageType type;
 };
@@ -28,13 +31,13 @@ public:
     MessageHandle(caf:: actor_config& cfg, const WebSocketConnectionPtr &wsConnPtr, std::string &&message,
                   const WebSocketMessageType &type );
     ~MessageHandle() override;
-    Json::Value handleTextMessage(Json::Value in);
-    Json::Value handleBinaryMessage(const WebSocketConnectionPtr &, std::string &message);
+    json handleTextMessage(json in);
+    json handleBinaryMessage(const WebSocketConnectionPtr &, std::string &message);
 private:
     void blocking_run();
 
     const WebSocketConnectionPtr wsConnPtr;
-    Json::Value in;
+    json in;
     caf:: behavior    running_job; // initial behavior
     std::string message;
     const WebSocketMessageType type;

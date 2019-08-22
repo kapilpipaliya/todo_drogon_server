@@ -35,12 +35,12 @@ void PaymentMethod::setupTable()
             };
 }
 
-Json::Value PaymentMethod::ins(Json::Value event, Json::Value args)
+json PaymentMethod::ins(json event, json args)
 {
-    return insBase(event, args, "name, url, description", "$1, $2, $3",  args[0]["name"].asString(), args[0]["url"].asString(), args[0]["description"].asString() );
+    return insBase(event, args, "name, url, description", "$1, $2, $3",  args[0]["name"].get<std::string>(), args[0]["url"].get<std::string>(), args[0]["description"].get<std::string>() );
 }
 
-Json::Value PaymentMethod::upd(Json::Value event, Json::Value args)
+json PaymentMethod::upd(json event, json args)
 {
-    return updBase(event, args, "name, url, description", "$1, $2, $3", args[0]["name"].asString(), args[0]["url"].asString(), args[0]["description"].asString());
+    return updBase(event, args, "name, url, description", "$1, $2, $3", args[0]["name"].get<std::string>(), args[0]["url"].get<std::string>(), args[0]["description"].get<std::string>());
 }

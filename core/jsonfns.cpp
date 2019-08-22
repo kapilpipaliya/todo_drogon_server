@@ -1,17 +1,17 @@
 #include "jsonfns.h"
 
-void printJson(Json::Value & in)
+void printJson(json &in)
 {
-    fprintf(stdout, "%s\n", in.toStyledString().c_str());
+    fprintf(stdout, "%s\n", in.dump().c_str());
     fflush(stdout);
 }
 
-Json::Value simpleJsonSaveResult(Json::Value event, bool ok, const std::string & error)
+json simpleJsonSaveResult(json event, bool ok, const std::string & error)
 {
-    Json::Value out;
+    json out;
     out[0]=event;
 
-    Json::Value ret;
+    json ret;
     ret["ok"]=ok;
     if (!ok) {
         ret["error"]=error;

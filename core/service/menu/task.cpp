@@ -41,12 +41,12 @@ void Task::setupTable()
             sqlb::Join("left", u2, "m.update_user_id = u2.id"),
             };
 }
-Json::Value Task::ins(Json::Value event, Json::Value args)
+json Task::ins(json event, json args)
 {
-    return insBase(event, args, "name", "$1",  args[0]["name"].asString() );
+    return insBase(event, args, "name", "$1",  args[0]["name"].get<std::string>() );
 }
 
-Json::Value Task::upd(Json::Value event, Json::Value args)
+json Task::upd(json event, json args)
 {
-    return updBase(event, args, "name", "$1", args[0]["name"].asString());
+    return updBase(event, args, "name", "$1", args[0]["name"].get<std::string>());
 }

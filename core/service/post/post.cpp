@@ -33,7 +33,7 @@ void Post1::setupTable()
 }
 
 
-Json::Value Post1::ins( Json::Value event, Json::Value args) {
+json Post1::ins( json event, json args) {
     auto post_table = sqlb::ObjectIdentifier("post", "post", "p");
 
     std::string strSqlPost =
@@ -48,17 +48,17 @@ Json::Value Post1::ins( Json::Value event, Json::Value args) {
     try {
         auto x = transPtr->execSqlSync(
             strSqlPost,
-            args[0]["comment_status"].asBool(),
-            args[0]["menu_order"].asInt(),
-            args[0]["excerpt"].asString(),
-            args[0]["content"].asString(),
-            args[0]["title"].asString(),
-            args[0]["name"].asString(),
-            args[0]["password"].asString(),
-            args[0]["status"].asString(),
-            args[0]["date"].asString(),
-            args[0]["type"].asString(),
-            args[0]["visibility"].asString()
+            args[0]["comment_status"].get<bool>(),
+            args[0]["menu_order"].get<int>(),
+            args[0]["excerpt"].get<std::string>(),
+            args[0]["content"].get<std::string>(),
+            args[0]["title"].get<std::string>(),
+            args[0]["name"].get<std::string>(),
+            args[0]["password"].get<std::string>(),
+            args[0]["status"].get<std::string>(),
+            args[0]["date"].get<std::string>(),
+            args[0]["type"].get<std::string>(),
+            args[0]["visibility"].get<std::string>()
             );
         auto post_id = x[0]["id"].as<int>();
 
@@ -66,17 +66,17 @@ Json::Value Post1::ins( Json::Value event, Json::Value args) {
         //save_product_categories(post_category_table, in, txn, post_id);
 
         
-        Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
+        json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
         
         std::cerr << e.what() << std::endl;
-        Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
+        json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
 }
-Json::Value Post1::upd( Json::Value event, Json::Value args) {
+json Post1::upd( json event, json args) {
     auto post_table = sqlb::ObjectIdentifier("post", "post", "p");
 
-    if (args[0]["id"].asInt()) {
+    if (args[0]["id"].get<long>()) {
         std::string strSqlPost =
                 "update %1.%2 set "
                 "(comment_status, menu_order, excerpt, content, title, name, password, status, date, type, visibility)"
@@ -87,30 +87,30 @@ Json::Value Post1::upd( Json::Value event, Json::Value args) {
         auto transPtr = clientPtr->newTransaction();
         try {
             transPtr->execSqlSync(strSqlPost,
-                            args[0]["id"].asInt64(),
-                    args[0]["comment_status"].asBool(),
-                    args[0]["menu_order"].asInt(),
-                    args[0]["excerpt"].asString(),
-                    args[0]["content"].asString(),
-                    args[0]["title"].asString(),
-                    args[0]["name"].asString(),
-                    args[0]["password"].asString(),
-                    args[0]["status"].asString(),
-                    args[0]["date"].asString(),
-                    args[0]["type"].asString(),
-                    args[0]["visibility"].asString()
+                            args[0]["id"].get<long>(),
+                    args[0]["comment_status"].get<bool>(),
+                    args[0]["menu_order"].get<int>(),
+                    args[0]["excerpt"].get<std::string>(),
+                    args[0]["content"].get<std::string>(),
+                    args[0]["title"].get<std::string>(),
+                    args[0]["name"].get<std::string>(),
+                    args[0]["password"].get<std::string>(),
+                    args[0]["status"].get<std::string>(),
+                    args[0]["date"].get<std::string>(),
+                    args[0]["type"].get<std::string>(),
+                    args[0]["visibility"].get<std::string>()
                     );
-            auto post_id = args[0]["id"].asInt();
+            auto post_id = args[0]["id"].get<long>();
 
             //product_tags_process(tags_table, post_tag_table, in, txn, post_id);
             //save_product_categories(post_category_table, in, txn, post_id);
 
             
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
+            json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
             
             std::cerr << e.what() << std::endl;
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
+            json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
         }
     }
 }

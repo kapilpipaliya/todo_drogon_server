@@ -35,7 +35,7 @@ void Tag::setupTable()
     };
 }
 
-Json::Value Tag::ins( Json::Value event, Json::Value args) {
+json Tag::ins( json event, json args) {
     auto product_table = sqlb::ObjectIdentifier("post", "tag", "t");
 
     std::string strSql = "INSERT INTO %1.%2 (slug, name, description) values($1, $2, $3)";
@@ -46,23 +46,23 @@ Json::Value Tag::ins( Json::Value event, Json::Value args) {
     try {
         transPtr->execSqlSync(
             strSql,
-            args[0]["slug"].asString(),
-            args[0]["name"].asString(),
-            args[0]["description"].asString()
+            args[0]["slug"].get<std::string>(),
+            args[0]["name"].get<std::string>(),
+            args[0]["description"].get<std::string>()
             );
         
-        Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
+        json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
         
         std::cerr << e.what() << std::endl;
-        Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
+        json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
 }
-Json::Value Tag::upd( Json::Value event, Json::Value args) {
+json Tag::upd( json event, json args) {
     printJson(args);
     auto product_table = sqlb::ObjectIdentifier("post", "tag", "t");
 
-    if (args[0]["id"].asInt()) {
+    if (args[0]["id"].get<long>()) {
         std::string strSql =
                 "update %1.%2 set "
                 "(slug, name, description)"
@@ -73,17 +73,17 @@ Json::Value Tag::upd( Json::Value event, Json::Value args) {
         auto transPtr = clientPtr->newTransaction();
         try {
             transPtr->execSqlSync(strSql,
-                            args[0]["id"].asInt64(),
-                    args[0]["slug"].asString(),
-                    args[0]["name"].asString(),
-                    args[0]["description"].asString()
+                            args[0]["id"].get<long>(),
+                    args[0]["slug"].get<std::string>(),
+                    args[0]["name"].get<std::string>(),
+                    args[0]["description"].get<std::string>()
                     );
             
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
+            json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
             
             std::cerr << e.what() << std::endl;
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
+            json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
         }
     }
 }

@@ -14,7 +14,7 @@ AccountHeading::AccountHeading(const WebSocketConnectionPtr& wsConnPtr_): BaseSe
             //m_query.setRowIdColumn("id");
             t.m_query.selectedColumns() = {
                 sqlb::SelectedColumn({"Id", "id", "", "a", PG_TYPES::INT8, false}),
-                sqlb::SelectedColumn({"Acc No", "accno", "", "a", PG_TYPES::INT8, true}),
+                sqlb::SelectedColumn({"Acc No", "accno", "", "a", PG_TYPES::TEXT, true}),
                 sqlb::SelectedColumn({"Name", "name", "", "a", PG_TYPES::TEXT, true}),
                 };
 
@@ -29,12 +29,12 @@ AccountHeading::AccountHeading(const WebSocketConnectionPtr& wsConnPtr_): BaseSe
                 //sqlb::Join("left", u2, "a.update_user_id = u2.id"),
                 };
 }
-Json::Value AccountHeading::ins(Json::Value event, Json::Value args)
+json AccountHeading::ins(json event, json args)
 {
-    return insBase(event, args, "name, accno", "$1, $2",  args[0]["name"].asString(), args[0]["accno"].asString());
+    return insBase(event, args, "name, accno", "$1, $2",  args[0]["name"].get<std::string>(), args[0]["accno"].get<std::string>());
 }
 
-Json::Value AccountHeading::upd(Json::Value event, Json::Value args)
+json AccountHeading::upd(json event, json args)
 {
-    return updBase(event, args, "name, accno", "$1, $2", args[0]["name"].asString(), args[0]["accno"].asString());
+    return updBase(event, args, "name, accno", "$1, $2", args[0]["name"].get<std::string>(), args[0]["accno"].get<std::string>());
 }

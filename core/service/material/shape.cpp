@@ -39,55 +39,12 @@ void Shape::setupTable()
 
 }
 
-
-
-Json::Value Shape::ins( Json::Value event, Json::Value args) {
-    printJson(args);
-    auto accessory_table = sqlb::ObjectIdentifier("material", "shape", "sh");
-
-    std::string strSql = "INSERT INTO %1.%2 (slug, name) values($1, $2)";
-    ReplaceAll2(strSql, "%1", accessory_table.schema());
-    ReplaceAll2(strSql, "%2", accessory_table.name());
-
-    auto transPtr = clientPtr->newTransaction();
-    try {
-        transPtr->execSqlSync(
-            strSql,
-            args[0]["slug"].asString(),
-            args[0]["name"].asString()
-            );
-        
-        Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
-    } catch (const std::exception &e) {
-        
-        std::cerr << e.what() << std::endl;
-        Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
-    }
+json Shape::ins(json event, json args)
+{
+    return insBase(event, args, "slug, name", "$1, $2",  args[0]["slug"].get<std::string>(), args[0]["name"].get<std::string>());
 }
-Json::Value Shape::upd( Json::Value event, Json::Value args) {
-    auto accessory_table = sqlb::ObjectIdentifier("material", "shape", "sh");
 
-    if (args[0]["id"].asInt()) {
-        std::string strSql =
-                "update %1.%2 set "
-                "(slug, name)"
-                " = ROW($2, $3) where id=$1";
-        ReplaceAll2(strSql, "%1", accessory_table.schema());
-        ReplaceAll2(strSql, "%2", accessory_table.name());
-
-        auto transPtr = clientPtr->newTransaction();
-        try {
-            transPtr->execSqlSync(strSql,
-                            args[0]["id"].asInt64(),
-                    args[0]["slug"].asString(),
-                    args[0]["name"].asString()
-                    );
-            
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
-        } catch (const std::exception &e) {
-            
-            std::cerr << e.what() << std::endl;
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
-        }
-    }
+json Shape::upd(json event, json args)
+{
+    return updBase(event, args, "slug, name", "$1, $2", args[0]["slug"].get<std::string>(), args[0]["name"].get<std::string>());
 }

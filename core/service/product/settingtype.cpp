@@ -36,16 +36,16 @@ void SettingType::setupTable()
             };
 }
 
-Json::Value SettingType::ins(Json::Value event, Json::Value args)
+json SettingType::ins(json event, json args)
 {
     return insBase(event, args, "name, description", "$1, $2",
-            args[0]["name"].asString(),
-            args[0]["description"].asString());
+            args[0]["name"].get<std::string>(),
+            args[0]["description"].get<std::string>());
 }
 
-Json::Value SettingType::upd(Json::Value event, Json::Value args)
+json SettingType::upd(json event, json args)
 {
     return updBase(event, args, "name, description", "$1, $2",
-            args[0]["name"].asString(),
-            args[0]["description"].asString());
+            args[0]["name"].get<std::string>(),
+            args[0]["description"].get<std::string>());
 }

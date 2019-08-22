@@ -22,12 +22,12 @@ void AddressType::setupTable()
 
 
 
-Json::Value AddressType::ins(Json::Value event, Json::Value args)
+json AddressType::ins(json event, json args)
 {
-    return insBase(event, args, "name", "$1",  args[0]["name"].asString());
+    return insBase(event, args, "name", "$1",  args[0]["name"].get<std::string>());
 }
 
-Json::Value AddressType::upd(Json::Value event, Json::Value args)
+json AddressType::upd(json event, json args)
 {
-    return updBase(event, args, "name", "$1", args[0]["name"].asString());
+    return updBase(event, args, "name", "$1", args[0]["name"].get<std::string>());
 }

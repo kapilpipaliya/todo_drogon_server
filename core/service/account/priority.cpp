@@ -35,12 +35,12 @@ Priority::Priority(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConn
                 sqlb::Join("left", u2, "a.update_user_id = u2.id"),
                 };
 }
-Json::Value Priority::ins(Json::Value event, Json::Value args)
+json Priority::ins(json event, json args)
 {
-    return insBase(event, args, "rank, slug, name", "$1, $2, $3",  args[0]["rank"].asString(), args[0]["slug"].asString(), args[0]["name"].asString() );
+    return insBase(event, args, "rank, slug, name", "$1, $2, $3",  args[0]["rank"].get<int>(), args[0]["slug"].get<std::string>(), args[0]["name"].get<std::string>() );
 }
 
-Json::Value Priority::upd(Json::Value event, Json::Value args)
+json Priority::upd(json event, json args)
 {
-    return updBase(event, args, "rank, slug, name", "$1, $2, $3", args[0]["rank"].asString(), args[0]["slug"].asString(), args[0]["name"].asString());
+    return updBase(event, args, "rank, slug, name", "$1, $2, $3", args[0]["rank"].get<int>(), args[0]["slug"].get<std::string>(), args[0]["name"].get<std::string>());
 }

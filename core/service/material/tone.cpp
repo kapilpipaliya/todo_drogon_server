@@ -38,54 +38,12 @@ void Tone::setupTable()
             };
 }
 
-
-
-Json::Value Tone::ins( Json::Value event, Json::Value args) {
-    auto product_table = sqlb::ObjectIdentifier("material", "tone", "t");
-
-    std::string strSql = "INSERT INTO %1.%2 (slug, name) values($1, $2)";
-    ReplaceAll2(strSql, "%1", product_table.schema());
-    ReplaceAll2(strSql, "%2", product_table.name());
-
-    auto transPtr = clientPtr->newTransaction();
-    try {
-        transPtr->execSqlSync(
-            strSql,
-            args[0]["slug"].asString(),
-            args[0]["name"].asString()
-            );
-        
-        Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
-    } catch (const std::exception &e) {
-        
-        std::cerr << e.what() << std::endl;
-        Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
-    }
+json Tone::ins(json event, json args)
+{
+    return insBase(event, args, "slug, name", "$1, $2",  args[0]["slug"].get<std::string>(), args[0]["name"].get<std::string>());
 }
-Json::Value Tone::upd( Json::Value event, Json::Value args) {
-    auto product_table = sqlb::ObjectIdentifier("material", "tone", "t");
 
-    if (args[0]["id"].asInt()) {
-        std::string strSql =
-                "update %1.%2 set "
-                "(slug, name)"
-                " = ROW($2, $3) where id=$1";
-        ReplaceAll2(strSql, "%1", product_table.schema());
-        ReplaceAll2(strSql, "%2", product_table.name());
-
-        auto transPtr = clientPtr->newTransaction();
-        try {
-            transPtr->execSqlSync(strSql,
-                            args[0]["id"].asInt64(),
-                    args[0]["slug"].asString(),
-                    args[0]["name"].asString()
-                    );
-            
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
-        } catch (const std::exception &e) {
-            
-            std::cerr << e.what() << std::endl;
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
-        }
-    }
+json Tone::upd(json event, json args)
+{
+    return updBase(event, args, "slug, name", "$1, $2", args[0]["slug"].get<std::string>(), args[0]["name"].get<std::string>());
 }

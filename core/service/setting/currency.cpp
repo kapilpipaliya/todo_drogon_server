@@ -34,23 +34,23 @@ void Currency::setupTable()
 
 }
 
-Json::Value Currency::ins(Json::Value event, Json::Value args)
+json Currency::ins(json event, json args)
 {
     return insBase(event, args, "slug, name, symbol, rounding, active", "$1, $2, $3, $4, $5",
-            args[0]["slug"].asString(),
-            args[0]["name"].asString(),
-            args[0]["symbol"].asString(),
-            args[0]["rounding"].asDouble(),
-            args[0]["active"].asBool() );
+            args[0]["slug"].get<std::string>(),
+            args[0]["name"].get<std::string>(),
+            args[0]["symbol"].get<std::string>(),
+            args[0]["rounding"].get<float>(),
+            args[0]["active"].get<bool>() );
 }
 
-Json::Value Currency::upd(Json::Value event, Json::Value args)
+json Currency::upd(json event, json args)
 {
     return updBase(event, args, "slug, name, symbol, rounding, active", "$1, $2, $3, $4, $5",
-                   args[0]["slug"].asString(),
-                   args[0]["name"].asString(),
-                   args[0]["symbol"].asString(),
-                   args[0]["rounding"].asDouble(),
-                   args[0]["active"].asBool()
+                   args[0]["slug"].get<std::string>(),
+                   args[0]["name"].get<std::string>(),
+                   args[0]["symbol"].get<std::string>(),
+                   args[0]["rounding"].get<float>(),
+                   args[0]["active"].get<bool>()
             );
 }

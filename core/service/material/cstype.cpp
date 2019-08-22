@@ -37,12 +37,12 @@ void CSType::setupTable()
 
 }
 
-Json::Value CSType::ins(Json::Value event, Json::Value args)
+json CSType::ins(json event, json args)
 {
-    return insBase(event, args, "name", "$1",  args[0]["name"].asString() );
+    return insBase(event, args, "name", "$1",  args[0]["name"].get<std::string>() );
 }
 
-Json::Value CSType::upd(Json::Value event, Json::Value args)
+json CSType::upd(json event, json args)
 {
-    return updBase(event, args, "name", "$1", args[0]["name"].asString());
+    return updBase(event, args, "name", "$1", args[0]["name"].get<std::string>());
 }

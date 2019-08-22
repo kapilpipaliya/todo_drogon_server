@@ -32,12 +32,12 @@ void Log::setupTable()
             //sqlb::Join("left", u2, "a.update_user_id = u2.id"),
             };
 }
-Json::Value Log::ins(Json::Value event, Json::Value args)
+json Log::ins(json event, json args)
 {
-    return insBase(event, args, "detail", "$1",  args[0]["detail"].asString() );
+    return insBase(event, args, "detail", "$1",  args[0]["detail"].get<std::string>() );
 }
 
-Json::Value Log::upd(Json::Value event, Json::Value args)
+json Log::upd(json event, json args)
 {
-    return updBase(event, args, "detail", "$1", args[0]["detail"].asString());
+    return updBase(event, args, "detail", "$1", args[0]["detail"].get<std::string>());
 }

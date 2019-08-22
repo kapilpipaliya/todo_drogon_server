@@ -8,9 +8,9 @@ Setting::Setting(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPt
 
 }
 
-Json::Value Setting::handleEvent(Json::Value event, int next, Json::Value args)
+json Setting::handleEvent(json event, int next, json args)
 {
-    auto event_cmp = event[next].asString();
+    auto event_cmp = event[next].get<std::string>();
     if(event_cmp == "data"){
         return allData(event, args);
     } else if (event_cmp == "header") {
@@ -47,47 +47,47 @@ void Setting::setupTable()
 }
 
 // where key = $1
-Json::Value Setting::del( Json::Value event, Json::Value args)
+json Setting::del( json event, json args)
 {
     auto transPtr = clientPtr->newTransaction();
     try {
-        transPtr->execSqlSync("DELETE FROM setting.setting WHERE key = $1", args[0].asString());
+        transPtr->execSqlSync("DELETE FROM setting.setting WHERE key = $1", args[0].get<std::string>());
         
-        Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
+        json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
         
         std::cerr << e.what() << std::endl;
-        Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
+        json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
 }
-Json::Value Setting::save( Json::Value event, Json::Value args) {
+json Setting::save( json event, json args) {
     // check if key exist
     auto transPtr = clientPtr->newTransaction();
-    auto y = transPtr->execSqlSync("select key from setting.setting where key = $1", args[0]["key"].asString());
+    auto y = transPtr->execSqlSync("select key from setting.setting where key = $1", args[0]["key"].get<std::string>());
     
     if (y.size() != 0) {
         std::string strSql = "update setting.setting set (value_int, value_num, value_text) = ROW($2, $3, $4) where key=$1";
         auto transPtr = clientPtr->newTransaction();
         try {
-            transPtr->execSqlSync(strSql, args[0]["key"].asString(), args[0]["value_int"].asInt(), args[0]["value_num"].asDouble(), args[0]["value_text"].asString());
+            transPtr->execSqlSync(strSql, args[0]["key"].get<std::string>(), args[0]["value_int"].get<int>(), args[0]["value_num"].get<float>(), args[0]["value_text"].get<std::string>());
             
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
+            json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
             
             std::cerr << e.what() << std::endl;
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
+            json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
         }
     } else {
         std::string strSql = "INSERT INTO setting.setting (key, value_int, value_num, value_text, setting_type, setting) values($1, $2, $3, $4, $5, $6)";
         auto transPtr = clientPtr->newTransaction();
         try {
-            transPtr->execSqlSync(strSql, args[0]["key"].asString(), args[0]["value_int"].asInt(), args[0]["value_num"].asDouble(), args[0]["value_text"].asString(), args[0]["setting_type"].asString(), args[0]["setting"].toStyledString());
+            transPtr->execSqlSync(strSql, args[0]["key"].get<std::string>(), args[0]["value_int"].get<int>(), args[0]["value_num"].get<float>(), args[0]["value_text"].get<std::string>(), args[0]["setting_type"].get<std::string>(), args[0]["setting"].dump());
             
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
+            json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
             
             std::cerr << e.what() << std::endl;
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
+            json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
         }
     }
 }

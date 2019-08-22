@@ -4,7 +4,7 @@
 
 #include "core/sql/Table.h"
 #include "core/connection/pdb.h"
-#include <json/json.h>
+#include  "json.hpp"
 
 #include <drogon/WebSocketController.h>
 using namespace drogon;
@@ -14,20 +14,20 @@ class Auth
 public:
     Auth(const WebSocketConnectionPtr& wsConnPtr);
 
-    Json::Value handleEvent(Json::Value event, int next, Json::Value args);
+    json handleEvent(json event, int next, json args);
 
 private:
-    Json::Value adminLogin(Json::Value event, Json::Value args);
-    Json::Value adminLogout(Json::Value event, Json::Value args);
-    Json::Value isAdminAuth(Json::Value event, Json::Value args);
+    json adminLogin(json event, json args);
+    json adminLogout(json event, json args);
+    json isAdminAuth(json event, json args);
 
-    Json::Value userRegister(Json::Value event, Json::Value args);
-    Json::Value userLogin(Json::Value event, Json::Value args);
-    Json::Value userId(Json::Value event, Json::Value args);
-    Json::Value userLogout(Json::Value event, Json::Value args);
-    Json::Value isUserAuth(Json::Value event, Json::Value args);
-    Json::Value checkout(Json::Value event, Json::Value args);
-    Json::Value saveImageMeta(Json::Value event, Json::Value args);
+    json userRegister(json event, json args);
+    json userLogin(json event, json args);
+    json userId(json event, json args);
+    json userLogout(json event, json args);
+    json isUserAuth(json event, json args);
+    json checkout(json event, json args);
+    json saveImageMeta(json event, json args);
 
 
     const WebSocketConnectionPtr& wsConnPtr;

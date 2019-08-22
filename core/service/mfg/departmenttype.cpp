@@ -32,12 +32,12 @@ void DepartmentType::setupTable()
             };
 }
 
-Json::Value DepartmentType::ins(Json::Value event, Json::Value args)
+json DepartmentType::ins(json event, json args)
 {
-    return insBase(event, args, "name", "$1",  args[0]["name"].asString() );
+    return insBase(event, args, "name", "$1",  args[0]["name"].get<std::string>() );
 }
 
-Json::Value DepartmentType::upd(Json::Value event, Json::Value args)
+json DepartmentType::upd(json event, json args)
 {
-    return updBase(event, args, "name", "$1", args[0]["name"].asString());
+    return updBase(event, args, "name", "$1", args[0]["name"].get<std::string>());
 }

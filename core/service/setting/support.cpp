@@ -35,12 +35,12 @@ void Support::setupTable()
 
 }
 
-Json::Value Support::ins(Json::Value event, Json::Value args)
+json Support::ins(json event, json args)
 {
-    return insBase(event, args, "name, email, phone, message", "$1, $2, $3, $4",  args[0]["name"].asString(), args[0]["email"].asString(), args[0]["phone"].asString(), args[0]["message"].asString() );
+    return insBase(event, args, "name, email, phone, message", "$1, $2, $3, $4",  args[0]["name"].get<std::string>(), args[0]["email"].get<std::string>(), args[0]["phone"].get<std::string>(), args[0]["message"].get<std::string>() );
 }
 
-Json::Value Support::upd(Json::Value event, Json::Value args)
+json Support::upd(json event, json args)
 {
-    return updBase(event, args, "name, email, phone, message", "$1, $2, $3, $4", args[0]["name"].asString(), args[0]["email"].asString(), args[0]["phone"].asString(), args[0]["message"].asString());
+    return updBase(event, args, "name, email, phone, message", "$1, $2, $3, $4", args[0]["name"].get<std::string>(), args[0]["email"].get<std::string>(), args[0]["phone"].get<std::string>(), args[0]["message"].get<std::string>());
 }

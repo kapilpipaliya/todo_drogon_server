@@ -33,12 +33,12 @@ void ImageCollection::setupTable()
             };
 }
 
-Json::Value ImageCollection::ins(Json::Value event, Json::Value args)
+json ImageCollection::ins(json event, json args)
 {
-    return insBase(event, args, "name", "$1",  args[0]["name"].asString() );
+    return insBase(event, args, "name", "$1",  args[0]["name"].get<std::string>() );
 }
 
-Json::Value ImageCollection::upd(Json::Value event, Json::Value args)
+json ImageCollection::upd(json event, json args)
 {
-    return updBase(event, args, "name", "$1", args[0]["name"].asString());
+    return updBase(event, args, "name", "$1", args[0]["name"].get<std::string>());
 }

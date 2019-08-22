@@ -8,13 +8,13 @@ class Setting : public BaseService
 public:
     Setting(const WebSocketConnectionPtr& wsConnPtr);
 
-   Json::Value handleEvent(Json::Value event, int next, Json::Value args);
+   json handleEvent(json event, int next, json args);
 
 private:
     void setupTable();
-    Json::Value ins(Json::Value event, Json::Value args){};
-    Json::Value upd(Json::Value event, Json::Value args){};
-    Json::Value save(Json::Value event, Json::Value args);
-    Json::Value del( Json::Value event, Json::Value args);
+    json ins(json event, json args){};
+    json upd(json event, json args){};
+    json save(json event, json args);
+    json del( json event, json args);
 };
 #endif // SETTING_H

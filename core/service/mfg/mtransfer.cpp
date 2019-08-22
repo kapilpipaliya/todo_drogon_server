@@ -40,12 +40,12 @@ void MTransfer::setupTable()
             sqlb::Join("left", u2, "m.update_user_id = u2.id"),
             };
 }
-Json::Value MTransfer::ins(Json::Value event, Json::Value args)
+json MTransfer::ins(json event, json args)
 {
-    return insBase(event, args, "name", "$1",  args[0]["name"].asString() );
+    return insBase(event, args, "name", "$1",  args[0]["name"].get<std::string>() );
 }
 
-Json::Value MTransfer::upd(Json::Value event, Json::Value args)
+json MTransfer::upd(json event, json args)
 {
-    return updBase(event, args, "name", "$1", args[0]["name"].asString());
+    return updBase(event, args, "name", "$1", args[0]["name"].get<std::string>());
 }

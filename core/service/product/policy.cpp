@@ -34,12 +34,12 @@ void Policy::setupTable()
             };
 }
 
-Json::Value Policy::ins(Json::Value event, Json::Value args)
+json Policy::ins(json event, json args)
 {
-    return insBase(event, args, "name, url, description", "$1, $2, $3",  args[0]["name"].asString(), args[0]["url"].asString(), args[0]["description"].asString() );
+    return insBase(event, args, "name, url, description", "$1, $2, $3",  args[0]["name"].get<std::string>(), args[0]["url"].get<std::string>(), args[0]["description"].get<std::string>() );
 }
 
-Json::Value Policy::upd(Json::Value event, Json::Value args)
+json Policy::upd(json event, json args)
 {
-    return updBase(event, args, "name, url, description", "$1, $2, $3", args[0]["name"].asString(), args[0]["url"].asString(), args[0]["description"].asString());
+    return updBase(event, args, "name, url, description", "$1, $2, $3", args[0]["name"].get<std::string>(), args[0]["url"].get<std::string>(), args[0]["description"].get<std::string>());
 }

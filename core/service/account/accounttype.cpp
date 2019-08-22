@@ -34,12 +34,12 @@ AccountType::AccountType(const WebSocketConnectionPtr& wsConnPtr_): BaseService(
     };
     }
 
-Json::Value AccountType::ins(Json::Value event, Json::Value args)
+json AccountType::ins(json event, json args)
 {
-    return insBase(event, args, "name", "$1",  args[0]["name"].asString());
+    return insBase(event, args, "name", "$1",  args[0]["name"].get<std::string>());
 }
 
-Json::Value AccountType::upd(Json::Value event, Json::Value args)
+json AccountType::upd(json event, json args)
 {
-    return updBase(event, args, "name", "$1", args[0]["name"].asString());
+    return updBase(event, args, "name", "$1", args[0]["name"].get<std::string>());
 }

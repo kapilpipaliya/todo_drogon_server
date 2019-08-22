@@ -43,31 +43,31 @@ void Node::setupTable()
             };
 }
 
-Json::Value Node::ins(Json::Value event, Json::Value args)
+json Node::ins(json event, json args)
 {
     return insBase(event, args, "parent_id, rank, slug, label, active, url, web_icon, description, class", "$1,$2,$3,$4,$5,$6,$7,$8,$9",
-            args[0]["parent_id"].asInt64(),
-            args[0]["rank"].asInt(),
-            args[0]["slug"].asString(),
-            args[0]["label"].asString(),
-            args[0]["active"].asBool(),
-            args[0]["url"].asString(),
-            args[0]["web_icon"].asString(),
-            args[0]["description"].asString(),
-            args[0]["class"].asString());
+            args[0]["parent_id"].get<long>(),
+            args[0]["rank"].get<int>(),
+            args[0]["slug"].get<std::string>(),
+            args[0]["label"].get<std::string>(),
+            args[0]["active"].get<bool>(),
+            args[0]["url"].get<std::string>(),
+            args[0]["web_icon"].get<std::string>(),
+            args[0]["description"].get<std::string>(),
+            args[0]["class"].get<std::string>()
+            );
 }
 
-Json::Value Node::upd(Json::Value event, Json::Value args)
+json Node::upd(json event, json args)
 {
     return updBase(event, args, "parent_id, rank, slug, label, active, url, web_icon, description, class", "$1,$2,$3,$4,$5,$6,$7,$8,$9",
-                   args[0]["parent_id"].asInt64(),
-                   args[0]["rank"].asInt(),
-                   args[0]["slug"].asString(),
-                   args[0]["label"].asString(),
-                   args[0]["active"].asBool(),
-                   args[0]["url"].asString(),
-                   args[0]["web_icon"].asString(),
-                   args[0]["description"].asString(),
-                   args[0]["class"].asString()
-            );
+                args[0]["parent_id"].get<long>(),
+                args[0]["rank"].get<int>(),
+                args[0]["slug"].get<std::string>(),
+                args[0]["label"].get<std::string>(),
+                args[0]["active"].get<bool>(),
+                args[0]["url"].get<std::string>(),
+                args[0]["web_icon"].get<std::string>(),
+                args[0]["description"].get<std::string>(),
+                args[0]["class"].get<std::string>());
 }

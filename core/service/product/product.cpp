@@ -189,9 +189,9 @@ void Product::setupTable()
 };
 }
 
-Json::Value Product::handleEvent(Json::Value event, int next, Json::Value args)
+json Product::handleEvent(json event, int next, json args)
 {
-    auto event_cmp = event[next].asString();
+    auto event_cmp = event[next].get<std::string>();
     if(event_cmp  == "data"){
         return allData(event, args);
     } else if (event_cmp  == "header") {
@@ -217,14 +217,14 @@ Json::Value Product::handleEvent(Json::Value event, int next, Json::Value args)
 
 
 #define purejoinTableSave(f, t, inKey, id1, id2)\
-void save_product_##f(Json::Value &args, std::shared_ptr<Transaction> transPtr, int idv1){\
+void save_product_##f(json &args, std::shared_ptr<Transaction> transPtr, int idv1){\
     std::string strSqlPostCategories = "SELECT " id1 ", " id2 " FROM " t " where " id1 " = $1";\
     std::string strSqlPostCategorySimpleFind = "SELECT * FROM " t " WHERE " id1 " = $1 and " id2 " = $2";\
     std::string strSqlPostCategoryDel = "DELETE FROM " t " WHERE " id1 " = $1 and " id2 " = $2";\
     std::string strSqlPostCategoryInsert = "INSERT INTO " t " (" id1 ", " id2 ") VALUES ($1, $2);";\
     std::vector<int>inNewTones;\
     for (auto i : args[ inKey ]) {\
-        if (!i.isNull()) inNewTones.push_back(i.asInt());\
+        if (!i.is_null()) inNewTones.push_back(i);\
     }\
     \
     auto all_ct = transPtr->execSqlSync(strSqlPostCategories, idv1);\
@@ -249,7 +249,7 @@ purejoinTableSave(certified_by, "product.post_certified_by", "p_certified_by_cer
 purejoinTableSave(policy, "product.post_policy", "p_policy_post_policy", "post_id", "policy_id");
 void product_tags_process(sqlb::ObjectIdentifier tags_table,
                           sqlb::ObjectIdentifier post_tag_table,
-                          Json::Value &args,
+                          json &args,
                           std::shared_ptr<Transaction> transPtr,
                           int post_id
                           ) {
@@ -280,7 +280,7 @@ void product_tags_process(sqlb::ObjectIdentifier tags_table,
     ReplaceAll2(strSqlPostTagsInsert, "%1", post_tag_table.schema());
     ReplaceAll2(strSqlPostTagsInsert, "%2", post_tag_table.name());
 
-    auto inNewTags = args[0]["tags_name"].asString();
+    auto inNewTags = args[0]["tags_name"].get<std::string>();
     std::vector<std::string> inNewTagsVector;
     std::stringstream ss{inNewTags};
     std::string tag;
@@ -311,7 +311,7 @@ void product_tags_process(sqlb::ObjectIdentifier tags_table,
 }
 
 void save_product_categories(sqlb::ObjectIdentifier post_category_table,
-                             Json::Value &args,
+                             json &args,
                              std::shared_ptr<Transaction> transPtr,
                              int post_id) {
     std::string strSqlPostCategories = "select post_id, category_id FROM %1.%2 where post_id = $1";
@@ -332,7 +332,7 @@ void save_product_categories(sqlb::ObjectIdentifier post_category_table,
     ReplaceAll2(strSqlPostCategoryInsert, "%2", post_category_table.name());
 
     std::vector<int> inNewCategories;
-    for (auto x : args[0]["pc_category_id"]) if (!x.isNull()) inNewCategories.push_back(x.asInt());
+    for (auto x : args[0]["pc_category_id"]) if (!x.is_null()) inNewCategories.push_back(x.get<int>());
 
     //std::vector<int>updatedCategories;
 
@@ -359,7 +359,7 @@ void save_product_categories(sqlb::ObjectIdentifier post_category_table,
 
 
 void save_product_clarities(sqlb::ObjectIdentifier post_clarity_table,
-                            Json::Value &args,
+                            json &args,
                             std::shared_ptr<Transaction> transPtr,
                             int post_id) {
     std::string strSqlPostCategories = "SELECT clarity_id FROM %1.%2 where post_id = $1";
@@ -390,8 +390,8 @@ void save_product_clarities(sqlb::ObjectIdentifier post_clarity_table,
     };
     std::vector<PostClarity> inVector;
     for (auto i : args[0]["p_clarity_clarity_id"]) { // purity_id, weight, price
-        if (!i[0].isNull())
-            inVector.push_back({i[0].asInt(), i[1].asInt(), i[2].asDouble(), i[3].asDouble(), i[4].asBool()});
+        if (!i[0].is_null())
+            inVector.push_back({i[0].get<int>(), i[1].get<int>(), i[2].get<float>(), i[3].get<float>(), i[4].get<bool>()});
     }
 
     auto all_ct = transPtr->execSqlSync(strSqlPostCategories, post_id);
@@ -418,7 +418,7 @@ void save_product_clarities(sqlb::ObjectIdentifier post_clarity_table,
     }
 }
 
-void save_purity_tone_(Json::Value &args, std::shared_ptr<Transaction> transPtr, int post_id, int purity_id) {
+void save_purity_tone_(json &args, std::shared_ptr<Transaction> transPtr, int post_id, int purity_id) {
     std::string strSqlPostCategories = sel_("product.purity_tone", "post_id, purity_id, tone_id",
                                            "where post_id = $1 and purity_id = $2");
     std::string strSqlPostCategorySimpleFind = sel_("product.purity_tone", "post_id, purity_id, tone_id, weight, price, ismain",
@@ -438,8 +438,8 @@ void save_purity_tone_(Json::Value &args, std::shared_ptr<Transaction> transPtr,
     };
     std::vector<PurityTone> inNewPrice; // post_id, purity_id, tone_id
     for (auto i : args) {
-        if (!i[0].isNull()) { // to pass null row
-            inNewPrice.push_back({post_id, purity_id, i[0].asInt(), i[1].asDouble(), i[2].asDouble(), i[3].asBool()});
+        if (!i[0].is_null()) { // to pass null row
+            inNewPrice.push_back({post_id, purity_id, i[0].get<int>(), i[1].get<float>(), i[2].get<float>(), i[3].get<bool>()});
         }
     }
 
@@ -467,7 +467,7 @@ void save_purity_tone_(Json::Value &args, std::shared_ptr<Transaction> transPtr,
 }
 
 void save_product_purities(sqlb::ObjectIdentifier post_purity_table,
-                           Json::Value &args,
+                           json &args,
                            std::shared_ptr<Transaction> transPtr,
                            int post_id) {
     std::string strSqlPostCategories = "SELECT purity_id FROM %1.%2 where post_id = $1";
@@ -492,12 +492,12 @@ void save_product_purities(sqlb::ObjectIdentifier post_purity_table,
     struct PostPurity {
         int purity_id;
         bool ismain;
-        Json::Value tones;
+        json tones;
     };
 
     std::vector<PostPurity> inVector;
     for (auto i : args[0]["p_purities_purity_id"]) { // purity_id, arry
-        if (!i[0].isNull()) inVector.push_back({i[0].asInt(), i[2].asBool(), i[1]});
+        if (!i[0].is_null()) inVector.push_back({i[0].get<int>(), i[2].get<bool>(), i[1]});
     }
 
     auto all_ct = transPtr->execSqlSync(strSqlPostCategories, post_id);
@@ -527,7 +527,7 @@ void save_product_purities(sqlb::ObjectIdentifier post_purity_table,
     }
 }
 
-void save_diamond_price(Json::Value &args, std::shared_ptr<Transaction> transPtr, int diamond_id) {
+void save_diamond_price(json &args, std::shared_ptr<Transaction> transPtr, int diamond_id) {
     std::string strSqlPostCategories = "SELECT diamond_id, clarity_id, weight, total_weight, rate, price FROM product.diamond_price where diamond_id = $1";
     std::string strSqlPostCategorySimpleFind = "SELECT diamond_id, clarity_id, weight, total_weight, rate, price FROM product.diamond_price where diamond_id = $1 and clarity_id = $2";
     std::string strSqlPostCategoryDel = "DELETE FROM product.diamond_price WHERE diamond_id = $1 and clarity_id = $2";
@@ -544,9 +544,9 @@ void save_diamond_price(Json::Value &args, std::shared_ptr<Transaction> transPtr
     };
     std::vector<DiamondPrice> inNewPrice;
     for (auto i : args) {
-        if (!i[0].isNull()) { // to pass null row
+        if (!i[0].is_null()) { // to pass null row
             inNewPrice.push_back(
-                {diamond_id, i[0].asInt(), i[2].asDouble(), i[3].asDouble(), i[4].asDouble(), i[5].asDouble()});
+                {diamond_id, i[0].get<int>(), i[2].get<float>(), i[3].get<float>(), i[4].get<float>(), i[5].get<float>()});
         }
     }
 
@@ -578,7 +578,7 @@ void save_diamond_price(Json::Value &args, std::shared_ptr<Transaction> transPtr
 }
 
 void save_product_diamond_sizes(sqlb::ObjectIdentifier post_diamond_sizes_table,
-                                Json::Value &args,
+                                json &args,
                                 std::shared_ptr<Transaction> transPtr,
                                 int post_id) {
     std::string strSqlPostCategories = "SELECT id, post_id, shape_id, color_id, size_id, pcs FROM product.post_diamond_size where post_id = $1";
@@ -594,13 +594,13 @@ void save_product_diamond_sizes(sqlb::ObjectIdentifier post_diamond_sizes_table,
         int pcs;
         int setting_type_id;
         std::string dsize;
-        Json::Value clarity_price;
+        json clarity_price;
     };
     std::vector<PostDiamondSize> inNewAttachments; // id Shape	Color	Size	Pcs
     for (auto i : args[0]["p_d_size_diamond_size_id"]) {
-        if (!i[1].isNull()) { // to pass null row
+        if (!i[1].is_null()) { // to pass null row
             inNewAttachments.push_back(
-                {i[0].asInt(), i[1].asInt(), i[2].asInt(), i[4].asInt(), i[5].asInt(), i[3].asString(), i[6]});
+                {i[0].get<int>(), i[1].get<int>(), i[2].get<int>(), i[4].get<int>(), i[5].get<int>(), i[3].get<std::string>(), i[6]});
         }
     }
 
@@ -635,7 +635,7 @@ void save_product_diamond_sizes(sqlb::ObjectIdentifier post_diamond_sizes_table,
     }
 }
 
-void save_cs_price(Json::Value &args, std::shared_ptr<Transaction> transPtr, int cs_id) {
+void save_cs_price(json &args, std::shared_ptr<Transaction> transPtr, int cs_id) {
     std::string strSqlPostCategories = "SELECT cs_id, weight, total_weight, rate, price FROM product.cs_price where cs_id = $1";
     std::string strSqlPostCategorySimpleFind = "SELECT cs_id, 0, weight, total_weight, rate, price FROM product.cs_price where cs_id = $1";
     std::string strSqlPostCategoryDel = "DELETE FROM product.cs_price WHERE cs_id = $1";
@@ -652,8 +652,8 @@ void save_cs_price(Json::Value &args, std::shared_ptr<Transaction> transPtr, int
     };
     std::vector<DiamondPrice> inNewPrice;
     for (auto i : args) {
-        if (!i[0].isNull()) { // to pass null row
-            inNewPrice.push_back({cs_id, i[2].asDouble(), i[3].asDouble(), i[4].asDouble(), i[5].asDouble()});
+        if (!i[0].is_null()) { // to pass null row
+            inNewPrice.push_back({cs_id, i[2].get<float>(), i[3].get<float>(), i[4].get<float>(), i[5].get<float>()});
         }
     }
 
@@ -682,7 +682,7 @@ void save_cs_price(Json::Value &args, std::shared_ptr<Transaction> transPtr, int
 }
 
 void save_product_cs_sizes(sqlb::ObjectIdentifier post_color_stone_size_table,
-                           Json::Value &args,
+                           json &args,
                            std::shared_ptr<Transaction> transPtr,
                            int post_id) {
     std::string strSqlPostCategories = "SELECT id, post_id, shape_id, color_id, size_id, pcs FROM product.post_color_stone_size where post_id = $1";
@@ -699,13 +699,13 @@ void save_product_cs_sizes(sqlb::ObjectIdentifier post_color_stone_size_table,
         int pcs;
         int setting_type_id;
         std::string dsize;
-        Json::Value clarity_price;
+        json clarity_price;
     };
     std::vector<PostCSSize> inNewAttachments; // id Shape	Color	Size	Pcs
     for (auto i : args[0]["p_cs_size_cs_size_id"]) {
-        if (!i[1].isNull()) { // to pass null row
+        if (!i[1].is_null()) { // to pass null row
             inNewAttachments.push_back(
-                {i[0].asInt(), i[1].asInt(), i[2].asInt(), i[3].asInt(), i[5].asInt(), i[6].asInt(), i[4].asString(), i[7]});
+                {i[0].get<int>(), i[1].get<int>(), i[2].get<int>(), i[3].get<int>(), i[5].get<int>(), i[6].get<int>(), i[4].get<std::string>(), i[7]});
         }
     }
 
@@ -741,7 +741,7 @@ void save_product_cs_sizes(sqlb::ObjectIdentifier post_color_stone_size_table,
 }
 
 void save_product_cs_total(sqlb::ObjectIdentifier post_cs_total_table,
-                           Json::Value &args,
+                           json &args,
                            std::shared_ptr<Transaction> transPtr,
                            int post_id) {
     std::string strSqlPostCategories = "SELECT post_id, pcs, weight, price FROM product.post_cs_total where post_id = $1";
@@ -758,8 +758,8 @@ void save_product_cs_total(sqlb::ObjectIdentifier post_cs_total_table,
     };
     std::vector<PostCSTotal> inNewAttachments; // id Shape	Color	Size	Pcs
     for (auto i : args[0]["p_cs_total_p_cs_total"]) {
-        if (!i[1].isNull()) { // to pass null row
-            inNewAttachments.push_back({post_id, i[0].asInt(), i[1].asDouble(), i[2].asDouble()});
+        if (!i[1].is_null()) { // to pass null row
+            inNewAttachments.push_back({post_id, i[0].get<int>(), i[1].get<float>(), i[2].get<float>()});
         }
     }
 
@@ -789,7 +789,7 @@ void save_product_cs_total(sqlb::ObjectIdentifier post_cs_total_table,
 }
 
 void save_product_Attachments(sqlb::ObjectIdentifier post_attachment_table,
-                              Json::Value &args,
+                              json &args,
                               std::shared_ptr<Transaction> transPtr,
                               int post_id) {
     std::string strSqlPostCategories = "SELECT id FROM %1.%2 where post_id = $1";
@@ -823,10 +823,10 @@ void save_product_Attachments(sqlb::ObjectIdentifier post_attachment_table,
     };
     std::vector<Attachment> inNewAttachments; // tone_id, temp_id
     for (auto i : args[0]["p_attachments_attachement_id"]) {
-        if (i[1].asInt() == 0) {
+        if (i[1].get<int>() == 0) {
             continue;
         }
-        inNewAttachments.push_back({i[0].asInt(), i[1].asInt(), i[2].asInt(), i[3].asBool()});
+        inNewAttachments.push_back({i[0].get<int>(), i[1].get<int>(), i[2].get<int>(), i[3].get<bool>()});
     }
 
     auto all_ct = transPtr->execSqlSync(strSqlPostCategories, post_id);
@@ -873,7 +873,7 @@ void save_product_Attachments(sqlb::ObjectIdentifier post_attachment_table,
     }
 }
 
-Json::Value Product::ins( Json::Value event, Json::Value args) {
+json Product::ins( json event, json args) {
     printJson(args);
     auto product_table = sqlb::ObjectIdentifier("product", "product", "p");
     auto post_table = sqlb::ObjectIdentifier("post", "post", "p");
@@ -907,48 +907,48 @@ Json::Value Product::ins( Json::Value event, Json::Value args) {
     try {
         auto x = transPtr->execSqlSync(
             strSqlPost,
-            args[0]["comment_status"].asBool(),
-            args[0]["menu_order"].asInt(),
-            args[0]["excerpt"].asString(),
-            args[0]["content"].asString(),
-            args[0]["title"].asString(),
-            args[0]["name"].asString(),
-            args[0]["password"].asString(),
-            args[0]["status"].asString(),
-            args[0]["date"].asString(),
-            args[0]["type"].asString(),
-            args[0]["visibility"].asString()
+            args[0]["comment_status"].get<bool>(),
+            args[0]["menu_order"].get<int>(),
+            args[0]["excerpt"].get<std::string>(),
+            args[0]["content"].get<std::string>(),
+            args[0]["title"].get<std::string>(),
+            args[0]["name"].get<std::string>(),
+            args[0]["password"].get<std::string>(),
+            args[0]["status"].get<std::string>(),
+            args[0]["date"].get<std::string>(),
+            args[0]["type"].get<std::string>(),
+            args[0]["visibility"].get<std::string>()
             );
         auto post_id = x[0]["id"].as<int>();
 
         transPtr->execSqlSync(
             strSqlProduct,
             post_id,
-            args[0]["p_sku"].asString(),
-            args[0]["p_min_price"].asFloat(),
-            args[0]["p_max_price"].asFloat(),
-            args[0]["p_weight"].asFloat(),
-            args[0]["p_length"].asFloat(),
-            args[0]["p_width"].asFloat(),
-            args[0]["p_height"].asFloat(),
-            args[0]["p_manage_stock"].asBool(),
-            args[0]["p_featured"].asBool(),
-            args[0]["p_stock_quantity"].asFloat(),
-            args[0]["p_shipping_class_id"].asInt(),
-            args[0]["p_catalog_visibility"].asString(),
-            args[0]["p_product_type"].asString(),
-            args[0]["p_backorders"].asString(),
-            args[0]["p_stock_status"].asString(),
-            args[0]["p_virtual"].asBool(),
-            args[0]["p_downloadable"].asBool(),
-            args[0]["p_purchase_note"].asString(),
-            args[0]["p_low_stock_amount"].asInt(),
-            args[0]["p_sold_individually"].asBool(),
-            args[0]["p_making_charges"].asDouble(),
-            args[0]["p_discount_per"].asDouble(),
-            args[0]["p_volume"].asDouble(),
-            args[0]["p_purity_id"].asInt(),
-            args[0]["p_tone_id"].asInt()
+            args[0]["p_sku"].get<std::string>(),
+            args[0]["p_min_price"].get<float>(),
+            args[0]["p_max_price"].get<float>(),
+            args[0]["p_weight"].get<float>(),
+            args[0]["p_length"].get<float>(),
+            args[0]["p_width"].get<float>(),
+            args[0]["p_height"].get<float>(),
+            args[0]["p_manage_stock"].get<bool>(),
+            args[0]["p_featured"].get<bool>(),
+            args[0]["p_stock_quantity"].get<float>(),
+            args[0]["p_shipping_class_id"].get<int>(),
+            args[0]["p_catalog_visibility"].get<std::string>(),
+            args[0]["p_product_type"].get<std::string>(),
+            args[0]["p_backorders"].get<std::string>(),
+            args[0]["p_stock_status"].get<std::string>(),
+            args[0]["p_virtual"].get<bool>(),
+            args[0]["p_downloadable"].get<bool>(),
+            args[0]["p_purchase_note"].get<std::string>(),
+            args[0]["p_low_stock_amount"].get<int>(),
+            args[0]["p_sold_individually"].get<bool>(),
+            args[0]["p_making_charges"].get<float>(),
+            args[0]["p_discount_per"].get<float>(),
+            args[0]["p_volume"].get<float>(),
+            args[0]["p_purity_id"].get<int>(),
+            args[0]["p_tone_id"].get<int>()
             );
         product_tags_process(tags_table, post_tag_table, args, transPtr, post_id);
         save_product_categories(post_category_table, args, transPtr, post_id);
@@ -962,14 +962,14 @@ Json::Value Product::ins( Json::Value event, Json::Value args) {
         save_product_certified_by(args, transPtr, post_id);
         save_product_policy(args, transPtr, post_id);
         
-        Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
+        json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
         
         std::cerr << e.what() << std::endl;
-        Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
+        json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
 }
-Json::Value Product::upd( Json::Value event, Json::Value args) {
+json Product::upd( json event, json args) {
     printJson(args);
     auto product_table = sqlb::ObjectIdentifier("product", "product", "p");
     auto post_table = sqlb::ObjectIdentifier("post", "post", "p");
@@ -984,7 +984,7 @@ Json::Value Product::upd( Json::Value event, Json::Value args) {
     auto post_cs_total_table = sqlb::ObjectIdentifier("product", "post_cs_total", "post_cs_total");
     auto post_certified_by = sqlb::ObjectIdentifier("product", "post_certified_by", "p_certified_by");
 
-    if (args[0]["id"].asInt()) {
+    if (args[0]["id"].get<long>()) {
         std::string strSqlPost =
                 "update %1.%2 set "
                 "(comment_status, menu_order, excerpt, content, title, name, password, status, date, type, visibility)"
@@ -1002,48 +1002,48 @@ Json::Value Product::upd( Json::Value event, Json::Value args) {
         auto transPtr = clientPtr->newTransaction();
         try {
             transPtr->execSqlSync(strSqlPost,
-                            args[0]["id"].asInt64(),
-                    args[0]["comment_status"].asBool(),
-                    args[0]["menu_order"].asInt(),
-                    args[0]["excerpt"].asString(),
-                    args[0]["content"].asString(),
-                    args[0]["title"].asString(),
-                    args[0]["name"].asString(),
-                    args[0]["password"].asString(),
-                    args[0]["status"].asString(),
-                    args[0]["date"].asString(),
-                    args[0]["type"].asString(),
-                    args[0]["visibility"].asString()
+                    args[0]["id"].get<long>(),
+                    args[0]["comment_status"].get<bool>(),
+                    args[0]["menu_order"].get<int>(),
+                    args[0]["excerpt"].get<std::string>(),
+                    args[0]["content"].get<std::string>(),
+                    args[0]["title"].get<std::string>(),
+                    args[0]["name"].get<std::string>(),
+                    args[0]["password"].get<std::string>(),
+                    args[0]["status"].get<std::string>(),
+                    args[0]["date"].get<std::string>(),
+                    args[0]["type"].get<std::string>(),
+                    args[0]["visibility"].get<std::string>()
                     );
-            auto post_id = args[0]["id"].asInt();
+            auto post_id = args[0]["id"].get<long>();
             transPtr->execSqlSync(strSqlProduct,
-                            args[0]["p_id"].asInt(),
+                            args[0]["p_id"].get<int>(),
                     post_id,
-                    args[0]["p_sku"].asString(),
-                    args[0]["p_min_price"].asFloat(),
-                    args[0]["p_max_price"].asFloat(),
-                    args[0]["p_weight"].asFloat(),
-                    args[0]["p_length"].asFloat(),
-                    args[0]["p_width"].asFloat(),
-                    args[0]["p_height"].asFloat(),
-                    args[0]["p_manage_stock"].asBool(),
-                    args[0]["p_featured"].asBool(),
-                    args[0]["p_stock_quantity"].asFloat(),
-                    args[0]["p_shipping_class_id"].asInt(),
-                    args[0]["p_catalog_visibility"].asString(),
-                    args[0]["p_product_type"].asString(),
-                    args[0]["p_backorders"].asString(),
-                    args[0]["p_stock_status"].asString(),
-                    args[0]["p_virtual"].asBool(),
-                    args[0]["p_downloadable"].asBool(),
-                    args[0]["p_purchase_note"].asString(),
-                    args[0]["p_low_stock_amount"].asInt(),
-                    args[0]["p_sold_individually"].asBool(),
-                    args[0]["p_making_charges"].asDouble(),
-                    args[0]["p_discount_per"].asDouble(),
-                    args[0]["p_volume"].asDouble(),
-                    args[0]["p_purity_id"].asInt(),
-                    args[0]["p_tone_id"].asInt()
+                    args[0]["p_sku"].get<std::string>(),
+                    args[0]["p_min_price"].get<float>(),
+                    args[0]["p_max_price"].get<float>(),
+                    args[0]["p_weight"].get<float>(),
+                    args[0]["p_length"].get<float>(),
+                    args[0]["p_width"].get<float>(),
+                    args[0]["p_height"].get<float>(),
+                    args[0]["p_manage_stock"].get<bool>(),
+                    args[0]["p_featured"].get<bool>(),
+                    args[0]["p_stock_quantity"].get<float>(),
+                    args[0]["p_shipping_class_id"].get<int>(),
+                    args[0]["p_catalog_visibility"].get<std::string>(),
+                    args[0]["p_product_type"].get<std::string>(),
+                    args[0]["p_backorders"].get<std::string>(),
+                    args[0]["p_stock_status"].get<std::string>(),
+                    args[0]["p_virtual"].get<bool>(),
+                    args[0]["p_downloadable"].get<bool>(),
+                    args[0]["p_purchase_note"].get<std::string>(),
+                    args[0]["p_low_stock_amount"].get<int>(),
+                    args[0]["p_sold_individually"].get<bool>(),
+                    args[0]["p_making_charges"].get<float>(),
+                    args[0]["p_discount_per"].get<float>(),
+                    args[0]["p_volume"].get<float>(),
+                    args[0]["p_purity_id"].get<int>(),
+                    args[0]["p_tone_id"].get<int>()
                     );
 
             product_tags_process(tags_table, post_tag_table, args, transPtr, post_id);
@@ -1059,16 +1059,16 @@ Json::Value Product::upd( Json::Value event, Json::Value args) {
             save_product_policy(args, transPtr, post_id);
 
             
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
+            json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
             
             std::cerr << e.what() << std::endl;
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
+            json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
         }
     }
 }
 
-Json::Value Product::del( Json::Value event, Json::Value args) {
+json Product::del( json event, json args) {
     printJson(args);
 
     auto transPtr = clientPtr->newTransaction();
@@ -1091,41 +1091,41 @@ Json::Value Product::del( Json::Value event, Json::Value args) {
         auto post_certified_by_del = "DELETE FROM product.post_certified_by WHERE post_id = $1";
         auto post_policy_del = "DELETE FROM product.post_policy WHERE post_id = $1";
 
-        transPtr->execSqlSync(post_policy_del, args[0].asInt());
-        transPtr->execSqlSync(post_certified_by_del, args[0].asInt());
-        transPtr->execSqlSync(post_cs_total_del, args[0].asInt());
-        transPtr->execSqlSync(post_cs_price_del, args[0].asInt());
-        transPtr->execSqlSync(post_cs_sizes_del, args[0].asInt());
-        transPtr->execSqlSync(post_diamond_price_id, args[0].asInt());
-        transPtr->execSqlSync(post_diamond_sizes_del, args[0].asInt());
-        transPtr->execSqlSync(post_attachment_del, args[0].asInt());
-        transPtr->execSqlSync(post_purity_tone_del, args[0].asInt());
-        transPtr->execSqlSync(post_purity_del, args[0].asInt());
-        transPtr->execSqlSync(post_tone_del, args[0].asInt());
-        transPtr->execSqlSync(post_tone_del, args[0].asInt());
-        transPtr->execSqlSync(post_clarity_del, args[0].asInt());
-        transPtr->execSqlSync(post_category_del, args[0].asInt());
-        transPtr->execSqlSync(post_tag_del, args[0].asInt());
-        //transPtr->execSqlSync(tags_del, args[0].asInt()); // Fix This. If Tag is not used in any product delete it
-        transPtr->execSqlSync(product_del, args[0].asInt());
-        transPtr->execSqlSync(post_del, args[0].asInt());
+        transPtr->execSqlSync(post_policy_del, args[0].get<int>());
+        transPtr->execSqlSync(post_certified_by_del, args[0].get<int>());
+        transPtr->execSqlSync(post_cs_total_del, args[0].get<int>());
+        transPtr->execSqlSync(post_cs_price_del, args[0].get<int>());
+        transPtr->execSqlSync(post_cs_sizes_del, args[0].get<int>());
+        transPtr->execSqlSync(post_diamond_price_id, args[0].get<int>());
+        transPtr->execSqlSync(post_diamond_sizes_del, args[0].get<int>());
+        transPtr->execSqlSync(post_attachment_del, args[0].get<int>());
+        transPtr->execSqlSync(post_purity_tone_del, args[0].get<int>());
+        transPtr->execSqlSync(post_purity_del, args[0].get<int>());
+        transPtr->execSqlSync(post_tone_del, args[0].get<int>());
+        transPtr->execSqlSync(post_tone_del, args[0].get<int>());
+        transPtr->execSqlSync(post_clarity_del, args[0].get<int>());
+        transPtr->execSqlSync(post_category_del, args[0].get<int>());
+        transPtr->execSqlSync(post_tag_del, args[0].get<int>());
+        //transPtr->execSqlSync(tags_del, args[0].get<int>()); // Fix This. If Tag is not used in any product delete it
+        transPtr->execSqlSync(product_del, args[0].get<int>());
+        transPtr->execSqlSync(post_del, args[0].get<int>());
 
 
         
-        Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
+        json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
         
         std::cerr << e.what() << std::endl;
-        Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
+        json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
 }
 
 
-Json::Value save_category( Json::Value event, Json::Value args) {
+json save_category( json event, json args) {
     printJson(args);
     auto product_table = sqlb::ObjectIdentifier("product", "category", "p");
 
-    if (args[0]["id"].asInt()) {
+    if (args[0]["id"].get<long>()) {
         std::string strSql =
             "update %1.%2 set "
             "(slug, name, description, display_type, parent_id, position)"
@@ -1136,20 +1136,20 @@ Json::Value save_category( Json::Value event, Json::Value args) {
         auto transPtr = clientPtr->newTransaction();
         try {
             transPtr->execSqlSync(strSql,
-                            args[0]["id"].asInt64(),
-                            args[0]["slug"].asString(),
-                            args[0]["name"].asString(),
-                            args[0]["description"].asString(),
-                            args[0]["display_type"].asString(),
-                            args[0]["parent_id"].asInt64(),
-                            args[0]["position"].asInt()
+                            args[0]["id"].get<long>(),
+                            args[0]["slug"].get<std::string>(),
+                            args[0]["name"].get<std::string>(),
+                            args[0]["description"].get<std::string>(),
+                            args[0]["display_type"].get<std::string>(),
+                            args[0]["parent_id"].get<long>(),
+                            args[0]["position"].get<int>()
                             );
             
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
+            json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
             
             std::cerr << e.what() << std::endl;
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
+            json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
         }
     } else {
         std::string strSql = "INSERT INTO %1.%2 (slug, name, description, display_type, parent_id, position) values($1, $2, $3, $4, NULLIF($5, 0), $6)";
@@ -1160,38 +1160,38 @@ Json::Value save_category( Json::Value event, Json::Value args) {
         try {
             transPtr->execSqlSync(
                 strSql,
-                args[0]["slug"].asString(),
-                args[0]["name"].asString(),
-                args[0]["description"].asString(),
-                args[0]["display_type"].asString(),
-                args[0]["parent_id"].asInt64(),
-                args[0]["position"].asInt()
+                args[0]["slug"].get<std::string>(),
+                args[0]["name"].get<std::string>(),
+                args[0]["description"].get<std::string>(),
+                args[0]["display_type"].get<std::string>(),
+                args[0]["parent_id"].get<long>(),
+                args[0]["position"].get<int>()
                 );
             
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
+            json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
             
             std::cerr << e.what() << std::endl;
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
+            json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
         }
     }
 }
 
 //--
 
-Json::Value Product::get_product_attachment_data( Json::Value event, Json::Value args)
+json Product::get_product_attachment_data( json event, json args)
 {
     // send meta_data
-    Json::Value batch;
-    Json::Value ret;
+    json batch;
+    json ret;
 
-    Json::Value data1;
+    json data1;
     data1[0] = "take_image_meta";
     ret[0] = data1;
     ret[1] = event;
 
     batch[0] = ret;
-    wsConnPtr->send(batch.toStyledString());
+    wsConnPtr->send(batch.dump());
 
     namespace fs = boost::filesystem;
     auto home = fs::path(getenv("HOME"));
@@ -1200,7 +1200,7 @@ Json::Value Product::get_product_attachment_data( Json::Value event, Json::Value
     auto transPtr = clientPtr->newTransaction();
     try {
         auto sql = "SELECT name FROM product.post_attachment WHERE id = $1";
-        auto x = transPtr->execSqlSync(sql, args.asInt());
+        auto x = transPtr->execSqlSync(sql, args.get<int>());
 
         fprintf(stdout, "Binary Requested 001:");
         fflush(stdout);
@@ -1237,26 +1237,23 @@ Json::Value Product::get_product_attachment_data( Json::Value event, Json::Value
         fflush(stdout);
         //simpleJsonSaveResult(event, false, e.what());
     }
-    return Json::Value(Json::nullValue);
+    return json(Json::nullValue);
 }
 
-Json::Value Product::get_product_diamond_price_data( Json::Value event, Json::Value args)
+json Product::get_product_diamond_price_data( json event, json args)
 {
-    Json::Value batch;
-    Json::Value jresult;
+    json batch;
+    json jresult;
     jresult[0] = event;
 
-    auto shape = args[1].asInt();
-    auto color = args[2].asInt();
-    auto size = args[3].asInt();
-    auto pcs = args[4].asInt();
-
-    fprintf(stdout, "%d %d %d\n", shape, color, size);
-    fflush(stdout);
+    auto shape = args[1].get<int>();
+    auto color = args[2].get<int>();
+    auto size = args[3].get<int>();
+    auto pcs = args[4].get<int>();
 
     std::string s = "{"; // clarity
     for (auto i : args[6]) {
-        s += std::to_string(i[0].asInt()) + ",";
+        s += std::to_string(i[0].get<int>()) + ",";
     }
     if (args[6].size() > 0) s.pop_back();
     s += "}";
@@ -1268,16 +1265,16 @@ Json::Value Product::get_product_diamond_price_data( Json::Value event, Json::Va
         auto x = transPtr->execSqlSync(sql, shape, color, size, s);
 
 
-        Json::Value d(Json::arrayValue);
+        json d(json::array());
         for (auto r : x) {
-            Json::Value row;
+            json row;
             row[0] = r["clarity_id"].as<int>();
             row[1] = "";
             row[2] = r["weight"].as<double>();
             row[3] = r["weight"].as<double>() * pcs;
             row[4] = r["rate"].as<double>();
             row[5] = r["weight"].as<double>() * pcs * r["rate"].as<double>();
-            d.append(row);
+            d.push_back(row);
         }
         jresult[1] = d;
         
@@ -1287,22 +1284,22 @@ Json::Value Product::get_product_diamond_price_data( Json::Value event, Json::Va
         
         std::cerr << e.what() << std::endl;
         //simpleJsonSaveResult(event, false, e.what());
-        return Json::Value(Json::nullValue);
+        return json(Json::nullValue);
     }
 
 }
 
-Json::Value Product::get_product_cs_price_data( Json::Value event, Json::Value args)
+json Product::get_product_cs_price_data( json event, json args)
 {
-    Json::Value batch;
-    Json::Value jresult;
+    json batch;
+    json jresult;
     jresult[0] = event;
 
-    auto type = args[1].asInt();
-    auto shape = args[2].asInt();
-    //auto color = args[3].asInt();
-    auto size = args[4].asInt();
-    auto pcs = args[5].asInt();
+    auto type = args[1].get<int>();
+    auto shape = args[2].get<int>();
+    //auto color = args[3].get<int>();
+    auto size = args[4].get<int>();
+    auto pcs = args[5].get<int>();
 
     auto transPtr = clientPtr->newTransaction();
     try {
@@ -1310,16 +1307,16 @@ Json::Value Product::get_product_cs_price_data( Json::Value event, Json::Value a
         auto sql = "SELECT weight, rate FROM material.color_stone_size_meta WHERE cs_type_id = $1 and shape_id = $2 AND size_id = $3";
         auto x = transPtr->execSqlSync(sql, type, shape, size);
 
-        Json::Value d(Json::arrayValue);
+        json d(json::array());
         for (auto r : x) {
-            Json::Value row;
+            json row;
             row[0] = 0;
             row[1] = "";
             row[2] = r["weight"].as<double>();
             row[3] = r["weight"].as<double>() * pcs;
             row[4] = r["rate"].as<double>();
             row[5] = r["weight"].as<double>() * pcs * r["rate"].as<double>();
-            d.append(row);
+            d.push_back(row);
         }
         jresult[1] = d;
         
@@ -1334,16 +1331,16 @@ Json::Value Product::get_product_cs_price_data( Json::Value event, Json::Value a
 
 }
 
-Json::Value Product::get_product_category_tree_data( Json::Value event, Json::Value args)
+json Product::get_product_category_tree_data( json event, json args)
 {
-    Json::Value batch;
-    Json::Value jresult;
+    json batch;
+    json jresult;
     jresult[0] = event;
 
-    //    auto shape = args[1].asInt();
-    //    auto color = args[2].asInt();
-    //    auto size = args[3].asInt();
-    //    auto pcs = args[4].asInt();
+    //    auto shape = args[1].get<int>();
+    //    auto color = args[2].get<int>();
+    //    auto size = args[3].get<int>();
+    //    auto pcs = args[4].get<int>();
 
     auto transPtr = clientPtr->newTransaction();
     try {
@@ -1360,12 +1357,12 @@ select * ,
 )";
         auto x = transPtr->execSqlSync(sql);
 
-        Json::Value d(Json::arrayValue);
+        json d(json::array());
         for (auto r : x) {
-            Json::Value row;
+            json row;
             row[0] = r["id"].as<int>();
             row[1] = r["label"].c_str();
-            d.append(row);
+            d.push_back(row);
         }
         jresult[1] = d;
         batch[0] = jresult;
@@ -1375,7 +1372,7 @@ select * ,
         
         std::cerr << e.what() << std::endl;
         //simpleJsonSaveResult(event, false, e.what());
-        return Json::Value(Json::nullValue);
+        return json(Json::nullValue);
     }
 
 }

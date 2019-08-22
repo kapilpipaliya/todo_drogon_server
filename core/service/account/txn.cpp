@@ -88,21 +88,21 @@ Txn::Txn(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
             };
 }
 
-Json::Value Txn::del(const Json::Value event, const Json::Value args) {
+json Txn::del(const json event, const json args) {
     auto transPtr = clientPtr->newTransaction();
     try {
         auto txn_del = "DELETE FROM account.txn WHERE id = $1";
         auto order_item_del = "DELETE FROM order1.order_item WHERE txn_id = $1";
-        transPtr->execSqlSync(order_item_del, args[0].asInt());
-        transPtr->execSqlSync(txn_del, args[0].asInt());
+        transPtr->execSqlSync(order_item_del, args[0].get<int>());
+        transPtr->execSqlSync(txn_del, args[0].get<int>());
 
-        Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
+        json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
-        Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
+        json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
 }
-void save_txn_order_item(Json::Value &args, std::shared_ptr<Transaction> transPtr, int txn_id) {
+void save_txn_order_item(json &args, std::shared_ptr<Transaction> transPtr, int txn_id) {
     std::string strSqlPostCategories = "SELECT id, post_id, pcs, purity_id, tone_id, clarity_id, price, instruction FROM order1.order_item where txn_id = $1";
     std::string strSqlPostCategorySimpleFind = "SELECT id, txn_id, post_id, pcs, purity_id, tone_id, clarity_id, price, instruction FROM order1.order_item WHERE id = $1";
     std::string strSqlPostCategoryDel = "DELETE FROM order1.order_item WHERE id = $1";
@@ -121,8 +121,8 @@ void save_txn_order_item(Json::Value &args, std::shared_ptr<Transaction> transPt
     };
     std::vector<OrderItem> newItems; // id Shape	Color	Size	Pcs
     for (auto i : args[0]["o_i_order_item"]) {
-        if (!i[1].isNull()) { // to pass null row
-            newItems.push_back({i[0].asInt(), i[1].asInt(), i[2].asInt(), i[3].asInt(), i[4].asInt(), i[5].asInt(), i[6].asDouble(), i[7].asString()});
+        if (!i[1].is_null()) { // to pass null row
+            newItems.push_back({i[0].get<int>(), i[1].get<int>(), i[2].get<int>(), i[3].get<int>(), i[4].get<int>(), i[5].get<int>(), i[6].get<float>(), i[7].get<std::string>()});
         }
     }
 
@@ -151,7 +151,7 @@ void save_txn_order_item(Json::Value &args, std::shared_ptr<Transaction> transPt
     }
 }
 
-Json::Value Txn::ins( Json::Value event, Json::Value args) {
+json Txn::ins( json event, json args) {
     std::string strSqlPost =
         "INSERT INTO account.txn "
         "(journal_type_id, party_id, date, description )"
@@ -162,20 +162,20 @@ Json::Value Txn::ins( Json::Value event, Json::Value args) {
         auto transPtr = clientPtr->newTransaction();
         auto x =
             transPtr->execSqlSync(strSqlPost,
-                            args[0]["journal_type_id"].asInt(), args[0]["party_id"].asInt(), args[0]["date"].asString(),
-                            args[0]["description"].asString()
+                            args[0]["journal_type_id"].get<int>(), args[0]["party_id"].get<int>(), args[0]["date"].get<std::string>(),
+                            args[0]["description"].get<std::string>()
                             );
         auto txn_id = x[0]["id"].as<int>();
         save_txn_order_item(args, transPtr, txn_id);
 
-        Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
+        json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
-        Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
+        json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
 }
-Json::Value Txn::upd( Json::Value event, Json::Value args) {
-    if (args[0]["id"].asInt()) {
+json Txn::upd( json event, json args) {
+    if (args[0]["id"].get<long>()) {
         std::string strSqlPost =
                 "update account.txn set (journal_type_id, party_id, date, description )"
                 " = ROW($2, $3, $4, $5) where id=$1";
@@ -183,17 +183,17 @@ Json::Value Txn::upd( Json::Value event, Json::Value args) {
         try {
             auto transPtr = clientPtr->newTransaction();
             transPtr->execSqlSync(strSqlPost,
-                            args[0]["id"].asInt64(),
-                    args[0]["journal_type_id"].asInt(), args[0]["party_id"].asInt(), args[0]["date"].asString(),
-                    args[0]["description"].asString()
+                            args[0]["id"].get<long>(),
+                    args[0]["journal_type_id"].get<int>(), args[0]["party_id"].get<int>(), args[0]["date"].get<std::string>(),
+                    args[0]["description"].get<std::string>()
                     );
-            auto txn_id = args[0]["id"].asInt();
+            auto txn_id = args[0]["id"].get<long>();
             save_txn_order_item(args, transPtr, txn_id);
 
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
+            json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
             std::cerr << e.what() << std::endl;
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
+            json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
         }
     }
 }

@@ -5,9 +5,9 @@
 BaseService::BaseService(const WebSocketConnectionPtr& wsConnPtr_): wsConnPtr(wsConnPtr_)
 {  }
 BaseService::~BaseService() {  }
-Json::Value BaseService::handleEvent(Json::Value event, int next, Json::Value args)
+json BaseService::handleEvent(json event, int next, json args)
 {
-    auto event_cmp = event[next].asString();
+    auto event_cmp = event[next].get<std::string>();
     if(event_cmp == "data"){
         return allData(event, args);
     } else if (event_cmp == "header") {
@@ -22,26 +22,26 @@ Json::Value BaseService::handleEvent(Json::Value event, int next, Json::Value ar
         return Json::nullValue;
     }
 }
-Json::Value BaseService::headerData(Json::Value event, Json::Value args)
+json BaseService::headerData(json event, json args)
 {
     setupTable();
-    Json::Value jresult;
+    json jresult;
     jresult[0]=event;
     jresult[1]=t.getJsonHeaderData();
-    Json::Value ret;
+    json ret;
     ret[0] = jresult;  return ret;
 }
-Json::Value BaseService::allData(Json::Value event, Json::Value args)
+json BaseService::allData(json event, json args)
 {
     setupTable();
-    Json::Value jresult;
+    json jresult;
     jresult[0]=event;
     jresult[1]=t.getAllData(args);
-    Json::Value ret;
+    json ret;
     ret[0] = jresult; return ret;
 }
 
-Json::Value BaseService::del(Json::Value event, Json::Value args)
+json BaseService::del(json event, json args)
 {
     try {
         auto transPtr = clientPtr->newTransaction();
@@ -49,11 +49,11 @@ Json::Value BaseService::del(Json::Value event, Json::Value args)
         t.updateFilterBase(args[0]);
         transPtr->execSqlSync(t.m_query.buildDeleteQuery());
         // affected rows should be returned too.
-        //transPtr->execSqlSync("DELETE FROM " + t.m_table.toDisplayString() + " WHERE id = $1", args[0].asInt());
-        Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
+        //transPtr->execSqlSync("DELETE FROM " + t.m_table.toDisplayString() + " WHERE id = $1", args[0]);
+        json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
-        Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
+        json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
 }
 

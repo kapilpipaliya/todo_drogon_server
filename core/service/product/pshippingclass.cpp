@@ -36,18 +36,18 @@ void PShippingClass::setupTable()
             };
 }
 
-Json::Value PShippingClass::ins(Json::Value event, Json::Value args)
+json PShippingClass::ins(json event, json args)
 {
     return insBase(event, args, "slug, name, description", "$1, $2, $3",
-            args[0]["slug"].asString(),
-            args[0]["name"].asString(),
-            args[0]["description"].asString());
+            args[0]["slug"].get<std::string>(),
+            args[0]["name"].get<std::string>(),
+            args[0]["description"].get<std::string>());
 }
 
-Json::Value PShippingClass::upd(Json::Value event, Json::Value args)
+json PShippingClass::upd(json event, json args)
 {
     return updBase(event, args, "slug, name, description", "$1, $2, $3",
-            args[0]["slug"].asString(),
-            args[0]["name"].asString(),
-            args[0]["description"].asString());
+            args[0]["slug"].get<std::string>(),
+            args[0]["name"].get<std::string>(),
+            args[0]["description"].get<std::string>());
 }

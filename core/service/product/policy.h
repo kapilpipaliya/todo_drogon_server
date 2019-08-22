@@ -7,8 +7,8 @@ public:
     Policy(const WebSocketConnectionPtr& wsConnPtr);
 private:
     void setupTable();
-    Json::Value ins(Json::Value event, Json::Value args);
-    Json::Value upd(Json::Value event, Json::Value args);
+    json ins(json event, json args);
+    json upd(json event, json args);
 };
 
 #endif // POLICY_H

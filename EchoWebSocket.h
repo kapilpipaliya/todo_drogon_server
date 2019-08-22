@@ -26,7 +26,7 @@ public:
 
     WS_PATH_LIST_BEGIN
         //list path definitions here;
-        //WS_PATH_ADD("/path","filter1","filter2",...);
+        //WS_PATH_ADD("/path","filter1","filter2",..);
         WS_PATH_ADD("/echo");
     WS_PATH_LIST_END
 

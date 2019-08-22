@@ -47,20 +47,20 @@ void WaxSetting::setupTable()
             };
 }
 
-Json::Value WaxSetting::ins(Json::Value event, Json::Value args)
+json WaxSetting::ins(json event, json args)
 {
     return insBase(event, args, "date, department_id, employee_id, description, status_id", "$1, $2, $3, $4, $5",
-                   args[0]["date"].asString(),
-                                  args[0]["department_id"].asInt(), args[0]["employee_id"].asInt(), args[0]["description"].asString(),
-                                  args[0]["status_id"].asString()
+                   args[0]["date"].get<std::string>(),
+                                  args[0]["department_id"].get<int>(), args[0]["employee_id"].get<int>(), args[0]["description"].get<std::string>(),
+                                  args[0]["status_id"].get<std::string>()
             );
 }
 
-Json::Value WaxSetting::upd(Json::Value event, Json::Value args)
+json WaxSetting::upd(json event, json args)
 {
     return updBase(event, args, "date, department_id, employee_id, description, status_id", "$1, $2, $3, $4, $5",
-                   args[0]["date"].asString(),
-                                  args[0]["department_id"].asInt(), args[0]["employee_id"].asInt(), args[0]["description"].asString(),
-                                  args[0]["status_id"].asString()
+                   args[0]["date"].get<std::string>(),
+                                  args[0]["department_id"].get<int>(), args[0]["employee_id"].get<int>(), args[0]["description"].get<std::string>(),
+                                  args[0]["status_id"].get<std::string>()
             );
 }

@@ -34,12 +34,12 @@ void POption::setupTable()
             };
 }
 
-Json::Value POption::ins(Json::Value event, Json::Value args)
+json POption::ins(json event, json args)
 {
-    return insBase(event, args, "name, value, auoload", "$1, $2, $3",  args[0]["name"].asString(), args[0]["value"].asString(), args[0]["auoload"].asString() );
+    return insBase(event, args, "name, value, auoload", "$1, $2, $3",  args[0]["name"].get<std::string>(), args[0]["value"].get<std::string>(), args[0]["auoload"].get<std::string>() );
 }
 
-Json::Value POption::upd(Json::Value event, Json::Value args)
+json POption::upd(json event, json args)
 {
-    return updBase(event, args, "name, value, auoload", "$1, $2, $3", args[0]["name"].asString(), args[0]["value"].asString(), args[0]["auoload"].asString());
+    return updBase(event, args, "name, value, auoload", "$1, $2, $3", args[0]["name"].get<std::string>(), args[0]["value"].get<std::string>(), args[0]["auoload"].get<std::string>());
 }

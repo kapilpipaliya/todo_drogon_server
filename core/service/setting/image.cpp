@@ -45,9 +45,9 @@ void Image::setupTable()
 };
 }
 
-Json::Value Image::handleEvent(Json::Value event, int next, Json::Value args)
+json Image::handleEvent(json event, int next, json args)
 {
-    auto event_cmp = event[next].asString();
+    auto event_cmp = event[next].get<std::string>();
     if(event_cmp  == "data"){
         return allData(event, args);
     } else if (event_cmp  == "header") {
@@ -65,9 +65,9 @@ Json::Value Image::handleEvent(Json::Value event, int next, Json::Value args)
     }
 }
 
-Json::Value Image::handleBinaryEvent(Json::Value event, int next, std::string &message)
+json Image::handleBinaryEvent(json event, int next, std::string &message)
 {
-    if(event[next].asString()  == "save_attachment_data"){
+    if(event[next].get<std::string>()  == "save_attachment_data"){
         return save_setting_attachment(event, message);
     } else {
         return Json::nullValue;
@@ -75,7 +75,7 @@ Json::Value Image::handleBinaryEvent(Json::Value event, int next, std::string &m
 }
 
 // this is normal images..
-Json::Value Image::ins( Json::Value event, Json::Value args) {
+json Image::ins( json event, json args) {
     auto metal_purity_table = sqlb::ObjectIdentifier("setting", "image", "c");
     std::string t = "setting.image";
     std::string c = "image_collection_id, name, size, type, title, description, url, position";
@@ -85,71 +85,71 @@ Json::Value Image::ins( Json::Value event, Json::Value args) {
     std::string strSql = "INSERT INTO " + t + " (" + c + ") values(NULLIF($1,0), $2, $3, $4, $5, $6, $7, $8)";
     auto transPtr = clientPtr->newTransaction();
     try {
-        auto temp_id = args[0]["temp_id"].asInt();
+        auto temp_id = args[0]["temp_id"].get<int>();
         if (temp_id != 0) {
             auto z = transPtr->execSqlSync(strSqlTempImage, temp_id);
             if (z.size() == 1) {
-                transPtr->execSqlSync(strSql, args[0]["image_collection_id"].asInt(), z[0]["name"].c_str(), z[0]["size"].as<int>(),z[0]["type"].c_str(), args[0]["title"].asString(), args[0]["description"].asString(), args[0]["url"].asString(), args[0]["position"].asInt());
+                transPtr->execSqlSync(strSql, args[0]["image_collection_id"].get<int>(), z[0]["name"].c_str(), z[0]["size"].as<int>(),z[0]["type"].c_str(), args[0]["title"].get<std::string>(), args[0]["description"].get<std::string>(), args[0]["url"].get<std::string>(), args[0]["position"].get<int>());
                 transPtr->execSqlSync(strSqlTempImageDel, temp_id);
             }
         } else {
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, "Please Upload Image"); return ret;
+            json ret; ret[0] = simpleJsonSaveResult(event, false, "Please Upload Image"); return ret;
         }
 
         
-        Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
+        json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
         
         std::cerr << e.what() << std::endl;
-        Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
+        json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
 }
 // this is normal images..
-Json::Value Image::upd( Json::Value event, Json::Value args) {
+json Image::upd( json event, json args) {
     auto metal_purity_table = sqlb::ObjectIdentifier("setting", "image", "c");
     std::string t = "setting.image";
     std::string c = "image_collection_id, name, size, type, title, description, url, position";
     std::string strSqlTempImage = "SELECT name, size, type FROM setting.temp_image_id WHERE id = $1";
     std::string strSqlTempImageDel = "DELETE FROM setting.temp_image_id WHERE id = $1";
 
-    if (args[0]["id"].asInt()) {
+    if (args[0]["id"].get<long>()) {
         std::string strSql = "update " + t + " set (" + c + ", version) = ROW(NULLIF($2, 0), $3, $4, $5, $6, $7, $8, $9, version + 1) where id=$1" ;
         auto transPtr = clientPtr->newTransaction();
         try {
-            auto temp_id = args[0]["temp_id"].asInt();
+            auto temp_id = args[0]["temp_id"].get<long>();
             if (temp_id != 0) {
                 auto z = transPtr->execSqlSync(strSqlTempImage, temp_id);
                 if (z.size() == 1) {
-                    transPtr->execSqlSync(strSql, args[0]["id"].asInt64(), args[0]["image_collection_id"].asInt(), z[0]["name"].c_str(), z[0]["size"].as<int>(),z[0]["type"].c_str(), args[0]["title"].asString(), args[0]["description"].asString(), args[0]["url"].asString(), args[0]["position"].asInt());
+                    transPtr->execSqlSync(strSql, args[0]["id"].get<long>(), args[0]["image_collection_id"].get<long>(), z[0]["name"].c_str(), z[0]["size"].as<int>(),z[0]["type"].c_str(), args[0]["title"].get<std::string>(), args[0]["description"].get<std::string>(), args[0]["url"].get<std::string>(), args[0]["position"].get<int>());
                     transPtr->execSqlSync(strSqlTempImageDel, temp_id);
                 }
             } else {
-                transPtr->execSqlSync("UPDATE setting.image SET (title, description, url, position, version) = ROW($2, $3, $4, $5, version + 1) WHERE id = $1", args[0]["id"].asInt64(), args[0]["title"].asString(), args[0]["description"].asString(), args[0]["url"].asString(), args[0]["position"].asInt());
+                transPtr->execSqlSync("UPDATE setting.image SET (title, description, url, position, version) = ROW($2, $3, $4, $5, version + 1) WHERE id = $1", args[0]["id"].get<long>(), args[0]["title"].get<std::string>(), args[0]["description"].get<std::string>(), args[0]["url"].get<std::string>(), args[0]["position"].get<int>());
             }
             
 
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
+            json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
             
             std::cerr << e.what() << std::endl;
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
+            json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
         }
     }
 }
 
-Json::Value Image::thumb_data( Json::Value event, Json::Value args)
+json Image::thumb_data( json event, json args)
 {
     // send meta_data
-    Json::Value batch;
-    Json::Value ret;
+    json batch;
+    json ret;
 
-    Json::Value data1;
+    json data1;
     data1[0] = "take_image_meta";
     ret[0] = data1;
     ret[1] = event;
 
     batch[0] = ret;
-    wsConnPtr->send(batch.toStyledString());
+    wsConnPtr->send(batch.dump());
 
     namespace fs = boost::filesystem;
     auto home = fs::path(getenv("HOME"));
@@ -157,7 +157,7 @@ Json::Value Image::thumb_data( Json::Value event, Json::Value args)
     auto transPtr = clientPtr->newTransaction();
     try {
         auto sql = "SELECT name FROM setting.image WHERE id = $1";
-        auto x = transPtr->execSqlSync(sql, args.asInt());
+        auto x = transPtr->execSqlSync(sql, args.get<int>());
         
         if (x.size() == 1) {
             std::streampos size;
@@ -176,18 +176,18 @@ Json::Value Image::thumb_data( Json::Value event, Json::Value args)
         } else {
             // Fix simpleJsonSaveResult(event, true, "Done");
         }
-        return Json::Value(Json::nullValue);
+        return json(Json::nullValue);
     } catch (const std::exception &e) {
         
         std::cerr << e.what() << std::endl;
         //simpleJsonSaveResult(event, false, e.what());
-        return Json::Value(Json::nullValue);
+        return json(Json::nullValue);
     }
 
     //get binary data and send.
 }
 // save image in disk and return temporary id:
-Json::Value Image::save_setting_attachment(Json::Value event, std::string &message)
+json Image::save_setting_attachment(json event, std::string &message)
 {
     auto session_id = getAdminContext(wsConnPtr);
     auto strSql = sel_("user1.temp_image", "event,  name, size, type", "where session_id = $1");
@@ -198,14 +198,8 @@ Json::Value Image::save_setting_attachment(Json::Value event, std::string &messa
 
         // check if file exist else rename a file
         // convert this to json
-        Json::Value event_json;
-        std::stringstream txt;
-        txt <<  r[0]["temp_image"].c_str();
-        Json::CharReaderBuilder rbuilder;
-        rbuilder["collectComments"] = false;
-        std::string errs;
-        bool ok = Json::parseFromStream(rbuilder, txt, &event_json, &errs);
-        (void)ok;
+
+        auto event_json = json::parse(r[0]["temp_image"].c_str());
 
         namespace fs = boost::filesystem;
         auto home = fs::path(getenv("HOME"));
@@ -246,8 +240,8 @@ Json::Value Image::save_setting_attachment(Json::Value event, std::string &messa
         ReplaceAll2(strSql, "%1", temp_image_table.schema());
         ReplaceAll2(strSql, "%2", temp_image_table.name());
 
-        Json::Value ret;
-        Json::Value jresult;
+        json ret;
+        json jresult;
         jresult[0] = event_json;
         auto insert_result = transPtr->execSqlSync(strSql, name, size, type);
         jresult[1] = insert_result[0]["id"].as<int>();

@@ -23,9 +23,9 @@ void EchoWebSocket::handleNewConnection(const HttpRequestPtr &req, const WebSock
     clientPtr = drogon::app().getDbClient("sce");
     //sleep(1);
     // save the cookie in contex, because its not available on other handler
-    LOG_DEBUG << "new websocket connection!\n";
-    auto &key=req->getHeader("Sec-WebSocket-Key");
-    LOG_DEBUG << key;
+   // LOG_DEBUG << "new websocket connection!\n";
+    //auto &key=req->getHeader("Sec-WebSocket-Key");
+    //LOG_DEBUG << key;
 
     std::shared_ptr<std::map<std::string, std::vector<int> >> k(new std::map<std::string, std::vector<int> >);
     k->insert(std::pair<std::string, std::vector<int> >("admin"s, {0}));
@@ -43,5 +43,5 @@ void EchoWebSocket::handleNewConnection(const HttpRequestPtr &req, const WebSock
     // create connection to the database and keep it open. Will Increase Performance.
 }
 void EchoWebSocket::handleConnectionClosed(const WebSocketConnectionPtr &wsConnPtr) {
-    LOG_DEBUG << "connection closed!\n" <<wsConnPtr->peerAddr().toIp();
+    //LOG_DEBUG << "connection closed!\n" <<wsConnPtr->peerAddr().toIp();
 }

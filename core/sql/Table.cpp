@@ -100,18 +100,18 @@ void Table::reset()
     //m_mCondFormats.clear();
 }
 
-Json::Value Table::getJsonHeaderData()
+json Table::getJsonHeaderData()
 {
-    Json::Value ret(Json::arrayValue);
+    json ret(json::array());
 
-    Json::Value jsonHeaderRow(Json::arrayValue);
-    Json::Value jsonFormHeaderRow(Json::arrayValue);
-    Json::Value jsonFormColumnTypesRow(Json::arrayValue);
-    Json::Value jsonFormVisibleColumnsRow(Json::arrayValue);
-    Json::Value jsonFormOffsetColumnsRow(Json::arrayValue);
-    Json::Value jsonFormTooltipOffsetColumnsRow(Json::arrayValue);
+    json jsonHeaderRow(json::array());
+    json jsonFormHeaderRow(json::array());
+    json jsonFormColumnTypesRow(json::array());
+    json jsonFormVisibleColumnsRow(json::array());
+    json jsonFormOffsetColumnsRow(json::array());
+    json jsonFormTooltipOffsetColumnsRow(json::array());
 
-    for (int c=0; c < m_query.selectedColumns().size(); c++) {
+    for (unsigned long c=0; c < m_query.selectedColumns().size(); c++) {
         jsonHeaderRow[c] = getHeaderName(c);
         auto column = m_query.selectedColumns().at(c);
         jsonFormColumnTypesRow[c] = column.column_type;
@@ -129,24 +129,24 @@ Json::Value Table::getJsonHeaderData()
             }
         }
     }
-    ret.append(jsonHeaderRow);
-    ret.append(jsonFormHeaderRow);
-    ret.append(jsonFormColumnTypesRow);
-    ret.append(jsonFormVisibleColumnsRow);
-    ret.append(jsonFormOffsetColumnsRow);
-    ret.append(jsonFormTooltipOffsetColumnsRow);
+    ret.push_back(jsonHeaderRow);
+    ret.push_back(jsonFormHeaderRow);
+    ret.push_back(jsonFormColumnTypesRow);
+    ret.push_back(jsonFormVisibleColumnsRow);
+    ret.push_back(jsonFormOffsetColumnsRow);
+    ret.push_back(jsonFormTooltipOffsetColumnsRow);
     return ret;
 }
 
-Json::Value Table::getJsonData()
+json Table::getJsonData()
 {
-    Json::Value jresult(Json::arrayValue);
+    json jresult(json::array());
 
-    for(int row=0; row<rowCount(); row++) {
-        Json::Value jsonRow;
-        for(int column=0; column<columnCount(); column++) {
+    for(unsigned long row=0; row<rowCount(); row++) {
+        json jsonRow;
+        for(unsigned long column=0; column<columnCount(); column++) {
             if(result[row][column].isNull()) {
-                jsonRow[column] = Json::Value(Json::nullValue);
+                jsonRow[column] = json(Json::nullValue);
                 continue;
             }
             auto ctype = m_query.selectedColumns().at(column).column_type;
@@ -166,13 +166,13 @@ Json::Value Table::getJsonData()
                 jsonRow[column] = result[row][column].as<double>();
                 break;
             /*case PG_TYPES::ARRAYINT: {
-                auto jsonArray = Json::Value(Json::arrayValue);
+                auto jsonArray = json(json::array());
                 auto ar = result[row][column].as_array();
                 auto jnc = ar.get_next();
                 while (jnc.first != array_parser::done) {
                     if(jnc.first == array_parser::string_value) {
                         int myint = stoi(jnc.second);
-                        jsonArray.append(myint);
+                        jsonArray.push_back(myint);
                     }
                     jnc = ar.get_next();
 
@@ -181,12 +181,12 @@ Json::Value Table::getJsonData()
             }
             break;
             case PG_TYPES::ARRAYTEXT: {
-                auto jsonArray = Json::Value(Json::arrayValue);
+                auto jsonArray = json(json::array());
                 auto ar = result[row][column].as_array();
                 auto jnc = ar.get_next();
                 while (jnc.first != array_parser::done) {
                     if(jnc.first == array_parser::string_value)
-                        jsonArray.append(jnc.second);
+                        jsonArray.push_back(jnc.second);
                     jnc = ar.get_next();
 
                 }
@@ -194,9 +194,7 @@ Json::Value Table::getJsonData()
             }
             break;*/
             case PG_TYPES::PSJSON: {
-                Json::Reader reader;
-                Json::Value valin;
-                reader.parse(result[row][column].c_str(),  valin);
+                auto valin = json::parse(result[row][column].c_str());
                 jsonRow[column] = valin;
             }
             break;
@@ -206,7 +204,7 @@ Json::Value Table::getJsonData()
                 jsonRow[column] = result[row][column].c_str();
             }
         }
-        jresult.append(jsonRow);
+        jresult.push_back(jsonRow);
     }
     return jresult;
 }
@@ -227,7 +225,7 @@ void Table::sort(const std::vector<sqlb::SortedColumn> &columns)
 
 }
 
-Json::Value Table::getAllData(Json::Value &args)
+json Table::getAllData(json &args)
 {
 //    printJson(args);
     updateFilterBase(args[0]);
@@ -237,13 +235,29 @@ Json::Value Table::getAllData(Json::Value &args)
     return getJsonData();
 }
 
-void Table::updateFilterBase(Json::Value filters)
+void Table::updateFilterBase(json filters)
 {
-    if (filters.isNull() || filters.size() == 0 || filters.type() != Json::ValueType::arrayValue) {
+    if (filters.is_null() || filters.size() == 0 || !filters.is_array()) {
         return;
     }
     for (unsigned int i=0; i < filters.size(); i++) {
-        std::string whereClause = CondFormat::filterToSqlCondition(filters.get(i, "").asString(), m_query.selectedColumns().at(i).column_type, "");
+
+//         == json::value_t::string
+        std::string v{""};
+        if (filters[i].is_null()) {
+            v  = "";
+        } else if(filters[i].type() == json::value_t::number_integer ||  filters[i].type() == json::value_t::number_unsigned) {
+            v = std::to_string(filters[i].get<long>());
+        } else if (filters[i].type() == json::value_t::number_float) {
+            v = std::to_string(filters[i].get<float>());
+        } else if(filters[i].type() == json::value_t::boolean) {
+            v = filters[i].get<bool>() ? "true" : "false";
+        } else if (filters[i].type() == json::value_t::string) {
+            v = filters[i].get<std::string>();
+        } else {
+            v = "";
+        }
+        std::string whereClause = CondFormat::filterToSqlCondition(v, m_query.selectedColumns().at(i).column_type, "");
         // If the value was set to an empty string remove any filter for this column. Otherwise insert a new filter rule or replace the old one if there is already one
         if(whereClause.empty())
             m_query.where().erase(static_cast<size_t>(i));
@@ -251,28 +265,28 @@ void Table::updateFilterBase(Json::Value filters)
             m_query.where()[static_cast<size_t>(i)] = whereClause;
     }
 }
-void Table::updateSortBase(Json::Value filters)
+void Table::updateSortBase(json filters)
 {
-    if (filters.isNull() || filters.size() == 0 || filters.type() != Json::ValueType::arrayValue) {
+    if (filters.is_null() || filters.size() == 0 || !filters.is_array()) {
         return;
     }
     for (unsigned int i=0; i < filters.size(); i++) {
-        if(filters[i].isNull()) {
+        if(filters[i].is_null()) {
             continue;
-        } else if(filters[i].asInt() == 0) {
+        } else if(filters[i].get<int>() == 0) {
             m_query.orderBy().emplace_back(i, sqlb::Ascending);
         } else {
             m_query.orderBy().emplace_back(i, sqlb::Descending);
         }
     }
 }
-void Table::updatePaginationBase(Json::Value filters)
+void Table::updatePaginationBase(json filters)
 {
-    if (filters.isNull() || filters.size() == 0 || filters.type() != Json::ValueType::arrayValue) {
+    if (filters.is_null() || filters.size() == 0 || !filters.is_array()) {
         return;
     }
-    if(!filters[0].isNull()) {
-        m_query.pagination().limit = filters[0].asInt();
+    if(!filters[0].is_null()) {
+        m_query.pagination().limit = filters[0].get<int>();
     }
 }
 size_t Table::filterCount() const

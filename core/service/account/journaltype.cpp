@@ -34,12 +34,12 @@ JournalType::JournalType(const WebSocketConnectionPtr& wsConnPtr_): BaseService(
                 sqlb::Join("left", u2, "a.update_user_id = u2.id"),
                 };
 }
-Json::Value JournalType::ins(Json::Value event, Json::Value args)
+json JournalType::ins(json event, json args)
 {
-    return insBase(event, args, "rank, name, description", "$1, $2, $3", args[0]["rank"].asInt(), args[0]["name"].asString(), args[0]["description"].asString());
+    return insBase(event, args, "rank, name, description", "$1, $2, $3", args[0]["rank"].get<int>(), args[0]["name"].get<std::string>(), args[0]["description"].get<std::string>());
 }
 
-Json::Value JournalType::upd(Json::Value event, Json::Value args)
+json JournalType::upd(json event, json args)
 {
-    return updBase(event, args, "rank, name, description", "$1, $2, $3", args[0]["rank"].asInt(), args[0]["name"].asString(), args[0]["description"].asString());
+    return updBase(event, args, "rank, name, description", "$1, $2, $3", args[0]["rank"].get<int>(), args[0]["name"].get<std::string>(), args[0]["description"].get<std::string>());
 }

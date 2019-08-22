@@ -27,42 +27,42 @@ class BaseService
 public:
     BaseService(const WebSocketConnectionPtr& wsConnPtr);
     virtual ~BaseService();
-    virtual Json::Value handleEvent(Json::Value event, int next, Json::Value args);
+    virtual json handleEvent(json event, int next, json args);
 
 protected:
     virtual void setupTable() = 0;
-    Json::Value headerData(Json::Value event, Json::Value args);
-    Json::Value allData(Json::Value event, Json::Value args);
-    virtual  Json::Value ins(Json::Value event, Json::Value args) = 0;
-    virtual  Json::Value upd(Json::Value event, Json::Value args) = 0;
-    virtual Json::Value del(Json::Value event, Json::Value args);
+    json headerData(json event, json args);
+    json allData(json event, json args);
+    virtual  json ins(json event, json args) = 0;
+    virtual  json upd(json event, json args) = 0;
+    virtual json del(json event, json args);
 
     template<class... Args>
-    Json::Value insBase(Json::Value event, Json::Value args, std::string column, std::string values,  Args... args_bind)
+    json insBase(json event, json args, std::string column, std::string values,  Args... args_bind)
     {
         std::string strSql = "INSERT INTO " + t.m_table.toString() + " (" + column + ") values(" + values + ")";
 
         try {
             clientPtr->execSqlSync( strSql, args_bind...);
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
+            json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
             std::cerr << e.what() << std::endl;
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
+            json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
         }
     }
 
     template<class... Args>
-    Json::Value updBase(Json::Value event, Json::Value args, std::string column, std::string values,  Args... args_bind)
+    json updBase(json event, json args, std::string column, std::string values,  Args... args_bind)
     {
         setupTable();
         t.updateFilterBase(args[1]);
         std::string strSql = t.m_query.buildUpdateQuery( column, values, "");
         try {
             clientPtr->execSqlSync(strSql, args_bind... );
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
+            json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
             std::cerr << e.what() << std::endl;
-            Json::Value ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
+            json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
         }
     }
     Table t;

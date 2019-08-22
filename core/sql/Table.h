@@ -7,7 +7,9 @@
 #include "core/sql/objectidentifier.h"
 #include "core/sql/query.h"
 
-#include <json/json.h>
+#include  "json.hpp"
+using nlohmann:: json;
+
 #include <drogon/orm/DbClient.h>
 using namespace drogon::orm;
 
@@ -29,15 +31,15 @@ public:
     virtual bool isEditableColumn(int column) const;
     virtual void sort(const std::vector<sqlb::SortedColumn>& columns);
     virtual std::string getHeaderName(const int column) const;
-    Json::Value getJsonHeaderData();
-    Json::Value getJsonData();
+    json getJsonHeaderData();
+    json getJsonData();
     size_t filterCount() const;
     sqlb::ObjectIdentifier currentTableName() const { return m_query.table(); }
     bool hasPseudoPk() const;
     //bool isBinary(const QModelIndex& index) const;
     // Add quotes to an identifier
     //std::string escapeIdentifier2(const std::string& id);
-    Json::Value getAllData(Json::Value &args);
+    json getAllData(json &args);
 public:
     sqlb::ObjectIdentifier m_table;
     sqlb::Query m_query;
@@ -45,9 +47,9 @@ public:
     bool saveCache = false;
     std::string insertError;
 
-    void updateFilterBase(Json::Value filters);
-    void updateSortBase(Json::Value filters);
-    void updatePaginationBase(Json::Value filters);
+    void updateFilterBase(json filters);
+    void updateSortBase(json filters);
+    void updatePaginationBase(json filters);
     void updateFilter(int column, const std::string& whereClause);
 
     drogon::orm::Result result{nullptr};
