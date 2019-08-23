@@ -23,16 +23,16 @@ void EchoWebSocket::handleNewMessage(const WebSocketConnectionPtr &wsConnPtr, st
    fflush(stdout);
 //std::chrono::seconds(10)
 //    globalCAF.self.
-//globalCAF.self->request(globalCAF.mainactor, caf::infinite, run_atom::value,  wsConnPtr, std::move(message), type).receive(
-//            [&]() {
-//       fprintf(stdout, "%s\n", message.c_str());
-//       fflush(stdout);
-//    return;
-//            },
-//            [&](error& err) {
-//              aout(globalCAF.self) << " -> " << globalCAF.self->system().render(err) << err.code() << endl;
-//            }
-//          );
+globalCAF.self->request(globalCAF.mainactor, caf::infinite, run_atom::value,  wsConnPtr, std::move(message), type).receive(
+            [&]() {
+       fprintf(stdout, "%s\n", message.c_str());
+       fflush(stdout);
+    return;
+            },
+            [&](error& err) {
+              aout(globalCAF.self) << " -> " << globalCAF.self->system().render(err) << err.code() << endl;
+            }
+          );
 //   auto main = globalCAF.sys.spawn<MainActor>();
 //   caf::scoped_actor self{globalCAF.sys};
 //   auto mainactor = self->spawn<MainActor>();
@@ -46,8 +46,8 @@ void EchoWebSocket::handleNewMessage(const WebSocketConnectionPtr &wsConnPtr, st
 //                 fprintf(stdout, "Error Message handling %hhu\n", err.code());
 //                 fflush(stdout);
 //               });
-   NoCAF nocaf{wsConnPtr, std::move(message), type};
-   nocaf.blocking_run();
+   //NoCAF nocaf{wsConnPtr, std::move(message), type};
+   //nocaf.blocking_run();
 }
 void EchoWebSocket::handleNewConnection(const HttpRequestPtr &req, const WebSocketConnectionPtr &wsConnPtr) {
     clientPtr = drogon::app().getDbClient("sce");

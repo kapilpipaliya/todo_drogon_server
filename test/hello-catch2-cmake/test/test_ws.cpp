@@ -27,7 +27,7 @@ TEST_CASE("login on backend with username and password","[WSTest]") {
 }
 /* currently this not working.. but make this working in future.
 TEST_CASE("signup with a form.","[WSTest]") {
-    LogIn w1; w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);
+    SignUp w1; w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);
 }
 */
 #define GetTableD(s)\
