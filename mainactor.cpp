@@ -1,4 +1,4 @@
-#include "messagehandle.h"
+#include "mainactor.h"
 #include "core/jsonfns.h"
 #include <chrono>
 using std::chrono::seconds;
@@ -78,9 +78,9 @@ using std::chrono::seconds;
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/basic_file_sink.h"
 
-using run_atom = caf::atom_constant<caf::atom("run")>;
 
-MessageHandle::MessageHandle(caf::actor_config &cfg, const WebSocketConnectionPtr &wsConnPtr, std::string &&message, const WebSocketMessageType &type) : caf::event_based_actor(cfg), wsConnPtr(wsConnPtr), message(std::move(message)), type(type)
+
+MainActor::MainActor(caf::actor_config &cfg) : caf::event_based_actor(cfg)
 {
     set_error_handler([=]([[maybe_unused]]caf::error& err) {
         fprintf(stdout, "\nMain Actor Error :\n");
@@ -93,18 +93,22 @@ MessageHandle::MessageHandle(caf::actor_config &cfg, const WebSocketConnectionPt
     /// Describes the behavior of an actor, i.e., provides a message
     /// handler and an optional timeout.
     running_job.assign(
-                [=, this](run_atom) {
-        blocking_run();
+                [=, this](run_atom, const WebSocketConnectionPtr &wsConnPtr, std::string message,
+                const WebSocketMessageType &type) {
+        blocking_run(wsConnPtr, std::move(message), type);
     }
     );
+    fprintf(stdout, "\Constructor:\n");
+    fflush(stdout);
 }
 
-MessageHandle::~MessageHandle()
+MainActor::~MainActor()
 {
     fprintf(stdout, "\nDestructor:\n");
     fflush(stdout);
 }
-void MessageHandle::blocking_run()
+void MainActor::blocking_run(const WebSocketConnectionPtr &wsConnPtr, std::string &&message,
+                             const WebSocketMessageType &type)
 {
     switch (type) {
     case WebSocketMessageType::Text: {
@@ -118,7 +122,7 @@ void MessageHandle::blocking_run()
                 json out(json::array());
                 for (auto i : valin) {
                     // printJson(valin);
-                    auto result  = handleTextMessage(i);
+                    auto result  = handleTextMessage(wsConnPtr, std::move(message), i);
                     for (auto &i : result) {
                         if(!i.is_null()){
                             out.push_back(i);
@@ -164,21 +168,20 @@ fprintf(stdout, "\nI Done:");
 fflush(stdout);
 }
 
-caf::behavior MessageHandle::make_behavior()
+caf::behavior MainActor::make_behavior()
 {
     // start runnig
-    send(this, run_atom::value);
-    // also run the job when message arrive for it.
-    return (
-                [=, this](run_atom) {
-        //delayed_send(this,seconds(5), run_atom::value);
-        send(this, run_atom::value);
-        become(running_job);
-    }
-    );
+    //send(this, run_atom::value); cant send..
+    // run the job when message arrive for it.
+      return {
+        [this](run_atom, const WebSocketConnectionPtr &wsConnPtr, std::string message, const WebSocketMessageType &type) -> caf::result<void>  {
+         blocking_run(wsConnPtr, std::move(message), type);
+         return {};
+        }
+    };
 }
 
-json MessageHandle::handleTextMessage(json in)
+json MainActor::handleTextMessage(const WebSocketConnectionPtr &wsConnPtr, std::string &&message, json in)
 {
     //    fprintf(stdout, "handle message:   -- %s", in.dump().c_str());
     //    fflush(stdout);
@@ -254,7 +257,7 @@ json MessageHandle::handleTextMessage(json in)
 
     return json::array();
 }
-json MessageHandle::handleBinaryMessage(const WebSocketConnectionPtr &wsConnPtr, std::string &message)
+json MainActor::handleBinaryMessage(const WebSocketConnectionPtr &wsConnPtr, std::string &message)
 {
     json event;
     try {

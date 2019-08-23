@@ -2,15 +2,13 @@
 
 #include <drogon/WebSocketController.h>
 #include <vector>
-#include "messagehandle.h"
+#include "mainactor.h"
 
 #include "caf/all.hpp"
 
 using namespace drogon;
-
 using namespace drogon::orm;
 extern DbClientPtr clientPtr;
-
 
 class EchoWebSocket : public drogon::WebSocketController<EchoWebSocket> {
 public:
@@ -35,9 +33,7 @@ private:
     std::mutex _mapMtx;
 //    var clients = new List<IWebSocketConnection>;
 
-  caf::actor_system_config cfg;
-  caf::actor_system sys;
-  caf::scoped_actor self;
+
 
 //  caf::actor_config cfg2;
 //  MessageHandle msgHandle;

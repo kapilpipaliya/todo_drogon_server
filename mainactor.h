@@ -24,23 +24,17 @@ private:
     const WebSocketMessageType type;
 };
 
-
-class MessageHandle : public caf::event_based_actor
+using run_atom = caf::atom_constant<caf::atom("run")>;
+class MainActor : public caf::event_based_actor
 {
 public:
-    MessageHandle(caf:: actor_config& cfg, const WebSocketConnectionPtr &wsConnPtr, std::string &&message,
-                  const WebSocketMessageType &type );
-    ~MessageHandle() override;
-    json handleTextMessage(json in);
+    MainActor(caf:: actor_config& cfg );
+    ~MainActor() override;
+    json handleTextMessage(const WebSocketConnectionPtr &wsConnPtr, std::string &&message, json in);
     json handleBinaryMessage(const WebSocketConnectionPtr &, std::string &message);
 private:
-    void blocking_run();
-
-    const WebSocketConnectionPtr wsConnPtr;
-    json in;
+    void blocking_run(const WebSocketConnectionPtr &wsConnPtr, std::string &&message, const WebSocketMessageType &type);
     caf:: behavior    running_job; // initial behavior
-    std::string message;
-    const WebSocketMessageType type;
 protected:
    caf::behavior make_behavior() override;
 };

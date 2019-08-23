@@ -52,7 +52,7 @@ json Auth::adminLogin( json event, json args)
             j["value"] = r[0]["id"].as<int>();
             auto sqlSession = "INSERT INTO user1.session (key, value) VALUES ($1, $2) returning id";
             // To serialize the json into a Json document, you should use a Json writer, or json::dump().
-            LOG_INFO << j.dump();
+            //LOG_INFO << j.dump();
             auto rs = transPtr->execSqlSync(sqlSession, "admin", j.dump());
             json login_result = simpleJsonSaveResult(event, true, "Done");
 
