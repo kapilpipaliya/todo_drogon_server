@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Tone::Tone(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+Tone::Tone()
 {
     t.m_table = sqlb::ObjectIdentifier("material", "tone", "c");
 

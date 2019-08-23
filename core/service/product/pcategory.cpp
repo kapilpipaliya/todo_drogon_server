@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-PCategory::PCategory(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+PCategory::PCategory()
 {
     t.m_table = sqlb::ObjectIdentifier("product", "category", "c");
 }

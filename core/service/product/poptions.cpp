@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-POption::POption(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+POption::POption()
 {
 
     t.m_table = sqlb::ObjectIdentifier("product", "option", "o");

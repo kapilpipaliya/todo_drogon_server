@@ -4,7 +4,7 @@
 class JournalType : public BaseService
 {
 public:
-    JournalType(const WebSocketConnectionPtr& wsConnPtr);
+    JournalType();
 private:
     void setupTable();
     json ins(json event, json args);

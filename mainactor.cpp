@@ -67,7 +67,7 @@ using std::chrono::seconds;
 
 #define REGISTER(s, T)\
     else if (in[0][1].get<std::string>()==s){\
-    T p{wsConnPtr};\
+    T p{};\
     auto r = p.handleEvent(in[0], 2, in[1]);\
     if(!r.is_null())\
     return r;\
@@ -98,7 +98,7 @@ MainActor::MainActor(caf::actor_config &cfg) : caf::event_based_actor(cfg)
         blocking_run(wsConnPtr, std::move(message), type);
     }
     );
-    fprintf(stdout, "\Constructor:\n");
+    fprintf(stdout, "Constructor:\n");
     fflush(stdout);
 }
 
@@ -192,7 +192,12 @@ json MainActor::handleTextMessage(const WebSocketConnectionPtr &wsConnPtr, std::
     if (in[0][0].get<std::string>() == "legacy"){
         if constexpr (false){
         }
-        REGISTER("auth", Auth)
+        else if (in[0][1].get<std::string>()=="auth"){
+        Auth p{wsConnPtr};
+        auto r = p.handleEvent(in[0], 2, in[1]);
+        if(!r.is_null())
+        return r;
+        }
 
                 REGISTER("account_type", AccountType)
                 REGISTER("account", Account)
@@ -275,7 +280,7 @@ json MainActor::handleBinaryMessage(const WebSocketConnectionPtr &wsConnPtr, std
                 //p.handleBinaryEvent creates new transaction.
                     if (event[0]=="legacy"){
                         if (event[1] == "image") {
-                            Image p{wsConnPtr};
+                            Auth p{wsConnPtr};
                             auto res = p.handleBinaryEvent(event, 2, message);
                             if(!res.is_null()){
                                 return res;
@@ -320,8 +325,12 @@ json NoCAF::handleTextMessage(json in)
     if (in[0][0].get<std::string>() == "legacy"){
         if constexpr (false){
         }
-        REGISTER("auth", Auth)
-
+        else if (in[0][1].get<std::string>()=="auth"){
+        Auth p{wsConnPtr};
+        auto r = p.handleEvent(in[0], 2, in[1]);
+        if(!r.is_null())
+        return r;
+        }
                 REGISTER("account_type", AccountType)
                 REGISTER("account", Account)
                 REGISTER("account_heading", AccountHeading)
@@ -405,7 +414,7 @@ json NoCAF::handleBinaryMessage(const WebSocketConnectionPtr &, std::string &mes
 
                 if (event[0]=="legacy"){
                     if (event[1] == "image") {
-                        Image p{wsConnPtr};
+                        Auth p{wsConnPtr};
                         auto res = p.handleBinaryEvent(event, 2, message);
                         if(!res.is_null()){
                             return res;

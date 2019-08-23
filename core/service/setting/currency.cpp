@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Currency::Currency(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+Currency::Currency()
 {
     t.m_table = sqlb::ObjectIdentifier("setting", "currency", "c");
 

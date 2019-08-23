@@ -1,8 +1,9 @@
 #include "baseservice.h"
 #include "../jsonfns.h"
 
+#include "../sql/query.h"
 
-BaseService::BaseService(const WebSocketConnectionPtr& wsConnPtr_): wsConnPtr(wsConnPtr_)
+BaseService::BaseService()
 {  }
 BaseService::~BaseService() {  }
 json BaseService::handleEvent(json event, int next, json args)

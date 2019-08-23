@@ -4,7 +4,7 @@
 class AddressType : public BaseService
 {
 public:
-    AddressType(const WebSocketConnectionPtr& wsConnPtr);
+    AddressType();
 private:
     void setupTable();
     json ins(json event, json args);

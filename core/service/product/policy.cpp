@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Policy::Policy(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+Policy::Policy()
 {
     t.m_table = sqlb::ObjectIdentifier("product", "policy", "t");
 

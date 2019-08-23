@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Setting::Setting(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+Setting::Setting()
 {
     t.m_table = sqlb::ObjectIdentifier("setting", "setting", "gs");
 

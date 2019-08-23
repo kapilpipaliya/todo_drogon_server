@@ -15,6 +15,7 @@ public:
     Auth(const WebSocketConnectionPtr& wsConnPtr);
 
     json handleEvent(json event, int next, json args);
+    json handleBinaryEvent(json event, int next, std::string &message);
 
 private:
     json adminLogin(json event, json args);
@@ -28,6 +29,10 @@ private:
     json isUserAuth(json event, json args);
     json checkout(json event, json args);
     json saveImageMeta(json event, json args);
+
+    json thumb_data( json event, json args);
+    //Binary functin:
+    json save_setting_attachment(json event, std::string &message);
 
 
     const WebSocketConnectionPtr& wsConnPtr;

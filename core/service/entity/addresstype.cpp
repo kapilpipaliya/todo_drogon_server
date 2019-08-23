@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-AddressType::AddressType(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+AddressType::AddressType()
 {
 
     t.m_table = sqlb::ObjectIdentifier("entity", "address_type", "a");

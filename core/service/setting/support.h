@@ -6,7 +6,7 @@
 class Support : public BaseService
 {
 public:
-    Support(const WebSocketConnectionPtr& wsConnPtr);
+    Support();
 private:
     void setupTable();
     json ins(json event, json args);

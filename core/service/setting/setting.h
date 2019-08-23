@@ -6,7 +6,7 @@
 class Setting : public BaseService
 {
 public:
-    Setting(const WebSocketConnectionPtr& wsConnPtr);
+    Setting();
 
    json handleEvent(json event, int next, json args);
 

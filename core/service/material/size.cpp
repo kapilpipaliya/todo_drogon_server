@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Size::Size(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+Size::Size()
 {
     t.m_table = sqlb::ObjectIdentifier("material", "size", "s");
 

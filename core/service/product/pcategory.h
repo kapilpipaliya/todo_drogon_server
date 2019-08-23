@@ -4,7 +4,7 @@
 class PCategory : public BaseService
 {
 public:
-    PCategory(const WebSocketConnectionPtr& wsConnPtr);
+    PCategory();
 private:
     void setupTable();
     json ins(json event, json args);

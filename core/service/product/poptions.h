@@ -4,7 +4,7 @@
 class POption : public BaseService
 {
 public:
-    POption(const WebSocketConnectionPtr& wsConnPtr);
+    POption();
 private:
     void setupTable();
     json ins(json event, json args);

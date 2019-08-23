@@ -4,7 +4,7 @@
 class Accessory : public BaseService
 {
 public:
-    Accessory(const WebSocketConnectionPtr& wsConnPtr);
+    Accessory();
 private:
     void setupTable();
     json ins(json event, json args);

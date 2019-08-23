@@ -4,7 +4,7 @@
 class Currency : public BaseService
 {
 public:
-    Currency(const WebSocketConnectionPtr& wsConnPtr);
+    Currency();
 private:
     void setupTable();
     json ins(json event, json args);

@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Log::Log(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+Log::Log()
 {
     t.m_table = sqlb::ObjectIdentifier("setting", "simple_log", "a");
 

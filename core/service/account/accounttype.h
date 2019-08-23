@@ -4,7 +4,7 @@
 class AccountType : public BaseService
 {
 public:
-    AccountType(const WebSocketConnectionPtr& wsConnPtr);
+    AccountType();
 private:
     void setupTable();
     json ins(json event, json args);

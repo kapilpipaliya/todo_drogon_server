@@ -4,7 +4,7 @@
 class Priority : public BaseService
 {
 public:
-    Priority(const WebSocketConnectionPtr& wsConnPtr);
+    Priority();
 private:
     void setupTable();
     json ins(json event, json args);

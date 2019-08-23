@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Department::Department(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+Department::Department()
 {
     t.m_table = sqlb::ObjectIdentifier("mfg", "department", "m");
 

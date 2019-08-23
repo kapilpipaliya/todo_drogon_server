@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Purity::Purity(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+Purity::Purity()
 {
     t.m_table = sqlb::ObjectIdentifier("material", "purity", "p");
 

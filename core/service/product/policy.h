@@ -4,7 +4,7 @@
 class Policy : public BaseService
 {
 public:
-    Policy(const WebSocketConnectionPtr& wsConnPtr);
+    Policy();
 private:
     void setupTable();
     json ins(json event, json args);

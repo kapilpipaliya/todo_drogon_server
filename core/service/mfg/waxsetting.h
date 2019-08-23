@@ -4,7 +4,7 @@
 class WaxSetting : public BaseService
 {
 public:
-    WaxSetting(const WebSocketConnectionPtr& wsConnPtr);
+    WaxSetting();
 private:
     void setupTable();
     json ins(json event, json args);

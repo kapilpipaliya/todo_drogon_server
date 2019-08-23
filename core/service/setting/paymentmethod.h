@@ -5,7 +5,7 @@
 class PaymentMethod : public BaseService
 {
 public:
-    PaymentMethod(const WebSocketConnectionPtr& wsConnPtr);
+    PaymentMethod();
 private:
     void setupTable();
     json ins(json event, json args);

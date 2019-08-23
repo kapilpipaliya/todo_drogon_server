@@ -4,7 +4,7 @@
 class Tag : public BaseService
 {
 public:
-    Tag(const WebSocketConnectionPtr& wsConnPtr);
+    Tag();
 private:
     void setupTable();
     json ins(json event, json args);

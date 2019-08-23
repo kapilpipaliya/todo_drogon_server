@@ -4,7 +4,7 @@
 class Account : public BaseService
 {
 public:
-    Account(const WebSocketConnectionPtr& wsConnPtr);
+    Account();
 private:
     void setupTable();
     json ins(json event, json args);

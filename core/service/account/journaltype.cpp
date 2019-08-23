@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-JournalType::JournalType(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+JournalType::JournalType()
 {
     t.m_table = sqlb::ObjectIdentifier("account", "journal_type", "a");
 

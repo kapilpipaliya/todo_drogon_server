@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Shape::Shape(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+Shape::Shape()
 {
     t.m_table = sqlb::ObjectIdentifier("material", "shape", "gs");
 

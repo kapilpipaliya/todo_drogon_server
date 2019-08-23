@@ -3,7 +3,8 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 #include "../../../EchoWebSocket.h"
-
+#include <boost/filesystem.hpp>
+#include "../../sql/query.h"
 using namespace std::literals;
 Auth::Auth(const WebSocketConnectionPtr& wsConnPtr_): wsConnPtr(wsConnPtr_)
 {
@@ -34,6 +35,17 @@ json Auth::handleEvent(json event, int next, json args)
         return checkout(event, args);
     } else if (event_cmp  == "save_image_meta_data") {
         return saveImageMeta(event, args);
+    } else if (event_cmp  == "thumb_data") {
+        return thumb_data(event, args);
+    } else {
+        return Json::nullValue;
+    }
+}
+
+json Auth::handleBinaryEvent(json event, int next, std::string &message)
+{
+    if(event[next].get<std::string>()  == "save_attachment_data"){
+        return save_setting_attachment(event, message);
     } else {
         return Json::nullValue;
     }
@@ -338,4 +350,127 @@ void setUserContext(const WebSocketConnectionPtr &wsConnPtr, int in)
 int getUserContext(const WebSocketConnectionPtr &wsConnPtr){
     auto c = wsConnPtr->getContext<std::map<std::string, std::vector<int> >>();
     return c->at("user"s)[0];
+}
+
+
+// ------------------
+json Auth::thumb_data( json event, json args)
+{
+    // send meta_data
+    json batch;
+    json ret;
+
+    json data1;
+    data1[0] = "take_image_meta";
+    ret[0] = data1;
+    ret[1] = event;
+
+    batch[0] = ret;
+    wsConnPtr->send(batch.dump());
+
+    namespace fs = boost::filesystem;
+    auto home = fs::path(getenv("HOME"));
+
+    auto transPtr = clientPtr->newTransaction();
+    try {
+        auto sql = "SELECT name FROM setting.image WHERE id = $1";
+        auto x = transPtr->execSqlSync(sql, args.get<int>());
+
+        if (x.size() == 1) {
+            std::streampos size;
+            // http://www.cplusplus.com/doc/tutorial/files/
+            // What is the best way to read an entire file into a std::string in C++?
+            // https://stackoverflow.com/questions/116038/what-is-the-best-way-to-read-an-entire-file-into-a-stdstring-in-c/116220#116220
+            std::ifstream file(home.string() + "/fileuploads/" + x[0]["name"].c_str(), std::ios::in | std::ios::binary | std::ios::ate);
+            if (file.is_open()) {
+                auto memblock = read_all(file);
+                file.close();
+
+                //std::cout << "the entire file content is in memory";
+                wsConnPtr->send(memblock, WebSocketMessageType::Binary); // Note when server not able to send this file, front end crash.
+                //delete[] memblock;
+            }
+        } else {
+            // Fix simpleJsonSaveResult(event, true, "Done");
+        }
+        return json(Json::nullValue);
+    } catch (const std::exception &e) {
+
+        std::cerr << e.what() << std::endl;
+        //simpleJsonSaveResult(event, false, e.what());
+        return json(Json::nullValue);
+    }
+    //get binary data and send.
+}
+
+// save image in disk and return temporary id:
+json Auth::save_setting_attachment(json event, std::string &message)
+{
+    auto session_id = getAdminContext(wsConnPtr);
+    auto strSql = sel_("user1.temp_image", "event,  name, size, type", "where session_id = $1");
+    auto transPtr = clientPtr->newTransaction();
+    try {
+        auto r = transPtr->execSqlSync(strSql, session_id);
+        transPtr->execSqlSync(dele_("user1.temp_image", "where session_id = $1"), session_id);
+
+        // check if file exist else rename a file
+        // convert this to json
+
+        auto event_json = json::parse(r[0]["temp_image"].c_str());
+
+        namespace fs = boost::filesystem;
+        auto home = fs::path(getenv("HOME"));
+
+        std::string name = r[0][1].c_str();
+        auto size = r[0][2].as<int>();
+        auto type = r[0][3].c_str();
+
+
+        fprintf(stdout, "%s %d %s\n", name.c_str(), size, type);
+        fflush(stdout);
+
+        // basic file operations
+
+        std::string new_name = name;
+        auto path = boost::filesystem::path(home.string() + "/fileuploads/" + new_name);
+        int i = 1;
+        while (true) {
+            if (boost::filesystem::exists(home.string() + "/fileuploads/" + new_name)) {
+                // new_name = path.parent_path().string() + "/" + path.stem().string() + std::to_string(i) + path.extension().string();
+                new_name = path.stem().string() + std::to_string(i) + path.extension().string();
+            } else {
+                break;
+            }
+            i++;
+        }
+        name = new_name;
+
+
+        std::ofstream myfile;
+        myfile.open(home.string() + "/fileuploads/" + name);
+        myfile << message;
+        myfile.close();
+
+        // Insert Image
+        auto temp_image_table = sqlb::ObjectIdentifier("setting", "temp_image_id", "pa");
+        std::string strSql = "INSERT INTO %1.%2 (name, size, type) VALUES ($1, $2, $3) RETURNING id";
+        ReplaceAll2(strSql, "%1", temp_image_table.schema());
+        ReplaceAll2(strSql, "%2", temp_image_table.name());
+
+        json ret;
+        json jresult;
+        jresult[0] = event_json;
+        auto insert_result = transPtr->execSqlSync(strSql, name, size, type);
+        jresult[1] = insert_result[0]["id"].as<int>();
+        //jresult[1] = e.what();
+        ret[0] = jresult;
+
+        return ret;
+
+    } catch (const std::exception &e) {
+
+        std::cerr << e.what() << std::endl;
+        return Json::nullValue;
+    }
+
 }

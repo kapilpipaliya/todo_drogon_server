@@ -4,7 +4,7 @@
 class ContactType : public BaseService
 {
 public:
-    ContactType(const WebSocketConnectionPtr& wsConnPtr);
+    ContactType();
 private:
     void setupTable();
     json ins(json event, json args);

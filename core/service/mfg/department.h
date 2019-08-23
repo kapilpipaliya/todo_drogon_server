@@ -4,7 +4,7 @@
 class Department : public BaseService
 {
 public:
-    Department(const WebSocketConnectionPtr& wsConnPtr);
+    Department();
 private:
     void setupTable();
     json ins(json event, json args);

@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Txn::Txn(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+Txn::Txn()
 {
 
     t.m_table = sqlb::ObjectIdentifier("account", "txn", "a");

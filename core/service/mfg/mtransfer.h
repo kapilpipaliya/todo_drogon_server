@@ -4,7 +4,7 @@
 class MTransfer : public BaseService
 {
 public:
-    MTransfer(const WebSocketConnectionPtr& wsConnPtr);
+    MTransfer();
 private:
     void setupTable();
     json ins(json event, json args);

@@ -4,7 +4,7 @@
 class Txn : public BaseService
 {
 public:
-    Txn(const WebSocketConnectionPtr& wsConnPtr);
+    Txn();
 private:
     void setupTable();
     json ins(json event, json args);

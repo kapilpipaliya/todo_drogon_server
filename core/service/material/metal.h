@@ -4,7 +4,7 @@
 class Metal : public BaseService
 {
 public:
-    Metal(const WebSocketConnectionPtr& wsConnPtr);
+    Metal();
 private:
     void setupTable();
     json ins(json event, json args);

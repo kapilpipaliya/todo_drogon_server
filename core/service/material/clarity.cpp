@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Clarity::Clarity(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+Clarity::Clarity()
 {
 
     t.m_table = sqlb::ObjectIdentifier("material", "clarity", "g");

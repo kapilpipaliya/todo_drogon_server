@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-EntityType::EntityType(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+EntityType::EntityType()
 {
 t.m_table = sqlb::ObjectIdentifier("entity", "entity_type", "a");
 }

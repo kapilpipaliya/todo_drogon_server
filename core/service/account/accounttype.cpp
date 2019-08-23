@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-AccountType::AccountType(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+AccountType::AccountType()
 {
 
     t.m_table = sqlb::ObjectIdentifier("account", "account_type", "a");

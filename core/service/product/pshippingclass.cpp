@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-PShippingClass::PShippingClass(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+PShippingClass::PShippingClass()
 {
 
     t.m_table = sqlb::ObjectIdentifier("product", "shipping_class", "t");

@@ -4,7 +4,7 @@
 
 
 typedef sqlb::SelectedColumn S;
-Entity::Entity(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+Entity::Entity()
 {
     t.m_table = sqlb::ObjectIdentifier("entity", "entity", "e");
 

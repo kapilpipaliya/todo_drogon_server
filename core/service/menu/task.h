@@ -4,7 +4,7 @@
 class Task : public BaseService
 {
 public:
-    Task(const WebSocketConnectionPtr& wsConnPtr);
+    Task();
 private:
     void setupTable();
     json ins(json event, json args);

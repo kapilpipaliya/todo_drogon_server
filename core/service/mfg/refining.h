@@ -4,7 +4,7 @@
 class Refining : public BaseService
 {
 public:
-    Refining(const WebSocketConnectionPtr& wsConnPtr);
+    Refining();
 private:
     void setupTable();
     json ins(json event, json args);

@@ -3,7 +3,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Product::Product(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+Product::Product()
 {
     t.m_table = sqlb::ObjectIdentifier("post", "post", "post");
 
@@ -202,8 +202,7 @@ json Product::handleEvent(json event, int next, json args)
         return upd(event, args);
     } else if (event_cmp  == "del") {
         return del(event, args);
-    } else if (event_cmp  == "attachment_data") {
-        return get_product_attachment_data(event, args);
+
     } else if (event_cmp  == "diamond_price_data") {
         return get_product_diamond_price_data(event, args);
     } else if (event_cmp  == "cs_price_data") {
@@ -1175,69 +1174,6 @@ json save_category( json event, json args) {
             json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
         }
     }
-}
-
-//--
-
-json Product::get_product_attachment_data( json event, json args)
-{
-    // send meta_data
-    json batch;
-    json ret;
-
-    json data1;
-    data1[0] = "take_image_meta";
-    ret[0] = data1;
-    ret[1] = event;
-
-    batch[0] = ret;
-    wsConnPtr->send(batch.dump());
-
-    namespace fs = boost::filesystem;
-    auto home = fs::path(getenv("HOME"));
-    fprintf(stdout, "Binary Requested:");
-    fflush(stdout);
-    auto transPtr = clientPtr->newTransaction();
-    try {
-        auto sql = "SELECT name FROM product.post_attachment WHERE id = $1";
-        auto x = transPtr->execSqlSync(sql, args.get<int>());
-
-        fprintf(stdout, "Binary Requested 001:");
-        fflush(stdout);
-        if (x.size() == 1) {
-            std::streampos size;
-            // http://www.cplusplus.com/doc/tutorial/files/
-            // What is the best way to read an entire file into a std::string in C++?
-            // https://stackoverflow.com/questions/116038/what-is-the-best-way-to-read-an-entire-file-into-a-stdstring-in-c/116220#116220
-            std::ifstream file(home.string() + "/fileuploads/" + x[0]["name"].c_str(), std::ios::in | std::ios::binary | std::ios::ate);
-            fprintf(stdout, "Binary Requested 002:");
-            fflush(stdout);
-            if (file.is_open()) {
-                auto memblock = read_all(file);
-                file.close();
-
-                //std::cout << "the entire file content is in memory";
-                fprintf(stdout, "Binary Request Succed:");
-                fflush(stdout);
-                wsConnPtr->send(memblock, WebSocketMessageType::Binary); // Note when server not able to send this file, front end crash.
-                //delete[] memblock;
-            }
-        } else {
-            fprintf(stdout, "Binary Request Failed:");
-            fflush(stdout);
-            // Fix simpleJsonSaveResult(event, true, "Done");
-        }
-        
-        return Json::nullValue;
-
-    } catch (const std::exception &e) {
-        
-        std::cerr << e.what() << std::endl;
-        fprintf(stdout, "Binary Request Failed 3:");
-        fflush(stdout);
-        //simpleJsonSaveResult(event, false, e.what());
-    }
-    return json(Json::nullValue);
 }
 
 json Product::get_product_diamond_price_data( json event, json args)

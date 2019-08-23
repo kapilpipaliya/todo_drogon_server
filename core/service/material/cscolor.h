@@ -4,7 +4,7 @@
 class CSColor : public BaseService
 {
 public:
-    CSColor(const WebSocketConnectionPtr& wsConnPtr);
+    CSColor();
 private:
     void setupTable();
     json ins(json event, json args);

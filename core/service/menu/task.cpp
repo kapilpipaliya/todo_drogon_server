@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Task::Task(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+Task::Task()
 {
 
     t.m_table = sqlb::ObjectIdentifier("menu", "task", "m");

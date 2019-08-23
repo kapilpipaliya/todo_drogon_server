@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Accessory::Accessory(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+Accessory::Accessory()
 {
 
     t.m_table = sqlb::ObjectIdentifier("material", "accessory", "a");

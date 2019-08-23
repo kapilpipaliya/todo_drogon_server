@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Tag::Tag(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+Tag::Tag()
 {
     t.m_table = sqlb::ObjectIdentifier("post", "tag", "t");
 

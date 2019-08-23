@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-DSize::DSize(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+DSize::DSize()
 {
     t.m_table = sqlb::ObjectIdentifier("material", "diamond_size_meta", "sm");
 

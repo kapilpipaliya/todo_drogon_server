@@ -4,7 +4,7 @@
 class Tone : public BaseService
 {
 public:
-    Tone(const WebSocketConnectionPtr& wsConnPtr);
+    Tone();
 private:
     void setupTable();
     json ins(json event, json args);

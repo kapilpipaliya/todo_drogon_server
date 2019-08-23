@@ -4,7 +4,7 @@
 class Entity : public BaseService
 {
 public:
-    Entity(const WebSocketConnectionPtr& wsConnPtr);
+    Entity();
 private:
     void setupTable();
     json ins(json event, json args);

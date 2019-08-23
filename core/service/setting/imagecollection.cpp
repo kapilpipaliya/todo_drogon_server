@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-ImageCollection::ImageCollection(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+ImageCollection::ImageCollection()
 {
     t.m_table = sqlb::ObjectIdentifier("setting", "image_collection", "a");
 

@@ -4,7 +4,7 @@
 class Log : public BaseService
 {
 public:
-    Log(const WebSocketConnectionPtr& wsConnPtr);
+    Log();
 private:
     void setupTable();
     json ins(json event, json args);

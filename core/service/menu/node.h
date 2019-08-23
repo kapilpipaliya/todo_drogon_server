@@ -4,7 +4,7 @@
 class Node : public BaseService
 {
 public:
-    Node(const WebSocketConnectionPtr& wsConnPtr);
+    Node();
 private:
     void setupTable();
     json ins(json event, json args);

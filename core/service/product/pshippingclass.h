@@ -4,7 +4,7 @@
 class PShippingClass : public BaseService
 {
 public:
-    PShippingClass(const WebSocketConnectionPtr& wsConnPtr);
+    PShippingClass();
 private:
     void setupTable();
     json ins(json event, json args);

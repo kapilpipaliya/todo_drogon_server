@@ -4,7 +4,7 @@
 class DSize : public BaseService
 {
 public:
-    DSize(const WebSocketConnectionPtr& wsConnPtr);
+    DSize();
 private:
     void setupTable();
     json ins(json event, json args);

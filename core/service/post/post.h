@@ -4,7 +4,7 @@
 class Post1 : public BaseService
 {
 public:
-    Post1(const WebSocketConnectionPtr& wsConnPtr);
+    Post1();
 private:
     void setupTable();
     json ins(json event, json args);

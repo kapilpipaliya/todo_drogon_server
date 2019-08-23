@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-WaxSetting::WaxSetting(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+WaxSetting::WaxSetting()
 {
     t.m_table = sqlb::ObjectIdentifier("mfg", "wax_setting", "m");
 

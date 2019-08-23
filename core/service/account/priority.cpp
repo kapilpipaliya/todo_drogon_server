@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Priority::Priority(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+Priority::Priority()
 {
     t.m_table = sqlb::ObjectIdentifier("account", "priority", "a");
 

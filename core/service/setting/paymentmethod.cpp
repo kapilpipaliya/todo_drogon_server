@@ -3,7 +3,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-PaymentMethod::PaymentMethod(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+PaymentMethod::PaymentMethod()
 {
     t.m_table = sqlb::ObjectIdentifier("setting", "payment_method", "t");
 

@@ -4,7 +4,7 @@
 class SettingType : public BaseService
 {
 public:
-    SettingType(const WebSocketConnectionPtr& wsConnPtr);
+    SettingType();
 private:
     void setupTable();
     json ins(json event, json args);

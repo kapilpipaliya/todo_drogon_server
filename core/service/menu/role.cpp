@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Role::Role(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+Role::Role()
 {
 
     t.m_table = sqlb::ObjectIdentifier("menu", "role", "m");

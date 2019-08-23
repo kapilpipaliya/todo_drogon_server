@@ -4,7 +4,7 @@
 class CSSize : public BaseService
 {
 public:
-    CSSize(const WebSocketConnectionPtr& wsConnPtr);
+    CSSize();
 private:
     void setupTable();
     json ins(json event, json args);

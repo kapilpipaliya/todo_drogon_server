@@ -4,7 +4,7 @@
 class Role : public BaseService
 {
 public:
-    Role(const WebSocketConnectionPtr& wsConnPtr);
+    Role();
 private:
     void setupTable();
     json ins(json event, json args);

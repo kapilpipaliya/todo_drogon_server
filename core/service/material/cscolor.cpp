@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-CSColor::CSColor(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+CSColor::CSColor()
 {
     t.m_table = sqlb::ObjectIdentifier("material", "cs_color", "gt");
 

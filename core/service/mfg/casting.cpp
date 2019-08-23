@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Casting::Casting(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+Casting::Casting()
 {
     t.m_table = sqlb::ObjectIdentifier("mfg", "casting", "m");
 

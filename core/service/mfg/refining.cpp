@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Refining::Refining(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+Refining::Refining()
 {
     t.m_table = sqlb::ObjectIdentifier("mfg", "refining", "m");
 

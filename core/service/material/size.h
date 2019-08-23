@@ -4,7 +4,7 @@
 class Size : public BaseService
 {
 public:
-    Size(const WebSocketConnectionPtr& wsConnPtr);
+    Size();
 private:
     void setupTable();
     json ins(json event, json args);

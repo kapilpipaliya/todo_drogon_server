@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-ContactType::ContactType(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+ContactType::ContactType()
 {
 
     t.m_table = sqlb::ObjectIdentifier("entity", "contact_type", "a");

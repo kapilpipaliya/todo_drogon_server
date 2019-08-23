@@ -4,7 +4,7 @@
 class CSType : public BaseService
 {
 public:
-    CSType(const WebSocketConnectionPtr& wsConnPtr);
+    CSType();
 private:
     void setupTable();
     json ins(json event, json args);

@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-CertifiedBy::CertifiedBy(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+CertifiedBy::CertifiedBy()
 {
 
     t.m_table = sqlb::ObjectIdentifier("product", "certified_by", "t");

@@ -3,7 +3,7 @@
 #include "../../jsonfns.h"
 
 
-MetalIssue::MetalIssue(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+MetalIssue::MetalIssue()
 {
 
     t.m_table = sqlb::ObjectIdentifier("mfg", "metal_issue", "m");

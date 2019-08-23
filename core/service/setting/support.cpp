@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Support::Support(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+Support::Support()
 {
     t.m_table = sqlb::ObjectIdentifier("setting", "support", "a");
 

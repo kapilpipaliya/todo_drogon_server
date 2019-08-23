@@ -4,7 +4,7 @@
 class CertifiedBy : public BaseService
 {
 public:
-    CertifiedBy(const WebSocketConnectionPtr& wsConnPtr);
+    CertifiedBy();
 private:
     void setupTable();
     json ins(json event, json args);

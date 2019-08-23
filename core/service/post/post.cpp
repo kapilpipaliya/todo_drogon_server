@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-Post1::Post1(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+Post1::Post1()
 {
     t.m_table = sqlb::ObjectIdentifier("post", "post", "post");
 

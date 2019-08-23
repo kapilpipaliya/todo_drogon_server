@@ -4,7 +4,7 @@
 class Shape : public BaseService
 {
 public:
-    Shape(const WebSocketConnectionPtr& wsConnPtr);
+    Shape();
 private:
     void setupTable();
     json ins(json event, json args);

@@ -4,7 +4,7 @@
 class Casting : public BaseService
 {
 public:
-    Casting(const WebSocketConnectionPtr& wsConnPtr);
+    Casting();
 private:
     void setupTable();
     json ins(json event, json args);

@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-CSType::CSType(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+CSType::CSType()
 {
     t.m_table = sqlb::ObjectIdentifier("material", "cs_type", "ct");
 

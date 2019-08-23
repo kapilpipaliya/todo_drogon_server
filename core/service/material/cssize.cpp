@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-CSSize::CSSize(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+CSSize::CSSize()
 {
     t.m_table = sqlb::ObjectIdentifier("material", "color_stone_size_meta", "sm");
 

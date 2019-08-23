@@ -4,7 +4,7 @@
 class Clarity : public BaseService
 {
 public:
-    Clarity(const WebSocketConnectionPtr& wsConnPtr);
+    Clarity();
 private:
     void setupTable();
     json ins(json event, json args);

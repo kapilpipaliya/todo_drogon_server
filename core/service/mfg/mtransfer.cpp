@@ -2,7 +2,7 @@
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
-MTransfer::MTransfer(const WebSocketConnectionPtr& wsConnPtr_): BaseService(wsConnPtr_)
+MTransfer::MTransfer()
 {
 
     t.m_table = sqlb::ObjectIdentifier("mfg", "m_transfer", "m");

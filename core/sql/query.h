@@ -25,6 +25,11 @@ enum PG_TYPES {
     PSJSON = 9999
 };
 
+inline std::string ins_(std::string t, std::string c, std::string v) { return "INSERT INTO " + t +" (" + c + ") VALUES (" + v + ")"; }
+inline std::string upd_(std::string t, std::string c, std::string v, std::string w) { return "UPDATE " + t + " SET (" + c + ") = ROW (" + v + ")" + w; }
+inline std::string sel_(std::string t, std::string c, std::string w) { return "SELECT " + c + " FROM " + t + " " + w; }
+inline std::string dele_(std::string t, std::string w) { return "DELETE FROM " + t + " " + w; }
+
 /*
  * This file's classes should not talk to database directly
  * */

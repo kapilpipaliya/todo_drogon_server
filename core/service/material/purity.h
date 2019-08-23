@@ -4,7 +4,7 @@
 class Purity : public BaseService
 {
 public:
-    Purity(const WebSocketConnectionPtr& wsConnPtr);
+    Purity();
 private:
     void setupTable();
     json ins(json event, json args);
