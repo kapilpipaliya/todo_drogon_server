@@ -107,7 +107,7 @@ json Auth::isAdminAuth( json event, json )
     json value;
     value[0] = event;
 
-    auto c = getAdminContext(wsConnPtr);
+    long c = getAdminContext(wsConnPtr);
     bool result = false;
     if (c != 0) { result = true; } else { result = false; }
     value[1] = result;
@@ -191,7 +191,7 @@ json Auth::userLogin( json event, json args)
 }
 json Auth::userId( json event, json )
 {
-    auto c = getUserContext(wsConnPtr);
+    long c = getUserContext(wsConnPtr);
     if (c != 0) {
         auto sqlSession = "SELECT key, value FROM user1.session where id = $1";
         try {
@@ -236,14 +236,14 @@ json Auth::isUserAuth( json event, json )
     json ret;
     json value;
     value[0] = event;
-    auto c = getUserContext(wsConnPtr);
+    long c = getUserContext(wsConnPtr);
     if (c != 0) { value[1] = true; } else { value[1] = false; }
     ret[0]=value;
     return ret;
 }
 json Auth::checkout( json event, json args)
 {
-    auto c = getUserContext(wsConnPtr);
+    long c = getUserContext(wsConnPtr);
     printJson(args);
     if (c != 0) {
         auto sqlSession = "SELECT key, value FROM user1.session where id = $1";
@@ -271,7 +271,7 @@ json Auth::checkout( json event, json args)
  // Save Image meta on server temporary
 json Auth::saveImageMeta( json event, json args)
 {
-    auto c = getAdminContext(wsConnPtr);
+    long c = getAdminContext(wsConnPtr);
 
     auto strSql = "INSERT INTO user1.temp_image ( session_id, event, name, size, type ) VALUES( $1, $2, $3, $4, $5 )";
     try {
@@ -307,7 +307,7 @@ int generateContext(const HttpRequestPtr &req, const WebSocketConnectionPtr &wsC
 }
 
 void deleteAdminSession(const WebSocketConnectionPtr &wsConnPtr) {
-    auto c = getAdminContext(wsConnPtr);
+    long c = getAdminContext(wsConnPtr);
     if (c != 0) {
         auto sqlSession = "DELETE FROM user1.session where id = $1";
         try {
@@ -320,7 +320,7 @@ void deleteAdminSession(const WebSocketConnectionPtr &wsConnPtr) {
     }
 }
 void deleteuserSession(const WebSocketConnectionPtr &wsConnPtr) {
-    auto c = getUserContext(wsConnPtr);
+    long c = getUserContext(wsConnPtr);
     if (c != 0) {
         auto sqlSession = "DELETE FROM user1.session where id = $1";
         try {
@@ -333,21 +333,21 @@ void deleteuserSession(const WebSocketConnectionPtr &wsConnPtr) {
     }
 }
 
-void setAdminContext(const WebSocketConnectionPtr &wsConnPtr, int in)
+void setAdminContext(const WebSocketConnectionPtr &wsConnPtr, long in)
 {
     auto c = wsConnPtr->getContext<std::map<std::string, std::vector<int> >>();
     c->at("admin"s)[0] = in;
 }
-int getAdminContext(const WebSocketConnectionPtr &wsConnPtr){
+long getAdminContext(const WebSocketConnectionPtr &wsConnPtr){
     auto c = wsConnPtr->getContext<std::map<std::string, std::vector<int> >>();
     return c->at("admin"s)[0];
 }
-void setUserContext(const WebSocketConnectionPtr &wsConnPtr, int in)
+void setUserContext(const WebSocketConnectionPtr &wsConnPtr, long in)
 {
     auto c = wsConnPtr->getContext<std::map<std::string, std::vector<int> >>();
     c->at("user"s)[0] = in;
 }
-int getUserContext(const WebSocketConnectionPtr &wsConnPtr){
+long getUserContext(const WebSocketConnectionPtr &wsConnPtr){
     auto c = wsConnPtr->getContext<std::map<std::string, std::vector<int> >>();
     return c->at("user"s)[0];
 }

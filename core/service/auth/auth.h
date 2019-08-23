@@ -43,9 +43,9 @@ int generateContext(const HttpRequestPtr &req, const WebSocketConnectionPtr &wsC
 void deleteAdminSession(const WebSocketConnectionPtr &wsConnPtr);
 void deleteuserSession(const WebSocketConnectionPtr &wsConnPtr);
 
-void setAdminContext( const WebSocketConnectionPtr &wsConnPtr, int in);
-int getAdminContext(const WebSocketConnectionPtr &wsConnPtr);
-void setUserContext( const WebSocketConnectionPtr &wsConnPtr, int in);
-int getUserContext(const WebSocketConnectionPtr &wsConnPtr);
+void setAdminContext( const WebSocketConnectionPtr &wsConnPtr, long in);
+long getAdminContext(const WebSocketConnectionPtr &wsConnPtr);
+void setUserContext( const WebSocketConnectionPtr &wsConnPtr, long in);
+long getUserContext(const WebSocketConnectionPtr &wsConnPtr);
 
 #endif // AUTH_H
