@@ -1,7 +1,5 @@
 #include "EchoWebSocket.h"
 
-// move this functionality to the class:
-#include "core/service/auth/auth.h"
 #include <unistd.h>
 #include "caf.h"
 #include "caf/all.hpp"
@@ -17,6 +15,7 @@ using namespace  caf;
 using std::endl;
 EchoWebSocket::EchoWebSocket()
 {
+
 }
 void EchoWebSocket::handleNewMessage(const WebSocketConnectionPtr &wsConnPtr, std::string &&message,
                                    const WebSocketMessageType &type) {
@@ -51,19 +50,13 @@ globalCAF.self->request(globalCAF.mainactor, caf::infinite, run_atom::value,  ws
    //nocaf.blocking_run();
 }
 void EchoWebSocket::handleNewConnection(const HttpRequestPtr &req, const WebSocketConnectionPtr &wsConnPtr) {
-    clientPtr = drogon::app().getDbClient("sce");
-    //sleep(1);
+   clientPtr = drogon::app().getDbClient("sce");
     // save the cookie in contex, because its not available on other handler
    // LOG_DEBUG << "new websocket connection!\n";
     //auto &key=req->getHeader("Sec-WebSocket-Key");
     //LOG_DEBUG << key;
-
-    std::shared_ptr<Context> context =  std::make_shared<Context>();
+    std::shared_ptr<Context> context =  std::make_shared<Context>(req);
     wsConnPtr->setContext(context);
-    auto adminContext = generateContext(req, wsConnPtr, "admin");
-    context->admin = adminContext;
-    auto userContext = generateContext(req, wsConnPtr, "user");
-    context->user = userContext;
     // LOG_DEBUG << req->getCookie("admin");
     for (auto i : req->cookies()) {
         printf("%s,%s", i.first.c_str(), i.second.c_str());

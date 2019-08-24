@@ -82,7 +82,7 @@ json Auth::adminLogin( json event, json args)
             cookie_value["admin"] = rs[0]["id"].as<int>();
             cookie_result[1] = cookie_value;
 
-            setAdminContext(wsConnPtr, rs[0]["id"].as<int>());
+            wsConnPtr->getContext<Context>()->admin = rs[0]["id"].as<int>();
 
             json final;
             final[0] = login_result;
@@ -99,7 +99,7 @@ json Auth::adminLogin( json event, json args)
 }
 json Auth::adminLogout( json event, json )
 {
-    deleteAdminSession(wsConnPtr);
+    wsConnPtr->getContext<Context>()->deleteAdminSession();
     json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
 }
 json Auth::isAdminAuth( json event, json )
@@ -108,7 +108,7 @@ json Auth::isAdminAuth( json event, json )
     json value;
     value[0] = event;
 
-    long c = getAdminContext(wsConnPtr);
+    long c = wsConnPtr->getContext<Context>()->admin;
     bool result = false;
     if (c != 0) { result = true; } else { result = false; }
     value[1] = result;
@@ -176,7 +176,7 @@ json Auth::userLogin( json event, json args)
             cookie_value["user"] = rs[0]["id"].as<int>();
             cookie_result[1] = cookie_value;
 
-            setUserContext(wsConnPtr, rs[0]["id"].as<int>());
+            wsConnPtr->getContext<Context>()->user = rs[0]["id"].as<int>();
             json final;
             final[0] = login_result;
             final[1] = cookie_result;
@@ -192,7 +192,7 @@ json Auth::userLogin( json event, json args)
 }
 json Auth::userId( json event, json )
 {
-    long c = getUserContext(wsConnPtr);
+    long c =  wsConnPtr->getContext<Context>()->user;
     if (c != 0) {
         auto sqlSession = "SELECT key, value FROM user1.session where id = $1";
         try {
@@ -229,7 +229,7 @@ json Auth::userId( json event, json )
 }
 json Auth::userLogout( json event, json )
 {
-    deleteuserSession(wsConnPtr);
+     wsConnPtr->getContext<Context>()->deleteuserSession();
     json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
 }
 json Auth::isUserAuth( json event, json )
@@ -237,14 +237,14 @@ json Auth::isUserAuth( json event, json )
     json ret;
     json value;
     value[0] = event;
-    long c = getUserContext(wsConnPtr);
+    long c = wsConnPtr->getContext<Context>()->user;
     if (c != 0) { value[1] = true; } else { value[1] = false; }
     ret[0]=value;
     return ret;
 }
 json Auth::checkout( json event, json args)
 {
-    long c = getUserContext(wsConnPtr);
+    long c = wsConnPtr->getContext<Context>()->user;
     printJson(args);
     if (c != 0) {
         auto sqlSession = "SELECT key, value FROM user1.session where id = $1";
@@ -272,7 +272,7 @@ json Auth::checkout( json event, json args)
  // Save Image meta on server temporary
 json Auth::saveImageMeta( json event, json args)
 {
-    long c = getAdminContext(wsConnPtr);
+    long c = wsConnPtr->getContext<Context>()->admin;
 
     auto strSql = "INSERT INTO user1.temp_image ( session_id, event, name, size, type ) VALUES( $1, $2, $3, $4, $5 )";
     try {
@@ -285,73 +285,6 @@ json Auth::saveImageMeta( json event, json args)
     }
 }
 //--------------------------
-int generateContext(const HttpRequestPtr &req, const WebSocketConnectionPtr &wsConnPtr, std::string account_type) {
-    auto c = req->getCookie(account_type);
-    if (c.empty()) {
-        return 0;
-    } else {
-        auto sqlSession = "SELECT * FROM user1.session where id = $1";
-        try {
-            auto transPtr = clientPtr->newTransaction();
-            auto r = transPtr->execSqlSync(sqlSession, c);
-            if (r.size() != 0) {
-                auto i = r[0]["id"].as<int>();
-                return i;
-            } else {
-                return 0;
-            }
-        } catch (const std::exception &e) {
-            std::cerr << e.what() << std::endl;
-            return 0;
-        }
-    }
-}
-
-void deleteAdminSession(const WebSocketConnectionPtr &wsConnPtr) {
-    long c = getAdminContext(wsConnPtr);
-    if (c != 0) {
-        auto sqlSession = "DELETE FROM user1.session where id = $1";
-        try {
-            auto transPtr = clientPtr->newTransaction();
-            auto r = transPtr->execSqlSync(sqlSession, c);
-            setAdminContext(wsConnPtr, 0);
-        } catch (const std::exception &e) {
-            std::cerr << e.what() << std::endl;
-        }
-    }
-}
-void deleteuserSession(const WebSocketConnectionPtr &wsConnPtr) {
-    long c = getUserContext(wsConnPtr);
-    if (c != 0) {
-        auto sqlSession = "DELETE FROM user1.session where id = $1";
-        try {
-            auto transPtr = clientPtr->newTransaction();
-            auto r = transPtr->execSqlSync(sqlSession, c);
-            setUserContext(wsConnPtr, 0);
-        } catch (const std::exception &e) {
-            std::cerr << e.what() << std::endl;
-        }
-    }
-}
-
-void setAdminContext(const WebSocketConnectionPtr &wsConnPtr, long in)
-{
-    auto c = wsConnPtr->getContext<Context>();
-    c->admin = in;
-}
-long getAdminContext(const WebSocketConnectionPtr &wsConnPtr){
-    auto c = wsConnPtr->getContext<Context>();
-    return c->admin;
-}
-void setUserContext(const WebSocketConnectionPtr &wsConnPtr, long in)
-{
-    auto c = wsConnPtr->getContext<Context>();
-    c->user = in;
-}
-long getUserContext(const WebSocketConnectionPtr &wsConnPtr){
-    auto c = wsConnPtr->getContext<Context>();
-    return c->user;
-}
 
 // ------------------
 json Auth::thumb_data( json event, json args)
@@ -406,7 +339,7 @@ json Auth::thumb_data( json event, json args)
 // save image in disk and return temporary id:
 json Auth::save_setting_attachment(json event, std::string &message)
 {
-    auto session_id = getAdminContext(wsConnPtr);
+    auto session_id = wsConnPtr->getContext<Context>()->admin;
     auto strSql = sel_("user1.temp_image", "event,  name, size, type", "where session_id = $1");
     auto transPtr = clientPtr->newTransaction();
     try {
@@ -444,7 +377,6 @@ json Auth::save_setting_attachment(json event, std::string &message)
             i++;
         }
         name = new_name;
-
 
         std::ofstream myfile;
         myfile.open(home.string() + "/fileuploads/" + name);

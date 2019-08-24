@@ -34,18 +34,8 @@ private:
     //Binary functin:
     json save_setting_attachment(json event, std::string &message);
 
-
     const WebSocketConnectionPtr& wsConnPtr;
-
-
 };
-int generateContext(const HttpRequestPtr &req, const WebSocketConnectionPtr &wsConnPtr, std::string account_type);
-void deleteAdminSession(const WebSocketConnectionPtr &wsConnPtr);
-void deleteuserSession(const WebSocketConnectionPtr &wsConnPtr);
 
-void setAdminContext( const WebSocketConnectionPtr &wsConnPtr, long in);
-long getAdminContext(const WebSocketConnectionPtr &wsConnPtr);
-void setUserContext( const WebSocketConnectionPtr &wsConnPtr, long in);
-long getUserContext(const WebSocketConnectionPtr &wsConnPtr);
 
 #endif // AUTH_H

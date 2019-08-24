@@ -65,6 +65,8 @@ using std::chrono::seconds;
 
 #include "json.hpp"
 
+#include "context.h"
+
 #define REGISTER(s, T)\
     else if (in[0][1].get<std::string>()==s){\
     T p{};\
@@ -266,7 +268,7 @@ json MainActor::handleBinaryMessage(const WebSocketConnectionPtr &wsConnPtr, std
 {
     json event;
     try {
-        auto c = getAdminContext(wsConnPtr);
+        long c = wsConnPtr->getContext<Context>()->admin;
         auto sqlSession = "SELECT event FROM user1.temp_image where session_id = $1";
         auto r = clientPtr->execSqlSync(sqlSession, c);
 
@@ -399,7 +401,7 @@ json NoCAF::handleBinaryMessage(const WebSocketConnectionPtr &, std::string &mes
 {
     json event;
     try {
-        auto c = getAdminContext(wsConnPtr);
+        long c = wsConnPtr->getContext<Context>()->admin;
         auto sqlSession = "SELECT event FROM user1.temp_image where session_id = $1";
         auto r = clientPtr->execSqlSync(sqlSession, c);
 
