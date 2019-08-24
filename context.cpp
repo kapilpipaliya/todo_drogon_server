@@ -12,6 +12,7 @@ int Context::generateContext(const HttpRequestPtr &req, std::string account_type
     } else {
         auto sqlSession = "SELECT * FROM user1.session where id = $1";
         try {
+            auto clientPtr = drogon::app().getDbClient("sce");
             auto transPtr = clientPtr->newTransaction();
             auto r = transPtr->execSqlSync(sqlSession, c);
             if (r.size() != 0) {
@@ -31,6 +32,7 @@ void Context::deleteAdminSession() {
     if (admin != 0) {
         auto sqlSession = "DELETE FROM user1.session where id = $1";
         try {
+            auto clientPtr = drogon::app().getDbClient("sce");
             auto transPtr = clientPtr->newTransaction();
             auto r = transPtr->execSqlSync(sqlSession, admin);
             admin = 0;
@@ -43,6 +45,7 @@ void Context::deleteuserSession() {
     if (user != 0) {
         auto sqlSession = "DELETE FROM user1.session where id = $1";
         try {
+            auto clientPtr = drogon::app().getDbClient("sce");
             auto transPtr = clientPtr->newTransaction();
             auto r = transPtr->execSqlSync(sqlSession, user);
             user = 0 ;
