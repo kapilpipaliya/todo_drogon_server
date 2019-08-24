@@ -5,6 +5,7 @@
 #include "../../../EchoWebSocket.h"
 #include <boost/filesystem.hpp>
 #include "../../sql/query.h"
+#include "../../../context.h"
 using namespace std::literals;
 Auth::Auth(const WebSocketConnectionPtr& wsConnPtr_): wsConnPtr(wsConnPtr_)
 {
@@ -335,23 +336,22 @@ void deleteuserSession(const WebSocketConnectionPtr &wsConnPtr) {
 
 void setAdminContext(const WebSocketConnectionPtr &wsConnPtr, long in)
 {
-    auto c = wsConnPtr->getContext<std::map<std::string, std::vector<int> >>();
-    c->at("admin"s)[0] = in;
+    auto c = wsConnPtr->getContext<Context>();
+    c->admin = in;
 }
 long getAdminContext(const WebSocketConnectionPtr &wsConnPtr){
-    auto c = wsConnPtr->getContext<std::map<std::string, std::vector<int> >>();
-    return c->at("admin"s)[0];
+    auto c = wsConnPtr->getContext<Context>();
+    return c->admin;
 }
 void setUserContext(const WebSocketConnectionPtr &wsConnPtr, long in)
 {
-    auto c = wsConnPtr->getContext<std::map<std::string, std::vector<int> >>();
-    c->at("user"s)[0] = in;
+    auto c = wsConnPtr->getContext<Context>();
+    c->user = in;
 }
 long getUserContext(const WebSocketConnectionPtr &wsConnPtr){
-    auto c = wsConnPtr->getContext<std::map<std::string, std::vector<int> >>();
-    return c->at("user"s)[0];
+    auto c = wsConnPtr->getContext<Context>();
+    return c->user;
 }
-
 
 // ------------------
 json Auth::thumb_data( json event, json args)

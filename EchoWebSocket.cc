@@ -9,6 +9,7 @@
 #include <chrono>
 //using namespace drogon_model::postgres;
 #include "mainactor.h"
+#include "context.h"
 using namespace std::literals;
 DbClientPtr clientPtr = nullptr;
 //using run_atom = caf::atom_constant<caf::atom("run")>;
@@ -57,14 +58,12 @@ void EchoWebSocket::handleNewConnection(const HttpRequestPtr &req, const WebSock
     //auto &key=req->getHeader("Sec-WebSocket-Key");
     //LOG_DEBUG << key;
 
-    std::shared_ptr<std::map<std::string, std::vector<int> >> k(new std::map<std::string, std::vector<int> >);
-    k->insert(std::pair<std::string, std::vector<int> >("admin"s, {0}));
-    k->insert(std::pair<std::string, std::vector<int> >("user"s, {0}));
-    wsConnPtr->setContext(k);
+    std::shared_ptr<Context> context =  std::make_shared<Context>();
+    wsConnPtr->setContext(context);
     auto adminContext = generateContext(req, wsConnPtr, "admin");
-    setAdminContext(wsConnPtr, adminContext);
+    context->admin = adminContext;
     auto userContext = generateContext(req, wsConnPtr, "user");
-    setUserContext(wsConnPtr, userContext);
+    context->user = userContext;
     // LOG_DEBUG << req->getCookie("admin");
     for (auto i : req->cookies()) {
         printf("%s,%s", i.first.c_str(), i.second.c_str());
