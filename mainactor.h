@@ -8,19 +8,17 @@ using nlohmann:: json;
 using namespace drogon;
 
 #include "caf/all.hpp"
+#include "./mainactortype.h"
 
-using run_atom = caf::atom_constant<caf::atom("run")>;
 class MainActor : public caf::event_based_actor
 {
 public:
     MainActor(caf:: actor_config& cfg );
     ~MainActor() override;
-    json handleTextMessage(const WebSocketConnectionPtr &wsConnPtr, std::string &&message, json in);
-    json handleBinaryMessage(const WebSocketConnectionPtr &, std::string &message);
-private:
-    void blocking_run(const WebSocketConnectionPtr &wsConnPtr, std::string &&message, const WebSocketMessageType &type);
-    caf:: behavior    running_job; // initial behavior
 protected:
    caf::behavior make_behavior() override;
+private:
+   void passToUser(MainActorType actortype, const WebSocketConnectionPtr &wsConnPtr, std::string &&message, const WebSocketMessageType &type);
+   std::unordered_map<WebSocketConnectionPtr, caf::actor> actorMap;
 };
 #endif // MESSAGEHANDLE_H

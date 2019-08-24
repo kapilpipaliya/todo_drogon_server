@@ -10,9 +10,10 @@
 #include "context.h"
 using namespace std::literals;
 DbClientPtr clientPtr = nullptr;
-//using run_atom = caf::atom_constant<caf::atom("run")>;
 using namespace  caf;
 using std::endl;
+#include "mainactortype.h"
+
 EchoWebSocket::EchoWebSocket()
 {
 
@@ -23,7 +24,7 @@ void EchoWebSocket::handleNewMessage(const WebSocketConnectionPtr &wsConnPtr, st
 //   fflush(stdout);
 //std::chrono::seconds(10)
 //    globalCAF.self.
-globalCAF.self->request(globalCAF.mainactor, caf::infinite, run_atom::value,  wsConnPtr, std::move(message), type).receive(
+globalCAF.self->request(globalCAF.mainactor, caf::infinite, run_atom::value,  MainActorType::JAdmin, wsConnPtr, std::move(message), type).receive(
             [&]() {
                 fprintf(stdout, "Output: %s\n", message.c_str());
                 fflush(stdout);
@@ -50,5 +51,6 @@ void EchoWebSocket::handleNewConnection(const HttpRequestPtr &req, const WebSock
     // create connection to the database and keep it open. Will Increase Performance.
 }
 void EchoWebSocket::handleConnectionClosed(const WebSocketConnectionPtr &wsConnPtr) {
+    globalCAF.self->request(globalCAF.mainactor, caf::infinite, exit_atom::value,  wsConnPtr);
     //LOG_DEBUG << "connection closed!\n" <<wsConnPtr->peerAddr().toIp();
 }
