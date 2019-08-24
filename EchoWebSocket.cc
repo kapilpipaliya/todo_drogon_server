@@ -33,21 +33,6 @@ globalCAF.self->request(globalCAF.mainactor, caf::infinite, run_atom::value,  ws
                  aout(globalCAF.self) << " -> " << globalCAF.self->system().render(err) << err.code() << endl;
             }
           );
-//   auto main = globalCAF.sys.spawn<MainActor>();
-//   caf::scoped_actor self{globalCAF.sys};
-//   auto mainactor = self->spawn<MainActor>();
-//    self->request(mainactor, std::chrono::seconds(10), run_atom::value,  wsConnPtr, std::move(message), type);
-//                   .then(
-//               [&](double z) {
-//               fprintf(stdout, "Done Message handling\n");
-//               fflush(stdout);
-//               },
-//               [&](const caf::error& err) {
-//                 fprintf(stdout, "Error Message handling %hhu\n", err.code());
-//                 fflush(stdout);
-//               });
-   //NoCAF nocaf{wsConnPtr, std::move(message), type};
-   //nocaf.blocking_run();
 }
 void EchoWebSocket::handleNewConnection(const HttpRequestPtr &req, const WebSocketConnectionPtr &wsConnPtr) {
    clientPtr = drogon::app().getDbClient("sce");

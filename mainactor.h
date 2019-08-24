@@ -9,21 +9,6 @@ using namespace drogon;
 
 #include "caf/all.hpp"
 
-class NoCAF {
-public:
-    NoCAF(const WebSocketConnectionPtr &wsConnPtr, std::string &&message,
-                  const WebSocketMessageType &type );
-    //~NoCAF() override;
-    json handleTextMessage(json in);
-    json handleBinaryMessage(const WebSocketConnectionPtr &, std::string &message);
-    void blocking_run();
-private:
-    const WebSocketConnectionPtr wsConnPtr;
-    json in;
-    std::string message;
-    const WebSocketMessageType type;
-};
-
 using run_atom = caf::atom_constant<caf::atom("run")>;
 class MainActor : public caf::event_based_actor
 {
