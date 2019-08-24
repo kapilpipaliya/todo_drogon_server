@@ -19,18 +19,18 @@ EchoWebSocket::EchoWebSocket()
 }
 void EchoWebSocket::handleNewMessage(const WebSocketConnectionPtr &wsConnPtr, std::string &&message,
                                    const WebSocketMessageType &type) {
-   fprintf(stdout, "%s\n", message.c_str());
-   fflush(stdout);
+//   fprintf(stdout, "Input: %s\n", message.c_str());
+//   fflush(stdout);
 //std::chrono::seconds(10)
 //    globalCAF.self.
 globalCAF.self->request(globalCAF.mainactor, caf::infinite, run_atom::value,  wsConnPtr, std::move(message), type).receive(
             [&]() {
-       fprintf(stdout, "%s\n", message.c_str());
-       fflush(stdout);
-    return;
+                fprintf(stdout, "Output: %s\n", message.c_str());
+                fflush(stdout);
+                return;
             },
             [&](error& err) {
-              aout(globalCAF.self) << " -> " << globalCAF.self->system().render(err) << err.code() << endl;
+                 aout(globalCAF.self) << " -> " << globalCAF.self->system().render(err) << err.code() << endl;
             }
           );
 //   auto main = globalCAF.sys.spawn<MainActor>();

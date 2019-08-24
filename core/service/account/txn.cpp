@@ -89,12 +89,14 @@ Txn::Txn()
 }
 
 json Txn::del(const json event, const json args) {
+    // to support global filter, get first all ids b selected filter and for each id delete.
     auto transPtr = clientPtr->newTransaction();
     try {
+        auto txn_id = args[0][0].get<int>();
         auto txn_del = "DELETE FROM account.txn WHERE id = $1";
         auto order_item_del = "DELETE FROM order1.order_item WHERE txn_id = $1";
-        transPtr->execSqlSync(order_item_del, args[0].get<int>());
-        transPtr->execSqlSync(txn_del, args[0].get<int>());
+        transPtr->execSqlSync(order_item_del, txn_id);
+        transPtr->execSqlSync(txn_del, txn_id);
 
         json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {

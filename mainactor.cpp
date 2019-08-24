@@ -88,6 +88,32 @@ MainActor::MainActor(caf::actor_config &cfg) : caf::event_based_actor(cfg)
         fprintf(stdout, "\nMain Actor Error :\n");
         fflush(stdout);
     });
+    set_down_handler([=](caf::down_msg&) {
+        fprintf(stdout, "\nMain Actor Error Down Error:\n");
+        fflush(stdout);
+    });
+    // If this exception error occur: server freeze.
+    set_exception_handler([=](caf::scheduled_actor*, std::exception_ptr& eptr)-> caf::error {
+        try {
+            if (eptr) {
+                std::rethrow_exception(eptr);
+            }
+        } catch(const std::exception& e) {
+            fprintf(stdout, "\nMain Actor Exception Error : %s\n", e.what());
+            fflush(stdout);
+        }
+        return caf::make_error(caf::pec::success);
+    });
+    set_default_handler([=](scheduled_actor* ptr, caf::message_view& x) -> caf::result<caf::message> {
+        fprintf(stdout, "\nunexpected message, I will Qui\n");
+        fflush(stdout);
+        CAF_LOG_WARNING("unexpected message, I will Quit" << CAF_ARG(x.content()));
+        aout(ptr) << "*** unexpected message [id: " << ptr->id()
+                  << ", name: " << ptr->name() << "]: "
+                  << x.content().stringify()
+                  << std::endl;
+        return caf::sec::unexpected_message;
+      });
 
     //Actors can store a set of callbacks—usually implemented as lambda expressions—using either
     //behavior or message_handler. The former stores an optional timeout, while the latter is composable.
@@ -97,7 +123,12 @@ MainActor::MainActor(caf::actor_config &cfg) : caf::event_based_actor(cfg)
     running_job.assign(
                 [=, this](run_atom, const WebSocketConnectionPtr &wsConnPtr, std::string message,
                 const WebSocketMessageType &type) {
-        blocking_run(wsConnPtr, std::move(message), type);
+
+            try {
+                blocking_run(wsConnPtr, std::move(message), type);
+            } catch (const std::exception &e) {
+                std::cerr << e.what() << std::endl;
+            }
     }
     );
     fprintf(stdout, "Constructor:\n");
@@ -166,7 +197,7 @@ void MainActor::blocking_run(const WebSocketConnectionPtr &wsConnPtr, std::strin
     default:
         break;
 }
-fprintf(stdout, "\nI Done:");
+fprintf(stdout, "\nI Done:\n");
 fflush(stdout);
 }
 
@@ -177,7 +208,11 @@ caf::behavior MainActor::make_behavior()
     // run the job when message arrive for it.
       return {
         [this](run_atom, const WebSocketConnectionPtr &wsConnPtr, std::string message, const WebSocketMessageType &type) -> caf::result<void>  {
-         blocking_run(wsConnPtr, std::move(message), type);
+              try{
+              blocking_run(wsConnPtr, std::move(message), type);
+          } catch (const std::exception &e) {
+              std::cerr << e.what() << std::endl;
+          }
          return {};
         }
     };

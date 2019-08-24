@@ -253,11 +253,13 @@ json Purity::upd( json event, json args) {
 }
 
 json Purity::del( json event, json args) {
+     // to support global filter, get first all ids b selected filter and for each id delete.
     auto transPtr = clientPtr->newTransaction();
     try {
-        transPtr->execSqlSync("DELETE FROM " "material.purity_metal" " WHERE purity_id = $1", args[0].get<int>());
-        transPtr->execSqlSync("DELETE FROM " "material.purity_tone" " WHERE purity_id = $1", args[0].get<int>());
-        transPtr->execSqlSync("DELETE FROM " "material.purity" " WHERE id = $1", args[0].get<int>());
+        auto post_id = args[0][0].get<int>();
+        transPtr->execSqlSync("DELETE FROM " "material.purity_metal" " WHERE purity_id = $1", post_id);
+        transPtr->execSqlSync("DELETE FROM " "material.purity_tone" " WHERE purity_id = $1", post_id);
+        transPtr->execSqlSync("DELETE FROM " "material.purity" " WHERE id = $1", post_id);
         
         json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {

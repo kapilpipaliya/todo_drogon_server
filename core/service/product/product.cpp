@@ -1068,8 +1068,7 @@ json Product::upd( json event, json args) {
 }
 
 json Product::del( json event, json args) {
-    printJson(args);
-
+     // to support global filter, get first all ids b selected filter and for each id delete.
     auto transPtr = clientPtr->newTransaction();
     try {
         auto post_del = "DELETE FROM post.post WHERE id = $1";
@@ -1090,24 +1089,25 @@ json Product::del( json event, json args) {
         auto post_certified_by_del = "DELETE FROM product.post_certified_by WHERE post_id = $1";
         auto post_policy_del = "DELETE FROM product.post_policy WHERE post_id = $1";
 
-        transPtr->execSqlSync(post_policy_del, args[0].get<int>());
-        transPtr->execSqlSync(post_certified_by_del, args[0].get<int>());
-        transPtr->execSqlSync(post_cs_total_del, args[0].get<int>());
-        transPtr->execSqlSync(post_cs_price_del, args[0].get<int>());
-        transPtr->execSqlSync(post_cs_sizes_del, args[0].get<int>());
-        transPtr->execSqlSync(post_diamond_price_id, args[0].get<int>());
-        transPtr->execSqlSync(post_diamond_sizes_del, args[0].get<int>());
-        transPtr->execSqlSync(post_attachment_del, args[0].get<int>());
-        transPtr->execSqlSync(post_purity_tone_del, args[0].get<int>());
-        transPtr->execSqlSync(post_purity_del, args[0].get<int>());
-        transPtr->execSqlSync(post_tone_del, args[0].get<int>());
-        transPtr->execSqlSync(post_tone_del, args[0].get<int>());
-        transPtr->execSqlSync(post_clarity_del, args[0].get<int>());
-        transPtr->execSqlSync(post_category_del, args[0].get<int>());
-        transPtr->execSqlSync(post_tag_del, args[0].get<int>());
-        //transPtr->execSqlSync(tags_del, args[0].get<int>()); // Fix This. If Tag is not used in any product delete it
-        transPtr->execSqlSync(product_del, args[0].get<int>());
-        transPtr->execSqlSync(post_del, args[0].get<int>());
+        auto post_id = args[0][0].get<int>();
+        transPtr->execSqlSync(post_policy_del, post_id);
+        transPtr->execSqlSync(post_certified_by_del, post_id);
+        transPtr->execSqlSync(post_cs_total_del, post_id);
+        transPtr->execSqlSync(post_cs_price_del, post_id);
+        transPtr->execSqlSync(post_cs_sizes_del, post_id);
+        transPtr->execSqlSync(post_diamond_price_id, post_id);
+        transPtr->execSqlSync(post_diamond_sizes_del, post_id);
+        transPtr->execSqlSync(post_attachment_del, post_id);
+        transPtr->execSqlSync(post_purity_tone_del, post_id);
+        transPtr->execSqlSync(post_purity_del, post_id);
+        transPtr->execSqlSync(post_tone_del, post_id);
+        transPtr->execSqlSync(post_tone_del, post_id);
+        transPtr->execSqlSync(post_clarity_del, post_id);
+        transPtr->execSqlSync(post_category_del, post_id);
+        transPtr->execSqlSync(post_tag_del, post_id);
+        //transPtr->execSqlSync(tags_del, post_id); // Fix This. If Tag is not used in any product delete it
+        transPtr->execSqlSync(product_del, post_id);
+        transPtr->execSqlSync(post_del, post_id);
 
 
         

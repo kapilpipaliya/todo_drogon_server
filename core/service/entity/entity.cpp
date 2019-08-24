@@ -244,9 +244,10 @@ json Entity::upd( json event, json args_) {
     }
 }
 json Entity::del( json event, json args) {
+     // to support global filter, get first all ids b selected filter and for each id delete.
     auto transPtr = clientPtr->newTransaction();
     try {
-        auto entity_id = args[0].get<int>();
+        auto entity_id = args[0][0].get<int>();
         transPtr->execSqlSync(dele_("setting.notification", "where from_entity_id = $1"), entity_id);
         transPtr->execSqlSync(dele_("setting.notification", "where to_entity_id = $1"), entity_id);
 

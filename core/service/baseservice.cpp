@@ -48,7 +48,10 @@ json BaseService::del(json event, json args)
         auto transPtr = clientPtr->newTransaction();
         setupTable();
         t.updateFilterBase(args[0]);
-        transPtr->execSqlSync(t.m_query.buildDeleteQuery());
+        auto res = transPtr->execSqlSync(t.m_query.buildDeleteQuery());
+        if (res.size() > 1){
+            throw("not valid arguments");
+        }
         // affected rows should be returned too.
         //transPtr->execSqlSync("DELETE FROM " + t.m_table.toDisplayString() + " WHERE id = $1", args[0]);
         json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;

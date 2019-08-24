@@ -49,10 +49,13 @@ void Setting::setupTable()
 // where key = $1
 json Setting::del( json event, json args)
 {
+     // to support global filter, get first all ids b selected filter and for each id delete.
     auto transPtr = clientPtr->newTransaction();
     try {
-        transPtr->execSqlSync("DELETE FROM setting.setting WHERE key = $1", args[0].get<std::string>());
-        
+        auto res = transPtr->execSqlSync("DELETE FROM setting.setting WHERE key = $1", args[0][0].get<std::string>());
+        if (res.size() > 1){
+            throw("not valid arguments");
+        }
         json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
         

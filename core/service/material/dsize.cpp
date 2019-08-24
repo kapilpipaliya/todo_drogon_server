@@ -261,12 +261,14 @@ json DSize::upd( json event, json args) {
 }
 
 json DSize::del( json event, json args) {
+     // to support global filter, get first all ids b selected filter and for each id delete.
     auto transPtr = clientPtr->newTransaction();
     try {
         auto get_row = "SELECT id, size_id FROM material.diamond_size_meta where id = $1";
-        auto r = transPtr->execSqlSync(get_row, args[0].get<int>());
+        auto id = args[0][0].get<int>();
+        auto r = transPtr->execSqlSync(get_row, id);
 
-        transPtr->execSqlSync("DELETE FROM " "material.diamond_size_meta" " WHERE id = $1", args[0].get<int>());
+        transPtr->execSqlSync("DELETE FROM " "material.diamond_size_meta" " WHERE id = $1", id);
 
         auto d_size_count = "SELECT count(*) FROM material.diamond_size_meta where size_id = $1";
         auto cs_size_count = "SELECT count(*) FROM material.color_stone_size_meta where size_id = $1";
