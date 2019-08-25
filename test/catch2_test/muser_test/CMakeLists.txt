@@ -12,17 +12,14 @@ find_package(fmt REQUIRED)
 find_package(Catch2 REQUIRED)
 find_package(Poco REQUIRED COMPONENTS Foundation JSON Util XML Zip)
 
-project(jadmin_test LANGUAGES CXX VERSION 0.0.1)
+project(muser_test LANGUAGES CXX VERSION 0.0.1)
 set(CMAKE_CXX_FLAGS "-std=c++17 -Wall -Wextra")
 include_directories("${PROJECT_SOURCE_DIR}/src")
-file(GLOB_RECURSE lib_SOURCES "src/*.cpp" "src/*/*.cpp")
-file(GLOB_RECURSE test_SOURCES "test/*.cpp")
-add_library(test_base SHARED ${lib_SOURCES})
-install (TARGETS test_base DESTINATION lib)
 
+file(GLOB_RECURSE test_SOURCES "*.cpp")
 
-add_executable(jadmin_test ${test_SOURCES})
-target_link_libraries(jadmin_test test_base Catch2::Catch2
+add_executable(muser_test ${test_SOURCES})
+target_link_libraries(muser_test test_base Catch2::Catch2
   Threads::Threads
   ZLIB::ZLIB
   ${UUID_LIBRARY}
@@ -35,4 +32,4 @@ target_link_libraries(jadmin_test test_base Catch2::Catch2
 
 include(CTest)
 include(Catch)
-catch_discover_tests(jadmin_test)
+catch_discover_tests(muser_test)
