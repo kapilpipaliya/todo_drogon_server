@@ -25,7 +25,7 @@ nlohmann::json WSTestBase::jsonparse(std::string msg)
 }
 void WSTestBase::init()
 {
-    req->setPath("/echo");
+    req->setPath("/jadmin");
     setMessageHandler();
     setConnectionClosedHandler();
     connectToServer();
