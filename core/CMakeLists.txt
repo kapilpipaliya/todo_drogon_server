@@ -51,16 +51,22 @@ actor/validation.cpp
 
     strfns.cpp
 )
-AUX_SOURCE_DIRECTORY(./service JEWEL_SRC)
-AUX_SOURCE_DIRECTORY(./service/auth JEWEL_SRC)
-AUX_SOURCE_DIRECTORY(./service/post JEWEL_SRC)
-AUX_SOURCE_DIRECTORY(./service/account JEWEL_SRC)
-AUX_SOURCE_DIRECTORY(./service/entity JEWEL_SRC)
-AUX_SOURCE_DIRECTORY(./service/material JEWEL_SRC)
-AUX_SOURCE_DIRECTORY(./service/menu JEWEL_SRC)
-AUX_SOURCE_DIRECTORY(./service/mfg JEWEL_SRC)
-AUX_SOURCE_DIRECTORY(./service/product JEWEL_SRC)
-AUX_SOURCE_DIRECTORY(./service/setting JEWEL_SRC)
+AUX_SOURCE_DIRECTORY(./service/jadmin JEWEL_SRC)
+AUX_SOURCE_DIRECTORY(./service/jadmin/auth JEWEL_SRC)
+AUX_SOURCE_DIRECTORY(./service/jadmin/post JEWEL_SRC)
+AUX_SOURCE_DIRECTORY(./service/jadmin/account JEWEL_SRC)
+AUX_SOURCE_DIRECTORY(./service/jadmin/entity JEWEL_SRC)
+AUX_SOURCE_DIRECTORY(./service/jadmin/material JEWEL_SRC)
+AUX_SOURCE_DIRECTORY(./service/jadmin/menu JEWEL_SRC)
+AUX_SOURCE_DIRECTORY(./service/jadmin/mfg JEWEL_SRC)
+AUX_SOURCE_DIRECTORY(./service/jadmin/product JEWEL_SRC)
+AUX_SOURCE_DIRECTORY(./service/jadmin/setting JEWEL_SRC)
+
+AUX_SOURCE_DIRECTORY(./service/juser JEWEL_SRC)
+
+AUX_SOURCE_DIRECTORY(./service/madmin JEWEL_SRC)
+
+AUX_SOURCE_DIRECTORY(./service/muser JEWEL_SRC)
 
 #set(JEWEL_RESOURCES
 #    languages.qrc
