@@ -18,5 +18,8 @@ private:
     void blocking_run(const WebSocketConnectionPtr &wsConnPtr, std::string &&message, const WebSocketMessageType &type);
     json handleTextMessage(const WebSocketConnectionPtr &wsConnPtr, std::string &&message, json in);
     json handleBinaryMessage(const WebSocketConnectionPtr &wsConnPtr, std::string &message);
+private:
+    //std::map<std::string, WebSocketConnectionPtr> _clientsMap; //UserID--->connection
+    //std::mutex _mapMtx;
 };
 #endif // JADMINACTOR_H

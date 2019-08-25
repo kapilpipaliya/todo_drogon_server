@@ -1,11 +1,10 @@
-#include "JAdminWebSock.h"
+#include "JAdminWebsock.h"
 
 #include <unistd.h>
 #include <chrono>
 
-#include "caf/all.hpp"
-#include "caf/io/all.hpp"
 #include "caf.h"
+#include "spdlog/spdlog.h"
 
 #include "mainactortype.h"
 #include "context.h"
@@ -13,25 +12,18 @@
 
 using namespace std::literals;
 using namespace  caf;
-using std::endl;
 
-EchoWebSocket::EchoWebSocket()
-{
-
-}
 void EchoWebSocket::handleNewMessage(const WebSocketConnectionPtr &wsConnPtr, std::string &&message,
                                    const WebSocketMessageType &type) {
-    // fprintf(stdout, "Input: %s\n", message.c_str());
-    // fflush(stdout);
+    // spdlog::info("Input: %s\n", message.c_str());
     // std::chrono::seconds(10)
     globalCAF.self->request(globalCAF.mainactor, caf::infinite, run_atom::value,  MainActorType::JAdmin, wsConnPtr, std::move(message), type).receive(
             [&]() {
-                fprintf(stdout, "Output: %s\n", message.c_str());
-                fflush(stdout);
+                //if(!message.empty()) spdlog::info("Output: {}\n", message.c_str());
                 return;
             },
             [&](error& err) {
-                 aout(globalCAF.self) << " -> " << globalCAF.self->system().render(err) << err.code() << endl;
+                 aout(globalCAF.self) << " -> " << globalCAF.self->system().render(err) << err.code() << std::endl;
             }
           );
 }
@@ -44,7 +36,7 @@ void EchoWebSocket::handleNewConnection(const HttpRequestPtr &req, const WebSock
     std::shared_ptr<Context> context =  std::make_shared<Context>(req);
     wsConnPtr->setContext(context);
     for (auto i : req->cookies()) {
-        printf("%s,%s", i.first.c_str(), i.second.c_str());
+        spdlog::info("{1}, {2}", i.first.c_str(), i.second.c_str());
         fflush(stdout);
     }
 }
