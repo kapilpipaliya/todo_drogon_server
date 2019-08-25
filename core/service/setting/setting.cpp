@@ -50,6 +50,7 @@ void Setting::setupTable()
 json Setting::del( json event, json args)
 {
      // to support global filter, get first all ids b selected filter and for each id delete.
+    auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     try {
         auto res = transPtr->execSqlSync("DELETE FROM setting.setting WHERE key = $1", args[0][0].get<std::string>());
@@ -65,6 +66,7 @@ json Setting::del( json event, json args)
 }
 json Setting::save( json event, json args) {
     // check if key exist
+    auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     auto y = transPtr->execSqlSync("select key from setting.setting where key = $1", args[0]["key"].get<std::string>());
     

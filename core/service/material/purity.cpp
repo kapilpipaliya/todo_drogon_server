@@ -152,6 +152,7 @@ json Purity::ins( json event, json args) {
     ReplaceAll2(strSql, "%1", metal_purity_table.schema());
     ReplaceAll2(strSql, "%2", metal_purity_table.name());
 
+    auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     try {
         auto x = transPtr->execSqlSync(
@@ -183,6 +184,7 @@ json Purity::upd( json event, json args) {
         ReplaceAll2(strSql, "%1", metal_purity_table.schema());
         ReplaceAll2(strSql, "%2", metal_purity_table.name());
 
+        auto clientPtr = drogon::app().getDbClient("sce");
         auto transPtr = clientPtr->newTransaction();
         try {
             transPtr->execSqlSync(strSql,
@@ -254,6 +256,7 @@ json Purity::upd( json event, json args) {
 
 json Purity::del( json event, json args) {
      // to support global filter, get first all ids b selected filter and for each id delete.
+    auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     try {
         auto post_id = args[0][0].get<int>();

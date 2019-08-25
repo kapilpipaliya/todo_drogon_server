@@ -1,4 +1,4 @@
-#include "EchoWebSocket.h"
+#include "JAdminWebSock.h"
 
 #include <unistd.h>
 #include <chrono>
@@ -14,8 +14,6 @@
 using namespace std::literals;
 using namespace  caf;
 using std::endl;
-
-DbClientPtr clientPtr = nullptr;
 
 EchoWebSocket::EchoWebSocket()
 {
@@ -38,8 +36,6 @@ void EchoWebSocket::handleNewMessage(const WebSocketConnectionPtr &wsConnPtr, st
           );
 }
 void EchoWebSocket::handleNewConnection(const HttpRequestPtr &req, const WebSocketConnectionPtr &wsConnPtr) {
-    // create connection to the database and keep it open. Will Increase Performance.
-    clientPtr = drogon::app().getDbClient("sce");
     // LOG_DEBUG << "new websocket connection!\n";
     // auto &key=req->getHeader("Sec-WebSocket-Key");
     // LOG_DEBUG << key;

@@ -225,6 +225,7 @@ nlohmann::json JUserActor::handleBinaryMessage(const WebSocketConnectionPtr &wsC
     try {
         long c = wsConnPtr->getContext<Context>()->admin;
         auto sqlSession = "SELECT event FROM user1.temp_image where session_id = $1";
+        auto clientPtr = drogon::app().getDbClient("sce");
         auto r = clientPtr->execSqlSync(sqlSession, c);
         if(r.size()!=0){
             try

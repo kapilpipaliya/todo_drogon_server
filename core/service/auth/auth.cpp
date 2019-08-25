@@ -2,7 +2,7 @@
 
 #include "../../strfns.h"
 #include "../../jsonfns.h"
-#include "../../../EchoWebSocket.h"
+
 #include <boost/filesystem.hpp>
 #include "../../sql/query.h"
 #include "../../../context.h"
@@ -56,6 +56,7 @@ json Auth::adminLogin( json event, json args)
 {
     auto sql = "select e.id from entity.entity e left join entity.entity_user as u on u.entity_id = e.id where e.email = $1 and u.password = $2";
     try {
+        auto clientPtr = drogon::app().getDbClient("sce");
         auto transPtr = clientPtr->newTransaction();
         auto r = transPtr->execSqlSync(sql, args["email"].get<std::string>(), args["pass"].get<std::string>());
 
@@ -122,6 +123,7 @@ json Auth::userRegister( json event, json args)
 
     std::string strSql = "INSERT INTO entity.entity ( entity_type_id, no, legal_name, slug, email) values($1, $2, $3, $4, $5) returning id";
     try {
+        auto clientPtr = drogon::app().getDbClient("sce");
         auto transPtr = clientPtr->newTransaction();
 
 
@@ -150,6 +152,7 @@ json Auth::userLogin( json event, json args)
 {
     auto sql = "select e.id from entity.entity e left join entity.entity_user as u on u.entity_id = e.id where e.email = $1 and u.password = $2";
     try {
+        auto clientPtr = drogon::app().getDbClient("sce");
         auto transPtr = clientPtr->newTransaction();
         auto r = transPtr->execSqlSync(sql, args["email"].get<std::string>(), args["pass"].get<std::string>());
 
@@ -196,6 +199,7 @@ json Auth::userId( json event, json )
     if (c != 0) {
         auto sqlSession = "SELECT key, value FROM user1.session where id = $1";
         try {
+            auto clientPtr = drogon::app().getDbClient("sce");
             auto transPtr = clientPtr->newTransaction();
             auto r = transPtr->execSqlSync(sqlSession, c);
             // send id
@@ -249,6 +253,7 @@ json Auth::checkout( json event, json args)
     if (c != 0) {
         auto sqlSession = "SELECT key, value FROM user1.session where id = $1";
         try {
+            auto clientPtr = drogon::app().getDbClient("sce");
             auto transPtr = clientPtr->newTransaction();
             auto r = transPtr->execSqlSync(sqlSession, c);
             // send id
@@ -276,6 +281,7 @@ json Auth::saveImageMeta( json event, json args)
 
     auto strSql = "INSERT INTO user1.temp_image ( session_id, event, name, size, type ) VALUES( $1, $2, $3, $4, $5 )";
     try {
+        auto clientPtr = drogon::app().getDbClient("sce");
         auto transPtr = clientPtr->newTransaction();
         auto r = transPtr->execSqlSync(strSql, c, args[0].dump(), args[1].get<std::string>(), args[2].get<long>(), args[3].get<std::string>());
         json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
@@ -304,6 +310,7 @@ json Auth::thumb_data( json event, json args)
     namespace fs = boost::filesystem;
     auto home = fs::path(getenv("HOME"));
 
+    auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     try {
         auto sql = "SELECT name FROM setting.image WHERE id = $1";
@@ -341,6 +348,7 @@ json Auth::save_setting_attachment(json event, std::string &message)
 {
     auto session_id = wsConnPtr->getContext<Context>()->admin;
     auto strSql = sel_("user1.temp_image", "event,  name, size, type", "where session_id = $1");
+    auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     try {
         auto r = transPtr->execSqlSync(strSql, session_id);

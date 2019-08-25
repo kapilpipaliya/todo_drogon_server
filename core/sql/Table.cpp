@@ -4,7 +4,6 @@
 #include <iostream>
 #include "condformat.h"
 #include <drogon/WebSocketController.h>
-#include "../../EchoWebSocket.h"
 
 Table::Table()
 {
@@ -23,6 +22,7 @@ bool Table::select()
 //    fflush(stdout);
     // crash !! auto clientPtr = drogon::app().getFastDbClient("sce");
 
+    auto clientPtr = drogon::app().getDbClient("sce");
     *clientPtr << q << Mode::Blocking >> [this](const Result &r) {
         result = r;
     } >> [q](const DrogonDbException &e) {

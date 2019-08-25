@@ -44,6 +44,7 @@ json Post1::ins( json event, json args) {
     ReplaceAll2(strSqlPost, "%1", post_table.schema());
     ReplaceAll2(strSqlPost, "%2", post_table.name());
 
+    auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     try {
         auto x = transPtr->execSqlSync(
@@ -84,6 +85,7 @@ json Post1::upd( json event, json args) {
         ReplaceAll2(strSqlPost, "%1", post_table.schema());
         ReplaceAll2(strSqlPost, "%2", post_table.name());
 
+        auto clientPtr = drogon::app().getDbClient("sce");
         auto transPtr = clientPtr->newTransaction();
         try {
             transPtr->execSqlSync(strSqlPost,

@@ -76,6 +76,7 @@ json CSSize::ins( json event, json args) {
     ReplaceAll2(strSql, "%2", size_meta_table.name());
 
     try {
+        auto clientPtr = drogon::app().getDbClient("sce");
         auto transPtr = clientPtr->newTransaction();
         int size_id;
         auto r = transPtr->execSqlSync(strSqlSizeSel, size_name);
@@ -166,6 +167,7 @@ json CSSize::upd( json event, json args) {
         std::string strSqlColorSizeCount = "SELECT count(*) FROM material.color_stone_size_meta cm WHERE cm.size_id = $1";
         std::string strSqlSizeDel = "DELETE FROM material.size WHERE id = $1";
 
+        auto clientPtr = drogon::app().getDbClient("sce");
         auto transPtr = clientPtr->newTransaction();
         try {
             int size_id;
@@ -238,6 +240,7 @@ json CSSize::upd( json event, json args) {
 
 json CSSize::del( json event, json args) {
      // to support global filter, get first all ids b selected filter and for each id delete.
+    auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     try {
         auto get_row = "SELECT id, size_id FROM material.color_stone_size_meta where id = $1";

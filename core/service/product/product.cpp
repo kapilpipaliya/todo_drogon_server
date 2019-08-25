@@ -902,6 +902,7 @@ json Product::ins( json event, json args) {
     ReplaceAll2(strSqlProduct, "%2", product_table.name());
 
 
+    auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     try {
         auto x = transPtr->execSqlSync(
@@ -998,6 +999,7 @@ json Product::upd( json event, json args) {
         ReplaceAll2(strSqlProduct, "%1", product_table.schema());
         ReplaceAll2(strSqlProduct, "%2", product_table.name());
 
+        auto clientPtr = drogon::app().getDbClient("sce");
         auto transPtr = clientPtr->newTransaction();
         try {
             transPtr->execSqlSync(strSqlPost,
@@ -1069,6 +1071,7 @@ json Product::upd( json event, json args) {
 
 json Product::del( json event, json args) {
      // to support global filter, get first all ids b selected filter and for each id delete.
+    auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     try {
         auto post_del = "DELETE FROM post.post WHERE id = $1";
@@ -1132,6 +1135,7 @@ json save_category( json event, json args) {
         ReplaceAll2(strSql, "%1", product_table.schema());
         ReplaceAll2(strSql, "%2", product_table.name());
 
+        auto clientPtr = drogon::app().getDbClient("sce");
         auto transPtr = clientPtr->newTransaction();
         try {
             transPtr->execSqlSync(strSql,
@@ -1155,6 +1159,7 @@ json save_category( json event, json args) {
         ReplaceAll2(strSql, "%1", product_table.schema());
         ReplaceAll2(strSql, "%2", product_table.name());
 
+        auto clientPtr = drogon::app().getDbClient("sce");
         auto transPtr = clientPtr->newTransaction();
         try {
             transPtr->execSqlSync(
@@ -1194,6 +1199,7 @@ json Product::get_product_diamond_price_data( json event, json args)
     if (args[6].size() > 0) s.pop_back();
     s += "}";
 
+    auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     try {
         // You can't use IN (...) with arrays. You need to use an operator (ex: =, >, <, etc) and ANY/ALL
@@ -1237,6 +1243,7 @@ json Product::get_product_cs_price_data( json event, json args)
     auto size = args[4].get<int>();
     auto pcs = args[5].get<int>();
 
+    auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     try {
         // You can't use IN (...) with arrays. You need to use an operator (ex: =, >, <, etc) and ANY/ALL
@@ -1278,6 +1285,7 @@ json Product::get_product_category_tree_data( json event, json args)
     //    auto size = args[3].get<int>();
     //    auto pcs = args[4].get<int>();
 
+    auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     try {
         auto sql = R"(

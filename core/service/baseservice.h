@@ -3,7 +3,7 @@
 
 #include "core/sql/Table.h"
 #include <drogon/WebSocketController.h>
-#include "../../EchoWebSocket.h"
+
 #include <fmt/format.h>
 #include "../jsonfns.h"
 using namespace fmt::v5;
@@ -38,6 +38,7 @@ protected:
         std::string strSql = "INSERT INTO " + t.m_table.toString() + " (" + column + ") values(" + values + ")";
 
         try {
+            auto clientPtr = drogon::app().getDbClient("sce");
             clientPtr->execSqlSync( strSql, args_bind...);
             json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
@@ -53,6 +54,7 @@ protected:
         t.updateFilterBase(args[1]);
         std::string strSql = t.m_query.buildUpdateQuery( column, values, "");
         try {
+            auto clientPtr = drogon::app().getDbClient("sce");
             clientPtr->execSqlSync(strSql, args_bind... );
             json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {

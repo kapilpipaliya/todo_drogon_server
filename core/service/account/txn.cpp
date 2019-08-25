@@ -90,6 +90,7 @@ Txn::Txn()
 
 json Txn::del(const json event, const json args) {
     // to support global filter, get first all ids b selected filter and for each id delete.
+    auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     try {
         auto txn_id = args[0][0].get<int>();
@@ -161,6 +162,7 @@ json Txn::ins( json event, json args) {
         "RETURNING id";
 
     try {
+        auto clientPtr = drogon::app().getDbClient("sce");
         auto transPtr = clientPtr->newTransaction();
         auto x =
             transPtr->execSqlSync(strSqlPost,
@@ -183,6 +185,7 @@ json Txn::upd( json event, json args) {
                 " = ROW($2, $3, $4, $5) where id=$1";
 
         try {
+            auto clientPtr = drogon::app().getDbClient("sce");
             auto transPtr = clientPtr->newTransaction();
             transPtr->execSqlSync(strSqlPost,
                             args[0]["id"].get<long>(),

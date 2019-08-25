@@ -45,6 +45,7 @@ json BaseService::allData(json event, json args)
 json BaseService::del(json event, json args)
 {
     try {
+        auto clientPtr = drogon::app().getDbClient("sce");
         auto transPtr = clientPtr->newTransaction();
         setupTable();
         t.updateFilterBase(args[0]);

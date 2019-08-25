@@ -42,6 +42,7 @@ json Tag::ins( json event, json args) {
     ReplaceAll2(strSql, "%1", product_table.schema());
     ReplaceAll2(strSql, "%2", product_table.name());
 
+    auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     try {
         transPtr->execSqlSync(
@@ -70,6 +71,7 @@ json Tag::upd( json event, json args) {
         ReplaceAll2(strSql, "%1", product_table.schema());
         ReplaceAll2(strSql, "%2", product_table.name());
 
+        auto clientPtr = drogon::app().getDbClient("sce");
         auto transPtr = clientPtr->newTransaction();
         try {
             transPtr->execSqlSync(strSql,
