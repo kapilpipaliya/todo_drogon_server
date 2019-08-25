@@ -35,7 +35,7 @@ void MUserWebsock::handleNewConnection(const HttpRequestPtr &req,const WebSocket
     // LOG_DEBUG << key;
     // use cookie to set context
     // LOG_DEBUG << req->getCookie("admin");
-    std::shared_ptr<MUserContext> context =  std::make_shared<MUserContext>(req);
+    std::shared_ptr<MUserContext> context =  std::make_shared<MUserContext>(req, wsConnPtr);
     wsConnPtr->setContext(context);
     for (auto i : req->cookies()) {
         spdlog::info("{1}, {2}", i.first.c_str(), i.second.c_str());

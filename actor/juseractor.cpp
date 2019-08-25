@@ -4,8 +4,6 @@
 #include "mainactortype.h"
 #include "../wscontroller/context/jusercontext.h"
 
-#include "core/service/auth/auth.h"
-
 #include "core/service/account/account.h"
 #include "core/service/account/accountheading.h"
 #include "core/service/account/accounttype.h"
@@ -152,8 +150,8 @@ nlohmann::json JUserActor::handleTextMessage(const WebSocketConnectionPtr &wsCon
         if constexpr (false){
         }
         else if (in[0][1].get<std::string>()=="auth"){
-            Auth p{wsConnPtr};
-            auto r = p.handleEvent(in[0], 2, in[1]);
+            auto contx = wsConnPtr->getContext<JUserContext>();
+            auto r = contx->handleEvent(in[0], 2, in[1]);
             if(!r.is_null())
             return r;
         }
@@ -235,8 +233,8 @@ nlohmann::json JUserActor::handleBinaryMessage(const WebSocketConnectionPtr &wsC
                 // p.handleBinaryEvent creates new transaction.
                 if (event[0]=="legacy"){
                     if (event[1] == "image") {
-                        Auth p{wsConnPtr};
-                        auto res = p.handleBinaryEvent(event, 2, message);
+                        auto contx = wsConnPtr->getContext<JUserContext>();
+                        auto res = contx->handleBinaryEvent(event, 2, message);
                         if(!res.is_null()){
                             return res;
                         }

@@ -8,7 +8,7 @@ using namespace drogon;
 class MUserContext : public ContextBase
 {
 public:
-    MUserContext(const HttpRequestPtr &req);
+    MUserContext(const HttpRequestPtr &req, const WebSocketConnectionPtr &wsConnPtr_);
 
     long user = 0;
     long admin = 0;

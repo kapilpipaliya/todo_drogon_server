@@ -35,7 +35,7 @@ void MusicWebsock::handleNewConnection(const HttpRequestPtr &req,const WebSocket
     // LOG_DEBUG << key;
     // use cookie to set context
     // LOG_DEBUG << req->getCookie("admin");
-    std::shared_ptr<MAdminContext> context =  std::make_shared<MAdminContext>(req);
+    std::shared_ptr<MAdminContext> context =  std::make_shared<MAdminContext>(req, wsConnPtr);
     wsConnPtr->setContext(context);
     for (auto i : req->cookies()) {
         spdlog::info("{1}, {2}", i.first.c_str(), i.second.c_str());

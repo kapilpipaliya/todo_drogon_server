@@ -1,10 +1,13 @@
 #include "jusercontext.h"
 #include "spdlog/spdlog.h"
+#include <boost/filesystem.hpp>
+#include "../../core/strfns.h"
+#include "../../core/sql/query.h"
 
-JUserContext::JUserContext(const HttpRequestPtr &req)
+JUserContext::JUserContext(const HttpRequestPtr &req, const WebSocketConnectionPtr &wsConnPtr_): ContextBase(req, wsConnPtr_)
 {
-admin = generateContext(req,  "admin");
-user = generateContext(req,  "user");
+    admin = generateContext(req,  "admin");
+    user = generateContext(req,  "user");
 }
 int JUserContext::generateContext(const HttpRequestPtr &req, std::string account_type) {
     auto c = req->getCookie(account_type);
@@ -54,4 +57,14 @@ void JUserContext::deleteuserSession() {
             spdlog::error(e.what());
         }
     }
+}
+
+nlohmann::json JUserContext::handleEvent(nlohmann::json event, int next, nlohmann::json args)
+{
+    return Json::nullValue;
+}
+
+nlohmann::json JUserContext::handleBinaryEvent(nlohmann::json event, int next, std::string &message)
+{
+    return Json::nullValue;
 }

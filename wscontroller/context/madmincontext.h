@@ -8,7 +8,7 @@ using namespace drogon;
 class MAdminContext : public ContextBase
 {
 public:
-    MAdminContext(const HttpRequestPtr &req);
+    MAdminContext(const HttpRequestPtr &req, const WebSocketConnectionPtr &wsConnPtr_);
 
     long user = 0;
     long admin = 0;

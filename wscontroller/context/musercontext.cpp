@@ -1,7 +1,7 @@
 #include "musercontext.h"
 #include "spdlog/spdlog.h"
 
-MUserContext::MUserContext(const HttpRequestPtr &req)
+MUserContext::MUserContext(const HttpRequestPtr &req, const WebSocketConnectionPtr &wsConnPtr_): ContextBase(req, wsConnPtr_)
 {
 admin = generateContext(req,  "admin");
 user = generateContext(req,  "user");
