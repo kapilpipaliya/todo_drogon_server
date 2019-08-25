@@ -7,7 +7,7 @@
 
 #include <boost/filesystem.hpp>
 #include "../../sql/query.h"
-#include "../../../context.h"
+#include "../../../wscontroller/context.h"
 using namespace std::literals;
 Auth::Auth(const WebSocketConnectionPtr& wsConnPtr_): wsConnPtr(wsConnPtr_)
 {

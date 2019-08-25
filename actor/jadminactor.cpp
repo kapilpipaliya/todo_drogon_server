@@ -3,7 +3,7 @@
 #include "spdlog/spdlog.h"
 
 #include "mainactortype.h"
-#include "context.h"
+#include "../wscontroller/context.h"
 
 #include "core/service/auth/auth.h"
 

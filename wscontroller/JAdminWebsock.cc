@@ -3,12 +3,12 @@
 #include <unistd.h>
 #include <chrono>
 
-#include "caf.h"
 #include "spdlog/spdlog.h"
+#include "../actor/caf.h"
 
-#include "mainactortype.h"
 #include "context.h"
-#include "mainactor.h"
+#include "../actor/mainactortype.h"
+#include "../actor/mainactor.h"
 
 using namespace std::literals;
 using namespace  caf;

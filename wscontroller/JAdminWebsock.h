@@ -1,7 +1,7 @@
 #pragma once
 
 #include <drogon/WebSocketController.h>
-#include "mainactor.h"
+#include "../actor/mainactor.h"
 
 class EchoWebSocket : public drogon::WebSocketController<EchoWebSocket> {
 public:
