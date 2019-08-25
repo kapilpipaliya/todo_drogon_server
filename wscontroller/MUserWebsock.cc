@@ -6,9 +6,10 @@
 #include "spdlog/spdlog.h"
 #include "../actor/caf.h"
 
-#include "context.h"
 #include "../actor/mainactortype.h"
 #include "../actor/mainactor.h"
+
+#include "context/musercontext.h"
 
 using namespace std::literals;
 using namespace  caf;
@@ -34,7 +35,7 @@ void MUserWebsock::handleNewConnection(const HttpRequestPtr &req,const WebSocket
     // LOG_DEBUG << key;
     // use cookie to set context
     // LOG_DEBUG << req->getCookie("admin");
-    std::shared_ptr<Context> context =  std::make_shared<Context>(req);
+    std::shared_ptr<MUserContext> context =  std::make_shared<MUserContext>(req);
     wsConnPtr->setContext(context);
     for (auto i : req->cookies()) {
         spdlog::info("{1}, {2}", i.first.c_str(), i.second.c_str());

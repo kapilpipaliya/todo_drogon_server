@@ -5,10 +5,10 @@
 #include <drogon/WebSocketController.h>
 using namespace drogon;
 
-class Context : public ContextBase
+class MAdminContext : public ContextBase
 {
 public:
-    Context(const HttpRequestPtr &req);
+    MAdminContext(const HttpRequestPtr &req);
 
     long user = 0;
     long admin = 0;

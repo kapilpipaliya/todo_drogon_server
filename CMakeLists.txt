@@ -85,6 +85,7 @@ find_package(CAF COMPONENTS core io REQUIRED)
 
 AUX_SOURCE_DIRECTORY(./ SRC_DIR)
 AUX_SOURCE_DIRECTORY(wscontroller WSCTL_SRC)
+AUX_SOURCE_DIRECTORY(wscontroller/context WSCTL_SRC_CONTEXT)
 AUX_SOURCE_DIRECTORY(httpcontroller HTTPCTL_SRC)
 AUX_SOURCE_DIRECTORY(actor ACTOR_SRC)
 AUX_SOURCE_DIRECTORY(filters FILTER_SRC)
@@ -115,7 +116,7 @@ add_subdirectory(test)
 #include_directories("/home/kapili3/k/jewelApp/src")
 #find_library(CONN_LIB libjewelconnection HINT /home/kapili3/k/build-jewelApp-Desktop_Qt_5_13_0_GCC_64bit-Debug/src/core/connection)
 #find_library(CORE_LIB libjewelcore2 HINT /home/kapili3/k/build-jewelApp-Desktop_Qt_5_13_0_GCC_64bit-Debug/src/core)
-add_executable(jdragon ${SRC_DIR} ${WSCTL_SRC} ${HTTPCTL_SRC} ${ACTOR_SRC} ${FILTER_SRC} ${VIEWSRC} ${PLUGIN_SRC} ${MODEL_SRC})
+add_executable(jdragon ${SRC_DIR} ${WSCTL_SRC} ${WSCTL_SRC_CONTEXT} ${HTTPCTL_SRC} ${ACTOR_SRC} ${FILTER_SRC} ${VIEWSRC} ${PLUGIN_SRC} ${MODEL_SRC})
 
   #  libpqxx::pqxx_shared
 target_link_libraries(jdragon

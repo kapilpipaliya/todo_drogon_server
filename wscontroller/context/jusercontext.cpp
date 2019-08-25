@@ -1,12 +1,12 @@
-#include "context.h"
+#include "jusercontext.h"
 #include "spdlog/spdlog.h"
 
-Context::Context(const HttpRequestPtr &req)
+JUserContext::JUserContext(const HttpRequestPtr &req)
 {
 admin = generateContext(req,  "admin");
 user = generateContext(req,  "user");
 }
-int Context::generateContext(const HttpRequestPtr &req, std::string account_type) {
+int JUserContext::generateContext(const HttpRequestPtr &req, std::string account_type) {
     auto c = req->getCookie(account_type);
     if (c.empty()) {
         return 0;
@@ -29,7 +29,7 @@ int Context::generateContext(const HttpRequestPtr &req, std::string account_type
     }
 }
 
-void Context::deleteAdminSession() {
+void JUserContext::deleteAdminSession() {
     if (admin != 0) {
         auto sqlSession = "DELETE FROM user1.session where id = $1";
         try {
@@ -42,7 +42,7 @@ void Context::deleteAdminSession() {
         }
     }
 }
-void Context::deleteuserSession() {
+void JUserContext::deleteuserSession() {
     if (user != 0) {
         auto sqlSession = "DELETE FROM user1.session where id = $1";
         try {

@@ -3,7 +3,7 @@
 #include "spdlog/spdlog.h"
 
 #include "mainactortype.h"
-#include "../wscontroller/context.h"
+#include "../wscontroller/context/jadmincontext.h"
 
 #include "core/service/auth/auth.h"
 
@@ -225,7 +225,7 @@ json JAdminActor::handleBinaryMessage(const WebSocketConnectionPtr &wsConnPtr, s
 {
     json event;
     try {
-        long c = wsConnPtr->getContext<Context>()->admin;
+        long c = wsConnPtr->getContext<JAdminContext>()->admin;
         auto sqlSession = "SELECT event FROM user1.temp_image where session_id = $1";
         auto clientPtr = drogon::app().getDbClient("sce");
         auto r = clientPtr->execSqlSync(sqlSession, c);

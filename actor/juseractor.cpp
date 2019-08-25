@@ -2,7 +2,7 @@
 #include "spdlog/spdlog.h"
 
 #include "mainactortype.h"
-#include "../wscontroller/context.h"
+#include "../wscontroller/context/jusercontext.h"
 
 #include "core/service/auth/auth.h"
 
@@ -224,7 +224,7 @@ nlohmann::json JUserActor::handleBinaryMessage(const WebSocketConnectionPtr &wsC
 {
     json event;
     try {
-        long c = wsConnPtr->getContext<Context>()->admin;
+        long c = wsConnPtr->getContext<JUserContext>()->admin;
         auto sqlSession = "SELECT event FROM user1.temp_image where session_id = $1";
         auto clientPtr = drogon::app().getDbClient("sce");
         auto r = clientPtr->execSqlSync(sqlSession, c);

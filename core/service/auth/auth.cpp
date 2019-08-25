@@ -7,7 +7,7 @@
 
 #include <boost/filesystem.hpp>
 #include "../../sql/query.h"
-#include "../../../wscontroller/context.h"
+#include "../../../wscontroller/context/jadmincontext.h"
 using namespace std::literals;
 Auth::Auth(const WebSocketConnectionPtr& wsConnPtr_): wsConnPtr(wsConnPtr_)
 {
@@ -85,7 +85,7 @@ json Auth::adminLogin( json event, json args)
             cookie_value["admin"] = rs[0]["id"].as<int>();
             cookie_result[1] = cookie_value;
 
-            wsConnPtr->getContext<Context>()->admin = rs[0]["id"].as<int>();
+            wsConnPtr->getContext<JAdminContext>()->admin = rs[0]["id"].as<int>();
 
             json final;
             final[0] = login_result;
@@ -102,7 +102,7 @@ json Auth::adminLogin( json event, json args)
 }
 json Auth::adminLogout( json event, json )
 {
-    wsConnPtr->getContext<Context>()->deleteAdminSession();
+    wsConnPtr->getContext<JAdminContext>()->deleteAdminSession();
     json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
 }
 json Auth::isAdminAuth( json event, json )
@@ -111,7 +111,7 @@ json Auth::isAdminAuth( json event, json )
     json value;
     value[0] = event;
 
-    long c = wsConnPtr->getContext<Context>()->admin;
+    long c = wsConnPtr->getContext<JAdminContext>()->admin;
     bool result = false;
     if (c != 0) { result = true; } else { result = false; }
     value[1] = result;
@@ -181,7 +181,7 @@ json Auth::userLogin( json event, json args)
             cookie_value["user"] = rs[0]["id"].as<int>();
             cookie_result[1] = cookie_value;
 
-            wsConnPtr->getContext<Context>()->user = rs[0]["id"].as<int>();
+            wsConnPtr->getContext<JAdminContext>()->user = rs[0]["id"].as<int>();
             json final;
             final[0] = login_result;
             final[1] = cookie_result;
@@ -197,7 +197,7 @@ json Auth::userLogin( json event, json args)
 }
 json Auth::userId( json event, json )
 {
-    long c =  wsConnPtr->getContext<Context>()->user;
+    long c =  wsConnPtr->getContext<JAdminContext>()->user;
     if (c != 0) {
         auto sqlSession = "SELECT key, value FROM user1.session where id = $1";
         try {
@@ -235,7 +235,7 @@ json Auth::userId( json event, json )
 }
 json Auth::userLogout( json event, json )
 {
-     wsConnPtr->getContext<Context>()->deleteuserSession();
+     wsConnPtr->getContext<JAdminContext>()->deleteuserSession();
     json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
 }
 json Auth::isUserAuth( json event, json )
@@ -243,14 +243,14 @@ json Auth::isUserAuth( json event, json )
     json ret;
     json value;
     value[0] = event;
-    long c = wsConnPtr->getContext<Context>()->user;
+    long c = wsConnPtr->getContext<JAdminContext>()->user;
     if (c != 0) { value[1] = true; } else { value[1] = false; }
     ret[0]=value;
     return ret;
 }
 json Auth::checkout( json event, json args)
 {
-    long c = wsConnPtr->getContext<Context>()->user;
+    long c = wsConnPtr->getContext<JAdminContext>()->user;
     printJson(args);
     if (c != 0) {
         auto sqlSession = "SELECT key, value FROM user1.session where id = $1";
@@ -279,7 +279,7 @@ json Auth::checkout( json event, json args)
  // Save Image meta on server temporary
 json Auth::saveImageMeta( json event, json args)
 {
-    long c = wsConnPtr->getContext<Context>()->admin;
+    long c = wsConnPtr->getContext<JAdminContext>()->admin;
 
     auto strSql = "INSERT INTO user1.temp_image ( session_id, event, name, size, type ) VALUES( $1, $2, $3, $4, $5 )";
     try {
@@ -348,7 +348,7 @@ json Auth::thumb_data( json event, json args)
 // save image in disk and return temporary id:
 json Auth::save_setting_attachment(json event, std::string &message)
 {
-    auto session_id = wsConnPtr->getContext<Context>()->admin;
+    auto session_id = wsConnPtr->getContext<JAdminContext>()->admin;
     auto strSql = sel_("user1.temp_image", "event,  name, size, type", "where session_id = $1");
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
