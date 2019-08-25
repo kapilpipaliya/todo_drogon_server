@@ -1,4 +1,5 @@
 #include "context.h"
+#include "spdlog/spdlog.h"
 
 Context::Context(const HttpRequestPtr &req)
 {
@@ -22,7 +23,7 @@ int Context::generateContext(const HttpRequestPtr &req, std::string account_type
                 return 0;
             }
         } catch (const std::exception &e) {
-            std::cerr << e.what() << std::endl;
+            spdlog::error(e.what());
             return 0;
         }
     }
@@ -37,7 +38,7 @@ void Context::deleteAdminSession() {
             auto r = transPtr->execSqlSync(sqlSession, admin);
             admin = 0;
         } catch (const std::exception &e) {
-            std::cerr << e.what() << std::endl;
+            spdlog::error(e.what());
         }
     }
 }
@@ -50,7 +51,7 @@ void Context::deleteuserSession() {
             auto r = transPtr->execSqlSync(sqlSession, user);
             user = 0 ;
         } catch (const std::exception &e) {
-            std::cerr << e.what() << std::endl;
+            spdlog::error(e.what());
         }
     }
 }

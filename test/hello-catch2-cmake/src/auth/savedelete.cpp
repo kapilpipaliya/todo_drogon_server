@@ -1,4 +1,5 @@
 #include "savedelete.h".h"
+#include "spdlog/spdlog.h"
 
 #include <catch2/catch.hpp>
 #include  "json.hpp"
@@ -34,14 +35,13 @@ void SaveDelete::connectToServer()
                                              ]
                                             )";
                                    auto s = fmt::v5::format(in, table, insert_query, update_query, delete_query);
-                                    std::cout << s << std::endl;
+                                    spdlog::info(s);
                                    auto j = jsonparse(s);
 
                                    wsPtr->getConnection()->send(j.dump());
                                }
                                else
                                {
-                                   std::cout << &r << std::endl;
                                    quit(false, "ws connection failed");
                                }
                            });
@@ -54,7 +54,7 @@ void SaveDelete::setMessageHandler()
         if (type == WebSocketMessageType::Text)
         {
             auto j =jsonparse(message);
-            std::cout << j.dump() << std::endl;
+            spdlog::info(j.dump());
             // event
             auto e = j[0][0];
             REQUIRE(e[0] == "legacy");
@@ -105,7 +105,6 @@ void SaveDelete::setMessageHandler()
 
             return quit(true);
         } else {
-            std::cout << &type;
             quit(false, "Not a Text Type Message!!");
         }
     });

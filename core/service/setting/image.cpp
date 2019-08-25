@@ -87,7 +87,7 @@ json Image::ins( json event, json args) {
         json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
         
-        std::cerr << e.what() << std::endl;
+        spdlog::error(e.what());
         json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
 }
@@ -119,7 +119,7 @@ json Image::upd( json event, json args) {
             json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
             
-            std::cerr << e.what() << std::endl;
+            spdlog::error(e.what());
             json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
         }
     }

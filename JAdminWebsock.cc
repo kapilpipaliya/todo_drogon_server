@@ -15,11 +15,11 @@ using namespace  caf;
 
 void EchoWebSocket::handleNewMessage(const WebSocketConnectionPtr &wsConnPtr, std::string &&message,
                                    const WebSocketMessageType &type) {
-    // spdlog::info("Input: %s\n", message.c_str());
+    // spdlog::info("Input: {}", message.c_str());
     // std::chrono::seconds(10)
     globalCAF.self->request(globalCAF.mainactor, caf::infinite, run_atom::value,  MainActorType::JAdmin, wsConnPtr, std::move(message), type).receive(
             [&]() {
-                //if(!message.empty()) spdlog::info("Output: {}\n", message.c_str());
+                //if(!message.empty()) spdlog::info("Output: {}", message.c_str());
                 return;
             },
             [&](error& err) {

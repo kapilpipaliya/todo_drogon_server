@@ -1,7 +1,8 @@
-#include "../strfns.h"
 #include "Table.h"
-
 #include <iostream>
+#include "spdlog/spdlog.h"
+
+#include "../strfns.h"
 #include "condformat.h"
 #include <drogon/WebSocketController.h>
 
@@ -22,8 +23,8 @@ bool Table::select()
     *clientPtr << q << Mode::Blocking >> [this](const Result &r) {
         result = r;
     } >> [q](const DrogonDbException &e) {
-        std::cout << "query: " << q << std::endl;
-        std::cerr << e.base().what() << std::endl;
+        spdlog::info("query: {}", q);
+        spdlog::error(e.base().what());
         //testOutput(false, "DbClient streaming-type interface(0)");
         throw;
     };

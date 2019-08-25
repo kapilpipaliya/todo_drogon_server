@@ -1,5 +1,7 @@
 #include "auth.h"
 
+#include "spdlog/spdlog.h"
+
 #include "../../strfns.h"
 #include "../../jsonfns.h"
 
@@ -94,7 +96,7 @@ json Auth::adminLogin( json event, json args)
         }
 
     } catch (const std::exception &e) {
-        std::cerr << e.what() << std::endl;
+        spdlog::error(e.what());
         json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
 }
@@ -144,7 +146,7 @@ json Auth::userRegister( json event, json args)
         //simpleJsonSaveResult(event, true, "Done");
         return userLogin(event, args);
     } catch (const std::exception &e) {
-        std::cerr << e.what() << std::endl;
+        spdlog::error(e.what());
         json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
 }
@@ -189,7 +191,7 @@ json Auth::userLogin( json event, json args)
         }
 
     } catch (const std::exception &e) {
-        std::cerr << e.what() << std::endl;
+        spdlog::error(e.what());
         json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
 }
@@ -214,15 +216,15 @@ json Auth::userId( json event, json )
             }
             catch (json::parse_error& e)
             {
-                 jresult[1]=0;
-                std::cout << "message: " << e.what() << '\n'
-                          << "exception id: " << e.id << '\n'
-                          << "byte position of error: " << e.byte << std::endl;
+                jresult[1]=0;
+                spdlog::error("message: {}", e.what());
+                spdlog::error("exception id: {}", e.id);
+                spdlog::error("byte position of error:", e.byte);
                 nlohmann::json j =  std::string("cant parse json reason: ") + e.what() ;
             }
             return jresult;
         } catch (const std::exception &e) {
-            std::cerr << e.what() << std::endl;
+            spdlog::error(e.what());
             json jresult;
             jresult[0]=event;
             jresult[1]=0;
@@ -264,7 +266,7 @@ json Auth::checkout( json event, json args)
             jresult[1]=root["value"];
             return jresult;
         } catch (const std::exception &e) {
-            std::cerr << e.what() << std::endl;
+            spdlog::error(e.what());
             json jresult;
             jresult[0]=event;
             jresult[1]=0;
@@ -286,7 +288,7 @@ json Auth::saveImageMeta( json event, json args)
         auto r = transPtr->execSqlSync(strSql, c, args[0].dump(), args[1].get<std::string>(), args[2].get<long>(), args[3].get<std::string>());
         json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
-        std::cerr << e.what() << std::endl;
+        spdlog::error(e.what());
         json ret; ret[0] = simpleJsonSaveResult(event, false, "Error"); return ret;
     }
 }
@@ -326,7 +328,7 @@ json Auth::thumb_data( json event, json args)
                 auto memblock = read_all(file);
                 file.close();
 
-                //std::cout << "the entire file content is in memory";
+                //spdlog::info("the entire file content is in memory");
                 wsConnPtr->send(memblock, WebSocketMessageType::Binary); // Note when server not able to send this file, front end crash.
                 //delete[] memblock;
             }
@@ -336,7 +338,7 @@ json Auth::thumb_data( json event, json args)
         return json(Json::nullValue);
     } catch (const std::exception &e) {
 
-        std::cerr << e.what() << std::endl;
+        spdlog::error(e.what());
         //simpleJsonSaveResult(event, false, e.what());
         return json(Json::nullValue);
     }
@@ -405,7 +407,7 @@ json Auth::save_setting_attachment(json event, std::string &message)
 
     } catch (const std::exception &e) {
 
-        std::cerr << e.what() << std::endl;
+        spdlog::error(e.what());
         return Json::nullValue;
     }
 

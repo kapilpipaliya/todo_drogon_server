@@ -1,4 +1,5 @@
 #include "signup.h"
+#include "spdlog/spdlog.h"
 
 #include <catch2/catch.hpp>
 #include  "json.hpp"
@@ -21,7 +22,6 @@ void SignUp::connectToServer()
                                }
                                else
                                {
-                                   std::cout << &r << std::endl;
                                    quit(false, "ws connection failed");
                                }
                            });
@@ -34,7 +34,7 @@ void SignUp::setMessageHandler()
         if (type == WebSocketMessageType::Text)
         {
             auto j =jsonparse(message);
-            std::cout << j.dump() << std::endl;
+            spdlog::info(j.dump());
             // event
             auto e = j[0][0];
             REQUIRE(e[0] == "legacy");
@@ -54,7 +54,6 @@ void SignUp::setMessageHandler()
             REQUIRE(j[1][1]["admin"].is_number() == true);
             return quit(true);
         } else {
-            std::cout << &type;
             //quit(true);
         }
     });

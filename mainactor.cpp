@@ -32,12 +32,12 @@ MainActor::MainActor(caf::actor_config &cfg) : caf::event_based_actor(cfg)
                 std::rethrow_exception(eptr);
             }
         } catch(const std::exception& e) {
-            spdlog::info( "\nMain Actor Exception Error : %s\n", e.what());
+            spdlog::info( "Main Actor Exception Error : {}", e.what());
         }
         return caf::make_error(caf::pec::success); // This will not resume actor.
     });
     set_default_handler([=](scheduled_actor* ptr, caf::message_view& x) -> caf::result<caf::message> {
-        spdlog::info( "\nunexpected message, I will Qui\n");
+        spdlog::info( "unexpected message, I will Quit");
         CAF_LOG_WARNING("unexpected message, I will Quit" << CAF_ARG(x.content()));
         aout(ptr) << "*** unexpected message [id: " << ptr->id()
                   << ", name: " << ptr->name() << "]: "
@@ -58,7 +58,7 @@ caf::behavior MainActor::make_behavior()
               try{
                   passToUser(actortype, wsConnPtr, std::move(message), type);
           } catch (const std::exception &e) {
-              std::cerr << e.what() << std::endl;
+              spdlog::error(e.what());
           }
          return {};
         },

@@ -1,4 +1,5 @@
 #include "authcheck.h"
+#include "spdlog/spdlog.h"
 
 #include <catch2/catch.hpp>
 #include  "json.hpp"
@@ -20,7 +21,6 @@ void AuthCheck::connectToServer()
                                }
                                else
                                {
-                                   std::cout << &r << std::endl;
                                    quit(false, "ws connection failed");
                                }
                            });
@@ -36,7 +36,7 @@ void AuthCheck::setMessageHandler()
             {
                 // parsing input with a syntax error
                 auto j = json::parse(message);
-               // std::cout << j.dump() << std::endl;
+               // spdlog::info(j.dump());
                 REQUIRE(j[0][0][0] == "legacy");
                 REQUIRE(j[0][0][1] == "auth");
                 REQUIRE(j[0][0][2] == "is_admin_auth");
@@ -51,15 +51,14 @@ void AuthCheck::setMessageHandler()
             catch (json::parse_error& e)
             {
                 // output exception information
-                std::cout << "message: " << e.what() << '\n'
-                          << "exception id: " << e.id << '\n'
-                          << "byte position of error: " << e.byte << std::endl;
+                spdlog::error("message: {}", e.what());
+                spdlog::error("exception id: {}", e.id);
+                spdlog::error("byte position of error:", e.byte);
                 return quit(false, "Return Value must be valid Json");
             }
 
             return quit(true);
         } else {
-            std::cout << &type;
             //quit(true);
         }
     });

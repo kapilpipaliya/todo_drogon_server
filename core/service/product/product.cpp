@@ -965,7 +965,7 @@ json Product::ins( json event, json args) {
         json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
         
-        std::cerr << e.what() << std::endl;
+        spdlog::error(e.what());
         json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
 }
@@ -1063,7 +1063,7 @@ json Product::upd( json event, json args) {
             json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
             
-            std::cerr << e.what() << std::endl;
+            spdlog::error(e.what());
             json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
         }
     }
@@ -1117,7 +1117,7 @@ json Product::del( json event, json args) {
         json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
         
-        std::cerr << e.what() << std::endl;
+        spdlog::error(e.what());
         json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
 }
@@ -1151,7 +1151,7 @@ json save_category( json event, json args) {
             json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
             
-            std::cerr << e.what() << std::endl;
+            spdlog::error(e.what());
             json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
         }
     } else {
@@ -1175,7 +1175,7 @@ json save_category( json event, json args) {
             json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
             
-            std::cerr << e.what() << std::endl;
+            spdlog::error(e.what());
             json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
         }
     }
@@ -1224,7 +1224,7 @@ json Product::get_product_diamond_price_data( json event, json args)
         return batch;
     } catch (const std::exception &e) {
         
-        std::cerr << e.what() << std::endl;
+        spdlog::error(e.what());
         //simpleJsonSaveResult(event, false, e.what());
         return json(Json::nullValue);
     }
@@ -1267,7 +1267,7 @@ json Product::get_product_cs_price_data( json event, json args)
         return batch;
     } catch (const std::exception &e) {
         
-        std::cerr << e.what() << std::endl;
+        spdlog::error(e.what());
         //simpleJsonSaveResult(event, false, e.what());
         return Json::nullValue;
     }
@@ -1314,7 +1314,7 @@ select * ,
         return batch;
     } catch (const std::exception &e) {
         
-        std::cerr << e.what() << std::endl;
+        spdlog::error(e.what());
         //simpleJsonSaveResult(event, false, e.what());
         return json(Json::nullValue);
     }
