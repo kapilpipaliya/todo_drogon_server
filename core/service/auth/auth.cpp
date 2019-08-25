@@ -366,10 +366,6 @@ json Auth::save_setting_attachment(json event, std::string &message)
         auto size = r[0][2].as<int>();
         auto type = r[0][3].c_str();
 
-
-        fprintf(stdout, "%s %d %s\n", name.c_str(), size, type);
-        fflush(stdout);
-
         // basic file operations
 
         std::string new_name = name;

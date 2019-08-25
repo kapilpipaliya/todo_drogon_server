@@ -17,11 +17,7 @@ Table::~Table()
 bool Table::select()
 {
     auto q = m_query.buildQuery(true);
-    // to print out query:
-//    fprintf(stdout, "%s\n", q.c_str());
-//    fflush(stdout);
     // crash !! auto clientPtr = drogon::app().getFastDbClient("sce");
-
     auto clientPtr = drogon::app().getDbClient("sce");
     *clientPtr << q << Mode::Blocking >> [this](const Result &r) {
         result = r;

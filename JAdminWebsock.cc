@@ -37,7 +37,6 @@ void EchoWebSocket::handleNewConnection(const HttpRequestPtr &req, const WebSock
     wsConnPtr->setContext(context);
     for (auto i : req->cookies()) {
         spdlog::info("{1}, {2}", i.first.c_str(), i.second.c_str());
-        fflush(stdout);
     }
 }
 void EchoWebSocket::handleConnectionClosed(const WebSocketConnectionPtr &wsConnPtr) {
