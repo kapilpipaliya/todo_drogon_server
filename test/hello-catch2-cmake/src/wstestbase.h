@@ -23,7 +23,7 @@ protected:
    virtual  void setMessageHandler();
     virtual void setConnectionClosedHandler();
     virtual void connectToServer();
-    void ExitAfter5s();
+    void ExitAfter(double seconds);
     void quit(bool isPass, std::string reason="");
 
 public:

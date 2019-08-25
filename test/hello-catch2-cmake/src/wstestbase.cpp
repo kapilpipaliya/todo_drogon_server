@@ -73,16 +73,17 @@ void WSTestBase::connectToServer()
                                }
                            });
 }
-void WSTestBase::ExitAfter5s()
+void WSTestBase::ExitAfter(double seconds=5)
 {
-    app().getLoop()->runAfter(5.0, []() {
+    app().getLoop()->runAfter(seconds, []() {
         // if (!continually) { exit(1); }
         app().getLoop()->quit();
     });
 }
 void WSTestBase::quit(bool isPass, std::string reason)
 {
-    app().getLoop()->quit();
+   app().getLoop()->quit();
+   // if(app().isRunning()){ app().quit(); }
     testResult = isPass;
     if(!reason.empty()){
          std::cout << reason << std::endl;
