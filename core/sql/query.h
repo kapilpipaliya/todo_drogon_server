@@ -8,6 +8,8 @@
 #include <utility>
 #include <vector>
 
+#include  "json.hpp"
+
 enum PG_TYPES {
     BOOL = 16,
     //    ByTea = 17,
@@ -120,6 +122,7 @@ public:
     std::string buildQuery(bool withRowid) const;
     std::string buildCountQuery() const;
     std::string buildDeleteQuery() const;
+    std::string buildInsQuery(nlohmann::json args) const;
     std::string buildUpdateQuery(std::string column, std::string values, std::string where_) const;
 
     //void setColumNames(const std::vector<std::string>& column_names) { m_column_names = column_names; }
@@ -164,9 +167,12 @@ private:
 
     std::vector<SelectedColumn>::iterator findSelectedColumnByName(const std::string& name);
     std::vector<SelectedColumn>::const_iterator findSelectedColumnByName(const std::string& name) const;
+    std::vector<SelectedColumn>::iterator findSelectedColumnBySelector(const std::string& name);
+    std::vector<SelectedColumn>::const_iterator findSelectedColumnBySelector(const std::string& name) const;
     std::string buildWherePart() const;
     std::string buildJoinPart() const;
     std::string buildGroupByPart() const;
+    std::string buildSelectorPart(std::vector<SelectedColumn> &m_selected_columns_) const;
 };
 
 }

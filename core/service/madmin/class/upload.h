@@ -2,10 +2,11 @@
 #define UPLOAD_H
 
 
+namespace madmin {
 class Upload
 {
 public:
     Upload();
 };
-
+}
 #endif // UPLOAD_H

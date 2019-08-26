@@ -1,5 +1,6 @@
 #include "dba.h"
 #include "spdlog/spdlog.h"
+using namespace  madmin;
 Dba::Dba()
 {
 

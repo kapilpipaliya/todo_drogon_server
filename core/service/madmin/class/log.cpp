@@ -1,6 +1,6 @@
-#include "ui.h"
+#include "log.h"
 using namespace  madmin;
-UI::UI()
+Log::Log()
 {
 
 }

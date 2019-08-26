@@ -2,6 +2,7 @@
 
 #include "../../sql/query.h"
 
+using namespace  madmin;
 BaseService::BaseService()
 {  }
 BaseService::~BaseService() {  }
@@ -22,7 +23,7 @@ json BaseService::handleEvent(json event, unsigned long next, json args)
         return Json::nullValue;
     }
 }
-json BaseService::headerData(json event, [[maybe_unused]] json args)
+json BaseService::headerData(json event,[[maybe_unused]] json args)
 {
     setupTable();
     json jresult;
@@ -39,6 +40,24 @@ json BaseService::allData(json event, json args)
     jresult[1]=t.getAllData(args);
     json ret;
     ret[0] = jresult; return ret;
+}
+
+nlohmann::json BaseService::ins(nlohmann::json event, nlohmann::json args)
+{
+    std::string strSql = t.m_query.buildInsQuery(args);
+    try {
+        auto clientPtr = drogon::app().getDbClient("sce");
+        clientPtr->execSqlSync(strSql);
+        json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
+    } catch (const std::exception &e) {
+        spdlog::error(e.what());
+        json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
+    }
+}
+
+nlohmann::json BaseService::upd(nlohmann::json event, nlohmann::json args)
+{
+
 }
 
 json BaseService::del(json event, json args)

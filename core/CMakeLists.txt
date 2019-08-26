@@ -66,6 +66,7 @@ AUX_SOURCE_DIRECTORY(./service/juser JEWEL_SRC)
 
 AUX_SOURCE_DIRECTORY(./service/madmin JEWEL_SRC)
 AUX_SOURCE_DIRECTORY(./service/madmin/class JEWEL_SRC)
+AUX_SOURCE_DIRECTORY(./service/madmin/modules/catalog JEWEL_SRC)
 
 AUX_SOURCE_DIRECTORY(./service/muser JEWEL_SRC)
 

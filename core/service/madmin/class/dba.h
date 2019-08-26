@@ -3,11 +3,12 @@
 #include <string>
 #include <drogon/HttpAppFramework.h>
 
+namespace madmin {
 class Dba
 {
 public:
     Dba();
     static drogon::orm::Result read(std::string sql);
 };
-
+}
 #endif // DBA_H

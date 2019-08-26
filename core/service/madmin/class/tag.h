@@ -2,10 +2,11 @@
 #define TAG_H
 
 
+namespace madmin {
 class Tag
 {
 public:
     Tag();
 };
-
+}
 #endif // TAG_H

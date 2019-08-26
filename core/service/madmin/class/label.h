@@ -2,10 +2,11 @@
 #define LABEL_H
 
 
+namespace madmin {
 class Label
 {
 public:
     Label();
 };
-
+}
 #endif // LABEL_H

@@ -18,7 +18,7 @@ using namespace fmt::v5;
  * with a user_id from user.id
  *
  */
-
+namespace madmin {
 struct Info{
     std::string username;
     std::string fullname;
@@ -45,8 +45,8 @@ public:
     static void get_valid_users(); // fix it..
     static User get_from_username(std::string username); // fix
     static User get_from_apikey(std::string apikey); //fix
-    public static User get_from_email($email); //fix
-    static User get_from_website($website); //fix
+    //public static User get_from_email($email); //fix
+    //static User get_from_website($website); //fix
 
     std::vector<Catalog > get_catalogs();
 //    get_preferences($type = 0, $system = false)
@@ -106,5 +106,5 @@ private:
     int id;
     int playlist_id;
 };
-
+}
 #endif // USER_H

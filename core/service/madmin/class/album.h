@@ -2,10 +2,11 @@
 #define ALBUM_H
 
 
+namespace madmin {
 class Album
 {
 public:
     Album();
 };
-
+}
 #endif // ALBUM_H

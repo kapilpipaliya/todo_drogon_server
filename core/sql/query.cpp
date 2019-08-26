@@ -73,9 +73,8 @@ std::string Query::buildGroupByPart() const
     return group_by;
 }
 
-std::string Query::buildQuery(bool withRowid) const
+std::string Query::buildSelectorPart(std::vector<SelectedColumn> &m_selected_columns_) const
 {
-    // Selector and display formats
     std::string selector;
     /*
     if (withRowid)
@@ -94,10 +93,10 @@ std::string Query::buildQuery(bool withRowid) const
         }
     }*/
 
-    if(m_selected_columns.empty()) {
+    if(m_selected_columns_.empty()) {
         selector += "*";
     } else {
-        for(const auto& it : m_selected_columns) {
+        for(const auto& it : m_selected_columns_) {
             if(it.calculated.empty()) {
                 if(!it.prefix.empty()) selector += it.prefix + ".";
                 if (it.original_column != it.selector)
@@ -111,6 +110,13 @@ std::string Query::buildQuery(bool withRowid) const
         }
         selector.pop_back();
     }
+    return selector;
+}
+
+std::string Query::buildQuery(bool withRowid) const
+{
+    // Selector and display formats
+    std::string selector = buildSelectorPart(const_cast<std::vector<SelectedColumn> &>(m_selected_columns));
     std::string join = buildJoinPart();
     // Filter
     std::string where = buildWherePart();
@@ -152,6 +158,41 @@ std::string Query::buildDeleteQuery() const
     return "DELETE FROM " + m_table.toString() + " " + m_table.as() + " " + where + " " + group_by;
 }
 
+std::string Query::buildInsQuery(nlohmann::json args) const
+{
+    std::string values;
+    std::vector<SelectedColumn> sel_columns;
+    for (auto& [key, val] : args.items())
+    {
+        auto c = findSelectedColumnBySelector(key);
+        sel_columns.push_back(*c.base());
+
+        std::string v{""};
+        if (val.is_null()) {
+            v  = "null";
+            values += v + " ,";
+        } else if(val.type() == nlohmann::json::value_t::number_integer ||  val.type() == nlohmann::json::value_t::number_unsigned) {
+            v = std::to_string(val.get<long>());
+            values += v + " ,";
+        } else if (val.type() == nlohmann::json::value_t::number_float) {
+            v = std::to_string(val.get<float>());
+            values += v + " ,";
+        } else if(val.type() == nlohmann::json::value_t::boolean) {
+            v = val.get<bool>() ? "true" : "false";
+            values += v + " ,";
+        } else if (val.type() == nlohmann::json::value_t::string) {
+            v = val.get<std::string>();
+            values += v + " ,";
+        } else {
+            v = "";
+            //value += v + " ,";
+        }
+    }
+    values.pop_back();
+    std::string selector = buildSelectorPart(const_cast<std::vector<SelectedColumn> &>(sel_columns));
+    return "INSERT INTO " + m_table.toString() + " " + m_table.as() + " (" + selector + ") values(" + values + ")";
+}
+
 std::string Query::buildUpdateQuery(std::string column, std::string values, std::string where_) const
 {
     std::string join = buildJoinPart();
@@ -182,6 +223,20 @@ std::vector<SelectedColumn>::const_iterator Query::findSelectedColumnByName(cons
 {
     return std::find_if(m_selected_columns.cbegin(), m_selected_columns.cend(), [name](const SelectedColumn& c) {
         return name == c.original_column;
+    });
+}
+
+std::vector<SelectedColumn>::iterator Query::findSelectedColumnBySelector(const std::string &name)
+{
+    return std::find_if(m_selected_columns.begin(), m_selected_columns.end(), [name](const SelectedColumn& c) {
+        return name == c.selector;
+    });
+}
+
+std::vector<SelectedColumn>::const_iterator Query::findSelectedColumnBySelector(const std::string &name) const
+{
+    return std::find_if(m_selected_columns.begin(), m_selected_columns.end(), [name](const SelectedColumn& c) {
+        return name == c.selector;
     });
 }
 

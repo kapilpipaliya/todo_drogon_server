@@ -11,11 +11,7 @@
 using namespace fmt::v5;
 using namespace drogon;
 
-#define ids2(s, array)\
-std::string array = "{";\
-for (auto i : (s)) { array += std::to_string(i["id"].as<int>()) + ","; }\
-if((s).size() > 0) array.pop_back();\
-array += "}";
+namespace madmin {
 
 
 class BaseService
@@ -25,12 +21,12 @@ public:
     virtual ~BaseService();
     virtual json handleEvent(json event, unsigned long next, json args);
 
-protected:
+    protected:
     virtual void setupTable() = 0;
     json headerData(json event, json args);
     json allData(json event, json args);
-    virtual  json ins(json event, json args) = 0;
-    virtual  json upd(json event, json args) = 0;
+    virtual  json ins(json event, json args);
+    virtual  json upd(json event, json args);
     virtual json del(json event, json args);
 
     template<class... Args>
@@ -67,4 +63,5 @@ protected:
 
 };
 
+}
 #endif // BASESERVICE_H

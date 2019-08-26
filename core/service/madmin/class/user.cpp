@@ -1,7 +1,7 @@
 #include "user.h"
 #include <chrono>
 #include "dba.h"
-
+using namespace  madmin;
 using namespace std::chrono;
 User::User(int user_id)
 {
