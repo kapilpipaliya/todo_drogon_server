@@ -11,5 +11,5 @@
     "dbname":"susant",
     "user":"postgres",
     "passwd":"postgres",
-    "tables":[]
+    "tables":["music.user"]
 }
