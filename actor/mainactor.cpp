@@ -78,15 +78,64 @@ caf::behavior MainActor::make_behavior()
 
 void MainActor::passToUser(MainActorType actortype, const WebSocketConnectionPtr &wsConnPtr, std::string &&message, const WebSocketMessageType &type)
 {
-    // If key not found in map iterator to end is returned
-    auto it = actorMap.find(wsConnPtr) ;
-    if (it == actorMap.end()) {
-        caf::actor userActor = spawn<JAdminActor>();
-        monitor(userActor); // this will send message when it down
-        request(userActor, caf::infinite, wsConnPtr, std::move(message), type);
-        actorMap.insert({wsConnPtr, userActor});
-    } else {
-         caf::actor userActor = it->second;
-        request(userActor, caf::infinite, wsConnPtr, std::move(message), type);
+    switch (actortype) {
+    case MainActorType::JAdmin:{
+        auto it = actorMap.find(wsConnPtr) ;
+        if (it == actorMap.end()) {
+            caf::actor userActor = spawn<JAdminActor>();
+            monitor(userActor); // this will send message when it down
+            request(userActor, caf::infinite, wsConnPtr, std::move(message), type);
+            actorMap.insert({wsConnPtr, userActor});
+        } else {
+             caf::actor userActor = it->second;
+            request(userActor, caf::infinite, wsConnPtr, std::move(message), type);
+        }
+
+        break;
+    }
+    case MainActorType::JUser:{
+        auto it = actorMap.find(wsConnPtr) ;
+        if (it == actorMap.end()) {
+            caf::actor userActor = spawn<JUserActor>();
+            monitor(userActor); // this will send message when it down
+            request(userActor, caf::infinite, wsConnPtr, std::move(message), type);
+            actorMap.insert({wsConnPtr, userActor});
+        } else {
+            caf::actor userActor = it->second;
+            request(userActor, caf::infinite, wsConnPtr, std::move(message), type);
+        }
+
+        break;
+    }
+    case MainActorType::MAdmin:{
+        auto it = actorMap.find(wsConnPtr) ;
+        if (it == actorMap.end()) {
+            caf::actor userActor = spawn<MAdminActor>();
+            monitor(userActor); // this will send message when it down
+            request(userActor, caf::infinite, wsConnPtr, std::move(message), type);
+            actorMap.insert({wsConnPtr, userActor});
+        } else {
+            caf::actor userActor = it->second;
+            request(userActor, caf::infinite, wsConnPtr, std::move(message), type);
+        }
+
+        break;
+    }
+    case MainActorType::MUser:{
+        auto it = actorMap.find(wsConnPtr) ;
+        if (it == actorMap.end()) {
+            caf::actor userActor = spawn<MUserActor>();
+            monitor(userActor); // this will send message when it down
+            request(userActor, caf::infinite, wsConnPtr, std::move(message), type);
+            actorMap.insert({wsConnPtr, userActor});
+        } else {
+            caf::actor userActor = it->second;
+            request(userActor, caf::infinite, wsConnPtr, std::move(message), type);
+        }
+
+        break;
+    }
+    default:
+        break;
     }
 }
