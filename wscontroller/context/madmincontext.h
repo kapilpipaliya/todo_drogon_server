@@ -9,13 +9,6 @@ class MAdminContext : public ContextBase
 {
 public:
     MAdminContext(const HttpRequestPtr &req, const WebSocketConnectionPtr &wsConnPtr_);
-
-    long user = 0;
-    long admin = 0;
-
-    int generateContext(const HttpRequestPtr &req, std::string account_type);
-    void deleteAdminSession();
-    void deleteuserSession();
 };
 
 #endif // CONTEXT_H

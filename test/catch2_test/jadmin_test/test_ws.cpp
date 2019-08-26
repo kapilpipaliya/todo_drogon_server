@@ -314,3 +314,8 @@ SUD("image_collection",
         )
 
 }
+/*More Test:
+ * Binary data test
+ * test for product related functions
+ * image function
+ * */
