@@ -2,11 +2,13 @@
 #define BROWSE_H
 
 
+#include "../baseservice.h"
 namespace madmin {
-class Browse
+class Browse : public BaseService
 {
 public:
     Browse();
+    void setupTable() override;
 };
 }
 #endif // BROWSE_H

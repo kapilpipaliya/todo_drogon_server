@@ -4,3 +4,8 @@ UserFlag::UserFlag()
 {
 
 }
+
+void UserFlag::setupTable()
+{
+
+}

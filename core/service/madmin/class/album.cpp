@@ -4,3 +4,8 @@ Album::Album()
 {
 
 }
+
+void Album::setupTable()
+{
+
+}

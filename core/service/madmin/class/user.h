@@ -18,28 +18,29 @@ using namespace fmt::v5;
  * with a user_id from user.id
  *
  */
+#include "../baseservice.h"
 namespace madmin {
-struct Info{
-    std::string username;
-    std::string fullname;
-    int access;
-};
 
-struct Count{
-    int users{0};
-    int connected{0};
-};
-struct Catalog{
-
-};
-
-class User
+class User : public BaseService
 {
+    struct Info{
+        std::string username;
+        std::string fullname;
+        int access;
+    };
 
+    struct Count{
+        int users{0};
+        int connected{0};
+    };
+    struct Catalog{
 
+    };
 
 public:
+
     User(int user_id);
+    void setupTable() override;
     static Count count();
     void load_playlist();
     static void get_valid_users(); // fix it..

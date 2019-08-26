@@ -2,11 +2,13 @@
 #define RANDOM_H
 
 
+#include "../baseservice.h"
 namespace madmin {
-class Random
+class Random : public BaseService
 {
 public:
     Random();
+    void setupTable() override;
 };
 }
 #endif // RANDOM_H

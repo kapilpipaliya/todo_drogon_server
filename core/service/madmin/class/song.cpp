@@ -4,3 +4,8 @@ Song::Song()
 {
 
 }
+
+void Song::setupTable()
+{
+
+}

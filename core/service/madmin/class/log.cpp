@@ -4,3 +4,8 @@ Log::Log()
 {
 
 }
+
+void Log::setupTable()
+{
+
+}

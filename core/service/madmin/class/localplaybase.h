@@ -2,11 +2,13 @@
 #define LOCALPLAYBASE_H
 
 
+#include "../baseservice.h"
 namespace madmin {
-class LocalPlayBase
+class LocalPlayBase : public BaseService
 {
 public:
     LocalPlayBase();
+    void setupTable() override;
 };
 }
 #endif // LOCALPLAYBASE_H

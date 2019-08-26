@@ -4,3 +4,8 @@ UserActivity::UserActivity()
 {
 
 }
+
+void UserActivity::setupTable()
+{
+
+}

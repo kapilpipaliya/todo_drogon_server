@@ -4,3 +4,8 @@ Registration::Registration()
 {
 
 }
+
+void Registration::setupTable()
+{
+
+}

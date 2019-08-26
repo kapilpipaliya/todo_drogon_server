@@ -4,3 +4,8 @@ Preference::Preference()
 {
 
 }
+
+void Preference::setupTable()
+{
+
+}

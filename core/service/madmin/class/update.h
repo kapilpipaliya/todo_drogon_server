@@ -2,11 +2,13 @@
 #define UPDATE_H
 
 
+#include "../baseservice.h"
 namespace madmin {
-class Update
+class Update : public BaseService
 {
 public:
     Update();
+    void setupTable() override;
 };
 }
 #endif // UPDATE_H

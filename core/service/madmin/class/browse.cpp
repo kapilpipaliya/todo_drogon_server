@@ -4,3 +4,8 @@ Browse::Browse()
 {
 
 }
+
+void Browse::setupTable()
+{
+
+}

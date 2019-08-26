@@ -4,3 +4,8 @@ Tag::Tag()
 {
 
 }
+
+void Tag::setupTable()
+{
+
+}

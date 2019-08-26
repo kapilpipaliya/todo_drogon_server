@@ -4,3 +4,8 @@ Share::Share()
 {
 
 }
+
+void Share::setupTable()
+{
+
+}

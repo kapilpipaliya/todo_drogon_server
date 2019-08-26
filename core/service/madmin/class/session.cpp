@@ -1,6 +1,10 @@
-#include "session.h"
-using namespace  madmin;
-Session::Session()
+#include "./session.h"
+madmin::Session::Session()
+{
+
+}
+
+void madmin::Session::setupTable()
 {
 
 }

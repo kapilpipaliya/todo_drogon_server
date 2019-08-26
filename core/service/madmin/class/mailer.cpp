@@ -4,3 +4,8 @@ Mailer::Mailer()
 {
 
 }
+
+void Mailer::setupTable()
+{
+
+}

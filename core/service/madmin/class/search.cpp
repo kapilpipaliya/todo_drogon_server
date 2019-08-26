@@ -4,3 +4,8 @@ Search::Search()
 {
 
 }
+
+void Search::setupTable()
+{
+
+}

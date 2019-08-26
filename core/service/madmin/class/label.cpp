@@ -4,3 +4,8 @@ Label::Label()
 {
 
 }
+
+void Label::setupTable()
+{
+
+}

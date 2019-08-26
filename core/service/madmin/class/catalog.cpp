@@ -4,3 +4,8 @@ Catalog::Catalog()
 {
 
 }
+
+void Catalog::setupTable()
+{
+
+}

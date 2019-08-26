@@ -4,3 +4,8 @@ Access::Access()
 {
 
 }
+
+void Access::setupTable()
+{
+
+}

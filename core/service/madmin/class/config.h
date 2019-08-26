@@ -3,11 +3,13 @@
 
 #include <string>
 
+#include "../baseservice.h"
 namespace madmin {
-class Config
+class Config : public BaseService
 {
 public:
     Config();
+    void setupTable() override;
     /**
      *  @var array $_global
      */

@@ -4,3 +4,8 @@ VaInfo::VaInfo()
 {
 
 }
+
+void VaInfo::setupTable()
+{
+
+}

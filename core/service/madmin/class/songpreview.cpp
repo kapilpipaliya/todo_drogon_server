@@ -4,3 +4,8 @@ SongPreview::SongPreview()
 {
 
 }
+
+void SongPreview::setupTable()
+{
+
+}

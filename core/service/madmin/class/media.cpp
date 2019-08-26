@@ -4,3 +4,8 @@ Media::Media()
 {
 
 }
+
+void Media::setupTable()
+{
+
+}

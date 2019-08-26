@@ -4,3 +4,8 @@ Auth::Auth()
 {
 
 }
+
+void Auth::setupTable()
+{
+
+}

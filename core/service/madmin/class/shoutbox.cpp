@@ -4,3 +4,8 @@ ShoutBox::ShoutBox()
 {
 
 }
+
+void ShoutBox::setupTable()
+{
+
+}

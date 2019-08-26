@@ -4,3 +4,8 @@ Stats::Stats()
 {
 
 }
+
+void Stats::setupTable()
+{
+
+}

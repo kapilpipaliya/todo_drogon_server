@@ -4,3 +4,8 @@ PrivateMsg::PrivateMsg()
 {
 
 }
+
+void PrivateMsg::setupTable()
+{
+
+}

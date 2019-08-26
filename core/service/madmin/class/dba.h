@@ -3,11 +3,13 @@
 #include <string>
 #include <drogon/HttpAppFramework.h>
 
+#include "../baseservice.h"
 namespace madmin {
-class Dba
+class Dba : public BaseService
 {
 public:
     Dba();
+    void setupTable() override;
     static drogon::orm::Result read(std::string sql);
 };
 }

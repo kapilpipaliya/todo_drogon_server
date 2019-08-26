@@ -2,11 +2,13 @@
 #define ACCESS_H
 
 
+#include "../baseservice.h"
 namespace madmin {
-class Access
+class Access : public BaseService
 {
 public:
     Access();
+    void setupTable() override;
 };
 }
 #endif // ACCESS_H

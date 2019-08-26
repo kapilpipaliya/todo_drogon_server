@@ -2,11 +2,13 @@
 #define ART_H
 
 
+#include "../baseservice.h"
 namespace madmin {
-class Art
+class Art : public BaseService
 {
 public:
     Art();
+    void setupTable() override;
 };
 }
 #endif // ART_H

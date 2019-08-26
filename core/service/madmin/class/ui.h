@@ -2,11 +2,13 @@
 #define UI_H
 
 
+#include "../baseservice.h"
 namespace madmin {
-class UI
+class UI : public BaseService
 {
 public:
     UI();
+    void setupTable() override;
 };
 }
 #endif // UI_H

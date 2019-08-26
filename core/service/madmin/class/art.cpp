@@ -4,3 +4,9 @@ Art::Art()
 {
 
 }
+
+void Art::setupTable()
+{
+
+
+}

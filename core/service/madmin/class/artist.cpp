@@ -4,3 +4,8 @@ Artist::Artist()
 {
 
 }
+
+void Artist::setupTable()
+{
+
+}

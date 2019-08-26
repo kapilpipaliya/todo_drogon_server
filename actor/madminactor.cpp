@@ -24,7 +24,6 @@
 #include "core/service/madmin/class/playlist.h"
 #include "core/service/madmin/class/preference.h"
 #include "core/service/madmin/class/privatemsg.h"
-#include "core/service/madmin/class/query.h"
 #include "core/service/madmin/class/random.h"
 #include "core/service/madmin/class/rating.h"
 #include "core/service/madmin/class/recommandation.h"

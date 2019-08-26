@@ -4,3 +4,8 @@ Rating::Rating()
 {
 
 }
+
+void Rating::setupTable()
+{
+
+}

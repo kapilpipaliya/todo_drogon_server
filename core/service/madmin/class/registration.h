@@ -2,11 +2,13 @@
 #define REGISTRATION_H
 
 
+#include "../baseservice.h"
 namespace madmin {
-class Registration
+class Registration : public BaseService
 {
 public:
     Registration();
+    void setupTable() override;
 };
 }
 #endif // REGISTRATION_H

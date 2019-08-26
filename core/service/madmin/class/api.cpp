@@ -4,3 +4,8 @@ Api::Api()
 {
 
 }
+
+void Api::setupTable()
+{
+
+}

@@ -4,3 +4,8 @@ Upload::Upload()
 {
 
 }
+
+void Upload::setupTable()
+{
+
+}

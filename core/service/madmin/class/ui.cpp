@@ -4,3 +4,8 @@ UI::UI()
 {
 
 }
+
+void UI::setupTable()
+{
+
+}

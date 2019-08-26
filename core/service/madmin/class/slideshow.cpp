@@ -4,3 +4,8 @@ Slideshow::Slideshow()
 {
 
 }
+
+void Slideshow::setupTable()
+{
+
+}

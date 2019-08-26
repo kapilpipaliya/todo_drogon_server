@@ -4,3 +4,8 @@ LocalPlayBase::LocalPlayBase()
 {
 
 }
+
+void LocalPlayBase::setupTable()
+{
+
+}

@@ -6,6 +6,11 @@ Dba::Dba()
 
 }
 
+void Dba::setupTable()
+{
+
+}
+
 drogon::orm::Result Dba::read(std::string sql)
 {
     try {

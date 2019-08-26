@@ -11,11 +11,16 @@ User::User(int user_id)
     auto info = get_info();
 
 }
+
+void User::setupTable()
+{
+
+}
 /**
  * _get_info
  * This function returns the information for this object
  */
-Info User::get_info()
+User::Info User::get_info()
 {
     // If user is in cache return from it.
     // If user is system user return system data.
@@ -41,7 +46,7 @@ Info User::get_info()
  *
  * This returns the number of user accounts that exist.
  */
-Count User::count()
+User::Count User::count()
 {
     Count count;
     //1
@@ -100,7 +105,7 @@ User User::get_from_apikey(std::string apikey)
 
 }
 
-std::vector<Catalog> User::get_catalogs()
+std::vector<User::Catalog> User::get_catalogs()
 {
 
 }

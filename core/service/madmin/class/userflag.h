@@ -2,11 +2,13 @@
 #define USERFLAG_H
 
 
+#include "../baseservice.h"
 namespace madmin {
-class UserFlag
+class UserFlag : public BaseService
 {
 public:
     UserFlag();
+    void setupTable() override;
 };
 }
 #endif // USERFLAG_H

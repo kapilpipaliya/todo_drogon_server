@@ -4,3 +4,8 @@ PlayListBase::PlayListBase()
 {
 
 }
+
+void PlayListBase::setupTable()
+{
+
+}

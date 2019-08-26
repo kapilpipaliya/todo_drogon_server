@@ -4,3 +4,8 @@ Recommandation::Recommandation()
 {
 
 }
+
+void Recommandation::setupTable()
+{
+
+}

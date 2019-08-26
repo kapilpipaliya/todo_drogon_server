@@ -4,8 +4,8 @@
 #include <memory>
 #include <vector>
 
-#include "core/sql/objectidentifier.h"
-#include "core/sql/query.h"
+#include "objectidentifier.h"
+#include "query.h"
 
 #include  "json.hpp"
 using nlohmann:: json;

@@ -4,3 +4,8 @@ LocalPlay::LocalPlay()
 {
 
 }
+
+void LocalPlay::setupTable()
+{
+
+}

@@ -4,3 +4,8 @@ Config::Config()
 {
 
 }
+
+void Config::setupTable()
+{
+
+}

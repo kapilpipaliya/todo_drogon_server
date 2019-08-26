@@ -4,3 +4,8 @@ Bookmark::Bookmark()
 {
 
 }
+
+void Bookmark::setupTable()
+{
+
+}

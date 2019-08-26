@@ -2,11 +2,13 @@
 #define SHARE_H
 
 
+#include "../baseservice.h"
 namespace madmin {
-class Share
+class Share : public BaseService
 {
 public:
     Share();
+    void setupTable() override;
 };
 }
 #endif // SHARE_H

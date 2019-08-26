@@ -4,3 +4,8 @@ Random::Random()
 {
 
 }
+
+void Random::setupTable()
+{
+
+}

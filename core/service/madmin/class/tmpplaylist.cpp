@@ -4,3 +4,8 @@ TmpPlayList::TmpPlayList()
 {
 
 }
+
+void TmpPlayList::setupTable()
+{
+
+}
