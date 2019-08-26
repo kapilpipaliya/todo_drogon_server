@@ -27,6 +27,7 @@ protected:
     void quit(bool isPass, std::string reason="");
 
 public:
+    void setpath(std::string path);
     void init();
     void run();
     WSTestBase();

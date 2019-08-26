@@ -24,9 +24,13 @@ nlohmann::json WSTestBase::jsonparse(std::string msg)
         throw ("Json can not be parsed");
     }
 }
+
+void WSTestBase::setpath(std::string path)
+{
+    req->setPath(path);
+}
 void WSTestBase::init()
 {
-    req->setPath("/jadmin");
     setMessageHandler();
     setConnectionClosedHandler();
     connectToServer();
@@ -90,4 +94,5 @@ void WSTestBase::quit(bool isPass, std::string reason)
          spdlog::info(reason);
     }
 }
+
 void WSTestBase::run() { app().run(); }

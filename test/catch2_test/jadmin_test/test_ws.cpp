@@ -1,12 +1,13 @@
 #include <catch2/catch.hpp>
 
-#include "../src/websockettest.h"
-#include "../src/auth/formatcheck.h"
-#include "../src/auth/authcheck.h"
-#include "../src/auth/login.h"
-#include "../src/auth/signup.h"
-#include "../src/auth/gettabledata.h"
-#include "../src/auth/savedelete.h"
+#include "../src/base/websockettest.h"
+#include "../src/base/formatcheck.h"
+
+#include "../src/jadmin/authcheck.h"
+#include "../src/jadmin/login.h"
+#include "../src/jadmin/signup.h"
+#include "../src/jadmin/gettabledata.h"
+#include "../src/jadmin/savedelete.h"
 
 //To Benchmark do
 // https://github.com/catchorg/Catch2/blob/master/docs/benchmarks.md
@@ -14,24 +15,24 @@
 
 
 TEST_CASE("is connection possible","[WSTest]") {
-    WSTest w1; w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);
+    WSTest w1; w1.setpath("/jadmin"); w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);
 }
 TEST_CASE("server reply error on string type of message.","[WSTest]") {
-        FormatCheck w1; w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);
+        FormatCheck w1;  w1.setpath("/jadmin"); w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);
 }
 TEST_CASE("authorisation check without cookies","[WSTest]") {
-        AuthCheck w1; w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);
+        AuthCheck w1; w1.setpath("/jadmin"); w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);
 }
 TEST_CASE("login on backend with username and password","[WSTest]") {
-        LogIn w1; w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);
+        LogIn w1; w1.setpath("/jadmin"); w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);
 }
 /* currently this not working.. but make this working in future.
 TEST_CASE("signup with a form.","[WSTest]") {
-    SignUp w1; w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);
+    SignUp w1; w1.setpath("/jadmin"); w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);
 }
 */
 #define GetTableD(s)\
-     {GetTableData w1{s}; w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);}
+     {GetTableData w1{s}; w1.setpath("/jadmin"); w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);}
 
 TEST_CASE("check that all table data are correctly replied","[WSTest]") {
     GetTableD("account_type")
@@ -93,7 +94,7 @@ TEST_CASE("check that all table data are correctly replied","[WSTest]") {
 }
 
 #define SUD(t, ins, upd, del)\
-{SaveDelete w1{t, ins, upd, del}; w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);}
+{SaveDelete w1{t, ins, upd, del}; w1.setpath("/jadmin"); w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);}
 
 TEST_CASE("insert of ","[WSTest]") {
     SUD("account_type",
