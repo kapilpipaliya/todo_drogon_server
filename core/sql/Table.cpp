@@ -1,6 +1,6 @@
 #include "Table.h"
 #include <iostream>
-#include "spdlog/spdlog.h"
+#include "spdlogfix.h"
 
 #include "../strfns.h"
 #include "condformat.h"
@@ -18,14 +18,14 @@ Table::~Table()
 bool Table::select()
 {
     auto q = m_query.buildQuery(true);
-    spdlog::info(q);
+    SPDLOG_TRACE(q);
     // crash !! auto clientPtr = drogon::app().getFastDbClient("sce");
     auto clientPtr = drogon::app().getDbClient("sce");
     *clientPtr << q << Mode::Blocking >> [this](const Result &r) {
         result = r;
     } >> [q](const DrogonDbException &e) {
-        spdlog::info("query: {}", q);
-        spdlog::error(e.base().what());
+        SPDLOG_TRACE("query: {}", q);
+       SPDLOG_TRACE(e.base().what());
         //testOutput(false, "DbClient streaming-type interface(0)");
         throw;
     };
@@ -144,7 +144,8 @@ json Table::getJsonData()
         json jsonRow;
         for(unsigned long column=0; column<columnCount(); column++) {
             if(result[row][column].isNull()) {
-                jsonRow[column] = json(Json::nullValue);
+                json j(nullptr);
+                jsonRow[column] = j;
                 continue;
             }
             auto ctype = m_query.selectedColumns().at(column).column_type;
@@ -285,6 +286,12 @@ void Table::updatePaginationBase(json filters)
     }
     if(!filters[0].is_null()) {
         m_query.pagination().limit = filters[0].get<int>();
+    }
+    if(!filters[1].is_null()) {
+        m_query.pagination().offset = filters[1].get<int>();
+    }
+    if(!filters[2].is_null()) {
+        m_query.pagination().current_page = filters[2].get<int>();
     }
 }
 size_t Table::filterCount() const
