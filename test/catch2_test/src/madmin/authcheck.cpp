@@ -16,7 +16,7 @@ void AuthCheck::connectToServer()
                                    //nlohmann::json j = {{"legacy", "auth", "user_login", 0}}; // srever crash!!
                                    //nlohmann::json j = {{{"legacy", "auth", "user_login", 0}, 1223}}; // 1223  causer execaption on server
                                    //nlohmann::json j = {{{"legacy", "auth", "user_login", 0}, {}}}; // works
-                                    json j = R"( [[["auth","is_admin_auth",0],[[]]]] )"_json;
+                                    json j = R"( [[["user","is_logged_in",0],[[]]]] )"_json;
                                    wsPtr->getConnection()->send(j.dump());
                                }
                                else
@@ -36,11 +36,10 @@ void AuthCheck::setMessageHandler()
             {
                 // parsing input with a syntax error
                 auto j = json::parse(message);
-                spdlog::info("reply {}", j.dump());
-                REQUIRE(j[0][0][0] == "legacy");
-                REQUIRE(j[0][0][1] == "auth");
-                REQUIRE(j[0][0][2] == "is_admin_auth");
-                REQUIRE(j[0][0][3] == 0);
+                //spdlog::info("reply {}", j.dump());
+                REQUIRE(j[0][0][0] == "user");
+                REQUIRE(j[0][0][1] == "is_logged_in");
+                REQUIRE(j[0][0][2] == 0);
 
                 REQUIRE(j[0][1] == false);
                 //REQUIRE(j[0][1]["error"] == "Error");

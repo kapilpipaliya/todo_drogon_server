@@ -1,4 +1,4 @@
-#include "gettabledata.h"
+#include "gettabledata_admin.h"
 #include "spdlog/spdlog.h"
 
 #include <catch2/catch.hpp>
@@ -7,12 +7,12 @@
 using namespace nlohmann;
 using namespace fmt::v5;
 using namespace  madmin;
-GetTableData::GetTableData(std::string table): table(table)
+GetTableDataAdmin::GetTableDataAdmin(std::string table): table(table)
 {
 
 }
 
-void GetTableData::connectToServer()
+void GetTableDataAdmin::connectToServer()
 {
     wsPtr->connectToServer(req,
                            [this](ReqResult r,
@@ -24,7 +24,7 @@ void GetTableData::connectToServer()
                                    // a JSON value
                                    auto in = R"(
                                             [
-                                            [["auth","login",0],{{"user":"sadmin","pass":"123456"}}],
+                                            [["auth","login",0],{{"user":"new_u","pass":"12345600"}}],
                                             [["user","is_logged_in",0],[[]]],
                                             [["{0}","header",1000],{{}}],
                                             [["{1}","data",1000],[[],[],[0]]]
@@ -42,7 +42,7 @@ void GetTableData::connectToServer()
                                }
                            });
 }
-void GetTableData::setMessageHandler()
+void GetTableDataAdmin::setMessageHandler()
 {
     wsPtr->setMessageHandler([this](const std::string &message,
                              [[maybe_unused]] const WebSocketClientPtr &wsPtr,

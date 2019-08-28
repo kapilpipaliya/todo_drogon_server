@@ -3,10 +3,9 @@
 
 #include <catch2/catch.hpp>
 #include  "json.hpp"
-#include <Poco/Format.h>
+#include <fmt/format.h>
 using namespace nlohmann;
-using Poco::format;
-
+using namespace fmt::v5;
 GetTableData::GetTableData(std::string table): table(table)
 {
 
@@ -24,10 +23,10 @@ void GetTableData::connectToServer()
                                    // a JSON value
                                    auto in = R"(
                                             [
-                                            [["legacy","auth","admin_login",0],{"email":"kapil.pipaliya@yahoo.com","pass":"3434"}],
+                                            [["legacy","auth","admin_login",0],{{"email":"kapil.pipaliya@yahoo.com","pass":"3434"}}],
                                             [["legacy","auth","is_admin_auth",0],[[]]],
-                                            [["legacy","%s","header",1000],{}],
-                                            [["legacy","%s","data",1000],[[],[],[0]]]
+                                            [["legacy","{0}","header",1000],{{}}],
+                                            [["legacy","{1}","data",1000],[[],[],[0]]]
                                             ]
                                             )";
                                    auto s = format(in, table, table);

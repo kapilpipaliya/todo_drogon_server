@@ -1,4 +1,4 @@
-#include "gettabledata.h"
+#include "getmenudata_sadmin.h"
 #include "spdlog/spdlog.h"
 
 #include <catch2/catch.hpp>
@@ -7,12 +7,12 @@
 using namespace nlohmann;
 using namespace fmt::v5;
 using namespace  madmin;
-GetTableData::GetTableData(std::string table): table(table)
+GetMenuSAdmin::GetMenuSAdmin(std::string table): table(table)
 {
 
 }
 
-void GetTableData::connectToServer()
+void GetMenuSAdmin::connectToServer()
 {
     wsPtr->connectToServer(req,
                            [this](ReqResult r,
@@ -26,11 +26,10 @@ void GetTableData::connectToServer()
                                             [
                                             [["auth","login",0],{{"user":"sadmin","pass":"123456"}}],
                                             [["user","is_logged_in",0],[[]]],
-                                            [["{0}","header",1000],{{}}],
-                                            [["{1}","data",1000],[[],[],[0]]]
+                                            [["ui","menu_data",1000],{{}}]
                                             ]
                                             )";
-                                   auto s = format(in, table, table);
+                                   auto s = format(in);
                                    spdlog::info(s);
                                    auto j = jsonparse(s);
 
@@ -42,7 +41,7 @@ void GetTableData::connectToServer()
                                }
                            });
 }
-void GetTableData::setMessageHandler()
+void GetMenuSAdmin::setMessageHandler()
 {
     wsPtr->setMessageHandler([this](const std::string &message,
                              [[maybe_unused]] const WebSocketClientPtr &wsPtr,
@@ -72,19 +71,12 @@ void GetTableData::setMessageHandler()
 
             // header data:
             auto h = j[3][0];
+            REQUIRE(h.is_array() == true);
             REQUIRE(h[0] == table);
-            REQUIRE(h[1] == "header");
+            REQUIRE(h[1] == "menu_data");
             REQUIRE(h[2] == 1000);
 
-            REQUIRE(j[3][1].size() == 6);
 
-            // table data:
-            auto t = j[4][0];
-            REQUIRE(t[0] == table);
-            REQUIRE(t[1] == "data");
-            REQUIRE(t[2] == 1000);
-
-            REQUIRE(j[4][1].size() >= 0);
 
 
             return quit(true);

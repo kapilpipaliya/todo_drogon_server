@@ -16,7 +16,7 @@ void LogIn::connectToServer()
                                    //
                                    // a JSON value
                                    json j = R"(
-                                            [[["legacy","auth","admin_login",0],{"email":"kapil.pipaliya@yahoo.com","pass":"3434"}]]
+                                            [[["auth","login",0],{"user":"sadmin","pass":"123456"}]]
                                             )"_json;
                                    wsPtr->getConnection()->send(j.dump());
                                }
@@ -34,24 +34,22 @@ void LogIn::setMessageHandler()
         if (type == WebSocketMessageType::Text)
         {
             auto j =jsonparse(message);
-            //spdlog::info(j.dump());
+            spdlog::info(j.dump());
             // event
             auto e = j[0][0];
-            REQUIRE(e[0] == "legacy");
-            REQUIRE(e[1] == "auth");
-            REQUIRE(e[2] == "admin_login");
-            REQUIRE(e[3] == 0);
+            REQUIRE(e[0] == "auth");
+            REQUIRE(e[1] == "login");
+            REQUIRE(e[2] == 0);
 
             REQUIRE(j[0][1]["ok"] == true);
 
             // cookie:
             auto c = j[1][0];
-            REQUIRE(c[0] == "legacy");
-            REQUIRE(c[1] == "auth");
-            REQUIRE(c[2] == "set_cookie");
-            REQUIRE(c[3] == 0);
+            REQUIRE(c[0] == "auth");
+            REQUIRE(c[1] == "set_cookie");
+            REQUIRE(c[2] == 0);
 
-            REQUIRE(j[1][1]["admin"].is_number() == true);
+            REQUIRE(j[1][1].is_number() == true);
             return quit(true);
         } else {
             //quit(true);

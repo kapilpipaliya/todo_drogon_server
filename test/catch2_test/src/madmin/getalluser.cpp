@@ -1,4 +1,4 @@
-#include "gettabledata.h"
+#include "getalluser.h"
 #include "spdlog/spdlog.h"
 
 #include <catch2/catch.hpp>
@@ -7,12 +7,7 @@
 using namespace nlohmann;
 using namespace fmt::v5;
 using namespace  madmin;
-GetTableData::GetTableData(std::string table): table(table)
-{
-
-}
-
-void GetTableData::connectToServer()
+void getAllUser::connectToServer()
 {
     wsPtr->connectToServer(req,
                            [this](ReqResult r,
@@ -22,18 +17,9 @@ void GetTableData::connectToServer()
                                {
                                    //
                                    // a JSON value
-                                   auto in = R"(
-                                            [
-                                            [["auth","login",0],{{"user":"sadmin","pass":"123456"}}],
-                                            [["user","is_logged_in",0],[[]]],
-                                            [["{0}","header",1000],{{}}],
-                                            [["{1}","data",1000],[[],[],[0]]]
-                                            ]
-                                            )";
-                                   auto s = format(in, table, table);
-                                   spdlog::info(s);
-                                   auto j = jsonparse(s);
-
+                                   json j = R"(
+                                            [[["user","header",0],{"user":"sadmin","pass":"123456"}]]
+                                            )"_json;
                                    wsPtr->getConnection()->send(j.dump());
                                }
                                else
@@ -42,7 +28,8 @@ void GetTableData::connectToServer()
                                }
                            });
 }
-void GetTableData::setMessageHandler()
+
+void getAllUser::setMessageHandler()
 {
     wsPtr->setMessageHandler([this](const std::string &message,
                              [[maybe_unused]] const WebSocketClientPtr &wsPtr,
@@ -50,7 +37,7 @@ void GetTableData::setMessageHandler()
         if (type == WebSocketMessageType::Text)
         {
             auto j =jsonparse(message);
-            spdlog::info("result: {}", j.dump());
+            spdlog::info(j.dump());
             // event
             auto e = j[0][0];
             REQUIRE(e[0] == "auth");
@@ -66,27 +53,6 @@ void GetTableData::setMessageHandler()
             REQUIRE(c[2] == 0);
 
             REQUIRE(j[1][1].is_number() == true);
-
-            // is_admin_auth == true
-            REQUIRE(j[2][1] == true);
-
-            // header data:
-            auto h = j[3][0];
-            REQUIRE(h[0] == table);
-            REQUIRE(h[1] == "header");
-            REQUIRE(h[2] == 1000);
-
-            REQUIRE(j[3][1].size() == 6);
-
-            // table data:
-            auto t = j[4][0];
-            REQUIRE(t[0] == table);
-            REQUIRE(t[1] == "data");
-            REQUIRE(t[2] == 1000);
-
-            REQUIRE(j[4][1].size() >= 0);
-
-
             return quit(true);
         } else {
             //quit(true);
