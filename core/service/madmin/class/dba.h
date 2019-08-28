@@ -51,7 +51,7 @@ public:
             auto r = transPtr->execSqlSync(sql, args...);
             return r;
         } catch (const std::exception &e) {
-            spdlog::error(e.what());
+           SPDLOG_TRACE(e.what());
             throw("Invalid Sql At Dba write");
         }
     }

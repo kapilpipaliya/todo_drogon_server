@@ -1,7 +1,7 @@
 #ifndef UI_H
 #define UI_H
 #include "../baseservice.h"
-#include "spdlog/spdlog.h"
+#include "spdlogfix.h"
 #include <fmt/format.h>
 #include  "json.hpp"
 using nlohmann:: json;

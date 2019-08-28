@@ -1,6 +1,7 @@
 #include "query.h"
 
 #include <algorithm>
+#include "spdlogfix.h"
 
 namespace sqlb
 {
@@ -81,6 +82,41 @@ std::string Query::buildGroupByPart() const
     return group_by;
 }
 
+std::string Query::buildOrderByByPart() const // Sorting
+{
+    std::string order_by;
+    for(const auto& sorted_column : m_sort) {
+        if(sorted_column.column < m_selected_columns.size()) {
+            auto c2 = m_selected_columns.at(sorted_column.column);
+            order_by += c2.prefix + "." + sqlb::escapeIdentifier(c2.selector) + " "
+                        + (sorted_column.direction == sqlb::Ascending ? "ASC" : "DESC") + ",";
+        }
+    }
+    if(!order_by.empty()) {
+        order_by.pop_back();
+        order_by = "ORDER BY " + order_by;
+    }
+    return order_by;
+}
+
+std::string Query::buildPaginationPart() const
+{
+    std::string pagination;
+    if (m_pagination.limit > 0) pagination += " LIMIT " + std::to_string(m_pagination.limit);
+
+    int offset = 0;
+    if(m_pagination.offset == 0){
+        if(m_pagination.current_page > 1) {
+            offset = m_pagination.limit * (m_pagination.current_page - 1);
+        }
+    }
+    if(offset) {
+        pagination += " OFFSET " + std::to_string(offset);
+    }
+
+    return  pagination;
+}
+
 std::string Query::buildSelectorPart(std::vector<SelectedColumn> &m_selected_columns_) const
 {
     std::string selector;
@@ -129,22 +165,8 @@ std::string Query::buildQuery(bool withRowid) const
     // Filter
     std::string where = buildWherePart();
     std::string group_by = buildGroupByPart();
-    // Sorting
-    std::string order_by;
-    for(const auto& sorted_column : m_sort) {
-        if(sorted_column.column < m_selected_columns.size()) {
-            auto c2 = m_selected_columns.at(sorted_column.column);
-            order_by += c2.prefix + "." + sqlb::escapeIdentifier(c2.selector) + " "
-                        + (sorted_column.direction == sqlb::Ascending ? "ASC" : "DESC") + ",";
-        }
-    }
-    if(!order_by.empty()) {
-        order_by.pop_back();
-        order_by = "ORDER BY " + order_by;
-    }
-    //Pagination
-    std::string pagination;
-    if (m_pagination.limit != 0) pagination += " LIMIT " + std::to_string(m_pagination.limit);
+    std::string order_by = buildOrderByByPart();
+    std::string pagination = buildPaginationPart();
 
     return "SELECT " + selector + " FROM " + m_table.toString() + " " + m_table.as() + " " + join + where + " " + group_by + order_by + pagination;
 }
@@ -152,7 +174,11 @@ std::string Query::buildQuery(bool withRowid) const
 std::string Query::buildCountQuery() const
 {
     // Build simplest count query for this (filtered) table
-    return "SELECT COUNT(*) FROM " + m_table.toString() + " " + buildWherePart();
+    // limit always applies last, and by that time there is only one row
+    // cant add order by
+    std::string q = "SELECT COUNT(*) FROM " + m_table.toString() + " " + m_table.as() + " " +  buildJoinPart() + buildWherePart() + " " + buildGroupByPart();
+    SPDLOG_TRACE(q);
+    return q;
 }
 
 std::string Query::buildDeleteQuery() const
@@ -163,42 +189,101 @@ std::string Query::buildDeleteQuery() const
     std::string group_by = buildGroupByPart();
 
     //return "DELETE FROM " + m_table.toString() + " " + m_table.as() + " " + join + where + " " + group_by;
+    // Fix delete query currently not working for join table.
+    //DELETE FROM [ ONLY ] table_name [ * ] [ [ AS ] alias ] [ USING using_list ] [ WHERE condition | WHERE CURRENT OF cursor_name ] [ RETURNING * | output_expression [ [ AS ] output_name ]
     return "DELETE FROM " + m_table.toString() + " " + m_table.as() + " " + where + " " + group_by;
 }
 
 std::string Query::buildInsQuery(nlohmann::json args) const
 {
+    std::string column;
     std::string values;
-    std::vector<SelectedColumn> sel_columns;
-    for (auto& [key, val] : args.items())
-    {
-        auto c = findSelectedColumnBySelector(key);
-        sel_columns.push_back(*c.base());
-
-        std::string v{""};
-        if (val.is_null()) {
-            v  = "null";
-            values += v + " ,";
-        } else if(val.type() == nlohmann::json::value_t::number_integer ||  val.type() == nlohmann::json::value_t::number_unsigned) {
-            v = std::to_string(val.get<long>());
-            values += v + " ,";
-        } else if (val.type() == nlohmann::json::value_t::number_float) {
-            v = std::to_string(val.get<float>());
-            values += v + " ,";
-        } else if(val.type() == nlohmann::json::value_t::boolean) {
-            v = val.get<bool>() ? "true" : "false";
-            values += v + " ,";
-        } else if (val.type() == nlohmann::json::value_t::string) {
-            v = val.get<std::string>();
-            values += v + " ,";
-        } else {
-            v = "";
-            //value += v + " ,";
+    auto o = args[0];
+    if(o.type() == nlohmann::json::object()){
+        for (auto& [key, val] : o.items())
+        {
+            std::string key_ = key;
+           auto it =  std::find_if(m_selected_columns.begin(), m_selected_columns.end(), [&](const SelectedColumn& c) {
+                    return key_ == c.selector;
+                });
+           if(it != m_selected_columns.end()){
+               column += key_ + " ,";
+               std::string v{""};
+               if (val.is_null()) {
+                   v  = "null";
+                   values += v + " ,";
+               } else if(val.type() == nlohmann::json::value_t::number_integer ||  val.type() == nlohmann::json::value_t::number_unsigned) {
+                   v = std::to_string(val.get<long>());
+                   values += v + " ,";
+               } else if (val.type() == nlohmann::json::value_t::number_float) {
+                   v = std::to_string(val.get<float>());
+                   values += v + " ,";
+               } else if(val.type() == nlohmann::json::value_t::boolean) {
+                   v = val.get<bool>() ? "true" : "false";
+                   values += v + " ,";
+               } else if (val.type() == nlohmann::json::value_t::string) {
+                   v = val.get<std::string>();
+                   values += "'" + v + "'" + " ,";
+               } else {
+                   v = " ";
+                   //value += v + " ,";
+               }
+           }
+        }
+        if(!column.empty()) column.pop_back();
+        if(!values.empty()) values.pop_back();
+        if(!column.empty() && !values.empty()){
+            return "INSERT INTO " + m_table.toString() + " " +  " (" + column + ") values(" + values + ")";
         }
     }
-    values.pop_back();
-    std::string selector = buildSelectorPart(const_cast<std::vector<SelectedColumn> &>(sel_columns));
-    return "INSERT INTO " + m_table.toString() + " " + m_table.as() + " (" + selector + ") values(" + values + ")";
+    return "";
+}
+
+std::string Query::buildUpdateQuery(nlohmann::json args) const
+{
+    std::string column;
+    std::string values;
+    auto o = args[0];
+    if(o.type() == nlohmann::json::object()){
+        for (auto& [key, val] : o.items())
+        {
+            std::string key_ = key;
+           auto it =  std::find_if(m_selected_columns.begin(), m_selected_columns.end(), [&](const SelectedColumn& c) {
+                    return key_ == c.selector;
+                });
+           if(it != m_selected_columns.end()){
+               column += key_ + " ,";
+               std::string v{""};
+               if (val.is_null()) {
+                   v  = "null";
+                   values += v + " ,";
+               } else if(val.type() == nlohmann::json::value_t::number_integer ||  val.type() == nlohmann::json::value_t::number_unsigned) {
+                   v = std::to_string(val.get<long>());
+                   values += v + " ,";
+               } else if (val.type() == nlohmann::json::value_t::number_float) {
+                   v = std::to_string(val.get<float>());
+                   values += v + " ,";
+               } else if(val.type() == nlohmann::json::value_t::boolean) {
+                   v = val.get<bool>() ? "true" : "false";
+                   values += v + " ,";
+               } else if (val.type() == nlohmann::json::value_t::string) {
+                   v = val.get<std::string>();
+                   values += "'" + v + "'" + " ,";
+               } else {
+                   v = " ";
+                   //value += v + " ,";
+               }
+           }
+        }
+        if(!column.empty()) column.pop_back();
+        if(!values.empty()) values.pop_back();
+        if(!column.empty() && !values.empty()){
+            // Filter
+            std::string where = buildWherePart();
+            return "UPDATE " + m_table.toString()  + " " + m_table.as() + " SET " +  " (" + column + ") =ROW(" + values + ") " +   where ;
+        }
+    }
+    return "";
 }
 
 std::string Query::buildUpdateQuery(std::string column, std::string values, std::string where_) const

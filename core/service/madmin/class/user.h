@@ -2,13 +2,14 @@
 #define USER_H
 
 #include <string>
-#include "spdlog/spdlog.h"
+#include "spdlogfix.h"
 #include <fmt/format.h>
 #include  "json.hpp"
 #include <vector>
 
 using nlohmann:: json;
 using namespace fmt::v5;
+using std::string;
 /**
  * User Class
  *
@@ -29,8 +30,8 @@ namespace madmin {
 class User : public BaseService
 {
     struct Info{
-        std::string username;
-        std::string fullname;
+        string username;
+        string fullname;
         int access;
     };
 
@@ -48,11 +49,11 @@ public:
     void setupTable() override;
     json handleEvent(json event, unsigned long next, json args) override;
 
-    static Count count();
+    //static Count count();
     void load_playlist();
     static void get_valid_users(); // fix it..
-    static User get_from_username(std::string username); // fix
-    static User get_from_apikey(std::string apikey); //fix
+    static User get_from_username(string username); // fix
+    static User get_from_apikey(string apikey); //fix
     //public static User get_from_email(email); //fix
     //static User get_from_website(website); //fix
 
@@ -60,19 +61,19 @@ public:
 
         //Basic Componets
 //        int id;
-//        std::string username;
-//       std::string fullname;
+//        string username;
+//       string fullname;
 //        bool fullname_public;
 //        int access;
 //       bool disabled;
-//        std::string email;
+//        string email;
 //        int last_seen;
 //        int create_date;
-//        std::string validation;
-//        std::string website;
-//        std::string state;
-//        std::string city;
-//        std::string apikey;
+//        string validation;
+//        string website;
+//        string state;
+//        string city;
+//        string apikey;
 
         // Constructed variables
         /**
@@ -83,16 +84,16 @@ public:
          * @var Tmp_Playlist playlist
          */
 //        public playlist;
-//        std::string f_name;
-//        std::string f_last_seen;
-//        std::string f_create_date;
-//        std::string link;
-//        std::string f_link;
-//        std::string f_useage;
-//        std::string ip_history;
-//        std::string f_avatar;
-//        std::string f_avatar_mini;
-//        std::string f_avatar_medium;
+//        string f_name;
+//        string f_last_seen;
+//        string f_create_date;
+//        string link;
+//        string f_link;
+//        string f_useage;
+//        string ip_history;
+//        string f_avatar;
+//        string f_avatar_mini;
+//        string f_avatar_medium;
 
         /**
          * count
@@ -252,7 +253,7 @@ public:
          * get_password
          * Get the current hashed user password from database.
          */
-        std::string get_password();
+        string get_password();
         /**
          * disable
          * This disables the current user
@@ -288,12 +289,12 @@ public:
          * create
          * inserts a new user into ampache
          */
-        //static //void  create(username, fullname, email, website, password, access, state = '', city = '', disabled = false);
+        static long  create(string username, string fullname, string email, string website, string password, string access, string state = "", string city = "", bool disabled = false);
         /**
          * update_password
          * updates a users password
          */
-        bool update_password(std::string new_password);
+        bool update_password(string new_password);
         /**
          * format
          * This function sets up the extra variables we need when we are displaying a

@@ -1,8 +1,8 @@
 #include "jsonfns.h"
-#include "spdlog/spdlog.h"
+#include "spdlogfix.h"
 void printJson(json &in)
 {
-    spdlog::info(in.dump().c_str());
+    SPDLOG_TRACE(in.dump().c_str());
 }
 
 json simpleJsonSaveResult(json event, bool ok, const std::string & error)

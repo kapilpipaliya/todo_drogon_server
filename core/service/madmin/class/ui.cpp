@@ -28,7 +28,7 @@ nlohmann::json UI::handleEvent(nlohmann::json event, unsigned long next, nlohman
 
 nlohmann::json UI::getMenuData()
 {
-    if(context->user.type == "sadmin"){
+    if(context->user.type == "super admin"){
         json j = json::array({
             json::array({"Dashboard", "music/dashboard"}),
             json::array({"Admins","music/users"}),
@@ -42,14 +42,13 @@ nlohmann::json UI::getMenuData()
         json j = json::array({
             json::array({"Dashboard", "music/dashboard"}),
             json::array({"Executives", "music/users"}),
-             json::array({"Songs","music/browse"}),
+            json::array({"Songs","music/browse"}),
             json::array({"Profile", "music/profile"}),
-            json::array( {"Password Change", "music/update_password"}),
+            json::array({"Password Change", "music/update_password"}),
             json::array({"Logout", "music/logout"})
-        })
-                ;
+        }) ;
         return j;
     } else {
-        return Json::nullValue;
+        return json::array();
     }
 }

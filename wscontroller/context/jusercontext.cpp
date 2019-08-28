@@ -1,5 +1,5 @@
 #include "jusercontext.h"
-#include "spdlog/spdlog.h"
+#include "spdlogfix.h"
 #include <boost/filesystem.hpp>
 #include "../../core/strfns.h"
 #include "../../core/sql/query.h"
@@ -26,7 +26,7 @@ int JUserContext::generateContext(const HttpRequestPtr &req, std::string account
                 return 0;
             }
         } catch (const std::exception &e) {
-            spdlog::error(e.what());
+           SPDLOG_TRACE(e.what());
             return 0;
         }
     }
@@ -41,7 +41,7 @@ void JUserContext::deleteAdminSession() {
             auto r = transPtr->execSqlSync(sqlSession, admin);
             admin = 0;
         } catch (const std::exception &e) {
-            spdlog::error(e.what());
+           SPDLOG_TRACE(e.what());
         }
     }
 }
@@ -54,7 +54,7 @@ void JUserContext::deleteuserSession() {
             auto r = transPtr->execSqlSync(sqlSession, user);
             user = 0 ;
         } catch (const std::exception &e) {
-            spdlog::error(e.what());
+           SPDLOG_TRACE(e.what());
         }
     }
 }

@@ -1,5 +1,5 @@
 #include "dba.h"
-#include "spdlog/spdlog.h"
+#include "spdlogfix.h"
 using namespace  madmin;
 Dba::Dba(const MAdminContextPtr &context_): BaseService(context_)
 {
@@ -18,7 +18,7 @@ drogon::orm::Result Dba::read(std::string sql)
         auto res = clientPtr->execSqlSync( sql);
         return res;
     } catch (const std::exception &e) {
-        spdlog::error(e.what());
+       SPDLOG_TRACE(e.what());
         throw("Invalid Sql At Dba");
     }
 }

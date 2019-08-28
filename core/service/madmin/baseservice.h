@@ -1,6 +1,6 @@
 #ifndef BASESERVICE_H
 #define BASESERVICE_H
-#include "spdlog/spdlog.h"
+#include "spdlogfix.h"
 
 #include <drogon/WebSocketController.h>
 
@@ -30,6 +30,7 @@ public:
     virtual  json ins(json event, json args);
     virtual  json upd(json event, json args);
     virtual json del(json event, json args);
+    virtual json count(json event, json args);
 
     template<class... Args>
     json insBase(json event, json args, std::string column, std::string values,  Args... args_bind)
@@ -41,7 +42,7 @@ public:
             clientPtr->execSqlSync( strSql, args_bind...);
             json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
-            spdlog::error(e.what());
+           SPDLOG_TRACE(e.what());
             json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
         }
     }
@@ -57,7 +58,7 @@ public:
             clientPtr->execSqlSync(strSql, args_bind... );
             json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
-            spdlog::error(e.what());
+           SPDLOG_TRACE(e.what());
             json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
         }
     }

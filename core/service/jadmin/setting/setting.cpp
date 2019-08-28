@@ -60,7 +60,7 @@ json Setting::del( json event, json args)
         json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
         
-        spdlog::error(e.what());
+       SPDLOG_TRACE(e.what());
         json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
 }
@@ -79,7 +79,7 @@ json Setting::save( json event, json args) {
             json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
             
-            spdlog::error(e.what());
+           SPDLOG_TRACE(e.what());
             json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
         }
     } else {
@@ -91,7 +91,7 @@ json Setting::save( json event, json args) {
             json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
             
-            spdlog::error(e.what());
+           SPDLOG_TRACE(e.what());
             json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
         }
     }

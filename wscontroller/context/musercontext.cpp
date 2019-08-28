@@ -1,5 +1,5 @@
 #include "musercontext.h"
-#include "spdlog/spdlog.h"
+#include "spdlogfix.h"
 
 MUserContext::MUserContext(const HttpRequestPtr &req, const WebSocketConnectionPtr &wsConnPtr_): ContextBase(req, wsConnPtr_)
 {
@@ -23,7 +23,7 @@ int MUserContext::generateContext(const HttpRequestPtr &req, std::string account
                 return 0;
             }
         } catch (const std::exception &e) {
-            spdlog::error(e.what());
+           SPDLOG_TRACE(e.what());
             return 0;
         }
     }
@@ -38,7 +38,7 @@ void MUserContext::deleteAdminSession() {
             auto r = transPtr->execSqlSync(sqlSession, admin);
             admin = 0;
         } catch (const std::exception &e) {
-            spdlog::error(e.what());
+           SPDLOG_TRACE(e.what());
         }
     }
 }
@@ -51,7 +51,7 @@ void MUserContext::deleteuserSession() {
             auto r = transPtr->execSqlSync(sqlSession, user);
             user = 0 ;
         } catch (const std::exception &e) {
-            spdlog::error(e.what());
+           SPDLOG_TRACE(e.what());
         }
     }
 }

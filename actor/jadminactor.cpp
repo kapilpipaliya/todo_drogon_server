@@ -1,6 +1,6 @@
 #include "jadminactor.h"
 
-#include "spdlog/spdlog.h"
+#include "spdlogfix.h"
 
 #include "mainactortype.h"
 #include "../wscontroller/context/jadmincontext.h"
@@ -122,9 +122,9 @@ void JAdminActor::blocking_run(const WebSocketConnectionPtr &wsConnPtr, std::str
         }
         catch (json::parse_error& e)
         {
-            spdlog::error("message: {}", e.what());
-            spdlog::error("exception id: {}", e.id);
-            spdlog::error("byte position of error:", e.byte);
+           SPDLOG_TRACE("message: {}", e.what());
+           SPDLOG_TRACE("exception id: {}", e.id);
+           SPDLOG_TRACE("byte position of error:", e.byte);
             nlohmann::json j =  std::string("cant parse json reason: ") + e.what() ;
             wsConnPtr->send(j.dump());
         }
@@ -244,15 +244,15 @@ json JAdminActor::handleBinaryMessage(const WebSocketConnectionPtr &wsConnPtr, s
             }
             catch (json::parse_error& e)
             {
-                spdlog::error("message: {}", e.what());
-                spdlog::error("exception id: {}", e.id);
-                spdlog::error("byte position of error:", e.byte);
+               SPDLOG_TRACE("message: {}", e.what());
+               SPDLOG_TRACE("exception id: {}", e.id);
+               SPDLOG_TRACE("byte position of error:", e.byte);
                 nlohmann::json j =  std::string("cant parse json reason: ") + e.what() + event.dump();
                 wsConnPtr->send(j.dump());
             }
         }
     } catch (const std::exception &e) {
-        spdlog::error(e.what());
+       SPDLOG_TRACE(e.what());
         json jresult;
         jresult[0] = event;
         jresult[1] = e.what();

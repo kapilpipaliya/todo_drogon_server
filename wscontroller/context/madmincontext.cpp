@@ -1,5 +1,5 @@
 #include "madmincontext.h"
-#include "spdlog/spdlog.h"
+#include "spdlogfix.h"
 
 MAdminContext::MAdminContext(const HttpRequestPtr &req, const WebSocketConnectionPtr &wsConnPtr_): ContextBase(req, wsConnPtr_)
 {
@@ -27,7 +27,7 @@ std::tuple<long, long> MAdminContext::generateContext(const HttpRequestPtr &req)
                 return {0, 0};
             }
         } catch (const std::exception &e) {
-            spdlog::error(e.what());
+           SPDLOG_TRACE(e.what());
             return {0, 0};
         }
     }
@@ -47,7 +47,7 @@ void MAdminContext::setUser()
             user.type = r[0]["type"].as<std::string>();
         }
     } catch (const std::exception &e) {
-        spdlog::error(e.what());
+       SPDLOG_TRACE(e.what());
     }
 }
 

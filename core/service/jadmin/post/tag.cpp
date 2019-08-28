@@ -55,7 +55,7 @@ json Tag::ins( json event, json args) {
         json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
         
-        spdlog::error(e.what());
+       SPDLOG_TRACE(e.what());
         json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
 }
@@ -84,7 +84,7 @@ json Tag::upd( json event, json args) {
             json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
             
-            spdlog::error(e.what());
+           SPDLOG_TRACE(e.what());
             json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
         }
     }

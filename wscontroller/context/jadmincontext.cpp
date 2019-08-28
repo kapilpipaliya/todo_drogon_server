@@ -1,5 +1,5 @@
 #include "jadmincontext.h"
-#include "spdlog/spdlog.h"
+#include "spdlogfix.h"
 #include <boost/filesystem.hpp>
 #include "../../core/strfns.h"
 #include "../../core/sql/query.h"
@@ -26,7 +26,7 @@ int JAdminContext::generateContext(const HttpRequestPtr &req, std::string accoun
                 return 0;
             }
         } catch (const std::exception &e) {
-            spdlog::error(e.what());
+           SPDLOG_TRACE(e.what());
             return 0;
         }
     }
@@ -41,7 +41,7 @@ void JAdminContext::deleteAdminSession() {
             auto r = transPtr->execSqlSync(sqlSession, admin);
             admin = 0;
         } catch (const std::exception &e) {
-            spdlog::error(e.what());
+           SPDLOG_TRACE(e.what());
         }
     }
 }
@@ -54,7 +54,7 @@ void JAdminContext::deleteuserSession() {
             auto r = transPtr->execSqlSync(sqlSession, user);
             user = 0 ;
         } catch (const std::exception &e) {
-            spdlog::error(e.what());
+           SPDLOG_TRACE(e.what());
         }
     }
 }
@@ -140,7 +140,7 @@ json JAdminContext::adminLogin( json event, json args)
         }
 
     } catch (const std::exception &e) {
-        spdlog::error(e.what());
+       SPDLOG_TRACE(e.what());
         json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
 }
@@ -185,7 +185,7 @@ json JAdminContext::userRegister( json event, json args)
         //simpleJsonSaveResult(event, true, "Done");
         return userLogin(event, args);
     } catch (const std::exception &e) {
-        spdlog::error(e.what());
+       SPDLOG_TRACE(e.what());
         json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
 }
@@ -230,7 +230,7 @@ json JAdminContext::userLogin( json event, json args)
         }
 
     } catch (const std::exception &e) {
-        spdlog::error(e.what());
+       SPDLOG_TRACE(e.what());
         json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
 }
@@ -256,14 +256,14 @@ json JAdminContext::userId( json event, json )
             catch (json::parse_error& e)
             {
                 jresult[1]=0;
-                spdlog::error("message: {}", e.what());
-                spdlog::error("exception id: {}", e.id);
-                spdlog::error("byte position of error:", e.byte);
+               SPDLOG_TRACE("message: {}", e.what());
+               SPDLOG_TRACE("exception id: {}", e.id);
+               SPDLOG_TRACE("byte position of error:", e.byte);
                 nlohmann::json j =  std::string("cant parse json reason: ") + e.what() ;
             }
             return jresult;
         } catch (const std::exception &e) {
-            spdlog::error(e.what());
+           SPDLOG_TRACE(e.what());
             json jresult;
             jresult[0]=event;
             jresult[1]=0;
@@ -305,7 +305,7 @@ json JAdminContext::checkout( json event, json args)
             jresult[1]=root["value"];
             return jresult;
         } catch (const std::exception &e) {
-            spdlog::error(e.what());
+           SPDLOG_TRACE(e.what());
             json jresult;
             jresult[0]=event;
             jresult[1]=0;
@@ -327,7 +327,7 @@ json JAdminContext::saveImageMeta( json event, json args)
         auto r = transPtr->execSqlSync(strSql, c, args[0].dump(), args[1].get<std::string>(), args[2].get<long>(), args[3].get<std::string>());
         json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
-        spdlog::error(e.what());
+       SPDLOG_TRACE(e.what());
         json ret; ret[0] = simpleJsonSaveResult(event, false, "Error"); return ret;
     }
 }
@@ -367,7 +367,7 @@ json JAdminContext::thumb_data( json event, json args)
                 auto memblock = read_all(file);
                 file.close();
 
-                //spdlog::info("the entire file content is in memory");
+                //SPDLOG_TRACE("the entire file content is in memory");
                 wsConnPtr->send(memblock, WebSocketMessageType::Binary); // Note when server not able to send this file, front end crash.
                 //delete[] memblock;
             }
@@ -377,7 +377,7 @@ json JAdminContext::thumb_data( json event, json args)
         return json(Json::nullValue);
     } catch (const std::exception &e) {
 
-        spdlog::error(e.what());
+       SPDLOG_TRACE(e.what());
         //simpleJsonSaveResult(event, false, e.what());
         return json(Json::nullValue);
     }
@@ -446,7 +446,7 @@ json JAdminContext::save_setting_attachment(json event, std::string &message)
 
     } catch (const std::exception &e) {
 
-        spdlog::error(e.what());
+       SPDLOG_TRACE(e.what());
         return Json::nullValue;
     }
 

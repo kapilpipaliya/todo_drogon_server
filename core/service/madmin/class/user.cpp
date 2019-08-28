@@ -23,7 +23,7 @@ void User::setupTable()
 
     //m_query.setRowIdColumn("id");
     t.m_query.selectedColumns() = {
-        S({"id", "id", "", "e", PG_TYPES::INT8}),
+        S({"Id", "id", "", "e", PG_TYPES::INT8}),
         S({"Account Type", "type", "", "e", PG_TYPES::ENUM}),
         //S({"no", "no", "", "e", PG_TYPES::TEXT}),
         //S({"sequence_id", "sequence_id", "", "e", PG_TYPES::INT8, false}),
@@ -35,6 +35,8 @@ void User::setupTable()
         S({"Active", "disabled", "", "e", PG_TYPES::BOOL}),
         S({"Email", "email", "", "e", PG_TYPES::TEXT, true}),
         S({"Password", "password", "", "e", PG_TYPES::TEXT, true}),
+        S({"City", "city", "", "e", PG_TYPES::TEXT, true}),
+        S({"State", "state", "", "e", PG_TYPES::TEXT, true}),
         //S({"Created By", "create_user_id", "", "e", PG_TYPES::INT8, true, 1, 0, false}), S({"u1_username", "username", "", "u1", PG_TYPES::TEXT, false, 0, 0, false}),
         //S({"Updated By", "update_user_id", "", "e", PG_TYPES::INT8, true, 1, 0, false}), S({"u2_username", "username", "", "u2", PG_TYPES::TEXT, false, 0, 0, false}),
         //S({"Create Time", "inserted_at", "", "e", PG_TYPES::TIMESTAMP, true, 0, 0, false}),
@@ -64,7 +66,7 @@ nlohmann::json User::handleEvent(nlohmann::json event, unsigned long next, nlohm
     } else if (event_cmp == "header") { // required
         return headerData(event, args);
     } else if (event_cmp == "data") { // required
-        if(context->user.type == "sadmin"){
+        if(context->user.type == "super admin"){
             return allData(event, args);
         } else if (context->user.type == "admin"){
             t.m_query.cusm_where() = format("e.parent_id = {}", context->user_id);
@@ -85,6 +87,8 @@ nlohmann::json User::handleEvent(nlohmann::json event, unsigned long next, nlohm
         return upd(event, args);
     } else if (event_cmp  == "del") {
         return del(event, args);
+    } else if (event_cmp  == "count") {
+        return count(event, args);
     } else {
         return nullptr;
     }
@@ -105,14 +109,14 @@ User::Info User::get_info()
         info.access = res[0]["access"].as<int>();
         return info;
     } catch (const std::exception &e) {
-        spdlog::error(e.what());
+       SPDLOG_TRACE(e.what());
         Info info;
         return info;
     }
     // add user to the cache
 }
 
-User::Count User::count()
+/*User::Count User::count()
 {
     Count count;
     //1
@@ -122,14 +126,14 @@ User::Count User::count()
         auto res = clientPtr->execSqlSync(strSql);
         count.users = res[0]["count"].as<int>();
     } catch (const std::exception &e) {
-        spdlog::error(e.what());
+       SPDLOG_TRACE(e.what());
     }
     try {
         auto clientPtr = drogon::app().getDbClient("sce");
         auto res = clientPtr->execSqlSync(strSql);
         count.users = res[0]["count"].as<int>();
     } catch (const std::exception &e) {
-        spdlog::error(e.what());
+       SPDLOG_TRACE(e.what());
     }
 
 
@@ -141,7 +145,7 @@ User::Count User::count()
     //                                  "WHERE session.expire > 1 and user.last_seen > 2");
     return count;
 }
-
+*/
 void User::load_playlist()
 {
     //playlist_id = Tmp_Playlist::get_from_session(session_id);
@@ -188,9 +192,63 @@ std::string User::get_password()
             return r[0]["password"].as<std::string>();
         }
     } catch (const std::exception &e) {
-        spdlog::error(e.what());
+       SPDLOG_TRACE(e.what());
     }
     return "";
+}
+
+long User::create(std::string username, std::string fullname, std::string email, std::string website, std::string password, std::string access, std::string state, std::string city, bool disabled)
+{
+    //website     = rtrim($website, "/");
+    //string password    = hash('sha256', $password);
+    //bool disabled    = $disabled ? 1 : 0;
+
+    /* Now Insert this new user */
+    /* Great Logic..
+    string sql = "INSERT INTO music.user (username, disabled, fullname, email, password, access, create_date";
+    string params = array(username, disabled, fullname, email, password, access, time());
+
+    if (!website.empty()) {
+        sql += ", website";
+        params[] = website;
+    }
+    if (!state.empty()) {
+        sql += ", state";
+        params[] = state;
+    }
+    if (!city.empty()) {
+        sql += ", city";
+        params[] = city;
+    }
+
+    sql += ") VALUES($, $, $, $, $, $, $";
+
+    if (!website.empty()) {
+        sql += ", $";
+    }
+    if (!state.empty()) {
+        sql += ", $";
+    }
+    if (!city.empty()) {
+        sql += ", $";
+    }
+
+    sql += ")";
+    db_results = Dba::write(sql, params);
+
+    if (!db_results) {
+        return false;
+    }
+
+    // Get the insert_id
+    string insert_id = Dba::insert_id();
+    */
+
+    /* Populates any missing preferences, in this case all of them */
+    //self::fix_preferences(insert_id);
+
+    //return insert_id;
+    return 0;
 }
 
 bool User::update_password(std::string new_password)
@@ -207,7 +265,7 @@ bool User::update_password(std::string new_password)
         }
         // todo: save updated password in cache...
     } catch (const std::exception &e) {
-        spdlog::error(e.what());
+       SPDLOG_TRACE(e.what());
     }
     return false;
 }

@@ -110,6 +110,7 @@ struct SubQuery {
 struct Pagination {
     int limit = 0;
     int offset = 0;
+    int current_page = 0;
 };
 
 class Query
@@ -123,6 +124,7 @@ public:
     std::string buildCountQuery() const;
     std::string buildDeleteQuery() const;
     std::string buildInsQuery(nlohmann::json args) const;
+    std::string buildUpdateQuery(nlohmann::json args) const;
     std::string buildUpdateQuery(std::string column, std::string values, std::string where_) const;
 
     //void setColumNames(const std::vector<std::string>& column_names) { m_column_names = column_names; }
@@ -174,6 +176,8 @@ private:
     std::string buildWherePart() const;
     std::string buildJoinPart() const;
     std::string buildGroupByPart() const;
+    std::string buildOrderByByPart() const;
+    std::string buildPaginationPart() const;
     std::string buildSelectorPart(std::vector<SelectedColumn> &m_selected_columns_) const;
 };
 

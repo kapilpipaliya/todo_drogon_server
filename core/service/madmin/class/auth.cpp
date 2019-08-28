@@ -97,7 +97,7 @@ std::tuple<long, long> Auth::login(std::string username, std::string password, [
                 session_id = rs[0]["id"].as<int>();
             }
         } catch (const std::exception &e) {
-            spdlog::error(e.what());
+           SPDLOG_TRACE(e.what());
         }
     }
     return {session_id, user_id};

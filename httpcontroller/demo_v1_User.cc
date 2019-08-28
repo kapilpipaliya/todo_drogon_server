@@ -1,5 +1,5 @@
 #include "demo_v1_User.h"
-#include "spdlog/spdlog.h"
+#include "spdlogfix.h"
 #include <boost/filesystem.hpp>
 #include  "json.hpp"
 
@@ -33,7 +33,7 @@ void User::download_id(const HttpRequestPtr &req, std::function<void(const HttpR
         }
     } catch (const std::exception &e) {
         
-       spdlog::error(e.what());
+      SPDLOG_TRACE(e.what());
        auto resp = HttpResponse::newHttpResponse();
        resp->setBody(e.what());
        callback(resp);
@@ -63,7 +63,7 @@ void User::thumb_id(const HttpRequestPtr &req, std::function<void (const HttpRes
         }
     } catch (const std::exception &e) {
         
-        spdlog::error(e.what());
+       SPDLOG_TRACE(e.what());
         auto resp = HttpResponse::newHttpResponse();
         resp->setBody(e.what());
         callback(resp);

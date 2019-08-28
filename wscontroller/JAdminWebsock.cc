@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <chrono>
 
-#include "spdlog/spdlog.h"
+#include "spdlogfix.h"
 #include "../actor/caf.h"
 
 #include "../actor/mainactortype.h"
@@ -16,11 +16,11 @@ using namespace  caf;
 
 void EchoWebSocket::handleNewMessage(const WebSocketConnectionPtr &wsConnPtr, std::string &&message, const WebSocketMessageType &type)
 {
-    // spdlog::info("Input: {}", message.c_str());
+    //SPDLOG_TRACE("Input: {}", message.c_str());
     // std::chrono::seconds(10)
     globalCAF.self->request(globalCAF.mainactor, caf::infinite, run_atom::value,  MainActorType::JAdmin, wsConnPtr, std::move(message), type).receive(
         [&]() {
-            //if(!message.empty()) spdlog::info("Output: {}", message.c_str());
+            //if(!message.empty()) SPDLOG_TRACE("Output: {}", message.c_str());
             return;
         },
         [&](error& err) {
@@ -38,7 +38,7 @@ void EchoWebSocket::handleNewConnection(const HttpRequestPtr &req, const WebSock
     std::shared_ptr<JAdminContext> context =  std::make_shared<JAdminContext>(req, wsConnPtr);
     wsConnPtr->setContext(context);
     for (auto i : req->cookies()) {
-        spdlog::info("{1}, {2}", i.first.c_str(), i.second.c_str());
+        SPDLOG_TRACE("{1}, {2}", i.first.c_str(), i.second.c_str());
     }
 }
 void EchoWebSocket::handleConnectionClosed(const WebSocketConnectionPtr &wsConnPtr)
