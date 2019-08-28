@@ -7,7 +7,7 @@ namespace madmin {
 class Share : public BaseService
 {
 public:
-    Share();
+    Share(const MAdminContextPtr &);
     void setupTable() override;
 };
 }

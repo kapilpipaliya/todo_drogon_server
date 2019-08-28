@@ -7,7 +7,7 @@ namespace madmin {
 class PrivateMsg : public BaseService
 {
 public:
-    PrivateMsg();
+    PrivateMsg(const MAdminContextPtr &);
     void setupTable() override;
 };
 }

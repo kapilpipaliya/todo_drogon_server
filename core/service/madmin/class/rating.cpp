@@ -1,6 +1,6 @@
 #include "rating.h"
 using namespace  madmin;
-Rating::Rating()
+Rating::Rating(const MAdminContextPtr &context_): BaseService(context_)
 {
 
 }

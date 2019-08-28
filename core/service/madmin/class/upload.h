@@ -7,7 +7,7 @@ namespace madmin {
 class Upload : public BaseService
 {
 public:
-    Upload();
+    Upload(const MAdminContextPtr &);
     void setupTable() override;
 };
 }

@@ -1,6 +1,6 @@
 #include "album.h"
 using namespace  madmin;
-Album::Album()
+Album::Album(const MAdminContextPtr &context_): BaseService(context_)
 {
 
 }

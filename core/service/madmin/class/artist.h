@@ -7,7 +7,7 @@ namespace madmin {
 class Artist : public BaseService
 {
 public:
-    Artist();
+    Artist(const MAdminContextPtr &);
     void setupTable() override;
 };
 }

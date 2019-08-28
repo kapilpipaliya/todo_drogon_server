@@ -153,6 +153,7 @@ public:
     std::vector<GroupByColumn>& groupBy() { return m_group; }
     const SubQuery& subquery() const { return m_subquery; }
     SubQuery& subquery() { return m_subquery; }
+    std::string& cusm_where(){ return  m_custm_where; }
 private:
     //std::vector<std::string> m_column_names;
     sqlb::ObjectIdentifier m_table;
@@ -164,6 +165,7 @@ private:
     std::vector<Join> m_joins;
     Pagination m_pagination;
     SubQuery m_subquery;
+    std::string m_custm_where{""};
 
     std::vector<SelectedColumn>::iterator findSelectedColumnByName(const std::string& name);
     std::vector<SelectedColumn>::const_iterator findSelectedColumnByName(const std::string& name) const;

@@ -1,6 +1,6 @@
 #include "userflag.h"
 using namespace  madmin;
-UserFlag::UserFlag()
+UserFlag::UserFlag(const MAdminContextPtr &context_): BaseService(context_)
 {
 
 }

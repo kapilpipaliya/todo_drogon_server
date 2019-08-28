@@ -1,6 +1,6 @@
 #include "bookmark.h"
 using namespace  madmin;
-Bookmark::Bookmark()
+Bookmark::Bookmark(const MAdminContextPtr &context_): BaseService(context_)
 {
 
 }

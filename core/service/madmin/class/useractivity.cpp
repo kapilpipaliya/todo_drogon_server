@@ -1,6 +1,6 @@
 #include "useractivity.h"
 using namespace  madmin;
-UserActivity::UserActivity()
+UserActivity::UserActivity(const MAdminContextPtr &context_): BaseService(context_)
 {
 
 }

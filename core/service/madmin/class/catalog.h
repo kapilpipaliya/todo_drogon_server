@@ -7,7 +7,7 @@ namespace madmin {
 class Catalog : public BaseService
 {
 public:
-    Catalog();
+    Catalog(const MAdminContextPtr &);
     void setupTable() override;
 };
 }

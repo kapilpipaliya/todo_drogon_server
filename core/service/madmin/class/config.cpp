@@ -1,6 +1,6 @@
 #include "config.h"
 using namespace  madmin;
-Config::Config()
+Config::Config(const MAdminContextPtr &context_): BaseService(context_)
 {
 
 }

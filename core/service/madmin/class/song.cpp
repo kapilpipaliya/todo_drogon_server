@@ -1,6 +1,6 @@
 #include "song.h"
 using namespace  madmin;
-Song::Song()
+Song::Song(const MAdminContextPtr &context_): BaseService(context_)
 {
 
 }

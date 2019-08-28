@@ -7,7 +7,7 @@ namespace madmin {
 class PlayList : public BaseService
 {
 public:
-    PlayList();
+    PlayList(const MAdminContextPtr &);
     void setupTable() override;
 };
 }

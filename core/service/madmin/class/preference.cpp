@@ -1,6 +1,6 @@
 #include "preference.h"
 using namespace  madmin;
-Preference::Preference()
+Preference::Preference(const MAdminContextPtr &context_): BaseService(context_)
 {
 
 }

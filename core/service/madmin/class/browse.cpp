@@ -1,6 +1,6 @@
 #include "browse.h"
 using namespace  madmin;
-Browse::Browse()
+Browse::Browse(const MAdminContextPtr &context_): BaseService(context_)
 {
 
 }

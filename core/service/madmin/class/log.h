@@ -7,7 +7,7 @@ namespace madmin {
 class Log : public BaseService
 {
 public:
-    Log();
+    Log(const MAdminContextPtr &);
     void setupTable() override;
 };
 }

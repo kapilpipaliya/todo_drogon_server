@@ -8,7 +8,7 @@ namespace madmin {
 class Config : public BaseService
 {
 public:
-    Config();
+    Config(const MAdminContextPtr &);
     void setupTable() override;
     /**
      *  @var array $_global

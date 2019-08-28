@@ -7,7 +7,7 @@ namespace madmin {
 class VaInfo : public BaseService
 {
 public:
-    VaInfo();
+    VaInfo(const MAdminContextPtr &);
     void setupTable() override;
 };
 }

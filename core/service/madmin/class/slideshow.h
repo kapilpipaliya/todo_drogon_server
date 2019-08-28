@@ -7,7 +7,7 @@ namespace madmin {
 class Slideshow : public BaseService
 {
 public:
-    Slideshow();
+    Slideshow(const MAdminContextPtr &);
     void setupTable() override;
 };
 }

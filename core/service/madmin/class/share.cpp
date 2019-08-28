@@ -1,6 +1,6 @@
 #include "share.h"
 using namespace  madmin;
-Share::Share()
+Share::Share(const MAdminContextPtr &context_): BaseService(context_)
 {
 
 }

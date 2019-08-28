@@ -1,6 +1,6 @@
 #include "access.h"
 using namespace  madmin;
-Access::Access()
+Access::Access(const MAdminContextPtr &context_): BaseService(context_)
 {
 
 }

@@ -7,7 +7,7 @@ namespace madmin {
 class ShoutBox : public BaseService
 {
 public:
-    ShoutBox();
+    ShoutBox(const MAdminContextPtr &);
     void setupTable() override;
 };
 }

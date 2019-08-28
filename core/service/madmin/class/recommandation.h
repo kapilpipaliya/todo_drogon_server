@@ -7,7 +7,7 @@ namespace madmin {
 class Recommandation : public BaseService
 {
 public:
-    Recommandation();
+    Recommandation(const MAdminContextPtr &);
     void setupTable() override;
 };
 }

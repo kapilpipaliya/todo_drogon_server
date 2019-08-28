@@ -7,7 +7,7 @@ namespace madmin {
 class Preference : public BaseService
 {
 public:
-    Preference();
+    Preference(const MAdminContextPtr &);
     void setupTable() override;
 };
 }

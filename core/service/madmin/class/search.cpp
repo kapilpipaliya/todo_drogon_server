@@ -1,6 +1,6 @@
 #include "search.h"
 using namespace  madmin;
-Search::Search()
+Search::Search(const MAdminContextPtr &context_): BaseService(context_)
 {
 
 }

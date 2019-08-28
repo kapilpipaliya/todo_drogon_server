@@ -3,7 +3,7 @@
 #include "../../sql/query.h"
 
 using namespace  madmin;
-BaseService::BaseService()
+BaseService::BaseService(const MAdminContextPtr &context_): context(context_)
 {  }
 BaseService::~BaseService() {  }
 json BaseService::handleEvent(json event, unsigned long next, json args)

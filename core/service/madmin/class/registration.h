@@ -7,7 +7,7 @@ namespace madmin {
 class Registration : public BaseService
 {
 public:
-    Registration();
+    Registration(const MAdminContextPtr &);
     void setupTable() override;
 };
 }

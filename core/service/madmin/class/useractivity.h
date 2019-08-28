@@ -7,7 +7,7 @@ namespace madmin {
 class UserActivity : public BaseService
 {
 public:
-    UserActivity();
+    UserActivity(const MAdminContextPtr &);
     void setupTable() override;
 };
 }

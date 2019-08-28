@@ -1,7 +1,7 @@
 #include "dba.h"
 #include "spdlog/spdlog.h"
 using namespace  madmin;
-Dba::Dba()
+Dba::Dba(const MAdminContextPtr &context_): BaseService(context_)
 {
 
 }

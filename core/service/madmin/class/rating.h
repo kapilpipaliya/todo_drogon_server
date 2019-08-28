@@ -7,7 +7,7 @@ namespace madmin {
 class Rating : public BaseService
 {
 public:
-    Rating();
+    Rating(const MAdminContextPtr &);
     void setupTable() override;
 };
 }

@@ -1,6 +1,6 @@
 #include "registration.h"
 using namespace  madmin;
-Registration::Registration()
+Registration::Registration(const MAdminContextPtr &context_): BaseService(context_)
 {
 
 }

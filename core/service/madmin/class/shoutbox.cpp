@@ -1,6 +1,6 @@
 #include "shoutbox.h"
 using namespace  madmin;
-ShoutBox::ShoutBox()
+ShoutBox::ShoutBox(const MAdminContextPtr &context_): BaseService(context_)
 {
 
 }

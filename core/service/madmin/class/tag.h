@@ -7,7 +7,7 @@ namespace madmin {
 class Tag : public BaseService
 {
 public:
-    Tag();
+    Tag(const MAdminContextPtr &);
     void setupTable() override;
 };
 }

@@ -1,6 +1,6 @@
 #include "log.h"
 using namespace  madmin;
-Log::Log()
+Log::Log(const MAdminContextPtr &context_): BaseService(context_)
 {
 
 }

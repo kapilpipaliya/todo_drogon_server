@@ -34,10 +34,18 @@ std::string Query::buildWherePart() const
             where += column + " " + i.second + " AND ";
         }
 
-        // Remove last ' AND '
-        where.erase(where.size() - 5);
+        if(!m_custm_where.empty()) {
+                where += m_custm_where;
+        } else {
+            // Remove last ' AND '
+            where.erase(where.size() - 5);
+        }
+    } else{
+        if(!m_custm_where.empty()) {
+              where = "WHERE ";
+              where += m_custm_where;
+        }
     }
-
     return where;
 }
 

@@ -1,6 +1,6 @@
 #include "localplay.h"
 using namespace  madmin;
-LocalPlay::LocalPlay()
+LocalPlay::LocalPlay(const MAdminContextPtr &context_): BaseService(context_)
 {
 
 }

@@ -1,6 +1,6 @@
 #include "catalog.h"
 using namespace  madmin;
-Catalog::Catalog()
+Catalog::Catalog(const MAdminContextPtr &context_): BaseService(context_)
 {
 
 }

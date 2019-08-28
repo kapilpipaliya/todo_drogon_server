@@ -7,7 +7,7 @@ namespace madmin {
 class Search : public BaseService
 {
 public:
-    Search();
+    Search(const MAdminContextPtr &);
     void setupTable() override;
 };
 }

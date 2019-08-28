@@ -7,7 +7,7 @@ namespace madmin {
 class Random : public BaseService
 {
 public:
-    Random();
+    Random(const MAdminContextPtr &);
     void setupTable() override;
 };
 }

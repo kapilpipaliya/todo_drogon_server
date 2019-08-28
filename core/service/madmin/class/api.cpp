@@ -1,6 +1,6 @@
 #include "api.h"
 using namespace  madmin;
-Api::Api()
+Api::Api(const MAdminContextPtr &context_): BaseService(context_)
 {
 
 }

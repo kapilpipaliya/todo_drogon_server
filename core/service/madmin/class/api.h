@@ -7,7 +7,7 @@ namespace madmin {
 class Api : public BaseService
 {
 public:
-    Api();
+    Api(const MAdminContextPtr &);
     void setupTable() override;
 };
 }

@@ -1,6 +1,6 @@
 #include "artist.h"
 using namespace  madmin;
-Artist::Artist()
+Artist::Artist(const MAdminContextPtr &context_): BaseService(context_)
 {
 
 }

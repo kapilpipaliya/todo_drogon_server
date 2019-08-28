@@ -1,6 +1,6 @@
 #include "update.h"
 using namespace  madmin;
-Update::Update()
+Update::Update(const MAdminContextPtr &context_): BaseService(context_)
 {
 
 }

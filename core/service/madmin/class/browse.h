@@ -7,7 +7,7 @@ namespace madmin {
 class Browse : public BaseService
 {
 public:
-    Browse();
+    Browse(const MAdminContextPtr &);
     void setupTable() override;
 };
 }

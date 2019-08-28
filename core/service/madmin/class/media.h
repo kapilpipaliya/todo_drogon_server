@@ -7,7 +7,7 @@ namespace madmin {
 class Media : public BaseService
 {
 public:
-    Media();
+    Media(const MAdminContextPtr &);
     void setupTable() override;
 };
 }

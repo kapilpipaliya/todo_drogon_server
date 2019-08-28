@@ -18,6 +18,7 @@ Table::~Table()
 bool Table::select()
 {
     auto q = m_query.buildQuery(true);
+    spdlog::info(q);
     // crash !! auto clientPtr = drogon::app().getFastDbClient("sce");
     auto clientPtr = drogon::app().getDbClient("sce");
     *clientPtr << q << Mode::Blocking >> [this](const Result &r) {
@@ -137,7 +138,7 @@ json Table::getJsonHeaderData()
 
 json Table::getJsonData()
 {
-    json jresult(json::array());
+    json jresult = json::array();
 
     for(unsigned long row=0; row<rowCount(); row++) {
         json jsonRow;

@@ -7,7 +7,7 @@ namespace madmin {
 class LocalPlay : public BaseService
 {
 public:
-    LocalPlay();
+    LocalPlay(const MAdminContextPtr &);
     void setupTable() override;
 };
 }

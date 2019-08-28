@@ -1,6 +1,6 @@
 #include "recommandation.h"
 using namespace  madmin;
-Recommandation::Recommandation()
+Recommandation::Recommandation(const MAdminContextPtr &context_): BaseService(context_)
 {
 
 }

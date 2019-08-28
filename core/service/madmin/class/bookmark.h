@@ -7,7 +7,7 @@ namespace madmin {
 class Bookmark : public BaseService
 {
 public:
-    Bookmark();
+    Bookmark(const MAdminContextPtr &);
     void setupTable() override;
 };
 }

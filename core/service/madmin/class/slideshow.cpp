@@ -1,6 +1,6 @@
 #include "slideshow.h"
 using namespace  madmin;
-Slideshow::Slideshow()
+Slideshow::Slideshow(const MAdminContextPtr &context_): BaseService(context_)
 {
 
 }

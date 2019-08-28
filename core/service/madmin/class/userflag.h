@@ -7,7 +7,7 @@ namespace madmin {
 class UserFlag : public BaseService
 {
 public:
-    UserFlag();
+    UserFlag(const MAdminContextPtr &);
     void setupTable() override;
 };
 }

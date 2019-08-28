@@ -1,6 +1,6 @@
 #include "vainfo.h"
 using namespace  madmin;
-VaInfo::VaInfo()
+VaInfo::VaInfo(const MAdminContextPtr &context_): BaseService(context_)
 {
 
 }

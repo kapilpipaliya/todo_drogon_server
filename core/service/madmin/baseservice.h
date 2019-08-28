@@ -7,17 +7,19 @@
 #include <fmt/format.h>
 #include "../../jsonfns.h"
 #include "core/sql/Table.h"
+#include "../../../wscontroller/context/madmincontext.h"
 
 using namespace fmt::v5;
 using namespace drogon;
 
 namespace madmin {
 
+typedef std::shared_ptr<MAdminContext> MAdminContextPtr;
 
 class BaseService
 {
 public:
-    BaseService();
+    BaseService(const MAdminContextPtr &context_);
     virtual ~BaseService();
     virtual json handleEvent(json event, unsigned long next, json args);
 
@@ -60,7 +62,7 @@ public:
         }
     }
     Table t;
-
+    MAdminContextPtr context;
 };
 
 }

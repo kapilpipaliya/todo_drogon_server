@@ -1,6 +1,6 @@
 #include "localplaybase.h"
 using namespace  madmin;
-LocalPlayBase::LocalPlayBase()
+LocalPlayBase::LocalPlayBase(const MAdminContextPtr &context_): BaseService(context_)
 {
 
 }

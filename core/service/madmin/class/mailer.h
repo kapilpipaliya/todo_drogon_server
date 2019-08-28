@@ -7,7 +7,7 @@ namespace madmin {
 class Mailer : public BaseService
 {
 public:
-    Mailer();
+    Mailer(const MAdminContextPtr &);
     void setupTable() override;
 };
 }

@@ -1,6 +1,6 @@
 #include "privatemsg.h"
 using namespace  madmin;
-PrivateMsg::PrivateMsg()
+PrivateMsg::PrivateMsg(const MAdminContextPtr &context_): BaseService(context_)
 {
 
 }

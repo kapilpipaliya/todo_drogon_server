@@ -7,7 +7,7 @@ namespace madmin {
 class Access : public BaseService
 {
 public:
-    Access();
+    Access(const MAdminContextPtr &);
     void setupTable() override;
 };
 }
