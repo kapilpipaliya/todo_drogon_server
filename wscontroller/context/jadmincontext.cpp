@@ -151,14 +151,10 @@ json JAdminContext::adminLogout( json event, json )
 }
 json JAdminContext::isAdminAuth( json event, json )
 {
-    json ret;
-    json value;
-    value[0] = event;
-
+    json ret = {{event}};
     bool result = false;
     if (admin != 0) { result = true; } else { result = false; }
-    value[1] = result;
-    ret[0]=value;
+    ret[0][1] = result;
     return ret;
 }
 

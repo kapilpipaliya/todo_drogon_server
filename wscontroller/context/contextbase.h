@@ -10,9 +10,9 @@ class ContextBase
 public:
     ContextBase(const HttpRequestPtr &req, const WebSocketConnectionPtr &wsConnPtr_);
 
-    virtual int generateContext(const HttpRequestPtr &req, std::string account_type) = 0;
-    virtual void deleteAdminSession() = 0;
-    virtual void deleteuserSession() = 0;
+    virtual std::tuple<long, long> generateContext(const HttpRequestPtr &req){};
+    virtual void deleteAdminSession(){};
+    virtual void deleteuserSession(){};
 
 protected:
     const WebSocketConnectionPtr& wsConnPtr;
