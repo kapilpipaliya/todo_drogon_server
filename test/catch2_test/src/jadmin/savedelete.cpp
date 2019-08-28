@@ -1,5 +1,5 @@
 #include "savedelete.h".h"
-#include "spdlog/spdlog.h"
+#include "spdlogfix.h"
 
 #include <catch2/catch.hpp>
 #include  "json.hpp"
@@ -35,7 +35,7 @@ void SaveDelete::connectToServer()
                                              ]
                                             )";
                                    auto s = fmt::v5::format(in, table, insert_query, update_query, delete_query);
-                                    spdlog::info(s);
+                                    SPDLOG_TRACE(s);
                                    auto j = jsonparse(s);
 
                                    wsPtr->getConnection()->send(j.dump());
@@ -54,7 +54,7 @@ void SaveDelete::setMessageHandler()
         if (type == WebSocketMessageType::Text)
         {
             auto j =jsonparse(message);
-            spdlog::info(j.dump());
+            SPDLOG_TRACE(j.dump());
             // event
             auto e = j[0][0];
             REQUIRE(e[0] == "legacy");

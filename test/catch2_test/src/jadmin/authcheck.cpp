@@ -1,5 +1,5 @@
 #include "authcheck.h"
-#include "spdlog/spdlog.h"
+#include "spdlogfix.h"
 
 #include <catch2/catch.hpp>
 #include  "json.hpp"
@@ -36,7 +36,7 @@ void AuthCheck::setMessageHandler()
             {
                 // parsing input with a syntax error
                 auto j = json::parse(message);
-               // spdlog::info(j.dump());
+               // SPDLOG_TRACE(j.dump());
                 REQUIRE(j[0][0][0] == "legacy");
                 REQUIRE(j[0][0][1] == "auth");
                 REQUIRE(j[0][0][2] == "is_admin_auth");
@@ -51,9 +51,9 @@ void AuthCheck::setMessageHandler()
             catch (json::parse_error& e)
             {
                 // output exception information
-                spdlog::error("message: {}", e.what());
-                spdlog::error("exception id: {}", e.id);
-                spdlog::error("byte position of error:", e.byte);
+               SPDLOG_TRACE("message: {}", e.what());
+               SPDLOG_TRACE("exception id: {}", e.id);
+               SPDLOG_TRACE("byte position of error:", e.byte);
                 return quit(false, "Return Value must be valid Json");
             }
 

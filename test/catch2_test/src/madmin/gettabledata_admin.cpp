@@ -1,5 +1,5 @@
 #include "gettabledata_admin.h"
-#include "spdlog/spdlog.h"
+#include "spdlogfix.h"
 
 #include <catch2/catch.hpp>
 #include  "json.hpp"
@@ -31,7 +31,7 @@ void GetTableDataAdmin::connectToServer()
                                             ]
                                             )";
                                    auto s = format(in, table, table);
-                                   spdlog::info(s);
+                                   SPDLOG_TRACE(s);
                                    auto j = jsonparse(s);
 
                                    wsPtr->getConnection()->send(j.dump());
@@ -50,7 +50,7 @@ void GetTableDataAdmin::setMessageHandler()
         if (type == WebSocketMessageType::Text)
         {
             auto j =jsonparse(message);
-            spdlog::info("result: {}", j.dump());
+            SPDLOG_TRACE("result: {}", j.dump());
             // event
             auto e = j[0][0];
             REQUIRE(e[0] == "auth");

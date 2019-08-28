@@ -1,5 +1,5 @@
 #include "getalluser.h"
-#include "spdlog/spdlog.h"
+#include "spdlogfix.h"
 
 #include <catch2/catch.hpp>
 #include  "json.hpp"
@@ -37,7 +37,7 @@ void getAllUser::setMessageHandler()
         if (type == WebSocketMessageType::Text)
         {
             auto j =jsonparse(message);
-            spdlog::info(j.dump());
+            SPDLOG_TRACE(j.dump());
             // event
             auto e = j[0][0];
             REQUIRE(e[0] == "auth");

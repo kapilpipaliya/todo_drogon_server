@@ -1,5 +1,5 @@
 #include "getmenudata_admin.h"
-#include "spdlog/spdlog.h"
+#include "spdlogfix.h"
 
 #include <catch2/catch.hpp>
 #include  "json.hpp"
@@ -30,7 +30,7 @@ void GetMenuAdmin::connectToServer()
                                             ]
                                             )";
                                    auto s = format(in, table, table);
-                                   spdlog::info(s);
+                                   SPDLOG_TRACE(s);
                                    auto j = jsonparse(s);
 
                                    wsPtr->getConnection()->send(j.dump());
@@ -49,7 +49,7 @@ void GetMenuAdmin::setMessageHandler()
         if (type == WebSocketMessageType::Text)
         {
             auto j =jsonparse(message);
-            spdlog::info("result: {}", j.dump());
+            SPDLOG_TRACE("result: {}", j.dump());
             // event
             auto e = j[0][0];
             REQUIRE(e[0] == "auth");
@@ -69,12 +69,12 @@ void GetMenuAdmin::setMessageHandler()
             // is_admin_auth == true
             REQUIRE(j[2][1] == true);
 
-            // header data:
+            // menu data:
             auto h = j[3][0];
             REQUIRE(h[0] == table);
             REQUIRE(h[1] == "menu_data");
             REQUIRE(h[2] == 1000);
-
+            REQUIRE(j[3][1].size() == 6);
 
             return quit(true);
         } else {

@@ -1,5 +1,5 @@
 #include "logout.h"
-#include "spdlog/spdlog.h"
+#include "spdlogfix.h"
 
 #include <catch2/catch.hpp>
 #include  "json.hpp"
@@ -38,7 +38,7 @@ void LogOut::setMessageHandler()
         if (type == WebSocketMessageType::Text)
         {
             auto j =jsonparse(message);
-            spdlog::info("Password change result: {}", j.dump());
+            SPDLOG_TRACE("Password change result: {}", j.dump());
             // event
             auto e = j[0][0];
             REQUIRE(e[0] == "auth");

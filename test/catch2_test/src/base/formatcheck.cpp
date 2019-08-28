@@ -1,5 +1,5 @@
 #include "formatcheck.h"
-#include "spdlog/spdlog.h"
+#include "spdlogfix.h"
 
 #include <catch2/catch.hpp>
 #include  "json.hpp"
@@ -33,7 +33,7 @@ void FormatCheck::setMessageHandler()
         {
                 // parsing input with a syntax error
                 auto j =jsonparse(message);
-                //spdlog::info(j.dump());
+                //SPDLOG_TRACE(j.dump());
                 REQUIRE(j== "Invalid Message only array handled: \"hello\"");
                 return quit(true);
         } else {

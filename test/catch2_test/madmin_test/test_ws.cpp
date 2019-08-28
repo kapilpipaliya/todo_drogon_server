@@ -14,6 +14,9 @@
 #include "../src/madmin/menu/getmenudata_sadmin.h"
 #include "../src/madmin/auth/passwordchange.h"
 #include "../src/madmin/auth/logout.h"
+#include "../src/madmin/user/create_user.h"
+#include "../src/madmin/user/user_count.h"
+
 
 using namespace  madmin;
 
@@ -70,4 +73,10 @@ TEST_CASE("password change should work.") {
 }
 TEST_CASE("Logout successfull") {
         LogOut w1; w1.setpath("/madmin"); w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);
+}
+TEST_CASE("create User successfull") {
+    CreateUser w1{"user"}; w1.setpath("/madmin"); w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);
+}
+TEST_CASE("create Count successfull") {
+    UserCount w1{"user"}; w1.setpath("/madmin"); w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);
 }

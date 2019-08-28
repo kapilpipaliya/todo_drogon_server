@@ -1,4 +1,4 @@
-#include "getmenudata_sadmin.h"
+#include "user_count.h"
 #include "spdlogfix.h"
 
 #include <catch2/catch.hpp>
@@ -7,12 +7,12 @@
 using namespace nlohmann;
 using namespace fmt::v5;
 using namespace  madmin;
-GetMenuSAdmin::GetMenuSAdmin(std::string table): table(table)
+UserCount::UserCount(std::string table): table(table)
 {
 
 }
 
-void GetMenuSAdmin::connectToServer()
+void UserCount::connectToServer()
 {
     wsPtr->connectToServer(req,
                            [this](ReqResult r,
@@ -24,12 +24,17 @@ void GetMenuSAdmin::connectToServer()
                                    // a JSON value
                                    auto in = R"(
                                             [
-                                            [["auth","login",0],{{"user":"sadmin","pass":"123456"}}],
-                                            [["user","is_logged_in",0],[[]]],
-                                            [["ui","menu_data",1000],{{}}]
+                                                [["auth","login",0],{{"user":"new_u","pass":"12345600"}}],
+                                                [["user","is_logged_in",0],[[]]],
+                                                [
+                                                 ["user","count",2],
+                                                 [
+                                                    [null, null, null, null, "=sadmin"]
+                                                 ]
+                                                ]
                                             ]
                                             )";
-                                   auto s = format(in);
+                                   auto s = format(in, table, table);
                                    SPDLOG_TRACE(s);
                                    auto j = jsonparse(s);
 
@@ -41,7 +46,7 @@ void GetMenuSAdmin::connectToServer()
                                }
                            });
 }
-void GetMenuSAdmin::setMessageHandler()
+void UserCount::setMessageHandler()
 {
     wsPtr->setMessageHandler([this](const std::string &message,
                              [[maybe_unused]] const WebSocketClientPtr &wsPtr,
@@ -49,7 +54,7 @@ void GetMenuSAdmin::setMessageHandler()
         if (type == WebSocketMessageType::Text)
         {
             auto j =jsonparse(message);
-            SPDLOG_TRACE("result: {}", j.dump());
+            SPDLOG_TRACE("create user result: {}", j.dump());
             // event
             auto e = j[0][0];
             REQUIRE(e[0] == "auth");
@@ -69,16 +74,13 @@ void GetMenuSAdmin::setMessageHandler()
             // is_admin_auth == true
             REQUIRE(j[2][1] == true);
 
-            // menu data:
-            auto h = j[3][0];
-            REQUIRE(h.is_array() == true);
-            REQUIRE(h[0] == table);
-            REQUIRE(h[1] == "menu_data");
-            REQUIRE(h[2] == 1000);
+            // count:
+            auto d = j[3][0];
+            REQUIRE(d[0] == table);
+            REQUIRE(d[1] == "count");
+            REQUIRE(d[2] == 2);
 
-            REQUIRE(j[3][1].size() == 6);
-
-
+            REQUIRE(j[3][1] == 1);
 
 
             return quit(true);

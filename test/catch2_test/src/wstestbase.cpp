@@ -1,5 +1,5 @@
 #include "wstestbase.h"
-#include "spdlog/spdlog.h"
+#include "spdlogfix.h"
 #include <iostream>
 #include <catch2/catch.hpp>
 #include <fmt/format.h>
@@ -18,9 +18,9 @@ nlohmann::json WSTestBase::jsonparse(std::string msg)
     }
     catch (nlohmann::json::parse_error& e)
     {
-        spdlog::error("message: {}", e.what());
-        spdlog::error("exception id: {}", e.id);
-        spdlog::error("byte position of error:", e.byte);
+       SPDLOG_TRACE("message: {}", e.what());
+       SPDLOG_TRACE("exception id: {}", e.id);
+       SPDLOG_TRACE("byte position of error:", e.byte);
         throw ("Json can not be parsed");
     }
 }
@@ -42,11 +42,11 @@ void WSTestBase::setMessageHandler()
     wsPtr->setMessageHandler([]( [[maybe_unused]]const std::string &message,
                              [[maybe_unused]] const WebSocketClientPtr &wsPtr,
                                            const WebSocketMessageType &type) {
-//        spdlog::info("new message: {}", message);
+//        SPDLOG_TRACE("new message: {}", message);
 //        REQUIRE(message.empty() == true);
         if (type == WebSocketMessageType::Pong)
         {
-            spdlog::info("recv a pong");
+            SPDLOG_TRACE("recv a pong");
             //if (!continually) { app().getLoop()->quit(); }
         }
     });
@@ -55,7 +55,7 @@ void WSTestBase::setConnectionClosedHandler()
 {
     wsPtr->setConnectionClosedHandler([](
                            [[maybe_unused]] const WebSocketClientPtr &wsPtr) {
-        spdlog::info("ws closed!");
+        SPDLOG_TRACE("ws closed!");
     });
 }
 void WSTestBase::connectToServer()
@@ -67,7 +67,7 @@ void WSTestBase::connectToServer()
                                        [[maybe_unused]] const WebSocketClientPtr &wsPtr) {
                                if (r == ReqResult::Ok)
                                {
-                                   //spdlog::info("ws connected!");
+                                   //SPDLOG_TRACE("ws connected!");
                                    //wsPtr->getConnection()->setPingMessage("", 2s);
                                    //wsPtr->getConnection()->send("hello!");
                                }
@@ -91,7 +91,7 @@ void WSTestBase::quit(bool isPass, std::string reason)
    // if(app().isRunning()){ app().quit(); }
     testResult = isPass;
     if(!reason.empty()){
-         spdlog::info(reason);
+         SPDLOG_TRACE(reason);
     }
 }
 
