@@ -20,6 +20,7 @@ MainActor::MainActor(caf::actor_config &cfg) : caf::event_based_actor(cfg)
 {
     set_error_handler([=]([[maybe_unused]]caf::error& err) {
         spdlog::info("Main Actor Error :");
+        spdlog::info(globalCAF.sys.render(err));
     });
     set_down_handler([=](caf::down_msg& msg) {
         spdlog::info( "Main Actor Error Down Error :");

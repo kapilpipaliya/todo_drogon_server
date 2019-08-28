@@ -115,9 +115,10 @@ void MAdminActor::blocking_run(const WebSocketConnectionPtr &wsConnPtr, std::str
         break;
     }
 }
-#define REGISTER(s, T)\
-    else if (in[0][1].get<std::string>()==s){\
-    T p{};\
+#define REGISTER(T, s)\
+    else if (in[0][0].get<std::string>()==s){\
+    auto contx = wsConnPtr->getContext<MAdminContext>();\
+    T p{contx};\
     auto r = p.handleEvent(in[0], 1, in[1]);\
     if(!r.is_null())\
     return r;\
@@ -130,7 +131,10 @@ nlohmann::json MAdminActor::handleTextMessage(const WebSocketConnectionPtr &wsCo
 
     if constexpr (false){
     }
-    REGISTER("account_type", madmin::Access)
+    REGISTER(madmin::Auth, "auth")
+    REGISTER(madmin::User, "user")
+    REGISTER(madmin::User, "users")
+    REGISTER(madmin::UI, "ui")
     else {
         return json::array();
     }
