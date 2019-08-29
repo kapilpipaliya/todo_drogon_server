@@ -27,17 +27,17 @@ void CreateUser::connectToServer()
                                             [["auth","login",0],{{"user":"new_u","pass":"12345600"}}],
                                             [["user","is_logged_in",0],[[]]],
                                             [
-                                             ["user","ins",null],
+                                             ["{0}","ins",null],
                                              [{{"username":"username","fullname":"fullname","email":"email@email.com","password":"password","disabled":true,"state":"state","city":"city"}},[null]]
                                              ],
                                            [
-                                             ["user","upd",2],
+                                             ["{0}","upd",2],
                                              [
                                                 {{"type":"executive","parent_id":null,"p_username":0,"username":"user1","fullname":"fullname1","create_date":"2019-08-28 12:04:23.440921+05:30","disabled":true,"email":"email1@gmail.com","password":"pass1","state":"state1","city":"city1"}},
                                                 [null, null, null, null, "=username"]
                                              ]
                                             ],
-                                            [["user","del",1000],[[null, null, null, null, "=user1"]]]
+                                            [["{0}","del",1000],[[null, null, null, null, "=user1"]]]
                                             ]
                                             )";
                                    auto s = format(in, table, table);

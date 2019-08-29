@@ -18,8 +18,8 @@ void PasswordChange::connectToServer()
                                    json j = R"(
                                             [
                                             [["auth","login",0],{"user":"sadmin","pass":"123456"}],
-                                            [["user","update_password",0],{"old_password":"123456","new_password":"999999"}],
-                                            [["user","update_password",0],{"old_password":"999999","new_password":"123456"}]
+                                            [["user","update_password",0],[{"old_password":"123456","new_password":"999999"}]],
+                                            [["user","update_password",0],[{"old_password":"999999","new_password":"123456"}]]
                                             ]
                                             )"_json;
                                    wsPtr->getConnection()->send(j.dump());

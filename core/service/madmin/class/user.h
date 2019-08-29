@@ -48,6 +48,7 @@ public:
     //User(int user_id);
     void setupTable() override;
     json handleEvent(json event, unsigned long next, json args) override;
+     json getUserTypeFormData();
 
     //static Count count();
     void load_playlist();

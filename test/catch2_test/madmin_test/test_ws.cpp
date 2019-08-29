@@ -61,9 +61,7 @@ TEST_CASE("check that all table Admin data are correctly replied","[WSTest]") {
     GetTableD("user")
 }
 
-TEST_CASE("User SAdmin Menu Test","[WSTest]") {
-    GetMenuSAdmin w1{"ui"}; w1.setpath("/madmin"); w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);
-}
+
 TEST_CASE("User Admin Menu Test","[WSTest]") {
     GetMenuAdmin w1{"ui"}; w1.setpath("/madmin"); w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);
 }

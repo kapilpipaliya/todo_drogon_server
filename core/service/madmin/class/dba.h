@@ -88,7 +88,7 @@ public:
      * just a count of rows returned by our select statement, this
      * doesn't work for updates or inserts.
      */
-    //static void num_rows(std::string resource);
+    static unsigned long num_rows(drogon::orm::Result &resource);
     /**
      * finish
      *

@@ -1,8 +1,8 @@
 #include "jadminactor.h"
 
 #include "spdlogfix.h"
-
 #include "mainactortype.h"
+#include "../wscontroller/wsfns.h"
 #include "../wscontroller/context/jadmincontext.h"
 
 #include "core/service/jadmin/account/account.h"
@@ -110,14 +110,14 @@ void JAdminActor::blocking_run(const WebSocketConnectionPtr &wsConnPtr, std::str
                     }
                 }
                 if(!out.empty()){
-                    wsConnPtr->send(out.dump());
+                   WsFns::sendJson(wsConnPtr, out);
                 } else {
                     nlohmann::json j =  "Message cant served: maybe not valid events in batch: " + message;
-                    wsConnPtr->send(j.dump());
+                    WsFns::sendJson(wsConnPtr, j);
                 }
             } else {
                 nlohmann::json j =  "Invalid Message only array handled: " + message;
-                wsConnPtr->send(j.dump());
+                WsFns::sendJson(wsConnPtr, j);
             }
         }
         catch (json::parse_error& e)
@@ -126,14 +126,14 @@ void JAdminActor::blocking_run(const WebSocketConnectionPtr &wsConnPtr, std::str
            SPDLOG_TRACE("exception id: {}", e.id);
            SPDLOG_TRACE("byte position of error:", e.byte);
             nlohmann::json j =  std::string("cant parse json reason: ") + e.what() ;
-            wsConnPtr->send(j.dump());
+            WsFns::sendJson(wsConnPtr, j);
         }
         break;
     }
     case WebSocketMessageType::Binary: {
         auto result  = handleBinaryMessage(wsConnPtr, message);
         if(!result.is_null()){
-            wsConnPtr->send(result.dump());
+            WsFns::sendJson(wsConnPtr, result);
         }
         break;
     }
@@ -248,7 +248,7 @@ json JAdminActor::handleBinaryMessage(const WebSocketConnectionPtr &wsConnPtr, s
                SPDLOG_TRACE("exception id: {}", e.id);
                SPDLOG_TRACE("byte position of error:", e.byte);
                 nlohmann::json j =  std::string("cant parse json reason: ") + e.what() + event.dump();
-                wsConnPtr->send(j.dump());
+                WsFns::sendJson(wsConnPtr, j);
             }
         }
     } catch (const std::exception &e) {

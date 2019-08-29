@@ -22,3 +22,16 @@ drogon::orm::Result Dba::read(std::string sql)
         throw("Invalid Sql At Dba");
     }
 }
+
+unsigned long Dba::num_rows(Result &resource)
+{
+    //if (resource) {
+        //auto result = resource.size();
+        //if (result) {
+            //return result;
+        //}
+    //}
+    return resource.size();
+
+    //return 0;
+}

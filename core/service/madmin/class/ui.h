@@ -17,6 +17,9 @@ public:
     json handleEvent(json event, unsigned long next, json args) override;
 
     json getMenuData();
+    std::string getPageTitle();
+    std::string getUserAccountType();
+    json getUserTypeData();
 
     //static classes_;
     //static ticker_;

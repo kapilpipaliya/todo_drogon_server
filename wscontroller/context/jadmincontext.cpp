@@ -1,6 +1,7 @@
 #include "jadmincontext.h"
 #include "spdlogfix.h"
 #include <boost/filesystem.hpp>
+#include "../wsfns.h"
 #include "../../core/strfns.h"
 #include "../../core/sql/query.h"
 
@@ -346,7 +347,7 @@ json JAdminContext::thumb_data( json event, json args)
     ret[1] = event;
 
     batch[0] = ret;
-    wsConnPtr->send(batch.dump());
+    WsFns::sendJson(wsConnPtr, batch);
 
     namespace fs = boost::filesystem;
     auto home = fs::path(getenv("HOME"));

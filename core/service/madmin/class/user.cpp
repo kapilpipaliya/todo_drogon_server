@@ -75,13 +75,17 @@ nlohmann::json User::handleEvent(nlohmann::json event, unsigned long next, nlohm
             return {{event, "unauthorised"}};
         }
     } else if (event_cmp == "update_password") {
-        if(get_password() == args["old_password"].get<std::string>()){
-            if(update_password(args["new_password"].get<std::string>())){
+        if(!args[0].is_array()) return {simpleJsonSaveResult(event, false, "Not Valid Args")};
+        if(get_password() == args[0]["old_password"].get<std::string>()){
+            if(update_password(args[0]["new_password"].get<std::string>())){
                 return {simpleJsonSaveResult(event, true, "Done")};
             }
         }
         return {simpleJsonSaveResult(event, false, "UnAuthorised")};
+    } else if (event_cmp  == "user_types_form_data") {
+         return {{event, getUserTypeFormData()}};
     } else if (event_cmp  == "ins") {
+        args[0]["parent_id"] = context->user_id;
         return ins(event, args);
     } else if (event_cmp  == "upd") {
         return upd(event, args);
@@ -91,6 +95,24 @@ nlohmann::json User::handleEvent(nlohmann::json event, unsigned long next, nlohm
         return count(event, args);
     } else {
         return nullptr;
+    }
+}
+
+nlohmann::json User::getUserTypeFormData()
+{
+    if(context->user.type == "super admin"){
+        json j = json::array({
+                                    json::array({"Admin","admin"}),
+                                    json::array({"Executive","executive"}),
+        });
+        return j;
+    } else if (context->user.type == "admin"){
+        json j = json::array({
+                                 json::array({"Executive","executive"}),
+        }) ;
+        return j;
+    } else {
+        return json::array();
     }
 }
 

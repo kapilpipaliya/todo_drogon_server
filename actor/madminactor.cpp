@@ -1,6 +1,8 @@
 #include "madminactor.h"
 #include "spdlogfix.h"
 #include "mainactortype.h"
+#include "../wscontroller/wsfns.h"
+
 #include "../wscontroller/context/madmincontext.h"
 
 #include "core/service/madmin/class/access.h"
@@ -46,6 +48,10 @@
 #include "core/service/madmin/class/user.h"
 #include "core/service/madmin/class/vainfo.h"
 
+#include "core/service/madmin/modules/catalog/cataloglocal.h"
+
+
+
 MAdminActor::MAdminActor(caf::actor_config &cfg) : caf::event_based_actor(cfg)
 {
 
@@ -84,14 +90,14 @@ void MAdminActor::blocking_run(const WebSocketConnectionPtr &wsConnPtr, std::str
                     }
                 }
                 if(!out.empty()){
-                    wsConnPtr->send(out.dump());
+                    WsFns::sendJson(wsConnPtr, out);
                 } else {
                     nlohmann::json j =  "Message cant served: maybe not valid events in batch: " + message;
-                    wsConnPtr->send(j.dump());
+                    WsFns::sendJson(wsConnPtr, j);
                 }
             } else {
                 nlohmann::json j =  "Invalid Message only array handled: " + message;
-                wsConnPtr->send(j.dump());
+                WsFns::sendJson(wsConnPtr, j);
             }
         }
         catch (json::parse_error& e)
@@ -100,14 +106,14 @@ void MAdminActor::blocking_run(const WebSocketConnectionPtr &wsConnPtr, std::str
            SPDLOG_TRACE("exception id: {}", e.id);
            SPDLOG_TRACE("byte position of error:", e.byte);
             nlohmann::json j =  std::string("cant parse json reason: ") + e.what() ;
-            wsConnPtr->send(j.dump());
+            WsFns::sendJson(wsConnPtr, j);
         }
         break;
     }
     case WebSocketMessageType::Binary: {
         auto result  = handleBinaryMessage(wsConnPtr, message);
         if(!result.is_null()){
-            wsConnPtr->send(result.dump());
+            WsFns::sendJson(wsConnPtr, result);
         }
         break;
     }
@@ -125,20 +131,26 @@ void MAdminActor::blocking_run(const WebSocketConnectionPtr &wsConnPtr, std::str
     }
 nlohmann::json MAdminActor::handleTextMessage(const WebSocketConnectionPtr &wsConnPtr, std::string &&message, nlohmann::json in)
 {
-    if (!in.is_array()) {
-        return json::array();
-    }
+    try {
+        if (!in.is_array()) {
+            return json::array();
+        }
 
-    if constexpr (false){
-    }
-    REGISTER(madmin::Auth, "auth")
-    REGISTER(madmin::User, "user")
-    REGISTER(madmin::User, "users")
-    REGISTER(madmin::UI, "ui")
-    else {
+        if constexpr (false){
+        }
+        REGISTER(madmin::Auth, "auth")
+        REGISTER(madmin::User, "user")
+        REGISTER(madmin::User, "users")
+        REGISTER(madmin::UI, "ui")
+        REGISTER(madmin::CatalogLocal, "catalog_local")
+        else {
+            return json::array();
+        }
         return json::array();
+    } catch (const std::exception &e) {
+        SPDLOG_TRACE(e.what());
+        throw;
     }
-    return json::array();
 }
 
 nlohmann::json MAdminActor::handleBinaryMessage(const WebSocketConnectionPtr &wsConnPtr, std::string &message)

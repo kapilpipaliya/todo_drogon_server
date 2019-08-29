@@ -1,6 +1,7 @@
 #include "museractor.h"
 
 #include "mainactortype.h"
+#include "../wscontroller/wsfns.h"
 
 MUserActor::MUserActor(caf::actor_config &cfg) : caf::event_based_actor(cfg)
 {
