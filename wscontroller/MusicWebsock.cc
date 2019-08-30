@@ -39,6 +39,7 @@ void MusicWebsock::handleNewConnection(const HttpRequestPtr &req,const WebSocket
     wsConnPtr->setContext(context);
     for (auto i : req->cookies()) {
         SPDLOG_TRACE("{1}, {2}", i.first.c_str(), i.second.c_str());
+        LOG_DEBUG << i.first << i.second;
     }
 }
 void MusicWebsock::handleConnectionClosed(const WebSocketConnectionPtr& wsConnPtr)

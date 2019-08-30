@@ -458,7 +458,7 @@ public:
          * @return array
          */
         //public function get_gather_types($media_type = "");
-        //static void clean_empty_albums();
+        static void clean_empty_albums();
         /**
          * clean_catalog
          *
@@ -549,7 +549,7 @@ public:
          * it takes the catalog id
          * @param int $catalog_id
          */
-        //static void delete(int catalog_id);
+        static bool delet(long catalog_id, std::string type);
         /**
          * exports the catalog
          * it exports all songs in the database to the given export type.

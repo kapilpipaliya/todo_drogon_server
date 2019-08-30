@@ -1,4 +1,5 @@
 rsync -avz --progress . kapil@95.216.152.135:/home/kapil/jdrogon
+rsync -avz --progress --exclude=.git --exclude=build . kapil@95.216.152.135:/home/kapil/music
 rsync -avz --progress /home/kapili3/fileuploads/ kapil@95.216.152.135:/home/kapil/fileuploads/
 
 cd /home/kapili3/k/scert
@@ -47,9 +48,10 @@ make
 
 # 
 
-
-
-
+sudo pacman -S fmt
+sudo pacman -S catch2
+sudo pacman -S poco
+sudo pacman -S spdlog
 
 
 

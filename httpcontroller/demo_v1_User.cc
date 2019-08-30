@@ -4,12 +4,7 @@
 #include  "json.hpp"
 
 using namespace demo::v1;
-void User::download(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback) {
-    auto id = req->getParameter("path", "AdminMenu5.png");
-    auto new_path = "/home/kapili3/fileuploads/" + id;
-    auto resp = HttpResponse::newFileResponse(new_path);
-    callback(resp);
-}
+
 void User::download_id(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback, long id, int version) {
 //    auto id = req->getParameter("path", "default.png"); //?path=
     namespace fs = boost::filesystem;
@@ -41,7 +36,6 @@ void User::download_id(const HttpRequestPtr &req, std::function<void(const HttpR
 }
 void User::thumb_id(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback, long id, int version)
 {
-    // auto id = req->getParameter("path", "default.png"); //?path=
     namespace fs = boost::filesystem;
     auto home = fs::path(getenv("HOME"));
     auto c = req->getCookie("admin");
@@ -63,6 +57,37 @@ void User::thumb_id(const HttpRequestPtr &req, std::function<void (const HttpRes
         }
     } catch (const std::exception &e) {
         
+       SPDLOG_TRACE(e.what());
+        auto resp = HttpResponse::newHttpResponse();
+        resp->setBody(e.what());
+        callback(resp);
+    }
+}
+
+void User::music_id(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback, std::string file)
+{
+    // check if its authorised or not..
+    namespace fs = boost::filesystem;
+    auto home = fs::path(getenv("HOME"));
+    auto c = req->getCookie("admin");
+    auto clientPtr = drogon::app().getDbClient("sce");
+    try {
+        //auto sql = "SELECT name FROM music.song where id = $1";
+        //auto x = clientPtr->execSqlSync(sql, file);
+        //if (!x.empty()) {
+            //  auto new_path = std::string("/home/kapili3/fileuploads/") + x[0][0].c_str();
+            auto resp = HttpResponse::newFileResponse(home.string() + "/fileuploads/" + file);
+            //resp->setExpiredTime(0);
+            resp->addHeader("Cache-Control", "max-age=2592000, public");
+            callback(resp);
+        //} else {
+         // nlohmann:: json j2 = {{"404", {404, 0 } }};
+         //auto resp = HttpResponse::newHttpResponse();
+         //resp->setBody(j2.dump());
+         //callback(resp);
+        //}
+    } catch (const std::exception &e) {
+
        SPDLOG_TRACE(e.what());
         auto resp = HttpResponse::newHttpResponse();
         resp->setBody(e.what());

@@ -90,7 +90,15 @@ nlohmann::json User::handleEvent(nlohmann::json event, unsigned long next, nlohm
     } else if (event_cmp  == "upd") {
         return upd(event, args);
     } else if (event_cmp  == "del") {
-        return del(event, args);
+        if(args[0].is_array()){
+            if(args[0][0].is_number()){
+                if(delNew(args[0][0].get<long>())){
+                    return {simpleJsonSaveResult(event, true, "Done")};
+                }
+            }
+        }
+        //return del(event,args);
+        return {simpleJsonSaveResult(event, false, "UnAuthorised")};
     } else if (event_cmp  == "count") {
         return count(event, args);
     } else {
@@ -205,7 +213,7 @@ bool User::is_logged_in()
 
 std::string User::get_password()
 {
-    auto sql        = "SELECT * FROM music.user WHERE id = $1";
+    auto sql        = "SELECT * FROM music.user WHERE id = 1";
     try {
         auto clientPtr = drogon::app().getDbClient("sce");
         auto transPtr = clientPtr->newTransaction();
@@ -221,9 +229,9 @@ std::string User::get_password()
 
 long User::create(std::string username, std::string fullname, std::string email, std::string website, std::string password, std::string access, std::string state, std::string city, bool disabled)
 {
-    //website     = rtrim($website, "/");
-    //string password    = hash('sha256', $password);
-    //bool disabled    = $disabled ? 1 : 0;
+    //website     = rtrim(website, "/");
+    //string password    = hash('sha256', password);
+    //bool disabled    = disabled $ 1 : 0;
 
     /* Now Insert this new user */
     /* Great Logic..
@@ -243,16 +251,16 @@ long User::create(std::string username, std::string fullname, std::string email,
         params[] = city;
     }
 
-    sql += ") VALUES($, $, $, $, $, $, $";
+    sql += ") VALUES(, , , , , , ";
 
     if (!website.empty()) {
-        sql += ", $";
+        sql += ", ";
     }
     if (!state.empty()) {
-        sql += ", $";
+        sql += ", ";
     }
     if (!city.empty()) {
-        sql += ", $";
+        sql += ", ";
     }
 
     sql += ")";
@@ -277,7 +285,7 @@ bool User::update_password(std::string new_password)
 {
     // std::string new_password = hash('sha256', new_password);
     //new_password = Dba::escape(new_password);
-    std::string sql          = "UPDATE music.user SET password = $2 WHERE id = $1";
+    std::string sql          = "UPDATE music.user SET password = 2 WHERE id = 1";
     try {
         auto clientPtr = drogon::app().getDbClient("sce");
         auto transPtr = clientPtr->newTransaction();
@@ -290,4 +298,98 @@ bool User::update_password(std::string new_password)
        SPDLOG_TRACE(e.what());
     }
     return false;
+}
+
+bool User::delNew(long user_id)
+{
+    /*
+      Before we do anything make sure that they aren't the last
+      admin
+    */
+    //if (this->has_access(100)) {
+        //sql        = "SELECT id FROM user WHERE access='100' AND id != $";
+        //db_results = Dba::read(sql, user_id);
+        //if (!Dba::num_rows(db_results)) {
+        //    return false;
+        //}
+    auto sql        = "SELECT id FROM music.user WHERE access='100' AND  id <> $1";
+    auto db_results = Dba::read(sql, user_id);
+    if (!Dba::num_rows(db_results)) {
+                return false;
+    }
+    //} // if this is an admin check for others
+
+    // Delete their playlists
+    auto sql1 = "DELETE FROM music.playlist WHERE user_id = $1";
+    Dba::write(sql1, user_id);
+
+    // Clean up the playlist data table
+    //auto sql2 = "DELETE FROM music.playlist_data USING playlist_data "
+     //   "LEFT JOIN playlist ON playlist.id=playlist_data.playlist "
+       // "WHERE playlist.id IS NULL";
+   // Dba::write(sql2);
+
+    // Delete any stats they have
+    auto sql3 = "DELETE FROM music.object_count WHERE user_id = $1";
+    Dba::write(sql3, user_id);
+
+    // Clear the IP history for this user
+    auto sql4 = "DELETE FROM music.ip_history WHERE user_id = $1";
+    Dba::write(sql4, user_id);
+
+    // Nuke any access lists that are specific to this user
+    auto sql5 = "DELETE FROM music.access_list WHERE user_id = $1";
+    Dba::write(sql5, user_id);
+
+    // Delete their ratings
+    auto sql6 = "DELETE FROM music.rating WHERE user_id = $1";
+    Dba::write(sql6, user_id);
+
+    // Delete their tags
+    auto sql7 = "DELETE FROM music.tag_map WHERE user_id = $1";
+    Dba::write(sql7, user_id);
+
+    // Clean out the tags
+    //auto sql8 = "DELETE FROM music.tag USING tag_map LEFT JOIN music.tag_map ON tag_map.id=tag.map_id AND tag_map.id IS NULL";
+    //Dba::write(sql8);
+
+    // Delete their preferences
+    auto sql9 = "DELETE FROM music.user_preference WHERE user_id = $1";
+    Dba::write(sql9, user_id);
+
+    // Delete their voted stuff in democratic play
+    auto sql10 = "DELETE FROM music.user_vote WHERE user_id = $1";
+    Dba::write(sql10, user_id);
+
+    // Delete their shoutbox posts
+    auto sql11 = "DELETE FROM music.user_shout WHERE user_id = $1";
+    Dba::write(sql11, user_id);
+
+    // Delete their private messages posts
+    auto sql12 = "DELETE FROM music.user_pvmsg WHERE from_user_id = $1 OR to_user_id = $2";
+    Dba::write(sql12, user_id, user_id);
+
+    // Delete their following/followers
+    auto sql13 = "DELETE FROM music.user_follower WHERE user_id = $1 OR follow_user_id = $2";
+    Dba::write(sql13, user_id, user_id);
+
+    // Added
+    auto sql15 = "DELETE FROM music.user_activity WHERE user_id = $1";
+    Dba::write(sql15, user_id);
+    // Added
+    auto sql16 = "DELETE FROM music.search WHERE user_id = $1";
+    Dba::write(sql16, user_id);
+    auto sql17 = "DELETE FROM music.session WHERE user_id = $1";
+    Dba::write(sql17, user_id);
+
+    // Delete the user itself
+    auto sql14 = "DELETE FROM music.user WHERE id = $1";
+    Dba::write(sql14, user_id);
+
+
+
+//    auto sql15 = "DELETE FROM music.session WHERE username = $";
+//    Dba::write(sql, array(this->username));
+
+    return true;
 }

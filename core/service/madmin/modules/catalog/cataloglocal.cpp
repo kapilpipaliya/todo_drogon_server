@@ -60,7 +60,15 @@ nlohmann::json CatalogLocal::handleEvent(nlohmann::json event, unsigned long nex
     } else if (event_cmp  == "upd") {
         return upd(event, args);
     } else if (event_cmp  == "del") {
-        return del(event, args);
+        if(args[0].is_array()){
+            if(args[0][0].is_number()){
+                if(delet(args[0][0].get<long>(), "local")){
+                    return {simpleJsonSaveResult(event, true, "Done")};
+                }
+            }
+        }
+        //return del(event,args);
+        return {simpleJsonSaveResult(event, false, "UnAuthorised")};
     } else if (event_cmp  == "count") {
         return count(event, args);
     } else {

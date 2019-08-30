@@ -54,7 +54,7 @@ nlohmann::json UI::getMenuData()
         json j = json::array({
             json::array({"Dashboard", "music/dashboard"}),
             json::array({"Executives", "music/users"}),
-            json::array({"Songs","music/browse"}),
+//            json::array({"Songs","music/browse"}),
 //            json::array({"Profile", "music/profile"}),
             json::array({"Password Change", "music/update_password"}),
             json::array({"Logout", "music/logout"})
@@ -63,8 +63,8 @@ nlohmann::json UI::getMenuData()
     } else if (context->user.type == "executive"){
         json j = json::array({
                                  json::array({"Dashboard", "music/dashboard"}),
-                                 json::array({"Songs","music/browse"}),
-                                 json::array({"Profile", "music/profile"}),
+//                                 json::array({"Songs","music/browse"}),
+//                                 json::array({"Profile", "music/profile"}),
                                  json::array({"Password Change", "music/update_password"}),
                                  json::array({"Logout", "music/logout"})
                              }) ;
@@ -109,8 +109,6 @@ nlohmann::json UI::getUserTypeData()
     } else if (context->user.type == "admin"){
         json j = json::array({
                                   json::array({"All", nullptr}),
-                                 json::array({"Super Admin", "super admin"}),
-                                 json::array({"Admins","admin"}),
                                  json::array({"Executives","executive"}),
         }) ;
         return j;

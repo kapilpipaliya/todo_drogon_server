@@ -22,6 +22,7 @@ remove_definitions(USE_MYSQL)
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall ${CMAKE_CXX_STD_FLAGS}")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall ${CMAKE_CXX_STD_FLAGS}")
 
+#FindCAF.cmake copied from actor-framework/cmake/
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules/ /home/kapili3/k/cpp_stuff/actor-framework/cmake/)
 find_package(Boost REQUIRED COMPONENTS filesystem date_time system timer )
 

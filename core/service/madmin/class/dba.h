@@ -40,6 +40,20 @@ public:
      * read
      */
     static drogon::orm::Result read(std::string sql);
+
+    template<class... Args>
+    static drogon::orm::Result read(std::string sql, Args... args){
+        try {
+            auto clientPtr = drogon::app().getDbClient("sce");
+            auto transPtr = clientPtr->newTransaction();
+            auto r = transPtr->execSqlSync(sql, args...);
+            return r;
+        } catch (const std::exception &e) {
+           SPDLOG_TRACE(e.what());
+            throw("Invalid Sql At Dba write");
+        }
+    }
+
     static json readJson(std::string sql);
     /**
      * write

@@ -321,7 +321,7 @@ public:
          * deletes this user and everything associated with it. This will affect
          * ratings and tottal stats
          */
-        //void delete();
+        bool delNew(long user_id);
         /**
          * is_online
          * delay how long since last_seen in seconds default of 20 min
