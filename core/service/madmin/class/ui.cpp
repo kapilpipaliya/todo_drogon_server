@@ -1,4 +1,5 @@
 #include "ui.h"
+#include "dba.h"
 using namespace  madmin;
 UI::UI(const MAdminContextPtr &context_): BaseService(context_)
 {
@@ -21,6 +22,8 @@ nlohmann::json UI::handleEvent(nlohmann::json event, unsigned long next, nlohman
         return {{event, getPageTitle()}};
     } else if (event_cmp  == "user_account_type") {
         return {{event, getUserAccountType()}};
+    } else if (event_cmp  == "catalog_local") {
+        return {{event, getCatalogFilterData()}};
     } else if (event_cmp  == "ins") {
         return ins(event, args);
     } else if (event_cmp  == "ins") {
@@ -42,7 +45,7 @@ nlohmann::json UI::getMenuData()
             json::array({"Admins","music/users"}),
             json::array({"Catalogs","music/catalogs"}),
             json::array({"Songs","music/browse"}),
-            json::array({"Profile", "music/profile"}),
+//            json::array({"Profile", "music/profile"}),
             json::array({"Password Change", "music/update_password"}),
             json::array({"Logout", "music/logout"})
         });
@@ -52,7 +55,7 @@ nlohmann::json UI::getMenuData()
             json::array({"Dashboard", "music/dashboard"}),
             json::array({"Executives", "music/users"}),
             json::array({"Songs","music/browse"}),
-            json::array({"Profile", "music/profile"}),
+//            json::array({"Profile", "music/profile"}),
             json::array({"Password Change", "music/update_password"}),
             json::array({"Logout", "music/logout"})
         });
@@ -114,4 +117,20 @@ nlohmann::json UI::getUserTypeData()
     } else {
         return json::array();
     }
+}
+
+nlohmann::json UI::getCatalogFilterData()
+{
+    std::string sql = "select id, name from music.catalog order by id";
+    auto r = Dba::read(sql);
+    json out = json::array({
+                    json::array({"All", nullptr})
+                });
+    for (auto i : r) {
+        auto id = i["id"].as<long>();
+        auto name = i["name"].as<std::string>();
+        out.push_back(json::array({name, id}));
+    }
+
+    return out;
 }

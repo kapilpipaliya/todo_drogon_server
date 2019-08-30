@@ -143,6 +143,7 @@ nlohmann::json MAdminActor::handleTextMessage(const WebSocketConnectionPtr &wsCo
         REGISTER(madmin::User, "users")
         REGISTER(madmin::UI, "ui")
         REGISTER(madmin::CatalogLocal, "catalog_local")
+        REGISTER(madmin::Song, "song")
         else {
             return json::array();
         }

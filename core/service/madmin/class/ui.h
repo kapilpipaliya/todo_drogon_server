@@ -20,6 +20,7 @@ public:
     std::string getPageTitle();
     std::string getUserAccountType();
     json getUserTypeData();
+    json getCatalogFilterData();
 
     //static classes_;
     //static ticker_;

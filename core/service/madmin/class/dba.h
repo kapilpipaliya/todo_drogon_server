@@ -40,6 +40,7 @@ public:
      * read
      */
     static drogon::orm::Result read(std::string sql);
+    static json readJson(std::string sql);
     /**
      * write
      */

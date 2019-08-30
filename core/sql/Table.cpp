@@ -155,10 +155,13 @@ json Table::getJsonData()
                 //jsonRow[column] = (long)strtolong(row, column);
                 jsonRow[column] = result[row][column].as<long>();
                 break;
-            case PG_TYPES::BOOL:
+            case PG_TYPES::BOOL:{
                 //jsonRow[column] = strbool(row, column);
-                jsonRow[column] = result[row][column].as<bool>();
+                auto r5 = result[row][column].as<std::string>();
+                //jsonRow[column] = result[row][column].as<bool>();
+                jsonRow[column] = result[row][column].as<std::string>() == "t" ? true : false;
                 break;
+            }
 //          case PG_TYPES::
             case PG_TYPES::DOUBLE:
                 //jsonRow[column] = strbool(row, column);

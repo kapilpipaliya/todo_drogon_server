@@ -23,6 +23,13 @@ drogon::orm::Result Dba::read(std::string sql)
     }
 }
 
+nlohmann::json Dba::readJson(std::string sql)
+{
+    // Fix this. dont know how to do it?
+    json j;
+    return j;
+}
+
 unsigned long Dba::num_rows(Result &resource)
 {
     //if (resource) {

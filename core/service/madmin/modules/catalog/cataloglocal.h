@@ -15,7 +15,7 @@ class CatalogLocal : public Catalog
     string type           = "local";
     string description    = "Local Catalog";
 
-    int count;
+    //int count; // This cause trouble with base function count();
     std::vector<int> added_songs_to_gather;
     std::vector<int> added_videos_to_gather;
 public:

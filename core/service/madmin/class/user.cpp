@@ -27,12 +27,12 @@ void User::setupTable()
         S({"Account Type", "type", "", "e", PG_TYPES::ENUM}),
         //S({"no", "no", "", "e", PG_TYPES::TEXT}),
         //S({"sequence_id", "sequence_id", "", "e", PG_TYPES::INT8, false}),
-        sqlb::SelectedColumn({"Parent", "parent_id", "", "e", PG_TYPES::INT8, true, 1, 1 }),
-        sqlb::SelectedColumn({"username", "username", "", "p", PG_TYPES::TEXT, false, 0, 0, false}),
+        S({"Parent", "parent_id", "", "e", PG_TYPES::INT8, true, 1, 1 }),
+        S({"username", "username", "", "p", PG_TYPES::TEXT, false, 0, 0, false}),
         S({"User Name", "username", "", "e", PG_TYPES::TEXT}),
         S({"Full Name", "fullname", "", "e", PG_TYPES::TEXT}),
         S({"Create Date", "create_date", "", "e", PG_TYPES::TIMESTAMP}),
-        S({"Active", "disabled", "", "e", PG_TYPES::BOOL}),
+        S({"Disabled", "disabled", "", "e", PG_TYPES::BOOL}),
         S({"Email", "email", "", "e", PG_TYPES::TEXT, true}),
         S({"Password", "password", "", "e", PG_TYPES::TEXT, true}),
         S({"City", "city", "", "e", PG_TYPES::TEXT, true}),
@@ -75,7 +75,7 @@ nlohmann::json User::handleEvent(nlohmann::json event, unsigned long next, nlohm
             return {{event, "unauthorised"}};
         }
     } else if (event_cmp == "update_password") {
-        if(!args[0].is_array()) return {simpleJsonSaveResult(event, false, "Not Valid Args")};
+        if(!args.is_array()) return {simpleJsonSaveResult(event, false, "Not Valid Args")};
         if(get_password() == args[0]["old_password"].get<std::string>()){
             if(update_password(args[0]["new_password"].get<std::string>())){
                 return {simpleJsonSaveResult(event, true, "Done")};

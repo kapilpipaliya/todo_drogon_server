@@ -13,11 +13,10 @@ void CatalogLocal::setupTable()
     //m_query.setRowIdColumn("id");
     t.m_query.selectedColumns() = {
         S({"Id", "id", "", "c", PG_TYPES::INT8}),
-        S({"Catalog Type", "catalog_type", "", "c", PG_TYPES::ENUM}),
+        //S({"Catalog Type", "catalog_type", "", "c", PG_TYPES::ENUM}),
         //S({"no", "no", "", "c", PG_TYPES::TEXT}),
         //S({"sequence_id", "sequence_id", "", "c", PG_TYPES::INT8, false}),
-        //sqlb::SelectedColumn({"Parent", "parent_id", "", "c", PG_TYPES::INT8, true, 1, 1 }),
-        sqlb::SelectedColumn({"Name", "name", "", "p", PG_TYPES::TEXT, false, 0, 0, false}),
+        S({"Name", "name", "", "c", PG_TYPES::TEXT, true}),
         //S({"Create Date", "last_update", "", "c", PG_TYPES::TIMESTAMP}),
         //S({"last_clean Date", "last_clean", "", "c", PG_TYPES::TIMESTAMP}),
         //S({"last_add Date", "last_add", "", "c", PG_TYPES::TIMESTAMP}),
@@ -46,5 +45,25 @@ void CatalogLocal::setupTable()
 
 nlohmann::json CatalogLocal::handleEvent(nlohmann::json event, unsigned long next, nlohmann::json args)
 {
-
+    auto event_cmp = event[next].get<std::string>();
+    if (event_cmp == "header") { // required
+        return headerData(event, args);
+    } else if (event_cmp == "data") { // required
+        if(context->user.type == "super admin"){
+            return allData(event, args);
+        } else {
+            return {{event, "unauthorised"}};
+        }
+    } else if (event_cmp  == "ins") {
+        //args[0]["parent_id"] = context->user_id;
+        return ins(event, args);
+    } else if (event_cmp  == "upd") {
+        return upd(event, args);
+    } else if (event_cmp  == "del") {
+        return del(event, args);
+    } else if (event_cmp  == "count") {
+        return count(event, args);
+    } else {
+        return nullptr;
+    }
 }
