@@ -136,6 +136,7 @@ nlohmann::json MAdminActor::handleTextMessage(const WebSocketConnectionPtr &wsCo
             return json::array();
         }
 
+
         if constexpr (false){
         }
         REGISTER(madmin::Auth, "auth")
@@ -156,5 +157,41 @@ nlohmann::json MAdminActor::handleTextMessage(const WebSocketConnectionPtr &wsCo
 
 nlohmann::json MAdminActor::handleBinaryMessage(const WebSocketConnectionPtr &wsConnPtr, std::string &message)
 {
+    json event;
+    try {
+        auto contx = wsConnPtr->getContext<MAdminContext>();\
+        long c = contx->current_session_id;
+        auto sqlSession = "SELECT event FROM music.temp_file_meta where session_id = $1";
+        auto clientPtr = drogon::app().getDbClient("sce");
+        auto r = clientPtr->execSqlSync(sqlSession, c);
+        if(r.size()!=0){
+            try
+            {
+                event = json::parse(r[0]["event"].c_str());
+                // p.handleBinaryEvent creates new transaction.
 
+                    if (event[0] == "song") {
+                        madmin::Song p{contx};
+                        auto r = p.handleBinaryEvent(event, 1, message);
+                        if(!r.is_null())
+                        return r;
+                        }
+             }
+            catch (json::parse_error& e)
+            {
+               SPDLOG_TRACE("message: {}", e.what());
+               SPDLOG_TRACE("exception id: {}", e.id);
+               SPDLOG_TRACE("byte position of error:", e.byte);
+                nlohmann::json j =  std::string("cant parse json reason: ") + e.what() + event.dump();
+                WsFns::sendJson(wsConnPtr, j);
+            }
+        }
+    } catch (const std::exception &e) {
+       SPDLOG_TRACE(e.what());
+        json jresult;
+        jresult[0] = event;
+        jresult[1] = e.what();
+        return jresult;
+    }
+    return Json::nullValue;
 }

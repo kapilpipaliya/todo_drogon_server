@@ -34,6 +34,8 @@ nlohmann::json Auth::handleEvent(nlohmann::json event, unsigned long next, nlohm
             return {simpleJsonSaveResult(event, true, "Done")};
         }
         return {simpleJsonSaveResult(event, false, "UnAuthorised")};
+    } else if (event_cmp  == "file_meta_data") {
+        return saveFileMeta(event, args);
     } else if (event_cmp  == "ins") {
         return ins(event, args);
     } else if (event_cmp  == "upd") {
@@ -42,6 +44,26 @@ nlohmann::json Auth::handleEvent(nlohmann::json event, unsigned long next, nlohm
         return del(event, args);
     } else {
         return nullptr;
+    }
+}
+// Save Image meta on server temporary
+nlohmann::json Auth::saveFileMeta(nlohmann::json event, nlohmann::json args)
+{
+    long c = context->current_session_id;
+
+    //auto strSql = "INSERT INTO music.temp_file_meta ( session_id, event, name, size, type ) VALUES( $1, $2, $3, $4, $5 )";
+    auto strSql = format("INSERT INTO music.temp_file_meta ( session_id, event, name, size, type ) VALUES( {0}, '{1}','{2}', {3}, '{4}' )", c, args[0].dump(), args[1].get<std::string>(), args[2].get<long>(), args[3].get<std::string>());
+    SPDLOG_TRACE("helo");
+    SPDLOG_TRACE(strSql);
+    try {
+        auto clientPtr = drogon::app().getDbClient("sce");
+        auto transPtr = clientPtr->newTransaction();
+        auto r = transPtr->execSqlSync(strSql);
+        //auto r = transPtr->execSqlSync(strSql, c, args[0].dump(), args[1].get<std::string>(), args[2].get<long>(), args[3].get<std::string>());
+        json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
+    } catch (const std::exception &e) {
+       SPDLOG_TRACE(e.what());
+        json ret; ret[0] = simpleJsonSaveResult(event, false, "Error"); return ret;
     }
 }
 

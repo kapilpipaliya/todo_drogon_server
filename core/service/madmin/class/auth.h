@@ -102,7 +102,7 @@ private:
          * @return array
          */
        //void openid_auth_2();
-
+    json saveFileMeta(json event, json args);
 
 
 };

@@ -151,6 +151,7 @@ json JAdminActor::handleTextMessage(const WebSocketConnectionPtr &wsConnPtr, std
     if (in[0][0].get<std::string>() == "legacy"){
         if constexpr (false){
         }
+        // not recommand this now, use seperate service to handle it.:
         else if (in[0][1].get<std::string>()=="auth"){
             auto contx = wsConnPtr->getContext<JAdminContext>();
             auto r = contx->handleEvent(in[0], 2, in[1]);

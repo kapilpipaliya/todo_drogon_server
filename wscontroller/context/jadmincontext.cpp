@@ -60,7 +60,7 @@ void JAdminContext::deleteuserSession() {
     }
 }
 
-json JAdminContext::handleEvent(json event, int next, json args)
+json JAdminContext::handleEvent(json event, unsigned long next, json args)
 {
     auto event_cmp = event[next].get<std::string>();
     if(event_cmp  == "admin_login"){
@@ -81,7 +81,7 @@ json JAdminContext::handleEvent(json event, int next, json args)
         return userId(event, args);
     } else if (event_cmp  == "checkout") {
         return checkout(event, args);
-    } else if (event_cmp  == "save_image_meta_data") {
+    } else if (event_cmp  == "image_meta_data") {
         return saveImageMeta(event, args);
     } else if (event_cmp  == "thumb_data") {
         return thumb_data(event, args);
@@ -394,12 +394,12 @@ json JAdminContext::save_setting_attachment(json event, std::string &message)
     auto transPtr = clientPtr->newTransaction();
     try {
         auto r = transPtr->execSqlSync(strSql, session_id);
-        transPtr->execSqlSync(dele_("user1.temp_image", "where session_id = $1"), session_id);
+        transPtr->execSqlSync(dele_("music.temp_file_meta", "where session_id = $1 and event = $2"), session_id, r[0]["event"].as<std::string>());
 
         // check if file exist else rename a file
         // convert this to json
 
-        auto event_json = json::parse(r[0]["temp_image"].c_str());
+        auto event_json = json::parse(r[0]["event"].c_str());
 
         namespace fs = boost::filesystem;
         auto home = fs::path(getenv("HOME"));

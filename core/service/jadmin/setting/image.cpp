@@ -65,6 +65,7 @@ json Image::ins( json event, json args) {
     auto metal_purity_table = sqlb::ObjectIdentifier("setting", "image", "c");
     std::string t = "setting.image";
     std::string c = "image_collection_id, name, size, type, title, description, url, position";
+
     std::string strSqlTempImage = "SELECT name, size, type FROM setting.temp_image_id WHERE id = $1";
     std::string strSqlTempImageDel = "DELETE FROM setting.temp_image_id WHERE id = $1";
 

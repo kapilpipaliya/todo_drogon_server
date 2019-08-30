@@ -100,9 +100,9 @@ TEST_CASE("create User successfull") {
         R"(
         [
         {"title": "very_new_song2", "catalog_id": 1},
-        [null, null, null, "=very_new_song"]
+        [null, null, null, null, "=very_new_song"]
         ])",
-        R"([[null, null, null, "=very_new_song2"]])")
+        R"([[null, null, null, null, "=very_new_song2"]])")
 }
 TEST_CASE("create Count successfull") {
     UserCount w1{"user"}; w1.setpath("/madmin"); w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);

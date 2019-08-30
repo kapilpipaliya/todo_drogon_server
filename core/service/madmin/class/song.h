@@ -16,7 +16,10 @@ public:
     Song(const MAdminContextPtr &);
     void setupTable() override;
     json handleEvent(json event, unsigned long next, json args) override;
-        /* Variables from DB */
+    json handleBinaryEvent(json event, unsigned long next, std::string &message);
+
+
+    /* Variables from DB */
 
 //    int id;
 //    string file;
@@ -608,7 +611,9 @@ public:
      * Remove the song from disk.
      */
     //public function remove_from_disk()
-
+private:
+    //Binary functin:
+    json save_song_binary(json event, std::string &message);
 };
 }
 #endif // SONG_H

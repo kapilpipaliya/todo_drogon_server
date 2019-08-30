@@ -19,7 +19,7 @@ public:
     void deleteAdminSession();
     void deleteuserSession();
 
-    json handleEvent(json event, int next, json args);
+    json handleEvent(json event, unsigned long next, json args);
     json handleBinaryEvent(json event, int next, std::string &message);
 
 private:

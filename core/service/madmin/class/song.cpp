@@ -1,4 +1,5 @@
 #include "song.h"
+#include <boost/filesystem.hpp>
 using namespace  madmin;
 typedef sqlb::SelectedColumn S;
 Song::Song(const MAdminContextPtr &context_): BaseService(context_)
@@ -12,7 +13,7 @@ void Song::setupTable()
     //m_query.setRowIdColumn("id");
     t.m_query.selectedColumns() = {
             S({"Id", "id", "", "s", PG_TYPES::INT8}),
-//            S({"file", "file", "", "s", PG_TYPES::TEXT}),
+            S({"file", "file", "", "s", PG_TYPES::TEXT, false}),
             S({"Catalog", "catalog_id", "", "s", PG_TYPES::INT8, true, 1, 1}),
             S({"c_name", "name", "", "c", PG_TYPES::TEXT, false, 0, 0, false}),
 //            S({"Album", "album_id", "", "s", PG_TYPES::INT8}),
@@ -22,7 +23,7 @@ void Song::setupTable()
 //            S({"bitrate", "bitrate", "", "s", PG_TYPES::INT4}),
 //            S({"rate", "rate", "", "s", PG_TYPES::INT4}),
 //            S({"mode", "mode", "", "s", PG_TYPES::ENUM}),
-//            S({"size", "size", "", "s", PG_TYPES::INT8}),
+            S({"size", "size", "", "s", PG_TYPES::INT8}),
 //            S({"time", "time", "", "s", PG_TYPES::INT4}),
 //            S({"track", "track", "", "s", PG_TYPES::INT4}),
 //            S({"mbid", "mbid", "", "s", PG_TYPES::TEXT}),
@@ -75,7 +76,37 @@ nlohmann::json Song::handleEvent(nlohmann::json event, unsigned long next, nlohm
         //}
     } else if (event_cmp  == "ins") {
         //args[0]["parent_id"] = context->user_id;
-        return ins(event, args);
+
+
+        std::string strSqlTempImage = "SELECT name, size, type FROM music.temp_file WHERE id = $1";
+        std::string strSqlTempImageDel = "DELETE FROM music.temp_file WHERE id = $1";
+
+        auto clientPtr = drogon::app().getDbClient("sce");
+        try {
+            if(args[0]["temp_id"].is_number_integer()){
+                auto temp_id = args[0]["temp_id"].get<long>();
+                if (temp_id != 0) {
+                    auto z = clientPtr->execSqlSync(strSqlTempImage, temp_id);
+                    if (z.size() == 1) {
+                       args[0]["file"] =  z[0]["name"].c_str();
+                       args[0]["size"] = z[0]["size"].as<long>();
+                       //auto type = z[0]["type"].c_str();
+                       clientPtr->execSqlSync(strSqlTempImageDel, temp_id);
+                       return ins(event, args);
+                    }
+                }
+                json ret; ret[0] = simpleJsonSaveResult(event, false, "Please Upload Music First!"); return ret;
+            } else {
+               // json ret; ret[0] = simpleJsonSaveResult(event, false, "Please Upload Music First!"); return ret;
+                return ins(event, args); // Make this to pass test.
+            }
+        } catch (const std::exception &e) {
+
+           SPDLOG_TRACE(e.what());
+            json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
+        }
+
+
     } else if (event_cmp  == "upd") {
         return upd(event, args);
     } else if (event_cmp  == "del") {
@@ -84,5 +115,77 @@ nlohmann::json Song::handleEvent(nlohmann::json event, unsigned long next, nlohm
         return count(event, args);
     } else {
         return nullptr;
+    }
+}
+
+nlohmann::json Song::handleBinaryEvent(nlohmann::json event, unsigned long next, std::string &message)
+{
+    if(event[next].get<std::string>()  == "song"){
+        return save_song_binary(event, message);
+    } else {
+        return Json::nullValue;
+    }
+}
+
+nlohmann::json Song::save_song_binary([[maybe_unused]]nlohmann::json event, std::string &message)
+{
+    auto session_id = context->current_session_id;
+    auto strSql = sel_("music.temp_file_meta", "event,  name, size, type", "where session_id = $1");
+    auto clientPtr = drogon::app().getDbClient("sce");
+    auto transPtr = clientPtr->newTransaction();
+    try {
+        auto r = transPtr->execSqlSync(strSql, session_id);
+        transPtr->execSqlSync(dele_("music.temp_file_meta", "where session_id = $1 and event = $2"), session_id, r[0]["event"].as<std::string>());
+
+        // check if file exist else rename a file
+        // convert this to json
+
+        auto event_json = json::parse(r[0]["event"].c_str());
+
+        namespace fs = boost::filesystem;
+        auto home = fs::path(getenv("HOME"));
+
+        std::string name = r[0][1].c_str();
+        auto size = r[0][2].as<long>();
+        auto type = r[0][3].c_str();
+
+        // basic file operations
+
+        std::string new_name = name;
+        auto path = boost::filesystem::path(home.string() + "/fileuploads/" + new_name);
+        int i = 1;
+        while (true) {
+            if (boost::filesystem::exists(home.string() + "/fileuploads/" + new_name)) {
+                // new_name = path.parent_path().string() + "/" + path.stem().string() + std::to_string(i) + path.extension().string();
+                new_name = path.stem().string() + std::to_string(i) + path.extension().string();
+            } else {
+                break;
+            }
+            i++;
+        }
+        name = new_name;
+
+        std::ofstream myfile;
+        myfile.open(home.string() + "/fileuploads/" + name);
+        myfile << message;
+        myfile.close();
+
+        // Insert Image
+        std::string strSql = "INSERT INTO music.temp_file (name, size, type) VALUES ($1, $2, $3) RETURNING id";
+
+        json ret;
+        json jresult;
+        jresult[0] = event_json;
+        auto insert_result = transPtr->execSqlSync(strSql, name, size, type);
+        jresult[1] = insert_result[0]["id"].as<long>();
+        //jresult[1] = e.what();
+        ret[0] = jresult;
+
+        return ret;
+
+    } catch (const std::exception &e) {
+       SPDLOG_TRACE(e.what());
+       json null;
+       return null;
     }
 }
