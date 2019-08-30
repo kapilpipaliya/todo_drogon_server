@@ -24,10 +24,11 @@ void GetTableDataAdmin::connectToServer()
                                    // a JSON value
                                    auto in = R"(
                                             [
-                                            [["auth","login",0],{{"user":"new_u","pass":"12345600"}}],
+                                            [["auth","login",0],{{"user":"sadmin","pass":"123456"}}],
                                             [["user","is_logged_in",0],[[]]],
                                             [["{0}","header",1000],{{}}],
-                                            [["{1}","data",1000],[[],[],[0]]]
+                                            [["{1}","data",1000],[[],[],[0]]],
+                                            [["{1}", "count", 0], [[]]]
                                             ]
                                             )";
                                    auto s = format(in, table, table);
@@ -84,7 +85,16 @@ void GetTableDataAdmin::setMessageHandler()
             REQUIRE(t[1] == "data");
             REQUIRE(t[2] == 1000);
 
+            REQUIRE(j[4][1].is_array());
             REQUIRE(j[4][1].size() >= 0);
+
+            //count data
+            auto d = j[5][0];
+            REQUIRE(d[0] == table);
+            REQUIRE(d[1] == "count");
+            REQUIRE(d[2] == 0);
+
+            REQUIRE(j[5][1].is_number());
 
 
             return quit(true);

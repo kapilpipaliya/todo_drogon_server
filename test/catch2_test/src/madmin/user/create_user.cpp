@@ -7,11 +7,11 @@
 using namespace nlohmann;
 using namespace fmt::v5;
 using namespace  madmin;
-CreateUser::CreateUser(std::string table): table(table)
+CreateUser::CreateUser(std::string table, std::string insert_query, std::string update_query, std::string delete_query):
+    table(table), insert_query(insert_query), update_query(update_query), delete_query(delete_query)
 {
 
 }
-
 void CreateUser::connectToServer()
 {
     wsPtr->connectToServer(req,
@@ -24,23 +24,20 @@ void CreateUser::connectToServer()
                                    // a JSON value
                                    auto in = R"(
                                             [
-                                            [["auth","login",0],{{"user":"new_u","pass":"12345600"}}],
+                                            [["auth","login",0],{{"user":"sadmin","pass":"123456"}}],
                                             [["user","is_logged_in",0],[[]]],
                                             [
                                              ["{0}","ins",null],
-                                             [{{"username":"username","fullname":"fullname","email":"email@email.com","password":"password","disabled":true,"state":"state","city":"city"}},[null]]
+                                             {1}
                                              ],
                                            [
                                              ["{0}","upd",2],
-                                             [
-                                                {{"type":"executive","parent_id":null,"p_username":0,"username":"user1","fullname":"fullname1","create_date":"2019-08-28 12:04:23.440921+05:30","disabled":true,"email":"email1@gmail.com","password":"pass1","state":"state1","city":"city1"}},
-                                                [null, null, null, null, "=username"]
-                                             ]
+                                             {2}
                                             ],
-                                            [["{0}","del",1000],[[null, null, null, null, "=user1"]]]
+                                            [["{0}","del",1000],{3}]
                                             ]
                                             )";
-                                   auto s = format(in, table, table);
+                                   auto s = format(in, table, insert_query, update_query, delete_query);
                                    SPDLOG_TRACE(s);
                                    auto j = jsonparse(s);
 
