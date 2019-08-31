@@ -213,7 +213,7 @@ bool User::is_logged_in()
 
 std::string User::get_password()
 {
-    auto sql        = "SELECT * FROM music.user WHERE id = 1";
+    auto sql        = "SELECT * FROM music.user WHERE id = $1";
     try {
         auto clientPtr = drogon::app().getDbClient("sce");
         auto transPtr = clientPtr->newTransaction();
@@ -285,7 +285,7 @@ bool User::update_password(std::string new_password)
 {
     // std::string new_password = hash('sha256', new_password);
     //new_password = Dba::escape(new_password);
-    std::string sql          = "UPDATE music.user SET password = 2 WHERE id = 1";
+    std::string sql          = "UPDATE music.user SET password = $2 WHERE id = $1";
     try {
         auto clientPtr = drogon::app().getDbClient("sce");
         auto transPtr = clientPtr->newTransaction();

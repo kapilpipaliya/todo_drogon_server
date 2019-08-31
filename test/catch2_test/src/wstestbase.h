@@ -18,7 +18,7 @@ protected:
 
   HttpRequestPtr req = HttpRequest::newHttpRequest();
   WebSocketClientPtr wsPtr =
-            WebSocketClient::newWebSocketClient("127.0.0.1", 8300);
+            WebSocketClient::newWebSocketClient("127.0.0.1", 8400);
 
    virtual  void setMessageHandler();
     virtual void setConnectionClosedHandler();
