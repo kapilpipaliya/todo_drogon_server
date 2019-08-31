@@ -33,13 +33,14 @@ TEST_CASE("is connection possible","[WSTest]") {
     char **argv;
     int i = 0;
     QCoreApplication a(i, argv);
-    auto &w2 = WsInst::getClient();
+    auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/madmin")));
+
     Once::connect(&w2.m_webSocket, &QWebSocket::connected, [](){
         SPDLOG_TRACE("Connection successfull");
         REQUIRE(true);});
     QTimer *timer = new QTimer();
     QObject::connect(timer, SIGNAL(timeout()), &a, SLOT(quit()));
-    timer->start(1000);
+    timer->start(500);
     a.exec();
 }
 
@@ -47,11 +48,11 @@ TEST_CASE("server reply error on string type of message.","[WSTest]") {
     char **argv;
     int i = 0;
     QCoreApplication a(i, argv);
-    auto &w2 = WsInst::getClient();
+    auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/madmin")));
     std::string str = "hello";
     nlohmann::json j = str;
     // Bind not work because reply is not an array
-//    auto b = w2.bind(j, [&a](json r){
+//    auto b = w2.bindOnce(j, [&a](json r){
 //        REQUIRE(r== "Invalid Message only array handled: \"hello\"");
 //        a.quit();
 //    });
@@ -62,7 +63,7 @@ TEST_CASE("server reply error on string type of message.","[WSTest]") {
         REQUIRE(true);});
     QTimer *timer = new QTimer();
     QObject::connect(timer, SIGNAL(timeout()), &a, SLOT(quit()));
-    timer->start(1000);
+    timer->start(500);
     a.exec();
         //FormatCheck w1;  w1.setpath("/madmin"); w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);
 }
@@ -72,12 +73,12 @@ TEST_CASE("authorisation check without cookies","[WSTest]") {
 char **argv;
 int i = 0;
 QCoreApplication a(i, argv);
-auto &w2 = WsInst::getClient();
+auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/madmin")));
 json event = json::array({"user", "is_logged_in", 0} );
 json payload = json::array({{event, {{}}}});
 //    json j = R"( [ [["user","is_logged_in",0],[[]]]] )"_json;
 SPDLOG_TRACE(payload.dump());
-auto b = w2.bind(event, [](json r){
+auto b = w2.bindOnce(event, [](json r){
     SPDLOG_TRACE("This should be false");
     REQUIRE(r[0] == false);
 });
@@ -85,7 +86,7 @@ w2.sendMessage(QString::fromStdString(payload.dump()));
 REQUIRE(b);
 QTimer *timer = new QTimer();
 QObject::connect(timer, SIGNAL(timeout()), &a, SLOT(quit()));
-timer->start(1000);
+timer->start(500);
 
 a.exec();
 
@@ -96,18 +97,18 @@ TEST_CASE("login on backend with username and password","[WSTest]") {
     char **argv;
     int i = 0;
     QCoreApplication a(i, argv);
-    auto &w2 = WsInst::getClient();
+    auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/madmin")));
     json event = json::array({"auth","login",0} );
     json payload = json::array({{event, json::object({{"user", "sadmin"}, {"pass", "123456"}}) }});
     SPDLOG_TRACE(payload.dump());
-    auto b = w2.bind(event, [](json r){
+    auto b = w2.bindOnce(event, [](json r){
         REQUIRE(r[0]["ok"] == true);
     });
     w2.sendMessage(QString::fromStdString(payload.dump()));
     REQUIRE(b);
     QTimer *timer = new QTimer();
     QObject::connect(timer, SIGNAL(timeout()), &a, SLOT(quit()));
-    timer->start(1000);
+    timer->start(500);
     a.exec();
     //LogIn w1; w1.setpath("/madmin"); w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);
 }
@@ -121,7 +122,7 @@ TEST_CASE("check that all table Super Admin data are correctly replied","[WSTest
     char **argv;
     int i = 0;
     QCoreApplication a(i, argv);
-    auto &w2 = WsInst::getClient();
+    auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/madmin")));
     json event1 = json::array({"auth","login",0} );
     json event11 = json::array({"auth","set_cookie",0} );
     json event2 = json::array({"auth","is_logged_in",0} );
@@ -136,11 +137,11 @@ TEST_CASE("check that all table Super Admin data are correctly replied","[WSTest
 
     SPDLOG_TRACE(payload.dump());
     bool r1, r2, r3, r4 = false;
-    auto b1 = w2.bind(event1, [](json r){ REQUIRE(r[0]["ok"] == true); });
-    auto b11 = w2.bind(event11, [](json r){ REQUIRE(r[0].is_number() == true);});
-    auto b2 = w2.bind(event2, [](json r){ REQUIRE(r[0] == true); });
-    auto b3 = w2.bind(event3, [](json r){ REQUIRE(r[0].size() == 6); });
-    auto b4 = w2.bind(event4, [](json r){ REQUIRE(r[1].size() >= 0); });
+    auto b1 = w2.bindOnce(event1, [](json r){ REQUIRE(r[0]["ok"] == true); });
+    auto b11 = w2.bindOnce(event11, [](json r){ REQUIRE(r[0].is_number() == true);});
+    auto b2 = w2.bindOnce(event2, [](json r){ REQUIRE(r[0] == true); });
+    auto b3 = w2.bindOnce(event3, [](json r){ REQUIRE(r[0].size() == 6); });
+    auto b4 = w2.bindOnce(event4, [](json r){ REQUIRE(r[1].size() >= 0); });
     w2.sendMessage(QString::fromStdString(payload.dump()));
     REQUIRE(b1);
     REQUIRE(b11);
@@ -149,7 +150,7 @@ TEST_CASE("check that all table Super Admin data are correctly replied","[WSTest
     REQUIRE(b4);
     QTimer *timer = new QTimer();
     QObject::connect(timer, SIGNAL(timeout()), &a, SLOT(quit()));
-    timer->start(1000);
+    timer->start(500);
     a.exec();
 }
     // do catalog_local and song test above
@@ -163,7 +164,7 @@ TEST_CASE("password change should work.") {
     char **argv;
     int i = 0;
     QCoreApplication a(i, argv);
-    auto &w2 = WsInst::getClient();
+    auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/madmin")));
     json event1 = json::array({"auth","login",0} );
     json event11 = json::array({"auth","set_cookie",0} );
     json event2 = json::array({"user","update_password",0} );
@@ -176,10 +177,10 @@ TEST_CASE("password change should work.") {
 
     SPDLOG_TRACE(payload.dump());
     bool r1, r2, r3, r4 = false;
-    auto b1 = w2.bind(event1, [](json r){ REQUIRE(r[0]["ok"] == true); });
-    auto b11 = w2.bind(event11, [](json r){ REQUIRE(r[0].is_number() == true);});
-    auto b2 = w2.bind(event2, [](json r){ REQUIRE(r[0]["ok"] == true); });
-    auto b3 = w2.bind(event3, [](json r){ REQUIRE(r[0]["ok"] == true); });
+    auto b1 = w2.bindOnce(event1, [](json r){REQUIRE(r[0]["ok"] == true); });
+    auto b11 = w2.bindOnce(event11, [](json r){ REQUIRE(r[0].is_number() == true);});
+    auto b2 = w2.bindOnce(event2, [](json r){ REQUIRE(r[0]["ok"] == true); });
+    auto b3 = w2.bindOnce(event3, [](json r){ REQUIRE(r[0]["ok"] == true); });
     w2.sendMessage(QString::fromStdString(payload.dump()));
     REQUIRE(b1);
     REQUIRE(b11);
@@ -187,7 +188,7 @@ TEST_CASE("password change should work.") {
     REQUIRE(b3);
     QTimer *timer = new QTimer();
     QObject::connect(timer, SIGNAL(timeout()), &a, SLOT(quit()));
-    timer->start(1000);
+    timer->start(500);
     a.exec();
     //PasswordChange w1; w1.setpath("/madmin"); w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);
 }
@@ -195,7 +196,7 @@ TEST_CASE("Logout successfull") {
     char **argv;
     int i = 0;
     QCoreApplication a(i, argv);
-    auto &w2 = WsInst::getClient();
+    auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/madmin")));
     json event1 = json::array({"auth","login",0} );
     json event11 = json::array({"auth","set_cookie",0} );
     json event2 = json::array({"auth","logout",0} );
@@ -208,22 +209,19 @@ TEST_CASE("Logout successfull") {
 
     SPDLOG_TRACE(payload.dump());
     bool r1, r2, r3, r4 = false;
-    auto b1 = w2.bind(event1, [](json r){ REQUIRE(r[0]["ok"] == true); });
-    auto b11 = w2.bind(event11, [](json r){ REQUIRE(r[0].is_number() == true);});
-    auto b2 = w2.bind(event2, [](json r){ REQUIRE(r[0]["ok"] == true); });
-    auto b3 = w2.bind(event3, [](json r){ REQUIRE(r[0] == false); });
+    auto b1 = w2.bindOnce(event1, [](json r){
+            REQUIRE(r[0]["ok"] == true); });
+    auto b11 = w2.bindOnce(event11, [](json r){ REQUIRE(r[0].is_number() == true);});
+    auto b2 = w2.bindOnce(event2, [](json r){ REQUIRE(r[0]["ok"] == true); });
+    auto b3 = w2.bindOnce(event3, [](json r){ REQUIRE(r[0] == false); });
     w2.sendMessage(QString::fromStdString(payload.dump()));
     REQUIRE(b1);
     REQUIRE(b11);
     REQUIRE(b2);
     REQUIRE(b3);
-    w2.unbind(event1);
-    w2.unbind(event11);
-    w2.unbind(event2);
-    w2.unbind(event3);
     QTimer *timer = new QTimer();
     QObject::connect(timer, SIGNAL(timeout()), &a, SLOT(quit()));
-    timer->start(1000);
+    timer->start(500);
     a.exec();
    //LogOut w1; w1.setpath("/madmin"); w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);
 }
@@ -261,7 +259,7 @@ TEST_CASE("create update delete successfull") {
     char **argv;
     int i = 0;
     QCoreApplication a(i, argv);
-    auto &w2 = WsInst::getClient();
+    auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/madmin")));
     json event1 = json::array({"auth","login",0} );
     json event11 = json::array({"auth","set_cookie",0} );
     json event2 = json::array({"user","is_logged_in",0} );
@@ -287,12 +285,12 @@ TEST_CASE("create update delete successfull") {
 
     SPDLOG_TRACE(payload.dump());
     bool r1, r2, r3, r4 = false;
-    auto b1 = w2.bind(event1, [](json r){ REQUIRE(r[0]["ok"] == true); });
-    auto b11 = w2.bind(event11, [](json r){ REQUIRE(r[0].is_number() == true);});
-    auto b2 = w2.bind(event2, [](json r){ REQUIRE(r[0] == true); });
-    auto b3 = w2.bind(event3, [](json r){ REQUIRE(r[0]["ok"] == true); });
-    auto b4 = w2.bind(event4, [](json r){ REQUIRE(r[0]["ok"] == true); });
-    auto b5 = w2.bind(event5, [](json r){ REQUIRE(r[0]["ok"] == true); });
+    auto b1 = w2.bindOnce(event1, [](json r){ REQUIRE(r[0]["ok"] == true); });
+    auto b11 = w2.bindOnce(event11, [](json r){ REQUIRE(r[0].is_number() == true);});
+    auto b2 = w2.bindOnce(event2, [](json r){ REQUIRE(r[0] == true); });
+    auto b3 = w2.bindOnce(event3, [](json r){ REQUIRE(r[0]["ok"] == true); });
+    auto b4 = w2.bindOnce(event4, [](json r){ REQUIRE(r[0]["ok"] == true); });
+    auto b5 = w2.bindOnce(event5, [](json r){ REQUIRE(r[0]["ok"] == true); });
     w2.sendMessage(QString::fromStdString(payload.dump()));
     REQUIRE(b1);
     REQUIRE(b11);
@@ -302,7 +300,7 @@ TEST_CASE("create update delete successfull") {
     REQUIRE(b5);
     QTimer *timer = new QTimer();
     QObject::connect(timer, SIGNAL(timeout()), &a, SLOT(quit()));
-    timer->start(1000);
+    timer->start(500);
     a.exec();
 }
 
