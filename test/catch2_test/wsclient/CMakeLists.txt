@@ -4,6 +4,13 @@ project(libwsclient)
 
 #find_package(folly)
 
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+SET(CMAKE_AUTOUIC ON)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 find_package(Qt5 COMPONENTS Core Gui Network Xml Sql WebSockets REQUIRED)
 
 set(HDR

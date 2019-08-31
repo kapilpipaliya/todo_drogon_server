@@ -30,13 +30,14 @@ public:
     bool bind(const nlohmann::json &event, std::function<void(json)> callback);
     bool unbind(const nlohmann::json &event);
 
+    QWebSocket m_webSocket;
+
 private Q_SLOTS:
     void onConnected();
     void onTextMessageReceived(QString message);
     void onSslErrors(const QList<QSslError> &errors);
 
 private:
-    QWebSocket m_webSocket;
     QUrl url;
 
     QTimer *ping_timer;
@@ -50,7 +51,7 @@ private:
     void reconnect();
 
     json jsonparse(std::string msg);
-    void dispatch(std::string event, json data);
+    void dispatch(nlohmann::json event, json data);
 };
 
 class WsInst {

@@ -16,7 +16,7 @@ using namespace  caf;
 
 void MusicWebsock::handleNewMessage(const WebSocketConnectionPtr& wsConnPtr, std::string &&message, const WebSocketMessageType &type)
 {
-     //SPDLOG_TRACE("Input: {}", message.c_str());
+     SPDLOG_TRACE("Input: {}", message.c_str());
      //std::chrono::seconds(10)
     globalCAF.self->request(globalCAF.mainactor, caf::infinite, run_atom::value,  MainActorType::MAdmin, wsConnPtr, std::move(message), type).receive(
         [&]() {

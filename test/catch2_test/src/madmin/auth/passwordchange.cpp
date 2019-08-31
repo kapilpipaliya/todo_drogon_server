@@ -30,6 +30,7 @@ void PasswordChange::connectToServer()
                                }
                            });
 }
+
 void PasswordChange::setMessageHandler()
 {
     wsPtr->setMessageHandler([this](const std::string &message,

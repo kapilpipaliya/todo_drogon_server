@@ -16,18 +16,19 @@ nlohmann::json Auth::handleEvent(nlohmann::json event, unsigned long next, nlohm
     auto event_cmp = event[next].get<std::string>();
     if(event_cmp == "login"){
         json res = {{}, {}};
-        auto [session_id, user_id] = login(args["user"].get<std::string>(), args["pass"].get<std::string>());
-        res[0][1] = session_id;
-        if(session_id) {
-            context->current_session_id = session_id;
-            context->user_id = user_id;
-            context->setUser();
-            res[0] = simpleJsonSaveResult(event, true, "Done");
-            res[1] = {{"auth", "set_cookie", 0}, session_id};
-            return  res;
-        } else {
-            return  {simpleJsonSaveResult(event, false, "Error")};
+        if(args.is_object() && args["user"].is_string() && args["pass"].is_string()){
+            auto [session_id, user_id] = login(args["user"].get<std::string>(), args["pass"].get<std::string>());
+            res[0][1] = session_id;
+            if(session_id) {
+                context->current_session_id = session_id;
+                context->user_id = user_id;
+                context->setUser();
+                res[0] = simpleJsonSaveResult(event, true, "Done");
+                res[1] = {{"auth", "set_cookie", 0}, session_id};
+                return  res;
+            }
         }
+        return  {simpleJsonSaveResult(event, false, "Error")};
     } else if (event_cmp == "logout") {
         auto r = logout();
         if(r){

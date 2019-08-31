@@ -88,10 +88,10 @@ json SslEchoClient::jsonparse(std::string msg)
     }
 }
 
-void SslEchoClient::dispatch(std::string event, nlohmann::json data)
+void SslEchoClient::dispatch(json event, nlohmann::json data)
 {
 
-    auto search = callbacks.find(event);
+    auto search = callbacks.find(event.dump());
     if (search != callbacks.end()) {
        //Found
         search->second(data);
@@ -109,7 +109,7 @@ void SslEchoClient::sendMessage(QString message)
         //when open send message;
         //connect(&m_webSocket, &QWebSocket::connected, this, [this, &message](){ m_webSocket.sendTextMessage(message); });
         Once::connect(&m_webSocket, &QWebSocket::connected,
-              [this, &message](){ m_webSocket.sendTextMessage(message); });
+              [this, message](){ m_webSocket.sendTextMessage(message); });
         break;
     case QAbstractSocket::ConnectedState:
         m_webSocket.sendTextMessage(message);
@@ -135,7 +135,7 @@ void SslEchoClient::sendMessage(QString message)
 //       ).toJson().toStdString()
 //   );
 
-   SPDLOG_TRACE("QSlackJukebox::sendMessage");
+   SPDLOG_TRACE("SslEchoClient::sendMessage");
    SPDLOG_TRACE("  ", message.toStdString());
 }
 
