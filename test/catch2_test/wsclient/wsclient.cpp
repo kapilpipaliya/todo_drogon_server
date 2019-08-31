@@ -87,6 +87,26 @@ json SslEchoClient::jsonparse(std::string msg)
         throw ("Json can not be parsed");
     }
 }
+bool SslEchoClient::bind(const json &event, std::function<void (nlohmann::json)> callback)
+{
+    auto r = callbacks.insert({event.dump(), {1, callback}});
+    return r.second;
+}
+
+bool SslEchoClient::bindOnce(const nlohmann::json &event, std::function<void (nlohmann::json)> callback)
+{
+    auto r = callbacks.insert({event.dump(), {0, callback}});
+    return r.second;
+}
+
+bool SslEchoClient::unbind(const json &event)
+{
+  auto removed_elements = callbacks.erase(event.dump());
+  if(removed_elements>0){
+      return true;
+  }
+  return false;
+}
 
 void SslEchoClient::dispatch(json event, nlohmann::json data)
 {
@@ -94,7 +114,12 @@ void SslEchoClient::dispatch(json event, nlohmann::json data)
     auto search = callbacks.find(event.dump());
     if (search != callbacks.end()) {
        //Found
-        search->second(data);
+        std::get<1>(search->second)(data);
+        auto isOnce = std::get<0>(search->second);
+        if(isOnce == 0){
+            auto r = unbind(event);
+            SPDLOG_TRACE(r);
+        }
     } else {
         SPDLOG_TRACE("Not found");
     }
@@ -138,22 +163,6 @@ void SslEchoClient::sendMessage(QString message)
    SPDLOG_TRACE("SslEchoClient::sendMessage");
    SPDLOG_TRACE("  ", message.toStdString());
 }
-
-bool SslEchoClient::bind(const json &event, std::function<void (nlohmann::json)> callback)
-{
-    auto r = callbacks.insert({event.dump(), callback});
-    return r.second;
-}
-
-bool SslEchoClient::unbind(const json &event)
-{
-  auto removed_elements = callbacks.erase(event.dump());
-  if(removed_elements>0){
-      return true;
-  }
-  return false;
-}
-
 
 void SslEchoClient::onTextMessageReceived(QString message)
 {

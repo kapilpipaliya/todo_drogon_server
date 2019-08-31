@@ -28,6 +28,7 @@ public:
     explicit SslEchoClient(const QUrl &url, QObject *parent = nullptr);
     void sendMessage(QString message);
     bool bind(const nlohmann::json &event, std::function<void(json)> callback);
+    bool bindOnce(const nlohmann::json &event, std::function<void(json)> callback);
     bool unbind(const nlohmann::json &event);
 
     QWebSocket m_webSocket;
@@ -46,7 +47,7 @@ private:
 
     short int intervals_from_last_pong;
 
-    std::map<std::string, std::function<void(json)>> callbacks;
+    std::map<std::string, std::tuple<int, std::function<void(json)>>> callbacks;
 
     void reconnect();
 
