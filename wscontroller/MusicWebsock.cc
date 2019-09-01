@@ -20,7 +20,7 @@ void MusicWebsock::handleNewMessage(const WebSocketConnectionPtr& wsConnPtr, std
      //std::chrono::seconds(10)
     globalCAF.self->request(globalCAF.mainactor, caf::infinite, run_atom::value,  MainActorType::MAdmin, wsConnPtr, std::move(message), type).receive(
         [&]() {
-            //if(!message.empty()) SPDLOG_TRACE("Output: {}", message.c_str());
+            //SPDLOG_TRACE("Output: {}", message.c_str());
             return;
         },
         [&](error& err) {

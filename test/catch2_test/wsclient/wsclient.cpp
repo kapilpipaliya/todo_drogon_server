@@ -121,7 +121,8 @@ void SslEchoClient::dispatch(json event, nlohmann::json data)
             SPDLOG_TRACE(r);
         }
     } else {
-        SPDLOG_TRACE("Not found");
+        SPDLOG_TRACE("Not found callback for:");
+        SPDLOG_TRACE(event.dump());
     }
 }
 void SslEchoClient::sendMessage(QString message)
