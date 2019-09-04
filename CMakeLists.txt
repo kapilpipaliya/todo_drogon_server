@@ -1,4 +1,17 @@
 cmake_minimum_required (VERSION 3.15)
+
+## This includes the Vita toolchain, must go before project definition
+# It is a convenience so you do not have to type
+# -DCMAKE_TOOLCHAIN_FILE=$VITASDK/share/vita.toolchain.cmake for cmake. It is
+# highly recommended that you include this block for all projects.
+if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+  if(DEFINED ENV{HOME})
+    set(CMAKE_TOOLCHAIN_FILE "$ENV{HOME}/k/cpp_stuff/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE PATH "toolchain file")
+  else()
+    message(FATAL_ERROR "$ENV{HOME}/k/cpp_stuff/vcpkg/scripts/buildsystems/vcpkg.cmake vcpkg path wrong!")
+  endif()
+endif()
+
 Project(jdragon)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -83,6 +96,8 @@ find_package(CAF COMPONENTS core io REQUIRED)
 # Process Abseil's CMake build system
 #add_subdirectory(abseil-cpp)
 
+find_package(GSL REQUIRED)
+include_directories("/home/kapili3/k/cpp_stuff/vcpkg/installed/x64-linux/include")
 
 AUX_SOURCE_DIRECTORY(./ SRC_DIR)
 AUX_SOURCE_DIRECTORY(wscontroller WSCTL_SRC)
