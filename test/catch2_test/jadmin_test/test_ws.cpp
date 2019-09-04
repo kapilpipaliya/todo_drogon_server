@@ -1,11 +1,5 @@
 #include <catch2/catch.hpp>
 
-#include "../src/base/websockettest.h"
-#include "../src/base/formatcheck.h"
-
-#include "../src/jadmin/authcheck.h"
-#include "../src/jadmin/login.h"
-#include "../src/jadmin/signup.h"
 #include "../src/jadmin/gettabledata.h"
 #include "../src/jadmin/savedelete.h"
 
