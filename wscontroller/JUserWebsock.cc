@@ -11,7 +11,6 @@
 
 #include "context/jusercontext.h"
 
-using namespace std::literals;
 using namespace  caf;
 
 void JUserWebsock::handleNewMessage(const WebSocketConnectionPtr& wsConnPtr, std::string &&message, const WebSocketMessageType &type)

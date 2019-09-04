@@ -11,7 +11,6 @@
 
 #include "context/madmincontext.h"
 
-using namespace std::literals;
 using namespace  caf;
 
 void MusicWebsock::handleNewMessage(const WebSocketConnectionPtr& wsConnPtr, std::string &&message, const WebSocketMessageType &type)

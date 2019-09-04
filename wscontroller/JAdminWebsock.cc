@@ -11,12 +11,11 @@
 
 #include "context/jadmincontext.h"
 
-using namespace std::literals;
 using namespace  caf;
 
 void EchoWebSocket::handleNewMessage(const WebSocketConnectionPtr &wsConnPtr, std::string &&message, const WebSocketMessageType &type)
 {
-    //SPDLOG_TRACE("Input: {}", message.c_str());
+    // SPDLOG_TRACE("Input: {}", message.c_str());
     // std::chrono::seconds(10)
     globalCAF.self->request(globalCAF.mainactor, caf::infinite, run_atom::value,  MainActorType::JAdmin, wsConnPtr, std::move(message), type).receive(
         [&]() {

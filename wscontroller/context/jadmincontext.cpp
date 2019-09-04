@@ -27,7 +27,7 @@ int JAdminContext::generateContext(const HttpRequestPtr &req, std::string accoun
                 return 0;
             }
         } catch (const std::exception &e) {
-           SPDLOG_TRACE(e.what());
+            SPDLOG_TRACE(e.what());
             return 0;
         }
     }
@@ -42,7 +42,7 @@ void JAdminContext::deleteAdminSession() {
             auto r = transPtr->execSqlSync(sqlSession, admin);
             admin = 0;
         } catch (const std::exception &e) {
-           SPDLOG_TRACE(e.what());
+            SPDLOG_TRACE(e.what());
         }
     }
 }
@@ -55,7 +55,7 @@ void JAdminContext::deleteuserSession() {
             auto r = transPtr->execSqlSync(sqlSession, user);
             user = 0 ;
         } catch (const std::exception &e) {
-           SPDLOG_TRACE(e.what());
+            SPDLOG_TRACE(e.what());
         }
     }
 }
@@ -110,7 +110,7 @@ json JAdminContext::adminLogin( json event, json args)
         if (r.size() == 1) {
 
             json j;
-            j["value"] = r[0]["id"].as<int>();
+            j["value"] = r[0]["id"].as<long>();
             auto sqlSession = "INSERT INTO user1.session (key, value) VALUES ($1, $2) returning id";
             // To serialize the json into a Json document, you should use a Json writer, or json::dump().
             //LOG_INFO << j.dump();
@@ -141,7 +141,7 @@ json JAdminContext::adminLogin( json event, json args)
         }
 
     } catch (const std::exception &e) {
-       SPDLOG_TRACE(e.what());
+        SPDLOG_TRACE(e.what());
         json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
 }
@@ -186,7 +186,7 @@ json JAdminContext::userRegister( json event, json args)
         //simpleJsonSaveResult(event, true, "Done");
         return userLogin(event, args);
     } catch (const std::exception &e) {
-       SPDLOG_TRACE(e.what());
+        SPDLOG_TRACE(e.what());
         json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
 }
@@ -231,7 +231,7 @@ json JAdminContext::userLogin( json event, json args)
         }
 
     } catch (const std::exception &e) {
-       SPDLOG_TRACE(e.what());
+        SPDLOG_TRACE(e.what());
         json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
 }
@@ -252,19 +252,19 @@ json JAdminContext::userId( json event, json )
             try
             {
                 auto root = json::parse(r[0][1].c_str());
-                 jresult[1]=root["value"];
+                jresult[1]=root["value"];
             }
             catch (json::parse_error& e)
             {
                 jresult[1]=0;
-               SPDLOG_TRACE("message: {}", e.what());
-               SPDLOG_TRACE("exception id: {}", e.id);
-               SPDLOG_TRACE("byte position of error:", e.byte);
+                SPDLOG_TRACE("message: {}", e.what());
+                SPDLOG_TRACE("exception id: {}", e.id);
+                SPDLOG_TRACE("byte position of error:", e.byte);
                 nlohmann::json j =  std::string("cant parse json reason: ") + e.what() ;
             }
             return jresult;
         } catch (const std::exception &e) {
-           SPDLOG_TRACE(e.what());
+            SPDLOG_TRACE(e.what());
             json jresult;
             jresult[0]=event;
             jresult[1]=0;
@@ -275,7 +275,7 @@ json JAdminContext::userId( json event, json )
 }
 json JAdminContext::userLogout( json event, json )
 {
-     deleteuserSession();
+    deleteuserSession();
     json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
 }
 json JAdminContext::isUserAuth( json event, json )
@@ -305,7 +305,7 @@ json JAdminContext::checkout( json event, json args)
             jresult[1]=root["value"];
             return jresult;
         } catch (const std::exception &e) {
-           SPDLOG_TRACE(e.what());
+            SPDLOG_TRACE(e.what());
             json jresult;
             jresult[0]=event;
             jresult[1]=0;
@@ -315,7 +315,7 @@ json JAdminContext::checkout( json event, json args)
         return Json::nullValue;
     }
 }
- // Save Image meta on server temporary
+// Save Image meta on server temporary
 json JAdminContext::saveImageMeta( json event, json args)
 {
     long c = admin;
@@ -327,7 +327,7 @@ json JAdminContext::saveImageMeta( json event, json args)
         auto r = transPtr->execSqlSync(strSql, c, args[0].dump(), args[1].get<std::string>(), args[2].get<long>(), args[3].get<std::string>());
         json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
-       SPDLOG_TRACE(e.what());
+        SPDLOG_TRACE(e.what());
         json ret; ret[0] = simpleJsonSaveResult(event, false, "Error"); return ret;
     }
 }
@@ -377,7 +377,7 @@ json JAdminContext::thumb_data( json event, json args)
         return json(Json::nullValue);
     } catch (const std::exception &e) {
 
-       SPDLOG_TRACE(e.what());
+        SPDLOG_TRACE(e.what());
         //simpleJsonSaveResult(event, false, e.what());
         return json(Json::nullValue);
     }
@@ -446,7 +446,7 @@ json JAdminContext::save_setting_attachment(json event, std::string &message)
 
     } catch (const std::exception &e) {
 
-       SPDLOG_TRACE(e.what());
+        SPDLOG_TRACE(e.what());
         return Json::nullValue;
     }
 

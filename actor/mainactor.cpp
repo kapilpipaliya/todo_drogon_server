@@ -9,7 +9,6 @@
 
 #include "juseractor.h"
 #include "jadminactor.h"
-#include "museractor.h"
 #include "madminactor.h"
 
 #include "caf.h"
@@ -112,20 +111,6 @@ void MainActor::passToUser(MainActorType actortype, const WebSocketConnectionPtr
         auto it = actorMap.find(wsConnPtr) ;
         if (it == actorMap.end()) {
             caf::actor userActor = spawn<MAdminActor>();
-            monitor(userActor); // this will send message when it down
-            request(userActor, caf::infinite, wsConnPtr, std::move(message), type);
-            actorMap.insert({wsConnPtr, userActor});
-        } else {
-            caf::actor userActor = it->second;
-            request(userActor, caf::infinite, wsConnPtr, std::move(message), type);
-        }
-
-        break;
-    }
-    case MainActorType::MUser:{
-        auto it = actorMap.find(wsConnPtr) ;
-        if (it == actorMap.end()) {
-            caf::actor userActor = spawn<MUserActor>();
             monitor(userActor); // this will send message when it down
             request(userActor, caf::infinite, wsConnPtr, std::move(message), type);
             actorMap.insert({wsConnPtr, userActor});
