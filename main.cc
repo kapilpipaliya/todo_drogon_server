@@ -1,16 +1,9 @@
 #include <drogon/drogon.h>
 #include "spdlogfix.h"
-#define GSL_THROW_ON_CONTRACT_VIOLATION
-#include <gsl/gsl>
 
 int main()
 {
     spdlog::set_pattern("[source %s] [function %!] [line %#] %v");
-    try {
-        Expects(-8 > 0);
-    } catch(const std::exception& e) {
-        SPDLOG_TRACE( "Main Actor Exception Error : {}", e.what());
-    }
     //auto console = spdlog::stdout_logger_mt("console");
     //spdlog::set_default_logger(console);
 
