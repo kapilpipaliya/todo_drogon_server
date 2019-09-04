@@ -6,65 +6,51 @@
 
 JUserContext::JUserContext(const HttpRequestPtr &req, const WebSocketConnectionPtr &wsConnPtr_): ContextBase(req, wsConnPtr_)
 {
-    admin = generateContext(req,  "admin");
-    user = generateContext(req,  "user");
+    auto truple = generateContext(req, "user");
+    current_session_id = std::get<0>(truple);
+    user_id = std::get<1>(truple);
+    if(current_session_id) setUser();
 }
-int JUserContext::generateContext(const HttpRequestPtr &req, std::string account_type) {
+std::tuple<long, long>  JUserContext::generateContext(const HttpRequestPtr &req, std::string account_type) {
     auto c = req->getCookie(account_type);
     if (c.empty()) {
-        return 0;
+        return {0, 0};
     } else {
+        auto session_id = stol(c);
         auto sqlSession = "SELECT * FROM user1.session where id = $1";
         try {
             auto clientPtr = drogon::app().getDbClient("sce");
             auto transPtr = clientPtr->newTransaction();
-            auto r = transPtr->execSqlSync(sqlSession, c);
+            auto r = transPtr->execSqlSync(sqlSession, session_id);
             if (r.size() != 0) {
-                auto i = r[0]["id"].as<int>();
-                return i;
+                return {r[0]["id"].as<long>(), r[0]["user_id"].as<long>()};
             } else {
-                return 0;
+                return {0, 0};
             }
         } catch (const std::exception &e) {
-           SPDLOG_TRACE(e.what());
-            return 0;
+            SPDLOG_TRACE(e.what());
+            return {0, 0};
         }
     }
 }
 
-void JUserContext::deleteAdminSession() {
-    if (admin != 0) {
-        auto sqlSession = "DELETE FROM user1.session where id = $1";
-        try {
-            auto clientPtr = drogon::app().getDbClient("sce");
-            auto transPtr = clientPtr->newTransaction();
-            auto r = transPtr->execSqlSync(sqlSession, admin);
-            admin = 0;
-        } catch (const std::exception &e) {
-           SPDLOG_TRACE(e.what());
-        }
-    }
-}
-void JUserContext::deleteuserSession() {
-    if (user != 0) {
-        auto sqlSession = "DELETE FROM user1.session where id = $1";
-        try {
-            auto clientPtr = drogon::app().getDbClient("sce");
-            auto transPtr = clientPtr->newTransaction();
-            auto r = transPtr->execSqlSync(sqlSession, user);
-            user = 0 ;
-        } catch (const std::exception &e) {
-           SPDLOG_TRACE(e.what());
-        }
-    }
-}
-
-nlohmann::json JUserContext::handleEvent(nlohmann::json event, int next, nlohmann::json args)
+void JUserContext::setUser()
 {
-    return Json::nullValue;
+    if(!user_id) return;
+
+    try {
+        auto sqlSession = "SELECT * FROM user1.user where id = $1";
+        auto clientPtr = drogon::app().getDbClient("sce");
+        auto transPtr = clientPtr->newTransaction();
+        auto r = transPtr->execSqlSync(sqlSession, user_id);
+        if (r.size() != 0) {
+            user.id= r[0]["id"].as<long>();
+            user.type = r[0]["type"].as<std::string>();
+        }
+    } catch (const std::exception &e) {
+       SPDLOG_TRACE(e.what());
+    }
 }
 
-nlohmann::json JUserContext::handleBinaryEvent(nlohmann::json event, int next, std::string &message)
-{
-    return Json::nullValue;
-}
+
+

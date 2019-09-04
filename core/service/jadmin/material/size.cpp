@@ -1,8 +1,7 @@
 #include "size.h"
-#include "../../../strfns.h"
-#include "../../../jsonfns.h"
+using namespace  jadmin;
 
-Size::Size()
+Size::Size(const JAdminContextPtr &context_): BaseService(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("material", "size", "s");
 

@@ -1,10 +1,11 @@
 #ifndef PRODUCT_H
 #define PRODUCT_H
 #include "../baseservice.h"
+namespace jadmin {
 class Product : public BaseService
 {
 public:
-    Product();
+    Product(const JAdminContextPtr &);
     json handleEvent(json event, int next, json args);
     json del(json event, json args);
 private:
@@ -16,4 +17,5 @@ private:
     json get_product_cs_price_data( json event, json args);
     json get_product_category_tree_data( json event, json args);
 };
+}
 #endif // PRODUCT_H

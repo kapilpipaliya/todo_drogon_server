@@ -1,8 +1,8 @@
 #include "metal.h"
 #include "../../../strfns.h"
-#include "../../../jsonfns.h"
+using namespace  jadmin;
 
-Metal::Metal()
+Metal::Metal(const JAdminContextPtr &context_): BaseService(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("material", "metal", "m");
 

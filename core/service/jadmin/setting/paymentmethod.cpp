@@ -1,9 +1,8 @@
 #include "paymentmethod.h"
 #include <boost/filesystem.hpp>
-#include "../../../strfns.h"
-#include "../../../jsonfns.h"
+using namespace  jadmin;
 
-PaymentMethod::PaymentMethod()
+PaymentMethod::PaymentMethod(const JAdminContextPtr &context_): BaseService(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("setting", "payment_method", "t");
 

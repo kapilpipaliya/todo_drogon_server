@@ -64,7 +64,7 @@ char **argv;
 int i = 0;
 QCoreApplication a(i, argv);
 auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/jadmin")));
-json event = json::array({"legacy","auth","is_admin_auth",0} );
+json event = json::array({"auth","is_admin_auth",0} );
 json payload = json::array({{event, {{}}}});
 //    json j = R"( [ [["user","is_logged_in",0],[[]]]] )"_json;
 SPDLOG_TRACE(payload.dump());
@@ -89,15 +89,15 @@ TEST_CASE("login on backend with username and password","[WSTest]") {
     int i = 0;
     QCoreApplication a(i, argv);
     auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/jadmin")));
-   json event = json::array({"legacy","auth","admin_login",0} );
-    json payload = json::array({{event, json::object({{"email", "kapil.pipaliya@yahoo.com"}, {"pass", "3434"}}) }});
+   json event = json::array({"auth","admin_login",0} );
+    json payload = json::array({{event, json::object({{"user", "kapil.pipaliya@yahoo.com"}, {"pass", "3434"}}) }});
     SPDLOG_TRACE(payload.dump());
     bool r0 =false;
     auto b = w2.bindOnce(event, [&r0](json r){
         REQUIRE(r[0]["ok"] == true);
         r0 = true;
     });
-    json event2 = json::array({"legacy","auth","set_cookie",0} );
+    json event2 = json::array({"auth","set_cookie",0} );
     bool r1 =false;
     auto b1 = w2.bindOnce(event2, [&r1](json r){
     REQUIRE(r[0]["admin"].is_number() == true);

@@ -1,8 +1,8 @@
 #include "post.h"
 #include "../../../strfns.h"
-#include "../../../jsonfns.h"
+using namespace  jadmin;
 
-Post1::Post1()
+Post1::Post1(const JAdminContextPtr &context_): BaseService(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("post", "post", "post");
 

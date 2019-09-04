@@ -1,7 +1,6 @@
 #include "account.h"
-#include "../../../strfns.h"
-#include "../../../jsonfns.h"
-Account::Account()
+using namespace  jadmin;
+Account::Account(const JAdminContextPtr &context_): BaseService(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("account", "account", "a");
 }

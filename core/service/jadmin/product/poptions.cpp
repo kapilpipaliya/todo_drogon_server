@@ -1,8 +1,7 @@
 #include "poptions.h"
-#include "../../../strfns.h"
-#include "../../../jsonfns.h"
+using namespace  jadmin;
 
-POption::POption()
+POption::POption(const JAdminContextPtr &context_): BaseService(context_)
 {
 
     t.m_table = sqlb::ObjectIdentifier("product", "option", "o");

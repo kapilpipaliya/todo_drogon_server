@@ -1,8 +1,8 @@
 #include "tag.h"
 #include "../../../strfns.h"
-#include "../../../jsonfns.h"
+using namespace  jadmin;
 
-Tag::Tag()
+Tag::Tag(const JAdminContextPtr &context_): BaseService(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("post", "tag", "t");
 

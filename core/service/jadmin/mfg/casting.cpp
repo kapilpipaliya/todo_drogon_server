@@ -1,8 +1,7 @@
 #include "casting.h"
-#include "../../../strfns.h"
-#include "../../../jsonfns.h"
+using namespace  jadmin;
 
-Casting::Casting()
+Casting::Casting(const JAdminContextPtr &context_): BaseService(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("mfg", "casting", "m");
 

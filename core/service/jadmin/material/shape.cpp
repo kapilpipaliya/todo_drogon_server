@@ -1,8 +1,7 @@
 #include "shape.h"
-#include "../../../strfns.h"
-#include "../../../jsonfns.h"
+using namespace  jadmin;
 
-Shape::Shape()
+Shape::Shape(const JAdminContextPtr &context_): BaseService(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("material", "shape", "gs");
 

@@ -1,8 +1,7 @@
 #include "node.h"
-#include "../../../strfns.h"
-#include "../../../jsonfns.h"
+using namespace  jadmin;
 
-Node::Node()
+Node::Node(const JAdminContextPtr &context_): BaseService(context_)
 {
 
     t.m_table = sqlb::ObjectIdentifier("menu", "node", "m");

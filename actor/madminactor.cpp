@@ -52,7 +52,6 @@
 
 MAdminActor::MAdminActor(caf::actor_config &cfg) : caf::event_based_actor(cfg)
 {
-
 }
 
 caf::behavior MAdminActor::make_behavior()
@@ -84,7 +83,6 @@ nlohmann::json MAdminActor::handleTextMessage(const WebSocketConnectionPtr &wsCo
         if (!in.is_array()) {
             return json::array();
         }
-
 
         if constexpr (false){
         }

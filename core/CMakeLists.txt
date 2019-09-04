@@ -51,7 +51,9 @@ actor/validation.cpp
 
     strfns.cpp
 )
+AUX_SOURCE_DIRECTORY(./service JEWEL_SRC)
 AUX_SOURCE_DIRECTORY(./service/jadmin JEWEL_SRC)
+AUX_SOURCE_DIRECTORY(./service/jadmin/class JEWEL_SRC)
 AUX_SOURCE_DIRECTORY(./service/jadmin/auth JEWEL_SRC)
 AUX_SOURCE_DIRECTORY(./service/jadmin/post JEWEL_SRC)
 AUX_SOURCE_DIRECTORY(./service/jadmin/account JEWEL_SRC)

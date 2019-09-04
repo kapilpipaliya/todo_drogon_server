@@ -1,9 +1,9 @@
 #include "product.h"
 #include <boost/filesystem.hpp>
 #include "../../../strfns.h"
-#include "../../../jsonfns.h"
+using namespace  jadmin;
 
-Product::Product()
+Product::Product(const JAdminContextPtr &context_): BaseService(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("post", "post", "post");
 

@@ -63,17 +63,12 @@
 #include "core/service/jadmin/setting/setting.h"
 #include "core/service/jadmin/setting/support.h"
 
-#define REGISTER(s, T)\
-    else if (in[0][1].get<std::string>()==s){\
-    T p{};\
-    auto r = p.handleEvent(in[0], 2, in[1]);\
-    if(!r.is_null())\
-    return r;\
-    }
+#include "core/service/jadmin/class/auth.h"
+
+using namespace jadmin;
 
 JAdminActor::JAdminActor(caf::actor_config &cfg) : caf::event_based_actor(cfg)
 {
-
 }
 
 caf::behavior JAdminActor::make_behavior()
@@ -90,81 +85,82 @@ caf::behavior JAdminActor::make_behavior()
     };
 }
 
+#define REGISTER(s, T)\
+    else if (in[0][0].get<std::string>()==s){\
+    auto contx = wsConnPtr->getContext<JAdminContext>();\
+    T p{contx};\
+    auto r = p.handleEvent(in[0], 1, in[1]);\
+    if(!r.is_null())\
+    return r;\
+    }
+
 json JAdminActor::handleTextMessage(const WebSocketConnectionPtr &wsConnPtr,  json in)
 {
     if (!in.is_array()) {
         return json::array();
     }
 
-    if (in[0][0].get<std::string>() == "legacy"){
-        if constexpr (false){
-        }
-        // not recommand this now, use seperate service to handle it.:
-        else if (in[0][1].get<std::string>()=="auth"){
-            auto contx = wsConnPtr->getContext<JAdminContext>();
-            auto r = contx->handleEvent(in[0], 2, in[1]);
-            if(!r.is_null())
-            return r;
-        }
-        REGISTER("account_type", AccountType)
-        REGISTER("account", Account)
-        REGISTER("account_heading", AccountHeading)
-        REGISTER("journal_type", JournalType)
-        REGISTER("txn", Txn)
-        REGISTER("priority", Priority)
+    if constexpr (false){
+    }
+    REGISTER("auth", Auth)
+    REGISTER("account_type", AccountType)
+    REGISTER("account", Account)
+    REGISTER("account_heading", AccountHeading)
+    REGISTER("journal_type", JournalType)
+    REGISTER("txn", Txn)
+    REGISTER("priority", Priority)
 
-        REGISTER("node", Node)
-        REGISTER("role", Role)
-        REGISTER("task", Task)
+    REGISTER("node", Node)
+    REGISTER("role", Role)
+    REGISTER("task", Task)
 
-        REGISTER("department_type", DepartmentType)
-        REGISTER("department", Department)
-        REGISTER("casting", Casting)
-        REGISTER("wax_setting", WaxSetting)
-        REGISTER("metal_issue", MetalIssue)
-        REGISTER("MFG_txn", MfgTxn)
-        REGISTER("refining", Refining)
-        REGISTER("m_transfer", MTransfer)
+    REGISTER("department_type", DepartmentType)
+    REGISTER("department", Department)
+    REGISTER("casting", Casting)
+    REGISTER("wax_setting", WaxSetting)
+    REGISTER("metal_issue", MetalIssue)
+    REGISTER("MFG_txn", MfgTxn)
+    REGISTER("refining", Refining)
+    REGISTER("m_transfer", MTransfer)
 
-        REGISTER("metal", Metal)
-        REGISTER("purity", Purity)
-        REGISTER("tone", Tone)
-        REGISTER("accessory", Accessory)
+    REGISTER("metal", Metal)
+    REGISTER("purity", Purity)
+    REGISTER("tone", Tone)
+    REGISTER("accessory", Accessory)
 
-        REGISTER("clarity", Clarity)
-        REGISTER("shape", Shape)
-        REGISTER("d_color", DColor)
-        REGISTER("cs_color", CSColor)
-        REGISTER("cs_type", CSType)
-        REGISTER("size", Size) // CRUD not required
-        REGISTER("d_size", DSize)
-        REGISTER("cs_size", CSSize)
+    REGISTER("clarity", Clarity)
+    REGISTER("shape", Shape)
+    REGISTER("d_color", DColor)
+    REGISTER("cs_color", CSColor)
+    REGISTER("cs_type", CSType)
+    REGISTER("size", Size) // CRUD not required
+    REGISTER("d_size", DSize)
+    REGISTER("cs_size", CSSize)
 
-        REGISTER("address_type", AddressType)
-        REGISTER("contact_type", ContactType)
-        REGISTER("entity_type", EntityType)
-        REGISTER("entity", Entity)
+    REGISTER("address_type", AddressType)
+    REGISTER("contact_type", ContactType)
+    REGISTER("entity_type", EntityType)
+    REGISTER("entity", Entity)
 
-        REGISTER("setting", Setting)
-        REGISTER("currency", Currency)
-        REGISTER("log", Log)
-        REGISTER("support", Support)
-        REGISTER("image_collection", ImageCollection)
-        REGISTER("image", Image)
-        REGISTER("payment_method", PaymentMethod)
+    REGISTER("setting", Setting)
+    REGISTER("currency", Currency)
+    REGISTER("log", Log)
+    REGISTER("support", Support)
+    REGISTER("image_collection", ImageCollection)
+    REGISTER("image", Image)
+    REGISTER("payment_method", PaymentMethod)
 
-        REGISTER("option", POption) //CRUD Not required
-        REGISTER("product", Product)
-        REGISTER("post", Post1)
-        REGISTER("category", PCategory)
-        REGISTER("tag", Tag)
-        REGISTER("shipping_class", PShippingClass)
-        REGISTER("setting_type", SettingType)
-        REGISTER("certified_by", CertifiedBy)
-        REGISTER("policy", Policy)
-        else {
-            return json::array();
-        }
+    REGISTER("option", POption) //CRUD Not required
+    REGISTER("product", Product)
+    REGISTER("post", Post1)
+    REGISTER("category", PCategory)
+    REGISTER("tag", Tag)
+    REGISTER("shipping_class", PShippingClass)
+    REGISTER("setting_type", SettingType)
+    REGISTER("certified_by", CertifiedBy)
+    REGISTER("policy", Policy)
+    else {
+        return json::array();
     }
     return json::array();
 }
@@ -172,7 +168,7 @@ json JAdminActor::handleBinaryMessage(const WebSocketConnectionPtr &wsConnPtr, s
 {
     json event;
     try {
-        long c = wsConnPtr->getContext<JAdminContext>()->admin;
+        long c = wsConnPtr->getContext<JAdminContext>()->current_session_id;
         auto sqlSession = "SELECT event FROM user1.temp_image where session_id = $1";
         auto clientPtr = drogon::app().getDbClient("sce");
         auto r = clientPtr->execSqlSync(sqlSession, c);
@@ -181,27 +177,26 @@ json JAdminActor::handleBinaryMessage(const WebSocketConnectionPtr &wsConnPtr, s
             {
                 event = json::parse(r[0]["event"].c_str());
                 // p.handleBinaryEvent creates new transaction.
-                if (event[0]=="legacy"){
-                    if (event[1] == "image") {
+                    if (event[0] == "image") {
                         auto contx = wsConnPtr->getContext<JAdminContext>();
-                        auto res = contx->handleBinaryEvent(event, 2, message);
+                        jadmin::Auth p{contx};
+                        auto res = p.handleBinaryEvent(event, 1, message);
                         if(!res.is_null()){
                             return res;
                         }
                     }
-                }
             }
             catch (json::parse_error& e)
             {
-               SPDLOG_TRACE("message: {}", e.what());
-               SPDLOG_TRACE("exception id: {}", e.id);
-               SPDLOG_TRACE("byte position of error:", e.byte);
+                SPDLOG_TRACE("message: {}", e.what());
+                SPDLOG_TRACE("exception id: {}", e.id);
+                SPDLOG_TRACE("byte position of error:", e.byte);
                 nlohmann::json j =  std::string("cant parse json reason: ") + e.what() + event.dump();
                 WsFns::sendJson(wsConnPtr, j);
             }
         }
     } catch (const std::exception &e) {
-       SPDLOG_TRACE(e.what());
+        SPDLOG_TRACE(e.what());
         json jresult;
         jresult[0] = event;
         jresult[1] = e.what();

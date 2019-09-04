@@ -1,8 +1,7 @@
 #include "imagecollection.h"
-#include "../../../strfns.h"
-#include "../../../jsonfns.h"
+using namespace  jadmin;
 
-ImageCollection::ImageCollection()
+ImageCollection::ImageCollection(const JAdminContextPtr &context_): BaseService(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("setting", "image_collection", "a");
 

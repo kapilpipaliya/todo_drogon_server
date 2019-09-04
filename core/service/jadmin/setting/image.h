@@ -1,10 +1,11 @@
 #ifndef IMAGE_H
 #define IMAGE_H
 #include "../baseservice.h"
+namespace jadmin {
 class Image : public BaseService
 {
 public:
-    Image();
+    Image(const JAdminContextPtr &);
     json handleEvent(json event, int next, json args);
 
 private:
@@ -13,4 +14,5 @@ private:
     json upd(json event, json args);
 
 };
+}
 #endif // IMAGE_H

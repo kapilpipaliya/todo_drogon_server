@@ -23,10 +23,10 @@ void GetTableData::connectToServer()
                                    // a JSON value
                                    auto in = R"(
                                             [
-                                            [["legacy","auth","admin_login",0],{{"email":"kapil.pipaliya@yahoo.com","pass":"3434"}}],
-                                            [["legacy","auth","is_admin_auth",0],[[]]],
-                                            [["legacy","{0}","header",1000],{{}}],
-                                            [["legacy","{1}","data",1000],[[],[],[0]]]
+                                            [["auth","admin_login",0],{{"user":"kapil.pipaliya@yahoo.com","pass":"3434"}}],
+                                            [["auth","is_admin_auth",0],[[]]],
+                                            [["{0}","header",1000],{{}}],
+                                            [["{1}","data",1000],[[],[],[0]]]
                                             ]
                                             )";
                                    auto s = format(in, table, table);
@@ -52,40 +52,36 @@ void GetTableData::setMessageHandler()
             SPDLOG_TRACE(j.dump());
             // event
             auto e = j[0][0];
-            REQUIRE(e[0] == "legacy");
-            REQUIRE(e[1] == "auth");
-            REQUIRE(e[2] == "admin_login");
-            REQUIRE(e[3] == 0);
+            REQUIRE(e[0] == "auth");
+            REQUIRE(e[1] == "admin_login");
+            REQUIRE(e[2] == 0);
 
             REQUIRE(j[0][1]["ok"] == true);
 
             // cookie:
             auto c = j[1][0];
-            REQUIRE(c[0] == "legacy");
-            REQUIRE(c[1] == "auth");
-            REQUIRE(c[2] == "set_cookie");
-            REQUIRE(c[3] == 0);
+            REQUIRE(c[0] == "auth");
+            REQUIRE(c[1] == "set_cookie");
+            REQUIRE(c[2] == 0);
 
-            REQUIRE(j[1][1]["admin"].is_number() == true);
+            REQUIRE(j[1][1].is_number() == true);
 
             // is_admin_auth == true
             REQUIRE(j[2][1] == true);
 
             // header data:
             auto h = j[3][0];
-            REQUIRE(h[0] == "legacy");
-            REQUIRE(h[1] == table);
-            REQUIRE(h[2] == "header");
-            REQUIRE(h[3] == 1000);
+            REQUIRE(h[0] == table);
+            REQUIRE(h[1] == "header");
+            REQUIRE(h[2] == 1000);
 
             REQUIRE(j[3][1].size() == 6);
 
             // table data:
             auto t = j[4][0];
-            REQUIRE(t[0] == "legacy");
-            REQUIRE(t[1] == table);
-            REQUIRE(t[2] == "data");
-            REQUIRE(t[3] == 1000);
+            REQUIRE(t[0] == table);
+            REQUIRE(t[1] == "data");
+            REQUIRE(t[2] == 1000);
 
             REQUIRE(j[4][1].size() >= 0);
 

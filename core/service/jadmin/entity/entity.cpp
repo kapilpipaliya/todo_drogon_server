@@ -1,10 +1,9 @@
 #include "entity.h"
-#include "../../../strfns.h"
-#include "../../../jsonfns.h"
+using namespace  jadmin;
 
 
 typedef sqlb::SelectedColumn S;
-Entity::Entity()
+Entity::Entity(const JAdminContextPtr &context_): BaseService(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("entity", "entity", "e");
 

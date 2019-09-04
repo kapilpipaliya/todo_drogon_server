@@ -1,9 +1,7 @@
 #include "metalissue.h"
-#include "../../../strfns.h"
-#include "../../../jsonfns.h"
+using namespace  jadmin;
 
-
-MetalIssue::MetalIssue()
+MetalIssue::MetalIssue(const JAdminContextPtr &context_): BaseService(context_)
 {
 
     t.m_table = sqlb::ObjectIdentifier("mfg", "metal_issue", "m");

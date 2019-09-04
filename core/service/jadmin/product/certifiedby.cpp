@@ -1,8 +1,7 @@
 #include "certifiedby.h"
-#include "../../../strfns.h"
-#include "../../../jsonfns.h"
+using namespace  jadmin;
 
-CertifiedBy::CertifiedBy()
+CertifiedBy::CertifiedBy(const JAdminContextPtr &context_): BaseService(context_)
 {
 
     t.m_table = sqlb::ObjectIdentifier("product", "certified_by", "t");

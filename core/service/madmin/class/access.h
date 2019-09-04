@@ -1,6 +1,4 @@
-#ifndef ACCESS_H
-#define ACCESS_H
-
+#pragma once
 
 #include "../baseservice.h"
 namespace madmin {
@@ -11,4 +9,3 @@ public:
     void setupTable() override;
 };
 }
-#endif // ACCESS_H

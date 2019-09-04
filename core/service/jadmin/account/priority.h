@@ -1,13 +1,15 @@
 #ifndef PRIORITY_H
 #define PRIORITY_H
 #include "../baseservice.h"
+namespace jadmin {
 class Priority : public BaseService
 {
 public:
-    Priority();
+    Priority(const JAdminContextPtr &);
 private:
     void setupTable();
     json ins(json event, json args);
     json upd(json event, json args);
 };
+}
 #endif // PRIORITY_H

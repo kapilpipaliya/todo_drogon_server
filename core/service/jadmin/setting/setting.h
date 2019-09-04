@@ -2,11 +2,11 @@
 #define SETTING_H
 
 #include "../baseservice.h"
-
+namespace jadmin {
 class Setting : public BaseService
 {
 public:
-    Setting();
+    Setting(const JAdminContextPtr &);
 
    json handleEvent(json event, int next, json args);
 
@@ -17,4 +17,5 @@ private:
     json save(json event, json args);
     json del( json event, json args);
 };
+}
 #endif // SETTING_H

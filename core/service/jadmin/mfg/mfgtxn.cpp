@@ -1,8 +1,7 @@
 #include "mfgtxn.h"
-#include "../../../strfns.h"
-#include "../../../jsonfns.h"
+using namespace  jadmin;
 
-MfgTxn::MfgTxn()
+MfgTxn::MfgTxn(const JAdminContextPtr &context_): BaseService(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("mfg", "mfg_txn", "m");
 

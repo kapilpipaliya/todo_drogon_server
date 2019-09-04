@@ -1,8 +1,7 @@
 #include "departmenttype.h"
-#include "../../../strfns.h"
-#include "../../../jsonfns.h"
+using namespace  jadmin;
 
-DepartmentType::DepartmentType()
+DepartmentType::DepartmentType(const JAdminContextPtr &context_): BaseService(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("mfg", "department_type", "m");
 

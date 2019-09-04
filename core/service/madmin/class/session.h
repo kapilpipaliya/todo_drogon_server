@@ -1,6 +1,4 @@
-#ifndef SESSION_H
-#define SESSION_H
-
+#pragma once
 
 #include "../baseservice.h"
 /**
@@ -165,4 +163,3 @@ public:
 
 };
 }
-#endif // SESSION_H

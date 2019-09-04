@@ -1,8 +1,7 @@
 #include "cscolor.h"
-#include "../../../strfns.h"
-#include "../../../jsonfns.h"
+using namespace  jadmin;
 
-CSColor::CSColor()
+CSColor::CSColor(const JAdminContextPtr &context_): BaseService(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("material", "cs_color", "gt");
 

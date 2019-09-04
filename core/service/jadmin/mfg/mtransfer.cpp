@@ -1,8 +1,7 @@
 #include "mtransfer.h"
-#include "../../../strfns.h"
-#include "../../../jsonfns.h"
+using namespace  jadmin;
 
-MTransfer::MTransfer()
+MTransfer::MTransfer(const JAdminContextPtr &context_): BaseService(context_)
 {
 
     t.m_table = sqlb::ObjectIdentifier("mfg", "m_transfer", "m");

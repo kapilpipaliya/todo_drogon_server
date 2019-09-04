@@ -1,8 +1,7 @@
 #include "priority.h"
-#include "../../../strfns.h"
-#include "../../../jsonfns.h"
+using namespace  jadmin;
 
-Priority::Priority()
+Priority::Priority(const JAdminContextPtr &context_): BaseService(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("account", "priority", "a");
 

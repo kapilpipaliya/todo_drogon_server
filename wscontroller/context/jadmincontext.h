@@ -1,5 +1,4 @@
-#ifndef JADMIN_CONTEXT_H
-#define JADMIN_CONTEXT_H
+#pragma once
 #include "contextbase.h"
 
 #include  "json.hpp"
@@ -7,37 +6,23 @@
 using namespace drogon;
 using nlohmann:: json;
 
+
 class JAdminContext : public ContextBase
 {
+struct ContextUser {
+    long id{0};
+    std::string type{""};
+};
 public:
     JAdminContext(const HttpRequestPtr &req, const WebSocketConnectionPtr &wsConnPtr_);
 
-    long user = 0;
-    long admin = 0;
+    long current_session_id = 0;
+    long user_id = 0;
 
-    int generateContext(const HttpRequestPtr &req, std::string account_type);
-    void deleteAdminSession();
-    void deleteuserSession();
+    std::tuple<long, long> generateContext(const HttpRequestPtr &req, std::string account_type);
+    void setUser();
 
-    json handleEvent(json event, unsigned long next, json args);
-    json handleBinaryEvent(json event, int next, std::string &message);
+    ContextUser user;
 
 private:
-    json adminLogin(json event, json args);
-    json adminLogout(json event, json args);
-    json isAdminAuth(json event, json args);
-
-    json userRegister(json event, json args);
-    json userLogin(json event, json args);
-    json userId(json event, json args);
-    json userLogout(json event, json args);
-    json isUserAuth(json event, json args);
-    json checkout(json event, json args);
-    json saveImageMeta(json event, json args);
-
-    json thumb_data( json event, json args);
-    //Binary functin:
-    json save_setting_attachment(json event, std::string &message);
-};
-
-#endif // JADMIN_CONTEXT_H
+ };

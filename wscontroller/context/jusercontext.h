@@ -1,24 +1,24 @@
-#ifndef JUSER_CONTEXT_H
-#define JUSER_CONTEXT_H
+#pragma once
 #include "contextbase.h"
 
 #include <drogon/WebSocketController.h>
 using namespace drogon;
 
+
 class JUserContext : public ContextBase
 {
+struct ContextUser {
+    long id{0};
+    std::string type{""};
+};
 public:
     JUserContext(const HttpRequestPtr &req, const WebSocketConnectionPtr &wsConnPtr_);
 
-    long user = 0;
-    long admin = 0;
+    long current_session_id = 0;
+    long user_id = 0;
 
-    int generateContext(const HttpRequestPtr &req, std::string account_type);
-    void deleteAdminSession();
-    void deleteuserSession();
+     std::tuple<long, long>  generateContext(const HttpRequestPtr &req, std::string account_type);
+     void setUser();
 
-    json handleEvent(json event, int next, json args);
-    json handleBinaryEvent(json event, int next, std::string &message);
+     ContextUser user;
 };
-
-#endif // JUSER_CONTEXT_H

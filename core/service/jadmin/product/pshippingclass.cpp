@@ -1,8 +1,7 @@
 #include "pshippingclass.h"
-#include "../../../strfns.h"
-#include "../../../jsonfns.h"
+using namespace  jadmin;
 
-PShippingClass::PShippingClass()
+PShippingClass::PShippingClass(const JAdminContextPtr &context_): BaseService(context_)
 {
 
     t.m_table = sqlb::ObjectIdentifier("product", "shipping_class", "t");

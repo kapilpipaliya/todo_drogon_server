@@ -1,7 +1,6 @@
 #include "accountheading.h"
-#include "../../../strfns.h"
-#include "../../../jsonfns.h"
-AccountHeading::AccountHeading()
+using namespace  jadmin;
+AccountHeading::AccountHeading(const JAdminContextPtr &context_): BaseService(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("account", "account_heading", "a");
 }

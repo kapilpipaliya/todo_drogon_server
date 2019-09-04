@@ -1,8 +1,7 @@
 #include "currency.h"
-#include "../../../strfns.h"
-#include "../../../jsonfns.h"
+using namespace  jadmin;
 
-Currency::Currency()
+Currency::Currency(const JAdminContextPtr &context_): BaseService(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("setting", "currency", "c");
 

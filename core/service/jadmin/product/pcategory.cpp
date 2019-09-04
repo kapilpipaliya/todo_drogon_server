@@ -1,8 +1,7 @@
 #include "pcategory.h"
-#include "../../../strfns.h"
-#include "../../../jsonfns.h"
+using namespace  jadmin;
 
-PCategory::PCategory()
+PCategory::PCategory(const JAdminContextPtr &context_): BaseService(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("product", "category", "c");
 }

@@ -1,8 +1,7 @@
 #include "setting.h"
-#include "../../../strfns.h"
-#include "../../../jsonfns.h"
+using namespace  jadmin;
 
-Setting::Setting()
+Setting::Setting(const JAdminContextPtr &context_): BaseService(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("setting", "setting", "gs");
 

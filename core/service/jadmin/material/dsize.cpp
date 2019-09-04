@@ -1,8 +1,8 @@
 #include "dsize.h"
 #include "../../../strfns.h"
-#include "../../../jsonfns.h"
+using namespace  jadmin;
 
-DSize::DSize()
+DSize::DSize(const JAdminContextPtr &context_): BaseService(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("material", "diamond_size_meta", "sm");
 
