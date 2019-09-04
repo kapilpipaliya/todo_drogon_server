@@ -44,7 +44,7 @@ nlohmann::json UI::getMenuData()
             json::array({"Dashboard", "music/dashboard"}),
             json::array({"Admins","music/users"}),
             json::array({"Catalogs","music/catalogs"}),
-            json::array({"Songs","music/browse"}),
+            json::array({"Music","music/browse"}),
 //            json::array({"Profile", "music/profile"}),
             json::array({"Password Change", "music/update_password"}),
             json::array({"Logout", "music/logout"})

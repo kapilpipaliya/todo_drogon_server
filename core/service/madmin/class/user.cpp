@@ -23,20 +23,20 @@ void User::setupTable()
 
     //m_query.setRowIdColumn("id");
     t.m_query.selectedColumns() = {
-        S({"Id", "id", "", "e", PG_TYPES::INT8}),
+        S({"ID No", "id", "", "e", PG_TYPES::INT8}),
         S({"Account Type", "type", "", "e", PG_TYPES::ENUM}),
         //S({"no", "no", "", "e", PG_TYPES::TEXT}),
         //S({"sequence_id", "sequence_id", "", "e", PG_TYPES::INT8, false}),
-        S({"Parent", "parent_id", "", "e", PG_TYPES::INT8, true, 1, 1 }),
-        S({"username", "username", "", "p", PG_TYPES::TEXT, false, 0, 0, false}),
         S({"User Name", "username", "", "e", PG_TYPES::TEXT}),
+        S({"Password", "password", "", "e", PG_TYPES::TEXT, true}),
         S({"Full Name", "fullname", "", "e", PG_TYPES::TEXT}),
+        S({"Parent User Name", "parent_id", "", "e", PG_TYPES::INT8, true, 1, 1 }),
+        S({"username", "username", "", "p", PG_TYPES::TEXT, false, 0, 0, false}),
         S({"Create Date", "create_date", "", "e", PG_TYPES::TIMESTAMP}),
         S({"Disabled", "disabled", "", "e", PG_TYPES::BOOL}),
-        S({"Email", "email", "", "e", PG_TYPES::TEXT, true}),
-        S({"Password", "password", "", "e", PG_TYPES::TEXT, true}),
-        S({"City", "city", "", "e", PG_TYPES::TEXT, true}),
-        S({"State", "state", "", "e", PG_TYPES::TEXT, true}),
+//        S({"Email", "email", "", "e", PG_TYPES::TEXT, true}),
+//        S({"City", "city", "", "e", PG_TYPES::TEXT, true}),
+//        S({"State", "state", "", "e", PG_TYPES::TEXT, true}),
         //S({"Created By", "create_user_id", "", "e", PG_TYPES::INT8, true, 1, 0, false}), S({"u1_username", "username", "", "u1", PG_TYPES::TEXT, false, 0, 0, false}),
         //S({"Updated By", "update_user_id", "", "e", PG_TYPES::INT8, true, 1, 0, false}), S({"u2_username", "username", "", "u2", PG_TYPES::TEXT, false, 0, 0, false}),
         //S({"Create Time", "inserted_at", "", "e", PG_TYPES::TIMESTAMP, true, 0, 0, false}),
@@ -110,6 +110,7 @@ nlohmann::json User::getUserTypeFormData()
 {
     if(context->user.type == "super admin"){
         json j = json::array({
+                                    json::array({"Super Admin","super admin"}),
                                     json::array({"Admin","admin"}),
                                     json::array({"Executive","executive"}),
         });

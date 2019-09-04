@@ -12,7 +12,7 @@ void CatalogLocal::setupTable()
 {
     //m_query.setRowIdColumn("id");
     t.m_query.selectedColumns() = {
-        S({"Id", "id", "", "c", PG_TYPES::INT8}),
+        S({"ID No", "id", "", "c", PG_TYPES::INT8}),
         //S({"Catalog Type", "catalog_type", "", "c", PG_TYPES::ENUM}),
         //S({"no", "no", "", "c", PG_TYPES::TEXT}),
         //S({"sequence_id", "sequence_id", "", "c", PG_TYPES::INT8, false}),

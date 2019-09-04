@@ -98,10 +98,10 @@ TEST_CASE("create User successfull") {
 //      ])",
 //        R"([[null, "=new_catalog1"]])")
     SUD("song",
-        R"([{"title": "very_new_song", "catalog_id": 1}, [null]])",
+        R"([{"title": "very_new_song", "catalog_id": 2}, [null]])",
         R"(
         [
-        {"title": "very_new_song2", "catalog_id": 1},
+        {"title": "very_new_song2", "catalog_id": 2},
         [null, null, null, null, "=very_new_song"]
         ])",
         R"([[null, null, null, null, "=very_new_song2"]])")

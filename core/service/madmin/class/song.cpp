@@ -12,7 +12,7 @@ void Song::setupTable()
 {
     //m_query.setRowIdColumn("id");
     t.m_query.selectedColumns() = {
-            S({"Id", "id", "", "s", PG_TYPES::INT8}),
+            S({"ID No", "id", "", "s", PG_TYPES::INT8}),
             S({"file", "file", "", "s", PG_TYPES::TEXT, false}),
             S({"Catalog", "catalog_id", "", "s", PG_TYPES::INT8, true, 1, 1}),
             S({"c_name", "name", "", "c", PG_TYPES::TEXT, false, 0, 0, false}),
