@@ -1,30 +1,8 @@
 #include <catch2/catch.hpp>
-
-#include "../src/base/websockettest.h"
-#include "../src/base/formatcheck.h"
-
-#include "../src/madmin/authcheck.h"
-#include "../src/madmin/login.h"
-#include "../src/madmin/signup.h"
-#include "../src/madmin/gettabledata.h"
-#include "../src/madmin/gettabledata_admin.h"
-#include "../src/madmin/savedelete.h"
-
-#include "../src/madmin/menu/getmenudata_admin.h"
-#include "../src/madmin/menu/getmenudata_sadmin.h"
-#include "../src/madmin/auth/passwordchange.h"
-#include "../src/madmin/auth/logout.h"
-#include "../src/madmin/user/create_user.h"
-#include "../src/madmin/user/user_count.h"
-
+#include <QCoreApplication>
+#include "spdlogfix.h"
 #include "../wsclient/wsclient.h"
 #include "../wsclient/once.h"
-
-#include <stdarg.h>
-#include <QCoreApplication>
-using namespace  madmin;
-#include "spdlogfix.h"
-
 //To Benchmark do
 // https://github.com/catchorg/Catch2/blob/master/docs/benchmarks.md
 //BENCHMARK("MY FUNC") { return my_func(); };
