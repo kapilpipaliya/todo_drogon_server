@@ -9,7 +9,7 @@ void WsFns::sendJson(const WebSocketConnectionPtr &wsConnPtr, nlohmann::json &j)
 {
     try
     {
-        SPDLOG_TRACE("sending a message: {}", j.dump());
+        //SPDLOG_TRACE("sending a message: {}", j.dump());
         wsConnPtr->send(j.dump());
     }
     catch (json::parse_error& e)

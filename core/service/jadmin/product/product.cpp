@@ -873,7 +873,6 @@ void save_product_Attachments(sqlb::ObjectIdentifier post_attachment_table,
 }
 
 json Product::ins( json event, json args) {
-    printJson(args);
     auto product_table = sqlb::ObjectIdentifier("product", "product", "p");
     auto post_table = sqlb::ObjectIdentifier("post", "post", "p");
     auto tags_table = sqlb::ObjectIdentifier("post", "tag", "t");
@@ -970,7 +969,6 @@ json Product::ins( json event, json args) {
     }
 }
 json Product::upd( json event, json args) {
-    printJson(args);
     auto product_table = sqlb::ObjectIdentifier("product", "product", "p");
     auto post_table = sqlb::ObjectIdentifier("post", "post", "p");
     auto tags_table = sqlb::ObjectIdentifier("post", "tag", "t");
@@ -1124,7 +1122,6 @@ json Product::del( json event, json args) {
 
 
 json save_category( json event, json args) {
-    printJson(args);
     auto product_table = sqlb::ObjectIdentifier("product", "category", "p");
 
     if (args[0]["id"].get<long>()) {

@@ -60,7 +60,6 @@ json Tag::ins( json event, json args) {
     }
 }
 json Tag::upd( json event, json args) {
-    printJson(args);
     auto product_table = sqlb::ObjectIdentifier("post", "tag", "t");
 
     if (args[0]["id"].get<long>()) {

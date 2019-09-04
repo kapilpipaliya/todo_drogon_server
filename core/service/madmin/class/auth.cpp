@@ -54,8 +54,6 @@ nlohmann::json Auth::saveFileMeta(nlohmann::json event, nlohmann::json args)
 
     //auto strSql = "INSERT INTO music.temp_file_meta ( session_id, event, name, size, type ) VALUES( $1, $2, $3, $4, $5 )";
     auto strSql = format("INSERT INTO music.temp_file_meta ( session_id, event, name, size, type ) VALUES( {0}, '{1}','{2}', {3}, '{4}' )", c, args[0].dump(), args[1].get<std::string>(), args[2].get<long>(), args[3].get<std::string>());
-    SPDLOG_TRACE("helo");
-    SPDLOG_TRACE(strSql);
     try {
         auto clientPtr = drogon::app().getDbClient("sce");
         auto transPtr = clientPtr->newTransaction();

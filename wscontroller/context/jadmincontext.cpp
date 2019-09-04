@@ -291,7 +291,6 @@ json JAdminContext::isUserAuth( json event, json )
 json JAdminContext::checkout( json event, json args)
 {
     long c = user;
-    printJson(args);
     if (c != 0) {
         auto sqlSession = "SELECT key, value FROM user1.session where id = $1";
         try {

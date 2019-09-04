@@ -177,7 +177,7 @@ std::string Query::buildCountQuery() const
     // limit always applies last, and by that time there is only one row
     // cant add order by
     std::string q = "SELECT COUNT(*) FROM " + m_table.toString() + " " + m_table.as() + " " +  buildJoinPart() + buildWherePart() + " " + buildGroupByPart();
-    SPDLOG_TRACE(q);
+    //SPDLOG_TRACE(q);
     return q;
 }
 

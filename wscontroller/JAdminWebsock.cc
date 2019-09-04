@@ -37,9 +37,9 @@ void EchoWebSocket::handleNewConnection(const HttpRequestPtr &req, const WebSock
     // LOG_DEBUG << req->getCookie("admin");
     std::shared_ptr<JAdminContext> context =  std::make_shared<JAdminContext>(req, wsConnPtr);
     wsConnPtr->setContext(context);
-    for (auto i : req->cookies()) {
-        SPDLOG_TRACE("{1}, {2}", i.first.c_str(), i.second.c_str());
-    }
+    //for (auto i : req->cookies()) {
+    //    SPDLOG_TRACE("{1}, {2}", i.first.c_str(), i.second.c_str());
+    //}
 }
 void EchoWebSocket::handleConnectionClosed(const WebSocketConnectionPtr &wsConnPtr)
 {

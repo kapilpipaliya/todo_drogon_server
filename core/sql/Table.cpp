@@ -18,13 +18,13 @@ Table::~Table()
 bool Table::select()
 {
     auto q = m_query.buildQuery(true);
-    SPDLOG_TRACE(q);
+    //SPDLOG_TRACE(q);
     // crash !! auto clientPtr = drogon::app().getFastDbClient("sce");
     auto clientPtr = drogon::app().getDbClient("sce");
     *clientPtr << q << Mode::Blocking >> [this](const Result &r) {
         result = r;
     } >> [q](const DrogonDbException &e) {
-        SPDLOG_TRACE("query: {}", q);
+       SPDLOG_TRACE("query: {}", q);
        SPDLOG_TRACE(e.base().what());
         //testOutput(false, "DbClient streaming-type interface(0)");
         throw;
@@ -229,7 +229,6 @@ void Table::sort(const std::vector<sqlb::SortedColumn> &columns)
 
 json Table::getAllData(json &args)
 {
-//    printJson(args);
     updateFilterBase(args[0]);
     updateSortBase(args[1]);
     updatePaginationBase(args[2]);
