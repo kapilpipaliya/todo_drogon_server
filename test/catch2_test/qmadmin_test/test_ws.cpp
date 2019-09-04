@@ -13,13 +13,17 @@ TEST_CASE("is connection possible","[WSTest]") {
     QCoreApplication a(i, argv);
     auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/madmin")));
 
-    Once::connect(&w2.m_webSocket, &QWebSocket::connected, [](){
+    bool r0 =false;
+    Once::connect(&w2.m_webSocket, &QWebSocket::connected, [&r0](){
         SPDLOG_TRACE("Connection successfull");
-        REQUIRE(true);});
+        REQUIRE(true);
+        r0 = true;
+    });
     QTimer *timer = new QTimer();
     QObject::connect(timer, SIGNAL(timeout()), &a, SLOT(quit()));
     timer->start(500);
     a.exec();
+    REQUIRE(r0);
 }
 
 TEST_CASE("server reply error on string type of message.","[WSTest]") {
@@ -36,13 +40,17 @@ TEST_CASE("server reply error on string type of message.","[WSTest]") {
 //    });
 //    REQUIRE(b);
     w2.sendMessage(QString::fromStdString(j.dump()));
-    Once::connect(&w2.m_webSocket, &QWebSocket::textMessageReceived, [](){
+    bool r0 =false;
+    Once::connect(&w2.m_webSocket, &QWebSocket::textMessageReceived, [&r0](){
         SPDLOG_TRACE("Connection Not successfull");
-        REQUIRE(true);});
+        REQUIRE(true);
+        r0 = true;
+    });
     QTimer *timer = new QTimer();
     QObject::connect(timer, SIGNAL(timeout()), &a, SLOT(quit()));
     timer->start(500);
     a.exec();
+    REQUIRE(r0);
         //FormatCheck w1;  w1.setpath("/madmin"); w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);
 }
 
@@ -56,9 +64,11 @@ json event = json::array({"user", "is_logged_in", 0} );
 json payload = json::array({{event, {{}}}});
 //    json j = R"( [ [["user","is_logged_in",0],[[]]]] )"_json;
 SPDLOG_TRACE(payload.dump());
-auto b = w2.bindOnce(event, [](json r){
+bool r0 =false;
+auto b = w2.bindOnce(event, [&r0](json r){
     SPDLOG_TRACE("This should be false");
     REQUIRE(r[0] == false);
+    r0 = true;
 });
 w2.sendMessage(QString::fromStdString(payload.dump()));
 REQUIRE(b);
@@ -67,6 +77,7 @@ QObject::connect(timer, SIGNAL(timeout()), &a, SLOT(quit()));
 timer->start(500);
 
 a.exec();
+REQUIRE(r0);
 
 //AuthCheck w1; w1.setpath("/madmin"); w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);
 }
@@ -79,8 +90,10 @@ TEST_CASE("login on backend with username and password","[WSTest]") {
     json event = json::array({"auth","login",0} );
     json payload = json::array({{event, json::object({{"user", "sadmin"}, {"pass", "123456"}}) }});
     SPDLOG_TRACE(payload.dump());
-    auto b = w2.bindOnce(event, [](json r){
+    bool r0 =false;
+    auto b = w2.bindOnce(event, [&r0](json r){
         REQUIRE(r[0]["ok"] == true);
+        r0 = true;
     });
     w2.sendMessage(QString::fromStdString(payload.dump()));
     REQUIRE(b);
@@ -88,6 +101,7 @@ TEST_CASE("login on backend with username and password","[WSTest]") {
     QObject::connect(timer, SIGNAL(timeout()), &a, SLOT(quit()));
     timer->start(500);
     a.exec();
+    REQUIRE(r0);
     //LogIn w1; w1.setpath("/madmin"); w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);
 }
 
@@ -114,22 +128,28 @@ TEST_CASE("check that all table Super Admin data are correctly replied","[WSTest
                                });
 
     SPDLOG_TRACE(payload.dump());
-    bool r1, r2, r3, r4 = false;
-    auto b1 = w2.bindOnce(event1, [](json r){ REQUIRE(r[0]["ok"] == true); });
-    auto b11 = w2.bindOnce(event11, [](json r){ REQUIRE(r[0].is_number() == true);});
-    auto b2 = w2.bindOnce(event2, [](json r){ REQUIRE(r[0] == true); });
-    auto b3 = w2.bindOnce(event3, [](json r){ REQUIRE(r[0].size() == 6); });
-    auto b4 = w2.bindOnce(event4, [](json r){ REQUIRE(r[1].size() >= 0); });
+    bool r0, r1, r2, r3, r4 = false;
+    auto b1 = w2.bindOnce(event1, [&r0](json r){ REQUIRE(r[0]["ok"] == true); r0 = true;});
+    auto b11 = w2.bindOnce(event11, [&r1](json r){ REQUIRE(r[0].is_number() == true); r1 = true;});
+    auto b2 = w2.bindOnce(event2, [&r2](json r){ REQUIRE(r[0] == true); r2 = true;});
+    auto b3 = w2.bindOnce(event3, [&r3](json r){ REQUIRE(r[0].size() == 6); r3 = true;});
+    auto b4 = w2.bindOnce(event4, [&r4](json r){ REQUIRE(r[1].size() >= 0); r4 = true;});
     w2.sendMessage(QString::fromStdString(payload.dump()));
     REQUIRE(b1);
     REQUIRE(b11);
     REQUIRE(b2);
     REQUIRE(b3);
     REQUIRE(b4);
+
     QTimer *timer = new QTimer();
     QObject::connect(timer, SIGNAL(timeout()), &a, SLOT(quit()));
     timer->start(500);
     a.exec();
+    REQUIRE(r0);
+    REQUIRE(r1);
+    REQUIRE(r2);
+    REQUIRE(r3);
+    REQUIRE(r4);
 }
     // do catalog_local and song test above
 
@@ -154,20 +174,25 @@ TEST_CASE("password change should work.") {
                                });
 
     SPDLOG_TRACE(payload.dump());
-    bool r1, r2, r3, r4 = false;
-    auto b1 = w2.bindOnce(event1, [](json r){REQUIRE(r[0]["ok"] == true); });
-    auto b11 = w2.bindOnce(event11, [](json r){ REQUIRE(r[0].is_number() == true);});
-    auto b2 = w2.bindOnce(event2, [](json r){ REQUIRE(r[0]["ok"] == true); });
-    auto b3 = w2.bindOnce(event3, [](json r){ REQUIRE(r[0]["ok"] == true); });
+    bool r0, r1, r2, r3 = false;
+    auto b1 = w2.bindOnce(event1, [&r0](json r){REQUIRE(r[0]["ok"] == true); r0 = true;});
+    auto b11 = w2.bindOnce(event11, [&r1](json r){ REQUIRE(r[0].is_number() == true); r1 = true;});
+    auto b2 = w2.bindOnce(event2, [&r2](json r){ REQUIRE(r[0]["ok"] == true); r2 = true;});
+    auto b3 = w2.bindOnce(event3, [&r3](json r){ REQUIRE(r[0]["ok"] == true); r3 = true;});
     w2.sendMessage(QString::fromStdString(payload.dump()));
     REQUIRE(b1);
     REQUIRE(b11);
     REQUIRE(b2);
     REQUIRE(b3);
+
     QTimer *timer = new QTimer();
     QObject::connect(timer, SIGNAL(timeout()), &a, SLOT(quit()));
     timer->start(500);
     a.exec();
+    REQUIRE(r0);
+    REQUIRE(r1);
+    REQUIRE(r2);
+    REQUIRE(r3);
     //PasswordChange w1; w1.setpath("/madmin"); w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);
 }
 TEST_CASE("Logout successfull") {
@@ -186,21 +211,25 @@ TEST_CASE("Logout successfull") {
                                });
 
     SPDLOG_TRACE(payload.dump());
-    bool r1, r2, r3, r4 = false;
+    bool r0, r1, r2 = false;
     auto b1 = w2.bindOnce(event1, [](json r){
             REQUIRE(r[0]["ok"] == true); });
-    auto b11 = w2.bindOnce(event11, [](json r){ REQUIRE(r[0].is_number() == true);});
-    auto b2 = w2.bindOnce(event2, [](json r){ REQUIRE(r[0]["ok"] == true); });
-    auto b3 = w2.bindOnce(event3, [](json r){ REQUIRE(r[0] == false); });
+    auto b11 = w2.bindOnce(event11, [&r0](json r){ REQUIRE(r[0].is_number() == true); r0 = true;});
+    auto b2 = w2.bindOnce(event2, [&r1](json r){ REQUIRE(r[0]["ok"] == true); r1 = true;});
+    auto b3 = w2.bindOnce(event3, [&r2](json r){ REQUIRE(r[0] == false); r2 = true;});
     w2.sendMessage(QString::fromStdString(payload.dump()));
     REQUIRE(b1);
     REQUIRE(b11);
     REQUIRE(b2);
     REQUIRE(b3);
+
     QTimer *timer = new QTimer();
     QObject::connect(timer, SIGNAL(timeout()), &a, SLOT(quit()));
     timer->start(500);
     a.exec();
+    REQUIRE(r0);
+    REQUIRE(r1);
+    REQUIRE(r2);
    //LogOut w1; w1.setpath("/madmin"); w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);
 }
 //#define SUD(t, ins, upd, del)\
@@ -262,13 +291,13 @@ TEST_CASE("create update delete successfull") {
                                });
 
     SPDLOG_TRACE(payload.dump());
-    bool r1, r2, r3, r4 = false;
-    auto b1 = w2.bindOnce(event1, [](json r){ REQUIRE(r[0]["ok"] == true); });
-    auto b11 = w2.bindOnce(event11, [](json r){ REQUIRE(r[0].is_number() == true);});
-    auto b2 = w2.bindOnce(event2, [](json r){ REQUIRE(r[0] == true); });
-    auto b3 = w2.bindOnce(event3, [](json r){ REQUIRE(r[0]["ok"] == true); });
-    auto b4 = w2.bindOnce(event4, [](json r){ REQUIRE(r[0]["ok"] == true); });
-    auto b5 = w2.bindOnce(event5, [](json r){ REQUIRE(r[0]["ok"] == true); });
+    bool r0, r1, r2, r3, r4, r5 = false;
+    auto b1 = w2.bindOnce(event1, [&r0](json r){ REQUIRE(r[0]["ok"] == true); r0 = true;});
+    auto b11 = w2.bindOnce(event11, [&r1](json r){ REQUIRE(r[0].is_number() == true); r1 = true;});
+    auto b2 = w2.bindOnce(event2, [&r2](json r){ REQUIRE(r[0] == true); r2 = true;});
+    auto b3 = w2.bindOnce(event3, [&r3](json r){ REQUIRE(r[0]["ok"] == true); r3 = true;});
+    auto b4 = w2.bindOnce(event4, [&r4](json r){ REQUIRE(r[0]["ok"] == true); r4 = true;});
+    auto b5 = w2.bindOnce(event5, [&r5](json r){ REQUIRE(r[0]["ok"] == true); r5 = true;});
     w2.sendMessage(QString::fromStdString(payload.dump()));
     REQUIRE(b1);
     REQUIRE(b11);
@@ -276,10 +305,17 @@ TEST_CASE("create update delete successfull") {
     REQUIRE(b3);
     REQUIRE(b4);
     REQUIRE(b5);
+
     QTimer *timer = new QTimer();
     QObject::connect(timer, SIGNAL(timeout()), &a, SLOT(quit()));
     timer->start(500);
     a.exec();
+    REQUIRE(r0);
+    REQUIRE(r1);
+    REQUIRE(r2);
+    REQUIRE(r3);
+    REQUIRE(r4);
+    REQUIRE(r5);
 }
 
 //// user count is not fixed now.

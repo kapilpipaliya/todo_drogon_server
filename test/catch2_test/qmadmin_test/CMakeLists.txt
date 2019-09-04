@@ -38,10 +38,10 @@ target_link_libraries(qmadmin_test test_base Catch2::Catch2
   fmt::fmt
   Poco::Foundation
   libwsclient
-Qt5::Core
-Qt5::Gui
-Qt5::Network
-Qt5::WebSockets
+  Qt5::Core
+  Qt5::Gui
+  Qt5::Network
+  Qt5::WebSockets
   )
 
 include(CTest)

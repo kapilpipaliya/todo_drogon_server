@@ -11,6 +11,15 @@ find_package(fmt REQUIRED)
 find_package(Catch2 REQUIRED)
 find_package(Poco REQUIRED COMPONENTS Foundation JSON Util XML Zip)
 
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+SET(CMAKE_AUTOUIC ON)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+find_package(Qt5 COMPONENTS Core Gui Widgets Network Xml Sql WebSockets REQUIRED)
+
 project(jadmin_test LANGUAGES CXX VERSION 0.0.1)
 set(CMAKE_CXX_FLAGS "-std=c++17 -Wall -Wextra")
 include_directories("${PROJECT_SOURCE_DIR}/src")
@@ -18,6 +27,7 @@ include_directories("${PROJECT_SOURCE_DIR}/src")
 file(GLOB_RECURSE test_SOURCES "*.cpp")
 
 add_executable(jadmin_test ${test_SOURCES})
+target_compile_definitions(${PROJECT_NAME} PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 target_link_libraries(jadmin_test test_base Catch2::Catch2
   Threads::Threads
   ZLIB::ZLIB
@@ -26,6 +36,11 @@ target_link_libraries(jadmin_test test_base Catch2::Catch2
   ${DROGON_LIBRARIES}
   fmt::fmt
   Poco::Foundation
+  libwsclient
+  Qt5::Core
+  Qt5::Gui
+  Qt5::Network
+  Qt5::WebSockets
   )
 
 include(CTest)

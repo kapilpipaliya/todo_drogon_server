@@ -145,7 +145,7 @@ void SslEchoClient::sendMessage(QString message)
         reconnect();
         // when open send message..
         Once::connect(&m_webSocket, &QWebSocket::connected,
-              [this, &message](){ m_webSocket.sendTextMessage(message); });
+              [this, message](){ m_webSocket.sendTextMessage(message); });
         break;
     default:
         break;

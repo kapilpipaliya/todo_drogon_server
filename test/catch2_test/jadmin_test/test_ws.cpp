@@ -9,22 +9,116 @@
 #include "../src/jadmin/gettabledata.h"
 #include "../src/jadmin/savedelete.h"
 
+#include <QCoreApplication>
+#include "spdlogfix.h"
+#include "../wsclient/wsclient.h"
+#include "../wsclient/once.h"
+
 //To Benchmark do
 // https://github.com/catchorg/Catch2/blob/master/docs/benchmarks.md
 //BENCHMARK("MY FUNC") { return my_func(); };
 
-
 TEST_CASE("is connection possible","[WSTest]") {
-    WSTest w1; w1.setpath("/jadmin"); w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);
+    char **argv;
+    int i = 0;
+    QCoreApplication a(i, argv);
+    auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/jadmin")));
+
+    bool r0 =false;
+    Once::connect(&w2.m_webSocket, &QWebSocket::connected, [&r0](){
+        SPDLOG_TRACE("Connection successfull");
+        REQUIRE(true);
+        r0 = true;
+    });
+    QTimer *timer = new QTimer();
+    QObject::connect(timer, SIGNAL(timeout()), &a, SLOT(quit()));
+    timer->start(500);
+    a.exec();
+    REQUIRE(r0);
 }
+
 TEST_CASE("server reply error on string type of message.","[WSTest]") {
-        FormatCheck w1;  w1.setpath("/jadmin"); w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);
+    char **argv;
+    int i = 0;
+    QCoreApplication a(i, argv);
+    auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/jadmin")));
+    std::string str = "hello";
+    nlohmann::json j = str;
+    // Bind not work because reply is not an array
+//    auto b = w2.bindOnce(j, [&a](json r){
+//        REQUIRE(r== "Invalid Message only array handled: \"hello\"");
+//        a.quit();
+//    });
+//    REQUIRE(b);
+    w2.sendMessage(QString::fromStdString(j.dump()));
+    bool r0 =false;
+    Once::connect(&w2.m_webSocket, &QWebSocket::textMessageReceived, [&r0](){
+        SPDLOG_TRACE("Connection Not successfull");
+        REQUIRE(true);
+        r0 = true;
+    });
+    QTimer *timer = new QTimer();
+    QObject::connect(timer, SIGNAL(timeout()), &a, SLOT(quit()));
+    timer->start(500);
+    a.exec();
+    REQUIRE(r0);
+        //FormatCheck w1;  w1.setpath("/madmin"); w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);
 }
 TEST_CASE("authorisation check without cookies","[WSTest]") {
-        AuthCheck w1; w1.setpath("/jadmin"); w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);
+
+char **argv;
+int i = 0;
+QCoreApplication a(i, argv);
+auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/jadmin")));
+json event = json::array({"legacy","auth","is_admin_auth",0} );
+json payload = json::array({{event, {{}}}});
+//    json j = R"( [ [["user","is_logged_in",0],[[]]]] )"_json;
+SPDLOG_TRACE(payload.dump());
+bool r0 = false;
+auto b = w2.bindOnce(event, [&r0](json r){
+    SPDLOG_TRACE("This should be false");
+    REQUIRE(r[0] == false);
+    r0 = true;
+});
+w2.sendMessage(QString::fromStdString(payload.dump()));
+REQUIRE(b);
+QTimer *timer = new QTimer();
+QObject::connect(timer, SIGNAL(timeout()), &a, SLOT(quit()));
+timer->start(500);
+
+a.exec();
+REQUIRE(r0);
 }
+
 TEST_CASE("login on backend with username and password","[WSTest]") {
-        LogIn w1; w1.setpath("/jadmin"); w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);
+    char **argv;
+    int i = 0;
+    QCoreApplication a(i, argv);
+    auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/jadmin")));
+   json event = json::array({"legacy","auth","admin_login",0} );
+    json payload = json::array({{event, json::object({{"email", "kapil.pipaliya@yahoo.com"}, {"pass", "3434"}}) }});
+    SPDLOG_TRACE(payload.dump());
+    bool r0 =false;
+    auto b = w2.bindOnce(event, [&r0](json r){
+        REQUIRE(r[0]["ok"] == true);
+        r0 = true;
+    });
+    json event2 = json::array({"legacy","auth","set_cookie",0} );
+    bool r1 =false;
+    auto b1 = w2.bindOnce(event2, [&r1](json r){
+    REQUIRE(r[0]["admin"].is_number() == true);
+    r1 = true;
+    });
+    w2.sendMessage(QString::fromStdString(payload.dump()));
+    REQUIRE(b);
+    REQUIRE(b1);
+    QTimer *timer = new QTimer();
+    QObject::connect(timer, SIGNAL(timeout()), &a, SLOT(quit()));
+    timer->start(500);
+    a.exec();
+    REQUIRE(r0);
+    REQUIRE(r1);
+    //LogIn w1; w1.setpath("/madmin"); w1.init(); w1.run(); REQUIRE(w1.isTestSuccess() == true);
 }
 /* currently this not working.. but make this working in future.
 TEST_CASE("signup with a form.","[WSTest]") {
