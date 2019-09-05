@@ -2,11 +2,14 @@
 #define CONFIG_H
 
 #include <string>
+#include "../../baseserviceabs.h"
+#include "../../../../wscontroller/context/madmincontext.h"
 
-#include "../baseservice.h"
+typedef std::shared_ptr<MAdminContext> MAdminContextPtr;
 namespace madmin {
-class Config : public BaseService
+class Config : public BaseServiceAbs
 {
+    MAdminContextPtr context;
 public:
     Config(const MAdminContextPtr &);
     void setupTable() override;

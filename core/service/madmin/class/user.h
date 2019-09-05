@@ -17,8 +17,10 @@ using std::string;
  * and deletion of the user objects from the database by defualt you constrcut it
  * with a user_id from user.id
  *
- */
-#include "../baseservice.h"
+ */#include "../../baseserviceabs.h"
+#include "../../../../wscontroller/context/madmincontext.h"
+
+typedef std::shared_ptr<MAdminContext> MAdminContextPtr;
 namespace madmin {
 /**
  * User Class
@@ -27,7 +29,7 @@ namespace madmin {
  * and deletion of the user objects from the database by defualt you constrcut it
  * with a user_id from user.id
  **/
-class User : public BaseService
+class User : public BaseServiceAbs
 {
     struct Info{
         string username;
@@ -42,6 +44,8 @@ class User : public BaseService
     struct Catalog{
 
     };
+
+    MAdminContextPtr context;
 
 public:
     User(const MAdminContextPtr &);

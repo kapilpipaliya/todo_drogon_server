@@ -1,7 +1,7 @@
 #include "settingtype.h"
 using namespace  jadmin;
 
-SettingType::SettingType(const JAdminContextPtr &context_): BaseService(context_)
+SettingType::SettingType(const JAdminContextPtr &context_): context(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("product", "setting_type", "t");
 

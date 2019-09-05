@@ -7,7 +7,7 @@
 #include "session.h"
 using namespace  jadmin;
 using nlohmann:: json;
-Auth::Auth(const JAdminContextPtr &context_): BaseService(context_)
+Auth::Auth(const JAdminContextPtr &context_): context(context_)
 {
 
 }

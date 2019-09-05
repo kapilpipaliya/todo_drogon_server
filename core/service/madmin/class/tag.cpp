@@ -1,6 +1,6 @@
 #include "tag.h"
 using namespace  madmin;
-Tag::Tag(const MAdminContextPtr &context_): BaseService(context_)
+Tag::Tag(const MAdminContextPtr &context_): context(context_)
 {
 
 }

@@ -2,7 +2,7 @@
 #include <boost/filesystem.hpp>
 using namespace  madmin;
 typedef sqlb::SelectedColumn S;
-Song::Song(const MAdminContextPtr &context_): BaseService(context_)
+Song::Song(const MAdminContextPtr &context_): context(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("music", "song", "s");
     t.m_query = sqlb::Query(t.m_table);

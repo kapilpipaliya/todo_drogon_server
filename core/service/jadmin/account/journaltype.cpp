@@ -1,7 +1,7 @@
 #include "journaltype.h"
 using namespace  jadmin;
 
-JournalType::JournalType(const JAdminContextPtr &context_): BaseService(context_)
+JournalType::JournalType(const JAdminContextPtr &context_): context(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("account", "journal_type", "a");
 

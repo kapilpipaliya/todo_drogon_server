@@ -1,9 +1,11 @@
 #ifndef SETTING_H
 #define SETTING_H
 
-#include "../baseservice.h"
+#include "../../baseserviceabs.h"
+#include "../../../../wscontroller/context/jadmincontext.h"
+typedef std::shared_ptr<JAdminContext> JAdminContextPtr;
 namespace jadmin {
-class Setting : public BaseService
+class Setting : public BaseServiceAbs
 {
 public:
     Setting(const JAdminContextPtr &);
@@ -16,6 +18,7 @@ private:
     json upd(json event, json args){};
     json save(json event, json args);
     json del( json event, json args);
+    JAdminContextPtr context;
 };
 }
 #endif // SETTING_H

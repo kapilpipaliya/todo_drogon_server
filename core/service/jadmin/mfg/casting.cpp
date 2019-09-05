@@ -1,7 +1,7 @@
 #include "casting.h"
 using namespace  jadmin;
 
-Casting::Casting(const JAdminContextPtr &context_): BaseService(context_)
+Casting::Casting(const JAdminContextPtr &context_): context(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("mfg", "casting", "m");
 

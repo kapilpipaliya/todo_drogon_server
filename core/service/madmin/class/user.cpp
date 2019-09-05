@@ -4,7 +4,7 @@
 using namespace  madmin;
 using namespace std::chrono;
 typedef sqlb::SelectedColumn S;
-User::User(const MAdminContextPtr &context_): BaseService(context_)
+User::User(const MAdminContextPtr &context_): context(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("music", "user", "e");
     t.m_query = sqlb::Query(t.m_table);

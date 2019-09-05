@@ -1,7 +1,7 @@
 #include "contacttype.h"
 using namespace  jadmin;
 
-ContactType::ContactType(const JAdminContextPtr &context_): BaseService(context_)
+ContactType::ContactType(const JAdminContextPtr &context_): context(context_)
 {
 
     t.m_table = sqlb::ObjectIdentifier("entity", "contact_type", "a");

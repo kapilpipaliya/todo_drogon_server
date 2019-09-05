@@ -1,7 +1,7 @@
 #include "auth.h"
 #include "session.h"
 using namespace  madmin;
-Auth::Auth(const MAdminContextPtr &context_): BaseService(context_)
+Auth::Auth(const MAdminContextPtr &context_): context(context_)
 {
 
 }

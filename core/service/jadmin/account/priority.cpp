@@ -1,7 +1,7 @@
 #include "priority.h"
 using namespace  jadmin;
 
-Priority::Priority(const JAdminContextPtr &context_): BaseService(context_)
+Priority::Priority(const JAdminContextPtr &context_): context(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("account", "priority", "a");
 

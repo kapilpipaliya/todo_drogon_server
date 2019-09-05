@@ -1,7 +1,7 @@
 #include "setting.h"
 using namespace  jadmin;
 
-Setting::Setting(const JAdminContextPtr &context_): BaseService(context_)
+Setting::Setting(const JAdminContextPtr &context_): context(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("setting", "setting", "gs");
 

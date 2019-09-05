@@ -1,14 +1,18 @@
 #pragma once
 
-#include "../baseservice.h"
+#include "../../baseserviceabs.h"
+#include "../../../../wscontroller/context/madmincontext.h"
+
+typedef std::shared_ptr<MAdminContext> MAdminContextPtr;
 /**
  *
  * This class handles all of the session related stuff in Ampache
  *
  */
 namespace madmin {
-class Session : public BaseService
+class Session : public BaseServiceAbs
 {
+    MAdminContextPtr context;
 public:
     Session(const MAdminContextPtr &);
     void setupTable() override;

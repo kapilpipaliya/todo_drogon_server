@@ -1,7 +1,7 @@
 #include "catalog.h"
 #include "../../dba.h"
 using namespace  madmin;
-Catalog::Catalog(const MAdminContextPtr &context_): BaseService(context_)
+Catalog::Catalog(const MAdminContextPtr &context_): context(context_)
 {
 
 }

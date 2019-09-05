@@ -1,6 +1,6 @@
 #include "upload.h"
 using namespace  madmin;
-Upload::Upload(const MAdminContextPtr &context_): BaseService(context_)
+Upload::Upload(const MAdminContextPtr &context_): context(context_)
 {
 
 }

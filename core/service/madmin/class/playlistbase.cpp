@@ -1,6 +1,6 @@
 #include "playlistbase.h"
 using namespace  madmin;
-PlayListBase::PlayListBase(const MAdminContextPtr &context_): BaseService(context_)
+PlayListBase::PlayListBase(const MAdminContextPtr &context_): context(context_)
 {
 
 }

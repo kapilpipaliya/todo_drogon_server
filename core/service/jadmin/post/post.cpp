@@ -2,7 +2,7 @@
 #include "../../../strfns.h"
 using namespace  jadmin;
 
-Post1::Post1(const JAdminContextPtr &context_): BaseService(context_)
+Post1::Post1(const JAdminContextPtr &context_): context(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("post", "post", "post");
 

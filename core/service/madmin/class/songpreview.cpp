@@ -1,6 +1,6 @@
 #include "songpreview.h"
 using namespace  madmin;
-SongPreview::SongPreview(const MAdminContextPtr &context_): BaseService(context_)
+SongPreview::SongPreview(const MAdminContextPtr &context_): context(context_)
 {
 
 }

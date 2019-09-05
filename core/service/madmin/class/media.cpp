@@ -1,6 +1,6 @@
 #include "media.h"
 using namespace  madmin;
-Media::Media(const MAdminContextPtr &context_): BaseService(context_)
+Media::Media(const MAdminContextPtr &context_): context(context_)
 {
 
 }

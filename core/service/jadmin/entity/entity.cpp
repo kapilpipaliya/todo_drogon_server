@@ -3,7 +3,7 @@ using namespace  jadmin;
 
 
 typedef sqlb::SelectedColumn S;
-Entity::Entity(const JAdminContextPtr &context_): BaseService(context_)
+Entity::Entity(const JAdminContextPtr &context_): context(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("entity", "entity", "e");
 

@@ -1,6 +1,6 @@
 #include "accountheading.h"
 using namespace  jadmin;
-AccountHeading::AccountHeading(const JAdminContextPtr &context_): BaseService(context_)
+AccountHeading::AccountHeading(const JAdminContextPtr &context_): context(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("account", "account_heading", "a");
 }

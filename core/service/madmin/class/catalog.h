@@ -2,12 +2,16 @@
 #define CATALOG_H
 
 
-#include "../baseservice.h"
+#include "../../baseserviceabs.h"
+#include "../../../../wscontroller/context/madmincontext.h"
+
+typedef std::shared_ptr<MAdminContext> MAdminContextPtr;
 using std::string;
 namespace madmin {
-class Catalog : public BaseService
+class Catalog : public BaseServiceAbs
 {
 public:
+    MAdminContextPtr context;
     Catalog(const MAdminContextPtr &);
     void setupTable() override;
 

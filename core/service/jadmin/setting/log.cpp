@@ -1,7 +1,7 @@
 #include "log.h"
 using namespace  jadmin;
 
-Log::Log(const JAdminContextPtr &context_): BaseService(context_)
+Log::Log(const JAdminContextPtr &context_): context(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("setting", "simple_log", "a");
 

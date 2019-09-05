@@ -1,7 +1,7 @@
 #include "waxsetting.h"
 using namespace  jadmin;
 
-WaxSetting::WaxSetting(const JAdminContextPtr &context_): BaseService(context_)
+WaxSetting::WaxSetting(const JAdminContextPtr &context_): context(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("mfg", "wax_setting", "m");
 

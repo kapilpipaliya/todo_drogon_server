@@ -1,7 +1,7 @@
 #include "pcategory.h"
 using namespace  jadmin;
 
-PCategory::PCategory(const JAdminContextPtr &context_): BaseService(context_)
+PCategory::PCategory(const JAdminContextPtr &context_): context(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("product", "category", "c");
 }

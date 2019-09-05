@@ -1,7 +1,7 @@
 #include "node.h"
 using namespace  jadmin;
 
-Node::Node(const JAdminContextPtr &context_): BaseService(context_)
+Node::Node(const JAdminContextPtr &context_): context(context_)
 {
 
     t.m_table = sqlb::ObjectIdentifier("menu", "node", "m");

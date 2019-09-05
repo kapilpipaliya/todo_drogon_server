@@ -1,7 +1,7 @@
 #include "policy.h"
 using namespace  jadmin;
 
-Policy::Policy(const JAdminContextPtr &context_): BaseService(context_)
+Policy::Policy(const JAdminContextPtr &context_): context(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("product", "policy", "t");
 

@@ -1,6 +1,6 @@
 #include "random.h"
 using namespace  madmin;
-Random::Random(const MAdminContextPtr &context_): BaseService(context_)
+Random::Random(const MAdminContextPtr &context_): context(context_)
 {
 
 }

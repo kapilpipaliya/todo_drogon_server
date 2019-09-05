@@ -1,14 +1,18 @@
 #ifndef SEARCH_H
 #define SEARCH_H
 
+#include "../../baseserviceabs.h"
+#include "../../../../wscontroller/context/madmincontext.h"
 
-#include "../baseservice.h"
+typedef std::shared_ptr<MAdminContext> MAdminContextPtr;
 namespace madmin {
-class Search : public BaseService
+class Search : public BaseServiceAbs
 {
 public:
     Search(const MAdminContextPtr &);
     void setupTable() override;
+private:
+    MAdminContextPtr context;
 };
 }
 #endif // SEARCH_H

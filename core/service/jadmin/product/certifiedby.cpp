@@ -1,7 +1,7 @@
 #include "certifiedby.h"
 using namespace  jadmin;
 
-CertifiedBy::CertifiedBy(const JAdminContextPtr &context_): BaseService(context_)
+CertifiedBy::CertifiedBy(const JAdminContextPtr &context_): context(context_)
 {
 
     t.m_table = sqlb::ObjectIdentifier("product", "certified_by", "t");

@@ -2,7 +2,13 @@
 #include "../../../strfns.h"
 using namespace  jadmin;
 
-Purity::Purity(const JAdminContextPtr &context_): BaseService(context_)
+#define ids2(s, array)\
+std::string array = "{";\
+for (auto i : (s)) { array += std::to_string(i["id"].as<long>()) + ","; }\
+if((s).size() > 0) array.pop_back();\
+array += "}";
+
+Purity::Purity(const JAdminContextPtr &context_): context(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("material", "purity", "p");
 

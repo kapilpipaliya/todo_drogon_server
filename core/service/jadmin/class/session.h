@@ -1,14 +1,17 @@
 #pragma once
 
-#include "../baseservice.h"
+#include "../../baseserviceabs.h"
+#include "../../../../wscontroller/context/jadmincontext.h"
+typedef std::shared_ptr<JAdminContext> JAdminContextPtr;
 /**
  *
  * This class handles all of the session related stuff in Ampache
  *
  */
 namespace jadmin {
-class Session : public BaseService
+class Session : public BaseServiceAbs
 {
+  JAdminContextPtr context;
 public:
     Session(const JAdminContextPtr &);
     void setupTable() override;

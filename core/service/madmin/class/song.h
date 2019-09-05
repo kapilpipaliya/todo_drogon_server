@@ -5,11 +5,14 @@
 #include <string>
 using std::string;
 using std::vector;
+#include "../../baseserviceabs.h"
+#include "../../../../wscontroller/context/madmincontext.h"
 
-#include "../baseservice.h"
+typedef std::shared_ptr<MAdminContext> MAdminContextPtr;
 namespace madmin {
-class Song : public BaseService
+class Song : public BaseServiceAbs
 {
+    MAdminContextPtr context;
 public:
   // class Song extends database_object implements media, library_item  {
   //   use \Lib\Metadata\Metadata;

@@ -1,7 +1,7 @@
 #include "shape.h"
 using namespace  jadmin;
 
-Shape::Shape(const JAdminContextPtr &context_): BaseService(context_)
+Shape::Shape(const JAdminContextPtr &context_): context(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("material", "shape", "gs");
 

@@ -1,7 +1,7 @@
 #include "size.h"
 using namespace  jadmin;
 
-Size::Size(const JAdminContextPtr &context_): BaseService(context_)
+Size::Size(const JAdminContextPtr &context_): context(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("material", "size", "s");
 

@@ -1,9 +1,12 @@
 #pragma once
 
-#include "../baseservice.h"
+#include "../../baseserviceabs.h"
+#include "../../../../wscontroller/context/jadmincontext.h"
+typedef std::shared_ptr<JAdminContext> JAdminContextPtr;
 namespace jadmin {
-class Auth : public BaseService
+class Auth : public BaseServiceAbs
 {
+    JAdminContextPtr context;
 public:
     Auth(const JAdminContextPtr &);
     void setupTable() override;

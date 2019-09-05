@@ -1,7 +1,7 @@
 #include "addresstype.h"
 using namespace  jadmin;
 
-AddressType::AddressType(const JAdminContextPtr &context_): BaseService(context_)
+AddressType::AddressType(const JAdminContextPtr &context_): context(context_)
 {
 
     t.m_table = sqlb::ObjectIdentifier("entity", "address_type", "a");

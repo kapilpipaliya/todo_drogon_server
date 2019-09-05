@@ -1,7 +1,7 @@
 #include "refining.h"
 using namespace  jadmin;
 
-Refining::Refining(const JAdminContextPtr &context_): BaseService(context_)
+Refining::Refining(const JAdminContextPtr &context_): context(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("mfg", "refining", "m");
 

@@ -1,6 +1,8 @@
 #ifndef UI_H
 #define UI_H
-#include "../baseservice.h"
+#include "../../baseserviceabs.h"
+#include "../../../../wscontroller/context/madmincontext.h"
+typedef std::shared_ptr<MAdminContext> MAdminContextPtr;
 #include "spdlogfix.h"
 #include <fmt/format.h>
 #include  "json.hpp"
@@ -9,8 +11,9 @@ using namespace fmt::v5;
 
 // A collection of methods related to the user interface
 namespace madmin {
-class UI : public BaseService
+class UI : public BaseServiceAbs
 {
+    MAdminContextPtr context;
 public:
     UI(const MAdminContextPtr &);
     void setupTable() override;

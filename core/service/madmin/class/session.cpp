@@ -1,7 +1,7 @@
 #include "./session.h"
 #include "../../dba.h"
 
-madmin::Session::Session(const MAdminContextPtr &context_): BaseService(context_)
+madmin::Session::Session(const MAdminContextPtr &context_): context(context_)
 {
 
 }

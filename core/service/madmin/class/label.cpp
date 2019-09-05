@@ -1,6 +1,6 @@
 #include "label.h"
 using namespace  madmin;
-Label::Label(const MAdminContextPtr &context_): BaseService(context_)
+Label::Label(const MAdminContextPtr &context_): context(context_)
 {
 
 }

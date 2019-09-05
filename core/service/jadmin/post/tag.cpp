@@ -2,7 +2,7 @@
 #include "../../../strfns.h"
 using namespace  jadmin;
 
-Tag::Tag(const JAdminContextPtr &context_): BaseService(context_)
+Tag::Tag(const JAdminContextPtr &context_): context(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("post", "tag", "t");
 

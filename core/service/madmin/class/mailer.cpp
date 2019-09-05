@@ -1,6 +1,6 @@
 #include "mailer.h"
 using namespace  madmin;
-Mailer::Mailer(const MAdminContextPtr &context_): BaseService(context_)
+Mailer::Mailer(const MAdminContextPtr &context_): context(context_)
 {
 
 }

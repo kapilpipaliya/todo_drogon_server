@@ -1,7 +1,7 @@
 #include "department.h"
 using namespace  jadmin;
 
-Department::Department(const JAdminContextPtr &context_): BaseService(context_)
+Department::Department(const JAdminContextPtr &context_): context(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("mfg", "department", "m");
 

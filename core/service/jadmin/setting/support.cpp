@@ -1,7 +1,7 @@
 #include "support.h"
 using namespace  jadmin;
 
-Support::Support(const JAdminContextPtr &context_): BaseService(context_)
+Support::Support(const JAdminContextPtr &context_): context(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("setting", "support", "a");
 

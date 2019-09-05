@@ -1,7 +1,7 @@
 #include "image.h"
 using namespace  jadmin;
 
-Image::Image(const JAdminContextPtr &context_): BaseService(context_)
+Image::Image(const JAdminContextPtr &context_): context(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("setting", "image", "a");
 

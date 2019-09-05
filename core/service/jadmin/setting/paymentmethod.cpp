@@ -2,7 +2,7 @@
 #include <boost/filesystem.hpp>
 using namespace  jadmin;
 
-PaymentMethod::PaymentMethod(const JAdminContextPtr &context_): BaseService(context_)
+PaymentMethod::PaymentMethod(const JAdminContextPtr &context_): context(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("setting", "payment_method", "t");
 

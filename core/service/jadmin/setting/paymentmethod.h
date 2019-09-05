@@ -1,8 +1,10 @@
 #ifndef PAYMENTMETHOD_H
 #define PAYMENTMETHOD_H
-#include "../baseservice.h"
+#include "../../baseserviceabs.h"
+#include "../../../../wscontroller/context/jadmincontext.h"
+typedef std::shared_ptr<JAdminContext> JAdminContextPtr;
 namespace jadmin {
-class PaymentMethod : public BaseService
+class PaymentMethod : public BaseServiceAbs
 {
 public:
     PaymentMethod(const JAdminContextPtr &);
@@ -10,6 +12,7 @@ private:
     void setupTable();
     json ins(json event, json args);
     json upd(json event, json args);
+    JAdminContextPtr context;
 };
 }
 #endif // PAYMENTMETHOD_H

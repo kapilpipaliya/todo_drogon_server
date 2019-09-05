@@ -1,7 +1,7 @@
 #include "imagecollection.h"
 using namespace  jadmin;
 
-ImageCollection::ImageCollection(const JAdminContextPtr &context_): BaseService(context_)
+ImageCollection::ImageCollection(const JAdminContextPtr &context_): context(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("setting", "image_collection", "a");
 

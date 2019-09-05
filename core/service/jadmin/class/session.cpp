@@ -1,7 +1,7 @@
 #include "./session.h"
 #include "../../dba.h"
 
-jadmin::Session::Session(const JAdminContextPtr &context_): BaseService(context_)
+jadmin::Session::Session(const JAdminContextPtr &context_): context(context_)
 {
 
 }

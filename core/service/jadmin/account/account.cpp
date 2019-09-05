@@ -1,6 +1,6 @@
 #include "account.h"
 using namespace  jadmin;
-Account::Account(const JAdminContextPtr &context_): BaseService(context_)
+Account::Account(const JAdminContextPtr &context_): context(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("account", "account", "a");
 }

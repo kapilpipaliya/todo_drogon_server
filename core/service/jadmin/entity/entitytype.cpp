@@ -1,7 +1,7 @@
 #include "entitytype.h"
 using namespace  jadmin;
 
-EntityType::EntityType(const JAdminContextPtr &context_): BaseService(context_)
+EntityType::EntityType(const JAdminContextPtr &context_): context(context_)
 {
 t.m_table = sqlb::ObjectIdentifier("entity", "entity_type", "a");
 }

@@ -1,7 +1,7 @@
 #include "role.h"
 using namespace  jadmin;
 
-Role::Role(const JAdminContextPtr &context_): BaseService(context_)
+Role::Role(const JAdminContextPtr &context_): context(context_)
 {
 
     t.m_table = sqlb::ObjectIdentifier("menu", "role", "m");

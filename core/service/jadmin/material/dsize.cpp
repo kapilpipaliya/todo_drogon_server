@@ -2,7 +2,7 @@
 #include "../../../strfns.h"
 using namespace  jadmin;
 
-DSize::DSize(const JAdminContextPtr &context_): BaseService(context_)
+DSize::DSize(const JAdminContextPtr &context_): context(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("material", "diamond_size_meta", "sm");
 

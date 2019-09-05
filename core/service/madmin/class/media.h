@@ -5,7 +5,10 @@
 #include <string>
 using std::string;
 using std::vector;
-#include "../baseservice.h"
+#include "../../baseserviceabs.h"
+#include "../../../../wscontroller/context/madmincontext.h"
+
+typedef std::shared_ptr<MAdminContext> MAdminContextPtr;
 namespace madmin {
 /**
  * media Interface
@@ -14,8 +17,9 @@ namespace madmin {
  * work, this lists all required functions and the expected
  * input
  */
-class Media : public BaseService
+class Media : public BaseServiceAbs
 {
+    MAdminContextPtr context;
 public:
     Media(const MAdminContextPtr &);
     void setupTable() override;

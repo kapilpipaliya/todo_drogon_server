@@ -1,6 +1,6 @@
 #include "stats.h"
 using namespace  madmin;
-Stats::Stats(const MAdminContextPtr &context_): BaseService(context_)
+Stats::Stats(const MAdminContextPtr &context_): context(context_)
 {
 
 }
