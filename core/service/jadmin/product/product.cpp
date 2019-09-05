@@ -859,7 +859,8 @@ void save_product_Attachments(const sqlb::ObjectIdentifier& post_attachment_tabl
         if (i[1].get<long>() == 0) {
             continue;
         }
-        inNewAttachments.push_back({i[0].get<long>(), i[1].get<long>(), i[2].get<long>(), i[3].get<bool>()});
+        auto ismain = i[3].is_null() ? false : i[3].get<bool>();
+        inNewAttachments.push_back({i[0].get<long>(), i[1].get<long>(), i[2].get<long>(), ismain});
     }
 
     auto all_ct = Dba::writeInTrans(transPtr, strSqlPostCategories, post_id);
@@ -881,8 +882,8 @@ void save_product_Attachments(const sqlb::ObjectIdentifier& post_attachment_tabl
             if (temp_id != 0) {
                 auto z = Dba::writeInTrans(transPtr, strSqlTempImage, temp_id);
                 if (z.size() == 1) {
-                    Dba::writeInTrans(transPtr, strSqlPostCategoryInsert, post_id, r.tone_id, z[0]["name"].c_str(), z[0]["size"].as<long>(),
-                                    z[0]["type"].c_str(), r.main_image);
+                    Dba::writeInTrans(transPtr, strSqlPostCategoryInsert, post_id, r.tone_id, z[0]["name"].as<std::string>(), z[0]["size"].as<long>(),
+                                    z[0]["type"].as<std::string>(), r.main_image);
                     Dba::writeInTrans(transPtr, strSqlTempImageDel, temp_id);
                 }
             }
@@ -893,8 +894,10 @@ void save_product_Attachments(const sqlb::ObjectIdentifier& post_attachment_tabl
                 if (temp_id != 0) {
                     auto z = Dba::writeInTrans(transPtr, strSqlTempImage, temp_id);
                     if (z.size() == 1) {
-                        Dba::writeInTrans(transPtr, strSqlPostCategoryUpdateAtt, y[0]["name"].as<std::string>(), r.tone_id, z[0]["size"].c_str(),
-                                        z[0]["type"].as<int>(), z[0][2].c_str(), r.main_image);
+                        auto name = z[0]["name"].as<std::string>();
+                        auto size = z[0]["size"].as<long>();
+                        auto type = z[0]["type"].as<std::string>();
+                        Dba::writeInTrans(transPtr, strSqlPostCategoryUpdateAtt, r.id, r.tone_id, name, size, type, r.main_image);
                         Dba::writeInTrans(transPtr, strSqlTempImageDel, temp_id);
                     }
                 } else {

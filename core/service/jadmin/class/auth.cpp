@@ -237,7 +237,7 @@ json Auth::save_setting_attachment(const json&  /*event*/, std::string &message)
     auto transPtr = clientPtr->newTransaction();
     try {
         auto r = Dba::writeInTrans(transPtr, strSql, session_id);
-        Dba::writeInTrans(transPtr, dele_("music.temp_file_meta", "where session_id = $1 and event = $2"), session_id, r[0]["event"].as<std::string>());
+        Dba::writeInTrans(transPtr, dele_("user1.temp_image", "where session_id = $1 and event = $2"), session_id, r[0]["event"].as<std::string>());
 
         // check if file exist else rename a file
         // convert this to json

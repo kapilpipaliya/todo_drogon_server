@@ -8,9 +8,9 @@ using namespace  jadmin;
 
 #define ids2(s, array)\
 std::string array = "{";\
-for (auto i : (s)) { (array) += std::to_string(i["id"].as<long>()) + ","; }\
-if((s).size() > 0) (array).pop_back();(\
-arr)ay += "}";
+for (auto i : (s)) { array += std::to_string(i["id"].as<long>()) + ","; }\
+if((s).size() > 0) array.pop_back();\
+array += "}";
 
 Purity::Purity(JAdminContextPtr context_): context(std::move(context_))
 {

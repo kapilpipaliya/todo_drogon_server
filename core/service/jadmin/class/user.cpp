@@ -146,7 +146,9 @@ void User::get_valid_users()
 bool User::is_logged_in()
 {
     //auto sql = "SELECT id,ip FROM session WHERE username=1 AND expire > now()";
-    return context->current_session_id != 0;:string User::get_password()
+    return context->current_session_id != 0;
+}
+string User::get_password()
 {
     auto sql        = "SELECT * FROM music.user WHERE id = $1";
     try {
