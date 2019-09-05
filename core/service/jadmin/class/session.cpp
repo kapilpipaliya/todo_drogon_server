@@ -1,24 +1,24 @@
 #include "./session.h"
 #include "../../dba.h"
 
-madmin::Session::Session(const MAdminContextPtr &context_): BaseService(context_)
+jadmin::Session::Session(const JAdminContextPtr &context_): BaseService(context_)
 {
 
 }
 
-void madmin::Session::setupTable()
+void jadmin::Session::setupTable()
 {
 
 }
 
-bool madmin::Session::destroy(long key)
+bool jadmin::Session::destroy(long key)
 {
     if (!key) { // !key.empty()
         return false;
     }
 
     // Remove anything and EVERYTHING
-    std::string sql = "DELETE FROM music.session WHERE id = $1";
+    std::string sql = "DELETE FROM user1.session WHERE id = $1";
     auto r = Dba::write(sql, key);
     if(r.affectedRows() == 1){ return true; } else { return false;}
 

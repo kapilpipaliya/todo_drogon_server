@@ -108,7 +108,6 @@ private:
 
 
    static std::tuple<long, long>    adminLogin(std::string username, std::string password, bool allow_ui = false);
-    json adminLogout(json event, json args);
     json isAdminAuth(json event, json args);
 
     //json userRegister(json event, json args);

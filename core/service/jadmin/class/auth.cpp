@@ -4,7 +4,7 @@
 #include "spdlogfix.h"
 #include "../../../sql/query.h"
 #include "../../../../wscontroller/wsfns.h"
-
+#include "session.h"
 using namespace  jadmin;
 using nlohmann:: json;
 Auth::Auth(const JAdminContextPtr &context_): BaseService(context_)
@@ -36,13 +36,21 @@ json Auth::handleEvent(json event, unsigned long next, json args)
         }
         return  {simpleJsonSaveResult(event, false, "Error")};
     } else if (event_cmp  == "admin_logout") {
-        return adminLogout(event, args);
+        auto r = logout();
+        if(r){
+            return {simpleJsonSaveResult(event, true, "Done")};
+        }
+        return {simpleJsonSaveResult(event, false, "UnAuthorised")};
     } else if (event_cmp  == "is_admin_auth") {
         return isAdminAuth(event, args);
 //    } else if (event_cmp  == "user_login") {
 //        return userLogin(event, args);
-//    } else if (event_cmp  == "user_logout") {
-//        return userLogout(event, args);
+    } else if (event_cmp  == "user_logout") {
+        auto r = logout();
+        if(r){
+            return {simpleJsonSaveResult(event, true, "Done")};
+        }
+        return {simpleJsonSaveResult(event, false, "UnAuthorised")};
 //    } else if (event_cmp  == "is_user_auth") {
 //        return isUserAuth(event, args);
 //    } else if (event_cmp  == "user_register") {
@@ -76,40 +84,6 @@ json Auth::saveFileMeta(json event, json args)
        SPDLOG_TRACE(e.what());
         json ret; ret[0] = simpleJsonSaveResult(event, false, "Error"); return ret;
     }
-}
-
-bool Auth::logout(long key,[[maybe_unused]] bool relogin)
-{
-    // If no key is passed try to find the session id
-    key = key ? key : context->current_session_id;
-
-    // Nuke the cookie before all else
-//    auto r = Session::destroy(key);
-//    if(r){
-//        context->current_session_id = 0;
-//        return true;
-//    }
-    //if ((!relogin) && AmpConfig::get('logout_redirect')) {
-        //target = AmpConfig::get('logout_redirect');
-    //} else {
-        //target = AmpConfig::get('web_path') . '/login.php';
-    //}
-
-    // Do a quick check to see if this is an AJAXed logout request
-    // if so use the iframe to redirect
-    //if (defined('AJAX_INCLUDE')) {
-        //ob_end_clean();
-        //ob_start();
-
-        //xoutput_headers();
-
-        //results            = array();
-        //results['rfc3514'] = '<script type="text/javascript">reloadRedirect("' . target . '")</script>';
-        //echo xoutput_from_array(results);
-    //} else {
-        /* Redirect them to the login page */
-        //header('Location: ' . target);
-    //}
 }
 
 std::tuple<long, long> Auth::login(std::string username, std::string password, [[maybe_unused]]bool allow_ui)
@@ -151,6 +125,40 @@ void Auth::deleteAdminSession() {
             SPDLOG_TRACE(e.what());
         }
     }
+}
+
+bool Auth::logout(long key, bool relogin)
+{
+    // If no key is passed try to find the session id
+    key = key ? key : context->current_session_id;
+
+    // Nuke the cookie before all else
+    auto r = Session::destroy(key);
+    if(r){
+        context->current_session_id = 0;
+        return true;
+    }
+    //if ((!relogin) && AmpConfig::get('logout_redirect')) {
+        //target = AmpConfig::get('logout_redirect');
+    //} else {
+        //target = AmpConfig::get('web_path') . '/login.php';
+    //}
+
+    // Do a quick check to see if this is an AJAXed logout request
+    // if so use the iframe to redirect
+    //if (defined('AJAX_INCLUDE')) {
+        //ob_end_clean();
+        //ob_start();
+
+        //xoutput_headers();
+
+        //results            = array();
+        //results['rfc3514'] = '<script type="text/javascript">reloadRedirect("' . target . '")</script>';
+        //echo xoutput_from_array(results);
+    //} else {
+        /* Redirect them to the login page */
+        //header('Location: ' . target);
+    //}
 }
 /*
 void Auth::deleteuserSession() {
@@ -205,11 +213,7 @@ std::tuple<long, long> Auth::adminLogin(std::string username, std::string passwo
     }
     return {session_id, user_id};
 }
-json Auth::adminLogout( json event, json )
-{
-    deleteAdminSession();
-    json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
-}
+
 json Auth::isAdminAuth( json event, json )
 {
     json ret = {{event}};

@@ -1,14 +1,7 @@
 #include "dba.h"
 #include "spdlogfix.h"
-using namespace  madmin;
-Dba::Dba(const MAdminContextPtr &context_): BaseService(context_)
+Dba::Dba()
 {
-
-}
-
-void Dba::setupTable()
-{
-
 }
 
 drogon::orm::Result Dba::read(std::string sql)
@@ -30,7 +23,7 @@ nlohmann::json Dba::readJson(std::string sql)
     return j;
 }
 
-unsigned long Dba::num_rows(Result &resource)
+unsigned long Dba::num_rows(drogon::orm::Result &resource)
 {
     //if (resource) {
         //auto result = resource.size();

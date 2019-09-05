@@ -15,7 +15,6 @@
 #include "core/service/madmin/class/browse.h"
 #include "core/service/madmin/class/catalog.h"
 #include "core/service/madmin/class/config.h"
-#include "core/service/madmin/class/dba.h"
 #include "core/service/madmin/class/label.h"
 #include "core/service/madmin/class/localplaybase.h"
 #include "core/service/madmin/class/localplay.h"

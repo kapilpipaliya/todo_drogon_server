@@ -1,5 +1,5 @@
 #include "catalog.h"
-#include "dba.h"
+#include "../../dba.h"
 using namespace  madmin;
 Catalog::Catalog(const MAdminContextPtr &context_): BaseService(context_)
 {

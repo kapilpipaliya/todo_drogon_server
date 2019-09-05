@@ -67,18 +67,8 @@
 
 using namespace jadmin;
 
-#define REGISTER(s, T)\
-    else if (in[0][0].get<std::string>()==s){\
-    auto contx = wsConnPtr->getContext<JAdminContext>();\
-    T p{contx};\
-    auto r = p.handleEvent(in[0], 1, in[1]);\
-    if(!r.is_null())\
-    return r;\
-    }
-
 JUserActor::JUserActor(caf::actor_config &cfg) : caf::event_based_actor(cfg)
 {
-
 }
 
 caf::behavior JUserActor::make_behavior()
@@ -94,6 +84,14 @@ caf::behavior JUserActor::make_behavior()
         }
     };
 }
+#define REGISTER(s, T)\
+    else if (in[0][0].get<std::string>()==s){\
+    auto contx = wsConnPtr->getContext<JAdminContext>();\
+    T p{contx};\
+    auto r = p.handleEvent(in[0], 1, in[1]);\
+    if(!r.is_null())\
+    return r;\
+    }
 
 nlohmann::json JUserActor::handleTextMessage(const WebSocketConnectionPtr &wsConnPtr, nlohmann::json in)
 {
@@ -103,6 +101,7 @@ nlohmann::json JUserActor::handleTextMessage(const WebSocketConnectionPtr &wsCon
 
     if constexpr (false){
     }
+    REGISTER("auth", Auth)
     REGISTER("account_type", AccountType)
     REGISTER("account", Account)
     REGISTER("account_heading", AccountHeading)
