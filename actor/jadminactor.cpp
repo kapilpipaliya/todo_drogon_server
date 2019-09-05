@@ -64,6 +64,7 @@
 #include "core/service/jadmin/setting/support.h"
 
 #include "core/service/jadmin/class/auth.h"
+#include "core/service/jadmin/class/user.h"
 
 using namespace jadmin;
 
@@ -103,6 +104,7 @@ json JAdminActor::handleTextMessage(const WebSocketConnectionPtr &wsConnPtr,  js
     if constexpr (false){
     }
     REGISTER("auth", Auth)
+    REGISTER("user", User)
     REGISTER("account_type", AccountType)
     REGISTER("account", Account)
     REGISTER("account_heading", AccountHeading)

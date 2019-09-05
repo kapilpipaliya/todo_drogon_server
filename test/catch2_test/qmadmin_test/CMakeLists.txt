@@ -5,7 +5,7 @@ find_package(Threads REQUIRED)
 find_package(ZLIB REQUIRED)
 #find_package (UUID REQUIRED)
 find_package(PostgreSQL REQUIRED)
-find_package(Drogon CONFIG REQUIRED)
+#find_package(Drogon CONFIG REQUIRED)
 include_directories(${DROGON_INCLUDE_DIRS})
 find_package(fmt REQUIRED)
 find_package(Catch2 REQUIRED)
@@ -34,7 +34,7 @@ target_link_libraries(qmadmin_test test_base Catch2::Catch2
   ZLIB::ZLIB
   # ${UUID_LIBRARY}
   PostgreSQL::PostgreSQL
-  ${DROGON_LIBRARIES}
+#  ${DROGON_LIBRARIES}
   fmt::fmt
   Poco::Foundation
   libwsclient

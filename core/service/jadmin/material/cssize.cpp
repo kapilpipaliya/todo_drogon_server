@@ -1,4 +1,5 @@
 #include "cssize.h"
+#include "../../dba.h"
 #include "../../../strfns.h"
 
 using namespace  jadmin;
@@ -79,23 +80,23 @@ json CSSize::ins( json event, json args) {
     try {
         auto clientPtr = drogon::app().getDbClient("sce");
         auto transPtr = clientPtr->newTransaction();
-        int size_id;
-        auto r = transPtr->execSqlSync(strSqlSizeSel, size_name);
+        long size_id;
+        auto r = Dba::writeInTrans(transPtr, strSqlSizeSel, size_name);
         if (r.size() == 0) { // insert
-            auto r1 = transPtr->execSqlSync(strSqlSizeIns, size_name);
-            size_id = r1[0]["id"].as<int>();
+            auto r1 = Dba::writeInTrans(transPtr, strSqlSizeIns, size_name);
+            size_id = r1[0]["id"].as<long>();
         } else {
-            size_id = r[0]["id"].as<int>();
+            size_id = r[0]["id"].as<long>();
         }
 
 
-        transPtr->execSqlSync(
+        Dba::writeInTrans(transPtr, 
             strSql,
-            args[0]["cs_type_id"].get<int>(),
-            args[0]["shape_id"].get<int>(),
+            args[0]["cs_type_id"].get<long>(),
+            args[0]["shape_id"].get<long>(),
             size_id,
             args[0]["weight"].get<float>(),
-            args[0]["currency_id"].get<int>(),
+            args[0]["currency_id"].get<long>(),
             args[0]["rate_on_id"].get<std::string>(),
             args[0]["rate"].get<float>()
             );
@@ -104,30 +105,30 @@ json CSSize::ins( json event, json args) {
         //copy
         // update product weight and price:..
         struct ProductUpdate {
-            int postId;
+            long postId;
         };
         std::vector<ProductUpdate> productUpdate;
 
-        auto s = transPtr->execSqlSync(strSqlSizeGet, args[0]["cs_type_id"].get<int>(), args[0]["shape_id"].get<int>(), size_id);
+        auto s = Dba::writeInTrans(transPtr, strSqlSizeGet, args[0]["cs_type_id"].get<long>(), args[0]["shape_id"].get<long>(), size_id);
         for (auto prow : s) {
             auto w = args[0]["weight"].get<float>();
             auto rate = args[0]["rate"].get<float>();
             auto pcs = prow[1].as<int>();
-            transPtr->execSqlSync(strSqlPriceUpdate, prow["cs_id"].as<int>(), w, w * pcs, rate, pcs * w * rate);
+            Dba::writeInTrans(transPtr, strSqlPriceUpdate, prow["cs_id"].as<long>(), w, w * pcs, rate, pcs * w * rate);
             std::vector<ProductUpdate>::iterator it = std::find_if(productUpdate.begin(), productUpdate.end(),
                                                                    [&](ProductUpdate t) {
-                                                                       return t.postId == prow[2].as<int>();
+                                                                       return t.postId == prow[2].as<long>();
                                                                    });
             if (it == productUpdate.end()) {// Element not Found
-                productUpdate.push_back({prow[2].as<int>()});
+                productUpdate.push_back({prow[2].as<long>()});
             } else {
 
             }
         }
 
         for (auto p : productUpdate) {
-            auto rsum = transPtr->execSqlSync(q, p.postId);
-            transPtr->execSqlSync(pc, p.postId, rsum[0]["sum_weight"].as<double>(), rsum[0]["sum_price"].as<double>());
+            auto rsum = Dba::writeInTrans(transPtr, q, p.postId);
+            Dba::writeInTrans(transPtr, pc, p.postId, rsum[0]["sum_weight"].as<double>(), rsum[0]["sum_price"].as<double>());
         }
 
         
@@ -171,62 +172,62 @@ json CSSize::upd( json event, json args) {
         auto clientPtr = drogon::app().getDbClient("sce");
         auto transPtr = clientPtr->newTransaction();
         try {
-            int size_id;
-            auto r = transPtr->execSqlSync(strSqlSizeSel, size_name);
+            long size_id;
+            auto r = Dba::writeInTrans(transPtr, strSqlSizeSel, size_name);
             if (r.size() == 0) { // insert
-                auto r1 = transPtr->execSqlSync(strSqlSizeIns, size_name);
-                size_id = r1[0]["id"].as<int>();
+                auto r1 = Dba::writeInTrans(transPtr, strSqlSizeIns, size_name);
+                size_id = r1[0]["id"].as<long>();
             } else {
-                size_id = r[0]["id"].as<int>();
+                size_id = r[0]["id"].as<long>();
             }
 
-            auto old_row = transPtr->execSqlSync(strSqlSizeId, args[0]["id"].get<long>());
-            int old_size_id = old_row[0]["id"].as<int>();
+            auto old_row = Dba::writeInTrans(transPtr, strSqlSizeId, args[0]["id"].get<long>());
+            long old_size_id = old_row[0]["size_id"].as<long>();
 
-            transPtr->execSqlSync(strSql,
+            Dba::writeInTrans(transPtr, strSql,
                             args[0]["id"].get<long>(),
-                    args[0]["cs_type_id"].get<int>(),
-                    args[0]["shape_id"].get<int>(),
+                    args[0]["cs_type_id"].get<long>(),
+                    args[0]["shape_id"].get<long>(),
                     size_id,
                     args[0]["weight"].get<float>(),
-                    args[0]["currency_id"].get<int>(),
+                    args[0]["currency_id"].get<long>(),
                     args[0]["rate_on_id"].get<std::string>(),
                     args[0]["rate"].get<float>()
                     );
             // If old size count = 0, delete size:
-            auto r3 = transPtr->execSqlSync(strSqlSizeCount, old_size_id);
-            auto r4 = transPtr->execSqlSync(strSqlColorSizeCount, old_size_id);
-            if (r3[0]["count"].as<int>() == 0 && r4[0]["count"].as<int>() == 0) {
-                transPtr->execSqlSync(strSqlSizeDel, old_size_id);
+            auto r3 = Dba::writeInTrans(transPtr, strSqlSizeCount, old_size_id);
+            auto r4 = Dba::writeInTrans(transPtr, strSqlColorSizeCount, old_size_id);
+            if (r3[0]["count"].as<long>() == 0 && r4[0]["count"].as<long>() == 0) {
+                Dba::writeInTrans(transPtr, strSqlSizeDel, old_size_id);
             }
 
             // update product weight and price:..
             struct ProductUpdate {
-                int postId;
+                long postId;
             };
             std::vector<ProductUpdate> productUpdate;
 
-            auto s = transPtr->execSqlSync(strSqlSizeGet, args[0]["cs_type_id"].get<int>(), args[0]["shape_id"].get<int>(), size_id);
+            auto s = Dba::writeInTrans(transPtr, strSqlSizeGet, args[0]["cs_type_id"].get<long>(), args[0]["shape_id"].get<long>(), size_id);
             for (auto prow : s) {
                 auto w = args[0]["weight"].get<float>();
                 auto rate = args[0]["rate"].get<float>();
                 auto pcs = prow[1].as<int>();
-                transPtr->execSqlSync(strSqlPriceUpdate, prow["cs_id"].as<int>(), w, w * pcs, rate, pcs * w * rate);
+                Dba::writeInTrans(transPtr, strSqlPriceUpdate, prow["cs_id"].as<long>(), w, w * pcs, rate, pcs * w * rate);
                 // Get all post_ids:
                 std::vector<ProductUpdate>::iterator it = std::find_if(productUpdate.begin(), productUpdate.end(),
                                                                        [&](ProductUpdate t) {
-                        return t.postId == prow[2].as<int>();
+                        return t.postId == prow[2].as<long>();
                 });
                 if (it == productUpdate.end()) {// Element not Found
-                    productUpdate.push_back({prow[2].as<int>()});
+                    productUpdate.push_back({prow[2].as<long>()});
                 } else {
 
                 }
             }
 
             for (auto p : productUpdate) {
-                auto rsum = transPtr->execSqlSync(q, p.postId);
-                transPtr->execSqlSync(pc, p.postId, rsum[0]["sum_weight"].as<double>(), rsum[0]["sum_price"].as<double>());
+                auto rsum = Dba::writeInTrans(transPtr, q, p.postId);
+                Dba::writeInTrans(transPtr, pc, p.postId, rsum[0]["sum_weight"].as<double>(), rsum[0]["sum_price"].as<double>());
             }
 
             
@@ -245,19 +246,19 @@ json CSSize::del( json event, json args) {
     auto transPtr = clientPtr->newTransaction();
     try {
         auto get_row = "SELECT id, size_id FROM material.color_stone_size_meta where id = $1";
-        auto id = args[0][0].get<int>();
-        auto r = transPtr->execSqlSync(get_row, id);
+        auto id = args[0][0].get<long>();
+        auto r = Dba::writeInTrans(transPtr, get_row, id);
 
-        transPtr->execSqlSync("DELETE FROM " "material.color_stone_size_meta" " WHERE id = $1", id);
+        Dba::writeInTrans(transPtr, "DELETE FROM " "material.color_stone_size_meta" " WHERE id = $1", id);
 
         auto d_size_count = "SELECT count(*) FROM material.diamond_size_meta where size_id = $1";
         auto cs_size_count = "SELECT count(*) FROM material.color_stone_size_meta where size_id = $1";
 
-        auto size_id = r[0][1].as<int>();
-        auto c1 = transPtr->execSqlSync(d_size_count, size_id);
-        auto c2 = transPtr->execSqlSync(cs_size_count, size_id);
-        if (c1[0]["count"].as<int>() == 0 && c2[0]["count"].as<int>() == 0) {
-            transPtr->execSqlSync("DELETE FROM " "material.size" " WHERE id = $1", size_id);
+        auto size_id = r[0][1].as<long>();
+        auto c1 = Dba::writeInTrans(transPtr, d_size_count, size_id);
+        auto c2 = Dba::writeInTrans(transPtr, cs_size_count, size_id);
+        if (c1[0]["count"].as<long>() == 0 && c2[0]["count"].as<long>() == 0) {
+            Dba::writeInTrans(transPtr, "DELETE FROM " "material.size" " WHERE id = $1", size_id);
         }
         
         json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;

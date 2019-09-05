@@ -12,7 +12,6 @@ public:
     void setupTable() override;
     json handleEvent(json event, unsigned long next, json args) override;
     json handleBinaryEvent(json event, int next, std::string &message);
-    void deleteAdminSession();
     //void deleteuserSession();
         /**
          * logout
@@ -107,23 +106,9 @@ private:
          */
        //void openid_auth_2();
     json saveFileMeta(json event, json args);
-
-
-
-   static std::tuple<long, long>    adminLogin(std::string username, std::string password, bool allow_ui = false);
-    json isAdminAuth(json event, json args);
-
-    //json userRegister(json event, json args);
-   // json userLogin(json event, json args);
-    //json userId(json event, json args);
-   // json userLogout(json event, json args);
-   // json isUserAuth(json event, json args);
-   // json checkout(json event, json args);
     json saveImageMeta(json event, json args);
-
    // json thumb_data( json event, json args);
     //Binary functin:
     json save_setting_attachment(json event, std::string &message);
-
 };
 }

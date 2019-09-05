@@ -1,5 +1,6 @@
 #include "txn.h"
 using namespace  jadmin;
+#include "../../dba.h"
 
 Txn::Txn(const JAdminContextPtr &context_): context(context_)
 {
@@ -92,11 +93,11 @@ json Txn::del(const json event, const json args) {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     try {
-        auto txn_id = args[0][0].get<int>();
+        auto txn_id = args[0][0].get<long>();
         auto txn_del = "DELETE FROM account.txn WHERE id = $1";
         auto order_item_del = "DELETE FROM order1.order_item WHERE txn_id = $1";
-        transPtr->execSqlSync(order_item_del, txn_id);
-        transPtr->execSqlSync(txn_del, txn_id);
+        Dba::writeInTrans(transPtr, order_item_del, txn_id);
+        Dba::writeInTrans(transPtr, txn_del, txn_id);
 
         json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
@@ -104,7 +105,7 @@ json Txn::del(const json event, const json args) {
         json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
 }
-void save_txn_order_item(json &args, std::shared_ptr<Transaction> transPtr, int txn_id) {
+void save_txn_order_item(json &args, std::shared_ptr<Transaction> transPtr, long txn_id) {
     std::string strSqlPostCategories = "SELECT id, post_id, pcs, purity_id, tone_id, clarity_id, price, instruction FROM order1.order_item where txn_id = $1";
     std::string strSqlPostCategorySimpleFind = "SELECT id, txn_id, post_id, pcs, purity_id, tone_id, clarity_id, price, instruction FROM order1.order_item WHERE id = $1";
     std::string strSqlPostCategoryDel = "DELETE FROM order1.order_item WHERE id = $1";
@@ -112,42 +113,42 @@ void save_txn_order_item(json &args, std::shared_ptr<Transaction> transPtr, int 
     std::string strSqlPostCategoryUpdateAtt = "UPDATE order1.order_item SET (txn_id, post_id, pcs, purity_id, tone_id, clarity_id, price, instruction) = ROW($2, $3, $4, $5, $6, $7, $8, $9) WHERE id = $1;";
 
     struct OrderItem {
-        int id;
-        int post_id;
+        long id;
+        long post_id;
         int pcs;
-        int purity_id;
-        int tone_id;
-        int clarity_id;
+        long purity_id;
+        long tone_id;
+        long clarity_id;
         double price;
         std::string instruction;
     };
     std::vector<OrderItem> newItems; // id Shape	Color	Size	Pcs
     for (auto i : args[0]["o_i_order_item"]) {
         if (!i[1].is_null()) { // to pass null row
-            newItems.push_back({i[0].get<int>(), i[1].get<int>(), i[2].get<int>(), i[3].get<int>(), i[4].get<int>(), i[5].get<int>(), i[6].get<float>(), i[7].get<std::string>()});
+            newItems.push_back({i[0].get<long>(), i[1].get<long>(), i[2].get<int>(), i[3].get<long>(), i[4].get<long>(), i[5].get<long>(), i[6].get<float>(), i[7].get<std::string>()});
         }
     }
 
-    auto all_ct = transPtr->execSqlSync(strSqlPostCategories, txn_id);
+    auto all_ct = Dba::writeInTrans(transPtr, strSqlPostCategories, txn_id);
     // For each saved attachments, If it not exist in new attachments, delete it.
     for (auto r : all_ct) {
         std::vector<OrderItem>::iterator it = std::find_if(newItems.begin(), newItems.end(),
                                                            [&](OrderItem t) {
-                                                               return t.id == r["id"].as<int>();
+                                                               return t.id == r["id"].as<long>();
                                                            });
         if (it == newItems.end()) {// Element not Found
-            transPtr->execSqlSync("DELETE FROM order1.order_item WHERE id = $1", r["id"].as<int>());
-            transPtr->execSqlSync(strSqlPostCategoryDel, r["id"].as<int>());
+            Dba::writeInTrans(transPtr, "DELETE FROM order1.order_item WHERE id = $1", r["id"].as<long>());
+            Dba::writeInTrans(transPtr, strSqlPostCategoryDel, r["id"].as<long>());
         }
     }
     // For each new attachments, insert it if it not already exist.
     for (auto r : newItems) {
-        auto y = transPtr->execSqlSync(strSqlPostCategorySimpleFind, r.id);
+        auto y = Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind, r.id);
         if (y.size() == 0) { // insert
-            auto i = transPtr->execSqlSync(strSqlPostCategoryInsert, txn_id, r.post_id, r.pcs, r.purity_id, r.tone_id, r.clarity_id, r.price, r.instruction);
+            auto i = Dba::writeInTrans(transPtr, strSqlPostCategoryInsert, txn_id, r.post_id, r.pcs, r.purity_id, r.tone_id, r.clarity_id, r.price, r.instruction);
         } else { // update
-            if (y[0][1].as<int>() != txn_id || y[0][2].as<int>() != r.post_id || y[0][3].as<int>() != r.pcs || y[0][4].as<int>() != r.purity_id || y[0][5].as<int>() != r.tone_id || y[0][6].as<int>() != r.clarity_id || y[0][7].as<double>() != r.price || y[0][8].c_str() != r.instruction) {
-                transPtr->execSqlSync(strSqlPostCategoryUpdateAtt, r.id, txn_id,  r.post_id, r.pcs, r.purity_id, r.tone_id, r.clarity_id, r.price, r.instruction);
+            if (y[0][1].as<long>() != txn_id || y[0][2].as<long>() != r.post_id || y[0][3].as<int>() != r.pcs || y[0][4].as<long>() != r.purity_id || y[0][5].as<long>() != r.tone_id || y[0][6].as<long>() != r.clarity_id || y[0][7].as<double>() != r.price || y[0][8].c_str() != r.instruction) {
+                Dba::writeInTrans(transPtr, strSqlPostCategoryUpdateAtt, r.id, txn_id,  r.post_id, r.pcs, r.purity_id, r.tone_id, r.clarity_id, r.price, r.instruction);
             }
         }
     }
@@ -164,11 +165,11 @@ json Txn::ins( json event, json args) {
         auto clientPtr = drogon::app().getDbClient("sce");
         auto transPtr = clientPtr->newTransaction();
         auto x =
-            transPtr->execSqlSync(strSqlPost,
-                            args[0]["journal_type_id"].get<int>(), args[0]["party_id"].get<int>(), args[0]["date"].get<std::string>(),
+            Dba::writeInTrans(transPtr, strSqlPost,
+                            args[0]["journal_type_id"].get<long>(), args[0]["party_id"].get<long>(), args[0]["date"].get<std::string>(),
                             args[0]["description"].get<std::string>()
                             );
-        auto txn_id = x[0]["id"].as<int>();
+        auto txn_id = x[0]["id"].as<long>();
         save_txn_order_item(args, transPtr, txn_id);
 
         json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
@@ -186,9 +187,9 @@ json Txn::upd( json event, json args) {
         try {
             auto clientPtr = drogon::app().getDbClient("sce");
             auto transPtr = clientPtr->newTransaction();
-            transPtr->execSqlSync(strSqlPost,
+            Dba::writeInTrans(transPtr, strSqlPost,
                             args[0]["id"].get<long>(),
-                    args[0]["journal_type_id"].get<int>(), args[0]["party_id"].get<int>(), args[0]["date"].get<std::string>(),
+                    args[0]["journal_type_id"].get<long>(), args[0]["party_id"].get<long>(), args[0]["date"].get<std::string>(),
                     args[0]["description"].get<std::string>()
                     );
             auto txn_id = args[0]["id"].get<long>();

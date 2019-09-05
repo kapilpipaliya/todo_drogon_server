@@ -1,4 +1,5 @@
 #include "song.h"
+#include "../../dba.h"
 #include <boost/filesystem.hpp>
 using namespace  madmin;
 typedef sqlb::SelectedColumn S;
@@ -134,8 +135,8 @@ nlohmann::json Song::save_song_binary([[maybe_unused]]nlohmann::json event, std:
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     try {
-        auto r = transPtr->execSqlSync(strSql, session_id);
-        transPtr->execSqlSync(dele_("music.temp_file_meta", "where session_id = $1 and event = $2"), session_id, r[0]["event"].as<std::string>());
+        auto r = Dba::writeInTrans(transPtr, strSql, session_id);
+        Dba::writeInTrans(transPtr, dele_("music.temp_file_meta", "where session_id = $1 and event = $2"), session_id, r[0]["event"].as<std::string>());
 
         // check if file exist else rename a file
         // convert this to json
@@ -176,7 +177,7 @@ nlohmann::json Song::save_song_binary([[maybe_unused]]nlohmann::json event, std:
         json ret;
         json jresult;
         jresult[0] = event_json;
-        auto insert_result = transPtr->execSqlSync(strSql, name, size, type);
+        auto insert_result = Dba::writeInTrans(transPtr, strSql, name, size, type);
         jresult[1] = insert_result[0]["id"].as<long>();
         //jresult[1] = e.what();
         ret[0] = jresult;

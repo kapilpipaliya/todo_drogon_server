@@ -1,4 +1,5 @@
 #include "tag.h"
+#include "../../dba.h"
 #include "../../../strfns.h"
 using namespace  jadmin;
 
@@ -45,7 +46,7 @@ json Tag::ins( json event, json args) {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     try {
-        transPtr->execSqlSync(
+        Dba::writeInTrans(transPtr, 
             strSql,
             args[0]["slug"].get<std::string>(),
             args[0]["name"].get<std::string>(),
@@ -73,7 +74,7 @@ json Tag::upd( json event, json args) {
         auto clientPtr = drogon::app().getDbClient("sce");
         auto transPtr = clientPtr->newTransaction();
         try {
-            transPtr->execSqlSync(strSql,
+            Dba::writeInTrans(transPtr, strSql,
                             args[0]["id"].get<long>(),
                     args[0]["slug"].get<std::string>(),
                     args[0]["name"].get<std::string>(),

@@ -1,4 +1,5 @@
 #include "image.h"
+#include "../../dba.h"
 using namespace  jadmin;
 
 Image::Image(const JAdminContextPtr &context_): context(context_)
@@ -67,16 +68,16 @@ json Image::ins( json event, json args) {
     std::string strSqlTempImage = "SELECT name, size, type FROM setting.temp_image_id WHERE id = $1";
     std::string strSqlTempImageDel = "DELETE FROM setting.temp_image_id WHERE id = $1";
 
-    std::string strSql = "INSERT INTO " + t + " (" + c + ") values(NULLIF($1,0), $2, $3, $4, $5, $6, $7, $8)";
+    std::string strSql = "INSERT INTO " + t + " (" + c + ") values(NULLIF($1,0::bigint), $2, $3, $4, $5, $6, $7, $8)";
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     try {
-        auto temp_id = args[0]["temp_id"].get<int>();
+        auto temp_id = args[0]["temp_id"].get<long>();
         if (temp_id != 0) {
-            auto z = transPtr->execSqlSync(strSqlTempImage, temp_id);
+            auto z = Dba::writeInTrans(transPtr, strSqlTempImage, temp_id);
             if (z.size() == 1) {
-                transPtr->execSqlSync(strSql, args[0]["image_collection_id"].get<int>(), z[0]["name"].c_str(), z[0]["size"].as<int>(),z[0]["type"].c_str(), args[0]["title"].get<std::string>(), args[0]["description"].get<std::string>(), args[0]["url"].get<std::string>(), args[0]["position"].get<int>());
-                transPtr->execSqlSync(strSqlTempImageDel, temp_id);
+                Dba::writeInTrans(transPtr, strSql, args[0]["image_collection_id"].get<long>(), z[0]["name"].c_str(), z[0]["size"].as<long>(),z[0]["type"].c_str(), args[0]["title"].get<std::string>(), args[0]["description"].get<std::string>(), args[0]["url"].get<std::string>(), args[0]["position"].get<int>());
+                Dba::writeInTrans(transPtr, strSqlTempImageDel, temp_id);
             }
         } else {
             json ret; ret[0] = simpleJsonSaveResult(event, false, "Please Upload Image"); return ret;
@@ -99,19 +100,19 @@ json Image::upd( json event, json args) {
     std::string strSqlTempImageDel = "DELETE FROM setting.temp_image_id WHERE id = $1";
 
     if (args[0]["id"].get<long>()) {
-        std::string strSql = "update " + t + " set (" + c + ", version) = ROW(NULLIF($2, 0), $3, $4, $5, $6, $7, $8, $9, version + 1) where id=$1" ;
+        std::string strSql = "update " + t + " set (" + c + ", version) = ROW(NULLIF($2, 0::bigint), $3, $4, $5, $6, $7, $8, $9, version + 1) where id=$1" ;
         auto clientPtr = drogon::app().getDbClient("sce");
         auto transPtr = clientPtr->newTransaction();
         try {
-            auto temp_id = args[0]["temp_id"].get<long>();
+            auto temp_id = args[0]["temp_id"].is_null() ? 0 : args[0]["temp_id"].get<long>();
             if (temp_id != 0) {
-                auto z = transPtr->execSqlSync(strSqlTempImage, temp_id);
+                auto z = Dba::writeInTrans(transPtr, strSqlTempImage, temp_id);
                 if (z.size() == 1) {
-                    transPtr->execSqlSync(strSql, args[0]["id"].get<long>(), args[0]["image_collection_id"].get<long>(), z[0]["name"].c_str(), z[0]["size"].as<int>(),z[0]["type"].c_str(), args[0]["title"].get<std::string>(), args[0]["description"].get<std::string>(), args[0]["url"].get<std::string>(), args[0]["position"].get<int>());
-                    transPtr->execSqlSync(strSqlTempImageDel, temp_id);
+                    Dba::writeInTrans(transPtr, strSql, args[0]["id"].get<long>(), args[0]["image_collection_id"].get<long>(), z[0]["name"].c_str(), z[0]["size"].as<long>(),z[0]["type"].c_str(), args[0]["title"].get<std::string>(), args[0]["description"].get<std::string>(), args[0]["url"].get<std::string>(), args[0]["position"].get<int>());
+                    Dba::writeInTrans(transPtr, strSqlTempImageDel, temp_id);
                 }
             } else {
-                transPtr->execSqlSync("UPDATE setting.image SET (title, description, url, position, version) = ROW($2, $3, $4, $5, version + 1) WHERE id = $1", args[0]["id"].get<long>(), args[0]["title"].get<std::string>(), args[0]["description"].get<std::string>(), args[0]["url"].get<std::string>(), args[0]["position"].get<int>());
+                Dba::writeInTrans(transPtr, "UPDATE setting.image SET (title, description, url, position, version) = ROW($2, $3, $4, $5, version + 1) WHERE id = $1", args[0]["id"].get<long>(), args[0]["title"].get<std::string>(), args[0]["description"].get<std::string>(), args[0]["url"].get<std::string>(), args[0]["position"].get<int>());
             }
             
 

@@ -28,7 +28,7 @@ void SaveDelete::connectToServer()
                                    auto in = R"(
                                             [
                                              [["auth","admin_login",0],{{"user":"kapil.pipaliya@yahoo.com","pass":"3434"}}],
-                                             [["auth","is_admin_auth",0],[[]]],
+                                             [["user","is_logged_in",0],[[]]],
                                              [["{0}","ins",100],{1}],
                                              [["{0}","upd",100],{2}],
                                              [["{0}","del",1000],{3}]
@@ -71,7 +71,7 @@ void SaveDelete::setMessageHandler()
 
             REQUIRE(j[1][1]["admin"].is_number() == true);
 
-            // is_admin_auth == true
+            // is_logged_in == true
             REQUIRE(j[2][1] == true);
 
             // ins data:

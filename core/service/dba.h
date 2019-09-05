@@ -68,6 +68,16 @@ public:
       throw("Invalid Sql At Dba write");
     }
   }
+  template<class... Args>
+  static drogon::orm::Result writeInTrans(std::shared_ptr<drogon::orm::Transaction> transPtr, std::string sql, Args... args){
+    try {
+      auto r = transPtr->execSqlSync(sql, args...);
+      return r;
+    } catch (const std::exception &e) {
+      SPDLOG_TRACE(e.what());
+      throw("Invalid Sql At Dba write");
+    }
+  }
   /**
      * escape
      *

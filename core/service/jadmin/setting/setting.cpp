@@ -1,4 +1,5 @@
 #include "setting.h"
+#include "../../dba.h"
 using namespace  jadmin;
 
 Setting::Setting(const JAdminContextPtr &context_): context(context_)
@@ -52,7 +53,7 @@ json Setting::del( json event, json args)
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     try {
-        auto res = transPtr->execSqlSync("DELETE FROM setting.setting WHERE key = $1", args[0][0].get<std::string>());
+        auto res = Dba::writeInTrans(transPtr, "DELETE FROM setting.setting WHERE key = $1", args[0][0].get<std::string>());
         if (res.size() > 1){
             throw("not valid arguments");
         }
@@ -67,13 +68,13 @@ json Setting::save( json event, json args) {
     // check if key exist
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
-    auto y = transPtr->execSqlSync("select key from setting.setting where key = $1", args[0]["key"].get<std::string>());
+    auto key = args[0]["key"].get<std::string>();
+    auto y = Dba::writeInTrans(transPtr, "select key from setting.setting where key = $1", key);
     
     if (y.size() != 0) {
         std::string strSql = "update setting.setting set (value_int, value_num, value_text) = ROW($2, $3, $4) where key=$1";
-        auto transPtr = clientPtr->newTransaction();
         try {
-            transPtr->execSqlSync(strSql, args[0]["key"].get<std::string>(), args[0]["value_int"].get<int>(), args[0]["value_num"].get<float>(), args[0]["value_text"].get<std::string>());
+            Dba::writeInTrans(transPtr, strSql, args[0]["key"].get<std::string>(), args[0]["value_int"].get<int>(), args[0]["value_num"].get<float>(), args[0]["value_text"].get<std::string>());
             
             json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {
@@ -83,9 +84,8 @@ json Setting::save( json event, json args) {
         }
     } else {
         std::string strSql = "INSERT INTO setting.setting (key, value_int, value_num, value_text, setting_type, setting) values($1, $2, $3, $4, $5, $6)";
-        auto transPtr = clientPtr->newTransaction();
         try {
-            transPtr->execSqlSync(strSql, args[0]["key"].get<std::string>(), args[0]["value_int"].get<int>(), args[0]["value_num"].get<float>(), args[0]["value_text"].get<std::string>(), args[0]["setting_type"].get<std::string>(), args[0]["setting"].dump());
+            Dba::writeInTrans(transPtr, strSql, args[0]["key"].get<std::string>(), args[0]["value_int"].get<int>(), args[0]["value_num"].get<float>(), args[0]["value_text"].get<std::string>(), args[0]["setting_type"].get<std::string>(), args[0]["setting"].dump());
             
             json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
         } catch (const std::exception &e) {

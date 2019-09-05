@@ -1,7 +1,7 @@
 #include "baseserviceabs.h"
 
 #include "../sql/query.h"
-
+#include "dba.h"
 
 json BaseServiceAbs::handleEvent(json event, unsigned long next, json args)
 {
@@ -91,12 +91,12 @@ json BaseServiceAbs::del(json event, json args)
         auto transPtr = clientPtr->newTransaction();
         setupTable();
         t.updateFilterBase(args[0]);
-        auto res = transPtr->execSqlSync(t.m_query.buildDeleteQuery());
+        auto res = Dba::writeInTrans(transPtr, t.m_query.buildDeleteQuery());
         if (res.size() > 1){
             throw("not valid arguments");
         }
         // affected rows should be returned too.
-        //transPtr->execSqlSync("DELETE FROM " + t.m_table.toDisplayString() + " WHERE id = $1", args[0]);
+        //Dba::writeInTrans(transPtr, "DELETE FROM " + t.m_table.toDisplayString() + " WHERE id = $1", args[0]);
         json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
        SPDLOG_TRACE(e.what());
@@ -114,9 +114,9 @@ nlohmann::json BaseServiceAbs::count(nlohmann::json event, nlohmann::json args)
         t.updateSortBase(args[1]);
         t.updatePaginationBase(args[2]);
         //SPDLOG_TRACE(t.m_query.buildCountQuery());
-        auto res = transPtr->execSqlSync(t.m_query.buildCountQuery());
+        auto res = Dba::writeInTrans(transPtr, t.m_query.buildCountQuery());
         // affected rows should be returned too.
-        //transPtr->execSqlSync("DELETE FROM " + t.m_table.toDisplayString() + " WHERE id = $1", args[0]);
+        //Dba::writeInTrans(transPtr, "DELETE FROM " + t.m_table.toDisplayString() + " WHERE id = $1", args[0]);
         json ret; ret[0] = json::array({event, res[0]["count"].as<long>()}); return  ret;
     } catch (const std::exception &e) {
        SPDLOG_TRACE(e.what());

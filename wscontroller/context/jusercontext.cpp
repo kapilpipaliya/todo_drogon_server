@@ -1,4 +1,5 @@
 #include "jusercontext.h"
+#include "./core/service/dba.h"
 #include "spdlogfix.h"
 #include <boost/filesystem.hpp>
 #include "../../core/strfns.h"
@@ -21,7 +22,7 @@ std::tuple<long, long>  JUserContext::generateContext(const HttpRequestPtr &req,
         try {
             auto clientPtr = drogon::app().getDbClient("sce");
             auto transPtr = clientPtr->newTransaction();
-            auto r = transPtr->execSqlSync(sqlSession, session_id);
+            auto r = Dba::writeInTrans(transPtr, sqlSession, session_id);
             if (r.size() != 0) {
                 return {r[0]["id"].as<long>(), r[0]["user_id"].as<long>()};
             } else {
@@ -42,7 +43,7 @@ void JUserContext::setUser()
         auto sqlSession = "SELECT * FROM user1.user where id = $1";
         auto clientPtr = drogon::app().getDbClient("sce");
         auto transPtr = clientPtr->newTransaction();
-        auto r = transPtr->execSqlSync(sqlSession, user_id);
+        auto r = Dba::writeInTrans(transPtr, sqlSession, user_id);
         if (r.size() != 0) {
             user.id= r[0]["id"].as<long>();
             user.type = r[0]["type"].as<std::string>();

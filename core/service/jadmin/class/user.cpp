@@ -1,15 +1,15 @@
 #include "user.h"
 #include <chrono>
 #include "../../dba.h"
-using namespace  madmin;
+using namespace  jadmin;
 using namespace std::chrono;
 typedef sqlb::SelectedColumn S;
-User::User(const MAdminContextPtr &context_): context(context_)
+User::User(const JAdminContextPtr &context_): context(context_)
 {
     t.m_table = sqlb::ObjectIdentifier("music", "user", "e");
     t.m_query = sqlb::Query(t.m_table);
 }
-//User::User(int user_id)
+//User::User(long user_id)
 //{
 //    if(!user_id){
 //        // return false;
@@ -20,40 +20,6 @@ User::User(const MAdminContextPtr &context_): context(context_)
 
 void User::setupTable()
 {
-
-    //m_query.setRowIdColumn("id");
-    t.m_query.selectedColumns() = {
-        S({"ID No", "id", "", "e", PG_TYPES::INT8}),
-        S({"Account Type", "type", "", "e", PG_TYPES::ENUM}),
-        //S({"no", "no", "", "e", PG_TYPES::TEXT}),
-        //S({"sequence_id", "sequence_id", "", "e", PG_TYPES::INT8, false}),
-        S({"User Name", "username", "", "e", PG_TYPES::TEXT}),
-        S({"Password", "password", "", "e", PG_TYPES::TEXT, true}),
-        S({"Full Name", "fullname", "", "e", PG_TYPES::TEXT}),
-        S({"Parent User Name", "parent_id", "", "e", PG_TYPES::INT8, true, 1, 1 }),
-        S({"username", "username", "", "p", PG_TYPES::TEXT, false, 0, 0, false}),
-        S({"Create Date", "create_date", "", "e", PG_TYPES::TIMESTAMP}),
-        S({"Disabled", "disabled", "", "e", PG_TYPES::BOOL}),
-//        S({"Email", "email", "", "e", PG_TYPES::TEXT, true}),
-//        S({"City", "city", "", "e", PG_TYPES::TEXT, true}),
-//        S({"State", "state", "", "e", PG_TYPES::TEXT, true}),
-        //S({"Created By", "create_user_id", "", "e", PG_TYPES::INT8, true, 1, 0, false}), S({"u1_username", "username", "", "u1", PG_TYPES::TEXT, false, 0, 0, false}),
-        //S({"Updated By", "update_user_id", "", "e", PG_TYPES::INT8, true, 1, 0, false}), S({"u2_username", "username", "", "u2", PG_TYPES::TEXT, false, 0, 0, false}),
-        //S({"Create Time", "inserted_at", "", "e", PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-        //S({"Update Time", "updated_at", "", "e", PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-    };
-    auto p = sqlb::ObjectIdentifier("music", "user", "p");
-    //auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
-    //auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
-
-        t.m_query.joins() = {
-                sqlb::Join("left", p, "e.parent_id = p.id")
-            //sqlb::Join("left", u1, "e.create_user_id = u1.id"),
-            //sqlb::Join("left", u2, "e.update_user_id = u2.id"),
-            };
-
-    t.m_query.groupBy() = {
-        };
 }
 
 nlohmann::json User::handleEvent(nlohmann::json event, unsigned long next, nlohmann::json args)
@@ -63,17 +29,6 @@ nlohmann::json User::handleEvent(nlohmann::json event, unsigned long next, nlohm
         json res = {{event}};
         res[0][1] = is_logged_in();
         return res;
-    } else if (event_cmp == "header") { // required
-        return headerData(event, args);
-    } else if (event_cmp == "data") { // required
-        if(context->user.type == "super admin"){
-            return allData(event, args);
-        } else if (context->user.type == "admin"){
-            t.m_query.cusm_where() = format("e.parent_id = {}", context->user_id);
-            return allData(event, args);
-        } else {
-            return {{event, "unauthorised"}};
-        }
     } else if (event_cmp == "update_password") {
         if(!args.is_array()) return {simpleJsonSaveResult(event, false, "Not Valid Args")};
         if(get_password() == args[0]["old_password"].get<std::string>()){
@@ -84,23 +39,12 @@ nlohmann::json User::handleEvent(nlohmann::json event, unsigned long next, nlohm
         return {simpleJsonSaveResult(event, false, "UnAuthorised")};
     } else if (event_cmp  == "user_types_form_data") {
          return {{event, getUserTypeFormData()}};
-    } else if (event_cmp  == "ins") {
-        args[0]["parent_id"] = context->user_id;
-        return ins(event, args);
-    } else if (event_cmp  == "upd") {
-        return upd(event, args);
-    } else if (event_cmp  == "del") {
-        if(args[0].is_array()){
-            if(args[0][0].is_number()){
-                if(delNew(args[0][0].get<long>())){
-                    return {simpleJsonSaveResult(event, true, "Done")};
-                }
-            }
-        }
-        //return del(event,args);
-        return {simpleJsonSaveResult(event, false, "UnAuthorised")};
-    } else if (event_cmp  == "count") {
-        return count(event, args);
+         } else if (event_cmp  == "user_register") {
+             return userRegister(event, args);
+         } else if (event_cmp  == "user_id") {
+             return userId(event, args);
+         } else if (event_cmp  == "checkout") {
+             return checkout(event, args);
     } else {
         return nullptr;
     }
@@ -177,10 +121,6 @@ User::Info User::get_info()
     return count;
 }
 */
-void User::load_playlist()
-{
-    //playlist_id = Tmp_Playlist::get_from_session(session_id);
-}
 
 void User::get_valid_users()
 {
@@ -197,11 +137,6 @@ User User::get_from_username(std::string username)
 }
 
 User User::get_from_apikey(std::string apikey)
-{
-
-}
-
-std::vector<User::Catalog> User::get_catalogs()
 {
 
 }
@@ -301,96 +236,145 @@ bool User::update_password(std::string new_password)
     return false;
 }
 
-bool User::delNew(long user_id)
+
+json User::userRegister( json event, json args)
 {
-    /*
-      Before we do anything make sure that they aren't the last
-      admin
-    */
-    //if (this->has_access(100)) {
-        //sql        = "SELECT id FROM user WHERE access='100' AND id != $";
-        //db_results = Dba::read(sql, user_id);
-        //if (!Dba::num_rows(db_results)) {
-        //    return false;
-        //}
-    auto sql        = "SELECT id FROM music.user WHERE access='100' AND  id <> $1";
-    auto db_results = Dba::read(sql, user_id);
-    if (!Dba::num_rows(db_results)) {
-                return false;
+
+    std::string strSql = "INSERT INTO entity.entity ( entity_type_id, no, legal_name, slug, email) values($1, $2, $3, $4, $5) returning id";
+    try {
+        auto clientPtr = drogon::app().getDbClient("sce");
+        auto transPtr = clientPtr->newTransaction();
+
+
+        std::string data = args["legal_name"].get<std::string>();
+        std::transform(data.begin(), data.end(), data.begin(),
+                       [](unsigned char c){ return std::tolower(c); });
+        std::transform(data.begin(), data.end(), data.begin(),
+                       [](unsigned char c){ return std::tolower(c); });
+        std::transform(data.begin(), data.end(), data.begin(), [](char ch) {
+            return ch == ' ' ? '_' : ch;
+        });
+
+        auto x = Dba::writeInTrans(transPtr, strSql, 6, "", args["legal_name"].get<std::string>(), data, args["email"].get<std::string>() );
+        auto entity_id = x[0]["id"].as<long>();
+        std::string strSqlUser = "INSERT INTO entity.entity_user (entity_id, username, password, password_hash) VALUES ($1, $2, $3, $4)";
+        Dba::writeInTrans(transPtr, strSqlUser, entity_id, args["email"].get<std::string>(), args["pass"].get<std::string>(), args["pass"].get<std::string>());
+
+        //simpleJsonSaveResult(event, true, "Done");
+        return userLogin(event, args);
+    } catch (const std::exception &e) {
+        SPDLOG_TRACE(e.what());
+        json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
-    //} // if this is an admin check for others
+}
 
-    // Delete their playlists
-    auto sql1 = "DELETE FROM music.playlist WHERE user_id = $1";
-    Dba::write(sql1, user_id);
+json User::userLogin( json event, json args)
+{
+    auto sql = "select e.id from entity.entity e left join entity.entity_user as u on u.entity_id = e.id where e.email = $1 and u.password = $2";
+    try {
+        auto clientPtr = drogon::app().getDbClient("sce");
+        auto transPtr = clientPtr->newTransaction();
+        auto r = Dba::writeInTrans(transPtr, sql, args["email"].get<std::string>(), args["pass"].get<std::string>());
 
-    // Clean up the playlist data table
-    //auto sql2 = "DELETE FROM music.playlist_data USING playlist_data "
-     //   "LEFT JOIN playlist ON playlist.id=playlist_data.playlist "
-       // "WHERE playlist.id IS NULL";
-   // Dba::write(sql2);
+        if (r.size() == 1) {
 
-    // Delete any stats they have
-    auto sql3 = "DELETE FROM music.object_count WHERE user_id = $1";
-    Dba::write(sql3, user_id);
+            json j;
+            j["value"] = r[0]["id"].as<long>();
+            auto sqlSession = "INSERT INTO user1.session (key, value) VALUES ($1, $2) returning id";
+            // To serialize the json into a Json document, you should use a Json writer, or json::dump().
+            LOG_INFO << j.dump();
+            auto rs = Dba::writeInTrans(transPtr, sqlSession, "user", j.dump());
+            json login_result = simpleJsonSaveResult(event, true, "Done");
 
-    // Clear the IP history for this user
-    auto sql4 = "DELETE FROM music.ip_history WHERE user_id = $1";
-    Dba::write(sql4, user_id);
+            // ask to save cookie
+            json cookie_result;
+            json cookie_event;
+            cookie_event[0] = "auth";
+            cookie_event[1] = "set_cookie";
+            cookie_event[2] = 0; // must be zero
+            cookie_result[0] = cookie_event;
+            json cookie_value;
+            //auto s = get_serial_no();
+            cookie_value["user"] = rs[0]["id"].as<long>();
+            cookie_result[1] = cookie_value;
 
-    // Nuke any access lists that are specific to this user
-    auto sql5 = "DELETE FROM music.access_list WHERE user_id = $1";
-    Dba::write(sql5, user_id);
+            context->current_session_id = rs[0]["id"].as<long>();
+            json final;
+            final[0] = login_result;
+            final[1] = cookie_result;
+            return final;
+        } else {
+            json ret; ret[0] = simpleJsonSaveResult(event, false, "Error"); return ret;
+        }
 
-    // Delete their ratings
-    auto sql6 = "DELETE FROM music.rating WHERE user_id = $1";
-    Dba::write(sql6, user_id);
+    } catch (const std::exception &e) {
+        SPDLOG_TRACE(e.what());
+        json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
+    }
+}
 
-    // Delete their tags
-    auto sql7 = "DELETE FROM music.tag_map WHERE user_id = $1";
-    Dba::write(sql7, user_id);
+json User::userId( json event, json )
+{
+    long c =  context->current_session_id;
+    if (c != 0) {
+        auto sqlSession = "SELECT key, value FROM user1.session where id = $1";
+        try {
+            auto clientPtr = drogon::app().getDbClient("sce");
+            auto transPtr = clientPtr->newTransaction();
+            auto r = Dba::writeInTrans(transPtr, sqlSession, c);
+            // send id
+            //simpleJsonSaveResult(event, true, r[0][1].c_str());
+            json jresult;
+            jresult[0]=event;
 
-    // Clean out the tags
-    //auto sql8 = "DELETE FROM music.tag USING tag_map LEFT JOIN music.tag_map ON tag_map.id=tag.map_id AND tag_map.id IS NULL";
-    //Dba::write(sql8);
+            try
+            {
+                auto root = json::parse(r[0][1].c_str());
+                jresult[1]=root["value"];
+            }
+            catch (json::parse_error& e)
+            {
+                jresult[1]=0;
+                SPDLOG_TRACE("message: {}", e.what());
+                SPDLOG_TRACE("exception id: {}", e.id);
+                SPDLOG_TRACE("byte position of error:", e.byte);
+                json j =  std::string("cant parse json reason: ") + e.what() ;
+            }
+            return jresult;
+        } catch (const std::exception &e) {
+            SPDLOG_TRACE(e.what());
+            json jresult;
+            jresult[0]=event;
+            jresult[1]=0;
+            return jresult;
+        }
+    }
+    json ret; ret[0] = 0; return ret;
+}
+json User::checkout( json event, json args)
+{
+    long c = context->current_session_id;
+    if (c != 0) {
+        auto sqlSession = "SELECT key, value FROM user1.session where id = $1";
+        try {
+            auto clientPtr = drogon::app().getDbClient("sce");
+            auto transPtr = clientPtr->newTransaction();
+            auto r = Dba::writeInTrans(transPtr, sqlSession, c);
+            // send id
+            json jresult;
+            jresult[0]=event;
 
-    // Delete their preferences
-    auto sql9 = "DELETE FROM music.user_preference WHERE user_id = $1";
-    Dba::write(sql9, user_id);
-
-    // Delete their voted stuff in democratic play
-    auto sql10 = "DELETE FROM music.user_vote WHERE user_id = $1";
-    Dba::write(sql10, user_id);
-
-    // Delete their shoutbox posts
-    auto sql11 = "DELETE FROM music.user_shout WHERE user_id = $1";
-    Dba::write(sql11, user_id);
-
-    // Delete their private messages posts
-    auto sql12 = "DELETE FROM music.user_pvmsg WHERE from_user_id = $1 OR to_user_id = $2";
-    Dba::write(sql12, user_id, user_id);
-
-    // Delete their following/followers
-    auto sql13 = "DELETE FROM music.user_follower WHERE user_id = $1 OR follow_user_id = $2";
-    Dba::write(sql13, user_id, user_id);
-
-    // Added
-    auto sql15 = "DELETE FROM music.user_activity WHERE user_id = $1";
-    Dba::write(sql15, user_id);
-    // Added
-    auto sql16 = "DELETE FROM music.search WHERE user_id = $1";
-    Dba::write(sql16, user_id);
-    auto sql17 = "DELETE FROM music.session WHERE user_id = $1";
-    Dba::write(sql17, user_id);
-
-    // Delete the user itself
-    auto sql14 = "DELETE FROM music.user WHERE id = $1";
-    Dba::write(sql14, user_id);
-
-
-
-//    auto sql15 = "DELETE FROM music.session WHERE username = $";
-//    Dba::write(sql, array(this->username));
-
-    return true;
+            auto root = json::parse(r[0][1].c_str());
+            jresult[1]=root["value"];
+            return jresult;
+        } catch (const std::exception &e) {
+            SPDLOG_TRACE(e.what());
+            json jresult;
+            jresult[0]=event;
+            jresult[1]=0;
+            return jresult;
+        }
+    } else {
+        return Json::nullValue;
+    }
 }

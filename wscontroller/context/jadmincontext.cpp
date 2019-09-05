@@ -1,4 +1,5 @@
 #include "jadmincontext.h"
+#include "./core/service/dba.h"
 #include "spdlogfix.h"
 #include "../wsfns.h"
 #include "../../core/strfns.h"
@@ -21,7 +22,7 @@ std::tuple<long, long>  JAdminContext::generateContext(const HttpRequestPtr &req
         try {
             auto clientPtr = drogon::app().getDbClient("sce");
             auto transPtr = clientPtr->newTransaction();
-            auto r = transPtr->execSqlSync(sqlSession, session_id);
+            auto r = Dba::writeInTrans(transPtr, sqlSession, session_id);
             if (r.size() != 0) {
 //                return {r[0]["id"].as<long>(), r[0]["user_id"].as<long>()};
                 return {r[0]["id"].as<long>(), 0};
@@ -43,7 +44,7 @@ void JAdminContext::setUser()
         auto sqlSession = "SELECT * FROM entity.entity where id = $1";
         auto clientPtr = drogon::app().getDbClient("sce");
         auto transPtr = clientPtr->newTransaction();
-        auto r = transPtr->execSqlSync(sqlSession, user_id);
+        auto r = Dba::writeInTrans(transPtr, sqlSession, user_id);
         if (r.size() != 0) {
             user.id= r[0]["id"].as<long>();
             //user.type = r[0]["type"].as<std::string>();

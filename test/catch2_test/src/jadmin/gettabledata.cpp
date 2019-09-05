@@ -24,7 +24,7 @@ void GetTableData::connectToServer()
                                    auto in = R"(
                                             [
                                             [["auth","admin_login",0],{{"user":"kapil.pipaliya@yahoo.com","pass":"3434"}}],
-                                            [["auth","is_admin_auth",0],[[]]],
+                                            [["user","is_logged_in",0],[[]]],
                                             [["{0}","header",1000],{{}}],
                                             [["{1}","data",1000],[[],[],[0]]]
                                             ]
@@ -66,7 +66,7 @@ void GetTableData::setMessageHandler()
 
             REQUIRE(j[1][1].is_number() == true);
 
-            // is_admin_auth == true
+            // is_logged_in == true
             REQUIRE(j[2][1] == true);
 
             // header data:

@@ -64,7 +64,7 @@ char **argv;
 int i = 0;
 QCoreApplication a(i, argv);
 auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/jadmin")));
-json event = json::array({"auth","is_admin_auth",0} );
+json event = json::array({"user","is_logged_in",0} );
 json payload = json::array({{event, {{}}}});
 //    json j = R"( [ [["user","is_logged_in",0],[[]]]] )"_json;
 SPDLOG_TRACE(payload.dump());
@@ -100,7 +100,7 @@ TEST_CASE("login on backend with username and password","[WSTest]") {
     json event2 = json::array({"auth","set_cookie",0} );
     bool r1 =false;
     auto b1 = w2.bindOnce(event2, [&r1](json r){
-    REQUIRE(r[0]["admin"].is_number() == true);
+    REQUIRE(r[0].is_number() == true);
     r1 = true;
     });
     w2.sendMessage(QString::fromStdString(payload.dump()));

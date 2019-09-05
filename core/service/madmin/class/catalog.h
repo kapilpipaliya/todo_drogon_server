@@ -190,7 +190,7 @@ public:
          * @param int $level
          * @return boolean
          */
-        //private static function _update_item($field, $value, int catalog_id, $level);
+        //private static function _update_item($field, $value, long catalog_id, $level);
         /**
          * format
          *

@@ -1,4 +1,5 @@
 #include "auth.h"
+#include "../../dba.h"
 #include "session.h"
 using namespace  madmin;
 Auth::Auth(const MAdminContextPtr &context_): context(context_)
@@ -57,8 +58,8 @@ nlohmann::json Auth::saveFileMeta(nlohmann::json event, nlohmann::json args)
     try {
         auto clientPtr = drogon::app().getDbClient("sce");
         auto transPtr = clientPtr->newTransaction();
-        auto r = transPtr->execSqlSync(strSql);
-        //auto r = transPtr->execSqlSync(strSql, c, args[0].dump(), args[1].get<std::string>(), args[2].get<long>(), args[3].get<std::string>());
+        auto r = Dba::writeInTrans(transPtr, strSql);
+        //auto r = Dba::writeInTrans(transPtr, strSql, c, args[0].dump(), args[1].get<std::string>(), args[2].get<long>(), args[3].get<std::string>());
         json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {
        SPDLOG_TRACE(e.what());
@@ -109,13 +110,13 @@ std::tuple<long, long> Auth::login(std::string username, std::string password, [
             auto sql = "SELECT id, password FROM music.user WHERE username = $1 and password = $2";
             auto clientPtr = drogon::app().getDbClient("sce");
             auto transPtr = clientPtr->newTransaction();
-            auto r = transPtr->execSqlSync(sql, username, password);
+            auto r = Dba::writeInTrans(transPtr, sql, username, password);
 
             if (r.size() == 1) {
                 user_id = r[0]["id"].as<long>();
                 auto sqlSession = "INSERT INTO music.session (user_id, expire, value) VALUES ($1, $2, $3) returning id";
-                auto rs = transPtr->execSqlSync(sqlSession, user_id, 0L, "");
-                session_id = rs[0]["id"].as<int>();
+                auto rs = Dba::writeInTrans(transPtr, sqlSession, user_id, 0L, "");
+                session_id = rs[0]["id"].as<long>();
             }
         } catch (const std::exception &e) {
            SPDLOG_TRACE(e.what());

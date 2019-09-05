@@ -1,4 +1,5 @@
 #include "metal.h"
+#include "../../dba.h"
 #include "../../../strfns.h"
 using namespace  jadmin;
 
@@ -58,7 +59,7 @@ json Metal::ins( json event, json args) {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     try {
-        transPtr->execSqlSync(
+        Dba::writeInTrans(transPtr, 
             strSql,
             args[0]["slug"].get<std::string>(),
             args[0]["name"].get<std::string>(),
@@ -89,7 +90,7 @@ json Metal::upd( json event, json args) {
         auto clientPtr = drogon::app().getDbClient("sce");
         auto transPtr = clientPtr->newTransaction();
         try {
-            transPtr->execSqlSync(strSql,
+            Dba::writeInTrans(transPtr, strSql,
                             args[0]["id"].get<long>(),
                     args[0]["slug"].get<std::string>(),
                     args[0]["name"].get<std::string>(),
@@ -107,7 +108,7 @@ json Metal::upd( json event, json args) {
                              pm.metal_id = $1
                              returning pm.purity_id;
                              )";
-            auto pr = transPtr->execSqlSync(pr_update, args[0]["id"].get<long>());
+            auto pr = Dba::writeInTrans(transPtr, pr_update, args[0]["id"].get<long>());
 
             ids2(pr, id1)
             //2. purity
@@ -120,7 +121,7 @@ json Metal::upd( json event, json args) {
                                p.metal_id = $1
                                returning p.id;
                                )";
-            auto pr0 = transPtr->execSqlSync(pr_update01, args[0]["id"].get<long>());
+            auto pr0 = Dba::writeInTrans(transPtr, pr_update01, args[0]["id"].get<long>());
             ids2(pr, id2)
             //3. purity_tone
             auto pr_update2 = R"(
@@ -137,7 +138,7 @@ json Metal::upd( json event, json args) {
                               where
                               pt.purity_id = ANY($1::bigint[]) or pt.purity_id = ANY($2::bigint[])
                               )";
-            auto pr2 = transPtr->execSqlSync(pr_update2, id1, id2);
+            auto pr2 = Dba::writeInTrans(transPtr, pr_update2, id1, id2);
 
             auto pr_update3 = R"(
                               update product.product p
@@ -157,7 +158,7 @@ json Metal::upd( json event, json args) {
                               where
                               p.purity_id = ANY($1::bigint[]) or p.purity_id = ANY($2::bigint[]) returning p.post_id
                               )";
-            auto product_update = transPtr->execSqlSync(pr_update3, id1, id2);
+            auto product_update = Dba::writeInTrans(transPtr, pr_update3, id1, id2);
             ids2(product_update, id3)
 
             auto pr_update4 = R"(
@@ -183,7 +184,7 @@ json Metal::upd( json event, json args) {
                               )";
 
 
-            auto pr4 = transPtr->execSqlSync(pr_update4, id1, id2, id3);
+            auto pr4 = Dba::writeInTrans(transPtr, pr_update4, id1, id2, id3);
 
             
             json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;

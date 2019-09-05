@@ -1,6 +1,8 @@
 #include "purity.h"
+#include "../../dba.h"
 #include "../../../strfns.h"
 using namespace  jadmin;
+#include "../../dba.h"
 
 #define ids2(s, array)\
 std::string array = "{";\
@@ -67,7 +69,7 @@ void Purity::setupTable()
         };
 }
 
-void save_purity_metal_(json &args, std::shared_ptr<Transaction> transPtr, int purity_id, int tone_id) {
+void save_purity_metal_(json &args, std::shared_ptr<Transaction> transPtr, long purity_id, long tone_id) {
     std::string strSqlPostCategories = "SELECT metal_id FROM material.purity_metal where purity_id = $1 and tone_id = $2";
     std::string strSqlPostCategorySimpleFind = "SELECT purity_id, tone_id, metal_id, purity, price FROM material.purity_metal WHERE purity_id = $1 and tone_id = $2 and metal_id = $3";
     std::string strSqlPostCategoryDel = "DELETE FROM material.purity_metal WHERE purity_id = $1 and tone_id = $2 and metal_id = $3";
@@ -75,38 +77,38 @@ void save_purity_metal_(json &args, std::shared_ptr<Transaction> transPtr, int p
     std::string strSqlPostCategoryUpdateAtt = "UPDATE material.purity_metal SET (purity, price) = ROW($4, $5) WHERE purity_id = $1 and tone_id = $2 and metal_id = $3";
 
     struct PriceMetal {
-        int metal_id;
+        long metal_id;
         double purity;
         double price;
     };
     std::vector<PriceMetal> inVector;
     for (auto i : args) {
-        if (!i[0].is_null()) inVector.push_back({i[0].get<int>(), i[1].get<float>(), i[2].get<float>()});
+        if (!i[0].is_null()) inVector.push_back({i[0].get<long>(), i[1].get<float>(), i[2].get<float>()});
     }
 
-    auto all_ct = transPtr->execSqlSync(strSqlPostCategories, purity_id, tone_id);
+    auto all_ct = Dba::writeInTrans(transPtr, strSqlPostCategories, purity_id, tone_id);
     // For each saved tones, If saved tone not exist in new tones, delete it.
     for (auto r : all_ct) {
         std::vector<PriceMetal>::iterator it = std::find_if(inVector.begin(), inVector.end(), [&](PriceMetal t) {
-            return t.metal_id == r["metal_id"].as<int>();
+            return t.metal_id == r["metal_id"].as<long>();
         });
         if (it == inVector.end()) {// Element not Found
-            transPtr->execSqlSync(strSqlPostCategoryDel, purity_id, tone_id, r["metal_id"].as<int>());
+            Dba::writeInTrans(transPtr, strSqlPostCategoryDel, purity_id, tone_id, r["metal_id"].as<long>());
         }
     }
     // For each new tones, insert it if it not already exist.
     for (auto r : inVector) {
-        auto y = transPtr->execSqlSync(strSqlPostCategorySimpleFind, purity_id, tone_id, r.metal_id);
+        auto y = Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind, purity_id, tone_id, r.metal_id);
         if (y.size() == 0) {
-            transPtr->execSqlSync(strSqlPostCategoryInsert, purity_id, tone_id, r.metal_id, r.purity, r.price);
+            Dba::writeInTrans(transPtr, strSqlPostCategoryInsert, purity_id, tone_id, r.metal_id, r.purity, r.price);
         } else { // update
-            if (y[0][2].as<int>() != r.metal_id || y[0]["purity"].as<double>() != r.purity || y[0]["price"].as<double>() != r.price) {
-                transPtr->execSqlSync(strSqlPostCategoryUpdateAtt, purity_id, tone_id, r.metal_id, r.purity, r.price);
+            if (y[0][2].as<long>() != r.metal_id || y[0]["purity"].as<double>() != r.purity || y[0]["price"].as<double>() != r.price) {
+                Dba::writeInTrans(transPtr, strSqlPostCategoryUpdateAtt, purity_id, tone_id, r.metal_id, r.purity, r.price);
             }
         }
     }
 }
-void save_purity_tone_(json &args, std::shared_ptr<Transaction> transPtr, int purity_id) {
+void save_purity_tone_(json &args, std::shared_ptr<Transaction> transPtr, long purity_id) {
     std::string strSqlPostCategories = "SELECT tone_id FROM material.purity_tone where purity_id = $1";
     std::string strSqlPostCategorySimpleFind = "SELECT purity_id, tone_id, price FROM material.purity_tone WHERE purity_id = $1 and tone_id = $2";
     std::string strSqlPostCategoryDel = "DELETE FROM material.purity_tone WHERE purity_id = $1 and tone_id = $2";
@@ -114,36 +116,36 @@ void save_purity_tone_(json &args, std::shared_ptr<Transaction> transPtr, int pu
     std::string strSqlPostCategoryUpdateAtt = "UPDATE material.purity_tone SET (price) = ROW($3) WHERE purity_id = $1 and tone_id = $2";
 
     struct PurityTone {
-        int tone_id;
+        long tone_id;
         double price;
         json j;
     };
     std::vector<PurityTone> inVector;
     for (auto i : args[0]["pt_purity_tone"]) {
-        if (!i[0].is_null()) inVector.push_back({i[0].get<int>(), i[2].get<float>(), i[1]});
+        if (!i[0].is_null()) inVector.push_back({i[0].get<long>(), i[2].get<float>(), i[1]});
     }
 
-    auto all_ct = transPtr->execSqlSync(strSqlPostCategories, purity_id);
+    auto all_ct = Dba::writeInTrans(transPtr, strSqlPostCategories, purity_id);
     // For each saved tones, If saved tone not exist in new tones, delete it.
     for (auto r : all_ct) {
         std::vector<PurityTone>::iterator it = std::find_if(inVector.begin(), inVector.end(), [&](PurityTone t) {
-            return t.tone_id == r["tone_id"].as<int>();
+            return t.tone_id == r["tone_id"].as<long>();
         });
         if (it == inVector.end()) {// Element not Found
             // because when tone_id change it actually inserting new entries..
-            transPtr->execSqlSync(dele_("material.purity_metal", "where purity_id = $1 and tone_id = $2"), purity_id, r["tone_id"].as<int>());
-            transPtr->execSqlSync(strSqlPostCategoryDel, purity_id, r["tone_id"].as<int>());
+            Dba::writeInTrans(transPtr, dele_("material.purity_metal", "where purity_id = $1 and tone_id = $2"), purity_id, r["tone_id"].as<long>());
+            Dba::writeInTrans(transPtr, strSqlPostCategoryDel, purity_id, r["tone_id"].as<long>());
         }
     }
     // For each new tones, insert it if it not already exist.
     for (auto r : inVector) {
-        auto y = transPtr->execSqlSync(strSqlPostCategorySimpleFind, purity_id, r.tone_id);
+        auto y = Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind, purity_id, r.tone_id);
         if (y.size() == 0) {
-            auto z = transPtr->execSqlSync(strSqlPostCategoryInsert, purity_id, r.tone_id, r.price);
-            save_purity_metal_(r.j, transPtr, z[0]["purity_id"].as<int>(), z[0]["tone_id"].as<int>());
+            auto z = Dba::writeInTrans(transPtr, strSqlPostCategoryInsert, purity_id, r.tone_id, r.price);
+            save_purity_metal_(r.j, transPtr, z[0]["purity_id"].as<long>(), z[0]["tone_id"].as<long>());
         } else { // update
-            if (y[0]["tone_id"].as<int>() != r.tone_id || y[0]["price"].as<double>() != r.price) {
-                transPtr->execSqlSync(strSqlPostCategoryUpdateAtt, purity_id, r.tone_id, r.price);
+            if (y[0]["tone_id"].as<long>() != r.tone_id || y[0]["price"].as<double>() != r.price) {
+                Dba::writeInTrans(transPtr, strSqlPostCategoryUpdateAtt, purity_id, r.tone_id, r.price);
             }
             save_purity_metal_(r.j, transPtr, purity_id, r.tone_id);
         }
@@ -161,16 +163,16 @@ json Purity::ins( json event, json args) {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     try {
-        auto x = transPtr->execSqlSync(
+        auto x = Dba::writeInTrans(transPtr,
             strSql,
             args[0]["slug"].get<std::string>(),
             args[0]["name"].get<std::string>(),
-            args[0]["metal_id"].get<int>(),
+            args[0]["metal_id"].get<long>(),
             args[0]["purity"].get<float>(),
             args[0]["price"].get<float>(),
             args[0]["description"].get<std::string>()
             );
-        auto purity_id = x[0]["id"].as<int>();
+        auto purity_id = x[0]["id"].as<long>();
         save_purity_tone_(args, transPtr, purity_id);
         
         json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
@@ -193,11 +195,11 @@ json Purity::upd( json event, json args) {
         auto clientPtr = drogon::app().getDbClient("sce");
         auto transPtr = clientPtr->newTransaction();
         try {
-            transPtr->execSqlSync(strSql,
+            Dba::writeInTrans(transPtr, strSql,
                     args[0]["id"].get<long>(),
                     args[0]["slug"].get<std::string>(),
                     args[0]["name"].get<std::string>(),
-                    args[0]["metal_id"].get<int>(),
+                    args[0]["metal_id"].get<long>(),
                     args[0]["purity"].get<float>(),
                     args[0]["price"].get<float>(),
                     args[0]["description"].get<std::string>()
@@ -224,7 +226,7 @@ json Purity::upd( json event, json args) {
                               p.purity_id = $1 returning p.post_id
                               )";
 
-            auto product_update = transPtr->execSqlSync(pr_update3, args[0]["id"].get<long>());
+            auto product_update = Dba::writeInTrans(transPtr, pr_update3, args[0]["id"].get<long>());
             ids2(product_update, ids);
             auto pr_update4 = R"(
                               UPDATE product.purity_tone pt
@@ -248,7 +250,7 @@ json Purity::upd( json event, json args) {
                               --returning pt.post_id, pt.purity_id, pt.weight, pt.price
                               )";
 
-            auto pr = transPtr->execSqlSync(pr_update4, purity_id, ids);
+            auto pr = Dba::writeInTrans(transPtr, pr_update4, purity_id, ids);
 
             
             json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
@@ -265,10 +267,10 @@ json Purity::del( json event, json args) {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     try {
-        auto post_id = args[0][0].get<int>();
-        transPtr->execSqlSync("DELETE FROM " "material.purity_metal" " WHERE purity_id = $1", post_id);
-        transPtr->execSqlSync("DELETE FROM " "material.purity_tone" " WHERE purity_id = $1", post_id);
-        transPtr->execSqlSync("DELETE FROM " "material.purity" " WHERE id = $1", post_id);
+        auto post_id = args[0][0].get<long>();
+        Dba::writeInTrans(transPtr, "DELETE FROM " "material.purity_metal" " WHERE purity_id = $1", post_id);
+        Dba::writeInTrans(transPtr, "DELETE FROM " "material.purity_tone" " WHERE purity_id = $1", post_id);
+        Dba::writeInTrans(transPtr, "DELETE FROM " "material.purity" " WHERE id = $1", post_id);
         
         json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
     } catch (const std::exception &e) {

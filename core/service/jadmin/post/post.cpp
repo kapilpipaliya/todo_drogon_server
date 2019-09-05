@@ -1,4 +1,5 @@
 #include "post.h"
+#include "../../dba.h"
 #include "../../../strfns.h"
 using namespace  jadmin;
 
@@ -47,7 +48,7 @@ json Post1::ins( json event, json args) {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     try {
-        auto x = transPtr->execSqlSync(
+        auto x = Dba::writeInTrans(transPtr, 
             strSqlPost,
             args[0]["comment_status"].get<bool>(),
             args[0]["menu_order"].get<int>(),
@@ -61,7 +62,7 @@ json Post1::ins( json event, json args) {
             args[0]["type"].get<std::string>(),
             args[0]["visibility"].get<std::string>()
             );
-        auto post_id = x[0]["id"].as<int>();
+        auto post_id = x[0]["id"].as<long>();
 
         //product_tags_process(tags_table, post_tag_table, in, txn, post_id);
         //save_product_categories(post_category_table, in, txn, post_id);
@@ -88,7 +89,7 @@ json Post1::upd( json event, json args) {
         auto clientPtr = drogon::app().getDbClient("sce");
         auto transPtr = clientPtr->newTransaction();
         try {
-            transPtr->execSqlSync(strSqlPost,
+            Dba::writeInTrans(transPtr, strSqlPost,
                             args[0]["id"].get<long>(),
                     args[0]["comment_status"].get<bool>(),
                     args[0]["menu_order"].get<int>(),

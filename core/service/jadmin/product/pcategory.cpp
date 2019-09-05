@@ -43,23 +43,23 @@ void PCategory::setupTable()
 
 json PCategory::ins(json event, json args)
 {
-    return insBase(event, args, "slug, name, description, display_type, parent_id, position", "$1, $2, $3, $4, NULLIF($5, 0), $6",
+    return insBase(event, args, "slug, name, description, display_type, parent_id, position", "$1, $2, $3, $4, NULLIF($5, 0::bigint), $6",
             args[0]["slug"].get<std::string>(),
             args[0]["name"].get<std::string>(),
             args[0]["description"].get<std::string>(),
             args[0]["display_type"].get<std::string>(),
-            args[0]["parent_id"].get<int>(), // why this ask for get<int>()? otherwise error: ERROR:  incorrect binary data format in bind parameter 5
+            args[0]["parent_id"].get<long>(), // why this ask for get<int>()? otherwise error: ERROR:  incorrect binary data format in bind parameter 5
             args[0]["position"].get<int>()  );
 }
 
 json PCategory::upd(json event, json args)
 {
-    return updBase(event, args, "slug, name, description, display_type, parent_id, position", "$1, $2, $3, $4, NULLIF($5, 0), $6",
+    return updBase(event, args, "slug, name, description, display_type, parent_id, position", "$1, $2, $3, $4, NULLIF($5, 0::bigint), $6",
                    args[0]["slug"].get<std::string>(),
                    args[0]["name"].get<std::string>(),
                    args[0]["description"].get<std::string>(),
                    args[0]["display_type"].get<std::string>(),
-                   args[0]["parent_id"].get<int>(), // why this ask for get<int>()?
+                   args[0]["parent_id"].get<long>(), // why this ask for get<int>()?
                    args[0]["position"].get<int>()  );
 }
 
