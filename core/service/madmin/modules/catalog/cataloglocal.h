@@ -77,6 +77,7 @@ public:
          */
         bool is_installed()
         {
+            return true;
         } // is_installed
         /**
          * install
@@ -84,6 +85,7 @@ public:
          */
         bool install()
         {
+            return true;
         } // install
         std::vector<string> catalog_fields();
         /**

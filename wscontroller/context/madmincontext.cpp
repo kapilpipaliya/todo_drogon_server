@@ -2,7 +2,7 @@
 #include "./core/service/dba.h"
 #include "spdlogfix.h"
 
-MAdminContext::MAdminContext(const HttpRequestPtr &req, const WebSocketConnectionPtr &wsConnPtr_): ContextBase(req, wsConnPtr_)
+MAdminContext::MAdminContext(const HttpRequestPtr &req, const WebSocketConnectionPtr &wsConnPtr_): wsConnPtr(wsConnPtr_)
 {
     auto truple = generateContext(req);
     current_session_id = std::get<0>(truple);

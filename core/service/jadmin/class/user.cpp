@@ -131,15 +131,15 @@ void User::get_valid_users()
     }
 }
 
-User User::get_from_username(std::string username)
-{
+//User User::get_from_username(std::string username)
+//{
 
-}
+//}
 
-User User::get_from_apikey(std::string apikey)
-{
+//User User::get_from_apikey(std::string apikey)
+//{
 
-}
+//}
 
 bool User::is_logged_in()
 {

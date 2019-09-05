@@ -1,6 +1,5 @@
 #ifndef CONTEXT_H
 #define CONTEXT_H
-#include "contextbase.h"
 
 #include <string>
 
@@ -12,7 +11,7 @@ struct ContextUser {
     std::string type{""};
 };
 
-class MAdminContext : public ContextBase
+class MAdminContext
 {
 public:
     MAdminContext(const HttpRequestPtr &req, const WebSocketConnectionPtr &wsConnPtr_);
@@ -23,6 +22,7 @@ public:
     void setUser();
 
     ContextUser user;
+    const WebSocketConnectionPtr& wsConnPtr;
 
 };
 

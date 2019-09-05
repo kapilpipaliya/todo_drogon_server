@@ -194,4 +194,5 @@ json Metal::upd( json event, json args) {
             json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
         }
     }
+    json ret; ret[0] = simpleJsonSaveResult(event, false, "Not Valid Structure"); return ret;
 }

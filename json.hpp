@@ -17836,7 +17836,7 @@ class basic_json
 
     /*!
     @brief overload for a default value of type const char*
-    @copydoc basic_json(const typename object_t::key_type&, const ValueType&) const
+    @copydoc basic_json::value(const typename object_t::key_type&, const ValueType&) const
     */
     string_t value(const typename object_t::key_type& key, const char* default_value) const
     {
@@ -17909,7 +17909,7 @@ class basic_json
 
     /*!
     @brief overload for a default value of type const char*
-    @copydoc basic_json(const json_pointer&, ValueType) const
+    @copydoc basic_json::value(const json_pointer&, ValueType) const
     */
     JSON_HEDLEY_NON_NULL(3)
     string_t value(const json_pointer& ptr, const char* default_value) const

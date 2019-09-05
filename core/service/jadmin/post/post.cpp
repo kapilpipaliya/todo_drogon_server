@@ -62,7 +62,7 @@ json Post1::ins( json event, json args) {
             args[0]["type"].get<std::string>(),
             args[0]["visibility"].get<std::string>()
             );
-        auto post_id = x[0]["id"].as<long>();
+        //auto post_id = x[0]["id"].as<long>();
 
         //product_tags_process(tags_table, post_tag_table, in, txn, post_id);
         //save_product_categories(post_category_table, in, txn, post_id);
@@ -103,7 +103,7 @@ json Post1::upd( json event, json args) {
                     args[0]["type"].get<std::string>(),
                     args[0]["visibility"].get<std::string>()
                     );
-            auto post_id = args[0]["id"].get<long>();
+            //auto post_id = args[0]["id"].get<long>();
 
             //product_tags_process(tags_table, post_tag_table, in, txn, post_id);
             //save_product_categories(post_category_table, in, txn, post_id);
@@ -116,4 +116,5 @@ json Post1::upd( json event, json args) {
             json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
         }
     }
+    json ret; ret[0] = simpleJsonSaveResult(event, false, "Not Valid Structure"); return ret;
 }

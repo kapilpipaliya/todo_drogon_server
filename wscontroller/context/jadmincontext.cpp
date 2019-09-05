@@ -5,7 +5,7 @@
 #include "../../core/strfns.h"
 #include "../../core/sql/query.h"
 
-JAdminContext::JAdminContext(const HttpRequestPtr &req, const WebSocketConnectionPtr &wsConnPtr_): ContextBase(req, wsConnPtr_)
+JAdminContext::JAdminContext(const HttpRequestPtr &req, const WebSocketConnectionPtr &wsConnPtr_): wsConnPtr(wsConnPtr_)
 {
     auto truple = generateContext(req, "admin");
     current_session_id = std::get<0>(truple);

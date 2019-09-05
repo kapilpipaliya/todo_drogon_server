@@ -1,5 +1,4 @@
 #pragma once
-#include "contextbase.h"
 
 #include  "json.hpp"
 #include <drogon/WebSocketController.h>
@@ -7,7 +6,7 @@ using namespace drogon;
 using nlohmann:: json;
 
 
-class JAdminContext : public ContextBase
+class JAdminContext
 {
 struct ContextUser {
     long id{0};
@@ -23,6 +22,7 @@ public:
     void setUser();
 
     ContextUser user;
+    const WebSocketConnectionPtr& wsConnPtr;
 
 private:
  };

@@ -56,8 +56,8 @@ public:
 
     //static Count count();
     static void get_valid_users(); // fix it..
-    static User get_from_username(string username); // fix
-    static User get_from_apikey(string apikey); //fix
+    //static User get_from_username(string username); // fix
+    //static User get_from_apikey(string apikey); //fix
     //public static User get_from_email(email); //fix
     //static User get_from_website(website); //fix
 

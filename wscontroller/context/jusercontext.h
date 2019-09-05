@@ -1,11 +1,9 @@
 #pragma once
-#include "contextbase.h"
 
 #include <drogon/WebSocketController.h>
 using namespace drogon;
 
-
-class JUserContext : public ContextBase
+class JUserContext
 {
 struct ContextUser {
     long id{0};
@@ -21,4 +19,5 @@ public:
      void setUser();
 
      ContextUser user;
+     const WebSocketConnectionPtr& wsConnPtr;
 };

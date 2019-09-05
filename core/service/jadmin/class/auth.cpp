@@ -86,6 +86,7 @@ bool Auth::logout(long key, bool relogin)
         context->current_session_id = 0;
         return true;
     }
+    return false;
     //if ((!relogin) && AmpConfig::get('logout_redirect')) {
         //target = AmpConfig::get('logout_redirect');
     //} else {

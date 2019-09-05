@@ -14,8 +14,6 @@ public:
 
 private:
     void setupTable();
-    json ins(json event, json args){};
-    json upd(json event, json args){};
     json save(json event, json args);
     json del( json event, json args);
     JAdminContextPtr context;
