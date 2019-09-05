@@ -1,107 +1,113 @@
 #include "metal.h"
 
 #include <utility>
-#include "../../dba.h"
 #include "../../../strfns.h"
-using namespace  jadmin;
+#include "../../dba.h"
+using namespace jadmin;
 
-#define ids2(s, array)\
-std::string array = "{";\
-for (auto i : (s)) { array += std::to_string(i["id"].as<long>()) + ","; }\
-if((s).size() > 0) array.pop_back();\
-array += "}";
+#define ids2(s, array)                                 \
+  std::string array = "{";                             \
+  for (auto i : (s)) {                                 \
+    array += std::to_string(i["id"].as<long>()) + ","; \
+  }                                                    \
+  if ((s).size() > 0) array.pop_back();                \
+  array += "}";
 
-Metal::Metal(JAdminContextPtr context_): context(std::move(context_))
-{
-    t.m_table = sqlb::ObjectIdentifier("material", "metal", "m");
-
+Metal::Metal(JAdminContextPtr context_) : context(std::move(context_)) {
+  t.m_table = sqlb::ObjectIdentifier("material", "metal", "m");
 }
 
-void Metal::setupTable()
-{
-    t.m_query = sqlb::Query(t.m_table);
+void Metal::setupTable() {
+  t.m_query = sqlb::Query(t.m_table);
 
-        //m_query.setRowIdColumn("id");
-        t.m_query.selectedColumns() = {
-            sqlb::SelectedColumn({"Id", "id", "", "m", PG_TYPES::INT8, false}),
-            //        sqlb::SelectedColumn({"Rank", "rank", "", "m", PG_TYPES::INT4, false}),
-            sqlb::SelectedColumn({"Code", "slug", "", "m", PG_TYPES::TEXT, true}),
-            sqlb::SelectedColumn({"Name", "name", "", "m", PG_TYPES::TEXT, true}),
-            sqlb::SelectedColumn({"Specific_density", "specific_density", "", "m", PG_TYPES::DOUBLE, true}),
-            sqlb::SelectedColumn({"Melting Point in C", "melting_point_in_c", "", "m", PG_TYPES::DOUBLE, true}),
-            sqlb::SelectedColumn({"Currency_id", "currency_id", "", "m", PG_TYPES::INT8, true}),
-            sqlb::SelectedColumn({"Price", "price", "", "m", PG_TYPES::DOUBLE, true}),
-            sqlb::SelectedColumn({"Created By", "create_user_id", "", "m", PG_TYPES::INT8, true, 1}),
-            sqlb::SelectedColumn({"u1_username", "username", "", "u1", PG_TYPES::TEXT, false, 0, 0, false}),
-            sqlb::SelectedColumn({"Updated By", "update_user_id", "", "m", PG_TYPES::INT8, true, 1}),
-            sqlb::SelectedColumn({"u2_username", "username", "", "u2", PG_TYPES::TEXT, false, 0, 0, false}),
-            sqlb::SelectedColumn({"Create Time", "inserted_at", "", "m", PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-            sqlb::SelectedColumn({"Update Time", "updated_at", "", "m", PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-            };
+  // m_query.setRowIdColumn("id");
+  t.m_query.selectedColumns() = {
+      sqlb::SelectedColumn({"Id", "id", "", "m", PG_TYPES::INT8, false}),
+      //        sqlb::SelectedColumn({"Rank", "rank", "", "m", PG_TYPES::INT4,
+      //        false}),
+      sqlb::SelectedColumn({"Code", "slug", "", "m", PG_TYPES::TEXT, true}),
+      sqlb::SelectedColumn({"Name", "name", "", "m", PG_TYPES::TEXT, true}),
+      sqlb::SelectedColumn({"Specific_density", "specific_density", "", "m",
+                            PG_TYPES::DOUBLE, true}),
+      sqlb::SelectedColumn({"Melting Point in C", "melting_point_in_c", "", "m",
+                            PG_TYPES::DOUBLE, true}),
+      sqlb::SelectedColumn(
+          {"Currency_id", "currency_id", "", "m", PG_TYPES::INT8, true}),
+      sqlb::SelectedColumn({"Price", "price", "", "m", PG_TYPES::DOUBLE, true}),
+      sqlb::SelectedColumn(
+          {"Created By", "create_user_id", "", "m", PG_TYPES::INT8, true, 1}),
+      sqlb::SelectedColumn({"u1_username", "username", "", "u1", PG_TYPES::TEXT,
+                            false, 0, 0, false}),
+      sqlb::SelectedColumn(
+          {"Updated By", "update_user_id", "", "m", PG_TYPES::INT8, true, 1}),
+      sqlb::SelectedColumn({"u2_username", "username", "", "u2", PG_TYPES::TEXT,
+                            false, 0, 0, false}),
+      sqlb::SelectedColumn({"Create Time", "inserted_at", "", "m",
+                            PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+      sqlb::SelectedColumn({"Update Time", "updated_at", "", "m",
+                            PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+  };
 
+  auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
+  auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-        auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
-    auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
+  t.m_query.joins() = {
 
-        t.m_query.joins() = {
-
-            sqlb::Join("left", u1, "m.create_user_id = u1.id"),
-            sqlb::Join("left", u2, "m.update_user_id = u2.id"),
-            };
+      sqlb::Join("left", u1, "m.create_user_id = u1.id"),
+      sqlb::Join("left", u2, "m.update_user_id = u2.id"),
+  };
 }
 
+json Metal::ins(json event, json args) {
+  auto metal_table = sqlb::ObjectIdentifier("material", "metal", "m");
 
-json Metal::ins( json event, json args) {
-    auto metal_table = sqlb::ObjectIdentifier("material", "metal", "m");
+  std::string strSql =
+      "INSERT INTO %1.%2 (slug, name, specific_density, price, "
+      "melting_point_in_c) values($1, $2, $3, $4, $5)";
+  ReplaceAll2(strSql, "%1", metal_table.schema());
+  ReplaceAll2(strSql, "%2", metal_table.name());
 
-    std::string strSql = "INSERT INTO %1.%2 (slug, name, specific_density, price, melting_point_in_c) values($1, $2, $3, $4, $5)";
+  auto clientPtr = drogon::app().getDbClient("sce");
+  auto transPtr = clientPtr->newTransaction();
+  try {
+    Dba::writeInTrans(transPtr, strSql, args[0]["slug"].get<std::string>(),
+                      args[0]["name"].get<std::string>(),
+                      args[0]["specific_density"].get<float>(),
+                      args[0]["price"].get<float>(),
+                      args[0]["melting_point_in_c"].get<float>());
+
+    json ret;
+    ret[0] = simpleJsonSaveResult(event, true, "Done");
+    return ret;
+  } catch (const std::exception &e) {
+    SPDLOG_TRACE(e.what());
+    json ret;
+    ret[0] = simpleJsonSaveResult(event, false, e.what());
+    return ret;
+  }
+}
+json Metal::upd(json event, json args) {
+  auto metal_table = sqlb::ObjectIdentifier("material", "metal", "m");
+
+  if (args[0]["id"].get<long>()) {
+    std::string strSql =
+        "update %1.%2 set "
+        "(slug, name, specific_density, price, melting_point_in_c)"
+        " = ROW($2, $3, $4, $5, $6) where id=$1";
     ReplaceAll2(strSql, "%1", metal_table.schema());
     ReplaceAll2(strSql, "%2", metal_table.name());
 
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     try {
-        Dba::writeInTrans(transPtr, 
-            strSql,
-            args[0]["slug"].get<std::string>(),
-            args[0]["name"].get<std::string>(),
-            args[0]["specific_density"].get<float>(),
-            args[0]["price"].get<float>(),
-            args[0]["melting_point_in_c"].get<float>()
-            );
-
-        
-        json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
-    } catch (const std::exception &e) {
-        
-       SPDLOG_TRACE(e.what());
-        json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
-    }
-}
-json Metal::upd( json event, json args) {
-    auto metal_table = sqlb::ObjectIdentifier("material", "metal", "m");
-
-    if (args[0]["id"].get<long>()) {
-        std::string strSql =
-                "update %1.%2 set "
-                "(slug, name, specific_density, price, melting_point_in_c)"
-                " = ROW($2, $3, $4, $5, $6) where id=$1";
-        ReplaceAll2(strSql, "%1", metal_table.schema());
-        ReplaceAll2(strSql, "%2", metal_table.name());
-
-        auto clientPtr = drogon::app().getDbClient("sce");
-        auto transPtr = clientPtr->newTransaction();
-        try {
-            Dba::writeInTrans(transPtr, strSql,
-                            args[0]["id"].get<long>(),
-                    args[0]["slug"].get<std::string>(),
-                    args[0]["name"].get<std::string>(),
-                    args[0]["specific_density"].get<float>(),
-                    args[0]["price"].get<float>(),
-                    args[0]["melting_point_in_c"].get<float>()
-                    );
-            //1 purity_metal
-            auto pr_update = R"(
+      Dba::writeInTrans(transPtr, strSql, args[0]["id"].get<long>(),
+                        args[0]["slug"].get<std::string>(),
+                        args[0]["name"].get<std::string>(),
+                        args[0]["specific_density"].get<float>(),
+                        args[0]["price"].get<float>(),
+                        args[0]["melting_point_in_c"].get<float>());
+      // 1 purity_metal
+      auto pr_update = R"(
                              update material.purity_metal pm
                              set (price) = row(pm.purity * m.price / 100)
                              from material.metal m
@@ -110,11 +116,12 @@ json Metal::upd( json event, json args) {
                              pm.metal_id = $1
                              returning pm.purity_id;
                              )";
-            auto pr = Dba::writeInTrans(transPtr, pr_update, args[0]["id"].get<long>());
+      auto pr =
+          Dba::writeInTrans(transPtr, pr_update, args[0]["id"].get<long>());
 
-            ids2(pr, id1)
-            //2. purity
-            auto pr_update01 = R"(
+      ids2(pr, id1)
+          // 2. purity
+          auto pr_update01 = R"(
                                update material.purity p
                                set (price) = row(p.purity * m.price / 100)
                                from material.metal m
@@ -123,10 +130,11 @@ json Metal::upd( json event, json args) {
                                p.metal_id = $1
                                returning p.id;
                                )";
-            auto pr0 = Dba::writeInTrans(transPtr, pr_update01, args[0]["id"].get<long>());
-            ids2(pr, id2)
-            //3. purity_tone
-            auto pr_update2 = R"(
+      auto pr0 =
+          Dba::writeInTrans(transPtr, pr_update01, args[0]["id"].get<long>());
+      ids2(pr, id2)
+          // 3. purity_tone
+          auto pr_update2 = R"(
                               update material.purity_tone pt
                               set (price) = row(
                               (select SUM(pm.price)
@@ -140,9 +148,9 @@ json Metal::upd( json event, json args) {
                               where
                               pt.purity_id = ANY($1::bigint[]) or pt.purity_id = ANY($2::bigint[])
                               )";
-            auto pr2 = Dba::writeInTrans(transPtr, pr_update2, id1, id2);
+      auto pr2 = Dba::writeInTrans(transPtr, pr_update2, id1, id2);
 
-            auto pr_update3 = R"(
+      auto pr_update3 = R"(
                               update product.product p
                               set (volume) = row(
                               p.weight / (
@@ -160,10 +168,10 @@ json Metal::upd( json event, json args) {
                               where
                               p.purity_id = ANY($1::bigint[]) or p.purity_id = ANY($2::bigint[]) returning p.post_id
                               )";
-            auto product_update = Dba::writeInTrans(transPtr, pr_update3, id1, id2);
-            ids2(product_update, id3)
+      auto product_update = Dba::writeInTrans(transPtr, pr_update3, id1, id2);
+      ids2(product_update, id3)
 
-            auto pr_update4 = R"(
+          auto pr_update4 = R"(
                               UPDATE product.purity_tone pt
                               SET (weight, price) = row(pr.volume * (sub_q0.sum_val + sub_q.sum_val), pr.volume * (sub_q0.sum_val + sub_q.sum_val) * (mpt.price))
                               FROM
@@ -185,16 +193,19 @@ json Metal::upd( json event, json args) {
                               --returning pt.post_id, pt.purity_id, pt.weight, pt.price
                               )";
 
+      auto pr4 = Dba::writeInTrans(transPtr, pr_update4, id1, id2, id3);
 
-            auto pr4 = Dba::writeInTrans(transPtr, pr_update4, id1, id2, id3);
-
-            
-            json ret; ret[0] = simpleJsonSaveResult(event, true, "Done"); return ret;
-        } catch (const std::exception &e) {
-            
-           SPDLOG_TRACE(e.what());
-            json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
-        }
+      json ret;
+      ret[0] = simpleJsonSaveResult(event, true, "Done");
+      return ret;
+    } catch (const std::exception &e) {
+      SPDLOG_TRACE(e.what());
+      json ret;
+      ret[0] = simpleJsonSaveResult(event, false, e.what());
+      return ret;
     }
-    json ret; ret[0] = simpleJsonSaveResult(event, false, "Not Valid Structure"); return ret;
+  }
+  json ret;
+  ret[0] = simpleJsonSaveResult(event, false, "Not Valid Structure");
+  return ret;
 }

@@ -1,13 +1,8 @@
 #include "preference.h"
 
 #include <utility>
-using namespace  madmin;
-Preference::Preference(MAdminContextPtr context_): context(std::move(context_))
-{
+using namespace madmin;
+Preference::Preference(MAdminContextPtr context_)
+    : context(std::move(context_)) {}
 
-}
-
-void Preference::setupTable()
-{
-
-}
+void Preference::setupTable() {}

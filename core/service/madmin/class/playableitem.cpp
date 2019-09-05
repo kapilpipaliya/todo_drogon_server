@@ -1,4 +1,3 @@
 #include "playableitem.h"
 
-PlayableItem::PlayableItem()
-= default;
+PlayableItem::PlayableItem() = default;
