@@ -1,6 +1,8 @@
 #include "accountheading.h"
+
+#include <utility>
 using namespace  jadmin;
-AccountHeading::AccountHeading(const JAdminContextPtr &context_): context(context_)
+AccountHeading::AccountHeading(JAdminContextPtr context_): context(std::move(context_))
 {
     t.m_table = sqlb::ObjectIdentifier("account", "account_heading", "a");
 }

@@ -1,10 +1,9 @@
 #include "dba.h"
 #include "spdlogfix.h"
 Dba::Dba()
-{
-}
+= default;
 
-drogon::orm::Result Dba::read(std::string sql)
+drogon::orm::Result Dba::read(const std::string& sql)
 {
     try {
         auto clientPtr = drogon::app().getDbClient("sce");
@@ -16,7 +15,7 @@ drogon::orm::Result Dba::read(std::string sql)
     }
 }
 
-nlohmann::json Dba::readJson(std::string sql)
+nlohmann::json Dba::readJson(const std::string&  /*sql*/)
 {
     // Fix this. dont know how to do it?
     json j;

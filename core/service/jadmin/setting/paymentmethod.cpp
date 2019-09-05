@@ -1,8 +1,9 @@
 #include "paymentmethod.h"
 #include <boost/filesystem.hpp>
+#include <utility>
 using namespace  jadmin;
 
-PaymentMethod::PaymentMethod(const JAdminContextPtr &context_): context(context_)
+PaymentMethod::PaymentMethod(JAdminContextPtr context_): context(std::move(context_))
 {
     t.m_table = sqlb::ObjectIdentifier("setting", "payment_method", "t");
 

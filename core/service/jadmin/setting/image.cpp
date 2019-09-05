@@ -1,8 +1,10 @@
 #include "image.h"
+
+#include <utility>
 #include "../../dba.h"
 using namespace  jadmin;
 
-Image::Image(const JAdminContextPtr &context_): context(context_)
+Image::Image(JAdminContextPtr context_): context(std::move(context_))
 {
     t.m_table = sqlb::ObjectIdentifier("setting", "image", "a");
 
@@ -41,12 +43,12 @@ void Image::setupTable()
 };
 }
 
-json Image::handleEvent(json event, int next, json args)
+json Image::handleEvent(json event, int next, const json& args)
 {
     auto event_cmp = event[next].get<std::string>();
     if(event_cmp  == "data"){
         return allData(event, args);
-    } else if (event_cmp  == "header") {
+    } if (event_cmp  == "header") {
         return headerData(event, args);
     } else if (event_cmp  == "ins") {
         return ins(event, args);
@@ -55,7 +57,7 @@ json Image::handleEvent(json event, int next, json args)
     } else if (event_cmp  == "del") {
         return del(event, args);
     } else {
-        return Json::nullValue;
+        json ret; return ret;
     }
 }
 

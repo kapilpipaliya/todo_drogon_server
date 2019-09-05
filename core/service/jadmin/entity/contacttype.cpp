@@ -1,7 +1,9 @@
 #include "contacttype.h"
+
+#include <utility>
 using namespace  jadmin;
 
-ContactType::ContactType(const JAdminContextPtr &context_): context(context_)
+ContactType::ContactType(JAdminContextPtr context_): context(std::move(context_))
 {
 
     t.m_table = sqlb::ObjectIdentifier("entity", "contact_type", "a");

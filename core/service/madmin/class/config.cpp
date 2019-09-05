@@ -1,6 +1,8 @@
 #include "config.h"
+
+#include <utility>
 using namespace  madmin;
-Config::Config(const MAdminContextPtr &context_): context(context_)
+Config::Config(MAdminContextPtr context_): context(std::move(context_))
 {
 
 }

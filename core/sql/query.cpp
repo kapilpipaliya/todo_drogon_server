@@ -157,7 +157,7 @@ std::string Query::buildSelectorPart(std::vector<SelectedColumn> &m_selected_col
     return selector;
 }
 
-std::string Query::buildQuery(bool withRowid) const
+std::string Query::buildQuery(bool  /*withRowid*/) const
 {
     // Selector and display formats
     std::string selector = buildSelectorPart(const_cast<std::vector<SelectedColumn> &>(m_selected_columns));
@@ -208,7 +208,7 @@ std::string Query::buildInsQuery(nlohmann::json args) const
                 });
            if(it != m_selected_columns.end()){
                column += key_ + " ,";
-               std::string v{""};
+               std::string v;
                if (val.is_null()) {
                    v  = "null";
                    values += v + " ,";
@@ -253,7 +253,7 @@ std::string Query::buildUpdateQuery(nlohmann::json args) const
                 });
            if(it != m_selected_columns.end()){
                column += key_ + " ,";
-               std::string v{""};
+               std::string v;
                if (val.is_null()) {
                    v  = "null";
                    values += v + " ,";
@@ -286,14 +286,14 @@ std::string Query::buildUpdateQuery(nlohmann::json args) const
     return "";
 }
 
-std::string Query::buildUpdateQuery(std::string column, std::string values, std::string where_) const
+std::string Query::buildUpdateQuery(const std::string& column, const std::string& values, const std::string& where_) const
 {
     std::string join = buildJoinPart();
     if(!join.empty()){
         join = " FROM " + join;
     }
     // Filter
-    std::string where{""};
+    std::string where;
     if(!where_.empty()) {
         where = where_;
     } else {

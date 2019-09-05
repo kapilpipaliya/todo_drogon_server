@@ -1,6 +1,8 @@
 #include "recommandation.h"
+
+#include <utility>
 using namespace  madmin;
-Recommandation::Recommandation(const MAdminContextPtr &context_): context(context_)
+Recommandation::Recommandation(MAdminContextPtr context_): context(std::move(context_))
 {
 
 }

@@ -2,7 +2,7 @@
 
 #include "../../baseserviceabs.h"
 #include "../../../../wscontroller/context/jadmincontext.h"
-typedef std::shared_ptr<JAdminContext> JAdminContextPtr;
+using JAdminContextPtr = std::shared_ptr<JAdminContext>;
 /**
  *
  * This class handles all of the session related stuff in Ampache
@@ -13,7 +13,7 @@ class Session : public BaseServiceAbs
 {
   JAdminContextPtr context;
 public:
-    Session(const JAdminContextPtr &);
+    Session(JAdminContextPtr );
     void setupTable() override;
 
         /**

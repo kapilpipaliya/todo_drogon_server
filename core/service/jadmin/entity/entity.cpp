@@ -1,10 +1,12 @@
 #include "entity.h"
+
+#include <utility>
 #include "../../dba.h"
 using namespace  jadmin;
 
 
-typedef sqlb::SelectedColumn S;
-Entity::Entity(const JAdminContextPtr &context_): context(context_)
+using S = sqlb::SelectedColumn;
+Entity::Entity(JAdminContextPtr context_): context(std::move(context_))
 {
     t.m_table = sqlb::ObjectIdentifier("entity", "entity", "e");
 
@@ -79,7 +81,7 @@ void Entity::setupTable()
 }
 
 void save_Entity_Address(json &args,
-                             std::shared_ptr<Transaction> transPtr,
+                             const std::shared_ptr<Transaction>& transPtr,
                              long entity_id) {
     std::string strSqlPostCategories = "SELECT id FROM entity.entity_address where entity_id = $1";
     std::string strSqlPostCategorySimpleFind = "SELECT address_type_id, line1, line2, line3, city, state, country, zipcode, phone, ismain FROM entity.entity_address WHERE id = $1";
@@ -111,7 +113,7 @@ void save_Entity_Address(json &args,
     auto all_ct = Dba::writeInTrans(transPtr, strSqlPostCategories, entity_id);
     // For each saved tones, If saved tone not exist in new tones, delete it.
     for (auto r : all_ct) {
-        std::vector<EntityAddress>::iterator it = std::find_if(inVector.begin(), inVector.end(), [&](EntityAddress t) {
+        auto it = std::find_if(inVector.begin(), inVector.end(), [&](const EntityAddress& t) {
             return t.id == r["id"].as<long>();
         });
         if (it == inVector.end()) {// Element not Found
@@ -119,9 +121,9 @@ void save_Entity_Address(json &args,
         }
     }
     // For each new tones, insert it if it not already exist.
-    for (auto r : inVector) {
+    for (const auto& r : inVector) {
         auto y = Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind, r.id);
-        if (y.size() == 0) {
+        if (y.empty()) {
             Dba::writeInTrans(transPtr, strSqlPostCategoryInsert, entity_id, r.addess_type_id, r.line1, r.line2, r.line3, r.city,
                             r.state, r.country, r.zipcode, r.phone, r.ismain);
         } else { // update

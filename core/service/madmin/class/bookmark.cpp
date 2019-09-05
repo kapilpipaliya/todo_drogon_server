@@ -1,6 +1,8 @@
 #include "bookmark.h"
+
+#include <utility>
 using namespace  madmin;
-Bookmark::Bookmark(const MAdminContextPtr &context_): context(context_)
+Bookmark::Bookmark(MAdminContextPtr context_): context(std::move(context_))
 {
 
 }

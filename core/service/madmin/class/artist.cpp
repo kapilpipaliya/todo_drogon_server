@@ -1,6 +1,8 @@
 #include "artist.h"
+
+#include <utility>
 using namespace  madmin;
-Artist::Artist(const MAdminContextPtr &context_): context(context_)
+Artist::Artist(MAdminContextPtr context_): context(std::move(context_))
 {
 
 }

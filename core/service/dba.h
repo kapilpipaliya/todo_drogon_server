@@ -37,7 +37,7 @@ public:
   /**
      * read
      */
-  static drogon::orm::Result read(std::string sql);
+  static drogon::orm::Result read(const std::string& sql);
 
   template<class... Args>
   static drogon::orm::Result read(std::string sql, Args... args){
@@ -52,7 +52,7 @@ public:
     }
   }
 
-  static json readJson(std::string sql);
+  static json readJson(const std::string& sql);
   /**
      * write
      */
@@ -69,7 +69,7 @@ public:
     }
   }
   template<class... Args>
-  static drogon::orm::Result writeInTrans(std::shared_ptr<drogon::orm::Transaction> transPtr, std::string sql, Args... args){
+  static drogon::orm::Result writeInTrans(const std::shared_ptr<drogon::orm::Transaction>& transPtr, std::string sql, Args... args){
     try {
       auto r = transPtr->execSqlSync(sql, args...);
       return r;

@@ -2,17 +2,17 @@
 #define ENTITY_H
 #include "../../baseserviceabs.h"
 #include "../../../../wscontroller/context/jadmincontext.h"
-typedef std::shared_ptr<JAdminContext> JAdminContextPtr;
+using JAdminContextPtr = std::shared_ptr<JAdminContext>;
 namespace jadmin {
 class Entity : public BaseServiceAbs
 {
 public:
-    Entity(const JAdminContextPtr &);
+    Entity(JAdminContextPtr );
 private:
-    void setupTable();
-    json ins(json event, json args);
-    json upd(json event, json args);
-    json del(json event, json args);
+    void setupTable() override;
+    json ins(json event, json args) override;
+    json upd(json event, json args) override;
+    json del(json event, json args) override;
     JAdminContextPtr context;
 };
 }

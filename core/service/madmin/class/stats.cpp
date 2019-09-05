@@ -1,6 +1,8 @@
 #include "stats.h"
+
+#include <utility>
 using namespace  madmin;
-Stats::Stats(const MAdminContextPtr &context_): context(context_)
+Stats::Stats(MAdminContextPtr context_): context(std::move(context_))
 {
 
 }

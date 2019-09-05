@@ -1,7 +1,9 @@
 #include "catalog.h"
+
+#include <utility>
 #include "../../dba.h"
 using namespace  madmin;
-Catalog::Catalog(const MAdminContextPtr &context_): context(context_)
+Catalog::Catalog(MAdminContextPtr context_): context(std::move(context_))
 {
 
 }
@@ -24,7 +26,7 @@ void Catalog::clean_empty_albums()
     }*/
 }
 
-bool Catalog::delet(long catalog_id, string type)
+bool Catalog::delet(long catalog_id, const string& type)
 {
     // Large catalog deletion can take time
     //set_time_limit(0);

@@ -1,6 +1,8 @@
 #include "api.h"
+
+#include <utility>
 using namespace  madmin;
-Api::Api(const MAdminContextPtr &context_): context(context_)
+Api::Api(MAdminContextPtr context_): context(std::move(context_))
 {
 
 }

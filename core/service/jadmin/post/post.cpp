@@ -1,9 +1,11 @@
 #include "post.h"
+
+#include <utility>
 #include "../../dba.h"
 #include "../../../strfns.h"
 using namespace  jadmin;
 
-Post1::Post1(const JAdminContextPtr &context_): context(context_)
+Post1::Post1(JAdminContextPtr context_): context(std::move(context_))
 {
     t.m_table = sqlb::ObjectIdentifier("post", "post", "post");
 

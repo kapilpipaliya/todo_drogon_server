@@ -5,14 +5,14 @@
 #include "../../baseserviceabs.h"
 #include "../../../../wscontroller/context/madmincontext.h"
 
-typedef std::shared_ptr<MAdminContext> MAdminContextPtr;
+using MAdminContextPtr = std::shared_ptr<MAdminContext>;
 using std::string;
 namespace madmin {
 class Catalog : public BaseServiceAbs
 {
 public:
     MAdminContextPtr context;
-    Catalog(const MAdminContextPtr &);
+    Catalog(MAdminContextPtr );
     void setupTable() override;
 
     /**
@@ -23,11 +23,11 @@ public:
      *
      */
 public:
-        int $id;
+        int $id{};
         string name;
-        int last_update;
-        int last_add;
-        int last_clean;
+        int last_update{};
+        int last_add{};
+        int last_clean{};
         string key;
         string rename_pattern;
         string sort_pattern;
@@ -553,7 +553,7 @@ public:
          * it takes the catalog id
          * @param int $catalog_id
          */
-        static bool delet(long catalog_id, std::string type);
+        static bool delet(long catalog_id, const std::string& type);
         /**
          * exports the catalog
          * it exports all songs in the database to the given export type.

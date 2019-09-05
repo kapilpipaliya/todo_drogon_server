@@ -1,6 +1,8 @@
 #include "playlistbase.h"
+
+#include <utility>
 using namespace  madmin;
-PlayListBase::PlayListBase(const MAdminContextPtr &context_): context(context_)
+PlayListBase::PlayListBase(MAdminContextPtr context_): context(std::move(context_))
 {
 
 }

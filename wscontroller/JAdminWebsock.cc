@@ -20,8 +20,7 @@ void EchoWebSocket::handleNewMessage(const WebSocketConnectionPtr &wsConnPtr, st
     globalCAF.self->request(globalCAF.mainactor, caf::infinite, run_atom::value,  MainActorType::JAdmin, wsConnPtr, std::move(message), type).receive(
         [&]() {
             //if(!message.empty()) SPDLOG_TRACE("Output: {}", message.c_str());
-            return;
-        },
+                   },
         [&](error& err) {
             aout(globalCAF.self) << " -> " << globalCAF.self->system().render(err) << err.code() << std::endl;
         }

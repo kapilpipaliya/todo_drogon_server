@@ -2,7 +2,7 @@
 #define UI_H
 #include "../../baseserviceabs.h"
 #include "../../../../wscontroller/context/madmincontext.h"
-typedef std::shared_ptr<MAdminContext> MAdminContextPtr;
+using MAdminContextPtr = std::shared_ptr<MAdminContext>;
 #include "spdlogfix.h"
 #include <fmt/format.h>
 #include  "json.hpp"
@@ -15,7 +15,7 @@ class UI : public BaseServiceAbs
 {
     MAdminContextPtr context;
 public:
-    UI(const MAdminContextPtr &);
+    UI(MAdminContextPtr );
     void setupTable() override;
     json handleEvent(json event, unsigned long next, json args) override;
 

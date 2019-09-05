@@ -1,6 +1,8 @@
 #include "search.h"
+
+#include <utility>
 using namespace  madmin;
-Search::Search(const MAdminContextPtr &context_): context(context_)
+Search::Search(MAdminContextPtr context_): context(std::move(context_))
 {
 
 }

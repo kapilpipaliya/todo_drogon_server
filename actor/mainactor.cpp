@@ -48,8 +48,7 @@ MainActor::MainActor(caf::actor_config &cfg) : caf::event_based_actor(cfg)
 }
 
 MainActor::~MainActor()
-{
-}
+= default;
 
 caf::behavior MainActor::make_behavior()
 {

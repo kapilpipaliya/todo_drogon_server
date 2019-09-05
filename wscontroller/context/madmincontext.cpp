@@ -15,23 +15,23 @@ std::tuple<long, long> MAdminContext::generateContext(const HttpRequestPtr &req)
     auto c = req->getCookie("music");
     if (c.empty()) {
         return {0, 0};
-    } else {
+    } 
         auto session_id = stol(c);
         auto sqlSession = "SELECT * FROM music.session where id = $1";
         try {
             auto clientPtr = drogon::app().getDbClient("sce");
             auto transPtr = clientPtr->newTransaction();
             auto r = Dba::writeInTrans(transPtr, sqlSession, session_id);
-            if (r.size() != 0) {
+            if (!r.empty()) {
                 return {r[0]["id"].as<long>(), r[0]["user_id"].as<long>()};
-            } else {
+            } 
                 return {0, 0};
-            }
+            
         } catch (const std::exception &e) {
            SPDLOG_TRACE(e.what());
             return {0, 0};
         }
-    }
+    
 }
 
 void MAdminContext::setUser()
@@ -43,7 +43,7 @@ void MAdminContext::setUser()
         auto clientPtr = drogon::app().getDbClient("sce");
         auto transPtr = clientPtr->newTransaction();
         auto r = Dba::writeInTrans(transPtr, sqlSession, user_id);
-        if (r.size() != 0) {
+        if (!r.empty()) {
             user.id= r[0]["id"].as<long>();
             user.type = r[0]["type"].as<std::string>();
         }

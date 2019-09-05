@@ -1,6 +1,8 @@
 #include "album.h"
+
+#include <utility>
 using namespace  madmin;
-Album::Album(const MAdminContextPtr &context_): context(context_)
+Album::Album(MAdminContextPtr context_): context(std::move(context_))
 {
 
 }

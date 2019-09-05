@@ -1,6 +1,8 @@
 #include "access.h"
+
+#include <utility>
 using namespace  madmin;
-Access::Access(const MAdminContextPtr &context_): context(context_)
+Access::Access(MAdminContextPtr context_): context(std::move(context_))
 {
 
 }

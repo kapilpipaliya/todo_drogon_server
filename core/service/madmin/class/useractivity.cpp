@@ -1,6 +1,8 @@
 #include "useractivity.h"
+
+#include <utility>
 using namespace  madmin;
-UserActivity::UserActivity(const MAdminContextPtr &context_): context(context_)
+UserActivity::UserActivity(MAdminContextPtr context_): context(std::move(context_))
 {
 
 }

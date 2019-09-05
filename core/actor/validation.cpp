@@ -1,8 +1,10 @@
 #include "validation.h"
 
+#include <utility>
+
 using check_validation = caf::atom_constant<caf::atom("permis")>;
 
-Validation::Validation(caf::actor_config &cfg, nlohmann::json in) : caf::event_based_actor(cfg), in(in)
+Validation::Validation(caf::actor_config &cfg, nlohmann::json in) : caf::event_based_actor(cfg), in(std::move(in))
 {
     running_job.assign(
       [=, this](check_validation) {

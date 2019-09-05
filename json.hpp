@@ -1775,7 +1775,7 @@ class exception : public std::exception
 {
   public:
     /// returns the explanatory string
-    JSON_HEDLEY_RETURNS_NON_NULL
+    [[nodiscard]] JSON_HEDLEY_RETURNS_NON_NULL
     const char* what() const noexcept override
     {
         return m.what();
@@ -2145,8 +2145,7 @@ struct static_const
     static constexpr T value{};
 };
 
-template<typename T>
-constexpr T static_const<T>::value;
+
 }  // namespace detail
 }  // namespace nlohmann
 
@@ -3941,23 +3940,23 @@ struct wide_string_input_helper
             }
             else if (wc <= 0x7FF)
             {
-                utf8_bytes[0] = static_cast<std::char_traits<char>::int_type>(0xC0u | ((wc >> 6u) & 0x1Fu));
-                utf8_bytes[1] = static_cast<std::char_traits<char>::int_type>(0x80u | (wc & 0x3Fu));
+                utf8_bytes[0] = static_cast<std::char_traits<char>::int_type>(0xC0U | ((wc >> 6U) & 0x1FU));
+                utf8_bytes[1] = static_cast<std::char_traits<char>::int_type>(0x80U | (wc & 0x3FU));
                 utf8_bytes_filled = 2;
             }
             else if (wc <= 0xFFFF)
             {
-                utf8_bytes[0] = static_cast<std::char_traits<char>::int_type>(0xE0u | ((wc >> 12u) & 0x0Fu));
-                utf8_bytes[1] = static_cast<std::char_traits<char>::int_type>(0x80u | ((wc >> 6u) & 0x3Fu));
-                utf8_bytes[2] = static_cast<std::char_traits<char>::int_type>(0x80u | (wc & 0x3Fu));
+                utf8_bytes[0] = static_cast<std::char_traits<char>::int_type>(0xE0U | ((wc >> 12U) & 0x0FU));
+                utf8_bytes[1] = static_cast<std::char_traits<char>::int_type>(0x80U | ((wc >> 6U) & 0x3FU));
+                utf8_bytes[2] = static_cast<std::char_traits<char>::int_type>(0x80U | (wc & 0x3FU));
                 utf8_bytes_filled = 3;
             }
             else if (wc <= 0x10FFFF)
             {
-                utf8_bytes[0] = static_cast<std::char_traits<char>::int_type>(0xF0u | ((wc >> 18u) & 0x07u));
-                utf8_bytes[1] = static_cast<std::char_traits<char>::int_type>(0x80u | ((wc >> 12u) & 0x3Fu));
-                utf8_bytes[2] = static_cast<std::char_traits<char>::int_type>(0x80u | ((wc >> 6u) & 0x3Fu));
-                utf8_bytes[3] = static_cast<std::char_traits<char>::int_type>(0x80u | (wc & 0x3Fu));
+                utf8_bytes[0] = static_cast<std::char_traits<char>::int_type>(0xF0U | ((wc >> 18U) & 0x07U));
+                utf8_bytes[1] = static_cast<std::char_traits<char>::int_type>(0x80U | ((wc >> 12U) & 0x3FU));
+                utf8_bytes[2] = static_cast<std::char_traits<char>::int_type>(0x80U | ((wc >> 6U) & 0x3FU));
+                utf8_bytes[3] = static_cast<std::char_traits<char>::int_type>(0x80u | (wc & 0x3FU));
                 utf8_bytes_filled = 4;
             }
             else
@@ -4000,15 +3999,15 @@ struct wide_string_input_helper<WideStringType, 2>
             }
             else if (wc <= 0x7FF)
             {
-                utf8_bytes[0] = static_cast<std::char_traits<char>::int_type>(0xC0u | ((wc >> 6u)));
-                utf8_bytes[1] = static_cast<std::char_traits<char>::int_type>(0x80u | (wc & 0x3Fu));
+                utf8_bytes[0] = static_cast<std::char_traits<char>::int_type>(0xC0U | ((wc >> 6U)));
+                utf8_bytes[1] = static_cast<std::char_traits<char>::int_type>(0x80U | (wc & 0x3FU));
                 utf8_bytes_filled = 2;
             }
             else if (0xD800 > wc or wc >= 0xE000)
             {
-                utf8_bytes[0] = static_cast<std::char_traits<char>::int_type>(0xE0u | ((wc >> 12u)));
-                utf8_bytes[1] = static_cast<std::char_traits<char>::int_type>(0x80u | ((wc >> 6u) & 0x3Fu));
-                utf8_bytes[2] = static_cast<std::char_traits<char>::int_type>(0x80u | (wc & 0x3Fu));
+                utf8_bytes[0] = static_cast<std::char_traits<char>::int_type>(0xE0U | ((wc >> 12U)));
+                utf8_bytes[1] = static_cast<std::char_traits<char>::int_type>(0x80U | ((wc >> 6U) & 0x3FU));
+                utf8_bytes[2] = static_cast<std::char_traits<char>::int_type>(0x80U | (wc & 0x3Fu));
                 utf8_bytes_filled = 3;
             }
             else
@@ -4016,11 +4015,11 @@ struct wide_string_input_helper<WideStringType, 2>
                 if (current_wchar < str.size())
                 {
                     const auto wc2 = static_cast<unsigned int>(str[current_wchar++]);
-                    const auto charcode = 0x10000u + (((wc & 0x3FFu) << 10u) | (wc2 & 0x3FFu));
-                    utf8_bytes[0] = static_cast<std::char_traits<char>::int_type>(0xF0u | (charcode >> 18u));
-                    utf8_bytes[1] = static_cast<std::char_traits<char>::int_type>(0x80u | ((charcode >> 12u) & 0x3Fu));
-                    utf8_bytes[2] = static_cast<std::char_traits<char>::int_type>(0x80u | ((charcode >> 6u) & 0x3Fu));
-                    utf8_bytes[3] = static_cast<std::char_traits<char>::int_type>(0x80u | (charcode & 0x3Fu));
+                    const auto charcode = 0x10000U + (((wc & 0x3FFU) << 10U) | (wc2 & 0x3FFu));
+                    utf8_bytes[0] = static_cast<std::char_traits<char>::int_type>(0xF0U | (charcode >> 18U));
+                    utf8_bytes[1] = static_cast<std::char_traits<char>::int_type>(0x80u | ((charcode >> 12u) & 0x3FU));
+                    utf8_bytes[2] = static_cast<std::char_traits<char>::int_type>(0x80u | ((charcode >> 6U) & 0x3FU));
+                    utf8_bytes[3] = static_cast<std::char_traits<char>::int_type>(0x80u | (charcode & 0x3FU));
                     utf8_bytes_filled = 4;
                 }
                 else
@@ -4454,16 +4453,16 @@ class json_sax_dom_parser
             switch ((ex.id / 100) % 100)
             {
                 case 1:
-                    JSON_THROW(*static_cast<const detail::parse_error*>(&ex));
+                    JSON_THROW(*dynamic_cast<const detail::parse_error*>(&ex));
                 case 4:
-                    JSON_THROW(*static_cast<const detail::out_of_range*>(&ex));
+                    JSON_THROW(*dynamic_cast<const detail::out_of_range*>(&ex));
                 // LCOV_EXCL_START
                 case 2:
-                    JSON_THROW(*static_cast<const detail::invalid_iterator*>(&ex));
+                    JSON_THROW(*dynamic_cast<const detail::invalid_iterator*>(&ex));
                 case 3:
-                    JSON_THROW(*static_cast<const detail::type_error*>(&ex));
+                    JSON_THROW(*dynamic_cast<const detail::type_error*>(&ex));
                 case 5:
-                    JSON_THROW(*static_cast<const detail::other_error*>(&ex));
+                    JSON_THROW(*dynamic_cast<const detail::other_error*>(&ex));
                 default:
                     assert(false);
                     // LCOV_EXCL_STOP
@@ -4472,7 +4471,7 @@ class json_sax_dom_parser
         return false;
     }
 
-    constexpr bool is_errored() const
+    [[nodiscard]] constexpr bool is_errored() const
     {
         return errored;
     }
@@ -4701,16 +4700,16 @@ class json_sax_dom_callback_parser
             switch ((ex.id / 100) % 100)
             {
                 case 1:
-                    JSON_THROW(*static_cast<const detail::parse_error*>(&ex));
+                    JSON_THROW(*dynamic_cast<const detail::parse_error*>(&ex));
                 case 4:
-                    JSON_THROW(*static_cast<const detail::out_of_range*>(&ex));
+                    JSON_THROW(*dynamic_cast<const detail::out_of_range*>(&ex));
                 // LCOV_EXCL_START
                 case 2:
-                    JSON_THROW(*static_cast<const detail::invalid_iterator*>(&ex));
+                    JSON_THROW(*dynamic_cast<const detail::invalid_iterator*>(&ex));
                 case 3:
-                    JSON_THROW(*static_cast<const detail::type_error*>(&ex));
+                    JSON_THROW(*dynamic_cast<const detail::type_error*>(&ex));
                 case 5:
-                    JSON_THROW(*static_cast<const detail::other_error*>(&ex));
+                    JSON_THROW(*dynamic_cast<const detail::other_error*>(&ex));
                 default:
                     assert(false);
                     // LCOV_EXCL_STOP
@@ -4719,7 +4718,7 @@ class json_sax_dom_callback_parser
         return false;
     }
 
-    constexpr bool is_errored() const
+    [[nodiscard]] constexpr bool is_errored() const
     {
         return errored;
     }
@@ -5553,7 +5552,7 @@ class binary_reader
             case 0x95:
             case 0x96:
             case 0x97:
-                return get_cbor_array(static_cast<std::size_t>(static_cast<unsigned int>(current) & 0x1Fu));
+                return get_cbor_array(static_cast<std::size_t>(static_cast<unsigned int>(current) & 0x1FU));
 
             case 0x98: // array (one-byte uint8_t for n follows)
             {
@@ -5607,7 +5606,7 @@ class binary_reader
             case 0xB5:
             case 0xB6:
             case 0xB7:
-                return get_cbor_object(static_cast<std::size_t>(static_cast<unsigned int>(current) & 0x1Fu));
+                return get_cbor_object(static_cast<std::size_t>(static_cast<unsigned int>(current) & 0x1FU));
 
             case 0xB8: // map (one-byte uint8_t for n follows)
             {
@@ -5669,7 +5668,7 @@ class binary_reader
                 // without such support. An example of a small decoder for
                 // half-precision floating-point numbers in the C language
                 // is shown in Fig. 3.
-                const auto half = static_cast<unsigned int>((byte1 << 8u) + byte2);
+                const auto half = static_cast<unsigned int>((byte1 << 8U) + byte2);
                 const double val = [&half]
                 {
                     const int exp = (half >> 10u) & 0x1Fu;
@@ -5688,7 +5687,7 @@ class binary_reader
                             return std::ldexp(mant + 1024, exp - 25);
                     }
                 }();
-                return sax->number_float((half & 0x8000u) != 0
+                return sax->number_float((half & 0x8000U) != 0
                                          ? static_cast<number_float_t>(-val)
                                          : static_cast<number_float_t>(val), "");
             }
@@ -5759,7 +5758,7 @@ class binary_reader
             case 0x76:
             case 0x77:
             {
-                return get_string(input_format_t::cbor, static_cast<unsigned int>(current) & 0x1Fu, result);
+                return get_string(input_format_t::cbor, static_cast<unsigned int>(current) & 0x1FU, result);
             }
 
             case 0x78: // UTF-8 string (one-byte uint8_t for n follows)
@@ -6057,7 +6056,7 @@ class binary_reader
             case 0x8D:
             case 0x8E:
             case 0x8F:
-                return get_msgpack_object(static_cast<std::size_t>(static_cast<unsigned int>(current) & 0x0Fu));
+                return get_msgpack_object(static_cast<std::size_t>(static_cast<unsigned int>(current) & 0x0FU));
 
             // fixarray
             case 0x90:
@@ -6076,7 +6075,7 @@ class binary_reader
             case 0x9D:
             case 0x9E:
             case 0x9F:
-                return get_msgpack_array(static_cast<std::size_t>(static_cast<unsigned int>(current) & 0x0Fu));
+                return get_msgpack_array(static_cast<std::size_t>(static_cast<unsigned int>(current) & 0x0FU));
 
             // fixstr
             case 0xA0:
@@ -6308,7 +6307,7 @@ class binary_reader
             case 0xBE:
             case 0xBF:
             {
-                return get_string(input_format_t::msgpack, static_cast<unsigned int>(current) & 0x1Fu, result);
+                return get_string(input_format_t::msgpack, static_cast<unsigned int>(current) & 0x1FU, result);
             }
 
             case 0xD9: // str 8
@@ -6947,7 +6946,7 @@ class binary_reader
     /*!
     @return a string representation of the last read byte
     */
-    std::string get_token_string() const
+    [[nodiscard]] std::string get_token_string() const
     {
         std::array<char, 3> cr{{}};
         (std::snprintf)(cr.data(), cr.size(), "%.2hhX", static_cast<unsigned char>(current));
@@ -6960,7 +6959,7 @@ class binary_reader
     @param[in] context  further contect information
     @return a message string to use in the parse_error exceptions
     */
-    std::string exception_message(const input_format_t format,
+    [[nodiscard]] std::string exception_message(const input_format_t format,
                                   const std::string& detail,
                                   const std::string& context) const
     {
@@ -7171,22 +7170,22 @@ class lexer
         assert(current == 'u');
         int codepoint = 0;
 
-        const auto factors = { 12u, 8u, 4u, 0u };
+        const auto factors = { 12U, 8U, 4U, 0U };
         for (const auto factor : factors)
         {
             get();
 
             if (current >= '0' and current <= '9')
             {
-                codepoint += static_cast<int>((static_cast<unsigned int>(current) - 0x30u) << factor);
+                codepoint += static_cast<int>((static_cast<unsigned int>(current) - 0x30U) << factor);
             }
             else if (current >= 'A' and current <= 'F')
             {
-                codepoint += static_cast<int>((static_cast<unsigned int>(current) - 0x37u) << factor);
+                codepoint += static_cast<int>((static_cast<unsigned int>(current) - 0x37U) << factor);
             }
             else if (current >= 'a' and current <= 'f')
             {
-                codepoint += static_cast<int>((static_cast<unsigned int>(current) - 0x57u) << factor);
+                codepoint += static_cast<int>((static_cast<unsigned int>(current) - 0x57U) << factor);
             }
             else
             {
@@ -7346,13 +7345,13 @@ class lexer
                                         // overwrite codepoint
                                         codepoint = static_cast<int>(
                                                         // high surrogate occupies the most significant 22 bits
-                                                        (static_cast<unsigned int>(codepoint1) << 10u)
+                                                        (static_cast<unsigned int>(codepoint1) << 10U)
                                                         // low surrogate occupies the least significant 15 bits
                                                         + static_cast<unsigned int>(codepoint2)
                                                         // there is still the 0xD800, 0xDC00 and 0x10000 noise
                                                         // in the result so we have to subtract with:
                                                         // (0xD800 << 10) + DC00 - 0x10000 = 0x35FDC00
-                                                        - 0x35FDC00u);
+                                                        - 0x35FDC00U);
                                     }
                                     else
                                     {
@@ -7387,23 +7386,23 @@ class lexer
                             else if (codepoint <= 0x7FF)
                             {
                                 // 2-byte characters: 110xxxxx 10xxxxxx
-                                add(static_cast<int>(0xC0u | (static_cast<unsigned int>(codepoint) >> 6u)));
-                                add(static_cast<int>(0x80u | (static_cast<unsigned int>(codepoint) & 0x3Fu)));
+                                add(static_cast<int>(0xC0U | (static_cast<unsigned int>(codepoint) >> 6U)));
+                                add(static_cast<int>(0x80U | (static_cast<unsigned int>(codepoint) & 0x3Fu)));
                             }
                             else if (codepoint <= 0xFFFF)
                             {
                                 // 3-byte characters: 1110xxxx 10xxxxxx 10xxxxxx
-                                add(static_cast<int>(0xE0u | (static_cast<unsigned int>(codepoint) >> 12u)));
-                                add(static_cast<int>(0x80u | ((static_cast<unsigned int>(codepoint) >> 6u) & 0x3Fu)));
-                                add(static_cast<int>(0x80u | (static_cast<unsigned int>(codepoint) & 0x3Fu)));
+                                add(static_cast<int>(0xE0U | (static_cast<unsigned int>(codepoint) >> 12U)));
+                                add(static_cast<int>(0x80U | ((static_cast<unsigned int>(codepoint) >> 6U) & 0x3FU)));
+                                add(static_cast<int>(0x80U | (static_cast<unsigned int>(codepoint) & 0x3Fu)));
                             }
                             else
                             {
                                 // 4-byte characters: 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
-                                add(static_cast<int>(0xF0u | (static_cast<unsigned int>(codepoint) >> 18u)));
-                                add(static_cast<int>(0x80u | ((static_cast<unsigned int>(codepoint) >> 12u) & 0x3Fu)));
-                                add(static_cast<int>(0x80u | ((static_cast<unsigned int>(codepoint) >> 6u) & 0x3Fu)));
-                                add(static_cast<int>(0x80u | (static_cast<unsigned int>(codepoint) & 0x3Fu)));
+                                add(static_cast<int>(0xF0U | (static_cast<unsigned int>(codepoint) >> 18U)));
+                                add(static_cast<int>(0x80U | ((static_cast<unsigned int>(codepoint) >> 12U) & 0x3Fu)));
+                                add(static_cast<int>(0x80U | ((static_cast<unsigned int>(codepoint) >> 6U) & 0x3Fu)));
+                                add(static_cast<int>(0x80U | (static_cast<unsigned int>(codepoint) & 0x3FU)));
                             }
 
                             break;
@@ -8337,19 +8336,19 @@ scan_number_done:
     /////////////////////
 
     /// return integer value
-    constexpr number_integer_t get_number_integer() const noexcept
+    [[nodiscard]] constexpr number_integer_t get_number_integer() const noexcept
     {
         return value_integer;
     }
 
     /// return unsigned integer value
-    constexpr number_unsigned_t get_number_unsigned() const noexcept
+    [[nodiscard]] constexpr number_unsigned_t get_number_unsigned() const noexcept
     {
         return value_unsigned;
     }
 
     /// return floating-point value
-    constexpr number_float_t get_number_float() const noexcept
+    [[nodiscard]] constexpr number_float_t get_number_float() const noexcept
     {
         return value_float;
     }
@@ -8365,7 +8364,7 @@ scan_number_done:
     /////////////////////
 
     /// return position of last read token
-    constexpr position_t get_position() const noexcept
+    [[nodiscard]] constexpr position_t get_position() const noexcept
     {
         return position;
     }
@@ -8373,7 +8372,7 @@ scan_number_done:
     /// return the last read token (for errors only).  Will never contain EOF
     /// (an arbitrary value that is not a valid char value, often -1), because
     /// 255 may legitimately occur.  May contain NUL, which should be escaped.
-    std::string get_token_string() const
+    [[nodiscard]] std::string get_token_string() const
     {
         // escape control characters
         std::string result;
@@ -8397,7 +8396,7 @@ scan_number_done:
     }
 
     /// return syntax error message
-    JSON_HEDLEY_RETURNS_NON_NULL
+    [[nodiscard]] JSON_HEDLEY_RETURNS_NON_NULL
     constexpr const char* get_error_message() const noexcept
     {
         return error_message;
@@ -8929,8 +8928,8 @@ class parser
                                         parse_error::create(101, m_lexer.get_position(),
                                                 exception_message(token_type::end_array, "array")));
             }
-            else  // object
-            {
+             // object
+            
                 // comma -> next value
                 if (get_token() == token_type::value_separator)
                 {
@@ -8984,7 +8983,7 @@ class parser
                                         m_lexer.get_token_string(),
                                         parse_error::create(101, m_lexer.get_position(),
                                                 exception_message(token_type::end_object, "object")));
-            }
+            
         }
     }
 
@@ -9069,7 +9068,7 @@ class primitive_iterator_t
     difference_type m_it = (std::numeric_limits<std::ptrdiff_t>::min)();
 
   public:
-    constexpr difference_type get_value() const noexcept
+    [[nodiscard]] constexpr difference_type get_value() const noexcept
     {
         return m_it;
     }
@@ -9087,13 +9086,13 @@ class primitive_iterator_t
     }
 
     /// return whether the iterator can be dereferenced
-    constexpr bool is_begin() const noexcept
+    [[nodiscard]] constexpr bool is_begin() const noexcept
     {
         return m_it == begin_value;
     }
 
     /// return whether the iterator is at end
-    constexpr bool is_end() const noexcept
+    [[nodiscard]] constexpr bool is_end() const noexcept
     {
         return m_it == end_value;
     }
@@ -9126,7 +9125,7 @@ class primitive_iterator_t
         return *this;
     }
 
-    primitive_iterator_t const operator++(int) noexcept
+    primitive_iterator_t operator++(int) noexcept
     {
         auto result = *this;
         ++m_it;
@@ -9139,7 +9138,7 @@ class primitive_iterator_t
         return *this;
     }
 
-    primitive_iterator_t const operator--(int) noexcept
+    primitive_iterator_t operator--(int) noexcept
     {
         auto result = *this;
         --m_it;
@@ -9502,7 +9501,7 @@ class iter_impl
     @brief post-increment (it++)
     @pre The iterator is initialized; i.e. `m_object != nullptr`.
     */
-    iter_impl const operator++(int)
+    iter_impl operator++(int)
     {
         auto result = *this;
         ++(*this);
@@ -9545,7 +9544,7 @@ class iter_impl
     @brief post-decrement (it--)
     @pre The iterator is initialized; i.e. `m_object != nullptr`.
     */
-    iter_impl const operator--(int)
+    iter_impl operator--(int)
     {
         auto result = *this;
         --(*this);
@@ -9801,7 +9800,7 @@ class iter_impl
     @brief  return the key of an object iterator
     @pre The iterator is initialized; i.e. `m_object != nullptr`.
     */
-    const typename object_t::key_type& key() const
+    [[nodiscard]] const typename object_t::key_type& key() const
     {
         assert(m_object != nullptr);
 
@@ -9817,7 +9816,7 @@ class iter_impl
     @brief  return the value of an iterator
     @pre The iterator is initialized; i.e. `m_object != nullptr`.
     */
-    reference value() const
+    [[nodiscard]] reference value() const
     {
         return operator*();
     }
@@ -9884,7 +9883,7 @@ class json_reverse_iterator : public std::reverse_iterator<Base>
     explicit json_reverse_iterator(const base_iterator& it) noexcept : base_iterator(it) {}
 
     /// post-increment (it++)
-    json_reverse_iterator const operator++(int)
+    json_reverse_iterator operator++(int)
     {
         return static_cast<json_reverse_iterator>(base_iterator::operator++(1));
     }
@@ -9896,7 +9895,7 @@ class json_reverse_iterator : public std::reverse_iterator<Base>
     }
 
     /// post-decrement (it--)
-    json_reverse_iterator const operator--(int)
+    json_reverse_iterator operator--(int)
     {
         return static_cast<json_reverse_iterator>(base_iterator::operator--(1));
     }
@@ -10023,7 +10022,7 @@ class json_pointer
 
     @since version 2.0.0
     */
-    std::string to_string() const
+    [[nodiscard]] std::string to_string() const
     {
         return std::accumulate(reference_tokens.begin(), reference_tokens.end(),
                                std::string{},
@@ -10142,7 +10141,7 @@ class json_pointer
 
     @since version 3.6.0
     */
-    friend json_pointer operator/(const json_pointer& ptr, std::string token)
+    friend json_pointer operator/(const json_pointer& ptr, const std::string& token)
     {
         return json_pointer(ptr) /= std::move(token);
     }
@@ -10180,7 +10179,7 @@ class json_pointer
 
     @since version 3.6.0
     */
-    json_pointer parent_pointer() const
+    [[nodiscard]] json_pointer parent_pointer() const
     {
         if (empty())
         {
@@ -10276,7 +10275,7 @@ class json_pointer
 
     @since version 3.6.0
     */
-    bool empty() const noexcept
+    [[nodiscard]] bool empty() const noexcept
     {
         return reference_tokens.empty();
     }
@@ -10303,7 +10302,7 @@ class json_pointer
         return res;
     }
 
-    json_pointer top() const
+    [[nodiscard]] json_pointer top() const
     {
         if (JSON_HEDLEY_UNLIKELY(empty()))
         {
@@ -11901,7 +11900,7 @@ class binary_writer
                                             "BSON key cannot contain code point U+0000 (at byte " + std::to_string(it) + ")"));
         }
 
-        return /*id*/ 1ul + name.size() + /*zero-terminator*/1u;
+        return /*id*/ 1UL + name.size() + /*zero-terminator*/1U;
     }
 
     /*!
@@ -11913,7 +11912,7 @@ class binary_writer
         oa->write_character(to_char_type(element_type)); // boolean
         oa->write_characters(
             reinterpret_cast<const CharType*>(name.c_str()),
-            name.size() + 1u);
+            name.size() + 1U);
     }
 
     /*!
@@ -11941,7 +11940,7 @@ class binary_writer
     */
     static std::size_t calc_bson_string_size(const string_t& value)
     {
-        return sizeof(std::int32_t) + value.size() + 1ul;
+        return sizeof(std::int32_t) + value.size() + 1UL;
     }
 
     /*!
@@ -11952,7 +11951,7 @@ class binary_writer
     {
         write_bson_entry_header(name, 0x02);
 
-        write_number<std::int32_t, true>(static_cast<std::int32_t>(value.size() + 1ul));
+        write_number<std::int32_t, true>(static_cast<std::int32_t>(value.size() + 1UL));
         oa->write_characters(
             reinterpret_cast<const CharType*>(value.c_str()),
             value.size() + 1);
@@ -12041,15 +12040,15 @@ class binary_writer
     */
     static std::size_t calc_bson_array_size(const typename BasicJsonType::array_t& value)
     {
-        std::size_t embedded_document_size = 0ul;
-        std::size_t array_index = 0ul;
+        std::size_t embedded_document_size = 0UL;
+        std::size_t array_index = 0UL;
 
         for (const auto& el : value)
         {
             embedded_document_size += calc_bson_element_size(std::to_string(array_index++), el);
         }
 
-        return sizeof(std::int32_t) + embedded_document_size + 1ul;
+        return sizeof(std::int32_t) + embedded_document_size + 1UL;
     }
 
     /*!
@@ -12061,7 +12060,7 @@ class binary_writer
         write_bson_entry_header(name, 0x04); // array
         write_number<std::int32_t, true>(static_cast<std::int32_t>(calc_bson_array_size(value)));
 
-        std::size_t array_index = 0ul;
+        std::size_t array_index = 0UL;
 
         for (const auto& el : value)
         {
@@ -12088,10 +12087,10 @@ class binary_writer
                 return header_size + calc_bson_array_size(*j.m_value.array);
 
             case value_t::boolean:
-                return header_size + 1ul;
+                return header_size + 1UL;
 
             case value_t::number_float:
-                return header_size + 8ul;
+                return header_size + 8UL;
 
             case value_t::number_integer:
                 return header_size + calc_bson_integer_size(j.m_value.number_integer);
@@ -12103,12 +12102,12 @@ class binary_writer
                 return header_size + calc_bson_string_size(*j.m_value.string);
 
             case value_t::null:
-                return header_size + 0ul;
+                return header_size + 0UL;
 
             // LCOV_EXCL_START
             default:
                 assert(false);
-                return 0ul;
+                return 0UL;
                 // LCOV_EXCL_STOP
         }
     }
@@ -12165,13 +12164,13 @@ class binary_writer
     */
     static std::size_t calc_bson_object_size(const typename BasicJsonType::object_t& value)
     {
-        std::size_t document_size = std::accumulate(value.begin(), value.end(), 0ul,
+        std::size_t document_size = std::accumulate(value.begin(), value.end(), 0UL,
                                     [](size_t result, const typename BasicJsonType::object_t::value_type & el)
         {
             return result += calc_bson_element_size(el.first, el.second);
         });
 
-        return sizeof(std::int32_t) + document_size + 1ul;
+        return sizeof(std::int32_t) + document_size + 1UL;
     }
 
     /*!
@@ -12351,7 +12350,7 @@ class binary_writer
           write_number_with_ubjson_prefix. Therefore, we return 'L' for any
           value that does not fit the previous limits.
     */
-    CharType ubjson_prefix(const BasicJsonType& j) const noexcept
+    [[nodiscard]] CharType ubjson_prefix(const BasicJsonType& j) const noexcept
     {
         switch (j.type())
         {
@@ -12637,9 +12636,9 @@ struct diyfp // f * 2^e
         //
         //   = p_lo + 2^64 p_hi
 
-        const std::uint64_t u_lo = x.f & 0xFFFFFFFFu;
+        const std::uint64_t u_lo = x.f & 0xFFFFFFFFU;
         const std::uint64_t u_hi = x.f >> 32u;
-        const std::uint64_t v_lo = y.f & 0xFFFFFFFFu;
+        const std::uint64_t v_lo = y.f & 0xFFFFFFFFU;
         const std::uint64_t v_hi = y.f >> 32u;
 
         const std::uint64_t p0 = u_lo * v_lo;
@@ -12647,11 +12646,11 @@ struct diyfp // f * 2^e
         const std::uint64_t p2 = u_hi * v_lo;
         const std::uint64_t p3 = u_hi * v_hi;
 
-        const std::uint64_t p0_hi = p0 >> 32u;
+        const std::uint64_t p0_hi = p0 >> 32U;
         const std::uint64_t p1_lo = p1 & 0xFFFFFFFFu;
-        const std::uint64_t p1_hi = p1 >> 32u;
+        const std::uint64_t p1_hi = p1 >> 32U;
         const std::uint64_t p2_lo = p2 & 0xFFFFFFFFu;
-        const std::uint64_t p2_hi = p2 >> 32u;
+        const std::uint64_t p2_hi = p2 >> 32U;
 
         std::uint64_t Q = p0_hi + p1_lo + p2_lo;
 
@@ -12664,7 +12663,7 @@ struct diyfp // f * 2^e
         // Effectively we only need to add the highest bit in p_lo to p_hi (and
         // Q_hi + 1 does not overflow).
 
-        Q += std::uint64_t{1} << (64u - 32u - 1u); // round, ties up
+        Q += std::uint64_t{1} << (64U - 32U - 1U); // round, ties up
 
         const std::uint64_t h = p3 + p2_hi + p1_hi + (Q >> 32u);
 
@@ -12679,9 +12678,9 @@ struct diyfp // f * 2^e
     {
         assert(x.f != 0);
 
-        while ((x.f >> 63u) == 0)
+        while ((x.f >> 63U) == 0)
         {
-            x.f <<= 1u;
+            x.f <<= 1U;
             x.e--;
         }
 
@@ -12739,7 +12738,7 @@ boundaries compute_boundaries(FloatType value)
 
     using bits_type = typename std::conditional<kPrecision == 24, std::uint32_t, std::uint64_t >::type;
 
-    const std::uint64_t bits = reinterpret_bits<bits_type>(value);
+    const auto bits = reinterpret_bits<bits_type>(value);
     const std::uint64_t E = bits >> (kPrecision - 1);
     const std::uint64_t F = bits & (kHiddenBit - 1);
 
@@ -13029,7 +13028,7 @@ inline int find_largest_pow10(const std::uint32_t n, std::uint32_t& pow10)
         return 10;
     }
     // LCOV_EXCL_STOP
-    else if (n >= 100000000)
+    if (n >= 100000000)
     {
         pow10 = 100000000;
         return  9;
@@ -14017,8 +14016,8 @@ class serializer
                                 else
                                 {
                                     (std::snprintf)(string_buffer.data() + bytes, 13, "\\u%04x\\u%04x",
-                                                    static_cast<std::uint16_t>(0xD7C0u + (codepoint >> 10u)),
-                                                    static_cast<std::uint16_t>(0xDC00u + (codepoint & 0x3FFu)));
+                                                    static_cast<std::uint16_t>(0xD7C0U + (codepoint >> 10U)),
+                                                    static_cast<std::uint16_t>(0xDC00U + (codepoint & 0x3FFU)));
                                     bytes += 12;
                                 }
                             }
@@ -14210,7 +14209,7 @@ class serializer
             {
                 return n_digits + 3;
             }
-            x = x / 10000u;
+            x = x / 10000U;
             n_digits += 4;
         }
     }
@@ -14438,10 +14437,10 @@ class serializer
         const std::uint8_t type = utf8d[byte];
 
         codep = (state != UTF8_ACCEPT)
-                ? (byte & 0x3fu) | (codep << 6u)
-                : (0xFFu >> type) & (byte);
+                ? (byte & 0x3fU) | (codep << 6U)
+                : (0xFFU >> type) & (byte);
 
-        state = utf8d[256u + state * 16u + type];
+        state = utf8d[256U + state * 16U + type];
         return state;
     }
 
@@ -16373,7 +16372,7 @@ class basic_json
            @a ensure_ascii and exceptions added in version 3.0.0; error
            handlers added in version 3.4.0.
     */
-    string_t dump(const int indent = -1,
+    [[nodiscard]] string_t dump(const int indent = -1,
                   const char indent_char = ' ',
                   const bool ensure_ascii = false,
                   const error_handler_t error_handler = error_handler_t::strict) const
@@ -16425,7 +16424,7 @@ class basic_json
 
     @since version 1.0.0
     */
-    constexpr value_t type() const noexcept
+    [[nodiscard]] constexpr value_t type() const noexcept
     {
         return m_type;
     }
@@ -16455,7 +16454,7 @@ class basic_json
 
     @since version 1.0.0
     */
-    constexpr bool is_primitive() const noexcept
+    [[nodiscard]] constexpr bool is_primitive() const noexcept
     {
         return is_null() or is_string() or is_boolean() or is_number();
     }
@@ -16482,7 +16481,7 @@ class basic_json
 
     @since version 1.0.0
     */
-    constexpr bool is_structured() const noexcept
+    [[nodiscard]] constexpr bool is_structured() const noexcept
     {
         return is_array() or is_object();
     }
@@ -16504,7 +16503,7 @@ class basic_json
 
     @since version 1.0.0
     */
-    constexpr bool is_null() const noexcept
+    [[nodiscard]] constexpr bool is_null() const noexcept
     {
         return m_type == value_t::null;
     }
@@ -16526,7 +16525,7 @@ class basic_json
 
     @since version 1.0.0
     */
-    constexpr bool is_boolean() const noexcept
+    [[nodiscard]] constexpr bool is_boolean() const noexcept
     {
         return m_type == value_t::boolean;
     }
@@ -16556,7 +16555,7 @@ class basic_json
 
     @since version 1.0.0
     */
-    constexpr bool is_number() const noexcept
+    [[nodiscard]] constexpr bool is_number() const noexcept
     {
         return is_number_integer() or is_number_float();
     }
@@ -16585,7 +16584,7 @@ class basic_json
 
     @since version 1.0.0
     */
-    constexpr bool is_number_integer() const noexcept
+    [[nodiscard]] constexpr bool is_number_integer() const noexcept
     {
         return m_type == value_t::number_integer or m_type == value_t::number_unsigned;
     }
@@ -16613,7 +16612,7 @@ class basic_json
 
     @since version 2.0.0
     */
-    constexpr bool is_number_unsigned() const noexcept
+    [[nodiscard]] constexpr bool is_number_unsigned() const noexcept
     {
         return m_type == value_t::number_unsigned;
     }
@@ -16641,7 +16640,7 @@ class basic_json
 
     @since version 1.0.0
     */
-    constexpr bool is_number_float() const noexcept
+    [[nodiscard]] constexpr bool is_number_float() const noexcept
     {
         return m_type == value_t::number_float;
     }
@@ -16663,7 +16662,7 @@ class basic_json
 
     @since version 1.0.0
     */
-    constexpr bool is_object() const noexcept
+    [[nodiscard]] constexpr bool is_object() const noexcept
     {
         return m_type == value_t::object;
     }
@@ -16685,7 +16684,7 @@ class basic_json
 
     @since version 1.0.0
     */
-    constexpr bool is_array() const noexcept
+    [[nodiscard]] constexpr bool is_array() const noexcept
     {
         return m_type == value_t::array;
     }
@@ -16707,7 +16706,7 @@ class basic_json
 
     @since version 1.0.0
     */
-    constexpr bool is_string() const noexcept
+    [[nodiscard]] constexpr bool is_string() const noexcept
     {
         return m_type == value_t::string;
     }
@@ -16734,7 +16733,7 @@ class basic_json
 
     @since version 1.0.0
     */
-    constexpr bool is_discarded() const noexcept
+    [[nodiscard]] constexpr bool is_discarded() const noexcept
     {
         return m_type == value_t::discarded;
     }
@@ -16914,7 +16913,7 @@ class basic_json
     template<typename BasicJsonType, detail::enable_if_t<
                  std::is_same<typename std::remove_const<BasicJsonType>::type, basic_json_t>::value,
                  int> = 0>
-    basic_json get() const
+    [[nodiscard]] basic_json get() const
     {
         return *this;
     }
@@ -16987,7 +16986,7 @@ class basic_json
                  detail::has_from_json<basic_json_t, ValueType>::value and
                  not detail::has_non_default_from_json<basic_json_t, ValueType>::value,
                  int> = 0>
-    ValueType get() const noexcept(noexcept(
+    [[nodiscard]] ValueType get() const noexcept(noexcept(
                                        JSONSerializer<ValueType>::from_json(std::declval<const basic_json_t&>(), std::declval<ValueType&>())))
     {
         // we cannot static_assert on ValueTypeCV being non-const, because
@@ -17146,7 +17145,7 @@ class basic_json
     template<typename PointerType, typename std::enable_if<
                  std::is_pointer<PointerType>::value and
                  std::is_const<typename std::remove_pointer<PointerType>::type>::value, int>::type = 0>
-    constexpr auto get_ptr() const noexcept -> decltype(std::declval<const basic_json_t&>().get_impl_ptr(std::declval<PointerType>()))
+    [[nodiscard]] constexpr auto get_ptr() const noexcept -> decltype(std::declval<const basic_json_t&>().get_impl_ptr(std::declval<PointerType>()))
     {
         // delegate the call to get_impl_ptr<>() const
         return get_impl_ptr(static_cast<PointerType>(nullptr));
@@ -17193,7 +17192,7 @@ class basic_json
     */
     template<typename PointerType, typename std::enable_if<
                  std::is_pointer<PointerType>::value, int>::type = 0>
-    constexpr auto get() const noexcept -> decltype(std::declval<const basic_json_t&>().template get_ptr<PointerType>())
+    [[nodiscard]] constexpr auto get() const noexcept -> decltype(std::declval<const basic_json_t&>().template get_ptr<PointerType>())
     {
         // delegate the call to get_ptr
         return get_ptr<PointerType>();
@@ -17379,7 +17378,7 @@ class basic_json
     `at()`. It also demonstrates the different exceptions that can be thrown.,
     at__size_type_const}
     */
-    const_reference at(size_type idx) const
+    [[nodiscard]] const_reference at(size_type idx) const
     {
         // at only works for arrays
         if (JSON_HEDLEY_LIKELY(is_array()))
@@ -17481,7 +17480,7 @@ class basic_json
     `at()`. It also demonstrates the different exceptions that can be thrown.,
     at__object_t_key_type_const}
     */
-    const_reference at(const typename object_t::key_type& key) const
+    [[nodiscard]] const_reference at(const typename object_t::key_type& key) const
     {
         // at only works for objects
         if (JSON_HEDLEY_LIKELY(is_object()))
@@ -17950,7 +17949,7 @@ class basic_json
     /*!
     @copydoc basic_json::front()
     */
-    const_reference front() const
+    [[nodiscard]] const_reference front() const
     {
         return *cbegin();
     }
@@ -17996,7 +17995,7 @@ class basic_json
     /*!
     @copydoc basic_json::back()
     */
-    const_reference back() const
+    [[nodiscard]] const_reference back() const
     {
         auto tmp = cend();
         --tmp;
@@ -18448,7 +18447,7 @@ class basic_json
 
     @since version 3.7.0
     */
-    bool contains(const json_pointer& ptr) const
+    [[nodiscard]] bool contains(const json_pointer& ptr) const
     {
         return ptr.contains(this);
     }
@@ -18497,7 +18496,7 @@ class basic_json
     /*!
     @copydoc basic_json::cbegin()
     */
-    const_iterator begin() const noexcept
+    [[nodiscard]] const_iterator begin() const noexcept
     {
         return cbegin();
     }
@@ -18527,7 +18526,7 @@ class basic_json
 
     @since version 1.0.0
     */
-    const_iterator cbegin() const noexcept
+    [[nodiscard]] const_iterator cbegin() const noexcept
     {
         const_iterator result(this);
         result.set_begin();
@@ -18568,7 +18567,7 @@ class basic_json
     /*!
     @copydoc basic_json::cend()
     */
-    const_iterator end() const noexcept
+    [[nodiscard]] const_iterator end() const noexcept
     {
         return cend();
     }
@@ -18598,7 +18597,7 @@ class basic_json
 
     @since version 1.0.0
     */
-    const_iterator cend() const noexcept
+    [[nodiscard]] const_iterator cend() const noexcept
     {
         const_iterator result(this);
         result.set_end();
@@ -18636,7 +18635,7 @@ class basic_json
     /*!
     @copydoc basic_json::crbegin()
     */
-    const_reverse_iterator rbegin() const noexcept
+    [[nodiscard]] const_reverse_iterator rbegin() const noexcept
     {
         return crbegin();
     }
@@ -18673,7 +18672,7 @@ class basic_json
     /*!
     @copydoc basic_json::crend()
     */
-    const_reverse_iterator rend() const noexcept
+    [[nodiscard]] const_reverse_iterator rend() const noexcept
     {
         return crend();
     }
@@ -18702,7 +18701,7 @@ class basic_json
 
     @since version 1.0.0
     */
-    const_reverse_iterator crbegin() const noexcept
+    [[nodiscard]] const_reverse_iterator crbegin() const noexcept
     {
         return const_reverse_iterator(cend());
     }
@@ -18731,7 +18730,7 @@ class basic_json
 
     @since version 1.0.0
     */
-    const_reverse_iterator crend() const noexcept
+    [[nodiscard]] const_reverse_iterator crend() const noexcept
     {
         return const_reverse_iterator(cbegin());
     }
@@ -18880,7 +18879,7 @@ class basic_json
     /*!
     @copydoc items()
     */
-    iteration_proxy<const_iterator> items() const noexcept
+    [[nodiscard]] iteration_proxy<const_iterator> items() const noexcept
     {
         return iteration_proxy<const_iterator>(*this);
     }
@@ -18936,7 +18935,7 @@ class basic_json
 
     @since version 1.0.0
     */
-    bool empty() const noexcept
+    [[nodiscard]] bool empty() const noexcept
     {
         switch (m_type)
         {
@@ -19008,7 +19007,7 @@ class basic_json
 
     @since version 1.0.0
     */
-    size_type size() const noexcept
+    [[nodiscard]] size_type size() const noexcept
     {
         switch (m_type)
         {
@@ -19078,7 +19077,7 @@ class basic_json
 
     @since version 1.0.0
     */
-    size_type max_size() const noexcept
+    [[nodiscard]] size_type max_size() const noexcept
     {
         switch (m_type)
         {
@@ -20098,7 +20097,7 @@ class basic_json
     */
     template<typename ScalarType, typename std::enable_if<
                  std::is_scalar<ScalarType>::value, int>::type = 0>
-    friend bool operator==(const_reference lhs, const ScalarType rhs) noexcept
+    friend bool operator==(const_reference lhs, ScalarType rhs) noexcept
     {
         return lhs == basic_json(rhs);
     }
@@ -20109,7 +20108,7 @@ class basic_json
     */
     template<typename ScalarType, typename std::enable_if<
                  std::is_scalar<ScalarType>::value, int>::type = 0>
-    friend bool operator==(const ScalarType lhs, const_reference rhs) noexcept
+    friend bool operator==(ScalarType lhs, const_reference rhs) noexcept
     {
         return basic_json(lhs) == rhs;
     }
@@ -20143,7 +20142,7 @@ class basic_json
     */
     template<typename ScalarType, typename std::enable_if<
                  std::is_scalar<ScalarType>::value, int>::type = 0>
-    friend bool operator!=(const_reference lhs, const ScalarType rhs) noexcept
+    friend bool operator!=(const_reference lhs, ScalarType rhs) noexcept
     {
         return lhs != basic_json(rhs);
     }
@@ -20154,7 +20153,7 @@ class basic_json
     */
     template<typename ScalarType, typename std::enable_if<
                  std::is_scalar<ScalarType>::value, int>::type = 0>
-    friend bool operator!=(const ScalarType lhs, const_reference rhs) noexcept
+    friend bool operator!=(ScalarType lhs, const_reference rhs) noexcept
     {
         return basic_json(lhs) != rhs;
     }
@@ -20261,7 +20260,7 @@ class basic_json
     */
     template<typename ScalarType, typename std::enable_if<
                  std::is_scalar<ScalarType>::value, int>::type = 0>
-    friend bool operator<(const_reference lhs, const ScalarType rhs) noexcept
+    friend bool operator<(const_reference lhs, ScalarType rhs) noexcept
     {
         return lhs < basic_json(rhs);
     }
@@ -20272,7 +20271,7 @@ class basic_json
     */
     template<typename ScalarType, typename std::enable_if<
                  std::is_scalar<ScalarType>::value, int>::type = 0>
-    friend bool operator<(const ScalarType lhs, const_reference rhs) noexcept
+    friend bool operator<(ScalarType lhs, const_reference rhs) noexcept
     {
         return basic_json(lhs) < rhs;
     }
@@ -20307,7 +20306,7 @@ class basic_json
     */
     template<typename ScalarType, typename std::enable_if<
                  std::is_scalar<ScalarType>::value, int>::type = 0>
-    friend bool operator<=(const_reference lhs, const ScalarType rhs) noexcept
+    friend bool operator<=(const_reference lhs, ScalarType rhs) noexcept
     {
         return lhs <= basic_json(rhs);
     }
@@ -20318,7 +20317,7 @@ class basic_json
     */
     template<typename ScalarType, typename std::enable_if<
                  std::is_scalar<ScalarType>::value, int>::type = 0>
-    friend bool operator<=(const ScalarType lhs, const_reference rhs) noexcept
+    friend bool operator<=(ScalarType lhs, const_reference rhs) noexcept
     {
         return basic_json(lhs) <= rhs;
     }
@@ -20353,7 +20352,7 @@ class basic_json
     */
     template<typename ScalarType, typename std::enable_if<
                  std::is_scalar<ScalarType>::value, int>::type = 0>
-    friend bool operator>(const_reference lhs, const ScalarType rhs) noexcept
+    friend bool operator>(const_reference lhs, ScalarType rhs) noexcept
     {
         return lhs > basic_json(rhs);
     }
@@ -20364,7 +20363,7 @@ class basic_json
     */
     template<typename ScalarType, typename std::enable_if<
                  std::is_scalar<ScalarType>::value, int>::type = 0>
-    friend bool operator>(const ScalarType lhs, const_reference rhs) noexcept
+    friend bool operator>(ScalarType lhs, const_reference rhs) noexcept
     {
         return basic_json(lhs) > rhs;
     }
@@ -20399,7 +20398,7 @@ class basic_json
     */
     template<typename ScalarType, typename std::enable_if<
                  std::is_scalar<ScalarType>::value, int>::type = 0>
-    friend bool operator>=(const_reference lhs, const ScalarType rhs) noexcept
+    friend bool operator>=(const_reference lhs, ScalarType rhs) noexcept
     {
         return lhs >= basic_json(rhs);
     }
@@ -20410,7 +20409,7 @@ class basic_json
     */
     template<typename ScalarType, typename std::enable_if<
                  std::is_scalar<ScalarType>::value, int>::type = 0>
-    friend bool operator>=(const ScalarType lhs, const_reference rhs) noexcept
+    friend bool operator>=(ScalarType lhs, const_reference rhs) noexcept
     {
         return basic_json(lhs) >= rhs;
     }
@@ -20799,7 +20798,7 @@ class basic_json
     @since version 1.0.0, public since 2.1.0, `const char*` and `noexcept`
     since 3.0.0
     */
-    JSON_HEDLEY_RETURNS_NON_NULL
+    [[nodiscard]] JSON_HEDLEY_RETURNS_NON_NULL
     const char* type_name() const noexcept
     {
         {
@@ -21798,7 +21797,7 @@ class basic_json
 
     @liveexample{The behavior is shown in the example.,at_json_pointer_const}
     */
-    const_reference at(const json_pointer& ptr) const
+    [[nodiscard]] const_reference at(const json_pointer& ptr) const
     {
         return ptr.get_checked(this);
     }
@@ -21825,7 +21824,7 @@ class basic_json
 
     @since version 2.0.0
     */
-    basic_json flatten() const
+    [[nodiscard]] basic_json flatten() const
     {
         basic_json result(value_t::object);
         json_pointer::flatten("", *this, result);
@@ -21862,7 +21861,7 @@ class basic_json
 
     @since version 2.0.0
     */
-    basic_json unflatten() const
+    [[nodiscard]] basic_json unflatten() const
     {
         return json_pointer::unflatten(*this);
     }
@@ -21923,7 +21922,7 @@ class basic_json
 
     @since version 2.0.0
     */
-    basic_json patch(const basic_json& json_patch) const
+    [[nodiscard]] basic_json patch(const basic_json& json_patch) const
     {
         // make a working copy to apply the patch to
         basic_json result = *this;

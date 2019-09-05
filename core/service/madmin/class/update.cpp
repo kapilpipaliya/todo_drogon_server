@@ -1,6 +1,8 @@
 #include "update.h"
+
+#include <utility>
 using namespace  madmin;
-Update::Update(const MAdminContextPtr &context_): context(context_)
+Update::Update(MAdminContextPtr context_): context(std::move(context_))
 {
 
 }

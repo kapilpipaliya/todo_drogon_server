@@ -1,7 +1,9 @@
 #include "entitytype.h"
+
+#include <utility>
 using namespace  jadmin;
 
-EntityType::EntityType(const JAdminContextPtr &context_): context(context_)
+EntityType::EntityType(JAdminContextPtr context_): context(std::move(context_))
 {
 t.m_table = sqlb::ObjectIdentifier("entity", "entity_type", "a");
 }

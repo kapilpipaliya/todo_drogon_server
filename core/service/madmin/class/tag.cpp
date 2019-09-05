@@ -1,6 +1,8 @@
 #include "tag.h"
+
+#include <utility>
 using namespace  madmin;
-Tag::Tag(const MAdminContextPtr &context_): context(context_)
+Tag::Tag(MAdminContextPtr context_): context(std::move(context_))
 {
 
 }

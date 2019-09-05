@@ -1,6 +1,8 @@
 #include "log.h"
+
+#include <utility>
 using namespace  madmin;
-Log::Log(const MAdminContextPtr &context_): context(context_)
+Log::Log(MAdminContextPtr context_): context(std::move(context_))
 {
 
 }

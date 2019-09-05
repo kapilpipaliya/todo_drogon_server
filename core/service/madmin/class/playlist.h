@@ -4,12 +4,12 @@
 #include "../../baseserviceabs.h"
 #include "../../../../wscontroller/context/madmincontext.h"
 
-typedef std::shared_ptr<MAdminContext> MAdminContextPtr;
+using MAdminContextPtr = std::shared_ptr<MAdminContext>;
 namespace madmin {
 class PlayList : public BaseServiceAbs
 {
 public:
-    PlayList(const MAdminContextPtr &);
+    PlayList(MAdminContextPtr );
     void setupTable() override;
 private:
     MAdminContextPtr context;

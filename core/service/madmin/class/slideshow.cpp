@@ -1,6 +1,8 @@
 #include "slideshow.h"
+
+#include <utility>
 using namespace  madmin;
-Slideshow::Slideshow(const MAdminContextPtr &context_): context(context_)
+Slideshow::Slideshow(MAdminContextPtr context_): context(std::move(context_))
 {
 
 }

@@ -1,7 +1,9 @@
 #include "ui.h"
+
+#include <utility>
 #include "../../dba.h"
 using namespace  madmin;
-UI::UI(const MAdminContextPtr &context_): context(context_)
+UI::UI(MAdminContextPtr context_): context(std::move(context_))
 {
 
 }
@@ -16,7 +18,7 @@ nlohmann::json UI::handleEvent(nlohmann::json event, unsigned long next, nlohman
     auto event_cmp = event[next].get<std::string>();
     if (event_cmp == "menu_data") {
         return {{event, getMenuData()}};
-    } else if (event_cmp  == "user_type") {
+    } if (event_cmp  == "user_type") {
         return {{event, getUserTypeData()}};
     } else if (event_cmp  == "user_title") {
         return {{event, getPageTitle()}};
@@ -33,7 +35,7 @@ nlohmann::json UI::handleEvent(nlohmann::json event, unsigned long next, nlohman
     } else if (event_cmp  == "del") {
         return del(event, args);
     } else {
-        return Json::nullValue;
+        json ret; return ret;
     }
 }
 
@@ -50,7 +52,7 @@ nlohmann::json UI::getMenuData()
             json::array({"Logout", "music/logout"})
         });
         return j;
-    } else if (context->user.type == "admin"){
+    } if (context->user.type == "admin"){
         json j = json::array({
             json::array({"Dashboard", "music/dashboard"}),
             json::array({"Executives", "music/users"}),
@@ -78,7 +80,7 @@ std::string UI::getPageTitle()
 {
     if(context->user.type == "super admin"){
         return "Admins";
-    } else if (context->user.type == "admin"){
+    } if (context->user.type == "admin"){
        return "Executives";
     } else {
         return "";
@@ -89,7 +91,7 @@ std::string UI::getUserAccountType()
 {
     if(context->user.type == "super admin"){
         return "Super Admin";
-    } else if (context->user.type == "admin"){
+    } if (context->user.type == "admin"){
        return "Admin";
     } else {
         return "Executive";
@@ -106,7 +108,7 @@ nlohmann::json UI::getUserTypeData()
                                     json::array({"Executives","executive"}),
         });
         return j;
-    } else if (context->user.type == "admin"){
+    } if (context->user.type == "admin"){
         json j = json::array({
                                   json::array({"All", nullptr}),
                                  json::array({"Executives","executive"}),
@@ -124,7 +126,7 @@ nlohmann::json UI::getCatalogFilterData()
     json out = json::array({
                     json::array({"All", nullptr})
                 });
-    for (auto i : r) {
+    for (const auto& i : r) {
         auto id = i["id"].as<long>();
         auto name = i["name"].as<std::string>();
         out.push_back(json::array({name, id}));

@@ -30,7 +30,7 @@ public:
     virtual const char *columnName(int columnNumber) const;
     virtual bool isEditableColumn(int column) const;
     virtual void sort(const std::vector<sqlb::SortedColumn>& columns);
-    virtual std::string getHeaderName(const int column) const;
+    virtual std::string getHeaderName(int column) const;
     json getJsonHeaderData();
     json getJsonData();
     size_t filterCount() const;

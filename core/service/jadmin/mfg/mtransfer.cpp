@@ -1,7 +1,9 @@
 #include "mtransfer.h"
+
+#include <utility>
 using namespace  jadmin;
 
-MTransfer::MTransfer(const JAdminContextPtr &context_): context(context_)
+MTransfer::MTransfer(JAdminContextPtr context_): context(std::move(context_))
 {
 
     t.m_table = sqlb::ObjectIdentifier("mfg", "m_transfer", "m");

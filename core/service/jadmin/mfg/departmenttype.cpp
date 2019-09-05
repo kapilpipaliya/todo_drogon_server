@@ -1,7 +1,9 @@
 #include "departmenttype.h"
+
+#include <utility>
 using namespace  jadmin;
 
-DepartmentType::DepartmentType(const JAdminContextPtr &context_): context(context_)
+DepartmentType::DepartmentType(JAdminContextPtr context_): context(std::move(context_))
 {
     t.m_table = sqlb::ObjectIdentifier("mfg", "department_type", "m");
 

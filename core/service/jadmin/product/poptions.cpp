@@ -1,7 +1,9 @@
 #include "poptions.h"
+
+#include <utility>
 using namespace  jadmin;
 
-POption::POption(const JAdminContextPtr &context_): context(context_)
+POption::POption(JAdminContextPtr context_): context(std::move(context_))
 {
 
     t.m_table = sqlb::ObjectIdentifier("product", "option", "o");

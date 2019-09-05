@@ -1,7 +1,9 @@
 #include "priority.h"
+
+#include <utility>
 using namespace  jadmin;
 
-Priority::Priority(const JAdminContextPtr &context_): context(context_)
+Priority::Priority(JAdminContextPtr context_): context(std::move(context_))
 {
     t.m_table = sqlb::ObjectIdentifier("account", "priority", "a");
 

@@ -1,7 +1,9 @@
 #include "mfgtxn.h"
+
+#include <utility>
 using namespace  jadmin;
 
-MfgTxn::MfgTxn(const JAdminContextPtr &context_): context(context_)
+MfgTxn::MfgTxn(JAdminContextPtr context_): context(std::move(context_))
 {
     t.m_table = sqlb::ObjectIdentifier("mfg", "mfg_txn", "m");
 

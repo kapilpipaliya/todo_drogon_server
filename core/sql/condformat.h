@@ -17,11 +17,11 @@ private:
     std::string m_filter;
 
 public:
-    std::string sqlCondition() const
+    [[nodiscard]] std::string sqlCondition() const
     {
         return m_sqlCondition;
     }
-    std::string filter() const
+    [[nodiscard]] std::string filter() const
     {
         return m_filter;
     }

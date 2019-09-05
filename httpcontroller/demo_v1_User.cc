@@ -5,7 +5,7 @@
 
 using namespace demo::v1;
 
-void User::download_id(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback, long id, int version) {
+void User::download_id(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback, long id, int  /*version*/) {
     //    auto id = req->getParameter("path", "default.png"); //?path=
     namespace fs = boost::filesystem;
     auto home = fs::path(getenv("HOME"));
@@ -34,7 +34,7 @@ void User::download_id(const HttpRequestPtr &req, std::function<void(const HttpR
         callback(resp);
     }
 }
-void User::thumb_id(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback, long id, int version)
+void User::thumb_id(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback, long id, int  /*version*/)
 {
     namespace fs = boost::filesystem;
     auto home = fs::path(getenv("HOME"));
@@ -64,7 +64,7 @@ void User::thumb_id(const HttpRequestPtr &req, std::function<void (const HttpRes
     }
 }
 
-void User::music_id(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback, std::string file)
+void User::music_id(const HttpRequestPtr &req, std::function<void (const HttpResponsePtr &)> &&callback, const std::string& file)
 {
     if( req->getHeader("bearer1") == "Sun, 06 Nov 1990 08:49:03 GMT" &&
             req->getHeader("bearer2") == "Sun, 06 Nov 1991 08:49:31 GMT" &&

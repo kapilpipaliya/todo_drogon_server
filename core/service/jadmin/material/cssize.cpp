@@ -1,10 +1,12 @@
 #include "cssize.h"
+
+#include <utility>
 #include "../../dba.h"
 #include "../../../strfns.h"
 
 using namespace  jadmin;
 
-CSSize::CSSize(const JAdminContextPtr &context_): context(context_)
+CSSize::CSSize(JAdminContextPtr context_): context(std::move(context_))
 {
     t.m_table = sqlb::ObjectIdentifier("material", "color_stone_size_meta", "sm");
 
@@ -82,7 +84,7 @@ json CSSize::ins( json event, json args) {
         auto transPtr = clientPtr->newTransaction();
         long size_id;
         auto r = Dba::writeInTrans(transPtr, strSqlSizeSel, size_name);
-        if (r.size() == 0) { // insert
+        if (r.empty()) { // insert
             auto r1 = Dba::writeInTrans(transPtr, strSqlSizeIns, size_name);
             size_id = r1[0]["id"].as<long>();
         } else {
@@ -115,7 +117,7 @@ json CSSize::ins( json event, json args) {
             auto rate = args[0]["rate"].get<float>();
             auto pcs = prow[1].as<int>();
             Dba::writeInTrans(transPtr, strSqlPriceUpdate, prow["cs_id"].as<long>(), w, w * pcs, rate, pcs * w * rate);
-            std::vector<ProductUpdate>::iterator it = std::find_if(productUpdate.begin(), productUpdate.end(),
+            auto it = std::find_if(productUpdate.begin(), productUpdate.end(),
                                                                    [&](ProductUpdate t) {
                                                                        return t.postId == prow[2].as<long>();
                                                                    });
@@ -174,7 +176,7 @@ json CSSize::upd( json event, json args) {
         try {
             long size_id;
             auto r = Dba::writeInTrans(transPtr, strSqlSizeSel, size_name);
-            if (r.size() == 0) { // insert
+            if (r.empty()) { // insert
                 auto r1 = Dba::writeInTrans(transPtr, strSqlSizeIns, size_name);
                 size_id = r1[0]["id"].as<long>();
             } else {
@@ -214,7 +216,7 @@ json CSSize::upd( json event, json args) {
                 auto pcs = prow[1].as<int>();
                 Dba::writeInTrans(transPtr, strSqlPriceUpdate, prow["cs_id"].as<long>(), w, w * pcs, rate, pcs * w * rate);
                 // Get all post_ids:
-                std::vector<ProductUpdate>::iterator it = std::find_if(productUpdate.begin(), productUpdate.end(),
+                auto it = std::find_if(productUpdate.begin(), productUpdate.end(),
                                                                        [&](ProductUpdate t) {
                         return t.postId == prow[2].as<long>();
                 });

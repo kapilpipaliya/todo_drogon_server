@@ -1,7 +1,9 @@
 #include "clarity.h"
+
+#include <utility>
 using namespace  jadmin;
 
-Clarity::Clarity(const JAdminContextPtr &context_): context(context_)
+Clarity::Clarity(JAdminContextPtr context_): context(std::move(context_))
 {
 
     t.m_table = sqlb::ObjectIdentifier("material", "clarity", "g");

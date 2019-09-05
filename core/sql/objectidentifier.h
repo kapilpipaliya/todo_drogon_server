@@ -51,8 +51,8 @@ public:
         return toDisplayString() < rhs.toDisplayString();
     }
 
-    const std::string& schema() const { return m_schema; }
-    const std::string& name() const { return m_name; }
+    [[nodiscard]] const std::string& schema() const { return m_schema; }
+    [[nodiscard]] const std::string& name() const { return m_name; }
     void setSchema(const std::string& schema) { m_schema = schema; }
     void setName(const std::string& name) { m_name = name; }
 
@@ -62,33 +62,33 @@ public:
         m_name.clear();
     }
 
-    bool isEmpty() const { return m_name.empty(); }
+    [[nodiscard]] bool isEmpty() const { return m_name.empty(); }
 
     // This returns a string which can be used in SQL statements
-    std::string toString(bool shortName = false) const
+    [[nodiscard]] std::string toString(bool shortName = false) const
     {
         if(shortName && m_schema == "public")
             return sqlb::escapeIdentifier(m_name);
-        else
+        
             return sqlb::escapeIdentifier(m_schema) + "." + sqlb::escapeIdentifier(m_name);
     }
 
     // This returns a string which can be used in the user interface
-    std::string toDisplayString() const
+    [[nodiscard]] std::string toDisplayString() const
     {
         if(m_schema == "main")
             return m_name;
-        else
+        
             return m_schema + "." + m_name;
     }
 
-    std::string toSerialised() const
+    [[nodiscard]] std::string toSerialised() const
     {
         return std::to_string(m_schema.size()) + "," + std::to_string(m_name.size()) + ":" + m_schema + m_name;
     }
 
     bool fromSerialised(const std::string& serialised);
-    std::string as() const
+    [[nodiscard]] std::string as() const
     {
         return m_as;
     }

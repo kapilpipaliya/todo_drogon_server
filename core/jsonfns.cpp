@@ -1,4 +1,6 @@
 #include "jsonfns.h"
+
+#include <utility>
 #include "spdlogfix.h"
 void printJson(json &in)
 {
@@ -8,7 +10,7 @@ void printJson(json &in)
 json simpleJsonSaveResult(json event, bool ok, const std::string & error)
 {
     json out;
-    out[0]=event;
+    out[0]=std::move(event);
 
     json ret;
     ret["ok"]=ok;

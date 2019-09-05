@@ -12,7 +12,7 @@ int main()
     //console->info("invoke member function");
 
     drogon::app().registerPostHandlingAdvice(
-    [](const drogon::HttpRequestPtr &req, const drogon::HttpResponsePtr &resp) {
+    [](const drogon::HttpResponsePtr &resp) {
         //LOG_DEBUG << "postHandling1";
         resp->addHeader("Access-Control-Allow-Origin", "*");
         //resp->addHeader("Access-Control-Allow-Credentials", "true");

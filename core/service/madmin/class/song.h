@@ -8,7 +8,7 @@ using std::vector;
 #include "../../baseserviceabs.h"
 #include "../../../../wscontroller/context/madmincontext.h"
 
-typedef std::shared_ptr<MAdminContext> MAdminContextPtr;
+using MAdminContextPtr = std::shared_ptr<MAdminContext>;
 namespace madmin {
 class Song : public BaseServiceAbs
 {
@@ -16,7 +16,7 @@ class Song : public BaseServiceAbs
 public:
   // class Song extends database_object implements media, library_item  {
   //   use \Lib\Metadata\Metadata;
-    Song(const MAdminContextPtr &);
+    Song(MAdminContextPtr );
     void setupTable() override;
     json handleEvent(json event, unsigned long next, json args) override;
     json handleBinaryEvent(json event, unsigned long next, std::string &message);
@@ -616,7 +616,7 @@ public:
     //public function remove_from_disk()
 private:
     //Binary functin:
-    json save_song_binary(json event, std::string &message);
+    json save_song_binary(const json& event, std::string &message);
 };
 }
 #endif // SONG_H

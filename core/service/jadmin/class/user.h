@@ -20,7 +20,7 @@ using std::string;
  */#include "../../baseserviceabs.h"
 #include "../../../../wscontroller/context/jadmincontext.h"
 
-typedef std::shared_ptr<JAdminContext> JAdminContextPtr;
+using JAdminContextPtr = std::shared_ptr<JAdminContext>;
 namespace jadmin {
 /**
  * User Class
@@ -34,7 +34,7 @@ class User : public BaseServiceAbs
     struct Info{
         string username;
         string fullname;
-        int access;
+        int access{};
     };
 
     struct Count{
@@ -48,7 +48,7 @@ class User : public BaseServiceAbs
     JAdminContextPtr context;
 
 public:
-    User(const JAdminContextPtr &);
+    User(JAdminContextPtr );
     //User(int user_id);
     void setupTable() override;
     json handleEvent(json event, unsigned long next, json args) override;
@@ -291,7 +291,7 @@ public:
          * create
          * inserts a new user into ampache
          */
-        static long  create(string username, string fullname, string email, string website, string password, string access, string state = "", string city = "", bool disabled = false);
+        static long  create(const string& username, const string& fullname, const string& email, const string& website, const string& password, const string& access, const string& state = "", const string& city = "", bool disabled = false);
         /**
          * update_password
          * updates a users password
@@ -437,12 +437,12 @@ public:
 
 private:
     Info get_info();
-    int id;
+    int id{};
 
-    json userRegister(json event, json args);
-    json userLogin(json event, json args);
-    json userId(json event, json args);
-    json checkout(json event, json args);
+    json userRegister(const json& event, json args);
+    json userLogin(const json& event, json args);
+    json userId(const json& event, const json& args);
+    json checkout(const json& event, const json& args);
 };
 }
 #endif // USER_H

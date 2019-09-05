@@ -1,7 +1,9 @@
 #include "log.h"
+
+#include <utility>
 using namespace  jadmin;
 
-Log::Log(const JAdminContextPtr &context_): context(context_)
+Log::Log(JAdminContextPtr context_): context(std::move(context_))
 {
     t.m_table = sqlb::ObjectIdentifier("setting", "simple_log", "a");
 

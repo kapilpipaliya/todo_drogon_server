@@ -1,8 +1,10 @@
 #include "txn.h"
+
+#include <utility>
 using namespace  jadmin;
 #include "../../dba.h"
 
-Txn::Txn(const JAdminContextPtr &context_): context(context_)
+Txn::Txn(JAdminContextPtr context_): context(std::move(context_))
 {
 
     t.m_table = sqlb::ObjectIdentifier("account", "txn", "a");
@@ -105,7 +107,7 @@ json Txn::del(const json event, const json args) {
         json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
 }
-void save_txn_order_item(json &args, std::shared_ptr<Transaction> transPtr, long txn_id) {
+void save_txn_order_item(json &args, const std::shared_ptr<Transaction>& transPtr, long txn_id) {
     std::string strSqlPostCategories = "SELECT id, post_id, pcs, purity_id, tone_id, clarity_id, price, instruction FROM order1.order_item where txn_id = $1";
     std::string strSqlPostCategorySimpleFind = "SELECT id, txn_id, post_id, pcs, purity_id, tone_id, clarity_id, price, instruction FROM order1.order_item WHERE id = $1";
     std::string strSqlPostCategoryDel = "DELETE FROM order1.order_item WHERE id = $1";
@@ -132,8 +134,8 @@ void save_txn_order_item(json &args, std::shared_ptr<Transaction> transPtr, long
     auto all_ct = Dba::writeInTrans(transPtr, strSqlPostCategories, txn_id);
     // For each saved attachments, If it not exist in new attachments, delete it.
     for (auto r : all_ct) {
-        std::vector<OrderItem>::iterator it = std::find_if(newItems.begin(), newItems.end(),
-                                                           [&](OrderItem t) {
+        auto it = std::find_if(newItems.begin(), newItems.end(),
+                                                           [&](const OrderItem& t) {
                                                                return t.id == r["id"].as<long>();
                                                            });
         if (it == newItems.end()) {// Element not Found
@@ -142,9 +144,9 @@ void save_txn_order_item(json &args, std::shared_ptr<Transaction> transPtr, long
         }
     }
     // For each new attachments, insert it if it not already exist.
-    for (auto r : newItems) {
+    for (const auto& r : newItems) {
         auto y = Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind, r.id);
-        if (y.size() == 0) { // insert
+        if (y.empty()) { // insert
             auto i = Dba::writeInTrans(transPtr, strSqlPostCategoryInsert, txn_id, r.post_id, r.pcs, r.purity_id, r.tone_id, r.clarity_id, r.price, r.instruction);
         } else { // update
             if (y[0][1].as<long>() != txn_id || y[0][2].as<long>() != r.post_id || y[0][3].as<int>() != r.pcs || y[0][4].as<long>() != r.purity_id || y[0][5].as<long>() != r.tone_id || y[0][6].as<long>() != r.clarity_id || y[0][7].as<double>() != r.price || y[0][8].c_str() != r.instruction) {

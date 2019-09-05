@@ -1,8 +1,10 @@
 #include "permission.h"
 
+#include <utility>
+
 using check_permission = caf::atom_constant<caf::atom("permis")>;
 
-Permission::Permission(caf::actor_config &cfg, nlohmann::json in) : caf::event_based_actor(cfg), in(in)
+Permission::Permission(caf::actor_config &cfg, nlohmann::json in) : caf::event_based_actor(cfg), in(std::move(in))
 {
     running_job.assign(
       [=, this](check_permission) {

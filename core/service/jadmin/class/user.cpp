@@ -1,10 +1,12 @@
 #include "user.h"
 #include <chrono>
+#include <utility>
+#include <utility>
 #include "../../dba.h"
 using namespace  jadmin;
 using namespace std::chrono;
-typedef sqlb::SelectedColumn S;
-User::User(const JAdminContextPtr &context_): context(context_)
+using S = sqlb::SelectedColumn;
+User::User(JAdminContextPtr context_): context(std::move(context_))
 {
     t.m_table = sqlb::ObjectIdentifier("music", "user", "e");
     t.m_query = sqlb::Query(t.m_table);
@@ -29,7 +31,7 @@ nlohmann::json User::handleEvent(nlohmann::json event, unsigned long next, nlohm
         json res = {{event}};
         res[0][1] = is_logged_in();
         return res;
-    } else if (event_cmp == "update_password") {
+    } if (event_cmp == "update_password") {
         if(!args.is_array()) return {simpleJsonSaveResult(event, false, "Not Valid Args")};
         if(get_password() == args[0]["old_password"].get<std::string>()){
             if(update_password(args[0]["new_password"].get<std::string>())){
@@ -59,7 +61,7 @@ nlohmann::json User::getUserTypeFormData()
                                     json::array({"Executive","executive"}),
         });
         return j;
-    } else if (context->user.type == "admin"){
+    } if (context->user.type == "admin"){
         json j = json::array({
                                  json::array({"Executive","executive"}),
         }) ;
@@ -144,10 +146,7 @@ void User::get_valid_users()
 bool User::is_logged_in()
 {
     //auto sql = "SELECT id,ip FROM session WHERE username=1 AND expire > now()";
-    if (context->current_session_id != 0) { return true; } else { return false; }
-}
-
-std::string User::get_password()
+    return context->current_session_id != 0;:string User::get_password()
 {
     auto sql        = "SELECT * FROM music.user WHERE id = $1";
     try {
@@ -163,7 +162,7 @@ std::string User::get_password()
     return "";
 }
 
-long User::create(std::string username, std::string fullname, std::string email, std::string website, std::string password, std::string access, std::string state, std::string city, bool disabled)
+long User::create(const std::string&  /*username*/, const std::string&  /*fullname*/, const std::string&  /*email*/, const std::string&  /*website*/, const std::string&  /*password*/, const std::string&  /*access*/, const std::string&  /*state*/, const std::string&  /*city*/, bool  /*disabled*/)
 {
     //website     = rtrim(website, "/");
     //string password    = hash('sha256', password);
@@ -225,7 +224,7 @@ bool User::update_password(std::string new_password)
     try {
         auto clientPtr = drogon::app().getDbClient("sce");
         auto transPtr = clientPtr->newTransaction();
-        auto r = Dba::writeInTrans(transPtr, sql, this->context->user_id, new_password);
+        auto r = Dba::writeInTrans(transPtr, sql, this->context->user_id, std::move(new_password));
         if (r.affectedRows() == 1) {
             return true;
         }
@@ -237,7 +236,7 @@ bool User::update_password(std::string new_password)
 }
 
 
-json User::userRegister( json event, json args)
+json User::userRegister( const json& event, json args)
 {
 
     std::string strSql = "INSERT INTO entity.entity ( entity_type_id, no, legal_name, slug, email) values($1, $2, $3, $4, $5) returning id";
@@ -246,7 +245,7 @@ json User::userRegister( json event, json args)
         auto transPtr = clientPtr->newTransaction();
 
 
-        std::string data = args["legal_name"].get<std::string>();
+        auto data = args["legal_name"].get<std::string>();
         std::transform(data.begin(), data.end(), data.begin(),
                        [](unsigned char c){ return std::tolower(c); });
         std::transform(data.begin(), data.end(), data.begin(),
@@ -268,7 +267,7 @@ json User::userRegister( json event, json args)
     }
 }
 
-json User::userLogin( json event, json args)
+json User::userLogin( const json& event, json args)
 {
     auto sql = "select e.id from entity.entity e left join entity.entity_user as u on u.entity_id = e.id where e.email = $1 and u.password = $2";
     try {
@@ -303,9 +302,9 @@ json User::userLogin( json event, json args)
             final[0] = login_result;
             final[1] = cookie_result;
             return final;
-        } else {
+        } 
             json ret; ret[0] = simpleJsonSaveResult(event, false, "Error"); return ret;
-        }
+        
 
     } catch (const std::exception &e) {
         SPDLOG_TRACE(e.what());
@@ -313,7 +312,7 @@ json User::userLogin( json event, json args)
     }
 }
 
-json User::userId( json event, json )
+json User::userId( const json& event, const json& )
 {
     long c =  context->current_session_id;
     if (c != 0) {
@@ -351,7 +350,7 @@ json User::userId( json event, json )
     }
     json ret; ret[0] = 0; return ret;
 }
-json User::checkout( json event, json args)
+json User::checkout( const json& event, const json&  /*args*/)
 {
     long c = context->current_session_id;
     if (c != 0) {
@@ -375,6 +374,6 @@ json User::checkout( json event, json args)
             return jresult;
         }
     } else {
-        return Json::nullValue;
+        json ret; return ret;
     }
 }

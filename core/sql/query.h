@@ -27,10 +27,10 @@ enum PG_TYPES {
     PSJSON = 9999
 };
 
-inline std::string ins_(std::string t, std::string c, std::string v) { return "INSERT INTO " + t +" (" + c + ") VALUES (" + v + ")"; }
-inline std::string upd_(std::string t, std::string c, std::string v, std::string w) { return "UPDATE " + t + " SET (" + c + ") = ROW (" + v + ")" + w; }
-inline std::string sel_(std::string t, std::string c, std::string w) { return "SELECT " + c + " FROM " + t + " " + w; }
-inline std::string dele_(std::string t, std::string w) { return "DELETE FROM " + t + " " + w; }
+inline std::string ins_(const std::string& t, const std::string& c, const std::string& v) { return "INSERT INTO " + t +" (" + c + ") VALUES (" + v + ")"; }
+inline std::string upd_(const std::string& t, const std::string& c, const std::string& v, const std::string& w) { return "UPDATE " + t + " SET (" + c + ") = ROW (" + v + ")" + w; }
+inline std::string sel_(const std::string& t, const std::string& c, const std::string& w) { return "SELECT " + c + " FROM " + t + " " + w; }
+inline std::string dele_(const std::string& t, const std::string& w) { return "DELETE FROM " + t + " " + w; }
 
 /*
  * This file's classes should not talk to database directly
@@ -125,7 +125,7 @@ public:
     std::string buildDeleteQuery() const;
     std::string buildInsQuery(nlohmann::json args) const;
     std::string buildUpdateQuery(nlohmann::json args) const;
-    std::string buildUpdateQuery(std::string column, std::string values, std::string where_) const;
+    std::string buildUpdateQuery(const std::string& column, const std::string& values, const std::string& where_) const;
 
     //void setColumNames(const std::vector<std::string>& column_names) { m_column_names = column_names; }
     //std::vector<std::string> columnNames() const { return m_column_names; }

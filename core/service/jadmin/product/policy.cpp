@@ -1,7 +1,9 @@
 #include "policy.h"
+
+#include <utility>
 using namespace  jadmin;
 
-Policy::Policy(const JAdminContextPtr &context_): context(context_)
+Policy::Policy(JAdminContextPtr context_): context(std::move(context_))
 {
     t.m_table = sqlb::ObjectIdentifier("product", "policy", "t");
 

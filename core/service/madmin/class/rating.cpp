@@ -1,6 +1,8 @@
 #include "rating.h"
+
+#include <utility>
 using namespace  madmin;
-Rating::Rating(const MAdminContextPtr &context_): context(context_)
+Rating::Rating(MAdminContextPtr context_): context(std::move(context_))
 {
 
 }

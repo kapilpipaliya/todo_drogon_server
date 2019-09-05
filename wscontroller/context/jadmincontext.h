@@ -18,7 +18,7 @@ public:
     long current_session_id = 0;
     long user_id = 0;
 
-    std::tuple<long, long> generateContext(const HttpRequestPtr &req, std::string account_type);
+    std::tuple<long, long> generateContext(const HttpRequestPtr &req, const std::string& account_type);
     void setUser();
 
     ContextUser user;

@@ -1,4 +1,6 @@
 #include "purity.h"
+
+#include <utility>
 #include "../../dba.h"
 #include "../../../strfns.h"
 using namespace  jadmin;
@@ -6,11 +8,11 @@ using namespace  jadmin;
 
 #define ids2(s, array)\
 std::string array = "{";\
-for (auto i : (s)) { array += std::to_string(i["id"].as<long>()) + ","; }\
-if((s).size() > 0) array.pop_back();\
-array += "}";
+for (auto i : (s)) { (array) += std::to_string(i["id"].as<long>()) + ","; }\
+if((s).size() > 0) (array).pop_back();(\
+arr)ay += "}";
 
-Purity::Purity(const JAdminContextPtr &context_): context(context_)
+Purity::Purity(JAdminContextPtr context_): context(std::move(context_))
 {
     t.m_table = sqlb::ObjectIdentifier("material", "purity", "p");
 
@@ -69,7 +71,7 @@ void Purity::setupTable()
         };
 }
 
-void save_purity_metal_(json &args, std::shared_ptr<Transaction> transPtr, long purity_id, long tone_id) {
+void save_purity_metal_(json &args, const std::shared_ptr<Transaction>& transPtr, long purity_id, long tone_id) {
     std::string strSqlPostCategories = "SELECT metal_id FROM material.purity_metal where purity_id = $1 and tone_id = $2";
     std::string strSqlPostCategorySimpleFind = "SELECT purity_id, tone_id, metal_id, purity, price FROM material.purity_metal WHERE purity_id = $1 and tone_id = $2 and metal_id = $3";
     std::string strSqlPostCategoryDel = "DELETE FROM material.purity_metal WHERE purity_id = $1 and tone_id = $2 and metal_id = $3";
@@ -89,7 +91,7 @@ void save_purity_metal_(json &args, std::shared_ptr<Transaction> transPtr, long 
     auto all_ct = Dba::writeInTrans(transPtr, strSqlPostCategories, purity_id, tone_id);
     // For each saved tones, If saved tone not exist in new tones, delete it.
     for (auto r : all_ct) {
-        std::vector<PriceMetal>::iterator it = std::find_if(inVector.begin(), inVector.end(), [&](PriceMetal t) {
+        auto it = std::find_if(inVector.begin(), inVector.end(), [&](PriceMetal t) {
             return t.metal_id == r["metal_id"].as<long>();
         });
         if (it == inVector.end()) {// Element not Found
@@ -99,7 +101,7 @@ void save_purity_metal_(json &args, std::shared_ptr<Transaction> transPtr, long 
     // For each new tones, insert it if it not already exist.
     for (auto r : inVector) {
         auto y = Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind, purity_id, tone_id, r.metal_id);
-        if (y.size() == 0) {
+        if (y.empty()) {
             Dba::writeInTrans(transPtr, strSqlPostCategoryInsert, purity_id, tone_id, r.metal_id, r.purity, r.price);
         } else { // update
             if (y[0][2].as<long>() != r.metal_id || y[0]["purity"].as<double>() != r.purity || y[0]["price"].as<double>() != r.price) {
@@ -108,7 +110,7 @@ void save_purity_metal_(json &args, std::shared_ptr<Transaction> transPtr, long 
         }
     }
 }
-void save_purity_tone_(json &args, std::shared_ptr<Transaction> transPtr, long purity_id) {
+void save_purity_tone_(json &args, const std::shared_ptr<Transaction>& transPtr, long purity_id) {
     std::string strSqlPostCategories = "SELECT tone_id FROM material.purity_tone where purity_id = $1";
     std::string strSqlPostCategorySimpleFind = "SELECT purity_id, tone_id, price FROM material.purity_tone WHERE purity_id = $1 and tone_id = $2";
     std::string strSqlPostCategoryDel = "DELETE FROM material.purity_tone WHERE purity_id = $1 and tone_id = $2";
@@ -128,7 +130,7 @@ void save_purity_tone_(json &args, std::shared_ptr<Transaction> transPtr, long p
     auto all_ct = Dba::writeInTrans(transPtr, strSqlPostCategories, purity_id);
     // For each saved tones, If saved tone not exist in new tones, delete it.
     for (auto r : all_ct) {
-        std::vector<PurityTone>::iterator it = std::find_if(inVector.begin(), inVector.end(), [&](PurityTone t) {
+        auto it = std::find_if(inVector.begin(), inVector.end(), [&](const PurityTone& t) {
             return t.tone_id == r["tone_id"].as<long>();
         });
         if (it == inVector.end()) {// Element not Found
@@ -140,7 +142,7 @@ void save_purity_tone_(json &args, std::shared_ptr<Transaction> transPtr, long p
     // For each new tones, insert it if it not already exist.
     for (auto r : inVector) {
         auto y = Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind, purity_id, r.tone_id);
-        if (y.size() == 0) {
+        if (y.empty()) {
             auto z = Dba::writeInTrans(transPtr, strSqlPostCategoryInsert, purity_id, r.tone_id, r.price);
             save_purity_metal_(r.j, transPtr, z[0]["purity_id"].as<long>(), z[0]["tone_id"].as<long>());
         } else { // update

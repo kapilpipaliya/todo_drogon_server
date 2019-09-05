@@ -1,6 +1,8 @@
 #include "upload.h"
+
+#include <utility>
 using namespace  madmin;
-Upload::Upload(const MAdminContextPtr &context_): context(context_)
+Upload::Upload(MAdminContextPtr context_): context(std::move(context_))
 {
 
 }

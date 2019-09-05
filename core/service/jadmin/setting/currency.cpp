@@ -1,7 +1,9 @@
 #include "currency.h"
+
+#include <utility>
 using namespace  jadmin;
 
-Currency::Currency(const JAdminContextPtr &context_): context(context_)
+Currency::Currency(JAdminContextPtr context_): context(std::move(context_))
 {
     t.m_table = sqlb::ObjectIdentifier("setting", "currency", "c");
 

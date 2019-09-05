@@ -1,6 +1,8 @@
 #include "share.h"
+
+#include <utility>
 using namespace  madmin;
-Share::Share(const MAdminContextPtr &context_): context(context_)
+Share::Share(MAdminContextPtr context_): context(std::move(context_))
 {
 
 }

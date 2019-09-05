@@ -1,8 +1,10 @@
 #include "auth.h"
+
+#include <utility>
 #include "../../dba.h"
 #include "session.h"
 using namespace  madmin;
-Auth::Auth(const MAdminContextPtr &context_): context(context_)
+Auth::Auth(MAdminContextPtr context_): context(std::move(context_))
 {
 
 }
@@ -30,7 +32,7 @@ nlohmann::json Auth::handleEvent(nlohmann::json event, unsigned long next, nlohm
             }
         }
         return  {simpleJsonSaveResult(event, false, "Error")};
-    } else if (event_cmp == "logout") {
+    } if (event_cmp == "logout") {
         auto r = logout();
         if(r){
             return {simpleJsonSaveResult(event, true, "Done")};
@@ -49,7 +51,7 @@ nlohmann::json Auth::handleEvent(nlohmann::json event, unsigned long next, nlohm
     }
 }
 // Save Image meta on server temporary
-nlohmann::json Auth::saveFileMeta(nlohmann::json event, nlohmann::json args)
+nlohmann::json Auth::saveFileMeta(const nlohmann::json& event, nlohmann::json args)
 {
     long c = context->current_session_id;
 
@@ -102,7 +104,7 @@ bool Auth::logout(long key,[[maybe_unused]] bool relogin)
     //}
 }
 
-std::tuple<long, long> Auth::login(std::string username, std::string password, [[maybe_unused]]bool allow_ui)
+std::tuple<long, long> Auth::login(const std::string& username, const std::string& password, [[maybe_unused]]bool allow_ui)
 {
     long session_id = 0;
     long user_id = 0;

@@ -1,6 +1,8 @@
 #include "privatemsg.h"
+
+#include <utility>
 using namespace  madmin;
-PrivateMsg::PrivateMsg(const MAdminContextPtr &context_): context(context_)
+PrivateMsg::PrivateMsg(MAdminContextPtr context_): context(std::move(context_))
 {
 
 }

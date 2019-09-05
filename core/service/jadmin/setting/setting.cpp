@@ -1,26 +1,28 @@
 #include "setting.h"
+
+#include <utility>
 #include "../../dba.h"
 using namespace  jadmin;
 
-Setting::Setting(const JAdminContextPtr &context_): context(context_)
+Setting::Setting(JAdminContextPtr context_): context(std::move(context_))
 {
     t.m_table = sqlb::ObjectIdentifier("setting", "setting", "gs");
 
 }
 
-json Setting::handleEvent(json event, int next, json args)
+json Setting::handleEvent(json event, int next, const json& args)
 {
     auto event_cmp = event[next].get<std::string>();
     if(event_cmp == "data"){
         return allData(event, args);
-    } else if (event_cmp == "header") {
+    } if (event_cmp == "header") {
         return headerData(event, args);
     } else if (event_cmp  == "save") {
         return save(event, args);
     } else if (event_cmp  == "del") {
         return del(event, args);
     } else {
-        return Json::nullValue;
+        json ret; return ret;
     }
 }
 
@@ -64,14 +66,14 @@ json Setting::del( json event, json args)
         json ret; ret[0] = simpleJsonSaveResult(event, false, e.what()); return ret;
     }
 }
-json Setting::save( json event, json args) {
+json Setting::save( const json& event, json args) {
     // check if key exist
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     auto key = args[0]["key"].get<std::string>();
     auto y = Dba::writeInTrans(transPtr, "select key from setting.setting where key = $1", key);
     
-    if (y.size() != 0) {
+    if (!y.empty()) {
         std::string strSql = "update setting.setting set (value_int, value_num, value_text) = ROW($2, $3, $4) where key=$1";
         try {
             Dba::writeInTrans(transPtr, strSql, args[0]["key"].get<std::string>(), args[0]["value_int"].get<int>(), args[0]["value_num"].get<float>(), args[0]["value_text"].get<std::string>());

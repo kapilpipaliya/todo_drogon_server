@@ -1,5 +1,7 @@
 #include "baseserviceabs.h"
 
+#include <utility>
+
 #include "../sql/query.h"
 #include "dba.h"
 
@@ -8,7 +10,7 @@ json BaseServiceAbs::handleEvent(json event, unsigned long next, json args)
     auto event_cmp = event[next].get<std::string>();
     if(event_cmp == "data"){
         return allData(event, args);
-    } else if (event_cmp == "header") {
+    } if (event_cmp == "header") {
         return headerData(event, args);
     } else if (event_cmp  == "ins") {
         return ins(event, args);
@@ -17,14 +19,14 @@ json BaseServiceAbs::handleEvent(json event, unsigned long next, json args)
     } else if (event_cmp  == "del") {
         return del(event, args);
     } else {
-        return Json::nullValue;
+        json ret; return ret;
     }
 }
-json BaseServiceAbs::headerData(json event,[[maybe_unused]] json args)
+json BaseServiceAbs::headerData(json event,[[maybe_unused]] const json& args)
 {
     setupTable();
     json jresult;
-    jresult[0]=event;
+    jresult[0]=std::move(event);
     jresult[1]=t.getJsonHeaderData();
     json ret;
     ret[0] = jresult;  return ret;
@@ -33,7 +35,7 @@ json BaseServiceAbs::allData(json event, json args)
 {
     setupTable();
     json jresult;
-    jresult[0]=event;
+    jresult[0]=std::move(event);
     jresult[1]=t.getAllData(args);
     json ret;
     ret[0] = jresult; return ret;
@@ -44,7 +46,7 @@ nlohmann::json BaseServiceAbs::ins(nlohmann::json event, nlohmann::json args)
     std::string strSql;
     try {
         setupTable();
-        strSql = t.m_query.buildInsQuery(args);
+        strSql = t.m_query.buildInsQuery(std::move(args));
         if(strSql.empty()){
              json ret; ret[0] = simpleJsonSaveResult(event, false, "UnValid Arguments"); return ret;
         }

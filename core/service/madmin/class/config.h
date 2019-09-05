@@ -5,13 +5,13 @@
 #include "../../baseserviceabs.h"
 #include "../../../../wscontroller/context/madmincontext.h"
 
-typedef std::shared_ptr<MAdminContext> MAdminContextPtr;
+using MAdminContextPtr = std::shared_ptr<MAdminContext>;
 namespace madmin {
 class Config : public BaseServiceAbs
 {
     MAdminContextPtr context;
 public:
-    Config(const MAdminContextPtr &);
+    Config(MAdminContextPtr );
     void setupTable() override;
     /**
      *  @var array $_global

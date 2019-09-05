@@ -1,6 +1,8 @@
 #include "localplaybase.h"
+
+#include <utility>
 using namespace  madmin;
-LocalPlayBase::LocalPlayBase(const MAdminContextPtr &context_): context(context_)
+LocalPlayBase::LocalPlayBase(MAdminContextPtr context_): context(std::move(context_))
 {
 
 }

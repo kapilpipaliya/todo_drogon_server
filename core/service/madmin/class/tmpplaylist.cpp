@@ -1,6 +1,8 @@
 #include "tmpplaylist.h"
+
+#include <utility>
 using namespace  madmin;
-TmpPlayList::TmpPlayList(const MAdminContextPtr &context_): context(context_)
+TmpPlayList::TmpPlayList(MAdminContextPtr context_): context(std::move(context_))
 {
 
 }

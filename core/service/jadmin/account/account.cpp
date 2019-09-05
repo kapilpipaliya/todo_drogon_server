@@ -1,6 +1,8 @@
 #include "account.h"
+
+#include <utility>
 using namespace  jadmin;
-Account::Account(const JAdminContextPtr &context_): context(context_)
+Account::Account(JAdminContextPtr context_): context(std::move(context_))
 {
     t.m_table = sqlb::ObjectIdentifier("account", "account", "a");
 }

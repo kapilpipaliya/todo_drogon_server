@@ -1,7 +1,9 @@
 #include "metalissue.h"
+
+#include <utility>
 using namespace  jadmin;
 
-MetalIssue::MetalIssue(const JAdminContextPtr &context_): context(context_)
+MetalIssue::MetalIssue(JAdminContextPtr context_): context(std::move(context_))
 {
 
     t.m_table = sqlb::ObjectIdentifier("mfg", "metal_issue", "m");

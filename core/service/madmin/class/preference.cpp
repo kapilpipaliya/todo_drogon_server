@@ -1,6 +1,8 @@
 #include "preference.h"
+
+#include <utility>
 using namespace  madmin;
-Preference::Preference(const MAdminContextPtr &context_): context(context_)
+Preference::Preference(MAdminContextPtr context_): context(std::move(context_))
 {
 
 }

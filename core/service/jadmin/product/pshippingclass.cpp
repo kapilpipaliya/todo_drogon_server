@@ -1,7 +1,9 @@
 #include "pshippingclass.h"
+
+#include <utility>
 using namespace  jadmin;
 
-PShippingClass::PShippingClass(const JAdminContextPtr &context_): context(context_)
+PShippingClass::PShippingClass(JAdminContextPtr context_): context(std::move(context_))
 {
 
     t.m_table = sqlb::ObjectIdentifier("product", "shipping_class", "t");

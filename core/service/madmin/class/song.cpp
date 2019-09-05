@@ -1,9 +1,10 @@
 #include "song.h"
 #include "../../dba.h"
 #include <boost/filesystem.hpp>
+#include <utility>
 using namespace  madmin;
-typedef sqlb::SelectedColumn S;
-Song::Song(const MAdminContextPtr &context_): context(context_)
+using S = sqlb::SelectedColumn;
+Song::Song(MAdminContextPtr context_): context(std::move(context_))
 {
     t.m_table = sqlb::ObjectIdentifier("music", "song", "s");
     t.m_query = sqlb::Query(t.m_table);
@@ -69,7 +70,7 @@ nlohmann::json Song::handleEvent(nlohmann::json event, unsigned long next, nlohm
     auto event_cmp = event[next].get<std::string>();
     if (event_cmp == "header") { // required
         return headerData(event, args);
-    } else if (event_cmp == "data") { // required
+    } if (event_cmp == "data") { // required
         //if(context->user.type == "super admin"){
             return allData(event, args);
         //} else {
@@ -97,10 +98,10 @@ nlohmann::json Song::handleEvent(nlohmann::json event, unsigned long next, nlohm
                     }
                 }
                 json ret; ret[0] = simpleJsonSaveResult(event, false, "Please Upload Music First!"); return ret;
-            } else {
+            } 
                // json ret; ret[0] = simpleJsonSaveResult(event, false, "Please Upload Music First!"); return ret;
                 return ins(event, args); // Make this to pass test.
-            }
+            
         } catch (const std::exception &e) {
 
            SPDLOG_TRACE(e.what());
@@ -123,12 +124,12 @@ nlohmann::json Song::handleBinaryEvent(nlohmann::json event, unsigned long next,
 {
     if(event[next].get<std::string>()  == "song"){
         return save_song_binary(event, message);
-    } else {
-        return Json::nullValue;
-    }
+    } 
+        json ret; return ret;
+    
 }
 
-nlohmann::json Song::save_song_binary([[maybe_unused]]nlohmann::json event, std::string &message)
+nlohmann::json Song::save_song_binary([[maybe_unused]]const nlohmann::json& event, std::string &message)
 {
     auto session_id = context->current_session_id;
     auto strSql = sel_("music.temp_file_meta", "event,  name, size, type", "where session_id = $1");

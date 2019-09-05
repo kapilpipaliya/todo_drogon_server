@@ -68,7 +68,7 @@ caf::behavior MAdminActor::make_behavior()
 }
 
 #define REGISTER(T, s)\
-    else if (in[0][0].get<std::string>()==s){\
+    else if (in[0][0].get<std::string>()==(s)){\
     auto contx = wsConnPtr->getContext<MAdminContext>();\
     T p{contx};\
     auto r = p.handleEvent(in[0], 1, in[1]);\
@@ -110,7 +110,7 @@ nlohmann::json MAdminActor::handleBinaryMessage(const WebSocketConnectionPtr &ws
         auto sqlSession = "SELECT event FROM music.temp_file_meta where session_id = $1";
         auto clientPtr = drogon::app().getDbClient("sce");
         auto r = clientPtr->execSqlSync(sqlSession, c);
-        if(r.size()!=0){
+        if(!r.empty()){
             try
             {
                 event = json::parse(r[0]["event"].c_str());
@@ -139,5 +139,5 @@ nlohmann::json MAdminActor::handleBinaryMessage(const WebSocketConnectionPtr &ws
         jresult[1] = e.what();
         return jresult;
     }
-    return Json::nullValue;
+    json ret; return ret;
 }

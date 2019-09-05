@@ -1,6 +1,8 @@
 #include "localplay.h"
+
+#include <utility>
 using namespace  madmin;
-LocalPlay::LocalPlay(const MAdminContextPtr &context_): context(context_)
+LocalPlay::LocalPlay(MAdminContextPtr context_): context(std::move(context_))
 {
 
 }

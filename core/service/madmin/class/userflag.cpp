@@ -1,6 +1,8 @@
 #include "userflag.h"
+
+#include <utility>
 using namespace  madmin;
-UserFlag::UserFlag(const MAdminContextPtr &context_): context(context_)
+UserFlag::UserFlag(MAdminContextPtr context_): context(std::move(context_))
 {
 
 }

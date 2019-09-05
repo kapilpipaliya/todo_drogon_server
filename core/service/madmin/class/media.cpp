@@ -1,6 +1,8 @@
 #include "media.h"
+
+#include <utility>
 using namespace  madmin;
-Media::Media(const MAdminContextPtr &context_): context(context_)
+Media::Media(MAdminContextPtr context_): context(std::move(context_))
 {
 
 }

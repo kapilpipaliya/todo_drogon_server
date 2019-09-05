@@ -46,7 +46,8 @@ bool ObjectIdentifier::fromSerialised(const std::string& serialised)
     if(pos_comma == std::string::npos || pos_colon == std::string::npos)
         return false;
 
-    size_t size_schema, size_name;
+    size_t size_schema;
+    size_t size_name;
     size_schema = std::stoul(serialised.substr(0, pos_comma));
     size_name = std::stoul(serialised.substr(pos_comma+1, pos_colon-pos_comma));
     if(pos_colon + size_schema + size_name + 1 != serialised.size())

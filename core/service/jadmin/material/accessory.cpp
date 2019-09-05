@@ -1,7 +1,9 @@
 #include "accessory.h"
+
+#include <utility>
 using namespace  jadmin;
 
-Accessory::Accessory(const JAdminContextPtr &context_): context(context_)
+Accessory::Accessory(JAdminContextPtr context_): context(std::move(context_))
 {
 
     t.m_table = sqlb::ObjectIdentifier("material", "accessory", "a");

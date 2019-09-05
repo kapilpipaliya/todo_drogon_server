@@ -4,13 +4,13 @@
 #include "../../baseserviceabs.h"
 #include "../../../../wscontroller/context/madmincontext.h"
 
-typedef std::shared_ptr<MAdminContext> MAdminContextPtr;
+using MAdminContextPtr = std::shared_ptr<MAdminContext>;
 namespace madmin {
 class Auth : public BaseServiceAbs
 {
     MAdminContextPtr context;
 public:
-    Auth(const MAdminContextPtr &);
+    Auth(MAdminContextPtr );
     void setupTable() override;
     json handleEvent(json event, unsigned long next, json args) override;
         /**
@@ -33,7 +33,7 @@ public:
          * @param boolean allow_ui
          * @return array
          */
-        static std::tuple<long, long>   login(std::string username, std::string password, bool allow_ui = false);
+        static std::tuple<long, long>   login(const std::string& username, const std::string& password, bool allow_ui = false);
         /**
          * login_step2
          *
@@ -105,7 +105,7 @@ private:
          * @return array
          */
        //void openid_auth_2();
-    json saveFileMeta(json event, json args);
+    json saveFileMeta(const json& event, json args);
 
 
 };

@@ -12,9 +12,7 @@ Table::Table()
 }
 
 Table::~Table()
-{
-
-}
+= default;
 bool Table::select()
 {
     auto q = m_query.buildQuery(true);
@@ -66,16 +64,16 @@ void Table::clear()
 }
 std::string &Table::lastError() const
 {
-    std::string s = "";
+    std::string s = s;
     return s;
 }
 const char *Table::columnName(int columnNumber) const
 {
     if(result.empty()) {
         return m_query.selectedColumns().at(columnNumber).original_column.c_str();
-    } else {
+    } 
         return result.columnName(columnNumber);
-    }
+    
 }
 bool Table::isEditableColumn(int column) const
 {
@@ -159,7 +157,7 @@ json Table::getJsonData()
                 //jsonRow[column] = strbool(row, column);
                 auto r5 = result[row][column].as<std::string>();
                 //jsonRow[column] = result[row][column].as<bool>();
-                jsonRow[column] = result[row][column].as<std::string>() == "t" ? true : false;
+                jsonRow[column] = result[row][column].as<std::string>() == "t";
                 break;
             }
 //          case PG_TYPES::
@@ -238,13 +236,13 @@ json Table::getAllData(json &args)
 
 void Table::updateFilterBase(json filters)
 {
-    if (filters.is_null() || filters.size() == 0 || !filters.is_array()) {
+    if (filters.is_null() || filters.empty() || !filters.is_array()) {
         return;
     }
     for (unsigned int i=0; i < filters.size(); i++) {
 
 //         == json::value_t::string
-        std::string v{""};
+        std::string v;
         if (filters[i].is_null()) {
             v  = "";
         } else if(filters[i].type() == json::value_t::number_integer ||  filters[i].type() == json::value_t::number_unsigned) {
@@ -268,13 +266,13 @@ void Table::updateFilterBase(json filters)
 }
 void Table::updateSortBase(json filters)
 {
-    if (filters.is_null() || filters.size() == 0 || !filters.is_array()) {
+    if (filters.is_null() || filters.empty() || !filters.is_array()) {
         return;
     }
     for (unsigned int i=0; i < filters.size(); i++) {
         if(filters[i].is_null()) {
             continue;
-        } else if(filters[i].get<int>() == 0) {
+        } if(filters[i].get<int>() == 0) {
             m_query.orderBy().emplace_back(i, sqlb::Ascending);
         } else {
             m_query.orderBy().emplace_back(i, sqlb::Descending);
@@ -283,7 +281,7 @@ void Table::updateSortBase(json filters)
 }
 void Table::updatePaginationBase(json filters)
 {
-    if (filters.is_null() || filters.size() == 0 || !filters.is_array()) {
+    if (filters.is_null() || filters.empty() || !filters.is_array()) {
         return;
     }
     if(!filters[0].is_null()) {

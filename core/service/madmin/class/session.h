@@ -3,7 +3,7 @@
 #include "../../baseserviceabs.h"
 #include "../../../../wscontroller/context/madmincontext.h"
 
-typedef std::shared_ptr<MAdminContext> MAdminContextPtr;
+using MAdminContextPtr = std::shared_ptr<MAdminContext>;
 /**
  *
  * This class handles all of the session related stuff in Ampache
@@ -14,7 +14,7 @@ class Session : public BaseServiceAbs
 {
     MAdminContextPtr context;
 public:
-    Session(const MAdminContextPtr &);
+    Session(MAdminContextPtr );
     void setupTable() override;
 
         /**

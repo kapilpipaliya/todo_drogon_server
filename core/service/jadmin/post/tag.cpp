@@ -1,9 +1,11 @@
 #include "tag.h"
+
+#include <utility>
 #include "../../dba.h"
 #include "../../../strfns.h"
 using namespace  jadmin;
 
-Tag::Tag(const JAdminContextPtr &context_): context(context_)
+Tag::Tag(JAdminContextPtr context_): context(std::move(context_))
 {
     t.m_table = sqlb::ObjectIdentifier("post", "tag", "t");
 

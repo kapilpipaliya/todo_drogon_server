@@ -5,6 +5,8 @@
 #include <drogon/WebSocketController.h>
 
 #include <fmt/format.h>
+
+#include <utility>
 #include "../jsonfns.h"
 #include "core/sql/Table.h"
 #include "../../wscontroller/context/madmincontext.h"
@@ -15,12 +17,12 @@ using namespace drogon;
 class BaseServiceAbs
 {
 public:
-  virtual ~BaseServiceAbs(){};
+  virtual ~BaseServiceAbs()= default;;
   virtual json handleEvent(json event, unsigned long next, json args);
 
 protected:
   virtual void setupTable() = 0;
-  json headerData(json event, json args);
+  json headerData(json event, const json& args);
   json allData(json event, json args);
   virtual  json ins(json event, json args);
   virtual  json upd(json event, json args);
@@ -28,7 +30,7 @@ protected:
   virtual json count(json event, json args);
 
   template<class... Args>
-  json insBase(json event, json args, std::string column, std::string values,  Args... args_bind)
+  json insBase(const json& event, const json&  /*args*/, const std::string& column, const std::string& values,  Args... args_bind)
   {
     std::string strSql = "INSERT INTO " + t.m_table.toString() + " (" + column + ") values(" + values + ")";
 
@@ -43,11 +45,11 @@ protected:
   }
 
   template<class... Args>
-  json updBase(json event, json args, std::string column, std::string values,  Args... args_bind)
+  json updBase(const json& event, json args, std::string column, std::string values,  Args... args_bind)
   {
     setupTable();
     t.updateFilterBase(args[1]);
-    std::string strSql = t.m_query.buildUpdateQuery( column, values, "");
+    std::string strSql = t.m_query.buildUpdateQuery( std::move(column), std::move(values), "");
     try {
       auto clientPtr = drogon::app().getDbClient("sce");
       clientPtr->execSqlSync(strSql, args_bind... );

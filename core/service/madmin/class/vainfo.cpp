@@ -1,6 +1,8 @@
 #include "vainfo.h"
+
+#include <utility>
 using namespace  madmin;
-VaInfo::VaInfo(const MAdminContextPtr &context_): context(context_)
+VaInfo::VaInfo(MAdminContextPtr context_): context(std::move(context_))
 {
 
 }

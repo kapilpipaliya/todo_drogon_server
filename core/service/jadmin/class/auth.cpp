@@ -1,6 +1,7 @@
 #include "auth.h"
 #include "../../../strfns.h"
 #include <boost/filesystem.hpp>
+#include <utility>
 #include "spdlogfix.h"
 #include "../../../sql/query.h"
 #include "../../../../wscontroller/wsfns.h"
@@ -10,7 +11,7 @@
 using namespace  jadmin;
 using nlohmann:: json;
 using namespace fmt::v5;
-Auth::Auth(const JAdminContextPtr &context_): context(context_)
+Auth::Auth(JAdminContextPtr context_): context(std::move(context_))
 {
 }
 
@@ -36,7 +37,7 @@ json Auth::handleEvent(json event, unsigned long next, json args)
             }
         }
         return  {simpleJsonSaveResult(event, false, "Error")};
-    } else if (event_cmp  == "logout") {
+    } if (event_cmp  == "logout") {
         auto r = logout();
         if(r){
             return {simpleJsonSaveResult(event, true, "Done")};
@@ -51,7 +52,7 @@ json Auth::handleEvent(json event, unsigned long next, json args)
     }
 }
 
-std::tuple<long, long> Auth::login(std::string username, std::string password, [[maybe_unused]] bool allow_ui)
+std::tuple<long, long> Auth::login(const std::string& username, const std::string& password, [[maybe_unused]] bool allow_ui)
 {
     long session_id = 0;
     long user_id = 0;
@@ -75,7 +76,7 @@ std::tuple<long, long> Auth::login(std::string username, std::string password, [
     return {session_id, user_id};
 }
 
-bool Auth::logout(long key, bool relogin)
+bool Auth::logout(long key, bool  /*relogin*/)
 {
     // If no key is passed try to find the session id
     key = key ? key : context->current_session_id;
@@ -129,13 +130,13 @@ json Auth::handleBinaryEvent(json event, int next, std::string &message)
 {
     if(event[next].get<std::string>()  == "save_attachment_data"){
         return save_setting_attachment(event, message);
-    } else {
-        return Json::nullValue;
-    }
+    } 
+        json ret; return ret;
+    
 }
 
 // Save Image meta on server temporary
-json Auth::saveFileMeta(json event, json args)
+json Auth::saveFileMeta(const json& event, json args)
 {
     long c = context->current_session_id;
 
@@ -154,7 +155,7 @@ json Auth::saveFileMeta(json event, json args)
 }
 
 // Save Image meta on server temporary
-json Auth::saveImageMeta( json event, json args)
+json Auth::saveImageMeta( const json& event, json args)
 {
     long c = context->current_session_id;
 
@@ -228,7 +229,7 @@ json Auth::thumb_data( json event, json args)
 */
 
 // save image in disk and return temporary id:
-json Auth::save_setting_attachment(json event, std::string &message)
+json Auth::save_setting_attachment(const json&  /*event*/, std::string &message)
 {
     auto session_id = context->current_session_id;
     auto strSql = sel_("user1.temp_image", "event,  name, size, type", "where session_id = $1");
@@ -290,7 +291,7 @@ json Auth::save_setting_attachment(json event, std::string &message)
     } catch (const std::exception &e) {
 
         SPDLOG_TRACE(e.what());
-        return Json::nullValue;
+        json ret; return ret;
     }
 
 }

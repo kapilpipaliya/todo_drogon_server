@@ -1,7 +1,9 @@
 #include "cstype.h"
+
+#include <utility>
 using namespace  jadmin;
 
-CSType::CSType(const JAdminContextPtr &context_): context(context_)
+CSType::CSType(JAdminContextPtr context_): context(std::move(context_))
 {
     t.m_table = sqlb::ObjectIdentifier("material", "cs_type", "ct");
 

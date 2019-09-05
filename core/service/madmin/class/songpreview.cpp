@@ -1,6 +1,8 @@
 #include "songpreview.h"
+
+#include <utility>
 using namespace  madmin;
-SongPreview::SongPreview(const MAdminContextPtr &context_): context(context_)
+SongPreview::SongPreview(MAdminContextPtr context_): context(std::move(context_))
 {
 
 }

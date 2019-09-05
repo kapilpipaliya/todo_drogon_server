@@ -1,7 +1,9 @@
 #include "node.h"
+
+#include <utility>
 using namespace  jadmin;
 
-Node::Node(const JAdminContextPtr &context_): context(context_)
+Node::Node(JAdminContextPtr context_): context(std::move(context_))
 {
 
     t.m_table = sqlb::ObjectIdentifier("menu", "node", "m");

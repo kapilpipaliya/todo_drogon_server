@@ -1,6 +1,8 @@
 #include "mailer.h"
+
+#include <utility>
 using namespace  madmin;
-Mailer::Mailer(const MAdminContextPtr &context_): context(context_)
+Mailer::Mailer(MAdminContextPtr context_): context(std::move(context_))
 {
 
 }

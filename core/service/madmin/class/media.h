@@ -8,7 +8,7 @@ using std::vector;
 #include "../../baseserviceabs.h"
 #include "../../../../wscontroller/context/madmincontext.h"
 
-typedef std::shared_ptr<MAdminContext> MAdminContextPtr;
+using MAdminContextPtr = std::shared_ptr<MAdminContext>;
 namespace madmin {
 /**
  * media Interface
@@ -21,7 +21,7 @@ class Media : public BaseServiceAbs
 {
     MAdminContextPtr context;
 public:
-    Media(const MAdminContextPtr &);
+    Media(MAdminContextPtr );
     void setupTable() override;
     /**
      * get_stream_types

@@ -1,10 +1,12 @@
 #include "user.h"
 #include <chrono>
+#include <utility>
+#include <utility>
 #include "../../dba.h"
 using namespace  madmin;
 using namespace std::chrono;
-typedef sqlb::SelectedColumn S;
-User::User(const MAdminContextPtr &context_): context(context_)
+using S = sqlb::SelectedColumn;
+User::User(MAdminContextPtr context_): context(std::move(context_))
 {
     t.m_table = sqlb::ObjectIdentifier("music", "user", "e");
     t.m_query = sqlb::Query(t.m_table);
@@ -63,12 +65,12 @@ nlohmann::json User::handleEvent(nlohmann::json event, unsigned long next, nlohm
         json res = {{event}};
         res[0][1] = is_logged_in();
         return res;
-    } else if (event_cmp == "header") { // required
+    } if (event_cmp == "header") { // required
         return headerData(event, args);
     } else if (event_cmp == "data") { // required
         if(context->user.type == "super admin"){
             return allData(event, args);
-        } else if (context->user.type == "admin"){
+        } if (context->user.type == "admin"){
             t.m_query.cusm_where() = format("e.parent_id = {}", context->user_id);
             return allData(event, args);
         } else {
@@ -115,7 +117,7 @@ nlohmann::json User::getUserTypeFormData()
                                     json::array({"Executive","executive"}),
         });
         return j;
-    } else if (context->user.type == "admin"){
+    } if (context->user.type == "admin"){
         json j = json::array({
                                  json::array({"Executive","executive"}),
         }) ;
@@ -209,10 +211,7 @@ void User::get_valid_users()
 bool User::is_logged_in()
 {
     //auto sql = "SELECT id,ip FROM session WHERE username=1 AND expire > now()";
-    if (context->current_session_id != 0) { return true; } else { return false; }
-}
-
-std::string User::get_password()
+    return context->current_session_id != 0;:string User::get_password()
 {
     auto sql        = "SELECT * FROM music.user WHERE id = $1";
     try {
@@ -228,7 +227,7 @@ std::string User::get_password()
     return "";
 }
 
-long User::create(std::string username, std::string fullname, std::string email, std::string website, std::string password, std::string access, std::string state, std::string city, bool disabled)
+long User::create(const std::string&  /*username*/, const std::string&  /*fullname*/, const std::string&  /*email*/, const std::string&  /*website*/, const std::string&  /*password*/, const std::string&  /*access*/, const std::string&  /*state*/, const std::string&  /*city*/, bool  /*disabled*/)
 {
     //website     = rtrim(website, "/");
     //string password    = hash('sha256', password);
@@ -290,7 +289,7 @@ bool User::update_password(std::string new_password)
     try {
         auto clientPtr = drogon::app().getDbClient("sce");
         auto transPtr = clientPtr->newTransaction();
-        auto r = Dba::writeInTrans(transPtr, sql, this->context->user_id, new_password);
+        auto r = Dba::writeInTrans(transPtr, sql, this->context->user_id, std::move(new_password));
         if (r.affectedRows() == 1) {
             return true;
         }

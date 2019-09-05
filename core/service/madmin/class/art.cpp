@@ -1,6 +1,8 @@
 #include "art.h"
+
+#include <utility>
 using namespace  madmin;
-Art::Art(const MAdminContextPtr &context_): context(context_)
+Art::Art(MAdminContextPtr context_): context(std::move(context_))
 {
 
 }

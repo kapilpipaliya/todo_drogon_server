@@ -3,9 +3,7 @@
 #include "./wscontroller/wsfns.h"
 
 UserActorBase::UserActorBase()
-{
-
-}
+= default;
 
 void UserActorBase::blocking_run(const WebSocketConnectionPtr &wsConnPtr, std::string &&message, const WebSocketMessageType &type)
 {
@@ -16,7 +14,7 @@ void UserActorBase::blocking_run(const WebSocketConnectionPtr &wsConnPtr, std::s
             auto valin = json::parse(message);
             if (valin.is_array()){
                 json out(json::array());
-                for (auto i : valin) {
+                for (const auto& i : valin) {
                     // printJson(valin);
                     auto result  = handleTextMessage(wsConnPtr, i);
                     for (auto &i : result) {

@@ -3,19 +3,19 @@
 
 #include "../../baseserviceabs.h"
 #include "../../../../wscontroller/context/jadmincontext.h"
-typedef std::shared_ptr<JAdminContext> JAdminContextPtr;
+using JAdminContextPtr = std::shared_ptr<JAdminContext>;
 namespace jadmin {
 class Setting : public BaseServiceAbs
 {
 public:
-    Setting(const JAdminContextPtr &);
+    Setting(JAdminContextPtr );
 
-   json handleEvent(json event, int next, json args);
+   json handleEvent(json event, int next, const json& args);
 
 private:
-    void setupTable();
-    json save(json event, json args);
-    json del( json event, json args);
+    void setupTable() override;
+    json save(const json& event, json args);
+    json del( json event, json args) override;
     JAdminContextPtr context;
 };
 }

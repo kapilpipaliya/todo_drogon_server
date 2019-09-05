@@ -1,6 +1,8 @@
 #include "random.h"
+
+#include <utility>
 using namespace  madmin;
-Random::Random(const MAdminContextPtr &context_): context(context_)
+Random::Random(MAdminContextPtr context_): context(std::move(context_))
 {
 
 }

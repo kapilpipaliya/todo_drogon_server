@@ -86,7 +86,7 @@ caf::behavior JUserActor::make_behavior()
     };
 }
 #define REGISTER(s, T)\
-    else if (in[0][0].get<std::string>()==s){\
+    else if (in[0][0].get<std::string>()==(s)){\
     auto contx = wsConnPtr->getContext<JAdminContext>();\
     T p{contx};\
     auto r = p.handleEvent(in[0], 1, in[1]);\
@@ -166,7 +166,7 @@ nlohmann::json JUserActor::handleTextMessage(const WebSocketConnectionPtr &wsCon
     return json::array();
 }
 
-nlohmann::json JUserActor::handleBinaryMessage(const WebSocketConnectionPtr &wsConnPtr, std::string &message)
+nlohmann::json JUserActor::handleBinaryMessage(const WebSocketConnectionPtr &wsConnPtr, std::string & /*message*/)
 {
     json event;
     try {
@@ -174,7 +174,7 @@ nlohmann::json JUserActor::handleBinaryMessage(const WebSocketConnectionPtr &wsC
         auto sqlSession = "SELECT event FROM user1.temp_image where session_id = $1";
         auto clientPtr = drogon::app().getDbClient("sce");
         auto r = clientPtr->execSqlSync(sqlSession, c);
-        if(r.size()!=0){
+        if(!r.empty()){
             try
             {
                 event = json::parse(r[0]["event"].c_str());
@@ -204,5 +204,5 @@ nlohmann::json JUserActor::handleBinaryMessage(const WebSocketConnectionPtr &wsC
         jresult[1] = e.what();
         return jresult;
     }
-    return Json::nullValue;
+    json ret; return ret;
 }

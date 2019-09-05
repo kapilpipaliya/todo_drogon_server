@@ -1,15 +1,17 @@
 #include "metal.h"
+
+#include <utility>
 #include "../../dba.h"
 #include "../../../strfns.h"
 using namespace  jadmin;
 
 #define ids2(s, array)\
 std::string array = "{";\
-for (auto i : (s)) { array += std::to_string(i["id"].as<int>()) + ","; }\
-if((s).size() > 0) array.pop_back();\
-array += "}";
+for (auto i : (s)) { (array) += std::to_string(i["id"].as<int>()) + ","; }\
+if((s).size() > 0) (array).pop_back();(\
+arr)ay += "}";
 
-Metal::Metal(const JAdminContextPtr &context_): context(context_)
+Metal::Metal(JAdminContextPtr context_): context(std::move(context_))
 {
     t.m_table = sqlb::ObjectIdentifier("material", "metal", "m");
 

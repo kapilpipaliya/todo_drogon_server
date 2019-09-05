@@ -1,7 +1,9 @@
 #include "dcolor.h"
+
+#include <utility>
 using namespace  jadmin;
 
-DColor::DColor(const JAdminContextPtr &context_): context(context_)
+DColor::DColor(JAdminContextPtr context_): context(std::move(context_))
 {
 
     t.m_table = sqlb::ObjectIdentifier("material", "diamond_color", "gt");

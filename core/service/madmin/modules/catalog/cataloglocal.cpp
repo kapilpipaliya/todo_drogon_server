@@ -1,6 +1,6 @@
 #include "cataloglocal.h"
 using namespace  madmin;
-typedef sqlb::SelectedColumn S;
+using S = sqlb::SelectedColumn;
 
 CatalogLocal::CatalogLocal(const MAdminContextPtr &context_): Catalog(context_)
 {
@@ -48,12 +48,12 @@ nlohmann::json CatalogLocal::handleEvent(nlohmann::json event, unsigned long nex
     auto event_cmp = event[next].get<std::string>();
     if (event_cmp == "header") { // required
         return headerData(event, args);
-    } else if (event_cmp == "data") { // required
+    } if (event_cmp == "data") { // required
         if(context->user.type == "super admin"){
             return allData(event, args);
-        } else {
+        } 
             return {{event, "unauthorised"}};
-        }
+        
     } else if (event_cmp  == "ins") {
         //args[0]["parent_id"] = context->user_id;
         return ins(event, args);

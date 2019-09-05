@@ -10,18 +10,20 @@ CondFormat::CondFormat(const std::string& filter, const std::string& encoding)
         m_sqlCondition = filterToSqlCondition(filter, PG_TYPES::TEXT, encoding);
 }
 
-std::string CondFormat::filterToSqlCondition(const std::string& value, PG_TYPES column_type, const std::string& encoding)
+std::string CondFormat::filterToSqlCondition(const std::string& value, PG_TYPES column_type, const std::string&  /*encoding*/)
 {
     // Check for any special comparison operators at the beginning of the value string. If there are none default to LIKE.
     std::string op = "LIKE";
-    std::string val, val2;
+    std::string val;
+    std::string val2;
     std::string escape;
-    bool numeric = false, ok = false;
+    bool numeric = false;
+    bool ok = false;
     std::size_t* pos = nullptr;
     std::size_t* numericp = nullptr;
 
     // range/BETWEEN operator
-    if (value.find("~") != std::string::npos) {
+    if (value.find('~') != std::string::npos) {
         auto sepIdx = value.find('~');
         val  = value.substr(0, sepIdx);
         val2 = value.substr(sepIdx+1);
@@ -123,7 +125,7 @@ std::string CondFormat::filterToSqlCondition(const std::string& value, PG_TYPES 
                 // Add % wildcards at the start and at the beginning of the filter query, but only if there weren't set any
                 // wildcards manually. The idea is to assume that a user who's just typing characters expects the wildcards to
                 // be added but a user who adds them herself knows what she's doing and doesn't want us to mess up her query.
-                if(value.find("%") == std::string::npos) {
+                if(value.find('%') == std::string::npos) {
                     val = value;
                     val = "%" + val;
                     val = val + "%";
@@ -140,9 +142,9 @@ std::string CondFormat::filterToSqlCondition(const std::string& value, PG_TYPES 
 //    if(val.empty())
 //        val = value;
 
-    if(val == "" || val == "%" || val == "%%")
+    if(val.empty() || val == "%" || val == "%%")
         return std::string();
-    else {
+    
 
         // Quote and escape value, but only if it's not numeric and not the empty string sequence
         if(!numeric && !numericp && val != "''" && (column_type == PG_TYPES::TEXT || column_type == PG_TYPES::PSJSON)){
@@ -155,5 +157,5 @@ std::string CondFormat::filterToSqlCondition(const std::string& value, PG_TYPES 
             whereClause += " AND " + val2;
         whereClause += " " + escape;
         return whereClause;
-    }
+    
 }

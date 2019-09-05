@@ -20,7 +20,7 @@ using std::string;
  */#include "../../baseserviceabs.h"
 #include "../../../../wscontroller/context/madmincontext.h"
 
-typedef std::shared_ptr<MAdminContext> MAdminContextPtr;
+using MAdminContextPtr = std::shared_ptr<MAdminContext>;
 namespace madmin {
 /**
  * User Class
@@ -34,7 +34,7 @@ class User : public BaseServiceAbs
     struct Info{
         string username;
         string fullname;
-        int access;
+        int access{};
     };
 
     struct Count{
@@ -48,7 +48,7 @@ class User : public BaseServiceAbs
     MAdminContextPtr context;
 
 public:
-    User(const MAdminContextPtr &);
+    User(MAdminContextPtr );
     //User(int user_id);
     void setupTable() override;
     json handleEvent(json event, unsigned long next, json args) override;
@@ -294,7 +294,7 @@ public:
          * create
          * inserts a new user into ampache
          */
-        static long  create(string username, string fullname, string email, string website, string password, string access, string state = "", string city = "", bool disabled = false);
+        static long  create(const string& username, const string& fullname, const string& email, const string& website, const string& password, const string& access, const string& state = "", const string& city = "", bool disabled = false);
         /**
          * update_password
          * updates a users password
@@ -440,8 +440,8 @@ public:
 
 private:
     Info get_info();
-    int id;
-    int playlist_id;
+    int id{};
+    int playlist_id{};
 };
 }
 #endif // USER_H

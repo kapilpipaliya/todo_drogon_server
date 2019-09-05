@@ -1,7 +1,9 @@
 #include "refining.h"
+
+#include <utility>
 using namespace  jadmin;
 
-Refining::Refining(const JAdminContextPtr &context_): context(context_)
+Refining::Refining(JAdminContextPtr context_): context(std::move(context_))
 {
     t.m_table = sqlb::ObjectIdentifier("mfg", "refining", "m");
 

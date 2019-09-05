@@ -17,6 +17,6 @@ namespace demo::v1 {
         //void your_method_name(const HttpRequestPtr& req,std::function<void (const HttpResponsePtr &)> &&callback,double p1,int p2) const;
         void download_id(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback, long id, int version);
         void thumb_id(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback, long id, int version);
-        void music_id(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback, std::string file);
+        void music_id(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback, const std::string& file);
     };
 }

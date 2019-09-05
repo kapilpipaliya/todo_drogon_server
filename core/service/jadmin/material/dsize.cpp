@@ -1,9 +1,11 @@
 #include "dsize.h"
+
+#include <utility>
 #include "../../dba.h"
 #include "../../../strfns.h"
 using namespace  jadmin;
 
-DSize::DSize(const JAdminContextPtr &context_): context(context_)
+DSize::DSize(JAdminContextPtr context_): context(std::move(context_))
 {
     t.m_table = sqlb::ObjectIdentifier("material", "diamond_size_meta", "sm");
 
@@ -91,7 +93,7 @@ json DSize::ins( json event, json args) {
     try {
         long size_id;
         auto r = Dba::writeInTrans(transPtr, strSqlSizeSel, size_name);
-        if (r.size() == 0) { // insert
+        if (r.empty()) { // insert
             auto r1 = Dba::writeInTrans(transPtr, strSqlSizeIns, size_name);
             size_id = r1[0]["id"].as<long>();
         } else {
@@ -128,8 +130,8 @@ json DSize::ins( json event, json args) {
             Dba::writeInTrans(transPtr, strSqlPriceUpdate, prow["diamond_id"].as<long>(), prow["clarity_id"].as<long>(), w, w * pcs, rate,
                             pcs * w * rate);
             // Get all post_ids:
-            std::vector<ProductUpdate>::iterator it = std::find_if(productUpdate.begin(), productUpdate.end(),
-                                                                   [&](ProductUpdate t) {
+            auto it = std::find_if(productUpdate.begin(), productUpdate.end(),
+                                                                   [&](const ProductUpdate& t) {
                                                                        return t.postId == prow[3].as<long>();
                                                                    });
             if (it == productUpdate.end()) {// Element not Found
@@ -139,7 +141,7 @@ json DSize::ins( json event, json args) {
             }
         }
 
-        for (auto p : productUpdate) {
+        for (const auto& p : productUpdate) {
             for (auto c : p.clarityId) {
                 auto rsum = Dba::writeInTrans(transPtr, q, p.postId, c);
                 Dba::writeInTrans(transPtr, pc, p.postId, c, rsum[0]["sum_weight"].as<double>(), rsum[0]["sum_price"].as<double>());
@@ -190,7 +192,7 @@ json DSize::upd( json event, json args) {
         try {
             long size_id;
             auto r = Dba::writeInTrans(transPtr, strSqlSizeSel, size_name);
-            if (r.size() == 0) { // insert
+            if (r.empty()) { // insert
                 auto r1 = Dba::writeInTrans(transPtr, strSqlSizeIns, size_name);
                 size_id = r1[0]["id"].as<long>();
             } else {
@@ -234,8 +236,8 @@ json DSize::upd( json event, json args) {
                 auto pcs = prow[2].as<int>();
                 Dba::writeInTrans(transPtr, strSqlPriceUpdate, prow["diamond_id"].as<long>(), prow[1].as<long>(), w, w * pcs, rate,
                         pcs * w * rate);
-                std::vector<ProductUpdate>::iterator it = std::find_if(productUpdate.begin(), productUpdate.end(),
-                                                                       [&](ProductUpdate t) {
+                auto it = std::find_if(productUpdate.begin(), productUpdate.end(),
+                                                                       [&](const ProductUpdate& t) {
                         return t.postId == prow[3].as<long>();
                 });
                 if (it == productUpdate.end()) {// Element not Found
@@ -245,7 +247,7 @@ json DSize::upd( json event, json args) {
                 }
             }
 
-            for (auto p : productUpdate) {
+            for (const auto& p : productUpdate) {
                 for (auto c : p.clarityId) {
                     auto rsum = Dba::writeInTrans(transPtr, q, p.postId, c);
                     Dba::writeInTrans(transPtr, pc, p.postId, c, rsum[0]["sum_weight"].as<double>(), rsum[0]["sum_price"].as<double>());

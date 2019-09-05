@@ -1,7 +1,9 @@
 #include "tone.h"
+
+#include <utility>
 using namespace  jadmin;
 
-Tone::Tone(const JAdminContextPtr &context_): context(context_)
+Tone::Tone(JAdminContextPtr context_): context(std::move(context_))
 {
     t.m_table = sqlb::ObjectIdentifier("material", "tone", "c");
 
