@@ -4,7 +4,7 @@
 #define SPDLOG_DEBUG_ON
 #define SPDLOG_TRACE_ON
 
-#include <spdlog/spdlog.h>
 #include <spdlog/sinks/stdout_sinks.h>
+#include <spdlog/spdlog.h>
 
-#endif // SPDLOGFIX_H
+#endif  // SPDLOGFIX_H

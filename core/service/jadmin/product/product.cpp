@@ -971,8 +971,8 @@ void save_product_cs_sizes(
     long dsize_id;
     json clarity_price;
   };
-  std::vector<PostCSSize>
-      inNewAttachments;  // id Shape	Color	Size	Pcs
+  std::vector<PostCSSize> inNewAttachments;  // id Shape	Color Size
+                                             // Pcs
   for (auto i : args[0]["p_cs_size_cs_size_id"]) {
     if (!i[1].is_null()) {  // to pass null row
       inNewAttachments.push_back(
@@ -1044,8 +1044,8 @@ void save_product_cs_total(
     double weight;
     double price;
   };
-  std::vector<PostCSTotal>
-      inNewAttachments;  // id Shape	Color	Size	Pcs
+  std::vector<PostCSTotal> inNewAttachments;  // id Shape	Color	Size
+                                              // Pcs
   for (auto i : args[0]["p_cs_total_p_cs_total"]) {
     if (!i[1].is_null()) {  // to pass null row
       inNewAttachments.push_back(
@@ -1127,7 +1127,7 @@ void save_product_Attachments(
   };
   std::vector<Attachment> inNewAttachments;  // tone_id, temp_id
   for (auto i : args[0]["p_attachments_attachement_id"]) {
-    if (i[1].get<long>() == 0) {
+    if (i[1].is_null() || i[1].get<long>() == 0) {
       continue;
     }
     auto ismain = i[3].is_null() ? false : i[3].get<bool>();
@@ -1251,7 +1251,9 @@ json Product::ins(json event, json args) {
         args[0]["p_manage_stock"].get<bool>(),
         args[0]["p_featured"].get<bool>(),
         args[0]["p_stock_quantity"].get<double>(),
-        args[0]["p_shipping_class_id"].get<long>(),
+        args[0]["p_shipping_class_id"].is_null()
+            ? 0L
+            : args[0]["p_shipping_class_id"].get<long>(),
         args[0]["p_catalog_visibility"].get<std::string>(),
         args[0]["p_product_type"].get<std::string>(),
         args[0]["p_backorders"].get<std::string>(),
@@ -1266,7 +1268,8 @@ json Product::ins(json event, json args) {
         args[0]["p_tone_id"].get<long>());
     product_tags_process(tags_table, post_tag_table, args, transPtr, post_id);
     save_product_categories(post_category_table, args, transPtr, post_id);
-    save_product_tones(args, transPtr, post_id);
+    purejoinTableSaveF("product.post_tone", args, transPtr, "p_tones_tone_id",
+                       "post_id", "tone_id", post_id);
     save_product_clarities(post_clarity_table, args, transPtr, post_id);
     save_product_purities(post_purity_table, args, transPtr, post_id);
     save_product_Attachments(post_attachment_table, args, transPtr, post_id);
@@ -1274,8 +1277,11 @@ json Product::ins(json event, json args) {
                                post_id);
     save_product_cs_sizes(post_diamond_sizes_table, args, transPtr, post_id);
     save_product_cs_total(post_cs_total_table, args, transPtr, post_id);
-    save_product_certified_by(args, transPtr, post_id);
-    save_product_policy(args, transPtr, post_id);
+    purejoinTableSaveF("product.post_certified_by", args, transPtr,
+                       "p_certified_by_certified_by", "post_id",
+                       "certified_by_id", post_id);
+    purejoinTableSaveF("product.post_policy", args, transPtr,
+                       "p_policy_post_policy", "post_id", "policy_id", post_id);
 
     json ret;
     ret[0] = simpleJsonSaveResult(event, true, "Done");
@@ -1373,24 +1379,103 @@ json Product::upd(json event, json args) {
           args[0]["p_discount_per"].get<double>(),
           args[0]["p_volume"].get<double>(), args[0]["p_purity_id"].get<long>(),
           args[0]["p_tone_id"].get<long>());
-
-      product_tags_process(tags_table, post_tag_table, args, transPtr, post_id);
-      save_product_categories(post_category_table, args, transPtr, post_id);
-      purejoinTableSaveF("product.post_tone", args, transPtr, "p_tones_tone_id",
-                         "post_id", "tone_id", post_id);
-      save_product_clarities(post_clarity_table, args, transPtr, post_id);
-      save_product_purities(post_purity_table, args, transPtr, post_id);
-      save_product_Attachments(post_attachment_table, args, transPtr, post_id);
-      save_product_diamond_sizes(post_diamond_sizes_table, args, transPtr,
+      try {
+        product_tags_process(tags_table, post_tag_table, args, transPtr,
+                             post_id);
+      } catch (const std::exception& e) {
+        SPDLOG_TRACE(e.what());
+        json ret;
+        ret[0] = simpleJsonSaveResult(event, false, e.what());
+        return ret;
+      }
+      try {
+        save_product_categories(post_category_table, args, transPtr, post_id);
+      } catch (const std::exception& e) {
+        SPDLOG_TRACE(e.what());
+        json ret;
+        ret[0] = simpleJsonSaveResult(event, false, e.what());
+        return ret;
+      }
+      try {
+        purejoinTableSaveF("product.post_tone", args, transPtr,
+                           "p_tones_tone_id", "post_id", "tone_id", post_id);
+      } catch (const std::exception& e) {
+        SPDLOG_TRACE(e.what());
+        json ret;
+        ret[0] = simpleJsonSaveResult(event, false, e.what());
+        return ret;
+      }
+      try {
+        save_product_clarities(post_clarity_table, args, transPtr, post_id);
+      } catch (const std::exception& e) {
+        SPDLOG_TRACE(e.what());
+        json ret;
+        ret[0] = simpleJsonSaveResult(event, false, e.what());
+        return ret;
+      }
+      try {
+        save_product_purities(post_purity_table, args, transPtr, post_id);
+      } catch (const std::exception& e) {
+        SPDLOG_TRACE(e.what());
+        json ret;
+        ret[0] = simpleJsonSaveResult(event, false, e.what());
+        return ret;
+      }
+      try {
+        save_product_Attachments(post_attachment_table, args, transPtr,
                                  post_id);
-      save_product_cs_sizes(post_diamond_sizes_table, args, transPtr, post_id);
-      save_product_cs_total(post_cs_total_table, args, transPtr, post_id);
-      purejoinTableSaveF("product.post_certified_by", args, transPtr,
-                         "p_certified_by_certified_by", "post_id",
-                         "certified_by_id", post_id);
-      purejoinTableSaveF("product.post_policy", args, transPtr,
-                         "p_policy_post_policy", "post_id", "policy_id",
-                         post_id);
+      } catch (const std::exception& e) {
+        SPDLOG_TRACE(e.what());
+        json ret;
+        ret[0] = simpleJsonSaveResult(event, false, e.what());
+        return ret;
+      }
+      try {
+        save_product_diamond_sizes(post_diamond_sizes_table, args, transPtr,
+                                   post_id);
+      } catch (const std::exception& e) {
+        SPDLOG_TRACE(e.what());
+        json ret;
+        ret[0] = simpleJsonSaveResult(event, false, e.what());
+        return ret;
+      }
+      try {
+        save_product_cs_sizes(post_diamond_sizes_table, args, transPtr,
+                              post_id);
+      } catch (const std::exception& e) {
+        SPDLOG_TRACE(e.what());
+        json ret;
+        ret[0] = simpleJsonSaveResult(event, false, e.what());
+        return ret;
+      }
+      try {
+        save_product_cs_total(post_cs_total_table, args, transPtr, post_id);
+      } catch (const std::exception& e) {
+        SPDLOG_TRACE(e.what());
+        json ret;
+        ret[0] = simpleJsonSaveResult(event, false, e.what());
+        return ret;
+      }
+      try {
+        purejoinTableSaveF("product.post_certified_by", args, transPtr,
+                           "p_certified_by_certified_by", "post_id",
+                           "certified_by_id", post_id);
+      } catch (const std::exception& e) {
+        SPDLOG_TRACE(e.what());
+        json ret;
+        ret[0] = simpleJsonSaveResult(event, false, e.what());
+        return ret;
+      }
+      try {
+        purejoinTableSaveF("product.post_policy", args, transPtr,
+                           "p_policy_post_policy", "post_id", "policy_id",
+                           post_id);
+      } catch (const std::exception& e) {
+        SPDLOG_TRACE(e.what());
+        json ret;
+        ret[0] = simpleJsonSaveResult(event, false, e.what());
+        return ret;
+      }
 
       json ret;
       ret[0] = simpleJsonSaveResult(event, true, "Done");
@@ -1541,49 +1626,53 @@ json Product::get_product_diamond_price_data(json event, json args) {
   json jresult;
   jresult[0] = std::move(event);
 
-  auto shape = args[1].get<long>();
-  auto color = args[2].get<long>();
-  auto size = args[3].get<long>();
-  auto pcs = args[4].get<int>();
+  if (args.is_array() && args.size() >= 7) {
+    auto shape = args[1].get<long>();
+    auto color = args[2].get<long>();
+    auto size = args[3].get<long>();
+    auto pcs = args[4].get<int>();
 
-  std::string s = "{";  // clarity
-  for (auto i : args[6]) {
-    s += std::to_string(i[0].get<long>()) + ",";
-  }
-  if (!args[6].empty()) s.pop_back();
-  s += "}";
-
-  auto clientPtr = drogon::app().getDbClient("sce");
-  auto transPtr = clientPtr->newTransaction();
-  try {
-    // You can't use IN (...) with arrays. You need to use an operator (ex: =,
-    // >, <, etc) and ANY/ALL
-    auto sql =
-        "SELECT clarity_id, weight, rate FROM material.diamond_size_meta WHERE "
-        "shape_id = $1 AND color_id = $2 AND size_id = $3 AND  clarity_id = "
-        "ANY($4::bigint[])";
-    auto x = Dba::writeInTrans(transPtr, sql, shape, color, size, s);
-
-    json d(json::array());
-    for (const auto& r : x) {
-      json row;
-      row[0] = r["clarity_id"].as<long>();
-      row[1] = "";
-      row[2] = r["weight"].as<double>();
-      row[3] = r["weight"].as<double>() * pcs;
-      row[4] = r["rate"].as<double>();
-      row[5] = r["weight"].as<double>() * pcs * r["rate"].as<double>();
-      d.push_back(row);
+    std::string s = "{";  // clarity
+    for (auto i : args[6]) {
+      s += std::to_string(i[0].get<long>()) + ",";
     }
-    jresult[1] = d;
+    if (!args[6].empty()) s.pop_back();
+    s += "}";
 
-    batch[0] = jresult;
-    return batch;
-  } catch (const std::exception& e) {
-    SPDLOG_TRACE(e.what());
-    // simpleJsonSaveResult(event, false, e.what());
-    return json(Json::nullValue);
+    auto clientPtr = drogon::app().getDbClient("sce");
+    auto transPtr = clientPtr->newTransaction();
+    try {
+      // You can't use IN (...) with arrays. You need to use an operator (ex: =,
+      // >, <, etc) and ANY/ALL
+      auto sql =
+          "SELECT clarity_id, weight, rate FROM material.diamond_size_meta "
+          "WHERE "
+          "shape_id = $1 AND color_id = $2 AND size_id = $3 AND  clarity_id = "
+          "ANY($4::bigint[])";
+      auto x = Dba::writeInTrans(transPtr, sql, shape, color, size, s);
+
+      json d(json::array());
+      for (const auto& r : x) {
+        json row;
+        row[0] = r["clarity_id"].as<long>();
+        row[1] = "";
+        row[2] = r["weight"].as<double>();
+        row[3] = r["weight"].as<double>() * pcs;
+        row[4] = r["rate"].as<double>();
+        row[5] = r["weight"].as<double>() * pcs * r["rate"].as<double>();
+        d.push_back(row);
+      }
+      jresult[1] = d;
+
+      batch[0] = jresult;
+      return batch;
+    } catch (const std::exception& e) {
+      SPDLOG_TRACE(e.what());
+      // simpleJsonSaveResult(event, false, e.what());
+      return json(Json::nullValue);
+    }
   }
+  return json(Json::nullValue);
 }
 
 json Product::get_product_cs_price_data(json event, json args) {
@@ -1591,43 +1680,46 @@ json Product::get_product_cs_price_data(json event, json args) {
   json jresult;
   jresult[0] = std::move(event);
 
-  auto type = args[1].get<long>();
-  auto shape = args[2].get<long>();
-  // auto color = args[3].get<long>();
-  auto size = args[4].get<long>();
-  auto pcs = args[5].get<int>();
+  if (args.is_array() && args.size() >= 7) {
+    auto type = args[1].get<long>();
+    auto shape = args[2].get<long>();
+    // auto color = args[3].get<long>();
+    auto size = args[4].get<long>();
+    auto pcs = args[5].get<int>();
 
-  auto clientPtr = drogon::app().getDbClient("sce");
-  auto transPtr = clientPtr->newTransaction();
-  try {
-    // You can't use IN (...) with arrays. You need to use an operator (ex: =,
-    // >, <, etc) and ANY/ALL
-    auto sql =
-        "SELECT weight, rate FROM material.color_stone_size_meta WHERE "
-        "cs_type_id = $1 and shape_id = $2 AND size_id = $3";
-    auto x = Dba::writeInTrans(transPtr, sql, type, shape, size);
+    auto clientPtr = drogon::app().getDbClient("sce");
+    auto transPtr = clientPtr->newTransaction();
+    try {
+      // You can't use IN (...) with arrays. You need to use an operator (ex: =,
+      // >, <, etc) and ANY/ALL
+      auto sql =
+          "SELECT weight, rate FROM material.color_stone_size_meta WHERE "
+          "cs_type_id = $1 and shape_id = $2 AND size_id = $3";
+      auto x = Dba::writeInTrans(transPtr, sql, type, shape, size);
 
-    json d(json::array());
-    for (const auto& r : x) {
-      json row;
-      row[0] = 0;
-      row[1] = "";
-      row[2] = r["weight"].as<double>();
-      row[3] = r["weight"].as<double>() * pcs;
-      row[4] = r["rate"].as<double>();
-      row[5] = r["weight"].as<double>() * pcs * r["rate"].as<double>();
-      d.push_back(row);
+      json d(json::array());
+      for (const auto& r : x) {
+        json row;
+        row[0] = 0;
+        row[1] = "";
+        row[2] = r["weight"].as<double>();
+        row[3] = r["weight"].as<double>() * pcs;
+        row[4] = r["rate"].as<double>();
+        row[5] = r["weight"].as<double>() * pcs * r["rate"].as<double>();
+        d.push_back(row);
+      }
+      jresult[1] = d;
+
+      batch[0] = jresult;
+      return batch;
+    } catch (const std::exception& e) {
+      SPDLOG_TRACE(e.what());
+      // simpleJsonSaveResult(event, false, e.what());
+      json ret;
+      return ret;
     }
-    jresult[1] = d;
-
-    batch[0] = jresult;
-    return batch;
-  } catch (const std::exception& e) {
-    SPDLOG_TRACE(e.what());
-    // simpleJsonSaveResult(event, false, e.what());
-    json ret;
-    return ret;
   }
+  return json(Json::nullValue);
 }
 
 json Product::get_product_category_tree_data(json event, const json& /*args*/) {

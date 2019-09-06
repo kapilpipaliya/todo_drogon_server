@@ -1,7 +1,7 @@
 #include "madminactor.h"
-#include "spdlogfix.h"
-#include "mainactortype.h"
 #include "../wscontroller/wsfns.h"
+#include "mainactortype.h"
+#include "spdlogfix.h"
 
 #include "../wscontroller/context/madmincontext.h"
 
@@ -16,13 +16,13 @@
 #include "core/service/madmin/class/catalog.h"
 #include "core/service/madmin/class/config.h"
 #include "core/service/madmin/class/label.h"
-#include "core/service/madmin/class/localplaybase.h"
 #include "core/service/madmin/class/localplay.h"
+#include "core/service/madmin/class/localplaybase.h"
 #include "core/service/madmin/class/log.h"
 #include "core/service/madmin/class/mailer.h"
 #include "core/service/madmin/class/media.h"
-#include "core/service/madmin/class/playlistbase.h"
 #include "core/service/madmin/class/playlist.h"
+#include "core/service/madmin/class/playlistbase.h"
 #include "core/service/madmin/class/preference.h"
 #include "core/service/madmin/class/privatemsg.h"
 #include "core/service/madmin/class/random.h"
@@ -42,102 +42,97 @@
 #include "core/service/madmin/class/ui.h"
 #include "core/service/madmin/class/update.h"
 #include "core/service/madmin/class/upload.h"
+#include "core/service/madmin/class/user.h"
 #include "core/service/madmin/class/useractivity.h"
 #include "core/service/madmin/class/userflag.h"
-#include "core/service/madmin/class/user.h"
 #include "core/service/madmin/class/vainfo.h"
 
 #include "core/service/madmin/modules/catalog/cataloglocal.h"
 
-MAdminActor::MAdminActor(caf::actor_config &cfg) : caf::event_based_actor(cfg)
-{
-}
+MAdminActor::MAdminActor(caf::actor_config &cfg)
+    : caf::event_based_actor(cfg) {}
 
-caf::behavior MAdminActor::make_behavior()
-{
-    return  {
-        [this](const WebSocketConnectionPtr &wsConnPtr, std::string message, const WebSocketMessageType &type)-> caf::result<void>{
+caf::behavior MAdminActor::make_behavior() {
+  return {[this](const WebSocketConnectionPtr &wsConnPtr, std::string message,
+                 const WebSocketMessageType &type) -> caf::result<void> {
             blocking_run(wsConnPtr, std::move(message), type);
             return {};
-        },
-        [this](exit_atom)-> caf::result<void>{
+          },
+          [this](exit_atom) -> caf::result<void> {
             quit();
             return {};
-        }
-    };
+          }};
 }
 
-#define REGISTER(T, s)\
-    else if (in[0][0].get<std::string>()==(s)){\
-    auto contx = wsConnPtr->getContext<MAdminContext>();\
-    T p{contx};\
-    auto r = p.handleEvent(in[0], 1, in[1]);\
-    if(!r.is_null())\
-    return r;\
+#define REGISTER(T, s)                                   \
+  else if (in[0][0].get<std::string>() == (s)) {         \
+    auto contx = wsConnPtr->getContext<MAdminContext>(); \
+    T p{contx};                                          \
+    auto r = p.handleEvent(in[0], 1, in[1]);             \
+    if (!r.is_null()) return r;                          \
+  }
+
+nlohmann::json MAdminActor::handleTextMessage(
+    const WebSocketConnectionPtr &wsConnPtr, nlohmann::json in) {
+  try {
+    if (!in.is_array()) {
+      return json::array();
     }
 
-nlohmann::json MAdminActor::handleTextMessage(const WebSocketConnectionPtr &wsConnPtr, nlohmann::json in)
-{
-    try {
-        if (!in.is_array()) {
-            return json::array();
-        }
-
-        if constexpr (false){
-        }
-        REGISTER(madmin::Auth, "auth")
-        REGISTER(madmin::User, "user")
-        REGISTER(madmin::User, "users")
-        REGISTER(madmin::UI, "ui")
-        REGISTER(madmin::CatalogLocal, "catalog_local")
-        REGISTER(madmin::Song, "song")
-        else {
-            return json::array();
-        }
-        return json::array();
-    } catch (const std::exception &e) {
-        SPDLOG_TRACE(e.what());
-        throw;
+    if constexpr (false) {
     }
+    REGISTER(madmin::Auth, "auth")
+    REGISTER(madmin::User, "user")
+    REGISTER(madmin::User, "users")
+    REGISTER(madmin::UI, "ui")
+    REGISTER(madmin::CatalogLocal, "catalog_local")
+    REGISTER(madmin::Song, "song")
+    else {
+      return json::array();
+    }
+    return json::array();
+  } catch (const std::exception &e) {
+    SPDLOG_TRACE(e.what());
+    throw;
+  }
 }
 
-nlohmann::json MAdminActor::handleBinaryMessage(const WebSocketConnectionPtr &wsConnPtr, std::string &message)
-{
-    json event;
-    try {
-        auto contx = wsConnPtr->getContext<MAdminContext>();\
-        long c = contx->current_session_id;
-        auto sqlSession = "SELECT event FROM music.temp_file_meta where session_id = $1";
-        auto clientPtr = drogon::app().getDbClient("sce");
-        auto r = clientPtr->execSqlSync(sqlSession, c);
-        if(!r.empty()){
-            try
-            {
-                event = json::parse(r[0]["event"].c_str());
-                // p.handleBinaryEvent creates new transaction.
+nlohmann::json MAdminActor::handleBinaryMessage(
+    const WebSocketConnectionPtr &wsConnPtr, std::string &message) {
+  json event;
+  try {
+    auto contx = wsConnPtr->getContext<MAdminContext>();
+    long c = contx->current_session_id;
+    auto sqlSession =
+        "SELECT event FROM music.temp_file_meta where session_id = $1";
+    auto clientPtr = drogon::app().getDbClient("sce");
+    auto r = clientPtr->execSqlSync(sqlSession, c);
+    if (!r.empty()) {
+      try {
+        event = json::parse(r[0]["event"].c_str());
+        // p.handleBinaryEvent creates new transaction.
 
-                    if (event[0] == "song") {
-                        madmin::Song p{contx};
-                        auto r = p.handleBinaryEvent(event, 1, message);
-                        if(!r.is_null())
-                        return r;
-                        }
-             }
-            catch (json::parse_error& e)
-            {
-               SPDLOG_TRACE("message: {}", e.what());
-               SPDLOG_TRACE("exception id: {}", e.id);
-               SPDLOG_TRACE("byte position of error:", e.byte);
-                nlohmann::json j =  std::string("cant parse json reason: ") + e.what() + event.dump();
-                WsFns::sendJson(wsConnPtr, j);
-            }
+        if (event[0] == "song") {
+          madmin::Song p{contx};
+          auto r = p.handleBinaryEvent(event, 1, message);
+          if (!r.is_null()) return r;
         }
-    } catch (const std::exception &e) {
-       SPDLOG_TRACE(e.what());
-        json jresult;
-        jresult[0] = event;
-        jresult[1] = e.what();
-        return jresult;
+      } catch (json::parse_error &e) {
+        SPDLOG_TRACE("message: {}", e.what());
+        SPDLOG_TRACE("exception id: {}", e.id);
+        SPDLOG_TRACE("byte position of error:", e.byte);
+        nlohmann::json j =
+            std::string("cant parse json reason: ") + e.what() + event.dump();
+        WsFns::sendJson(wsConnPtr, j);
+      }
     }
-    json ret; return ret;
+  } catch (const std::exception &e) {
+    SPDLOG_TRACE(e.what());
+    json jresult;
+    jresult[0] = event;
+    jresult[1] = e.what();
+    return jresult;
+  }
+  json ret;
+  return ret;
 }
