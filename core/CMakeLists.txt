@@ -91,7 +91,6 @@ install(TARGETS ${PROJECT_NAME} LIBRARY DESTINATION /home/kapili3)
 
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
-    PostgreSQL::PostgreSQL
 #    libpqxx::pqxx_shared
 #    libjewelconnection
 #    ${JSONCPP_LIBRARY}

@@ -15,6 +15,19 @@ nlohmann::json Auth::handleEvent(nlohmann::json event, unsigned long next,
     json res = {{}, {}};
     if (args.is_object() && args["user"].is_string() &&
         args["pass"].is_string()) {
+      auto isauthorised =
+          "select (u.expiry > now()) as isexpired, u.disabled from music.user "
+          "as u WHERE "
+          "username = $1";
+      auto r = Dba::read(isauthorised, args["user"]);
+      if (r.empty()) {
+        return {simpleJsonSaveResult(event, false, "Error")};
+      } else if (!r[0]["isexpired"].isNull() && r[0]["isexpired"].as<bool>()) {
+        return {simpleJsonSaveResult(event, false, "Expired")};
+      } else if (r[0]["disabled"].as<bool>()) {
+        return {simpleJsonSaveResult(event, false, "Locked")};
+      }
+
       auto [session_id, user_id] = login(args["user"].get<std::string>(),
                                          args["pass"].get<std::string>());
       res[0][1] = session_id;
@@ -54,7 +67,7 @@ nlohmann::json Auth::saveFileMeta(const nlohmann::json& event,
 
   // auto strSql = "INSERT INTO music.temp_file_meta ( session_id, event, name,
   // size, type ) VALUES( $1, $2, $3, $4, $5 )";
-  auto strSql = format(
+  auto strSql = fmt::format(
       "INSERT INTO music.temp_file_meta ( session_id, event, name, size, type "
       ") VALUES( {0}, '{1}','{2}', {3}, '{4}' )",
       c, args[0].dump(), args[1].get<std::string>(), args[2].get<long>(),

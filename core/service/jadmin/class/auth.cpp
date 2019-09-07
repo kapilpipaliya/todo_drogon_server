@@ -10,7 +10,6 @@
 #include "spdlogfix.h"
 using namespace jadmin;
 using nlohmann::json;
-using namespace fmt::v5;
 Auth::Auth(JAdminContextPtr context_) : context(std::move(context_)) {}
 
 void Auth::setupTable() {}
@@ -142,7 +141,7 @@ json Auth::saveFileMeta(const json &event, json args) {
 
   // auto strSql = "INSERT INTO music.temp_file_meta ( session_id, event, name,
   // size, type ) VALUES( $1, $2, $3, $4, $5 )";
-  auto strSql = format(
+  auto strSql = fmt::format(
       "INSERT INTO music.temp_file_meta ( session_id, event, name, size, type "
       ") VALUES( {0}, '{1}','{2}', {3}, '{4}' )",
       c, args[0].dump(), args[1].get<std::string>(), args[2].get<long>(),

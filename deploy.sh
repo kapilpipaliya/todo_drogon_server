@@ -1,4 +1,5 @@
 rsync -avz --progress --exclude=.git --exclude=build --exclude=.vscode . kapil@95.216.152.135:/home/kapil/jdrogon
+rsync -avz --progress --exclude=.git --exclude=build --exclude=.vscode . root@162.241.29.170:jdrogon
 rsync -avz --progress --exclude=.git --exclude=build --exclude=.vscode . kapil@95.216.152.135:/home/kapil/music
 rsync -avz --progress /home/kapili3/fileuploads/ kapil@95.216.152.135:/home/kapil/fileuploads/
 
@@ -54,6 +55,10 @@ sudo pacman -S poco
 sudo pacman -S spdlog
 
 
+libfmt-dev not useful...
+libsqlite3-dev
+libpng-dev
+libboost-dev not useful...
 
 
 
@@ -61,11 +66,7 @@ sudo pacman -S spdlog
 
 
 
-
-
-
-
-
+//ALTER TABLE music."user" ADD expiry timestamptz NULL;
 
 
 
@@ -86,3 +87,6 @@ CREATE TABLE setting.temp_image_id (
 
 ALTER TABLE setting.temp_image_id
   OWNER TO postgres;
+
+
+

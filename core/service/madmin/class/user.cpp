@@ -27,10 +27,11 @@ void User::setupTable() {
       // S({"sequence_id", "sequence_id", "", "e", PG_TYPES::INT8, false}),
       S({"User Name", "username", "", "e", PG_TYPES::TEXT}),
       S({"Password", "password", "", "e", PG_TYPES::TEXT, true}),
-      S({"Full Name", "fullname", "", "e", PG_TYPES::TEXT}),
+      //      S({"Full Name", "fullname", "", "e", PG_TYPES::TEXT}),
       S({"Parent User Name", "parent_id", "", "e", PG_TYPES::INT8, true, 1, 1}),
       S({"username", "username", "", "p", PG_TYPES::TEXT, false, 0, 0, false}),
       S({"Create Date", "create_date", "", "e", PG_TYPES::TIMESTAMP}),
+      S({"Expiry Date", "expiry", "", "e", PG_TYPES::TIMESTAMP}),
       S({"Disabled", "disabled", "", "e", PG_TYPES::BOOL}),
       //        S({"Email", "email", "", "e", PG_TYPES::TEXT, true}),
       //        S({"City", "city", "", "e", PG_TYPES::TEXT, true}),
@@ -72,7 +73,8 @@ nlohmann::json User::handleEvent(nlohmann::json event, unsigned long next,
       return allData(event, args);
     }
     if (context->user.type == "admin") {
-      t.m_query.cusm_where() = format("e.parent_id = {}", context->user_id);
+      t.m_query.cusm_where() =
+          fmt::format("e.parent_id = {}", context->user_id);
       return allData(event, args);
     } else {
       return {{event, "unauthorised"}};

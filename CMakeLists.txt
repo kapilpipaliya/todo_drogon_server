@@ -5,20 +5,20 @@ cmake_minimum_required (VERSION 3.15)
 # -DCMAKE_TOOLCHAIN_FILE=$VITASDK/share/vita.toolchain.cmake for cmake. It is
 # highly recommended that you include this block for all projects.
 
-#if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
-#  if(DEFINED ENV{HOME})
-#    set(CMAKE_TOOLCHAIN_FILE "$ENV{HOME}/k/cpp_stuff/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE PATH "toolchain file")
-#  else()
-#    message(FATAL_ERROR "$ENV{HOME}/k/cpp_stuff/vcpkg/scripts/buildsystems/vcpkg.cmake vcpkg path wrong!")
-#  endif()
-#endif()
+if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+  if(DEFINED ENV{HOME})
+    set(CMAKE_TOOLCHAIN_FILE "$ENV{HOME}/k/cpp_stuff/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE PATH "toolchain file")
+  else()
+    message(FATAL_ERROR "$ENV{HOME}/k/cpp_stuff/vcpkg/scripts/buildsystems/vcpkg.cmake vcpkg path wrong!")
+  endif()
+endif()
 
 
 Project(jdragon)
 
 include_directories("$ENV{HOME}/k/cpp_stuff/vcpkg/installed/x64-linux/include")
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 17)
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
@@ -40,7 +40,6 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall ${CMAKE_CXX_STD_FLAGS}
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall ${CMAKE_CXX_STD_FLAGS}")
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules/ "$ENV{HOME}/k/cpp_stuff/actor-framework/cmake/")
-find_package(Boost REQUIRED COMPONENTS filesystem date_time system timer )
 
 #find_package (UUID REQUIRED)
 
@@ -53,13 +52,9 @@ find_package(ZLIB REQUIRED)
 
 find_package(PostgreSQL REQUIRED)
 
-find_package (SQLite3)
-if (SQLITE3_FOUND)
-  include_directories(${SQLITE3_INCLUDE_DIRS})
-  link_libraries(${SQLITE3_LIBRARIES})
-endif()
-
-# find_package(Boost REQUIRED COMPONENTS chrono filesystem date_time program_options iostreams)
+#find_package(Boost REQUIRED COMPONENTS chrono filesystem date_time program_options iostreams)
+set(BOOST_ROOT "$ENV{HOME}/k/cpp_stuff/vcpkg/installed/x64-linux")
+find_package(Boost REQUIRED COMPONENTS filesystem )
 set (Boost_ARCHITECTURE "-x64")
 # find_package(Boost REQUIRED COMPONENTS filesystem date_time system timer)
 #find_package(cppzmq REQUIRED)
@@ -127,7 +122,6 @@ target_link_libraries(jdragon
   ${_OPTIONAL_LIBS}
   # ${UUID_LIBRARY}
   ZLIB::ZLIB
-  PostgreSQL::PostgreSQL
   ${DROGON_LIBRARIES}
   ${CAF_LIBRARIES}
   Boost::filesystem
