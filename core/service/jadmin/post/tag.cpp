@@ -6,12 +6,33 @@
 using namespace jadmin;
 
 Tag::Tag(JAdminContextPtr context_) : context(std::move(context_)) {
-  getQuery() = sqlb::Query(sqlb::ObjectIdentifier("post", "tag", "t"));
+  query = sqlb::Query(sqlb::ObjectIdentifier("post", "tag", "t"));
+  setupTable();
+}
+
+nlohmann::json Tag::handleEvent(nlohmann::json event, unsigned long next,
+                                nlohmann::json args) {
+  auto event_cmp = event[next].get<std::string>();
+  if (event_cmp == "data") {
+    return query.allData(event, args);
+  }
+  if (event_cmp == "header") {
+    return query.headerData(event, args);
+  } else if (event_cmp == "ins") {
+    return ins(event, args);
+  } else if (event_cmp == "upd") {
+    return upd(event, args);
+  } else if (event_cmp == "del") {
+    return query.del(event, args);
+  } else {
+    nlohmann::json ret;
+    return ret;
+  }
 }
 
 void Tag::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().setSelectedColumns({
+  query.setSelectedColumns({
       sqlb::SelectedColumn({"Id", "id", "", "t", PG_TYPES::INT8, false}),
       sqlb::SelectedColumn({"Slug", "slug", "", "t", PG_TYPES::TEXT, true}),
       sqlb::SelectedColumn({"Name", "name", "", "t", PG_TYPES::TEXT, true}),
@@ -33,7 +54,7 @@ void Tag::setupTable() {
   // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getQuery().setJoins({
+  query.setJoins({
       // sqlb::Join("left", m, "a.material_id = m.id"),
       // sqlb::Join("left", u1, "gt.create_user_id = u1.id"),
       // sqlb::Join("left", u2, "a.update_user_id = u2.id"),

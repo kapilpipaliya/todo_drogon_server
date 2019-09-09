@@ -1,15 +1,15 @@
 #pragma once
 
 #include "../../../../wscontroller/context/jadmincontext.h"
-#include "../../baseserviceabs.h"
+#include "core/sql/query.h"
 using JAdminContextPtr = std::shared_ptr<JAdminContext>;
 namespace jadmin {
-class Auth : public BaseServiceAbs {
+class Auth {
  public:
   Auth(JAdminContextPtr);
-  void setupTable() override;
+  void setupTable();
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
-                             nlohmann::json args) override;
+                             nlohmann::json args);
   nlohmann::json handleBinaryEvent(nlohmann::json event, int next,
                                    std::string& message);
   // void deleteuserSession();
@@ -116,5 +116,6 @@ class Auth : public BaseServiceAbs {
                                          std::string& message);
 
   JAdminContextPtr context;
+  sqlb::Query query;
 };
 }  // namespace jadmin

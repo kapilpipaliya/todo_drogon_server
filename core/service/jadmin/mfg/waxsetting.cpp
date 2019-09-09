@@ -5,12 +5,33 @@ using namespace jadmin;
 
 WaxSetting::WaxSetting(JAdminContextPtr context_)
     : context(std::move(context_)) {
-  getQuery() = sqlb::Query(sqlb::ObjectIdentifier("mfg", "wax_setting", "m"));
+  query = sqlb::Query(sqlb::ObjectIdentifier("mfg", "wax_setting", "m"));
+  setupTable();
+}
+
+nlohmann::json WaxSetting::handleEvent(nlohmann::json event, unsigned long next,
+                                       nlohmann::json args) {
+  auto event_cmp = event[next].get<std::string>();
+  if (event_cmp == "data") {
+    return query.allData(event, args);
+  }
+  if (event_cmp == "header") {
+    return query.headerData(event, args);
+  } else if (event_cmp == "ins") {
+    return ins(event, args);
+  } else if (event_cmp == "upd") {
+    return upd(event, args);
+  } else if (event_cmp == "del") {
+    return query.del(event, args);
+  } else {
+    nlohmann::json ret;
+    return ret;
+  }
 }
 
 void WaxSetting::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().setSelectedColumns({
+  query.setSelectedColumns({
       sqlb::SelectedColumn({"Id", "id", "", "m", PG_TYPES::INT8, false}),
       sqlb::SelectedColumn({"Rank", "rank", "", "m", PG_TYPES::INT4, true}),
       sqlb::SelectedColumn({"No", "no", "", "m", PG_TYPES::TEXT, true}),
@@ -51,7 +72,7 @@ void WaxSetting::setupTable() {
   auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getQuery().setJoins({
+  query.setJoins({
       sqlb::Join("left", dep, "dep.id = m.department_id"),
       sqlb::Join("left", e, "e.id = m.employee_id"),
       sqlb::Join("left", u1, "m.create_user_id = u1.id"),
@@ -60,7 +81,7 @@ void WaxSetting::setupTable() {
 }
 
 nlohmann::json WaxSetting::ins(nlohmann::json event, nlohmann::json args) {
-  return insBase(
+  return query.insBase(
       event, args, "date, department_id, employee_id, description, status_id",
       "$1, $2, $3, $4, $5", args[0]["date"].get<std::string>(),
       args[0]["department_id"].get<long>(), args[0]["employee_id"].get<long>(),
@@ -69,7 +90,7 @@ nlohmann::json WaxSetting::ins(nlohmann::json event, nlohmann::json args) {
 }
 
 nlohmann::json WaxSetting::upd(nlohmann::json event, nlohmann::json args) {
-  return updBase(
+  return query.updBase(
       event, args, "date, department_id, employee_id, description, status_id",
       "$1, $2, $3, $4, $5", args[0]["date"].get<std::string>(),
       args[0]["department_id"].get<long>(), args[0]["employee_id"].get<long>(),

@@ -2,17 +2,20 @@
 #define RATING_H
 
 #include "../../../../wscontroller/context/madmincontext.h"
-#include "../../baseserviceabs.h"
 
+#include "core/sql/query.h"
 using MAdminContextPtr = std::shared_ptr<MAdminContext>;
 namespace madmin {
-class Rating : public BaseServiceAbs {
+class Rating {
  public:
   Rating(MAdminContextPtr);
-  void setupTable() override;
+  nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
+                             nlohmann::json args);
+  void setupTable();
 
  private:
   MAdminContextPtr context;
+  sqlb::Query query;
 };
 }  // namespace madmin
 #endif  // RATING_H

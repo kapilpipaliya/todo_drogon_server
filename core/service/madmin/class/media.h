@@ -6,8 +6,8 @@
 using std::string;
 using std::vector;
 #include "../../../../wscontroller/context/madmincontext.h"
-#include "../../baseserviceabs.h"
 
+#include "core/sql/query.h"
 using MAdminContextPtr = std::shared_ptr<MAdminContext>;
 namespace madmin {
 /**
@@ -17,11 +17,13 @@ namespace madmin {
  * work, this lists all required functions and the expected
  * input
  */
-class Media : public BaseServiceAbs {
+class Media {
  public:
   Media(MAdminContextPtr);
+  nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
+                             nlohmann::json args);
   virtual ~Media() = default;
-  void setupTable() override;
+  void setupTable();
   /**
    * get_stream_types
    *
@@ -56,6 +58,7 @@ class Media : public BaseServiceAbs {
 
  private:
   MAdminContextPtr context;
+  sqlb::Query query;
 };
 }  // namespace madmin
 #endif  // MEDIA_H

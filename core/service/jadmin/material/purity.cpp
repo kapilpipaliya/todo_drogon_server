@@ -15,12 +15,33 @@ using namespace jadmin;
   array += "}";
 
 Purity::Purity(JAdminContextPtr context_) : context(std::move(context_)) {
-  getQuery() = sqlb::Query(sqlb::ObjectIdentifier("material", "purity", "p"));
+  query = sqlb::Query(sqlb::ObjectIdentifier("material", "purity", "p"));
+  setupTable();
+}
+
+nlohmann::json Purity::handleEvent(nlohmann::json event, unsigned long next,
+                                   nlohmann::json args) {
+  auto event_cmp = event[next].get<std::string>();
+  if (event_cmp == "data") {
+    return query.allData(event, args);
+  }
+  if (event_cmp == "header") {
+    return query.headerData(event, args);
+  } else if (event_cmp == "ins") {
+    return ins(event, args);
+  } else if (event_cmp == "upd") {
+    return upd(event, args);
+  } else if (event_cmp == "del") {
+    return del(event, args);
+  } else {
+    nlohmann::json ret;
+    return ret;
+  }
 }
 
 void Purity::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().setSelectedColumns({
+  query.setSelectedColumns({
       sqlb::SelectedColumn({"Id", "id", "", "p", PG_TYPES::INT8, false}),
       //        sqlb::SelectedColumn({"Metal", "metal_id", "", "p",
       //        PG_TYPES::INT8, true, 1, 2}), sqlb::SelectedColumn({"m_slug",
@@ -67,7 +88,7 @@ void Purity::setupTable() {
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
   auto metal_purity = sqlb::ObjectIdentifier("material", "purity_metal", "mp");
 
-  getQuery().setJoins({
+  query.setJoins({
       sqlb::Join("left", pt, "pt.purity_id = p.id"),
       sqlb::Join("left",
                  "( select pm.purity_id, pm.tone_id, jsonb_agg(distinct "
@@ -82,7 +103,7 @@ void Purity::setupTable() {
       sqlb::Join("left", u1, "p.create_user_id = u1.id"),
       sqlb::Join("left", u2, "p.update_user_id = u2.id"),
   });
-  getQuery().setGroupBy({
+  query.setGroupBy({
       sqlb::GroupByColumn("p", "id"),
       sqlb::GroupByColumn("m", "id"),
       sqlb::GroupByColumn("u1", "id"),
@@ -91,7 +112,7 @@ void Purity::setupTable() {
 }
 
 void save_purity_metal_(nlohmann::json &args,
-                        const std::shared_ptr<Transaction> &transPtr,
+                        const std::shared_ptr<drogon::orm::Transaction> &transPtr,
                         long purity_id, long tone_id) {
   std::string strSqlPostCategories =
       "SELECT metal_id FROM material.purity_metal where purity_id = $1 and "
@@ -152,7 +173,7 @@ void save_purity_metal_(nlohmann::json &args,
   }
 }
 void save_purity_tone_(nlohmann::json &args,
-                       const std::shared_ptr<Transaction> &transPtr,
+                       const std::shared_ptr<drogon::orm::Transaction> &transPtr,
                        long purity_id) {
   std::string strSqlPostCategories =
       "SELECT tone_id FROM material.purity_tone where purity_id = $1";

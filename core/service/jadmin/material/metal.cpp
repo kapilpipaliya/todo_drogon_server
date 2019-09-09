@@ -14,12 +14,33 @@ using namespace jadmin;
   array += "}";
 
 Metal::Metal(JAdminContextPtr context_) : context(std::move(context_)) {
-  getQuery() = sqlb::Query(sqlb::ObjectIdentifier("material", "metal", "m"));
+  query = sqlb::Query(sqlb::ObjectIdentifier("material", "metal", "m"));
+  setupTable();
+}
+
+nlohmann::json Metal::handleEvent(nlohmann::json event, unsigned long next,
+                                  nlohmann::json args) {
+  auto event_cmp = event[next].get<std::string>();
+  if (event_cmp == "data") {
+    return query.allData(event, args);
+  }
+  if (event_cmp == "header") {
+    return query.headerData(event, args);
+  } else if (event_cmp == "ins") {
+    return ins(event, args);
+  } else if (event_cmp == "upd") {
+    return upd(event, args);
+  } else if (event_cmp == "del") {
+    return query.del(event, args);
+  } else {
+    nlohmann::json ret;
+    return ret;
+  }
 }
 
 void Metal::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().setSelectedColumns({
+  query.setSelectedColumns({
       sqlb::SelectedColumn({"Id", "id", "", "m", PG_TYPES::INT8, false}),
       //        sqlb::SelectedColumn({"Rank", "rank", "", "m", PG_TYPES::INT4,
       //        false}),
@@ -49,7 +70,7 @@ void Metal::setupTable() {
   auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getQuery().setJoins({
+  query.setJoins({
 
       sqlb::Join("left", u1, "m.create_user_id = u1.id"),
       sqlb::Join("left", u2, "m.update_user_id = u2.id"),

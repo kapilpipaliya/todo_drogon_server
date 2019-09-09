@@ -2,17 +2,20 @@
 #define USERFLAG_H
 
 #include "../../../../wscontroller/context/madmincontext.h"
-#include "../../baseserviceabs.h"
 
+#include "core/sql/query.h"
 using MAdminContextPtr = std::shared_ptr<MAdminContext>;
 namespace madmin {
-class UserFlag : public BaseServiceAbs {
+class UserFlag {
  public:
   UserFlag(MAdminContextPtr);
-  void setupTable() override;
+  nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
+                             nlohmann::json args);
+  void setupTable();
 
  private:
   MAdminContextPtr context;
+  sqlb::Query query;
 };
 }  // namespace madmin
 #endif  // USERFLAG_H

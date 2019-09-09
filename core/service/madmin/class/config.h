@@ -3,14 +3,16 @@
 
 #include <string>
 #include "../../../../wscontroller/context/madmincontext.h"
-#include "../../baseserviceabs.h"
 
+#include "core/sql/query.h"
 using MAdminContextPtr = std::shared_ptr<MAdminContext>;
 namespace madmin {
-class Config : public BaseServiceAbs {
+class Config {
  public:
   Config(MAdminContextPtr);
-  void setupTable() override;
+  nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
+                             nlohmann::json args);
+  void setupTable();
   /**
    *  @var array $_global
    */
@@ -53,6 +55,7 @@ class Config : public BaseServiceAbs {
 
  private:
   MAdminContextPtr context;
+  sqlb::Query query;
 };
 }  // namespace madmin
 #endif  // CONFIG_H

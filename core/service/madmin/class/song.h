@@ -6,18 +6,18 @@
 using std::string;
 using std::vector;
 #include "../../../../wscontroller/context/madmincontext.h"
-#include "../../baseserviceabs.h"
 
+#include "core/sql/query.h"
 using MAdminContextPtr = std::shared_ptr<MAdminContext>;
 namespace madmin {
-class Song : public BaseServiceAbs {
+class Song {
  public:
   // class Song extends database_object implements media, library_item  {
   //   use \Lib\Metadata\Metadata;
   Song(MAdminContextPtr);
-  void setupTable() override;
+  void setupTable();
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
-                             nlohmann::json args) override;
+                             nlohmann::json args);
   nlohmann::json handleBinaryEvent(nlohmann::json event, unsigned long next,
                                    std::string &message);
 
@@ -625,6 +625,7 @@ class Song : public BaseServiceAbs {
   // public function remove_from_disk()
  private:
   MAdminContextPtr context;
+  sqlb::Query query;
   // Binary functin:
   nlohmann::json save_song_binary(const nlohmann::json &event,
                                   std::string &message);

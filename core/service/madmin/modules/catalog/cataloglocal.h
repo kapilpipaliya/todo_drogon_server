@@ -12,8 +12,9 @@ namespace madmin {
 class CatalogLocal : public Catalog {
  public:
   CatalogLocal(const MAdminContextPtr &);
-  void setupTable() override;
-  nlohmann::json handleEvent(nlohmann::json event, unsigned long next, nlohmann::json args) override;
+  void setupTable();
+  nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
+                             nlohmann::json args);
   /**
    * Constructor
    *
@@ -155,6 +156,8 @@ class CatalogLocal : public Catalog {
   std::vector<int> added_songs_to_gather;
   std::vector<int> added_videos_to_gather;
   string path;
+
+  sqlb::Query query;
 };
 }  // namespace madmin
 #endif  // CATALOGLOCAL_H

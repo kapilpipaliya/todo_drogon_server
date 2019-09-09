@@ -11,8 +11,6 @@
 
 #include "context/madmincontext.h"
 
-using namespace caf;
-
 void MusicWebsock::handleNewMessage(
     const drogon::WebSocketConnectionPtr& wsConnPtr, std::string&& message,
     const drogon::WebSocketMessageType& type) {
@@ -24,7 +22,7 @@ void MusicWebsock::handleNewMessage(
           [&]() {
             // SPDLOG_TRACE("Output: {}", message.c_str());
           },
-          [&](error& err) {
+          [&](caf::error& err) {
             aout(globalCAF.communicateWithActors())
                 << " -> "
                 << globalCAF.communicateWithActors()->system().render(err)

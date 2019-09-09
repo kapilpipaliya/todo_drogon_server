@@ -1,20 +1,20 @@
 #ifndef UI_H
 #define UI_H
 #include "../../../../wscontroller/context/madmincontext.h"
-#include "../../baseserviceabs.h"
+#include "core/sql/query.h"
 using MAdminContextPtr = std::shared_ptr<MAdminContext>;
 #include <fmt/format.h>
 #include "json.hpp"
 #include "spdlogfix.h"
 
-
 // A collection of methods related to the user interface
 namespace madmin {
-class UI : public BaseServiceAbs {
+class UI {
  public:
   UI(MAdminContextPtr);
-  void setupTable() override;
-  nlohmann::json handleEvent(nlohmann::json event, unsigned long next, nlohmann::json args) override;
+  void setupTable();
+  nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
+                             nlohmann::json args);
 
   nlohmann::json getMenuData();
   std::string getPageTitle();
@@ -134,6 +134,7 @@ class UI : public BaseServiceAbs {
   // static void is_grid_view($type);
  private:
   MAdminContextPtr context;
+  sqlb::Query query;
 };
 }  // namespace madmin
 #endif  // UI_H

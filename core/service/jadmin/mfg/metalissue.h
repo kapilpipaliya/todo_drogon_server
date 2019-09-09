@@ -1,18 +1,21 @@
 #ifndef METALISSUE_H
 #define METALISSUE_H
 #include "../../../../wscontroller/context/jadmincontext.h"
-#include "../../baseserviceabs.h"
+#include "core/sql/query.h"
 using JAdminContextPtr = std::shared_ptr<JAdminContext>;
 namespace jadmin {
-class MetalIssue : public BaseServiceAbs {
+class MetalIssue {
  public:
   MetalIssue(JAdminContextPtr);
+  nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
+                             nlohmann::json args);
 
  private:
-  void setupTable() override;
-  nlohmann::json ins(nlohmann::json event, nlohmann::json args) override;
-  nlohmann::json upd(nlohmann::json event, nlohmann::json args) override;
+  void setupTable();
+  nlohmann::json ins(nlohmann::json event, nlohmann::json args);
+  nlohmann::json upd(nlohmann::json event, nlohmann::json args);
   JAdminContextPtr context;
+  sqlb::Query query;
 };
 }  // namespace jadmin
 #endif  // METALISSUE_H

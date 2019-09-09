@@ -4,13 +4,33 @@
 using namespace jadmin;
 
 CSColor::CSColor(JAdminContextPtr context_) : context(std::move(context_)) {
-  getQuery() =
-      sqlb::Query(sqlb::ObjectIdentifier("material", "cs_color", "gt"));
+  query = sqlb::Query(sqlb::ObjectIdentifier("material", "cs_color", "gt"));
+  setupTable();
+}
+
+nlohmann::json CSColor::handleEvent(nlohmann::json event, unsigned long next,
+                                    nlohmann::json args) {
+  auto event_cmp = event[next].get<std::string>();
+  if (event_cmp == "data") {
+    return query.allData(event, args);
+  }
+  if (event_cmp == "header") {
+    return query.headerData(event, args);
+  } else if (event_cmp == "ins") {
+    return ins(event, args);
+  } else if (event_cmp == "upd") {
+    return upd(event, args);
+  } else if (event_cmp == "del") {
+    return query.del(event, args);
+  } else {
+    nlohmann::json ret;
+    return ret;
+  }
 }
 
 void CSColor::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().setSelectedColumns({
+  query.setSelectedColumns({
       sqlb::SelectedColumn({"Id", "id", "", "gt", PG_TYPES::INT8, false}),
       sqlb::SelectedColumn({"Rank", "rank", "", "gt", PG_TYPES::INT4, false}),
       sqlb::SelectedColumn({"Code", "slug", "", "gt", PG_TYPES::TEXT, true}),
@@ -32,20 +52,20 @@ void CSColor::setupTable() {
   auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getQuery().setJoins({
+  query.setJoins({
       sqlb::Join("left", u1, "gt.create_user_id = u1.id"),
       sqlb::Join("left", u2, "gt.update_user_id = u2.id"),
   });
 }
 
 nlohmann::json CSColor::ins(nlohmann::json event, nlohmann::json args) {
-  return insBase(event, args, "slug, name", "$1, $2",
-                 args[0]["slug"].get<std::string>(),
-                 args[0]["name"].get<std::string>());
+  return query.insBase(event, args, "slug, name", "$1, $2",
+                       args[0]["slug"].get<std::string>(),
+                       args[0]["name"].get<std::string>());
 }
 
 nlohmann::json CSColor::upd(nlohmann::json event, nlohmann::json args) {
-  return updBase(event, args, "slug, name", "$1, $2",
-                 args[0]["slug"].get<std::string>(),
-                 args[0]["name"].get<std::string>());
+  return query.updBase(event, args, "slug, name", "$1, $2",
+                       args[0]["slug"].get<std::string>(),
+                       args[0]["name"].get<std::string>());
 }

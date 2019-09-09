@@ -2,12 +2,36 @@
 
 #include <utility>
 #include "../../dba.h"
-using namespace madmin;
-Catalog::Catalog(MAdminContextPtr context_) : context(std::move(context_)) {}
 
-void Catalog::setupTable() {}
+madmin::Catalog::Catalog(MAdminContextPtr context_)
+    : context(std::move(context_)) {
+  setupTable();
+}
 
-void Catalog::clean_empty_albums() {
+nlohmann::json madmin::Catalog::handleEvent(nlohmann::json event,
+                                            unsigned long next,
+                                            nlohmann::json args) {
+  auto event_cmp = event[next].get<std::string>();
+  if (event_cmp == "data") {
+    return query.allData(event, args);
+  }
+  if (event_cmp == "header") {
+    return query.headerData(event, args);
+  } else if (event_cmp == "ins") {
+    return query.ins(event, args);
+  } else if (event_cmp == "upd") {
+    return query.upd(event, args);
+  } else if (event_cmp == "del") {
+    return query.del(event, args);
+  } else {
+    nlohmann::json ret;
+    return ret;
+  }
+}
+
+void madmin::Catalog::setupTable() {}
+
+void madmin::Catalog::clean_empty_albums() {
   /*
   auto sql = "SELECT id FROM music.album WHERE NOT EXISTS "
       "(SELECT id FROM song WHERE song.album = album.id)";
@@ -19,7 +43,7 @@ void Catalog::clean_empty_albums() {
   }*/
 }
 
-bool Catalog::delet(long catalog_id, const string& type) {
+bool madmin::Catalog::delet(long catalog_id, const string& type) {
   // Large catalog deletion can take time
   // set_time_limit(0);
 

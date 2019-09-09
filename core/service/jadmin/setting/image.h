@@ -1,19 +1,21 @@
 #ifndef IMAGE_H
 #define IMAGE_H
 #include "../../../../wscontroller/context/jadmincontext.h"
-#include "../../baseserviceabs.h"
+#include "core/sql/query.h"
 using JAdminContextPtr = std::shared_ptr<JAdminContext>;
 namespace jadmin {
-class Image : public BaseServiceAbs {
+class Image {
  public:
   Image(JAdminContextPtr);
-  nlohmann::json handleEvent(nlohmann::json event, int next, const nlohmann::json& args);
+  nlohmann::json handleEvent(nlohmann::json event, int next,
+                             const nlohmann::json& args);
 
  private:
-  void setupTable() override;
-  nlohmann::json ins(nlohmann::json event, nlohmann::json args) override;
-  nlohmann::json upd(nlohmann::json event, nlohmann::json args) override;
+  void setupTable();
+  nlohmann::json ins(nlohmann::json event, nlohmann::json args);
+  nlohmann::json upd(nlohmann::json event, nlohmann::json args);
   JAdminContextPtr context;
+  sqlb::Query query;
 };
 }  // namespace jadmin
 #endif  // IMAGE_H

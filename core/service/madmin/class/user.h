@@ -7,7 +7,6 @@
 #include "json.hpp"
 #include "spdlogfix.h"
 
-
 using std::string;
 /**
  * User Class
@@ -18,8 +17,8 @@ using std::string;
  *
  */
 #include "../../../../wscontroller/context/madmincontext.h"
-#include "../../baseserviceabs.h"
 
+#include "core/sql/query.h"
 using MAdminContextPtr = std::shared_ptr<MAdminContext>;
 namespace madmin {
 /**
@@ -29,7 +28,7 @@ namespace madmin {
  * and deletion of the user objects from the database by defualt you constrcut
  *it with a user_id from user.id
  **/
-class User : public BaseServiceAbs {
+class User {
   struct Info {
     string username;
     string fullname;
@@ -45,8 +44,9 @@ class User : public BaseServiceAbs {
  public:
   User(MAdminContextPtr);
   // User(int user_id);
-  void setupTable() override;
-  nlohmann::json handleEvent(nlohmann::json event, unsigned long next, nlohmann::json args) override;
+  void setupTable();
+  nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
+                             nlohmann::json args);
   nlohmann::json getUserTypeFormData();
 
   // static Count count();
@@ -442,6 +442,7 @@ class User : public BaseServiceAbs {
 
  private:
   MAdminContextPtr context;
+  sqlb::Query query;
 
   Info get_info();
   int id{};

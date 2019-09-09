@@ -5,13 +5,35 @@ using namespace jadmin;
 
 ImageCollection::ImageCollection(JAdminContextPtr context_)
     : context(std::move(context_)) {
-  getQuery() =
+  query =
       sqlb::Query(sqlb::ObjectIdentifier("setting", "image_collection", "a"));
+  setupTable();
+}
+
+nlohmann::json ImageCollection::handleEvent(nlohmann::json event,
+                                            unsigned long next,
+                                            nlohmann::json args) {
+  auto event_cmp = event[next].get<std::string>();
+  if (event_cmp == "data") {
+    return query.allData(event, args);
+  }
+  if (event_cmp == "header") {
+    return query.headerData(event, args);
+  } else if (event_cmp == "ins") {
+    return ins(event, args);
+  } else if (event_cmp == "upd") {
+    return upd(event, args);
+  } else if (event_cmp == "del") {
+    return query.del(event, args);
+  } else {
+    nlohmann::json ret;
+    return ret;
+  }
 }
 
 void ImageCollection::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().setSelectedColumns({
+  query.setSelectedColumns({
       sqlb::SelectedColumn({"Id", "id", "", "a", PG_TYPES::INT8, true}),
       sqlb::SelectedColumn({"Name", "name", "", "a", PG_TYPES::TEXT, true}),
       // sqlb::SelectedColumn({"Created By", "create_user_id", "", "a",
@@ -31,7 +53,7 @@ void ImageCollection::setupTable() {
   // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getQuery().setJoins({
+  query.setJoins({
       // sqlb::Join("left", m, "a.material_id = m.id"),
       // sqlb::Join("left", u1, "gt.create_user_id = u1.id"),
       // sqlb::Join("left", u2, "a.update_user_id = u2.id"),
@@ -39,9 +61,11 @@ void ImageCollection::setupTable() {
 }
 
 nlohmann::json ImageCollection::ins(nlohmann::json event, nlohmann::json args) {
-  return insBase(event, args, "name", "$1", args[0]["name"].get<std::string>());
+  return query.insBase(event, args, "name", "$1",
+                       args[0]["name"].get<std::string>());
 }
 
 nlohmann::json ImageCollection::upd(nlohmann::json event, nlohmann::json args) {
-  return updBase(event, args, "name", "$1", args[0]["name"].get<std::string>());
+  return query.updBase(event, args, "name", "$1",
+                       args[0]["name"].get<std::string>());
 }

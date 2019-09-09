@@ -4,12 +4,33 @@
 using namespace jadmin;
 
 Size::Size(JAdminContextPtr context_) : context(std::move(context_)) {
-  getQuery() = sqlb::Query(sqlb::ObjectIdentifier("material", "size", "s"));
+  query = sqlb::Query(sqlb::ObjectIdentifier("material", "size", "s"));
+  setupTable();
+}
+
+nlohmann::json Size::handleEvent(nlohmann::json event, unsigned long next,
+                                 nlohmann::json args) {
+  auto event_cmp = event[next].get<std::string>();
+  if (event_cmp == "data") {
+    return query.allData(event, args);
+  }
+  if (event_cmp == "header") {
+    return query.headerData(event, args);
+  } else if (event_cmp == "ins") {
+    return ins(event, args);
+  } else if (event_cmp == "upd") {
+    return upd(event, args);
+  } else if (event_cmp == "del") {
+    return query.del(event, args);
+  } else {
+    nlohmann::json ret;
+    return ret;
+  }
 }
 
 void Size::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().setSelectedColumns({
+  query.setSelectedColumns({
       sqlb::SelectedColumn({"Id", "id", "", "s", PG_TYPES::INT8, false}),
       sqlb::SelectedColumn({"Name", "name", "", "s", PG_TYPES::TEXT, true}),
       // sqlb::SelectedColumn({"Created By", "create_user_id", "", "sm",
@@ -28,9 +49,11 @@ void Size::setupTable() {
 }
 
 nlohmann::json Size::ins(nlohmann::json event, nlohmann::json args) {
-  return insBase(event, args, "name", "$1", args[0]["name"].get<std::string>());
+  return query.insBase(event, args, "name", "$1",
+                       args[0]["name"].get<std::string>());
 }
 
 nlohmann::json Size::upd(nlohmann::json event, nlohmann::json args) {
-  return updBase(event, args, "name", "$1", args[0]["name"].get<std::string>());
+  return query.updBase(event, args, "name", "$1",
+                       args[0]["name"].get<std::string>());
 }

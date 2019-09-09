@@ -2,16 +2,16 @@
 #define AUTH_H
 
 #include "../../../../wscontroller/context/madmincontext.h"
-#include "../../baseserviceabs.h"
 
+#include "core/sql/query.h"
 using MAdminContextPtr = std::shared_ptr<MAdminContext>;
 namespace madmin {
-class Auth : public BaseServiceAbs {
+class Auth {
  public:
   Auth(MAdminContextPtr);
-  void setupTable() override;
+  void setupTable();
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
-                             nlohmann::json args) override;
+                             nlohmann::json args);
   /**
    * logout
    *
@@ -110,6 +110,7 @@ class Auth : public BaseServiceAbs {
 
  private:
   MAdminContextPtr context;
+  sqlb::Query query;
 };
 }  // namespace madmin
 #endif  // AUTH_H

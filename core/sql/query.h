@@ -7,11 +7,11 @@
 #include <unordered_map>
 #include <utility>
 #include <vector>
-
 #include "json.hpp"
+#include "spdlogfix.h"
 
 #include <drogon/drogon.h>
-using namespace drogon::orm;
+#include "../jsonfns.h"
 
 #include "json.hpp"
 
@@ -187,6 +187,55 @@ class Query {
   void updateSortBase(nlohmann::json filters);
   void updatePaginationBase(nlohmann::json filters);
   void updateFilter(int column, const std::string& whereClause);
+
+  nlohmann::json headerData(nlohmann::json event, const nlohmann::json& args);
+  nlohmann::json allData(nlohmann::json event, nlohmann::json args);
+  nlohmann::json ins(nlohmann::json event, nlohmann::json args);
+  nlohmann::json upd(nlohmann::json event, nlohmann::json args);
+  nlohmann::json del(nlohmann::json event, nlohmann::json args);
+  nlohmann::json count(nlohmann::json event, nlohmann::json args);
+
+  template <class... Args>
+  nlohmann::json insBase(const nlohmann::json& event,
+                         const nlohmann::json& /*args*/,
+                         const std::string& column, const std::string& values,
+                         Args... args_bind) {
+    std::string strSql = "INSERT INTO " + table().toString() + " (" + column +
+                         ") values(" + values + ")";
+
+    try {
+      auto clientPtr = drogon::app().getDbClient("sce");
+      clientPtr->execSqlSync(strSql, args_bind...);
+      nlohmann::json ret;
+      ret[0] = simpleJsonSaveResult(event, true, "Done");
+      return ret;
+    } catch (const std::exception& e) {
+      SPDLOG_TRACE(e.what());
+      nlohmann::json ret;
+      ret[0] = simpleJsonSaveResult(event, false, e.what());
+      return ret;
+    }
+  }
+
+  template <class... Args>
+  nlohmann::json updBase(const nlohmann::json& event, nlohmann::json args,
+                         const std::string& column, const std::string& values,
+                         Args... args_bind) {
+    updateFilterBase(args[1]);
+    std::string strSql = buildUpdateQuery(column, values, "");
+    try {
+      auto clientPtr = drogon::app().getDbClient("sce");
+      clientPtr->execSqlSync(strSql, args_bind...);
+      nlohmann::json ret;
+      ret[0] = simpleJsonSaveResult(event, true, "Done");
+      return ret;
+    } catch (const std::exception& e) {
+      SPDLOG_TRACE(e.what());
+      nlohmann::json ret;
+      ret[0] = simpleJsonSaveResult(event, false, e.what());
+      return ret;
+    }
+  }
 
  private:
   // std::vector<std::string> m_column_names;

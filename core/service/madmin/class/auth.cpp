@@ -3,13 +3,16 @@
 #include <utility>
 #include "../../dba.h"
 #include "session.h"
-using namespace madmin;
-Auth::Auth(MAdminContextPtr context_) : context(std::move(context_)) {}
 
-void Auth::setupTable() {}
+madmin::Auth::Auth(MAdminContextPtr context_) : context(std::move(context_)) {
+  setupTable();
+}
 
-nlohmann::json Auth::handleEvent(nlohmann::json event, unsigned long next,
-                                 nlohmann::json args) {
+void madmin::Auth::setupTable() {}
+
+nlohmann::json madmin::Auth::handleEvent(nlohmann::json event,
+                                         unsigned long next,
+                                         nlohmann::json args) {
   auto event_cmp = event[next].get<std::string>();
   if (event_cmp == "login") {
     nlohmann::json res = {{}, {}};
@@ -51,18 +54,18 @@ nlohmann::json Auth::handleEvent(nlohmann::json event, unsigned long next,
   } else if (event_cmp == "file_meta_data") {
     return saveFileMeta(event, args);
   } else if (event_cmp == "ins") {
-    return ins(event, args);
+    return query.ins(event, args);
   } else if (event_cmp == "upd") {
-    return upd(event, args);
+    return query.upd(event, args);
   } else if (event_cmp == "del") {
-    return del(event, args);
+    return query.del(event, args);
   } else {
     return nullptr;
   }
 }
 // Save Image meta on server temporary
-nlohmann::json Auth::saveFileMeta(const nlohmann::json& event,
-                                  nlohmann::json args) {
+nlohmann::json madmin::Auth::saveFileMeta(const nlohmann::json& event,
+                                          nlohmann::json args) {
   long c = context->sessionId();
 
   // auto strSql = "INSERT INTO music.temp_file_meta ( session_id, event, name,
@@ -90,7 +93,7 @@ nlohmann::json Auth::saveFileMeta(const nlohmann::json& event,
   }
 }
 
-bool Auth::logout(long key, [[maybe_unused]] bool relogin) {
+bool madmin::Auth::logout(long key, [[maybe_unused]] bool relogin) {
   // If no key is passed try to find the session id
   key = key ? key : context->sessionId();
 
@@ -124,9 +127,9 @@ bool Auth::logout(long key, [[maybe_unused]] bool relogin) {
   //}
 }
 
-std::tuple<long, long> Auth::login(const std::string& username,
-                                   const std::string& password,
-                                   [[maybe_unused]] bool allow_ui) {
+std::tuple<long, long> madmin::Auth::login(const std::string& username,
+                                           const std::string& password,
+                                           [[maybe_unused]] bool allow_ui) {
   long session_id = 0;
   long user_id = 0;
   if (!password.empty() && !username.empty()) {

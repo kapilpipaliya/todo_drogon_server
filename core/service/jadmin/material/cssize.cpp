@@ -7,13 +7,34 @@
 using namespace jadmin;
 
 CSSize::CSSize(JAdminContextPtr context_) : context(std::move(context_)) {
-  getQuery() = sqlb::Query(
+  query = sqlb::Query(
       sqlb::ObjectIdentifier("material", "color_stone_size_meta", "sm"));
+  setupTable();
+}
+
+nlohmann::json CSSize::handleEvent(nlohmann::json event, unsigned long next,
+                                   nlohmann::json args) {
+  auto event_cmp = event[next].get<std::string>();
+  if (event_cmp == "data") {
+    return query.allData(event, args);
+  }
+  if (event_cmp == "header") {
+    return query.headerData(event, args);
+  } else if (event_cmp == "ins") {
+    return ins(event, args);
+  } else if (event_cmp == "upd") {
+    return upd(event, args);
+  } else if (event_cmp == "del") {
+    return del(event, args);
+  } else {
+    nlohmann::json ret;
+    return ret;
+  }
 }
 
 void CSSize::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().setSelectedColumns({
+  query.setSelectedColumns({
       sqlb::SelectedColumn({"Id", "id", "", "sm", PG_TYPES::INT8, false}),
       sqlb::SelectedColumn(
           {"Type", "cs_type_id", "", "sm", PG_TYPES::INT8, true, 1, 1}),
@@ -65,7 +86,7 @@ void CSSize::setupTable() {
   auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getQuery().setJoins({
+  query.setJoins({
       sqlb::Join("left", type, "cs_type.id = sm.cs_type_id"),
       sqlb::Join("left", size, "size.id = sm.size_id"),
       //        sqlb::Join("left", clarity, "clarity.id = sm.clarity_id"),

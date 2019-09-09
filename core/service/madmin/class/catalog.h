@@ -2,16 +2,18 @@
 #define CATALOG_H
 
 #include "../../../../wscontroller/context/madmincontext.h"
-#include "../../baseserviceabs.h"
 
+#include "core/sql/query.h"
 using MAdminContextPtr = std::shared_ptr<MAdminContext>;
 using std::string;
 namespace madmin {
-class Catalog : public BaseServiceAbs {
+class Catalog {
  public:
   Catalog(MAdminContextPtr);
+  nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
+                             nlohmann::json args);
   virtual ~Catalog() = default;
-  void setupTable() override;
+  void setupTable();
 
   /**
    * Catalog Class
@@ -596,6 +598,7 @@ class Catalog : public BaseServiceAbs {
   string f_clean;
 
   MAdminContextPtr context;
+  sqlb::Query query;
 };
 }  // namespace madmin
 #endif  // CATALOG_H

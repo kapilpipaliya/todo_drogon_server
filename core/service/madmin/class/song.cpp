@@ -2,77 +2,92 @@
 #include <boost/filesystem.hpp>
 #include <utility>
 #include "../../dba.h"
-using namespace madmin;
-using S = sqlb::SelectedColumn;
-Song::Song(MAdminContextPtr context_) : context(std::move(context_)) {
-  getQuery() = sqlb::Query(sqlb::ObjectIdentifier("music", "song", "s"));
+
+madmin::Song::Song(MAdminContextPtr context_) : context(std::move(context_)) {
+  query = sqlb::Query(sqlb::ObjectIdentifier("music", "song", "s"));
+  setupTable();
 }
 
-void Song::setupTable() {
+void madmin::Song::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().setSelectedColumns({
-      S({"ID No", "id", "", "s", PG_TYPES::INT8}),
-      S({"file", "file", "", "s", PG_TYPES::TEXT, false}),
-      S({"Catalog", "catalog_id", "", "s", PG_TYPES::INT8, true, 1, 1}),
-      S({"c_name", "name", "", "c", PG_TYPES::TEXT, false, 0, 0, false}),
-      //            S({"Album", "album_id", "", "s", PG_TYPES::INT8}),
-      //            S({"Year", "year", "", "s", PG_TYPES::INT4}),
-      //            S({"Artist", "artist_id", "", "s", PG_TYPES::INT8}),
-      S({"Title", "title", "", "s", PG_TYPES::TEXT}),
-      //            S({"bitrate", "bitrate", "", "s", PG_TYPES::INT4}),
-      //            S({"rate", "rate", "", "s", PG_TYPES::INT4}),
-      //            S({"mode", "mode", "", "s", PG_TYPES::ENUM}),
-      S({"size", "size", "", "s", PG_TYPES::INT8}),
-      //            S({"time", "time", "", "s", PG_TYPES::INT4}),
-      //            S({"track", "track", "", "s", PG_TYPES::INT4}),
-      //            S({"mbid", "mbid", "", "s", PG_TYPES::TEXT}),
-      //            S({"played", "played", "", "s", PG_TYPES::BOOL}),
-      //            S({"enabled", "enabled", "", "s", PG_TYPES::BOOL}),
-      //            S({"update_time", "update_time", "", "s",
-      //            PG_TYPES::TIMESTAMP}), S({"addition_time", "addition_time",
-      //            "", "s", PG_TYPES::TIMESTAMP}), S({"user_upload",
-      //            "user_upload", "", "s", PG_TYPES::INT8}), S({"license",
-      //            "license", "", "s", PG_TYPES::INT8}), S({"composer",
-      //            "composer", "", "s", PG_TYPES::TEXT}), S({"channels",
+  query.setSelectedColumns({
+      sqlb::SelectedColumn({"ID No", "id", "", "s", PG_TYPES::INT8}),
+      sqlb::SelectedColumn({"file", "file", "", "s", PG_TYPES::TEXT, false}),
+      sqlb::SelectedColumn(
+          {"Catalog", "catalog_id", "", "s", PG_TYPES::INT8, true, 1, 1}),
+      sqlb::SelectedColumn(
+          {"c_name", "name", "", "c", PG_TYPES::TEXT, false, 0, 0, false}),
+      //            sqlb::SelectedColumn({"Album", "album_id", "", "s",
+      //            PG_TYPES::INT8}), sqlb::SelectedColumn({"Year", "year", "",
+      //            "s", PG_TYPES::INT4}), sqlb::SelectedColumn({"Artist",
+      //            "artist_id", "", "s", PG_TYPES::INT8}),
+      sqlb::SelectedColumn({"Title", "title", "", "s", PG_TYPES::TEXT}),
+      //            sqlb::SelectedColumn({"bitrate", "bitrate", "", "s",
+      //            PG_TYPES::INT4}), sqlb::SelectedColumn({"rate", "rate", "",
+      //            "s", PG_TYPES::INT4}), sqlb::SelectedColumn({"mode", "mode",
+      //            "", "s", PG_TYPES::ENUM}),
+      sqlb::SelectedColumn({"size", "size", "", "s", PG_TYPES::INT8}),
+      //            sqlb::SelectedColumn({"time", "time", "", "s",
+      //            PG_TYPES::INT4}), sqlb::SelectedColumn({"track", "track",
+      //            "", "s", PG_TYPES::INT4}), sqlb::SelectedColumn({"mbid",
+      //            "mbid", "", "s", PG_TYPES::TEXT}),
+      //            sqlb::SelectedColumn({"played", "played", "", "s",
+      //            PG_TYPES::BOOL}), sqlb::SelectedColumn({"enabled",
+      //            "enabled", "", "s", PG_TYPES::BOOL}),
+      //            sqlb::SelectedColumn({"update_time", "update_time", "", "s",
+      //            PG_TYPES::TIMESTAMP}),
+      //            sqlb::SelectedColumn({"addition_time", "addition_time",
+      //            "", "s", PG_TYPES::TIMESTAMP}),
+      //            sqlb::SelectedColumn({"user_upload", "user_upload", "", "s",
+      //            PG_TYPES::INT8}), sqlb::SelectedColumn({"license",
+      //            "license", "", "s", PG_TYPES::INT8}),
+      //            sqlb::SelectedColumn({"composer", "composer", "", "s",
+      //            PG_TYPES::TEXT}), sqlb::SelectedColumn({"channels",
       //            "channels", "", "s", PG_TYPES::INT4}),
 
-      // S({"no", "no", "", "s", PG_TYPES::TEXT}),
-      // S({"sequence_id", "sequence_id", "", "s", PG_TYPES::INT8, false}),
-      // S({"Create Date", "last_update", "", "s", PG_TYPES::TIMESTAMP}),
-      // S({"last_clean Date", "last_clean", "", "s", PG_TYPES::TIMESTAMP}),
-      // S({"last_add Date", "last_add", "", "s", PG_TYPES::TIMESTAMP}),
-      // S({"Rename Pattern", "rename_pattern", "", "s", PG_TYPES::TEXT, true}),
-      // S({"Sort Pattern", "sort_pattern", "", "s", PG_TYPES::TEXT, true}),
-      // S({"Gather Types", "gather_types", "", "s", PG_TYPES::TEXT, true}),
-      // S({"Created By", "create_user_id", "", "s", PG_TYPES::INT8, true, 1, 0,
-      // false}), S({"u1_username", "username", "", "u1", PG_TYPES::TEXT, false,
-      // 0, 0, false}), S({"Updated By", "update_user_id", "", "s",
-      // PG_TYPES::INT8, true, 1, 0, false}), S({"u2_username", "username", "",
-      // "u2", PG_TYPES::TEXT, false, 0, 0, false}), S({"Create Time",
-      // "inserted_at", "", "s", PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-      // S({"Update Time", "updated_at", "", "s", PG_TYPES::TIMESTAMP, true, 0,
-      // 0, false}),
+      // sqlb::SelectedColumn({"no", "no", "", "s", PG_TYPES::TEXT}),
+      // sqlb::SelectedColumn({"sequence_id", "sequence_id", "", "s",
+      // PG_TYPES::INT8, false}), sqlb::SelectedColumn({"Create Date",
+      // "last_update", "", "s", PG_TYPES::TIMESTAMP}),
+      // sqlb::SelectedColumn({"last_clean Date", "last_clean", "", "s",
+      // PG_TYPES::TIMESTAMP}), sqlb::SelectedColumn({"last_add Date",
+      // "last_add", "", "s", PG_TYPES::TIMESTAMP}),
+      // sqlb::SelectedColumn({"Rename Pattern", "rename_pattern", "", "s",
+      // PG_TYPES::TEXT, true}), sqlb::SelectedColumn({"Sort Pattern",
+      // "sort_pattern", "", "s", PG_TYPES::TEXT, true}),
+      // sqlb::SelectedColumn({"Gather Types", "gather_types", "", "s",
+      // PG_TYPES::TEXT, true}), sqlb::SelectedColumn({"Created By",
+      // "create_user_id", "", "s", PG_TYPES::INT8, true, 1, 0, false}),
+      // sqlb::SelectedColumn({"u1_username", "username", "", "u1",
+      // PG_TYPES::TEXT, false, 0, 0, false}), sqlb::SelectedColumn({"Updated
+      // By", "update_user_id", "", "s", PG_TYPES::INT8, true, 1, 0, false}),
+      // sqlb::SelectedColumn({"u2_username", "username", "", "u2",
+      // PG_TYPES::TEXT, false, 0, 0, false}), sqlb::SelectedColumn({"Create
+      // Time", "inserted_at", "", "s", PG_TYPES::TIMESTAMP, true, 0, 0,
+      // false}), sqlb::SelectedColumn({"Update Time", "updated_at", "", "s",
+      // PG_TYPES::TIMESTAMP, true, 0, 0, false}),
   });
   auto c = sqlb::ObjectIdentifier("music", "catalog", "c");
   // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getQuery().setJoins({
+  query.setJoins({
       sqlb::Join("left", c, "c.id = s.catalog_id")
       // sqlb::Join("left", u1, "e.create_user_id = u1.id"),
       // sqlb::Join("left", u2, "e.update_user_id = u2.id"),
   });
 }
 
-nlohmann::json Song::handleEvent(nlohmann::json event, unsigned long next,
-                                 nlohmann::json args) {
+nlohmann::json madmin::Song::handleEvent(nlohmann::json event,
+                                         unsigned long next,
+                                         nlohmann::json args) {
   auto event_cmp = event[next].get<std::string>();
   if (event_cmp == "header") {  // required
-    return headerData(event, args);
+    return query.headerData(event, args);
   }
   if (event_cmp == "data") {  // required
                               // if(context->getUser().type == "super admin"){
-    return allData(event, args);
+    return query.allData(event, args);
     //} else {
     // return {{event, "unauthorised"}};
     //}
@@ -95,7 +110,7 @@ nlohmann::json Song::handleEvent(nlohmann::json event, unsigned long next,
             args[0]["size"] = z[0]["size"].as<long>();
             // auto type = z[0]["type"].c_str();
             clientPtr->execSqlSync(strSqlTempImageDel, temp_id);
-            return ins(event, args);
+            return query.ins(event, args);
           }
         }
         nlohmann::json ret;
@@ -105,7 +120,7 @@ nlohmann::json Song::handleEvent(nlohmann::json event, unsigned long next,
       }
       // nlohmann::json ret; ret[0] = simpleJsonSaveResult(event, false, "Please
       // Upload Music First!"); return ret;
-      return ins(event, args);  // Make this to pass test.
+      return query.ins(event, args);  // Make this to pass test.
 
     } catch (const std::exception &e) {
       SPDLOG_TRACE(e.what());
@@ -115,18 +130,19 @@ nlohmann::json Song::handleEvent(nlohmann::json event, unsigned long next,
     }
 
   } else if (event_cmp == "upd") {
-    return upd(event, args);
+    return query.upd(event, args);
   } else if (event_cmp == "del") {
-    return del(event, args);
+    return query.del(event, args);
   } else if (event_cmp == "count") {
-    return count(event, args);
+    return query.count(event, args);
   } else {
     return nullptr;
   }
 }
 
-nlohmann::json Song::handleBinaryEvent(nlohmann::json event, unsigned long next,
-                                       std::string &message) {
+nlohmann::json madmin::Song::handleBinaryEvent(nlohmann::json event,
+                                               unsigned long next,
+                                               std::string &message) {
   if (event[next].get<std::string>() == "song") {
     return save_song_binary(event, message);
   }
@@ -134,7 +150,7 @@ nlohmann::json Song::handleBinaryEvent(nlohmann::json event, unsigned long next,
   return ret;
 }
 
-nlohmann::json Song::save_song_binary(
+nlohmann::json madmin::Song::save_song_binary(
     [[maybe_unused]] const nlohmann::json &event, std::string &message) {
   auto session_id = context->sessionId();
   auto strSql = sel_("music.temp_file_meta", "event,  name, size, type",

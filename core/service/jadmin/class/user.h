@@ -17,8 +17,8 @@ using std::string;
  *
  */
 #include "../../../../wscontroller/context/jadmincontext.h"
-#include "../../baseserviceabs.h"
 
+#include "core/sql/query.h"
 using JAdminContextPtr = std::shared_ptr<JAdminContext>;
 namespace jadmin {
 /**
@@ -28,7 +28,7 @@ namespace jadmin {
  * and deletion of the user objects from the database by defualt you constrcut
  *it with a user_id from user.id
  **/
-class User : public BaseServiceAbs {
+class User {
   struct Info {
     string username;
     string fullname;
@@ -44,9 +44,9 @@ class User : public BaseServiceAbs {
  public:
   User(JAdminContextPtr);
   // User(int user_id);
-  void setupTable() override;
+  void setupTable();
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
-                             nlohmann::json args) override;
+                             nlohmann::json args);
   nlohmann::json getUserTypeFormData();
 
   // static Count count();
@@ -449,6 +449,7 @@ class User : public BaseServiceAbs {
                           const nlohmann::json& args);
 
   JAdminContextPtr context;
+  sqlb::Query query;
 };
 }  // namespace jadmin
 #endif  // USER_H

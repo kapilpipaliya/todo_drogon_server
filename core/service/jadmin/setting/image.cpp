@@ -5,12 +5,13 @@
 using namespace jadmin;
 
 Image::Image(JAdminContextPtr context_) : context(std::move(context_)) {
-  getQuery() = sqlb::Query(sqlb::ObjectIdentifier("setting", "image", "a"));
+  query = sqlb::Query(sqlb::ObjectIdentifier("setting", "image", "a"));
+  setupTable();
 }
 
 void Image::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().setSelectedColumns({
+  query.setSelectedColumns({
       sqlb::SelectedColumn({"Id", "id", "", "a", PG_TYPES::INT8, true}),
       sqlb::SelectedColumn({"Collection", "image_collection_id", "", "a",
                             PG_TYPES::INT8, true, 1, 1}),
@@ -43,26 +44,27 @@ void Image::setupTable() {
   // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getQuery().setJoins({
+  query.setJoins({
       sqlb::Join("left", c, "c.id = a.image_collection_id"),
       // sqlb::Join("left", u1, "gt.create_user_id = u1.id"),
       // sqlb::Join("left", u2, "a.update_user_id = u2.id"),
   });
 }
 
-nlohmann::json Image::handleEvent(nlohmann::json event, int next, const nlohmann::json &args) {
+nlohmann::json Image::handleEvent(nlohmann::json event, int next,
+                                  const nlohmann::json &args) {
   auto event_cmp = event[next].get<std::string>();
   if (event_cmp == "data") {
-    return allData(event, args);
+    return query.allData(event, args);
   }
   if (event_cmp == "header") {
-    return headerData(event, args);
+    return query.headerData(event, args);
   } else if (event_cmp == "ins") {
     return ins(event, args);
   } else if (event_cmp == "upd") {
     return upd(event, args);
   } else if (event_cmp == "del") {
-    return del(event, args);
+    return query.del(event, args);
   } else {
     nlohmann::json ret;
     return ret;

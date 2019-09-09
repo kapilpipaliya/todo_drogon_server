@@ -5,16 +5,18 @@
 using namespace jadmin;
 
 Setting::Setting(JAdminContextPtr context_) : context(std::move(context_)) {
-  getQuery() = sqlb::Query(sqlb::ObjectIdentifier("setting", "setting", "gs"));
+  query = sqlb::Query(sqlb::ObjectIdentifier("setting", "setting", "gs"));
+  setupTable();
 }
 
-nlohmann::json Setting::handleEvent(nlohmann::json event, int next, const nlohmann::json &args) {
+nlohmann::json Setting::handleEvent(nlohmann::json event, unsigned long next,
+                                    nlohmann::json args) {
   auto event_cmp = event[next].get<std::string>();
   if (event_cmp == "data") {
-    return allData(event, args);
+    return query.allData(event, args);
   }
   if (event_cmp == "header") {
-    return headerData(event, args);
+    return query.headerData(event, args);
   } else if (event_cmp == "save") {
     return save(event, args);
   } else if (event_cmp == "del") {
@@ -27,7 +29,7 @@ nlohmann::json Setting::handleEvent(nlohmann::json event, int next, const nlohma
 
 void Setting::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().setSelectedColumns({
+  query.setSelectedColumns({
       sqlb::SelectedColumn({"Key", "key", "", "gs", PG_TYPES::TEXT, true}),
       sqlb::SelectedColumn(
           {"Setting Type", "setting_type", "", "gs", PG_TYPES::TEXT, true}),
@@ -43,7 +45,7 @@ void Setting::setupTable() {
   // auto m = sqlb::ObjectIdentifier("material", "metal", "m");
   // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
-  getQuery().setJoins({
+  query.setJoins({
       // sqlb::Join("left", m, "a.material_id = m.id"),
       // sqlb::Join("left", u1, "gt.create_user_id = u1.id"),
       // sqlb::Join("left", u2, "a.update_user_id = u2.id"),

@@ -2,11 +2,11 @@
 #include <chrono>
 #include <utility>
 #include "../../dba.h"
-using namespace madmin;
+
 using namespace std::chrono;
-using S = sqlb::SelectedColumn;
-User::User(MAdminContextPtr context_) : context(std::move(context_)) {
-  getQuery() = sqlb::Query(sqlb::ObjectIdentifier("music", "user", "e"));
+madmin::User::User(MAdminContextPtr context_) : context(std::move(context_)) {
+  query = sqlb::Query(sqlb::ObjectIdentifier("music", "user", "e"));
+  setupTable();
 }
 // User::User(int user_id)
 //{
@@ -17,46 +17,57 @@ User::User(MAdminContextPtr context_) : context(std::move(context_)) {
 
 //}
 
-void User::setupTable() {
+void madmin::User ::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().setSelectedColumns({
-      S({"ID No", "id", "", "e", PG_TYPES::INT8}),
-      S({"Account Type", "type", "", "e", PG_TYPES::ENUM}),
-      // S({"no", "no", "", "e", PG_TYPES::TEXT}),
-      // S({"sequence_id", "sequence_id", "", "e", PG_TYPES::INT8, false}),
-      S({"User Name", "username", "", "e", PG_TYPES::TEXT}),
-      S({"Password", "password", "", "e", PG_TYPES::TEXT, true}),
-      //      S({"Full Name", "fullname", "", "e", PG_TYPES::TEXT}),
-      S({"Parent User Name", "parent_id", "", "e", PG_TYPES::INT8, true, 1, 1}),
-      S({"username", "username", "", "p", PG_TYPES::TEXT, false, 0, 0, false}),
-      S({"Create Date", "create_date", "", "e", PG_TYPES::TIMESTAMP}),
-      S({"Expiry Date", "expiry", "", "e", PG_TYPES::TIMESTAMP}),
-      S({"Disabled", "disabled", "", "e", PG_TYPES::BOOL}),
-      //        S({"Email", "email", "", "e", PG_TYPES::TEXT, true}),
-      //        S({"City", "city", "", "e", PG_TYPES::TEXT, true}),
-      //        S({"State", "state", "", "e", PG_TYPES::TEXT, true}),
-      // S({"Created By", "create_user_id", "", "e", PG_TYPES::INT8, true, 1, 0,
-      // false}), S({"u1_username", "username", "", "u1", PG_TYPES::TEXT, false,
-      // 0, 0, false}), S({"Updated By", "update_user_id", "", "e",
-      // PG_TYPES::INT8, true, 1, 0, false}), S({"u2_username", "username", "",
-      // "u2", PG_TYPES::TEXT, false, 0, 0, false}), S({"Create Time",
-      // "inserted_at", "", "e", PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-      // S({"Update Time", "updated_at", "", "e", PG_TYPES::TIMESTAMP, true, 0,
-      // 0, false}),
+  query.setSelectedColumns({
+      sqlb::SelectedColumn({"ID No", "id", "", "e", PG_TYPES::INT8}),
+      sqlb::SelectedColumn({"Account Type", "type", "", "e", PG_TYPES::ENUM}),
+      // sqlb::SelectedColumn({"no", "no", "", "e", PG_TYPES::TEXT}),
+      // sqlb::SelectedColumn({"sequence_id", "sequence_id", "", "e",
+      // PG_TYPES::INT8, false}),
+      sqlb::SelectedColumn({"User Name", "username", "", "e", PG_TYPES::TEXT}),
+      sqlb::SelectedColumn(
+          {"Password", "password", "", "e", PG_TYPES::TEXT, true}),
+      //      sqlb::SelectedColumn({"Full Name", "fullname", "", "e",
+      //      PG_TYPES::TEXT}),
+      sqlb::SelectedColumn({"Parent User Name", "parent_id", "", "e",
+                            PG_TYPES::INT8, true, 1, 1}),
+      sqlb::SelectedColumn({"username", "username", "", "p", PG_TYPES::TEXT,
+                            false, 0, 0, false}),
+      sqlb::SelectedColumn(
+          {"Create Date", "create_date", "", "e", PG_TYPES::TIMESTAMP}),
+      sqlb::SelectedColumn(
+          {"Expiry Date", "expiry", "", "e", PG_TYPES::TIMESTAMP}),
+      sqlb::SelectedColumn({"Disabled", "disabled", "", "e", PG_TYPES::BOOL}),
+      //        sqlb::SelectedColumn({"Email", "email", "", "e", PG_TYPES::TEXT,
+      //        true}), sqlb::SelectedColumn({"City", "city", "", "e",
+      //        PG_TYPES::TEXT, true}), sqlb::SelectedColumn({"State", "state",
+      //        "", "e", PG_TYPES::TEXT, true}),
+      // sqlb::SelectedColumn({"Created By", "create_user_id", "", "e",
+      // PG_TYPES::INT8, true, 1, 0, false}),
+      // sqlb::SelectedColumn({"u1_username", "username", "", "u1",
+      // PG_TYPES::TEXT, false, 0, 0, false}), sqlb::SelectedColumn({"Updated
+      // By", "update_user_id", "", "e", PG_TYPES::INT8, true, 1, 0, false}),
+      // sqlb::SelectedColumn({"u2_username", "username", "", "u2",
+      // PG_TYPES::TEXT, false, 0, 0, false}), sqlb::SelectedColumn({"Create
+      // Time", "inserted_at", "", "e", PG_TYPES::TIMESTAMP, true, 0, 0,
+      // false}), sqlb::SelectedColumn({"Update Time", "updated_at", "", "e",
+      // PG_TYPES::TIMESTAMP, true, 0, 0, false}),
   });
   auto p = sqlb::ObjectIdentifier("music", "user", "p");
   // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getQuery().setJoins({
+  query.setJoins({
       sqlb::Join("left", p, "e.parent_id = p.id")
       // sqlb::Join("left", u1, "e.create_user_id = u1.id"),
       // sqlb::Join("left", u2, "e.update_user_id = u2.id"),
   });
 }
 
-nlohmann::json User::handleEvent(nlohmann::json event, unsigned long next,
-                                 nlohmann::json args) {
+nlohmann::json madmin::User::handleEvent(nlohmann::json event,
+                                         unsigned long next,
+                                         nlohmann::json args) {
   auto event_cmp = event[next].get<std::string>();
   if (event_cmp == "is_logged_in") {
     nlohmann::json res = {{event}};
@@ -64,15 +75,15 @@ nlohmann::json User::handleEvent(nlohmann::json event, unsigned long next,
     return res;
   }
   if (event_cmp == "header") {  // required
-    return headerData(event, args);
+    return query.headerData(event, args);
   } else if (event_cmp == "data") {  // required
     if (context->getUser().type == "super admin") {
-      return allData(event, args);
+      return query.allData(event, args);
     }
     if (context->getUser().type == "admin") {
-      getQuery().setCustomWhere(
+      query.setCustomWhere(
           fmt::format("e.parent_id = {}", context->getUserId()));
-      return allData(event, args);
+      return query.allData(event, args);
     } else {
       return {{event, "unauthorised"}};
     }
@@ -89,9 +100,9 @@ nlohmann::json User::handleEvent(nlohmann::json event, unsigned long next,
     return {{event, getUserTypeFormData()}};
   } else if (event_cmp == "ins") {
     args[0]["parent_id"] = context->getUserId();
-    return ins(event, args);
+    return query.ins(event, args);
   } else if (event_cmp == "upd") {
-    return upd(event, args);
+    return query.upd(event, args);
   } else if (event_cmp == "del") {
     if (args[0].is_array()) {
       if (args[0][0].is_number()) {
@@ -103,13 +114,13 @@ nlohmann::json User::handleEvent(nlohmann::json event, unsigned long next,
     // return del(event,args);
     return {simpleJsonSaveResult(event, false, "UnAuthorised")};
   } else if (event_cmp == "count") {
-    return count(event, args);
+    return query.count(event, args);
   } else {
     return nullptr;
   }
 }
 
-nlohmann::json User::getUserTypeFormData() {
+nlohmann::json madmin::User::getUserTypeFormData() {
   if (context->getUser().type == "super admin") {
     nlohmann::json j = nlohmann::json::array({
         nlohmann::json::array({"Super Admin", "super admin"}),
@@ -128,7 +139,7 @@ nlohmann::json User::getUserTypeFormData() {
   }
 }
 
-User::Info User::get_info() {
+madmin::User::Info madmin::User ::get_info() {
   // If user is in cache return from it.
   // If user is system user return system data.
 
@@ -182,11 +193,11 @@ FROM session INNER JOIN user ON session.username = user.username "
 user.last_seen > 2"); return count;
 }
 */
-void User::load_playlist() {
+void madmin::User::load_playlist() {
   // playlist_id = Tmp_Playlist::get_from_session(session_id);
 }
 
-void User::get_valid_users() {
+void madmin::User::get_valid_users() {
   std::string sql = fmt::format("SELECT id FROM user WHERE disabled = false");
   auto db_results = Dba::read(sql);
   for (auto r : db_results) {
@@ -208,11 +219,11 @@ void User::get_valid_users() {
 
 //}
 
-bool User::is_logged_in() {
+bool madmin::User::is_logged_in() {
   // auto sql = "SELECT id,ip FROM session WHERE username=1 AND expire > now()";
   return context->sessionId() != 0;
 }
-string User::get_password() {
+string madmin::User::get_password() {
   auto sql = "SELECT * FROM music.user WHERE id = $1";
   try {
     auto clientPtr = drogon::app().getDbClient("sce");
@@ -227,12 +238,14 @@ string User::get_password() {
   return "";
 }
 
-long User::create(const std::string& /*username*/,
-                  const std::string& /*fullname*/, const std::string& /*email*/,
-                  const std::string& /*website*/,
-                  const std::string& /*password*/,
-                  const std::string& /*access*/, const std::string& /*state*/,
-                  const std::string& /*city*/, bool /*disabled*/) {
+long madmin::User::create(const std::string& /*username*/,
+                          const std::string& /*fullname*/,
+                          const std::string& /*email*/,
+                          const std::string& /*website*/,
+                          const std::string& /*password*/,
+                          const std::string& /*access*/,
+                          const std::string& /*state*/,
+                          const std::string& /*city*/, bool /*disabled*/) {
   // website     = rtrim(website, "/");
   // string password    = hash('sha256', password);
   // bool disabled    = disabled $ 1 : 0;
@@ -286,7 +299,7 @@ long User::create(const std::string& /*username*/,
   return 0;
 }
 
-bool User::update_password(std::string new_password) {
+bool madmin::User::update_password(std::string new_password) {
   // std::string new_password = hash('sha256', new_password);
   // new_password = Dba::escape(new_password);
   std::string sql = "UPDATE music.user SET password = $2 WHERE id = $1";
@@ -305,7 +318,7 @@ bool User::update_password(std::string new_password) {
   return false;
 }
 
-bool User::delNew(long user_id) {
+bool madmin::User::delNew(long user_id) {
   /*
     Before we do anything make sure that they aren't the last
     admin

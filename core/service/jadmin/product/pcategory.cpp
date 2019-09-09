@@ -4,12 +4,33 @@
 using namespace jadmin;
 
 PCategory::PCategory(JAdminContextPtr context_) : context(std::move(context_)) {
-  getQuery() = sqlb::Query(sqlb::ObjectIdentifier("product", "category", "c"));
+  query = sqlb::Query(sqlb::ObjectIdentifier("product", "category", "c"));
+  setupTable();
+}
+
+nlohmann::json PCategory::handleEvent(nlohmann::json event, unsigned long next,
+                                      nlohmann::json args) {
+  auto event_cmp = event[next].get<std::string>();
+  if (event_cmp == "data") {
+    return query.allData(event, args);
+  }
+  if (event_cmp == "header") {
+    return query.headerData(event, args);
+  } else if (event_cmp == "ins") {
+    return ins(event, args);
+  } else if (event_cmp == "upd") {
+    return upd(event, args);
+  } else if (event_cmp == "del") {
+    return query.del(event, args);
+  } else {
+    nlohmann::json ret;
+    return ret;
+  }
 }
 
 void PCategory::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().setSelectedColumns({
+  query.setSelectedColumns({
       sqlb::SelectedColumn({"Id", "id", "", "c", PG_TYPES::INT8, false}),
       sqlb::SelectedColumn(
           {"Parent", "parent_id", "", "c", PG_TYPES::INT8, true, 2, 1}),
@@ -43,7 +64,7 @@ void PCategory::setupTable() {
   auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getQuery().setJoins({
+  query.setJoins({
       sqlb::Join("left", p, "c.parent_id = p.id"),
       sqlb::Join("left", u1, "c.create_user_id = u1.id"),
       sqlb::Join("left", u2, "c.update_user_id = u2.id"),
@@ -51,7 +72,7 @@ void PCategory::setupTable() {
 }
 
 nlohmann::json PCategory::ins(nlohmann::json event, nlohmann::json args) {
-  return insBase(
+  return query.insBase(
       event, args, "slug, name, description, display_type, parent_id, position",
       "$1, $2, $3, $4, NULLIF($5, 0::bigint), $6",
       args[0]["slug"].get<std::string>(), args[0]["name"].get<std::string>(),
@@ -64,7 +85,7 @@ nlohmann::json PCategory::ins(nlohmann::json event, nlohmann::json args) {
 }
 
 nlohmann::json PCategory::upd(nlohmann::json event, nlohmann::json args) {
-  return updBase(
+  return query.updBase(
       event, args, "slug, name, description, display_type, parent_id, position",
       "$1, $2, $3, $4, NULLIF($5, 0::bigint), $6",
       args[0]["slug"].get<std::string>(), args[0]["name"].get<std::string>(),

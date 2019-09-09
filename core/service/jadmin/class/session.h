@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../../../../wscontroller/context/jadmincontext.h"
-#include "../../baseserviceabs.h"
+#include "core/sql/query.h"
 using JAdminContextPtr = std::shared_ptr<JAdminContext>;
 /**
  *
@@ -9,10 +9,12 @@ using JAdminContextPtr = std::shared_ptr<JAdminContext>;
  *
  */
 namespace jadmin {
-class Session : public BaseServiceAbs {
+class Session {
  public:
   Session(JAdminContextPtr);
-  void setupTable() override;
+  nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
+                             nlohmann::json args);
+  void setupTable();
 
   /**
    * open
@@ -164,5 +166,6 @@ class Session : public BaseServiceAbs {
   // static void ungimp_ie();
  private:
   JAdminContextPtr context;
+  sqlb::Query query;
 };
 }  // namespace jadmin

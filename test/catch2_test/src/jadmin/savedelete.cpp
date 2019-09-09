@@ -4,8 +4,6 @@
 #include <catch2/catch.hpp>
 #include "json.hpp"
 
-//#include <Poco/Format.h>
-// using Poco::format;
 #include <fmt/format.h>
 
 SaveDelete::SaveDelete(std::string table, std::string insert_query,

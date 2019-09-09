@@ -6,12 +6,13 @@
 using namespace jadmin;
 
 Product::Product(JAdminContextPtr context_) : context(std::move(context_)) {
-  getQuery() = sqlb::Query(sqlb::ObjectIdentifier("post", "post", "post"));
+  query = sqlb::Query(sqlb::ObjectIdentifier("post", "post", "post"));
+  setupTable();
 }
 
 void Product::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().setSelectedColumns({
+  query.setSelectedColumns({
       sqlb::SelectedColumn({"Id", "id", "", "post", PG_TYPES::INT8, true}),
       // sqlb::SelectedColumn({"Directory", "dir_path", "", "p", PG_TYPES::TEXT,
       // true}), sqlb::SelectedColumn({"File Name", " "",file_name", "p",
@@ -226,7 +227,7 @@ void Product::setupTable() {
   // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getQuery().setJoins({
+  query.setJoins({
       // sqlb::Join("left", c, "p.color_id = c.id"),
       sqlb::Join("left", product, "p.post_id = post.id"),
       sqlb::Join("left", pc, "pc.post_id = post.id"),
@@ -270,20 +271,20 @@ void Product::setupTable() {
       // sqlb::Join("left", u2, "a.update_user_id = u2.id"),
   });
 
-  getQuery().setGroupBy({
+  query.setGroupBy({
       sqlb::GroupByColumn("post", "id"),
       sqlb::GroupByColumn("p", "id"),
   });
 }
 
-nlohmann::json Product::handleEvent(nlohmann::json event, int next,
-                                    const nlohmann::json& args) {
+nlohmann::json Product::handleEvent(nlohmann::json event, unsigned long next,
+                                    nlohmann::json args) {
   auto event_cmp = event[next].get<std::string>();
   if (event_cmp == "data") {
-    return allData(event, args);
+    return query.allData(event, args);
   }
   if (event_cmp == "header") {
-    return headerData(event, args);
+    return query.headerData(event, args);
   } else if (event_cmp == "ins") {
     return ins(event, args);
   } else if (event_cmp == "upd") {
@@ -305,7 +306,8 @@ nlohmann::json Product::handleEvent(nlohmann::json event, int next,
 
 #define purejoinTableSave(f, t, inKey, id1, id2)                              \
   void save_product_##f(nlohmann::json& args,                                 \
-                        std::shared_ptr<Transaction> transPtr, long idv1) {   \
+                        std::shared_ptr<drogon::orm::Transaction> transPtr,   \
+                        long idv1) {                                          \
     std::string strSqlPostCategories =                                        \
         "SELECT " id1 ", " id2 " FROM " t " where " id1 " = $1";              \
     std::string strSqlPostCategorySimpleFind =                                \
@@ -340,10 +342,11 @@ nlohmann::json Product::handleEvent(nlohmann::json event, int next,
     }                                                                         \
   }
 
-void purejoinTableSaveF(const std::string& t, nlohmann::json& args,
-                        const std::shared_ptr<Transaction>& transPtr,
-                        const std::string& inKey, const std::string& id1,
-                        const std::string& id2, long idv1) {
+void purejoinTableSaveF(
+    const std::string& t, nlohmann::json& args,
+    const std::shared_ptr<drogon::orm::Transaction>& transPtr,
+    const std::string& inKey, const std::string& id1, const std::string& id2,
+    long idv1) {
   std::string strSqlPostCategories =
       "SELECT " + id1 + ", " + id2 + " FROM " + t + " where " + id1 + " = $1";
   std::string strSqlPostCategorySimpleFind =
@@ -382,11 +385,10 @@ purejoinTableSave(certified_by, "product.post_certified_by",
 purejoinTableSave(policy, "product.post_policy", "p_policy_post_policy",
                   "post_id", "policy_id");
 
-void product_tags_process(const sqlb::ObjectIdentifier& tags_table,
-                          const sqlb::ObjectIdentifier& post_tag_table,
-                          nlohmann::json& args,
-                          const std::shared_ptr<Transaction>& transPtr,
-                          long post_id) {
+void product_tags_process(
+    const sqlb::ObjectIdentifier& tags_table,
+    const sqlb::ObjectIdentifier& post_tag_table, nlohmann::json& args,
+    const std::shared_ptr<drogon::orm::Transaction>& transPtr, long post_id) {
   std::string strSqlTag = "select id, name FROM %1.%2 where name = $1";
   ReplaceAll2(strSqlTag, "%1", tags_table.schema());
   ReplaceAll2(strSqlTag, "%2", tags_table.name());
@@ -453,10 +455,9 @@ void product_tags_process(const sqlb::ObjectIdentifier& tags_table,
   }
 }
 
-void save_product_categories(const sqlb::ObjectIdentifier& post_category_table,
-                             nlohmann::json& args,
-                             const std::shared_ptr<Transaction>& transPtr,
-                             long post_id) {
+void save_product_categories(
+    const sqlb::ObjectIdentifier& post_category_table, nlohmann::json& args,
+    const std::shared_ptr<drogon::orm::Transaction>& transPtr, long post_id) {
   std::string strSqlPostCategories =
       "select post_id, category_id FROM %1.%2 where post_id = $1";
   ReplaceAll2(strSqlPostCategories, "%1", post_category_table.schema());
@@ -508,10 +509,9 @@ void save_product_categories(const sqlb::ObjectIdentifier& post_category_table,
   }
 }
 
-void save_product_clarities(const sqlb::ObjectIdentifier& post_clarity_table,
-                            nlohmann::json& args,
-                            const std::shared_ptr<Transaction>& transPtr,
-                            long post_id) {
+void save_product_clarities(
+    const sqlb::ObjectIdentifier& post_clarity_table, nlohmann::json& args,
+    const std::shared_ptr<drogon::orm::Transaction>& transPtr, long post_id) {
   std::string strSqlPostCategories =
       "SELECT clarity_id FROM %1.%2 where post_id = $1";
   ReplaceAll2(strSqlPostCategories, "%1", post_clarity_table.schema());
@@ -586,9 +586,10 @@ void save_product_clarities(const sqlb::ObjectIdentifier& post_clarity_table,
   }
 }
 
-void save_purity_tone_(nlohmann::json& args,
-                       const std::shared_ptr<Transaction>& transPtr,
-                       long post_id, long purity_id) {
+void save_purity_tone_(
+    nlohmann::json& args,
+    const std::shared_ptr<drogon::orm::Transaction>& transPtr, long post_id,
+    long purity_id) {
   std::string strSqlPostCategories =
       sel_("product.purity_tone", "post_id, purity_id, tone_id",
            "where post_id = $1 and purity_id = $2");
@@ -657,10 +658,9 @@ void save_purity_tone_(nlohmann::json& args,
   }
 }
 
-void save_product_purities(const sqlb::ObjectIdentifier& post_purity_table,
-                           nlohmann::json& args,
-                           const std::shared_ptr<Transaction>& transPtr,
-                           long post_id) {
+void save_product_purities(
+    const sqlb::ObjectIdentifier& post_purity_table, nlohmann::json& args,
+    const std::shared_ptr<drogon::orm::Transaction>& transPtr, long post_id) {
   std::string strSqlPostCategories =
       "SELECT purity_id FROM %1.%2 where post_id = $1";
   ReplaceAll2(strSqlPostCategories, "%1", post_purity_table.schema());
@@ -733,9 +733,10 @@ void save_product_purities(const sqlb::ObjectIdentifier& post_purity_table,
   }
 }
 
-void save_diamond_price(nlohmann::json& args,
-                        const std::shared_ptr<Transaction>& transPtr,
-                        long diamond_id) {
+void save_diamond_price(
+    nlohmann::json& args,
+    const std::shared_ptr<drogon::orm::Transaction>& transPtr,
+    long diamond_id) {
   std::string strSqlPostCategories =
       "SELECT diamond_id, clarity_id, weight, total_weight, rate, price FROM "
       "product.diamond_price where diamond_id = $1";
@@ -804,8 +805,8 @@ void save_diamond_price(nlohmann::json& args,
 
 void save_product_diamond_sizes(
     const sqlb::ObjectIdentifier& /*post_diamond_sizes_table*/,
-    nlohmann::json& args, const std::shared_ptr<Transaction>& transPtr,
-    long post_id) {
+    nlohmann::json& args,
+    const std::shared_ptr<drogon::orm::Transaction>& transPtr, long post_id) {
   std::string strSqlPostCategories =
       "SELECT id, post_id, shape_id, color_id, size_id, pcs FROM "
       "product.post_diamond_size where post_id = $1";
@@ -882,7 +883,8 @@ void save_product_diamond_sizes(
 }
 
 void save_cs_price(nlohmann::json& args,
-                   const std::shared_ptr<Transaction>& transPtr, long cs_id) {
+                   const std::shared_ptr<drogon::orm::Transaction>& transPtr,
+                   long cs_id) {
   std::string strSqlPostCategories =
       "SELECT cs_id, weight, total_weight, rate, price FROM product.cs_price "
       "where cs_id = $1";
@@ -944,8 +946,8 @@ void save_cs_price(nlohmann::json& args,
 
 void save_product_cs_sizes(
     const sqlb::ObjectIdentifier& /*post_color_stone_size_table*/,
-    nlohmann::json& args, const std::shared_ptr<Transaction>& transPtr,
-    long post_id) {
+    nlohmann::json& args,
+    const std::shared_ptr<drogon::orm::Transaction>& transPtr, long post_id) {
   std::string strSqlPostCategories =
       "SELECT id, post_id, shape_id, color_id, size_id, pcs FROM "
       "product.post_color_stone_size where post_id = $1";
@@ -1024,7 +1026,7 @@ void save_product_cs_sizes(
 
 void save_product_cs_total(
     const sqlb::ObjectIdentifier& /*post_cs_total_table*/, nlohmann::json& args,
-    const std::shared_ptr<Transaction>& transPtr, long post_id) {
+    const std::shared_ptr<drogon::orm::Transaction>& transPtr, long post_id) {
   std::string strSqlPostCategories =
       "SELECT post_id, pcs, weight, price FROM product.post_cs_total where "
       "post_id = $1";
@@ -1087,7 +1089,7 @@ void save_product_cs_total(
 
 void save_product_Attachments(
     const sqlb::ObjectIdentifier& post_attachment_table, nlohmann::json& args,
-    const std::shared_ptr<Transaction>& transPtr, long post_id) {
+    const std::shared_ptr<drogon::orm::Transaction>& transPtr, long post_id) {
   std::string strSqlPostCategories = "SELECT id FROM %1.%2 where post_id = $1";
   ReplaceAll2(strSqlPostCategories, "%1", post_attachment_table.schema());
   ReplaceAll2(strSqlPostCategories, "%2", post_attachment_table.name());

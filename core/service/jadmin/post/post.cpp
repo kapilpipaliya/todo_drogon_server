@@ -6,11 +6,32 @@
 using namespace jadmin;
 
 Post1::Post1(JAdminContextPtr context_) : context(std::move(context_)) {
-  getQuery() = sqlb::Query(sqlb::ObjectIdentifier("post", "post", "post"));
+  query = sqlb::Query(sqlb::ObjectIdentifier("post", "post", "post"));
+  setupTable();
+}
+
+nlohmann::json Post1::handleEvent(nlohmann::json event, unsigned long next,
+                                  nlohmann::json args) {
+  auto event_cmp = event[next].get<std::string>();
+  if (event_cmp == "data") {
+    return query.allData(event, args);
+  }
+  if (event_cmp == "header") {
+    return query.headerData(event, args);
+  } else if (event_cmp == "ins") {
+    return ins(event, args);
+  } else if (event_cmp == "upd") {
+    return upd(event, args);
+  } else if (event_cmp == "del") {
+    return query.del(event, args);
+  } else {
+    nlohmann::json ret;
+    return ret;
+  }
 }
 
 void Post1::setupTable() {
-  getQuery().setSelectedColumns({
+  query.setSelectedColumns({
       sqlb::SelectedColumn({"Id", "id", "", "post", PG_TYPES::INT8, true}),
       sqlb::SelectedColumn(
           {"Post Type", "type", "", "post", PG_TYPES::ENUM, true}),

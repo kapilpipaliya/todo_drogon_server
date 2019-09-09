@@ -5,12 +5,33 @@ using namespace jadmin;
 #include "../../dba.h"
 
 Txn::Txn(JAdminContextPtr context_) : context(std::move(context_)) {
-  getQuery() = sqlb::Query(sqlb::ObjectIdentifier("account", "txn", "a"));
+  query = sqlb::Query(sqlb::ObjectIdentifier("account", "txn", "a"));
+  setupTable();
+}
+
+nlohmann::json Txn::handleEvent(nlohmann::json event, unsigned long next,
+                                nlohmann::json args) {
+  auto event_cmp = event[next].get<std::string>();
+  if (event_cmp == "data") {
+    return query.allData(event, args);
+  }
+  if (event_cmp == "header") {
+    return query.headerData(event, args);
+  } else if (event_cmp == "ins") {
+    return ins(event, args);
+  } else if (event_cmp == "upd") {
+    return upd(event, args);
+  } else if (event_cmp == "del") {
+    return del(event, args);
+  } else {
+    nlohmann::json ret;
+    return ret;
+  }
 }
 
 void Txn::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().setSelectedColumns({
+  query.setSelectedColumns({
       sqlb::SelectedColumn({"id", "id", "", "a", PG_TYPES::INT8}),
       sqlb::SelectedColumn({"Journal Type", "journal_type_id", "", "a",
                             PG_TYPES::INT8, true, 1, 1}),
@@ -100,14 +121,14 @@ void Txn::setupTable() {
   auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getQuery().setJoins({
+  query.setJoins({
       sqlb::Join("left", jt, "jt.id = a.journal_type_id"),
       sqlb::Join("left", party, "party.id = a.party_id"),
       sqlb::Join("left", order_item, "o_i.txn_id = a.id"),
       sqlb::Join("left", u1, "a.create_user_id = u1.id"),
       sqlb::Join("left", u2, "a.update_user_id = u2.id"),
   });
-  getQuery().setGroupBy({
+  query.setGroupBy({
       sqlb::GroupByColumn("a", "id"),
       sqlb::GroupByColumn("jt", "id"),
       sqlb::GroupByColumn("party", "id"),
@@ -138,9 +159,9 @@ nlohmann::json Txn::del(const nlohmann::json event, const nlohmann::json args) {
     return ret;
   }
 }
-void save_txn_order_item(nlohmann::json &args,
-                         const std::shared_ptr<Transaction> &transPtr,
-                         long txn_id) {
+void save_txn_order_item(
+    nlohmann::json &args,
+    const std::shared_ptr<drogon::orm::Transaction> &transPtr, long txn_id) {
   std::string strSqlPostCategories =
       "SELECT id, post_id, pcs, purity_id, tone_id, clarity_id, price, "
       "instruction FROM order1.order_item where txn_id = $1";

@@ -4,12 +4,33 @@
 using namespace jadmin;
 
 Support::Support(JAdminContextPtr context_) : context(std::move(context_)) {
-  getQuery() = sqlb::Query(sqlb::ObjectIdentifier("setting", "support", "a"));
+  query = sqlb::Query(sqlb::ObjectIdentifier("setting", "support", "a"));
+  setupTable();
+}
+
+nlohmann::json Support::handleEvent(nlohmann::json event, unsigned long next,
+                                    nlohmann::json args) {
+  auto event_cmp = event[next].get<std::string>();
+  if (event_cmp == "data") {
+    return query.allData(event, args);
+  }
+  if (event_cmp == "header") {
+    return query.headerData(event, args);
+  } else if (event_cmp == "ins") {
+    return ins(event, args);
+  } else if (event_cmp == "upd") {
+    return upd(event, args);
+  } else if (event_cmp == "del") {
+    return query.del(event, args);
+  } else {
+    nlohmann::json ret;
+    return ret;
+  }
 }
 
 void Support::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().setSelectedColumns({
+  query.setSelectedColumns({
       sqlb::SelectedColumn({"Id", "id", "", "a", PG_TYPES::INT8, false}),
       sqlb::SelectedColumn({"Name", "name", "", "a", PG_TYPES::TEXT, true}),
       sqlb::SelectedColumn({"Email", "email", "", "a", PG_TYPES::TEXT, true}),
@@ -32,24 +53,24 @@ void Support::setupTable() {
   // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getQuery().setJoins({
+  query.setJoins({
       // sqlb::Join("left", u1, "gt.create_user_id = u1.id"),
       // sqlb::Join("left", u2, "a.update_user_id = u2.id"),
   });
 }
 
 nlohmann::json Support::ins(nlohmann::json event, nlohmann::json args) {
-  return insBase(event, args, "name, email, phone, message", "$1, $2, $3, $4",
-                 args[0]["name"].get<std::string>(),
-                 args[0]["email"].get<std::string>(),
-                 args[0]["phone"].get<std::string>(),
-                 args[0]["message"].get<std::string>());
+  return query.insBase(event, args, "name, email, phone, message",
+                       "$1, $2, $3, $4", args[0]["name"].get<std::string>(),
+                       args[0]["email"].get<std::string>(),
+                       args[0]["phone"].get<std::string>(),
+                       args[0]["message"].get<std::string>());
 }
 
 nlohmann::json Support::upd(nlohmann::json event, nlohmann::json args) {
-  return updBase(event, args, "name, email, phone, message", "$1, $2, $3, $4",
-                 args[0]["name"].get<std::string>(),
-                 args[0]["email"].get<std::string>(),
-                 args[0]["phone"].get<std::string>(),
-                 args[0]["message"].get<std::string>());
+  return query.updBase(event, args, "name, email, phone, message",
+                       "$1, $2, $3, $4", args[0]["name"].get<std::string>(),
+                       args[0]["email"].get<std::string>(),
+                       args[0]["phone"].get<std::string>(),
+                       args[0]["message"].get<std::string>());
 }

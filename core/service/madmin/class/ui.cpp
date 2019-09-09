@@ -2,13 +2,15 @@
 
 #include <utility>
 #include "../../dba.h"
-using namespace madmin;
-UI::UI(MAdminContextPtr context_) : context(std::move(context_)) {}
 
-void UI::setupTable() {}
+madmin::UI::UI(MAdminContextPtr context_) : context(std::move(context_)) {
+  setupTable();
+}
 
-nlohmann::json UI::handleEvent(nlohmann::json event, unsigned long next,
-                               nlohmann::json args) {
+void madmin::UI ::setupTable() {}
+
+nlohmann::json madmin::UI::handleEvent(nlohmann::json event, unsigned long next,
+                                       nlohmann::json args) {
   auto event_cmp = event[next].get<std::string>();
   if (event_cmp == "menu_data") {
     return {{event, getMenuData()}};
@@ -22,20 +24,18 @@ nlohmann::json UI::handleEvent(nlohmann::json event, unsigned long next,
   } else if (event_cmp == "catalog_local") {
     return {{event, getCatalogFilterData()}};
   } else if (event_cmp == "ins") {
-    return ins(event, args);
-  } else if (event_cmp == "ins") {
-    return ins(event, args);
+    return query.ins(event, args);
   } else if (event_cmp == "upd") {
-    return upd(event, args);
+    return query.upd(event, args);
   } else if (event_cmp == "del") {
-    return del(event, args);
+    return query.del(event, args);
   } else {
     nlohmann::json ret;
     return ret;
   }
 }
 
-nlohmann::json UI::getMenuData() {
+nlohmann::json madmin::UI::getMenuData() {
   if (context->getUser().type == "super admin") {
     nlohmann::json j = nlohmann::json::array(
         {nlohmann::json::array({"Dashboard", "music/dashboard"}),
@@ -70,7 +70,7 @@ nlohmann::json UI::getMenuData() {
   }
 }
 
-std::string UI::getPageTitle() {
+std::string madmin::UI::getPageTitle() {
   if (context->getUser().type == "super admin") {
     return "Admins";
   }
@@ -81,7 +81,7 @@ std::string UI::getPageTitle() {
   }
 }
 
-std::string UI::getUserAccountType() {
+std::string madmin::UI::getUserAccountType() {
   if (context->getUser().type == "super admin") {
     return "Super Admin";
   }
@@ -92,7 +92,7 @@ std::string UI::getUserAccountType() {
   }
 }
 
-nlohmann::json UI::getUserTypeData() {
+nlohmann::json madmin::UI::getUserTypeData() {
   if (context->getUser().type == "super admin") {
     nlohmann::json j = nlohmann::json::array({
         nlohmann::json::array({"All", nullptr}),
@@ -113,7 +113,7 @@ nlohmann::json UI::getUserTypeData() {
   }
 }
 
-nlohmann::json UI::getCatalogFilterData() {
+nlohmann::json madmin::UI::getCatalogFilterData() {
   std::string sql = "select id, name from music.catalog order by id";
   auto r = Dba::read(sql);
   nlohmann::json out =

@@ -1,6 +1,7 @@
 #include "query.h"
 
 #include <algorithm>
+#include "../service/dba.h"
 #include "condformat.h"
 #include "spdlogfix.h"
 
@@ -350,14 +351,14 @@ bool Query::select() {
   // SPDLOG_TRACE(q);
   // crash !! auto clientPtr = drogon::app().getFastDbClient("sce");
   auto clientPtr = drogon::app().getDbClient("sce");
-  *clientPtr << q << Mode::Blocking >> [this](const Result& r) {
-    result = r;
-  } >> [q](const DrogonDbException& e) {
-    SPDLOG_TRACE("query: {}", q);
-    SPDLOG_TRACE(e.base().what());
-    // testOutput(false, "DbClient streaming-type interface(0)");
-    throw;
-  };
+  *clientPtr << q << drogon::orm::Mode::Blocking >>
+      [this](const drogon::orm::Result& r) { result = r; } >>
+      [q](const drogon::orm::DrogonDbException& e) {
+        SPDLOG_TRACE("query: {}", q);
+        SPDLOG_TRACE(e.base().what());
+        // testOutput(false, "DbClient streaming-type interface(0)");
+        throw;
+      };
   return true;
 }
 
@@ -574,6 +575,126 @@ void Query::updateFilter(int column, const std::string& whereClause) {
   // buildQuery();
 
   select();
+}
+
+nlohmann::json Query::headerData(nlohmann::json event,
+                                 const nlohmann::json& args) {
+  nlohmann::json jresult;
+  jresult[0] = std::move(event);
+  jresult[1] = getJsonHeaderData();
+  nlohmann::json ret;
+  ret[0] = jresult;
+  return ret;
+}
+
+nlohmann::json Query::allData(nlohmann::json event, nlohmann::json args) {
+  nlohmann::json jresult;
+  jresult[0] = std::move(event);
+  jresult[1] = getAllData(args);
+  nlohmann::json ret;
+  ret[0] = jresult;
+  return ret;
+}
+
+nlohmann::json Query::ins(nlohmann::json event, nlohmann::json args) {
+  std::string strSql;
+  try {
+    strSql = buildInsQuery(std::move(args));
+    if (strSql.empty()) {
+      nlohmann::json ret;
+      ret[0] = simpleJsonSaveResult(event, false, "UnValid Arguments");
+      return ret;
+    }
+  } catch (const std::exception& e) {
+    SPDLOG_TRACE("error: {0}, sql: {1}", e.what(), strSql);
+    throw;
+  }
+  try {
+    auto clientPtr = drogon::app().getDbClient("sce");
+    clientPtr->execSqlSync(strSql);
+    nlohmann::json ret;
+    ret[0] = simpleJsonSaveResult(event, true, "Done");
+    return ret;
+  } catch (const std::exception& e) {
+    SPDLOG_TRACE("error: {0}, sql: {1}", e.what(), strSql);
+    nlohmann::json ret;
+    ret[0] = simpleJsonSaveResult(event, false, e.what());
+    return ret;
+  }
+}
+
+nlohmann::json Query::upd(nlohmann::json event, nlohmann::json args) {
+  updateFilterBase(args[1]);
+  std::string strSql = buildUpdateQuery(args);
+  if (strSql.empty()) {
+    nlohmann::json ret;
+    ret[0] = simpleJsonSaveResult(event, false, "UnValid Arguments");
+    return ret;
+  }
+  try {
+    auto clientPtr = drogon::app().getDbClient("sce");
+    auto res = clientPtr->execSqlSync(strSql);
+    if (res.size() > 1) {
+      SPDLOG_TRACE("error: Argus Must update one row");
+      throw("not valid arguments");
+    }
+    nlohmann::json ret;
+    ret[0] = simpleJsonSaveResult(event, true, "Done");
+    return ret;
+  } catch (const std::exception& e) {
+    SPDLOG_TRACE("error: {0}, sql: {1}", e.what(), strSql);
+    nlohmann::json ret;
+    ret[0] = simpleJsonSaveResult(event, false, e.what());
+    return ret;
+  }
+}
+
+nlohmann::json Query::del(nlohmann::json event, nlohmann::json args) {
+  try {
+    auto clientPtr = drogon::app().getDbClient("sce");
+    auto transPtr = clientPtr->newTransaction();
+    updateFilterBase(args[0]);
+    auto res = Dba::writeInTrans(transPtr, buildDeleteQuery());
+    if (res.size() > 1) {
+      throw("not valid arguments");
+    }
+    // affected rows should be returned too.
+    // Dba::writeInTrans(transPtr, "DELETE FROM " +
+    // m_table.toDisplayString()
+    // + " WHERE id = $1", args[0]);
+    nlohmann::json ret;
+    ret[0] = simpleJsonSaveResult(event, true, "Done");
+    return ret;
+  } catch (const std::exception& e) {
+    SPDLOG_TRACE(e.what());
+    nlohmann::json ret;
+    ret[0] = simpleJsonSaveResult(event, false, e.what());
+    return ret;
+  }
+}
+
+nlohmann::json Query::count(nlohmann::json event, nlohmann::json args) {
+  try {
+    auto clientPtr = drogon::app().getDbClient("sce");
+    auto transPtr = clientPtr->newTransaction();
+    updateFilterBase(args[0]);
+    updateSortBase(args[1]);
+    updatePaginationBase(args[2]);
+    // SPDLOG_TRACE(buildCountQuery());
+    auto res = Dba::writeInTrans(transPtr, buildCountQuery());
+    // affected rows should be returned too.
+    // Dba::writeInTrans(transPtr, "DELETE FROM " +
+    // m_table.toDisplayString()
+    // + " WHERE id = $1", args[0]);
+    nlohmann::json ret;
+    ret[0] = nlohmann::json::array({event, res[0]["count"].as<long>()});
+    return ret;
+  } catch (const std::exception& e) {
+    SPDLOG_TRACE(e.what());
+    nlohmann::json ret;
+    ret[0] = simpleJsonSaveResult(event, false, e.what());
+    return ret;
+  }
 }
 }  // namespace sqlb
    /*

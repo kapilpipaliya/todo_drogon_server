@@ -5,13 +5,33 @@ using namespace jadmin;
 
 EntityType::EntityType(JAdminContextPtr context_)
     : context(std::move(context_)) {
-  getQuery() =
-      sqlb::Query(sqlb::ObjectIdentifier("entity", "entity_type", "a"));
+  query = sqlb::Query(sqlb::ObjectIdentifier("entity", "entity_type", "a"));
+  setupTable();
+}
+
+nlohmann::json EntityType::handleEvent(nlohmann::json event, unsigned long next,
+                                       nlohmann::json args) {
+  auto event_cmp = event[next].get<std::string>();
+  if (event_cmp == "data") {
+    return query.allData(event, args);
+  }
+  if (event_cmp == "header") {
+    return query.headerData(event, args);
+  } else if (event_cmp == "ins") {
+    return ins(event, args);
+  } else if (event_cmp == "upd") {
+    return upd(event, args);
+  } else if (event_cmp == "del") {
+    return query.del(event, args);
+  } else {
+    nlohmann::json ret;
+    return ret;
+  }
 }
 
 void EntityType::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().setSelectedColumns({
+  query.setSelectedColumns({
       sqlb::SelectedColumn({"Id", "id", "", "a", PG_TYPES::INT8, true}),
       sqlb::SelectedColumn({"Name", "name", "", "a", PG_TYPES::TEXT, true}),
       sqlb::SelectedColumn({"Create Time", "inserted_at", "", "a",
@@ -22,9 +42,11 @@ void EntityType::setupTable() {
 }
 
 nlohmann::json EntityType::ins(nlohmann::json event, nlohmann::json args) {
-  return insBase(event, args, "name", "$1", args[0]["name"].get<std::string>());
+  return query.insBase(event, args, "name", "$1",
+                       args[0]["name"].get<std::string>());
 }
 
 nlohmann::json EntityType::upd(nlohmann::json event, nlohmann::json args) {
-  return updBase(event, args, "name", "$1", args[0]["name"].get<std::string>());
+  return query.updBase(event, args, "name", "$1",
+                       args[0]["name"].get<std::string>());
 }
