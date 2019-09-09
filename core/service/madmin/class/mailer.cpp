@@ -2,7 +2,7 @@
 
 #include <utility>
 
-madmin::Mailer::Mailer(MAdminContextPtr context_)
+madmin::Mailer::Mailer(std::shared_ptr<MAdminContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }

@@ -3,7 +3,7 @@
 #include "../../dba.h"
 #include "./session.h"
 namespace jadmin {
-jadmin::Session::Session(JAdminContextPtr context_)
+jadmin::Session::Session(std::shared_ptr<JAdminContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }

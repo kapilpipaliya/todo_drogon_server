@@ -3,7 +3,7 @@
 #include <utility>
 
 namespace jadmin {
-PaymentMethod::PaymentMethod(JAdminContextPtr context_)
+PaymentMethod::PaymentMethod(std::shared_ptr<JAdminContext> context_)
     : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("setting", "payment_method", "t"));
   setupTable();

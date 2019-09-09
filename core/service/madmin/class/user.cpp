@@ -3,8 +3,9 @@
 #include <utility>
 #include "../../dba.h"
 
-using namespace std::chrono;
-madmin::User::User(MAdminContextPtr context_) : context(std::move(context_)) {
+// using namespace std::chrono;
+madmin::User::User(std::shared_ptr<MAdminContext> context_)
+    : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("music", "user", "e"));
   setupTable();
 }
@@ -223,7 +224,7 @@ bool madmin::User::is_logged_in() {
   // auto sql = "SELECT id,ip FROM session WHERE username=1 AND expire > now()";
   return context->sessionId() != 0;
 }
-string madmin::User::get_password() {
+std::string madmin::User::get_password() {
   auto sql = "SELECT * FROM music.user WHERE id = $1";
   try {
     auto clientPtr = drogon::app().getDbClient("sce");
@@ -247,14 +248,14 @@ long madmin::User::create(const std::string& /*username*/,
                           const std::string& /*state*/,
                           const std::string& /*city*/, bool /*disabled*/) {
   // website     = rtrim(website, "/");
-  // string password    = hash('sha256', password);
+  // std::string password    = hash('sha256', password);
   // bool disabled    = disabled $ 1 : 0;
 
   /* Now Insert this new user */
   /* Great Logic..
-  string sql = "INSERT INTO music.user (username, disabled, fullname, email,
-  password, access, create_date"; string params = array(username, disabled,
-  fullname, email, password, access, time());
+  std::string sql = "INSERT INTO music.user (username, disabled, fullname,
+  email, password, access, create_date"; std::string params = array(username,
+  disabled, fullname, email, password, access, time());
 
   if (!website.empty()) {
       sql += ", website";
@@ -289,7 +290,7 @@ long madmin::User::create(const std::string& /*username*/,
   }
 
   // Get the insert_id
-  string insert_id = Dba::insert_id();
+  std::string insert_id = Dba::insert_id();
   */
 
   /* Populates any missing preferences, in this case all of them */

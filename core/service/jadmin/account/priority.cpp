@@ -3,7 +3,7 @@
 #include <utility>
 
 namespace jadmin {
-Priority::Priority(JAdminContextPtr context_) : context(std::move(context_)) {
+Priority::Priority(std::shared_ptr<JAdminContext> context_) : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("account", "priority", "a"));
   setupTable();
 }

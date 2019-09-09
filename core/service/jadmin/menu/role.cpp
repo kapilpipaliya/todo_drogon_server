@@ -3,7 +3,7 @@
 #include <utility>
 
 namespace jadmin {
-Role::Role(JAdminContextPtr context_) : context(std::move(context_)) {
+Role::Role(std::shared_ptr<JAdminContext> context_) : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("menu", "role", "m"));
   setupTable();
 }

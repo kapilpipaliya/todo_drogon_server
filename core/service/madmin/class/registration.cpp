@@ -2,7 +2,7 @@
 
 #include <utility>
 
-madmin::Registration::Registration(MAdminContextPtr context_)
+madmin::Registration::Registration(std::shared_ptr<MAdminContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }

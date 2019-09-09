@@ -4,8 +4,8 @@
 #include "../../dba.h"
 
 namespace jadmin {
-using S = sqlb::SelectedColumn;
-Entity::Entity(JAdminContextPtr context_) : context(std::move(context_)) {
+Entity::Entity(std::shared_ptr<JAdminContext> context_)
+    : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("entity", "entity", "e"));
   setupTable();
 }
@@ -33,57 +33,80 @@ nlohmann::json Entity::handleEvent(nlohmann::json event, unsigned long next,
 void Entity::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns(
-      {S({"id", "id", "", "e", PG_TYPES::INT8}),
-       S({"Entity Type", "entity_type_id", "", "e", PG_TYPES::INT8, true, 1,
-          1}),
+      {sqlb::SelectedColumn({"id", "id", "", "e", PG_TYPES::INT8}),
+       sqlb::SelectedColumn({"Entity Type", "entity_type_id", "", "e",
+                             PG_TYPES::INT8, true, 1, 1}),
        sqlb::SelectedColumn(
            {"et_name", "name", "", "et", PG_TYPES::TEXT, false, 0, 0, false}),
-       S({"no", "no", "", "e", PG_TYPES::TEXT}),
-       S({"sequence_id", "sequence_id", "", "e", PG_TYPES::INT8, false}),
-       S({"Code", "slug", "", "e", PG_TYPES::TEXT}),
-       S({"Parent", "parent_id", "", "e", PG_TYPES::INT8}),
-       S({"Legal Name", "legal_name", "", "e", PG_TYPES::TEXT}),
-       S({"tax_no", "tax_no", "", "e", PG_TYPES::TEXT, false}),
-       S({"First Name", "first_name", "", "e", PG_TYPES::TEXT}),
-       S({"Middle Name", "middle_name", "", "e", PG_TYPES::TEXT}),
-       S({"Last Name", "last_name", "", "e", PG_TYPES::TEXT}),
-       S({"Email", "email", "", "e", PG_TYPES::TEXT, true}),
-       S({"Password", "password", "", "eu", PG_TYPES::TEXT, true}),
-       S({"Birth Date", "birth_date", "", "e", PG_TYPES::TIMESTAMP, false}),
-       S({"Start Date", "start_date", "", "e", PG_TYPES::TIMESTAMP}),
-       S({"End Date", "end_date", "", "e", PG_TYPES::TIMESTAMP}),
-       S({"Salary", "salary", "", "e", PG_TYPES::DOUBLE, false}),
-       S({"Rate", "rate", "", "e", PG_TYPES::DOUBLE, false}),
-       S({"Active", "active", "", "e", PG_TYPES::BOOL, false}),
-       S({"Pay To Name", "pay_to_name", "", "e", PG_TYPES::TEXT, false}),
-       S({"Threshold", "threshold", "", "e", PG_TYPES::DOUBLE, false}),
-       S({"Credit Limit", "credit_limit", "", "e", PG_TYPES::DOUBLE, false}),
-       S({"Terms", "terms", "", "e", PG_TYPES::INT4, false}),
-       S({"Discount", "discount", "", "e", PG_TYPES::DOUBLE, false}),
-       S({"Discount Terms", "discount_terms", "", "e", PG_TYPES::INT4, false}),
-       S({"discount_account_id", "discount_account_id", "", "e", PG_TYPES::INT8,
-          false}),
-       S({"ar_ap_account_id", "ar_ap_account_id", "", "e", PG_TYPES::INT8,
-          false}),
-       S({"cash_account_id", "cash_account_id", "", "e", PG_TYPES::INT8,
-          false}),
-       S({"currency_id", "currency_id", "", "e", PG_TYPES::INT8, false}),
-       S({"price_group_id", "price_group_id", "", "e", PG_TYPES::INT8, false}),
-       S({"tax_included", "tax_included", "", "e", PG_TYPES::BOOL, false}),
+       sqlb::SelectedColumn({"no", "no", "", "e", PG_TYPES::TEXT}),
+       sqlb::SelectedColumn(
+           {"sequence_id", "sequence_id", "", "e", PG_TYPES::INT8, false}),
+       sqlb::SelectedColumn({"Code", "slug", "", "e", PG_TYPES::TEXT}),
+       sqlb::SelectedColumn({"Parent", "parent_id", "", "e", PG_TYPES::INT8}),
+       sqlb::SelectedColumn(
+           {"Legal Name", "legal_name", "", "e", PG_TYPES::TEXT}),
+       sqlb::SelectedColumn(
+           {"tax_no", "tax_no", "", "e", PG_TYPES::TEXT, false}),
+       sqlb::SelectedColumn(
+           {"First Name", "first_name", "", "e", PG_TYPES::TEXT}),
+       sqlb::SelectedColumn(
+           {"Middle Name", "middle_name", "", "e", PG_TYPES::TEXT}),
+       sqlb::SelectedColumn(
+           {"Last Name", "last_name", "", "e", PG_TYPES::TEXT}),
+       sqlb::SelectedColumn({"Email", "email", "", "e", PG_TYPES::TEXT, true}),
+       sqlb::SelectedColumn(
+           {"Password", "password", "", "eu", PG_TYPES::TEXT, true}),
+       sqlb::SelectedColumn(
+           {"Birth Date", "birth_date", "", "e", PG_TYPES::TIMESTAMP, false}),
+       sqlb::SelectedColumn(
+           {"Start Date", "start_date", "", "e", PG_TYPES::TIMESTAMP}),
+       sqlb::SelectedColumn(
+           {"End Date", "end_date", "", "e", PG_TYPES::TIMESTAMP}),
+       sqlb::SelectedColumn(
+           {"Salary", "salary", "", "e", PG_TYPES::DOUBLE, false}),
+       sqlb::SelectedColumn({"Rate", "rate", "", "e", PG_TYPES::DOUBLE, false}),
+       sqlb::SelectedColumn(
+           {"Active", "active", "", "e", PG_TYPES::BOOL, false}),
+       sqlb::SelectedColumn(
+           {"Pay To Name", "pay_to_name", "", "e", PG_TYPES::TEXT, false}),
+       sqlb::SelectedColumn(
+           {"Threshold", "threshold", "", "e", PG_TYPES::DOUBLE, false}),
+       sqlb::SelectedColumn(
+           {"Credit Limit", "credit_limit", "", "e", PG_TYPES::DOUBLE, false}),
+       sqlb::SelectedColumn({"Terms", "terms", "", "e", PG_TYPES::INT4, false}),
+       sqlb::SelectedColumn(
+           {"Discount", "discount", "", "e", PG_TYPES::DOUBLE, false}),
+       sqlb::SelectedColumn({"Discount Terms", "discount_terms", "", "e",
+                             PG_TYPES::INT4, false}),
+       sqlb::SelectedColumn({"discount_account_id", "discount_account_id", "",
+                             "e", PG_TYPES::INT8, false}),
+       sqlb::SelectedColumn({"ar_ap_account_id", "ar_ap_account_id", "", "e",
+                             PG_TYPES::INT8, false}),
+       sqlb::SelectedColumn({"cash_account_id", "cash_account_id", "", "e",
+                             PG_TYPES::INT8, false}),
+       sqlb::SelectedColumn(
+           {"currency_id", "currency_id", "", "e", PG_TYPES::INT8, false}),
+       sqlb::SelectedColumn({"price_group_id", "price_group_id", "", "e",
+                             PG_TYPES::INT8, false}),
+       sqlb::SelectedColumn(
+           {"tax_included", "tax_included", "", "e", PG_TYPES::BOOL, false}),
 
-       // S({"Created By", "create_user_id", "", "e", PG_TYPES::INT8, true, 1,
-       // 0, false}), S({"u1_username", "username", "", "u1", PG_TYPES::TEXT,
-       // false, 0, 0, false}), S({"Updated By", "update_user_id", "", "e",
-       // PG_TYPES::INT8, true, 1, 0, false}), S({"u2_username", "username", "",
-       // "u2", PG_TYPES::TEXT, false, 0, 0, false}), S({"Create Time",
-       // "inserted_at", "", "e", PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-       // S({"Update Time", "updated_at", "", "e", PG_TYPES::TIMESTAMP, true, 0,
-       // 0, false}),
-       S({"Addresses", "entity_address",
-          "json_agg(distinct jsonb_build_array(ea.id, ea.address_type_id, "
-          "ea.line1, ea.line2, ea.line3, ea.city, ea.state, ea.country, "
-          "ea.zipcode, ea.phone, ea.ismain ))",
-          "ea", PG_TYPES::PSJSON, false})});
+       // sqlb::SelectedColumn({"Created By", "create_user_id", "", "e",
+       // PG_TYPES::INT8, true, 1, 0, false}),
+       // sqlb::SelectedColumn({"u1_username", "username", "", "u1",
+       // PG_TYPES::TEXT, false, 0, 0, false}), sqlb::SelectedColumn({"Updated
+       // By", "update_user_id", "", "e", PG_TYPES::INT8, true, 1, 0, false}),
+       // sqlb::SelectedColumn({"u2_username", "username", "", "u2",
+       // PG_TYPES::TEXT, false, 0, 0, false}), sqlb::SelectedColumn({"Create
+       // Time", "inserted_at", "", "e", PG_TYPES::TIMESTAMP, true, 0, 0,
+       // false}), sqlb::SelectedColumn({"Update Time", "updated_at", "", "e",
+       // PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+       sqlb::SelectedColumn(
+           {"Addresses", "entity_address",
+            "json_agg(distinct jsonb_build_array(ea.id, ea.address_type_id, "
+            "ea.line1, ea.line2, ea.line3, ea.city, ea.state, ea.country, "
+            "ea.zipcode, ea.phone, ea.ismain ))",
+            "ea", PG_TYPES::PSJSON, false})});
   auto entity_type = sqlb::ObjectIdentifier("entity", "entity_type", "et");
   auto entity_address =
       sqlb::ObjectIdentifier("entity", "entity_address", "ea");

@@ -5,7 +5,8 @@
 #include "../../dba.h"
 
 namespace jadmin {
-Product::Product(JAdminContextPtr context_) : context(std::move(context_)) {
+Product::Product(std::shared_ptr<JAdminContext> context_)
+    : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("post", "post", "post"));
   setupTable();
 }

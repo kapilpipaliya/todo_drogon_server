@@ -3,7 +3,7 @@
 #include <utility>
 
 namespace jadmin {
-ImageCollection::ImageCollection(JAdminContextPtr context_)
+ImageCollection::ImageCollection(std::shared_ptr<JAdminContext> context_)
     : context(std::move(context_)) {
   query =
       sqlb::Query(sqlb::ObjectIdentifier("setting", "image_collection", "a"));

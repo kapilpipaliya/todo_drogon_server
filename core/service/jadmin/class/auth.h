@@ -2,11 +2,11 @@
 
 #include "../../../../wscontroller/context/jadmincontext.h"
 #include "core/sql/query.h"
-using JAdminContextPtr = std::shared_ptr<JAdminContext>;
+
 namespace jadmin {
 class Auth {
  public:
-  Auth(JAdminContextPtr);
+  Auth(std::shared_ptr<JAdminContext>);
   void setupTable();
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
@@ -115,7 +115,7 @@ class Auth {
   nlohmann::json save_setting_attachment(const nlohmann::json& event,
                                          std::string& message);
 
-  JAdminContextPtr context;
+  std::shared_ptr<JAdminContext> context;
   sqlb::Query query;
 };
 }  // namespace jadmin

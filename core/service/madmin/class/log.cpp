@@ -2,7 +2,7 @@
 
 #include <utility>
 
-madmin::Log::Log(MAdminContextPtr context_) : context(std::move(context_)) {
+madmin::Log::Log(std::shared_ptr<MAdminContext> context_) : context(std::move(context_)) {
   setupTable();
 }
 

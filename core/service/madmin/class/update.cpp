@@ -2,7 +2,7 @@
 
 #include <utility>
 
-madmin::Update::Update(MAdminContextPtr context_)
+madmin::Update::Update(std::shared_ptr<MAdminContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }

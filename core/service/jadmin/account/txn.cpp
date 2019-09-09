@@ -4,7 +4,7 @@
 
 #include "../../dba.h"
 namespace jadmin {
-Txn::Txn(JAdminContextPtr context_) : context(std::move(context_)) {
+Txn::Txn(std::shared_ptr<JAdminContext> context_) : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("account", "txn", "a"));
   setupTable();
 }

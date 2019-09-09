@@ -3,7 +3,7 @@
 #include <utility>
 
 namespace jadmin {
-EntityType::EntityType(JAdminContextPtr context_)
+EntityType::EntityType(std::shared_ptr<JAdminContext> context_)
     : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("entity", "entity_type", "a"));
   setupTable();

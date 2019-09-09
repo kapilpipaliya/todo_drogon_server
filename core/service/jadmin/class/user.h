@@ -7,7 +7,6 @@
 #include "json.hpp"
 #include "spdlogfix.h"
 
-using std::string;
 /**
  * User Class
  *
@@ -19,7 +18,7 @@ using std::string;
 #include "../../../../wscontroller/context/jadmincontext.h"
 
 #include "core/sql/query.h"
-using JAdminContextPtr = std::shared_ptr<JAdminContext>;
+
 namespace jadmin {
 /**
  * User Class
@@ -30,8 +29,8 @@ namespace jadmin {
  **/
 class User {
   struct Info {
-    string username;
-    string fullname;
+    std::string username;
+    std::string fullname;
     int access{};
   };
 
@@ -42,7 +41,7 @@ class User {
   struct Catalog {};
 
  public:
-  User(JAdminContextPtr);
+  User(std::shared_ptr<JAdminContext>);
   // User(int user_id);
   void setupTable();
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
@@ -51,26 +50,26 @@ class User {
 
   // static Count count();
   static void get_valid_users();  // fix it..
-  // static User get_from_username(string username); // fix
-  // static User get_from_apikey(string apikey); //fix
+  // static User get_from_username(std::string username); // fix
+  // static User get_from_apikey(std::string apikey); //fix
   // public static User get_from_email(email); //fix
   // static User get_from_website(website); //fix
 
   // Basic Componets
   //        int id;
-  //        string username;
-  //       string fullname;
+  //        std::string username;
+  //       std::string fullname;
   //        bool fullname_public;
   //        int access;
   //       bool disabled;
-  //        string email;
+  //        std::string email;
   //        int last_seen;
   //        int create_date;
-  //        string validation;
-  //        string website;
-  //        string state;
-  //        string city;
-  //        string apikey;
+  //        std::string validation;
+  //        std::string website;
+  //        std::string state;
+  //        std::string city;
+  //        std::string apikey;
 
   // Constructed variables
   /**
@@ -81,16 +80,16 @@ class User {
    * @var Tmp_Playlist playlist
    */
   //        public playlist;
-  //        string f_name;
-  //        string f_last_seen;
-  //        string f_create_date;
-  //        string link;
-  //        string f_link;
-  //        string f_useage;
-  //        string ip_history;
-  //        string f_avatar;
-  //        string f_avatar_mini;
-  //        string f_avatar_medium;
+  //        std::string f_name;
+  //        std::string f_last_seen;
+  //        std::string f_create_date;
+  //        std::string link;
+  //        std::string f_link;
+  //        std::string f_useage;
+  //        std::string ip_history;
+  //        std::string f_avatar;
+  //        std::string f_avatar_mini;
+  //        std::string f_avatar_medium;
 
   /**
    * count
@@ -252,7 +251,7 @@ class User {
    * get_password
    * Get the current hashed user password from database.
    */
-  string get_password();
+  std::string get_password();
   /**
    * disable
    * This disables the current user
@@ -289,16 +288,16 @@ class User {
    * create
    * inserts a new user into ampache
    */
-  static long create(const string& username, const string& fullname,
-                     const string& email, const string& website,
-                     const string& password, const string& access,
-                     const string& state = "", const string& city = "",
-                     bool disabled = false);
+  static long create(const std::string& username, const std::string& fullname,
+                     const std::string& email, const std::string& website,
+                     const std::string& password, const std::string& access,
+                     const std::string& state = "",
+                     const std::string& city = "", bool disabled = false);
   /**
    * update_password
    * updates a users password
    */
-  bool update_password(string new_password);
+  bool update_password(std::string new_password);
   /**
    * format
    * This function sets up the extra variables we need when we are displaying a
@@ -351,7 +350,7 @@ class User {
   // void get_ip_history(count='', distinct='');
   /**
    * Get item fullname.
-   * @return string
+   * @return std::string
    */
   // void get_fullname();
   /**
@@ -413,7 +412,7 @@ class User {
    * get_display_follow
    * Get html code to display the follow/unfollow link
    * @param int|null display_user_id
-   * @return string
+   * @return std::string
    */
   // void get_display_follow(user_id = null);
   /**
@@ -448,7 +447,7 @@ class User {
   nlohmann::json checkout(const nlohmann::json& event,
                           const nlohmann::json& args);
 
-  JAdminContextPtr context;
+  std::shared_ptr<JAdminContext> context;
   sqlb::Query query;
 };
 }  // namespace jadmin

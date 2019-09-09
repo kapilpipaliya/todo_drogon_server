@@ -3,7 +3,7 @@
 #include <utility>
 
 namespace jadmin {
-Clarity::Clarity(JAdminContextPtr context_) : context(std::move(context_)) {
+Clarity::Clarity(std::shared_ptr<JAdminContext> context_) : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("material", "clarity", "g"));
   setupTable();
 }

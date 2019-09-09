@@ -3,7 +3,7 @@
 #include <utility>
 
 namespace jadmin {
-Casting::Casting(JAdminContextPtr context_) : context(std::move(context_)) {
+Casting::Casting(std::shared_ptr<JAdminContext> context_) : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("mfg", "casting", "m"));
   setupTable();
 }

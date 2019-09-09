@@ -2,7 +2,7 @@
 
 #include <utility>
 
-madmin::Label::Label(MAdminContextPtr context_) : context(std::move(context_)) {
+madmin::Label::Label(std::shared_ptr<MAdminContext> context_) : context(std::move(context_)) {
   setupTable();
 }
 

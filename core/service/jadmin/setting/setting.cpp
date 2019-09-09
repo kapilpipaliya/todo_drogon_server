@@ -4,7 +4,8 @@
 #include "../../dba.h"
 
 namespace jadmin {
-Setting::Setting(JAdminContextPtr context_) : context(std::move(context_)) {
+Setting::Setting(std::shared_ptr<JAdminContext> context_)
+    : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("setting", "setting", "gs"));
   setupTable();
 }

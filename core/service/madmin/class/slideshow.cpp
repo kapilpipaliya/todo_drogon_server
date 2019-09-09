@@ -2,7 +2,7 @@
 
 #include <utility>
 
-madmin::Slideshow::Slideshow(MAdminContextPtr context_)
+madmin::Slideshow::Slideshow(std::shared_ptr<MAdminContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }

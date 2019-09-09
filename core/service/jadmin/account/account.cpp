@@ -2,7 +2,7 @@
 
 #include <utility>
 namespace jadmin {
-Account::Account(JAdminContextPtr context_) : context(std::move(context_)) {
+Account::Account(std::shared_ptr<JAdminContext> context_) : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("account", "account", "a"));
   setupTable();
 }

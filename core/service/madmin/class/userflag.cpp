@@ -2,7 +2,7 @@
 
 #include <utility>
 
-madmin::UserFlag::UserFlag(MAdminContextPtr context_)
+madmin::UserFlag::UserFlag(std::shared_ptr<MAdminContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }

@@ -5,7 +5,8 @@
 #include "../../dba.h"
 
 namespace jadmin {
-DSize::DSize(JAdminContextPtr context_) : context(std::move(context_)) {
+DSize::DSize(std::shared_ptr<JAdminContext> context_)
+    : context(std::move(context_)) {
   query = sqlb::Query(
       sqlb::ObjectIdentifier("material", "diamond_size_meta", "sm"));
   setupTable();

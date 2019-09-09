@@ -3,7 +3,7 @@
 #include <utility>
 
 namespace jadmin {
-Refining::Refining(JAdminContextPtr context_) : context(std::move(context_)) {
+Refining::Refining(std::shared_ptr<JAdminContext> context_) : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("mfg", "refining", "m"));
   setupTable();
 }

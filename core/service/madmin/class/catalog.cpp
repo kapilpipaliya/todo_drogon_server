@@ -3,7 +3,7 @@
 #include <utility>
 #include "../../dba.h"
 
-madmin::Catalog::Catalog(MAdminContextPtr context_)
+madmin::Catalog::Catalog(std::shared_ptr<MAdminContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }
@@ -43,12 +43,12 @@ void madmin::Catalog::clean_empty_albums() {
   }*/
 }
 
-bool madmin::Catalog::delet(long catalog_id, const string& type) {
+bool madmin::Catalog::delet(long catalog_id, const std::string& type) {
   // Large catalog deletion can take time
   // set_time_limit(0);
 
   // First remove the songs in this catalog
-  string sql1 = "DELETE FROM music.song WHERE catalog_id = $1";
+  std::string sql1 = "DELETE FROM music.song WHERE catalog_id = $1";
   auto db_results = Dba::write(sql1, catalog_id);
 
   // Only if the previous one works do we go on
@@ -57,7 +57,7 @@ bool madmin::Catalog::delet(long catalog_id, const string& type) {
   //}
   clean_empty_albums();
 
-  string sql2 = "DELETE FROM music.video WHERE catalog_id = $1";
+  std::string sql2 = "DELETE FROM music.video WHERE catalog_id = $1";
   auto db_results2 = Dba::write(sql2, catalog_id);
 
   // if (!db_results) {
@@ -69,9 +69,10 @@ bool madmin::Catalog::delet(long catalog_id, const string& type) {
   //   return false;
   // }
 
-  // string sql3 =  'DELETE FROM music.catalog_' . catalog->get_type() . ' WHERE
-  // catalog_id = $';
-  string sql3 = "DELETE FROM music.catalog_" + type + " WHERE catalog_id = $1";
+  // std::string sql3 =  'DELETE FROM music.catalog_' . catalog->get_type() . '
+  // WHERE catalog_id = $';
+  std::string sql3 =
+      "DELETE FROM music.catalog_" + type + " WHERE catalog_id = $1";
   auto db_results3 = Dba::write(sql3, catalog_id);
 
   // if (!db_results) {

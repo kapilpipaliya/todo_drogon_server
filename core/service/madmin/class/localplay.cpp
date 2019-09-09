@@ -2,7 +2,7 @@
 
 #include <utility>
 
-madmin::LocalPlay::LocalPlay(MAdminContextPtr context_)
+madmin::LocalPlay::LocalPlay(std::shared_ptr<MAdminContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }

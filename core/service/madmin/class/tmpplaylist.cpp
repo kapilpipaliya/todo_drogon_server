@@ -2,7 +2,7 @@
 
 #include <utility>
 
-madmin::TmpPlayList::TmpPlayList(MAdminContextPtr context_)
+madmin::TmpPlayList::TmpPlayList(std::shared_ptr<MAdminContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }

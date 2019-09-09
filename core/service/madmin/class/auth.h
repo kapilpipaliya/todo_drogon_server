@@ -4,11 +4,11 @@
 #include "../../../../wscontroller/context/madmincontext.h"
 
 #include "core/sql/query.h"
-using MAdminContextPtr = std::shared_ptr<MAdminContext>;
+
 namespace madmin {
 class Auth {
  public:
-  Auth(MAdminContextPtr);
+  Auth(std::shared_ptr<MAdminContext>);
   void setupTable();
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
@@ -109,7 +109,7 @@ class Auth {
   nlohmann::json saveFileMeta(const nlohmann::json& event, nlohmann::json args);
 
  private:
-  MAdminContextPtr context;
+  std::shared_ptr<MAdminContext> context;
   sqlb::Query query;
 };
 }  // namespace madmin

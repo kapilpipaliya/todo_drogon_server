@@ -2,7 +2,7 @@
 
 #include <utility>
 
-madmin::PrivateMsg::PrivateMsg(MAdminContextPtr context_)
+madmin::PrivateMsg::PrivateMsg(std::shared_ptr<MAdminContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }

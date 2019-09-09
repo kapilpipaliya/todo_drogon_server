@@ -2,7 +2,7 @@
 
 #include <utility>
 
-madmin::SongPreview::SongPreview(MAdminContextPtr context_)
+madmin::SongPreview::SongPreview(std::shared_ptr<MAdminContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }

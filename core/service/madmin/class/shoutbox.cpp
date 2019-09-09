@@ -2,7 +2,7 @@
 
 #include <utility>
 
-madmin::ShoutBox::ShoutBox(MAdminContextPtr context_)
+madmin::ShoutBox::ShoutBox(std::shared_ptr<MAdminContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }

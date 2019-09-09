@@ -7,7 +7,6 @@
 #include "json.hpp"
 #include "spdlogfix.h"
 
-using std::string;
 /**
  * User Class
  *
@@ -19,7 +18,7 @@ using std::string;
 #include "../../../../wscontroller/context/madmincontext.h"
 
 #include "core/sql/query.h"
-using MAdminContextPtr = std::shared_ptr<MAdminContext>;
+
 namespace madmin {
 /**
  * User Class
@@ -30,8 +29,8 @@ namespace madmin {
  **/
 class User {
   struct Info {
-    string username;
-    string fullname;
+    std::string username;
+    std::string fullname;
     int access{};
   };
 
@@ -42,7 +41,7 @@ class User {
   struct Catalog {};
 
  public:
-  User(MAdminContextPtr);
+  User(std::shared_ptr<MAdminContext>);
   // User(int user_id);
   void setupTable();
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
@@ -52,8 +51,8 @@ class User {
   // static Count count();
   void load_playlist();
   static void get_valid_users();  // fix it..
-  // static User get_from_username(string username); // fix
-  // static User get_from_apikey(string apikey); //fix
+  // static User get_from_username(std::string username); // fix
+  // static User get_from_apikey(std::string apikey); //fix
   // public static User get_from_email(email); //fix
   // static User get_from_website(website); //fix
 
@@ -255,7 +254,7 @@ class User {
    * get_password
    * Get the current hashed user password from database.
    */
-  string get_password();
+  std::string get_password();
   /**
    * disable
    * This disables the current user
@@ -292,16 +291,16 @@ class User {
    * create
    * inserts a new user into ampache
    */
-  static long create(const string& username, const string& fullname,
-                     const string& email, const string& website,
-                     const string& password, const string& access,
-                     const string& state = "", const string& city = "",
-                     bool disabled = false);
+  static long create(const std::string& username, const std::string& fullname,
+                     const std::string& email, const std::string& website,
+                     const std::string& password, const std::string& access,
+                     const std::string& state = "",
+                     const std::string& city = "", bool disabled = false);
   /**
    * update_password
    * updates a users password
    */
-  bool update_password(string new_password);
+  bool update_password(std::string new_password);
   /**
    * format
    * This function sets up the extra variables we need when we are displaying a
@@ -441,7 +440,7 @@ class User {
   // static void  stream_control(media_ids, User user = null);
 
  private:
-  MAdminContextPtr context;
+  std::shared_ptr<MAdminContext> context;
   sqlb::Query query;
 
   Info get_info();

@@ -3,9 +3,10 @@
 #include <utility>
 #include "../../dba.h"
 
-using namespace std::chrono;
+// using namespace std::chrono;
 namespace jadmin {
-User::User(JAdminContextPtr context_) : context(std::move(context_)) {
+User::User(std::shared_ptr<JAdminContext> context_)
+    : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("music", "user", "e"));
   setupTable();
 }
@@ -145,7 +146,7 @@ bool User::is_logged_in() {
   // auto sql = "SELECT id,ip FROM session WHERE username=1 AND expire > now()";
   return context->sessionId() != 0;
 }
-string User::get_password() {
+std::string User::get_password() {
   auto sql = "SELECT * FROM music.user WHERE id = $1";
   try {
     auto clientPtr = drogon::app().getDbClient("sce");

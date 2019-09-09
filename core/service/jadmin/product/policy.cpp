@@ -3,7 +3,8 @@
 #include <utility>
 
 namespace jadmin {
-Policy::Policy(JAdminContextPtr context_) : context(std::move(context_)) {
+Policy::Policy(std::shared_ptr<JAdminContext> context_)
+    : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("product", "policy", "t"));
   setupTable();
 }

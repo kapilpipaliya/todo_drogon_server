@@ -3,7 +3,7 @@
 #include <utility>
 
 namespace jadmin {
-CertifiedBy::CertifiedBy(JAdminContextPtr context_)
+CertifiedBy::CertifiedBy(std::shared_ptr<JAdminContext> context_)
     : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("product", "certified_by", "t"));
   setupTable();

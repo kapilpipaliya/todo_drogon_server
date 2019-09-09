@@ -3,7 +3,8 @@
 #include <utility>
 
 namespace jadmin {
-Currency::Currency(JAdminContextPtr context_) : context(std::move(context_)) {
+Currency::Currency(std::shared_ptr<JAdminContext> context_)
+    : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("setting", "currency", "c"));
   setupTable();
 }

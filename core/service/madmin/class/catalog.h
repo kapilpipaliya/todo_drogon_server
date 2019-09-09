@@ -4,12 +4,11 @@
 #include "../../../../wscontroller/context/madmincontext.h"
 
 #include "core/sql/query.h"
-using MAdminContextPtr = std::shared_ptr<MAdminContext>;
-using std::string;
+
 namespace madmin {
 class Catalog {
  public:
-  Catalog(MAdminContextPtr);
+  Catalog(std::shared_ptr<MAdminContext>);
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
   virtual ~Catalog() = default;
@@ -49,24 +48,24 @@ class Catalog {
    */
   // protected static $tags    = array();
  public:
-  // virtual string get_type() = 0;
-  // virtual string get_description() = 0;
-  // virtual string get_version() = 0;
-  // virtual string get_create_help() = 0;
+  // virtual std::string get_type() = 0;
+  // virtual std::string get_description() = 0;
+  // virtual std::string get_version() = 0;
+  // virtual std::string get_create_help() = 0;
   // virtual bool is_installed() = 0;
   // virtual bool install() = 0;
-  // virtual string add_to_catalog($options = null) = 0; // fix return
-  // virtual string verify_catalog_proc() = 0; // fix return
-  // virtual string clean_catalog_proc() = 0; // fix return
+  // virtual std::string add_to_catalog($options = null) = 0; // fix return
+  // virtual std::string verify_catalog_proc() = 0; // fix return
+  // virtual std::string clean_catalog_proc() = 0; // fix return
   /**
    * @return array
    */
-  // virtual string catalog_fields() = 0;
-  // virtual string get_rel_path($file_path) = 0;
+  // virtual std::string catalog_fields() = 0;
+  // virtual std::string get_rel_path($file_path) = 0;
   /**
    * @return media|null
    */
-  // virtual string prepare_media($media) = 0;
+  // virtual std::string prepare_media($media) = 0;
 
   /**
    * Check if the catalog is ready to perform actions (configuration completed,
@@ -103,52 +102,52 @@ class Catalog {
    * This function attempts to create a catalog type
    * all Catalog modules should be located in
    * /modules/catalog/<name>/<name>.class.php
-   * @param string $type
+   * @param std::string $type
    * @param int $id
    * @return Catalog|null
    */
-  static void create_catalog_type(string type, int id = 0);
+  static void create_catalog_type(std::string type, int id = 0);
   /**
    * Show dropdown catalog types.
-   * @param string $divback
+   * @param std::string $divback
    */
   // static void show_catalog_types($divback = 'catalog_type_fields');
   /**
    * get_catalog_types
    * This returns the catalog types that are available
-   * @return string[]
+   * @return std::string[]
    */
   static void get_catalog_types();
   /**
    * Check if a file is an audio.
-   * @param string $file
+   * @param std::string $file
    * @return boolean
    */
-  static void is_audio_file(string file);
+  static void is_audio_file(std::string file);
   /**
    * Check if a file is a video.
-   * @param string $file
+   * @param std::string $file
    * @return boolean
    */
-  static void is_video_file(string file);
+  static void is_video_file(std::string file);
   /**
    * Check if a file is a playlist.
-   * @param string $file
+   * @param std::string $file
    * @return boolean
    */
-  static void is_playlist_file(string file);
+  static void is_playlist_file(std::string file);
   /**
    * Get catalog info from table.
    * @param int $id
-   * @param string $table
+   * @param std::string $table
    * @return array
    */
   // public function get_info(int id, $table = 'catalog');
   /**
    * Get enable sql filter;
-   * @param string $type
+   * @param std::string $type
    * @param int $id
-   * @return string
+   * @return std::string
    */
   // static void get_enable_filter($type, int id);
   /**
@@ -172,7 +171,7 @@ class Catalog {
    * foremost it checks the level against $GLOBALS['user'] to make sure they are
    * allowed to update this record it then updates it and sets $this->{$field}
    * to the new value
-   * @param string $field
+   * @param std::string $field
    * @param mixed $value
    * @param int $catalog_id
    * @param int $level
@@ -236,9 +235,9 @@ class Catalog {
   // static void count_medias(int catalog_id = null);
   /**
    *
-   * @param string $type
+   * @param std::string $type
    * @param int|null $user_id
-   * @return string
+   * @return std::string
    */
   // static void get_uploads_sql($type, $user_id=null);
   /**
@@ -253,21 +252,21 @@ class Catalog {
    * get_video_ids
    *
    * This returns an array of ids of videos in this catalog
-   * @param string $type
+   * @param std::string $type
    * @return int[]
    */
   // public function get_video_ids($type = "");
   /**
    *
    * @param int[]|null $catalogs
-   * @param string $type
+   * @param std::string $type
    * @return \Video[]
    */
   // static void get_videos($catalogs = null, $type = "");
   /**
    *
    * @param int|null $catalog_id
-   * @param string $type
+   * @param std::string $type
    * @return int
    */
   // static int get_videos_count(int catalog_id = null, $type = "");
@@ -350,7 +349,7 @@ class Catalog {
   // static void get_newest_podcasts($catalogs = null);
   /**
    *
-   * @param string $type
+   * @param std::string $type
    * @param int $id
    */
   // public function gather_art_item($type, int id);
@@ -405,7 +404,7 @@ class Catalog {
    * update_single_item
    * updates a single album,artist,song from the tag data
    * this can be done by 75+
-   * @param string $type
+   * @param std::string $type
    * @param int $id
    */
   // static void update_single_item($type, int id);
@@ -414,8 +413,8 @@ class Catalog {
    * This is a 'wrapper' function calls the update function for the media
    * type in question
    * @param \media $media
-   * @param string $sort_pattern
-   * @param string $rename_pattern
+   * @param std::string $sort_pattern
+   * @param std::string $rename_pattern
    * @return array
    */
   // static void update_media_from_tags($media, $gather_types = array('music');,
@@ -451,7 +450,7 @@ class Catalog {
   // $rename_pattern);
   /**
    *
-   * @param string $media_type
+   * @param std::string $media_type
    * @return array
    */
   // public function get_gather_types($media_type = "");
@@ -476,39 +475,39 @@ class Catalog {
   // static void gc();
   /**
    * trim_prefix
-   * Splits the prefix from the string
-   * @param string $string
+   * Splits the prefix from the std::string
+   * @param std::string $std::string
    * @return array
    */
-  // static void trim_prefix($string);
+  // static void trim_prefix($std::string);
   // static void normalize_year($year);
   /**
    * trim_slashed_list
    * Return only the first item from / separated list
-   * @param string $string
-   * @return string
+   * @param std::string $std::string
+   * @return std::string
    */
-  // static void trim_slashed_list($string);
+  // static void trim_slashed_list($std::string);
   /**
    * trim_featuring
-   * Splits artists featuring from the string
-   * @param string $string
+   * Splits artists featuring from the std::string
+   * @param std::string $std::string
    * @return array
    */
-  // static void trim_featuring($string);
+  // static void trim_featuring($std::string);
   /**
    * check_title
    * this checks to make sure something is
    * set on the title, if it isn't it looks at the
    * filename and trys to set the title based on that
-   * @param string $title
-   * @param string $file
+   * @param std::string $title
+   * @param std::string $file
    */
-  // static void check_title($title, string file="");
+  // static void check_title($title, std::string file="");
   /**
    * playlist_import
    * Attempts to create a Public Playlist based on the playlist file
-   * @param string $playlist
+   * @param std::string $playlist
    * @return array
    */
   // static void import_playlist($playlist);
@@ -516,7 +515,7 @@ class Catalog {
    * parse_m3u
    * this takes m3u filename and then attempts to found song filenames listed in
    * the m3u
-   * @param string $data
+   * @param std::string $data
    * @return array
    */
   // static void parse_m3u($data);
@@ -524,7 +523,7 @@ class Catalog {
    * parse_pls
    * this takes pls filename and then attempts to found song filenames listed in
    * the pls
-   * @param string $data
+   * @param std::string $data
    * @return array
    */
   // static void parse_pls($data);
@@ -532,7 +531,7 @@ class Catalog {
    * parse_asx
    * this takes asx filename and then attempts to found song filenames listed in
    * the asx
-   * @param string $data
+   * @param std::string $data
    * @return array
    */
   // static void parse_asx($data);
@@ -540,7 +539,7 @@ class Catalog {
    * parse_xspf
    * this takes xspf filename and then attempts to found song filenames listed
    * in the xspf
-   * @param string $data
+   * @param std::string $data
    * @return array
    */
   // static void parse_xspf($data);
@@ -554,7 +553,7 @@ class Catalog {
   /**
    * exports the catalog
    * it exports all songs in the database to the given export type.
-   * @param string $type
+   * @param std::string $type
    * @param int|null $catalog_id
    */
   // static void export($type, int catalog_id =null);
@@ -570,34 +569,34 @@ class Catalog {
   // protected static function updateArtistTags(Song $song);
   /**
    * Get all tags from all Songs from [type] (artist, album, ...);
-   * @param string $type
+   * @param std::string $type
    * @param integer $id
    * @return array
    */
   // protected static function getSongTags($type, int id);
   // static void can_remove($libitem, $user = null);
   // static void process_action($action, $catalogs, $options = null);
-  MAdminContextPtr& getContext() { return context; }
+  std::shared_ptr<MAdminContext>& getContext() { return context; }
 
  private:
   int $id{};
-  string name;
+  std::string name;
   int last_update{};
   int last_add{};
   int last_clean{};
-  string key;
-  string rename_pattern;
-  string sort_pattern;
-  string catalog_type;
-  string gather_types;
-  string f_name;
-  string link;
-  string f_link;
-  string f_update;
-  string f_add;
-  string f_clean;
+  std::string key;
+  std::string rename_pattern;
+  std::string sort_pattern;
+  std::string catalog_type;
+  std::string gather_types;
+  std::string f_name;
+  std::string link;
+  std::string f_link;
+  std::string f_update;
+  std::string f_add;
+  std::string f_clean;
 
-  MAdminContextPtr context;
+  std::shared_ptr<MAdminContext> context;
   sqlb::Query query;
 };
 }  // namespace madmin

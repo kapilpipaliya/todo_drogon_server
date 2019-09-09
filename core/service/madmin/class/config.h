@@ -5,11 +5,11 @@
 #include "../../../../wscontroller/context/madmincontext.h"
 
 #include "core/sql/query.h"
-using MAdminContextPtr = std::shared_ptr<MAdminContext>;
+
 namespace madmin {
 class Config {
  public:
-  Config(MAdminContextPtr);
+  Config(std::shared_ptr<MAdminContext>);
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
   void setupTable();
@@ -54,7 +54,7 @@ class Config {
   static void set_by_array(int array, bool clobber = false);
 
  private:
-  MAdminContextPtr context;
+  std::shared_ptr<MAdminContext> context;
   sqlb::Query query;
 };
 }  // namespace madmin

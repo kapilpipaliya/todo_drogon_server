@@ -3,7 +3,7 @@
 #include <utility>
 
 namespace jadmin {
-CSType::CSType(JAdminContextPtr context_) : context(std::move(context_)) {
+CSType::CSType(std::shared_ptr<JAdminContext> context_) : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("material", "cs_type", "ct"));
   setupTable();
 }

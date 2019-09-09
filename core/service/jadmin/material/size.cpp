@@ -3,7 +3,7 @@
 #include <utility>
 
 namespace jadmin {
-Size::Size(JAdminContextPtr context_) : context(std::move(context_)) {
+Size::Size(std::shared_ptr<JAdminContext> context_) : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("material", "size", "s"));
   setupTable();
 }

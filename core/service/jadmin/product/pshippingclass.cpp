@@ -3,7 +3,7 @@
 #include <utility>
 
 namespace jadmin {
-PShippingClass::PShippingClass(JAdminContextPtr context_)
+PShippingClass::PShippingClass(std::shared_ptr<JAdminContext> context_)
     : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("product", "shipping_class", "t"));
   setupTable();

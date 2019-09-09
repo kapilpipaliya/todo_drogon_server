@@ -2,7 +2,7 @@
 #define UI_H
 #include "../../../../wscontroller/context/madmincontext.h"
 #include "core/sql/query.h"
-using MAdminContextPtr = std::shared_ptr<MAdminContext>;
+
 #include <fmt/format.h>
 #include "json.hpp"
 #include "spdlogfix.h"
@@ -11,7 +11,7 @@ using MAdminContextPtr = std::shared_ptr<MAdminContext>;
 namespace madmin {
 class UI {
  public:
-  UI(MAdminContextPtr);
+  UI(std::shared_ptr<MAdminContext>);
   void setupTable();
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
@@ -133,7 +133,7 @@ class UI {
   // static void get_logo_url();
   // static void is_grid_view($type);
  private:
-  MAdminContextPtr context;
+  std::shared_ptr<MAdminContext> context;
   sqlb::Query query;
 };
 }  // namespace madmin

@@ -3,7 +3,7 @@
 #include <utility>
 
 namespace jadmin {
-ContactType::ContactType(JAdminContextPtr context_)
+ContactType::ContactType(std::shared_ptr<JAdminContext> context_)
     : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("entity", "contact_type", "a"));
   setupTable();

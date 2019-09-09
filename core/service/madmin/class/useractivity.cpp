@@ -2,7 +2,7 @@
 
 #include <utility>
 
-madmin::UserActivity::UserActivity(MAdminContextPtr context_)
+madmin::UserActivity::UserActivity(std::shared_ptr<MAdminContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }

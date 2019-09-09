@@ -3,7 +3,7 @@
 #include <utility>
 
 namespace jadmin {
-JournalType::JournalType(JAdminContextPtr context_)
+JournalType::JournalType(std::shared_ptr<JAdminContext> context_)
     : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("account", "journal_type", "a"));
   setupTable();

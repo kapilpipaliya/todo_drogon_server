@@ -2,7 +2,7 @@
 
 #include <utility>
 
-madmin::Browse::Browse(MAdminContextPtr context_)
+madmin::Browse::Browse(std::shared_ptr<MAdminContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }

@@ -3,7 +3,7 @@
 #include <utility>
 #include "../../dba.h"
 
-madmin::UI::UI(MAdminContextPtr context_) : context(std::move(context_)) {
+madmin::UI::UI(std::shared_ptr<MAdminContext> context_) : context(std::move(context_)) {
   setupTable();
 }
 

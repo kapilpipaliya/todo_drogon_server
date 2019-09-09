@@ -3,7 +3,7 @@
 #include "../../../../wscontroller/context/madmincontext.h"
 
 #include "core/sql/query.h"
-using MAdminContextPtr = std::shared_ptr<MAdminContext>;
+
 /**
  *
  * This class handles all of the session related stuff in Ampache
@@ -12,7 +12,7 @@ using MAdminContextPtr = std::shared_ptr<MAdminContext>;
 namespace madmin {
 class Session {
  public:
-  Session(MAdminContextPtr);
+  Session(std::shared_ptr<MAdminContext>);
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
   void setupTable();
@@ -166,7 +166,7 @@ class Session {
    */
   // static void ungimp_ie();
  private:
-  MAdminContextPtr context;
+  std::shared_ptr<MAdminContext> context;
   sqlb::Query query;
 };
 }  // namespace madmin

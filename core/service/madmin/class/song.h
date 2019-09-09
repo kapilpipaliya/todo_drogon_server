@@ -3,18 +3,17 @@
 
 #include <string>
 #include <vector>
-using std::string;
-using std::vector;
+
 #include "../../../../wscontroller/context/madmincontext.h"
 
 #include "core/sql/query.h"
-using MAdminContextPtr = std::shared_ptr<MAdminContext>;
+
 namespace madmin {
 class Song {
  public:
   // class Song extends database_object implements media, library_item  {
   //   use \Lib\Metadata\Metadata;
-  Song(MAdminContextPtr);
+  Song(std::shared_ptr<MAdminContext>);
   void setupTable();
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
@@ -52,7 +51,7 @@ class Song {
   //    string composer;
   //    string catalog_number;
   //    int channels;
-  //    vector<string> tags;
+  //    std::vector<string> tags;
   //    string label;
   //    string language;
   //    string comment;
@@ -161,7 +160,7 @@ class Song {
    * @param string $type
    * @return string
    */
-  // static string type_to_mime(string type);
+  // static string type_to_mime(std::string type);
   /**
    * get_disabled
    *
@@ -169,7 +168,7 @@ class Song {
    * @param int $count
    * @return int[]
    */
-  // static vector<int> function get_disabled(int count = 0);
+  // static std::vector<int> function get_disabled(int count = 0);
   /**
    * find_duplicates
    *
@@ -178,8 +177,8 @@ class Song {
    * @param string $search_type
    * @return array
    */
-  // public static function find_duplicates(string search_type)
-  // static int find(vector<string> data);
+  // public static function find_duplicates(std::string search_type)
+  // static int find(std::vector<string> data);
 
   /**
    * Get duplicate information.
@@ -187,7 +186,7 @@ class Song {
    * @param string $search_type
    * @return int[]
    */
-  // public static function get_duplicate_info($dupe, string search_type)
+  // public static function get_duplicate_info($dupe, std::string search_type)
   /**
    * get_album_name
    * gets the name of $this->album, allows passing of id
@@ -624,7 +623,7 @@ class Song {
    */
   // public function remove_from_disk()
  private:
-  MAdminContextPtr context;
+  std::shared_ptr<MAdminContext> context;
   sqlb::Query query;
   // Binary functin:
   nlohmann::json save_song_binary(const nlohmann::json &event,

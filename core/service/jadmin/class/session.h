@@ -2,7 +2,7 @@
 
 #include "../../../../wscontroller/context/jadmincontext.h"
 #include "core/sql/query.h"
-using JAdminContextPtr = std::shared_ptr<JAdminContext>;
+
 /**
  *
  * This class handles all of the session related stuff in Ampache
@@ -11,7 +11,7 @@ using JAdminContextPtr = std::shared_ptr<JAdminContext>;
 namespace jadmin {
 class Session {
  public:
-  Session(JAdminContextPtr);
+  Session(std::shared_ptr<JAdminContext>);
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
   void setupTable();
@@ -165,7 +165,7 @@ class Session {
    */
   // static void ungimp_ie();
  private:
-  JAdminContextPtr context;
+  std::shared_ptr<JAdminContext> context;
   sqlb::Query query;
 };
 }  // namespace jadmin

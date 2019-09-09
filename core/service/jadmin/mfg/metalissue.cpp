@@ -3,7 +3,7 @@
 #include <utility>
 
 namespace jadmin {
-MetalIssue::MetalIssue(JAdminContextPtr context_)
+MetalIssue::MetalIssue(std::shared_ptr<JAdminContext> context_)
     : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("mfg", "metal_issue", "m"));
   setupTable();

@@ -4,7 +4,7 @@
 #include "../../dba.h"
 #include "session.h"
 
-madmin::Auth::Auth(MAdminContextPtr context_) : context(std::move(context_)) {
+madmin::Auth::Auth(std::shared_ptr<MAdminContext> context_) : context(std::move(context_)) {
   setupTable();
 }
 

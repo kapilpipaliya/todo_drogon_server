@@ -14,7 +14,7 @@
   if ((s).size() > 0) array.pop_back();                \
   array += "}";
 namespace jadmin {
-Purity::Purity(JAdminContextPtr context_) : context(std::move(context_)) {
+Purity::Purity(std::shared_ptr<JAdminContext> context_) : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("material", "purity", "p"));
   setupTable();
 }

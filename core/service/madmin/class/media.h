@@ -3,12 +3,11 @@
 
 #include <string>
 #include <vector>
-using std::string;
-using std::vector;
+
 #include "../../../../wscontroller/context/madmincontext.h"
 
 #include "core/sql/query.h"
-using MAdminContextPtr = std::shared_ptr<MAdminContext>;
+
 namespace madmin {
 /**
  * media Interface
@@ -19,7 +18,7 @@ namespace madmin {
  */
 class Media {
  public:
-  Media(MAdminContextPtr);
+  Media(std::shared_ptr<MAdminContext>);
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
   virtual ~Media() = default;
@@ -30,7 +29,8 @@ class Media {
    * Returns an array of strings; current types are 'native'
    * and 'transcode'
    */
-  virtual vector<string> get_stream_types(string player = "null") = 0;
+  virtual std::vector<std::string> get_stream_types(
+      std::string player = "null") = 0;
   /**
    * play_url
    *
@@ -54,10 +54,11 @@ class Media {
    * Get the complete name to display for the stream.
    */
   virtual void get_stream_name() = 0;
-  virtual void set_played(string user, string agent, string location) = 0;
+  virtual void set_played(std::string user, std::string agent,
+                          std::string location) = 0;
 
  private:
-  MAdminContextPtr context;
+  std::shared_ptr<MAdminContext> context;
   sqlb::Query query;
 };
 }  // namespace madmin

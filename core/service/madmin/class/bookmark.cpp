@@ -2,7 +2,7 @@
 
 #include <utility>
 
-madmin::Bookmark::Bookmark(MAdminContextPtr context_)
+madmin::Bookmark::Bookmark(std::shared_ptr<MAdminContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }

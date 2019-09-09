@@ -3,7 +3,8 @@
 #include <utility>
 namespace jadmin {
 
-PCategory::PCategory(JAdminContextPtr context_) : context(std::move(context_)) {
+PCategory::PCategory(std::shared_ptr<JAdminContext> context_)
+    : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("product", "category", "c"));
   setupTable();
 }

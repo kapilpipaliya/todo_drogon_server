@@ -2,7 +2,7 @@
 
 #include <utility>
 
-madmin::Preference::Preference(MAdminContextPtr context_)
+madmin::Preference::Preference(std::shared_ptr<MAdminContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }

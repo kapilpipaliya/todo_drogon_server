@@ -5,7 +5,7 @@
 #include "../../dba.h"
 
 namespace jadmin {
-CSSize::CSSize(JAdminContextPtr context_) : context(std::move(context_)) {
+CSSize::CSSize(std::shared_ptr<JAdminContext> context_) : context(std::move(context_)) {
   query = sqlb::Query(
       sqlb::ObjectIdentifier("material", "color_stone_size_meta", "sm"));
   setupTable();

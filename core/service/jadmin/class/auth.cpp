@@ -10,7 +10,8 @@
 #include "spdlogfix.h"
 
 namespace jadmin {
-Auth::Auth(JAdminContextPtr context_) : context(std::move(context_)) {
+Auth::Auth(std::shared_ptr<JAdminContext> context_)
+    : context(std::move(context_)) {
   setupTable();
 }
 

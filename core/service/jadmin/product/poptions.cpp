@@ -3,7 +3,8 @@
 #include <utility>
 
 namespace jadmin {
-POption::POption(JAdminContextPtr context_) : context(std::move(context_)) {
+POption::POption(std::shared_ptr<JAdminContext> context_)
+    : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("product", "option", "o"));
   setupTable();
 }

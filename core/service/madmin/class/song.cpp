@@ -3,7 +3,7 @@
 #include <utility>
 #include "../../dba.h"
 
-madmin::Song::Song(MAdminContextPtr context_) : context(std::move(context_)) {
+madmin::Song::Song(std::shared_ptr<MAdminContext> context_) : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("music", "song", "s"));
   setupTable();
 }

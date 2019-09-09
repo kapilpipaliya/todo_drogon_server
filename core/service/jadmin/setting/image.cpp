@@ -4,7 +4,8 @@
 #include "../../dba.h"
 
 namespace jadmin {
-Image::Image(JAdminContextPtr context_) : context(std::move(context_)) {
+Image::Image(std::shared_ptr<JAdminContext> context_)
+    : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("setting", "image", "a"));
   setupTable();
 }

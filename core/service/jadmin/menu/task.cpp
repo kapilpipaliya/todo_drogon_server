@@ -3,7 +3,7 @@
 #include <utility>
 
 namespace jadmin {
-Task::Task(JAdminContextPtr context_) : context(std::move(context_)) {
+Task::Task(std::shared_ptr<JAdminContext> context_) : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("menu", "task", "m"));
   setupTable();
 }

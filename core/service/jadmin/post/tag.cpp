@@ -5,7 +5,8 @@
 #include "../../dba.h"
 
 namespace jadmin {
-Tag::Tag(JAdminContextPtr context_) : context(std::move(context_)) {
+Tag::Tag(std::shared_ptr<JAdminContext> context_)
+    : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("post", "tag", "t"));
   setupTable();
 }

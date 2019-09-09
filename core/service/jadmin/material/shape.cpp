@@ -3,7 +3,7 @@
 #include <utility>
 
 namespace jadmin {
-Shape::Shape(JAdminContextPtr context_) : context(std::move(context_)) {
+Shape::Shape(std::shared_ptr<JAdminContext> context_) : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("material", "shape", "gs"));
   setupTable();
 }

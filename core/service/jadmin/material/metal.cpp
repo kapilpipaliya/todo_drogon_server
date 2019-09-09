@@ -12,7 +12,7 @@
   if ((s).size() > 0) array.pop_back();                \
   array += "}";
 namespace jadmin {
-Metal::Metal(JAdminContextPtr context_) : context(std::move(context_)) {
+Metal::Metal(std::shared_ptr<JAdminContext> context_) : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("material", "metal", "m"));
   setupTable();
 }

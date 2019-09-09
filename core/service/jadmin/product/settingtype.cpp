@@ -3,7 +3,7 @@
 #include <utility>
 
 namespace jadmin {
-SettingType::SettingType(JAdminContextPtr context_)
+SettingType::SettingType(std::shared_ptr<JAdminContext> context_)
     : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("product", "setting_type", "t"));
   setupTable();

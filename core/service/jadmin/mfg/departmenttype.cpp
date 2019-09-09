@@ -3,7 +3,7 @@
 #include <utility>
 
 namespace jadmin {
-DepartmentType::DepartmentType(JAdminContextPtr context_)
+DepartmentType::DepartmentType(std::shared_ptr<JAdminContext> context_)
     : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("mfg", "department_type", "m"));
   setupTable();

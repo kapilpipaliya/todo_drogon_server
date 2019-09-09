@@ -2,7 +2,7 @@
 
 #include <utility>
 
-madmin::Art::Art(MAdminContextPtr context_) : context(std::move(context_)) {
+madmin::Art::Art(std::shared_ptr<MAdminContext> context_) : context(std::move(context_)) {
   setupTable();
 }
 

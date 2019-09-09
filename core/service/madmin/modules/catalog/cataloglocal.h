@@ -11,7 +11,7 @@
 namespace madmin {
 class CatalogLocal : public Catalog {
  public:
-  CatalogLocal(const MAdminContextPtr &);
+  CatalogLocal(const std::shared_ptr<MAdminContext> &);
   void setupTable();
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
@@ -36,22 +36,22 @@ class CatalogLocal : public Catalog {
    * get_description
    * This returns the description of this catalog
    */
-  string get_description() { return description; }  // get_description
+  std::string get_description() { return description; }  // get_description
   /**
    * get_version
    * This returns the current version
    */
-  string get_version() { return version; }  // get_version
+  std::string get_version() { return version; }  // get_version
   /**
    * get_type
    * This returns the current catalog type
    */
-  string get_type() { return type; }  // get_type
+  std::string get_type() { return type; }  // get_type
   /**
    * get_create_help
    * This returns hints on catalog creation
    */
-  string get_create_help() { return ""; }  // get_create_help
+  std::string get_create_help() { return ""; }  // get_create_help
   /**
    * is_installed
    * This returns true or false if local catalog is installed
@@ -62,7 +62,7 @@ class CatalogLocal : public Catalog {
    * This function installs the local catalog
    */
   bool install() { return true; }  // install
-  std::vector<string> catalog_fields();
+  std::vector<std::string> catalog_fields();
   /**
    * get_from_path
    *
@@ -70,7 +70,7 @@ class CatalogLocal : public Catalog {
    * This is useful when creating a new catalog to make sure we're not
    * doubling up here.
    */
-  // bool function get_from_path(string path);
+  // bool function get_from_path(std::string path);
   /**
    * create_type
    *
@@ -78,7 +78,8 @@ class CatalogLocal : public Catalog {
    * It checks to make sure its parameters is not already used before creating
    * the catalog.
    */
-  // static bool function create_type(int catalog_id, std::vector<string> data);
+  // static bool function create_type(int catalog_id, std::vector<std::string>
+  // data);
   /**
    * add_files
    *
@@ -86,15 +87,15 @@ class CatalogLocal : public Catalog {
    * full path in an array. Passes gather_type to determine if we need to
    * check id3 information against the db.
    */
-  bool add_files(string path, std::vector<string> options);
+  bool add_files(std::string path, std::vector<std::string> options);
 
-  bool add_file(string full_file, std::vector<string> options);
+  bool add_file(std::string full_file, std::vector<std::string> options);
   /**
    * add_to_catalog
    * this function adds new files to an
    * existing catalog
    */
-  // void add_to_catalog(std::vector<string> options = null);
+  // void add_to_catalog(std::vector<std::string> options = null);
   /**
    * verify_catalog_proc
    * This function compares the DB's information with the ID3 tags
@@ -113,7 +114,7 @@ class CatalogLocal : public Catalog {
    */
   // long insert_local_video($file, $options = array())
   // bool check_local_mp3($full_file, $gather_type="");
-  // string get_rel_path($file_path);
+  // std::string get_rel_path($file_path);
   /**
    * format
    *
@@ -148,14 +149,14 @@ class CatalogLocal : public Catalog {
    * if not
    */
 
-  string version = "000001";
-  string type = "local";
-  string description = "Local Catalog";
+  std::string version = "000001";
+  std::string type = "local";
+  std::string description = "Local Catalog";
 
   // int count; // This cause trouble with base function count();
   std::vector<int> added_songs_to_gather;
   std::vector<int> added_videos_to_gather;
-  string path;
+  std::string path;
 
   sqlb::Query query;
 };

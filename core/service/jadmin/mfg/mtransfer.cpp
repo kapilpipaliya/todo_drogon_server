@@ -3,7 +3,7 @@
 #include <utility>
 
 namespace jadmin {
-MTransfer::MTransfer(JAdminContextPtr context_) : context(std::move(context_)) {
+MTransfer::MTransfer(std::shared_ptr<JAdminContext> context_) : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("mfg", "m_transfer", "m"));
   setupTable();
 }

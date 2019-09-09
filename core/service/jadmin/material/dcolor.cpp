@@ -3,7 +3,7 @@
 #include <utility>
 
 namespace jadmin {
-DColor::DColor(JAdminContextPtr context_) : context(std::move(context_)) {
+DColor::DColor(std::shared_ptr<JAdminContext> context_) : context(std::move(context_)) {
   query =
       sqlb::Query(sqlb::ObjectIdentifier("material", "diamond_color", "gt"));
   setupTable();

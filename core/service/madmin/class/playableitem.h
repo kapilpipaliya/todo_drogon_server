@@ -2,8 +2,7 @@
 #define PLAYABLEITEM_H
 #include <string>
 #include <vector>
-using std::string;
-using std::vector;
+
 /**
  * playable_item Interface
  *
@@ -27,7 +26,7 @@ class PlayableItem {
    *
    * Get the item full name.
    */
-  virtual string get_fullname() = 0;
+  virtual std::string get_fullname() = 0;
 
   /**
    * get_parent
@@ -50,7 +49,7 @@ class PlayableItem {
    * Search for direct childrens. Return an array of `object_type`, `object_id`
    * childrens matching the criteria.
    */
-  virtual vector<long> search_childrens(string name) = 0;
+  virtual std::vector<long> search_childrens(std::string name) = 0;
 
   /*
    * get_medias
@@ -58,7 +57,7 @@ class PlayableItem {
    * Get all medias from all childrens. Return an array of `object_type`,
    * `object_id` medias.
    */
-  virtual vector<long> get_medias(string filter_type = "null") = 0;
+  virtual std::vector<long> get_medias(std::string filter_type = "null") = 0;
 
   /**
    * get_catalogs
@@ -66,7 +65,7 @@ class PlayableItem {
    * Get all catalog ids related to this item.
    * @return int[]
    */
-  virtual vector<int> get_catalogs() = 0;
+  virtual std::vector<int> get_catalogs() = 0;
 };
 
 #endif  // PLAYABLEITEM_H

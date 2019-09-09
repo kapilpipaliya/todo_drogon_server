@@ -3,7 +3,7 @@
 #include <utility>
 
 namespace jadmin {
-WaxSetting::WaxSetting(JAdminContextPtr context_)
+WaxSetting::WaxSetting(std::shared_ptr<JAdminContext> context_)
     : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("mfg", "wax_setting", "m"));
   setupTable();

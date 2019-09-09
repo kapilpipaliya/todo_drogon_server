@@ -1,6 +1,6 @@
 #include "cataloglocal.h"
 
-madmin::CatalogLocal::CatalogLocal(const MAdminContextPtr &context_)
+madmin::CatalogLocal::CatalogLocal(const std::shared_ptr<MAdminContext> &context_)
     : Catalog(context_) {
   query = sqlb::Query(sqlb::ObjectIdentifier("music", "catalog", "c"));
   setupTable();

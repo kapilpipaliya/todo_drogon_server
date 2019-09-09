@@ -13,7 +13,7 @@
 
 #include "caf.h"
 
-using std::chrono::seconds;
+// using std::chrono::seconds;
 
 MainActor::MainActor(caf::actor_config &cfg) : caf::event_based_actor(cfg) {
   set_error_handler([=]([[maybe_unused]] caf::error &err) {
@@ -50,27 +50,29 @@ MainActor::MainActor(caf::actor_config &cfg) : caf::event_based_actor(cfg) {
 MainActor::~MainActor() = default;
 
 caf::behavior MainActor::make_behavior() {
-  return {[this](run_atom, MainActorType actortype,
-                 const drogon::WebSocketConnectionPtr &wsConnPtr, std::string message,
-                 const drogon::WebSocketMessageType &type) -> caf::result<void> {
-            try {
-              passToUser(actortype, wsConnPtr, std::move(message), type);
-            } catch (const std::exception &e) {
-              SPDLOG_TRACE(e.what());
-            }
-            return {};
-          },
-          [this](exit_atom, const drogon::WebSocketConnectionPtr &wsConnPtr) {
-            auto it = actorMap.find(wsConnPtr);
-            if (it == actorMap.end()) {
-              // not possible..
-            } else {
-              caf::actor userActor = it->second;
-              request(userActor, caf::infinite, exit_atom::value);
-              demonitor(it->second);
-              actorMap.erase(it);
-            }
-          }};
+  return {
+      [this](run_atom, MainActorType actortype,
+             const drogon::WebSocketConnectionPtr &wsConnPtr,
+             std::string message,
+             const drogon::WebSocketMessageType &type) -> caf::result<void> {
+        try {
+          passToUser(actortype, wsConnPtr, std::move(message), type);
+        } catch (const std::exception &e) {
+          SPDLOG_TRACE(e.what());
+        }
+        return {};
+      },
+      [this](exit_atom, const drogon::WebSocketConnectionPtr &wsConnPtr) {
+        auto it = actorMap.find(wsConnPtr);
+        if (it == actorMap.end()) {
+          // not possible..
+        } else {
+          caf::actor userActor = it->second;
+          request(userActor, caf::infinite, exit_atom::value);
+          demonitor(it->second);
+          actorMap.erase(it);
+        }
+      }};
 }
 
 void MainActor::passToUser(MainActorType actortype,

@@ -2,7 +2,7 @@
 
 #include <utility>
 
-madmin::VaInfo::VaInfo(MAdminContextPtr context_)
+madmin::VaInfo::VaInfo(std::shared_ptr<MAdminContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }

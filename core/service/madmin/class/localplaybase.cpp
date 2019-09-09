@@ -2,7 +2,7 @@
 
 #include <utility>
 
-madmin::LocalPlayBase::LocalPlayBase(MAdminContextPtr context_)
+madmin::LocalPlayBase::LocalPlayBase(std::shared_ptr<MAdminContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }

@@ -3,7 +3,7 @@
 #include <utility>
 
 namespace jadmin {
-AccountType::AccountType(JAdminContextPtr context_)
+AccountType::AccountType(std::shared_ptr<JAdminContext> context_)
     : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("account", "account_type", "a"));
   setupTable();

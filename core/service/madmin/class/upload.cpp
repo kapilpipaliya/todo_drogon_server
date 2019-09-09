@@ -2,7 +2,7 @@
 
 #include <utility>
 
-madmin::Upload::Upload(MAdminContextPtr context_)
+madmin::Upload::Upload(std::shared_ptr<MAdminContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }

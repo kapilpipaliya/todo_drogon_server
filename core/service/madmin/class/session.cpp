@@ -3,7 +3,7 @@
 #include "../../dba.h"
 #include "./session.h"
 
-madmin::Session::Session(MAdminContextPtr context_)
+madmin::Session::Session(std::shared_ptr<MAdminContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }

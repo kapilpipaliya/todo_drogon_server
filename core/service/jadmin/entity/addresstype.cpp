@@ -3,7 +3,7 @@
 #include <utility>
 
 namespace jadmin {
-AddressType::AddressType(JAdminContextPtr context_)
+AddressType::AddressType(std::shared_ptr<JAdminContext> context_)
     : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("entity", "address_type", "a"));
   setupTable();

@@ -3,7 +3,8 @@
 #include <utility>
 
 namespace jadmin {
-Log::Log(JAdminContextPtr context_) : context(std::move(context_)) {
+Log::Log(std::shared_ptr<JAdminContext> context_)
+    : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("setting", "simple_log", "a"));
   setupTable();
 }
