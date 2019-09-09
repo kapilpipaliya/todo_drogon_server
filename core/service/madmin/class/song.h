@@ -16,8 +16,10 @@ class Song : public BaseServiceAbs {
   //   use \Lib\Metadata\Metadata;
   Song(MAdminContextPtr);
   void setupTable() override;
-  json handleEvent(json event, unsigned long next, json args) override;
-  json handleBinaryEvent(json event, unsigned long next, std::string &message);
+  nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
+                             nlohmann::json args) override;
+  nlohmann::json handleBinaryEvent(nlohmann::json event, unsigned long next,
+                                   std::string &message);
 
   /* Variables from DB */
 
@@ -624,7 +626,8 @@ class Song : public BaseServiceAbs {
  private:
   MAdminContextPtr context;
   // Binary functin:
-  json save_song_binary(const json &event, std::string &message);
+  nlohmann::json save_song_binary(const nlohmann::json &event,
+                                  std::string &message);
 };
 }  // namespace madmin
 #endif  // SONG_H

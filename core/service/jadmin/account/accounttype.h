@@ -10,8 +10,8 @@ class AccountType : public BaseServiceAbs {
 
  private:
   void setupTable() override;
-  json ins(json event, json args) override;
-  json upd(json event, json args) override;
+  nlohmann::json ins(nlohmann::json event, nlohmann::json args) override;
+  nlohmann::json upd(nlohmann::json event, nlohmann::json args) override;
   JAdminContextPtr context;
 };
 }  // namespace jadmin

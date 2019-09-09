@@ -10,7 +10,7 @@ DColor::DColor(JAdminContextPtr context_) : context(std::move(context_)) {
 
 void DColor::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().selectedColumns() = {
+  getQuery().setSelectedColumns({
       sqlb::SelectedColumn({"Id", "id", "", "gt", PG_TYPES::INT8, false}),
       sqlb::SelectedColumn({"Rank", "rank", "", "gt", PG_TYPES::INT4, false}),
       sqlb::SelectedColumn({"Code", "slug", "", "gt", PG_TYPES::TEXT, true}),
@@ -27,24 +27,24 @@ void DColor::setupTable() {
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
       sqlb::SelectedColumn({"Update Time", "updated_at", "", "gt",
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-  };
+  });
 
   auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getQuery().joins() = {
+  getQuery().setJoins({
       sqlb::Join("left", u1, "gt.create_user_id = u1.id"),
       sqlb::Join("left", u2, "gt.update_user_id = u2.id"),
-  };
+  });
 }
 
-json DColor::ins(json event, json args) {
+nlohmann::json DColor::ins(nlohmann::json event, nlohmann::json args) {
   return insBase(event, args, "slug, name", "$1, $2",
                  args[0]["slug"].get<std::string>(),
                  args[0]["name"].get<std::string>());
 }
 
-json DColor::upd(json event, json args) {
+nlohmann::json DColor::upd(nlohmann::json event, nlohmann::json args) {
   return updBase(event, args, "slug, name", "$1, $2",
                  args[0]["slug"].get<std::string>(),
                  args[0]["name"].get<std::string>());

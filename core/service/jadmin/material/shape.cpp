@@ -4,13 +4,12 @@
 using namespace jadmin;
 
 Shape::Shape(JAdminContextPtr context_) : context(std::move(context_)) {
-  getQuery() =
-      sqlb::Query(sqlb::ObjectIdentifier("material", "shape", "gs"));
+  getQuery() = sqlb::Query(sqlb::ObjectIdentifier("material", "shape", "gs"));
 }
 
 void Shape::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().selectedColumns() = {
+  getQuery().setSelectedColumns({
       sqlb::SelectedColumn({"Id", "id", "", "gs", PG_TYPES::INT8, false}),
       //        sqlb::SelectedColumn({"Material", "material_id", "", "gs",
       //        PG_TYPES::INT8, true, 1, 2}), sqlb::SelectedColumn({"m_slug",
@@ -32,26 +31,26 @@ void Shape::setupTable() {
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
       sqlb::SelectedColumn({"Update Time", "updated_at", "", "gs",
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-  };
+  });
 
   //    auto m = sqlb::ObjectIdentifier("material", "metal", "m");
   auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getQuery().joins() = {
+  getQuery().setJoins({
       //        sqlb::Join("left", m, "gs.material_id = m.id"),
       sqlb::Join("left", u1, "gs.create_user_id = u1.id"),
       sqlb::Join("left", u2, "gs.update_user_id = u2.id"),
-  };
+  });
 }
 
-json Shape::ins(json event, json args) {
+nlohmann::json Shape::ins(nlohmann::json event, nlohmann::json args) {
   return insBase(event, args, "slug, name", "$1, $2",
                  args[0]["slug"].get<std::string>(),
                  args[0]["name"].get<std::string>());
 }
 
-json Shape::upd(json event, json args) {
+nlohmann::json Shape::upd(nlohmann::json event, nlohmann::json args) {
   return updBase(event, args, "slug, name", "$1, $2",
                  args[0]["slug"].get<std::string>(),
                  args[0]["name"].get<std::string>());

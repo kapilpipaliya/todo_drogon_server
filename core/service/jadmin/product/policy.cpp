@@ -4,13 +4,12 @@
 using namespace jadmin;
 
 Policy::Policy(JAdminContextPtr context_) : context(std::move(context_)) {
-  getQuery() =
-      sqlb::Query(sqlb::ObjectIdentifier("product", "policy", "t"));
+  getQuery() = sqlb::Query(sqlb::ObjectIdentifier("product", "policy", "t"));
 }
 
 void Policy::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().selectedColumns() = {
+  getQuery().setSelectedColumns({
       sqlb::SelectedColumn({"Id", "id", "", "t", PG_TYPES::INT8, false}),
       //            sqlb::SelectedColumn({"Code", "slug", "", "t",
       //            PG_TYPES::TEXT, true}),
@@ -29,25 +28,25 @@ void Policy::setupTable() {
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
       sqlb::SelectedColumn({"Update Time", "updated_at", "", "t",
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-  };
+  });
 
   // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getQuery().joins() = {
+  getQuery().setJoins({
       // sqlb::Join("left", u1, "t.create_user_id = u1.id"),
       // sqlb::Join("left", u2, "t.update_user_id = u2.id"),
-  };
+  });
 }
 
-json Policy::ins(json event, json args) {
+nlohmann::json Policy::ins(nlohmann::json event, nlohmann::json args) {
   return insBase(event, args, "name, url, description", "$1, $2, $3",
                  args[0]["name"].get<std::string>(),
                  args[0]["url"].get<std::string>(),
                  args[0]["description"].get<std::string>());
 }
 
-json Policy::upd(json event, json args) {
+nlohmann::json Policy::upd(nlohmann::json event, nlohmann::json args) {
   return updBase(event, args, "name, url, description", "$1, $2, $3",
                  args[0]["name"].get<std::string>(),
                  args[0]["url"].get<std::string>(),

@@ -7,12 +7,12 @@ namespace jadmin {
 class Image : public BaseServiceAbs {
  public:
   Image(JAdminContextPtr);
-  json handleEvent(json event, int next, const json& args);
+  nlohmann::json handleEvent(nlohmann::json event, int next, const nlohmann::json& args);
 
  private:
   void setupTable() override;
-  json ins(json event, json args) override;
-  json upd(json event, json args) override;
+  nlohmann::json ins(nlohmann::json event, nlohmann::json args) override;
+  nlohmann::json upd(nlohmann::json event, nlohmann::json args) override;
   JAdminContextPtr context;
 };
 }  // namespace jadmin

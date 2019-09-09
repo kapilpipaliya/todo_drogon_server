@@ -5,13 +5,12 @@
 using namespace jadmin;
 
 Image::Image(JAdminContextPtr context_) : context(std::move(context_)) {
-  getQuery() =
-      sqlb::Query(sqlb::ObjectIdentifier("setting", "image", "a"));
+  getQuery() = sqlb::Query(sqlb::ObjectIdentifier("setting", "image", "a"));
 }
 
 void Image::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().selectedColumns() = {
+  getQuery().setSelectedColumns({
       sqlb::SelectedColumn({"Id", "id", "", "a", PG_TYPES::INT8, true}),
       sqlb::SelectedColumn({"Collection", "image_collection_id", "", "a",
                             PG_TYPES::INT8, true, 1, 1}),
@@ -38,20 +37,20 @@ void Image::setupTable() {
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
       sqlb::SelectedColumn({"Update Time", "updated_at", "", "a",
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-  };
+  });
 
   auto c = sqlb::ObjectIdentifier("setting", "image_collection", "c");
   // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getQuery().joins() = {
+  getQuery().setJoins({
       sqlb::Join("left", c, "c.id = a.image_collection_id"),
       // sqlb::Join("left", u1, "gt.create_user_id = u1.id"),
       // sqlb::Join("left", u2, "a.update_user_id = u2.id"),
-  };
+  });
 }
 
-json Image::handleEvent(json event, int next, const json &args) {
+nlohmann::json Image::handleEvent(nlohmann::json event, int next, const nlohmann::json &args) {
   auto event_cmp = event[next].get<std::string>();
   if (event_cmp == "data") {
     return allData(event, args);
@@ -65,13 +64,13 @@ json Image::handleEvent(json event, int next, const json &args) {
   } else if (event_cmp == "del") {
     return del(event, args);
   } else {
-    json ret;
+    nlohmann::json ret;
     return ret;
   }
 }
 
 // this is normal images..
-json Image::ins(json event, json args) {
+nlohmann::json Image::ins(nlohmann::json event, nlohmann::json args) {
   auto metal_purity_table = sqlb::ObjectIdentifier("setting", "image", "c");
   std::string t = "setting.image";
   std::string c =
@@ -102,23 +101,23 @@ json Image::ins(json event, json args) {
         Dba::writeInTrans(transPtr, strSqlTempImageDel, temp_id);
       }
     } else {
-      json ret;
+      nlohmann::json ret;
       ret[0] = simpleJsonSaveResult(event, false, "Please Upload Image");
       return ret;
     }
 
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, true, "Done");
     return ret;
   } catch (const std::exception &e) {
     SPDLOG_TRACE(e.what());
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, false, e.what());
     return ret;
   }
 }
 // this is normal images..
-json Image::upd(json event, json args) {
+nlohmann::json Image::upd(nlohmann::json event, nlohmann::json args) {
   auto metal_purity_table = sqlb::ObjectIdentifier("setting", "image", "c");
   std::string t = "setting.image";
   std::string c =
@@ -161,17 +160,17 @@ json Image::upd(json event, json args) {
             args[0]["url"].get<std::string>(), args[0]["position"].get<int>());
       }
 
-      json ret;
+      nlohmann::json ret;
       ret[0] = simpleJsonSaveResult(event, true, "Done");
       return ret;
     } catch (const std::exception &e) {
       SPDLOG_TRACE(e.what());
-      json ret;
+      nlohmann::json ret;
       ret[0] = simpleJsonSaveResult(event, false, e.what());
       return ret;
     }
   }
-  json ret;
+  nlohmann::json ret;
   ret[0] = simpleJsonSaveResult(event, false, "Not Valid Structure");
   return ret;
 }

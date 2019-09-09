@@ -4,17 +4,15 @@
 #include "caf/all.hpp"
 
 #include <drogon/WebSocketController.h>
-using namespace drogon;
-using namespace drogon::orm;
+
 #include "mainactor.h"
 
 #include "json.hpp"
-using nlohmann::json;
 
 // caf::allowed_unsafe_message_type<WebSocketConnectionPtr>;
 // caf::allowed_unsafe_message_type<json>;
-CAF_ALLOW_UNSAFE_MESSAGE_TYPE(WebSocketConnectionPtr)
-CAF_ALLOW_UNSAFE_MESSAGE_TYPE(json)
+CAF_ALLOW_UNSAFE_MESSAGE_TYPE(drogon::WebSocketConnectionPtr)
+CAF_ALLOW_UNSAFE_MESSAGE_TYPE(nlohmann::json)
 
 class MyCAF {
  public:

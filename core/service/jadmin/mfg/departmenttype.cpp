@@ -11,7 +11,7 @@ DepartmentType::DepartmentType(JAdminContextPtr context_)
 
 void DepartmentType::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().selectedColumns() = {
+  getQuery().setSelectedColumns({
       sqlb::SelectedColumn({"Id", "id", "", "m", PG_TYPES::INT8, false}),
       sqlb::SelectedColumn({"Name", "name", "", "m", PG_TYPES::TEXT, true}),
       //            sqlb::SelectedColumn({"Created By", "create_user_id", "",
@@ -26,21 +26,21 @@ void DepartmentType::setupTable() {
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
       sqlb::SelectedColumn({"Update Time", "updated_at", "", "m",
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-  };
+  });
 
   //        auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   //        auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getQuery().joins() = {
+  getQuery().setJoins({
       //            sqlb::Join("left", u1, "m.create_user_id = u1.id"),
       //            sqlb::Join("left", u2, "m.update_user_id = u2.id"),
-  };
+  });
 }
 
-json DepartmentType::ins(json event, json args) {
+nlohmann::json DepartmentType::ins(nlohmann::json event, nlohmann::json args) {
   return insBase(event, args, "name", "$1", args[0]["name"].get<std::string>());
 }
 
-json DepartmentType::upd(json event, json args) {
+nlohmann::json DepartmentType::upd(nlohmann::json event, nlohmann::json args) {
   return updBase(event, args, "name", "$1", args[0]["name"].get<std::string>());
 }

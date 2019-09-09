@@ -6,8 +6,7 @@ using namespace madmin;
 using namespace std::chrono;
 using S = sqlb::SelectedColumn;
 User::User(MAdminContextPtr context_) : context(std::move(context_)) {
-  getQuery() =
-      sqlb::Query(sqlb::ObjectIdentifier("music", "user", "e"));
+  getQuery() = sqlb::Query(sqlb::ObjectIdentifier("music", "user", "e"));
 }
 // User::User(int user_id)
 //{
@@ -20,7 +19,7 @@ User::User(MAdminContextPtr context_) : context(std::move(context_)) {
 
 void User::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().selectedColumns() = {
+  getQuery().setSelectedColumns({
       S({"ID No", "id", "", "e", PG_TYPES::INT8}),
       S({"Account Type", "type", "", "e", PG_TYPES::ENUM}),
       // S({"no", "no", "", "e", PG_TYPES::TEXT}),
@@ -44,25 +43,23 @@ void User::setupTable() {
       // "inserted_at", "", "e", PG_TYPES::TIMESTAMP, true, 0, 0, false}),
       // S({"Update Time", "updated_at", "", "e", PG_TYPES::TIMESTAMP, true, 0,
       // 0, false}),
-  };
+  });
   auto p = sqlb::ObjectIdentifier("music", "user", "p");
   // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getQuery().joins() = {
+  getQuery().setJoins({
       sqlb::Join("left", p, "e.parent_id = p.id")
       // sqlb::Join("left", u1, "e.create_user_id = u1.id"),
       // sqlb::Join("left", u2, "e.update_user_id = u2.id"),
-  };
-
-  getQuery().groupBy() = {};
+  });
 }
 
 nlohmann::json User::handleEvent(nlohmann::json event, unsigned long next,
                                  nlohmann::json args) {
   auto event_cmp = event[next].get<std::string>();
   if (event_cmp == "is_logged_in") {
-    json res = {{event}};
+    nlohmann::json res = {{event}};
     res[0][1] = is_logged_in();
     return res;
   }
@@ -73,8 +70,8 @@ nlohmann::json User::handleEvent(nlohmann::json event, unsigned long next,
       return allData(event, args);
     }
     if (context->getUser().type == "admin") {
-      getQuery().cusm_where() =
-          fmt::format("e.parent_id = {}", context->getUserId());
+      getQuery().setCustomWhere(
+          fmt::format("e.parent_id = {}", context->getUserId()));
       return allData(event, args);
     } else {
       return {{event, "unauthorised"}};
@@ -114,20 +111,20 @@ nlohmann::json User::handleEvent(nlohmann::json event, unsigned long next,
 
 nlohmann::json User::getUserTypeFormData() {
   if (context->getUser().type == "super admin") {
-    json j = json::array({
-        json::array({"Super Admin", "super admin"}),
-        json::array({"Admin", "admin"}),
-        json::array({"Executive", "executive"}),
+    nlohmann::json j = nlohmann::json::array({
+        nlohmann::json::array({"Super Admin", "super admin"}),
+        nlohmann::json::array({"Admin", "admin"}),
+        nlohmann::json::array({"Executive", "executive"}),
     });
     return j;
   }
   if (context->getUser().type == "admin") {
-    json j = json::array({
-        json::array({"Executive", "executive"}),
+    nlohmann::json j = nlohmann::json::array({
+        nlohmann::json::array({"Executive", "executive"}),
     });
     return j;
   } else {
-    return json::array();
+    return nlohmann::json::array();
   }
 }
 

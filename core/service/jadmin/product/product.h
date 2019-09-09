@@ -7,17 +7,21 @@ namespace jadmin {
 class Product : public BaseServiceAbs {
  public:
   Product(JAdminContextPtr);
-  json handleEvent(json event, int next, const json& args);
-  json del(json event, json args) override;
+  nlohmann::json handleEvent(nlohmann::json event, int next,
+                             const nlohmann::json& args);
+  nlohmann::json del(nlohmann::json event, nlohmann::json args) override;
 
  private:
   void setupTable() override;
-  json ins(json event, json args) override;
-  json upd(json event, json args) override;
+  nlohmann::json ins(nlohmann::json event, nlohmann::json args) override;
+  nlohmann::json upd(nlohmann::json event, nlohmann::json args) override;
 
-  json get_product_diamond_price_data(json event, json args);
-  json get_product_cs_price_data(json event, json args);
-  json get_product_category_tree_data(json event, const json& args);
+  nlohmann::json get_product_diamond_price_data(nlohmann::json event,
+                                                nlohmann::json args);
+  nlohmann::json get_product_cs_price_data(nlohmann::json event,
+                                           nlohmann::json args);
+  nlohmann::json get_product_category_tree_data(nlohmann::json event,
+                                                const nlohmann::json& args);
   JAdminContextPtr context;
 };
 }  // namespace jadmin

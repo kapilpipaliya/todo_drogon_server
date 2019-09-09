@@ -4,13 +4,12 @@
 using namespace jadmin;
 
 Size::Size(JAdminContextPtr context_) : context(std::move(context_)) {
-  getQuery() =
-      sqlb::Query(sqlb::ObjectIdentifier("material", "size", "s"));
+  getQuery() = sqlb::Query(sqlb::ObjectIdentifier("material", "size", "s"));
 }
 
 void Size::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().selectedColumns() = {
+  getQuery().setSelectedColumns({
       sqlb::SelectedColumn({"Id", "id", "", "s", PG_TYPES::INT8, false}),
       sqlb::SelectedColumn({"Name", "name", "", "s", PG_TYPES::TEXT, true}),
       // sqlb::SelectedColumn({"Created By", "create_user_id", "", "sm",
@@ -23,16 +22,15 @@ void Size::setupTable() {
       // Time", "inserted_at", "", "sm", PG_TYPES::TIMESTAMP, true, 0, 0,
       // false}), sqlb::SelectedColumn({"Update Time", "updated_at", "", "sm",
       // PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-  };
+  });
   auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
-  getQuery().joins() = {};
 }
 
-json Size::ins(json event, json args) {
+nlohmann::json Size::ins(nlohmann::json event, nlohmann::json args) {
   return insBase(event, args, "name", "$1", args[0]["name"].get<std::string>());
 }
 
-json Size::upd(json event, json args) {
+nlohmann::json Size::upd(nlohmann::json event, nlohmann::json args) {
   return updBase(event, args, "name", "$1", args[0]["name"].get<std::string>());
 }

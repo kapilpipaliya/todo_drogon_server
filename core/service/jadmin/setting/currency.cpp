@@ -4,13 +4,12 @@
 using namespace jadmin;
 
 Currency::Currency(JAdminContextPtr context_) : context(std::move(context_)) {
-  getQuery() =
-      sqlb::Query(sqlb::ObjectIdentifier("setting", "currency", "c"));
+  getQuery() = sqlb::Query(sqlb::ObjectIdentifier("setting", "currency", "c"));
 }
 
 void Currency::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().selectedColumns() = {
+  getQuery().setSelectedColumns({
       sqlb::SelectedColumn({"Id", "id", "", "c", PG_TYPES::INT8, false}),
       sqlb::SelectedColumn({"Code", "slug", "", "c", PG_TYPES::TEXT, true}),
       sqlb::SelectedColumn({"Name", "name", "", "c", PG_TYPES::TEXT, true}),
@@ -18,20 +17,20 @@ void Currency::setupTable() {
       sqlb::SelectedColumn(
           {"Rounding", "rounding", "", "c", PG_TYPES::DOUBLE, true}),
       sqlb::SelectedColumn({"Active", "active", "", "c", PG_TYPES::BOOL, true}),
-  };
+  });
 
   // auto m = sqlb::ObjectIdentifier("material", "metal", "m");
   // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getQuery().joins() = {
+  getQuery().setJoins({
       // sqlb::Join("left", m, "a.material_id = m.id"),
       // sqlb::Join("left", u1, "gt.create_user_id = u1.id"),
       // sqlb::Join("left", u2, "a.update_user_id = u2.id"),
-  };
+  });
 }
 
-json Currency::ins(json event, json args) {
+nlohmann::json Currency::ins(nlohmann::json event, nlohmann::json args) {
   return insBase(
       event, args, "slug, name, symbol, rounding, active", "$1, $2, $3, $4, $5",
       args[0]["slug"].get<std::string>(), args[0]["name"].get<std::string>(),
@@ -39,7 +38,7 @@ json Currency::ins(json event, json args) {
       args[0]["active"].get<bool>());
 }
 
-json Currency::upd(json event, json args) {
+nlohmann::json Currency::upd(nlohmann::json event, nlohmann::json args) {
   return updBase(
       event, args, "slug, name, symbol, rounding, active", "$1, $2, $3, $4, $5",
       args[0]["slug"].get<std::string>(), args[0]["name"].get<std::string>(),

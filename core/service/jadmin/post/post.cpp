@@ -6,12 +6,11 @@
 using namespace jadmin;
 
 Post1::Post1(JAdminContextPtr context_) : context(std::move(context_)) {
-  getQuery() =
-      sqlb::Query(sqlb::ObjectIdentifier("post", "post", "post"));
+  getQuery() = sqlb::Query(sqlb::ObjectIdentifier("post", "post", "post"));
 }
 
 void Post1::setupTable() {
-  getQuery().selectedColumns() = {
+  getQuery().setSelectedColumns({
       sqlb::SelectedColumn({"Id", "id", "", "post", PG_TYPES::INT8, true}),
       sqlb::SelectedColumn(
           {"Post Type", "type", "", "post", PG_TYPES::ENUM, true}),
@@ -41,10 +40,10 @@ void Post1::setupTable() {
       // "post", PG_TYPES::ENUM, false}),
       sqlb::SelectedColumn(
           {"Comment Count", "comment_count", "", "post", PG_TYPES::INT8, true}),
-  };
+  });
 }
 
-json Post1::ins(json event, json args) {
+nlohmann::json Post1::ins(nlohmann::json event, nlohmann::json args) {
   auto post_table = sqlb::ObjectIdentifier("post", "post", "p");
 
   std::string strSqlPost =
@@ -73,17 +72,17 @@ json Post1::ins(json event, json args) {
     // product_tags_process(tags_table, post_tag_table, in, txn, post_id);
     // save_product_categories(post_category_table, in, txn, post_id);
 
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, true, "Done");
     return ret;
   } catch (const std::exception &e) {
     SPDLOG_TRACE(e.what());
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, false, e.what());
     return ret;
   }
 }
-json Post1::upd(json event, json args) {
+nlohmann::json Post1::upd(nlohmann::json event, nlohmann::json args) {
   auto post_table = sqlb::ObjectIdentifier("post", "post", "p");
 
   if (args[0]["id"].get<long>()) {
@@ -115,17 +114,17 @@ json Post1::upd(json event, json args) {
       // product_tags_process(tags_table, post_tag_table, in, txn, post_id);
       // save_product_categories(post_category_table, in, txn, post_id);
 
-      json ret;
+      nlohmann::json ret;
       ret[0] = simpleJsonSaveResult(event, true, "Done");
       return ret;
     } catch (const std::exception &e) {
       SPDLOG_TRACE(e.what());
-      json ret;
+      nlohmann::json ret;
       ret[0] = simpleJsonSaveResult(event, false, e.what());
       return ret;
     }
   }
-  json ret;
+  nlohmann::json ret;
   ret[0] = simpleJsonSaveResult(event, false, "Not Valid Structure");
   return ret;
 }

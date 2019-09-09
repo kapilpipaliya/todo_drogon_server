@@ -53,15 +53,17 @@ MAdminActor::MAdminActor(caf::actor_config &cfg)
     : caf::event_based_actor(cfg) {}
 
 caf::behavior MAdminActor::make_behavior() {
-  return {[this](const WebSocketConnectionPtr &wsConnPtr, std::string message,
-                 const WebSocketMessageType &type) -> caf::result<void> {
-            blocking_run(wsConnPtr, std::move(message), type);
-            return {};
-          },
-          [this](exit_atom) -> caf::result<void> {
-            quit();
-            return {};
-          }};
+  return {
+      [this](const drogon::WebSocketConnectionPtr &wsConnPtr,
+             std::string message,
+             const drogon::WebSocketMessageType &type) -> caf::result<void> {
+        blocking_run(wsConnPtr, std::move(message), type);
+        return {};
+      },
+      [this](exit_atom) -> caf::result<void> {
+        quit();
+        return {};
+      }};
 }
 
 #define REGISTER(T, s)                                   \
@@ -73,10 +75,10 @@ caf::behavior MAdminActor::make_behavior() {
   }
 
 nlohmann::json MAdminActor::handleTextMessage(
-    const WebSocketConnectionPtr &wsConnPtr, nlohmann::json in) {
+    const drogon::WebSocketConnectionPtr &wsConnPtr, nlohmann::json in) {
   try {
     if (!in.is_array()) {
-      return json::array();
+      return nlohmann::json::array();
     }
 
     if constexpr (false) {
@@ -88,9 +90,9 @@ nlohmann::json MAdminActor::handleTextMessage(
     REGISTER(madmin::CatalogLocal, "catalog_local")
     REGISTER(madmin::Song, "song")
     else {
-      return json::array();
+      return nlohmann::json::array();
     }
-    return json::array();
+    return nlohmann::json::array();
   } catch (const std::exception &e) {
     SPDLOG_TRACE(e.what());
     throw;
@@ -98,8 +100,8 @@ nlohmann::json MAdminActor::handleTextMessage(
 }
 
 nlohmann::json MAdminActor::handleBinaryMessage(
-    const WebSocketConnectionPtr &wsConnPtr, std::string &message) {
-  json event;
+    const drogon::WebSocketConnectionPtr &wsConnPtr, std::string &message) {
+  nlohmann::json event;
   try {
     auto contx = wsConnPtr->getContext<MAdminContext>();
     long c = contx->sessionId();
@@ -109,7 +111,7 @@ nlohmann::json MAdminActor::handleBinaryMessage(
     auto r = clientPtr->execSqlSync(sqlSession, c);
     if (!r.empty()) {
       try {
-        event = json::parse(r[0]["event"].c_str());
+        event = nlohmann::json::parse(r[0]["event"].c_str());
         // p.handleBinaryEvent creates new transaction.
 
         if (event[0] == "song") {
@@ -117,7 +119,7 @@ nlohmann::json MAdminActor::handleBinaryMessage(
           auto r = p.handleBinaryEvent(event, 1, message);
           if (!r.is_null()) return r;
         }
-      } catch (json::parse_error &e) {
+      } catch (nlohmann::json::parse_error &e) {
         SPDLOG_TRACE("message: {}", e.what());
         SPDLOG_TRACE("exception id: {}", e.id);
         SPDLOG_TRACE("byte position of error:", e.byte);
@@ -128,11 +130,11 @@ nlohmann::json MAdminActor::handleBinaryMessage(
     }
   } catch (const std::exception &e) {
     SPDLOG_TRACE(e.what());
-    json jresult;
+    nlohmann::json jresult;
     jresult[0] = event;
     jresult[1] = e.what();
     return jresult;
   }
-  json ret;
+  nlohmann::json ret;
   return ret;
 }

@@ -7,7 +7,6 @@
 #include "json.hpp"
 #include "spdlogfix.h"
 
-using nlohmann::json;
 using std::string;
 /**
  * User Class
@@ -46,8 +45,9 @@ class User : public BaseServiceAbs {
   User(JAdminContextPtr);
   // User(int user_id);
   void setupTable() override;
-  json handleEvent(json event, unsigned long next, json args) override;
-  json getUserTypeFormData();
+  nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
+                             nlohmann::json args) override;
+  nlohmann::json getUserTypeFormData();
 
   // static Count count();
   static void get_valid_users();  // fix it..
@@ -159,7 +159,7 @@ class User : public BaseServiceAbs {
    * set_preferences
    * sets the prefs for this specific user
    */
-  // void set_preferences();;
+  // void set_preferences();
   /**
    * get_favorites
    * returns an array of your type favorites
@@ -441,10 +441,12 @@ class User : public BaseServiceAbs {
   Info get_info();
   int id{};
 
-  json userRegister(const json& event, json args);
-  json userLogin(const json& event, json args);
-  json userId(const json& event, const json& args);
-  json checkout(const json& event, const json& args);
+  nlohmann::json userRegister(const nlohmann::json& event, nlohmann::json args);
+  nlohmann::json userLogin(const nlohmann::json& event, nlohmann::json args);
+  nlohmann::json userId(const nlohmann::json& event,
+                        const nlohmann::json& args);
+  nlohmann::json checkout(const nlohmann::json& event,
+                          const nlohmann::json& args);
 
   JAdminContextPtr context;
 };

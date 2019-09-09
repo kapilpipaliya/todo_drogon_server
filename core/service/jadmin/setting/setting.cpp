@@ -5,11 +5,10 @@
 using namespace jadmin;
 
 Setting::Setting(JAdminContextPtr context_) : context(std::move(context_)) {
-  getQuery() =
-      sqlb::Query(sqlb::ObjectIdentifier("setting", "setting", "gs"));
+  getQuery() = sqlb::Query(sqlb::ObjectIdentifier("setting", "setting", "gs"));
 }
 
-json Setting::handleEvent(json event, int next, const json &args) {
+nlohmann::json Setting::handleEvent(nlohmann::json event, int next, const nlohmann::json &args) {
   auto event_cmp = event[next].get<std::string>();
   if (event_cmp == "data") {
     return allData(event, args);
@@ -21,14 +20,14 @@ json Setting::handleEvent(json event, int next, const json &args) {
   } else if (event_cmp == "del") {
     return del(event, args);
   } else {
-    json ret;
+    nlohmann::json ret;
     return ret;
   }
 }
 
 void Setting::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().selectedColumns() = {
+  getQuery().setSelectedColumns({
       sqlb::SelectedColumn({"Key", "key", "", "gs", PG_TYPES::TEXT, true}),
       sqlb::SelectedColumn(
           {"Setting Type", "setting_type", "", "gs", PG_TYPES::TEXT, true}),
@@ -40,19 +39,19 @@ void Setting::setupTable() {
           {"Text", "value_text", "", "gs", PG_TYPES::TEXT, true}),
       sqlb::SelectedColumn(
           {"Internal", "setting", "", "gs", PG_TYPES::PSJSON, true}),
-  };
+  });
   // auto m = sqlb::ObjectIdentifier("material", "metal", "m");
   // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
-  getQuery().joins() = {
+  getQuery().setJoins({
       // sqlb::Join("left", m, "a.material_id = m.id"),
       // sqlb::Join("left", u1, "gt.create_user_id = u1.id"),
       // sqlb::Join("left", u2, "a.update_user_id = u2.id"),
-  };
+  });
 }
 
 // where key = $1
-json Setting::del(json event, json args) {
+nlohmann::json Setting::del(nlohmann::json event, nlohmann::json args) {
   // to support global filter, get first all ids b selected filter and for each
   // id delete.
   auto clientPtr = drogon::app().getDbClient("sce");
@@ -64,17 +63,17 @@ json Setting::del(json event, json args) {
     if (res.size() > 1) {
       throw("not valid arguments");
     }
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, true, "Done");
     return ret;
   } catch (const std::exception &e) {
     SPDLOG_TRACE(e.what());
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, false, e.what());
     return ret;
   }
 }
-json Setting::save(const json &event, json args) {
+nlohmann::json Setting::save(const nlohmann::json &event, nlohmann::json args) {
   // check if key exist
   auto clientPtr = drogon::app().getDbClient("sce");
   auto transPtr = clientPtr->newTransaction();
@@ -92,12 +91,12 @@ json Setting::save(const json &event, json args) {
                         args[0]["value_num"].get<float>(),
                         args[0]["value_text"].get<std::string>());
 
-      json ret;
+      nlohmann::json ret;
       ret[0] = simpleJsonSaveResult(event, true, "Done");
       return ret;
     } catch (const std::exception &e) {
       SPDLOG_TRACE(e.what());
-      json ret;
+      nlohmann::json ret;
       ret[0] = simpleJsonSaveResult(event, false, e.what());
       return ret;
     }
@@ -113,12 +112,12 @@ json Setting::save(const json &event, json args) {
                         args[0]["setting_type"].get<std::string>(),
                         args[0]["setting"].dump());
 
-      json ret;
+      nlohmann::json ret;
       ret[0] = simpleJsonSaveResult(event, true, "Done");
       return ret;
     } catch (const std::exception &e) {
       SPDLOG_TRACE(e.what());
-      json ret;
+      nlohmann::json ret;
       ret[0] = simpleJsonSaveResult(event, false, e.what());
       return ret;
     }

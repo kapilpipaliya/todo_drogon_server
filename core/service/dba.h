@@ -4,7 +4,7 @@
 #include <string>
 #include "json.hpp"
 #include "spdlogfix.h"
-using nlohmann::json;
+
 /**
  * Dba Class
  *
@@ -51,7 +51,7 @@ class Dba {
     }
   }
 
-  static json readJson(const std::string &sql);
+  static nlohmann::json readJson(const std::string &sql);
   /**
    * write
    */

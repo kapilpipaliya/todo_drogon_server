@@ -14,6 +14,7 @@ using std::vector;
 class PlayableItem {
  public:
   PlayableItem();
+  ~PlayableItem() = default;
   /**
    * format
    *

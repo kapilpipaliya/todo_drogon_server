@@ -12,6 +12,7 @@
 class LibraryItem {
  public:
   LibraryItem();
+  virtual ~LibraryItem() = default;
 
   //  virtual void get_keywords() = 0;
   //  virtual void get_user_owner() = 0;

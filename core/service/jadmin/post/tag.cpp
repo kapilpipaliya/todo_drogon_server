@@ -11,7 +11,7 @@ Tag::Tag(JAdminContextPtr context_) : context(std::move(context_)) {
 
 void Tag::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().selectedColumns() = {
+  getQuery().setSelectedColumns({
       sqlb::SelectedColumn({"Id", "id", "", "t", PG_TYPES::INT8, false}),
       sqlb::SelectedColumn({"Slug", "slug", "", "t", PG_TYPES::TEXT, true}),
       sqlb::SelectedColumn({"Name", "name", "", "t", PG_TYPES::TEXT, true}),
@@ -27,20 +27,20 @@ void Tag::setupTable() {
       // Time", "inserted_at", "", "t", PG_TYPES::TIMESTAMP, true, 0, 0,
       // false}), sqlb::SelectedColumn({"Update Time", "updated_at", "", "t",
       // PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-  };
+  });
 
   auto m = sqlb::ObjectIdentifier("material", "metal", "m");
   // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getQuery().joins() = {
+  getQuery().setJoins({
       // sqlb::Join("left", m, "a.material_id = m.id"),
       // sqlb::Join("left", u1, "gt.create_user_id = u1.id"),
       // sqlb::Join("left", u2, "a.update_user_id = u2.id"),
-  };
+  });
 }
 
-json Tag::ins(json event, json args) {
+nlohmann::json Tag::ins(nlohmann::json event, nlohmann::json args) {
   auto product_table = sqlb::ObjectIdentifier("post", "tag", "t");
 
   std::string strSql =
@@ -55,17 +55,17 @@ json Tag::ins(json event, json args) {
                       args[0]["name"].get<std::string>(),
                       args[0]["description"].get<std::string>());
 
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, true, "Done");
     return ret;
   } catch (const std::exception &e) {
     SPDLOG_TRACE(e.what());
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, false, e.what());
     return ret;
   }
 }
-json Tag::upd(json event, json args) {
+nlohmann::json Tag::upd(nlohmann::json event, nlohmann::json args) {
   auto product_table = sqlb::ObjectIdentifier("post", "tag", "t");
 
   if (args[0]["id"].get<long>()) {
@@ -84,17 +84,17 @@ json Tag::upd(json event, json args) {
                         args[0]["name"].get<std::string>(),
                         args[0]["description"].get<std::string>());
 
-      json ret;
+      nlohmann::json ret;
       ret[0] = simpleJsonSaveResult(event, true, "Done");
       return ret;
     } catch (const std::exception &e) {
       SPDLOG_TRACE(e.what());
-      json ret;
+      nlohmann::json ret;
       ret[0] = simpleJsonSaveResult(event, false, e.what());
       return ret;
     }
   }
-  json ret;
+  nlohmann::json ret;
   ret[0] = simpleJsonSaveResult(event, false, "Not Valid Structure");
   return ret;
 }

@@ -16,7 +16,6 @@
 #include <functional>
 
 #include "json.hpp"
-using nlohmann::json;
 
 class SslEchoClient : public QObject {
   Q_OBJECT
@@ -24,9 +23,10 @@ class SslEchoClient : public QObject {
  public:
   explicit SslEchoClient(const QUrl &url, QObject *parent = nullptr);
   void sendMessage(QString message);
-  bool bind(const nlohmann::json &event, std::function<void(json)> callback);
+  bool bind(const nlohmann::json &event,
+            std::function<void(nlohmann::json)> callback);
   bool bindOnce(const nlohmann::json &event,
-                std::function<void(json)> callback);
+                std::function<void(nlohmann::json)> callback);
   bool unbind(const nlohmann::json &event);
   QWebSocket &getWebSocket() { return m_webSocket; }
 
@@ -49,12 +49,13 @@ class SslEchoClient : public QObject {
 
   short int intervals_from_last_pong;
 
-  std::map<std::string, std::tuple<int, std::function<void(json)>>> callbacks;
+  std::map<std::string, std::tuple<int, std::function<void(nlohmann::json)>>>
+      callbacks;
 
   void reconnect();
 
-  json jsonparse(std::string msg);
-  void dispatch(nlohmann::json event, json data);
+  nlohmann::json jsonparse(std::string msg);
+  void dispatch(nlohmann::json event, nlohmann::json data);
 };
 
 class WsInst {

@@ -5,13 +5,12 @@ using namespace jadmin;
 
 WaxSetting::WaxSetting(JAdminContextPtr context_)
     : context(std::move(context_)) {
-  getQuery() =
-      sqlb::Query(sqlb::ObjectIdentifier("mfg", "wax_setting", "m"));
+  getQuery() = sqlb::Query(sqlb::ObjectIdentifier("mfg", "wax_setting", "m"));
 }
 
 void WaxSetting::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().selectedColumns() = {
+  getQuery().setSelectedColumns({
       sqlb::SelectedColumn({"Id", "id", "", "m", PG_TYPES::INT8, false}),
       sqlb::SelectedColumn({"Rank", "rank", "", "m", PG_TYPES::INT4, true}),
       sqlb::SelectedColumn({"No", "no", "", "m", PG_TYPES::TEXT, true}),
@@ -45,22 +44,22 @@ void WaxSetting::setupTable() {
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
       sqlb::SelectedColumn({"Update Time", "updated_at", "", "m",
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-  };
+  });
 
   auto dep = sqlb::ObjectIdentifier("mfg", "department", "dep");
   auto e = sqlb::ObjectIdentifier("entity", "entity", "e");
   auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getQuery().joins() = {
+  getQuery().setJoins({
       sqlb::Join("left", dep, "dep.id = m.department_id"),
       sqlb::Join("left", e, "e.id = m.employee_id"),
       sqlb::Join("left", u1, "m.create_user_id = u1.id"),
       sqlb::Join("left", u2, "m.update_user_id = u2.id"),
-  };
+  });
 }
 
-json WaxSetting::ins(json event, json args) {
+nlohmann::json WaxSetting::ins(nlohmann::json event, nlohmann::json args) {
   return insBase(
       event, args, "date, department_id, employee_id, description, status_id",
       "$1, $2, $3, $4, $5", args[0]["date"].get<std::string>(),
@@ -69,7 +68,7 @@ json WaxSetting::ins(json event, json args) {
       args[0]["status_id"].get<std::string>());
 }
 
-json WaxSetting::upd(json event, json args) {
+nlohmann::json WaxSetting::upd(nlohmann::json event, nlohmann::json args) {
   return updBase(
       event, args, "date, department_id, employee_id, description, status_id",
       "$1, $2, $3, $4, $5", args[0]["date"].get<std::string>(),

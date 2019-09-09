@@ -5,13 +5,12 @@ using namespace jadmin;
 #include "../../dba.h"
 
 Txn::Txn(JAdminContextPtr context_) : context(std::move(context_)) {
-  getQuery() =
-      sqlb::Query(sqlb::ObjectIdentifier("account", "txn", "a"));
+  getQuery() = sqlb::Query(sqlb::ObjectIdentifier("account", "txn", "a"));
 }
 
 void Txn::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().selectedColumns() = {
+  getQuery().setSelectedColumns({
       sqlb::SelectedColumn({"id", "id", "", "a", PG_TYPES::INT8}),
       sqlb::SelectedColumn({"Journal Type", "journal_type_id", "", "a",
                             PG_TYPES::INT8, true, 1, 1}),
@@ -93,7 +92,7 @@ void Txn::setupTable() {
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
       sqlb::SelectedColumn({"Update Time", "updated_at", "", "a",
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-  };
+  });
 
   auto jt = sqlb::ObjectIdentifier("account", "journal_type", "jt");
   auto party = sqlb::ObjectIdentifier("entity", "entity", "party");
@@ -101,21 +100,23 @@ void Txn::setupTable() {
   auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getQuery().joins() = {
+  getQuery().setJoins({
       sqlb::Join("left", jt, "jt.id = a.journal_type_id"),
       sqlb::Join("left", party, "party.id = a.party_id"),
       sqlb::Join("left", order_item, "o_i.txn_id = a.id"),
       sqlb::Join("left", u1, "a.create_user_id = u1.id"),
       sqlb::Join("left", u2, "a.update_user_id = u2.id"),
-  };
-  getQuery().groupBy() = {
-      sqlb::GroupByColumn("a", "id"),     sqlb::GroupByColumn("jt", "id"),
-      sqlb::GroupByColumn("party", "id"), sqlb::GroupByColumn("u1", "id"),
+  });
+  getQuery().setGroupBy({
+      sqlb::GroupByColumn("a", "id"),
+      sqlb::GroupByColumn("jt", "id"),
+      sqlb::GroupByColumn("party", "id"),
+      sqlb::GroupByColumn("u1", "id"),
       sqlb::GroupByColumn("u2", "id"),
-  };
+  });
 }
 
-json Txn::del(const json event, const json args) {
+nlohmann::json Txn::del(const nlohmann::json event, const nlohmann::json args) {
   // to support global filter, get first all ids b selected filter and for each
   // id delete.
   auto clientPtr = drogon::app().getDbClient("sce");
@@ -127,17 +128,17 @@ json Txn::del(const json event, const json args) {
     Dba::writeInTrans(transPtr, order_item_del, txn_id);
     Dba::writeInTrans(transPtr, txn_del, txn_id);
 
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, true, "Done");
     return ret;
   } catch (const std::exception &e) {
     SPDLOG_TRACE(e.what());
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, false, e.what());
     return ret;
   }
 }
-void save_txn_order_item(json &args,
+void save_txn_order_item(nlohmann::json &args,
                          const std::shared_ptr<Transaction> &transPtr,
                          long txn_id) {
   std::string strSqlPostCategories =
@@ -209,7 +210,7 @@ void save_txn_order_item(json &args,
   }
 }
 
-json Txn::ins(json event, json args) {
+nlohmann::json Txn::ins(nlohmann::json event, nlohmann::json args) {
   std::string strSqlPost =
       "INSERT INTO account.txn "
       "(journal_type_id, party_id, date, description )"
@@ -226,17 +227,17 @@ json Txn::ins(json event, json args) {
     auto txn_id = x[0]["id"].as<long>();
     save_txn_order_item(args, transPtr, txn_id);
 
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, true, "Done");
     return ret;
   } catch (const std::exception &e) {
     SPDLOG_TRACE(e.what());
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, false, e.what());
     return ret;
   }
 }
-json Txn::upd(json event, json args) {
+nlohmann::json Txn::upd(nlohmann::json event, nlohmann::json args) {
   if (args[0]["id"].get<long>()) {
     std::string strSqlPost =
         "update account.txn set (journal_type_id, party_id, date, description )"
@@ -253,17 +254,17 @@ json Txn::upd(json event, json args) {
       auto txn_id = args[0]["id"].get<long>();
       save_txn_order_item(args, transPtr, txn_id);
 
-      json ret;
+      nlohmann::json ret;
       ret[0] = simpleJsonSaveResult(event, true, "Done");
       return ret;
     } catch (const std::exception &e) {
       SPDLOG_TRACE(e.what());
-      json ret;
+      nlohmann::json ret;
       ret[0] = simpleJsonSaveResult(event, false, e.what());
       return ret;
     }
   }
-  json ret;
+  nlohmann::json ret;
   ret[0] = simpleJsonSaveResult(event, false, "Not Valid Structure");
   return ret;
 }

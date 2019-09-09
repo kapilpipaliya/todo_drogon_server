@@ -11,20 +11,20 @@ ContactType::ContactType(JAdminContextPtr context_)
 
 void ContactType::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().selectedColumns() = {
+  getQuery().setSelectedColumns({
       sqlb::SelectedColumn({"Id", "id", "", "a", PG_TYPES::INT8, true}),
       sqlb::SelectedColumn({"Name", "name", "", "a", PG_TYPES::TEXT, true}),
       sqlb::SelectedColumn({"Create Time", "inserted_at", "", "a",
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
       sqlb::SelectedColumn({"Update Time", "updated_at", "", "a",
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-  };
+  });
 }
 
-json ContactType::ins(json event, json args) {
+nlohmann::json ContactType::ins(nlohmann::json event, nlohmann::json args) {
   return insBase(event, args, "name", "$1", args[0]["name"].get<std::string>());
 }
 
-json ContactType::upd(json event, json args) {
+nlohmann::json ContactType::upd(nlohmann::json event, nlohmann::json args) {
   return updBase(event, args, "name", "$1", args[0]["name"].get<std::string>());
 }

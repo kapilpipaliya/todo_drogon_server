@@ -4,20 +4,21 @@
 #include <drogon/WebSocketController.h>
 #include "json.hpp"
 
-using namespace drogon;
-using nlohmann::json;
+
+
 
 class UserActorBase {
  public:
   UserActorBase();
+  virtual ~UserActorBase();
 
  protected:
-  virtual void blocking_run(const WebSocketConnectionPtr &wsConnPtr,
+  virtual void blocking_run(const drogon::WebSocketConnectionPtr &wsConnPtr,
                             std::string &&message,
-                            const WebSocketMessageType &type);
-  virtual json handleTextMessage(const WebSocketConnectionPtr &wsConnPtr,
-                                 json in) = 0;
-  virtual json handleBinaryMessage(const WebSocketConnectionPtr &wsConnPtr,
+                            const drogon::WebSocketMessageType &type);
+  virtual nlohmann::json handleTextMessage(const drogon::WebSocketConnectionPtr &wsConnPtr,
+                                 nlohmann::json in) = 0;
+  virtual nlohmann::json handleBinaryMessage(const drogon::WebSocketConnectionPtr &wsConnPtr,
                                    std::string &message) = 0;
 };
 

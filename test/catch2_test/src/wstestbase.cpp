@@ -31,29 +31,31 @@ void WSTestBase::init() {
   // run();
 }
 void WSTestBase::setMessageHandler() {
-  wsPtr->setMessageHandler([]([[maybe_unused]] const std::string &message,
-                              [[maybe_unused]] const WebSocketClientPtr &wsPtr,
-                              const WebSocketMessageType &type) {
-    //        SPDLOG_TRACE("new message: {}", message);
-    //        REQUIRE(message.empty() == true);
-    if (type == WebSocketMessageType::Pong) {
-      SPDLOG_TRACE("recv a pong");
-      // if (!continually) { app().getLoop()->quit(); }
-    }
-  });
+  wsPtr->setMessageHandler(
+      []([[maybe_unused]] const std::string &message,
+         [[maybe_unused]] const drogon::WebSocketClientPtr &wsPtr,
+         const drogon::WebSocketMessageType &type) {
+        //        SPDLOG_TRACE("new message: {}", message);
+        //        REQUIRE(message.empty() == true);
+        if (type == drogon::WebSocketMessageType::Pong) {
+          SPDLOG_TRACE("recv a pong");
+          // if (!continually) { app().getLoop()->quit(); }
+        }
+      });
 }
 void WSTestBase::setConnectionClosedHandler() {
   wsPtr->setConnectionClosedHandler(
-      []([[maybe_unused]] const WebSocketClientPtr &wsPtr) {
+      []([[maybe_unused]] const drogon::WebSocketClientPtr &wsPtr) {
         SPDLOG_TRACE("ws closed!");
       });
 }
 void WSTestBase::connectToServer() {
   //    req->addCookie("", "");
   wsPtr->connectToServer(
-      req, [this](ReqResult r, [[maybe_unused]] const HttpResponsePtr &resp,
-                  [[maybe_unused]] const WebSocketClientPtr &wsPtr) {
-        if (r == ReqResult::Ok) {
+      req, [this](drogon::ReqResult r,
+                  [[maybe_unused]] const drogon::HttpResponsePtr &resp,
+                  [[maybe_unused]] const drogon::WebSocketClientPtr &wsPtr) {
+        if (r == drogon::ReqResult::Ok) {
           // SPDLOG_TRACE("ws connected!");
           // wsPtr->getConnection()->setPingMessage("", 2s);
           // wsPtr->getConnection()->send("hello!");
@@ -64,13 +66,13 @@ void WSTestBase::connectToServer() {
       });
 }
 void WSTestBase::ExitAfter(double seconds = 5) {
-  app().getLoop()->runAfter(seconds, []() {
+  drogon::app().getLoop()->runAfter(seconds, []() {
     // if (!continually) { exit(1); }
-    app().getLoop()->quit();
+    drogon::app().getLoop()->quit();
   });
 }
 void WSTestBase::quit(bool isPass, std::string reason) {
-  app().getLoop()->quit();
+  drogon::app().getLoop()->quit();
   // if(app().isRunning()){ app().quit(); }
   testResult = isPass;
   if (!reason.empty()) {
@@ -78,4 +80,4 @@ void WSTestBase::quit(bool isPass, std::string reason) {
   }
 }
 
-void WSTestBase::run() { app().run(); }
+void WSTestBase::run() { drogon::app().run(); }

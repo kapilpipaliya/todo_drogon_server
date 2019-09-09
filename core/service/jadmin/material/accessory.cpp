@@ -10,7 +10,7 @@ Accessory::Accessory(JAdminContextPtr context_) : context(std::move(context_)) {
 
 void Accessory::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().selectedColumns() = {
+  getQuery().setSelectedColumns({
       sqlb::SelectedColumn({"Id", "id", "", "a", PG_TYPES::INT8, false}),
       //        sqlb::SelectedColumn({"Material", "material_id", "", "a",
       //        PG_TYPES::INT8, true, 1, 2}), sqlb::SelectedColumn({"m_slug",
@@ -32,26 +32,26 @@ void Accessory::setupTable() {
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
       sqlb::SelectedColumn({"Update Time", "updated_at", "", "a",
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-  };
+  });
 
   //    auto m = sqlb::ObjectIdentifier("material", "metal", "m");
   auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getQuery().joins() = {
+  getQuery().setJoins({
       //        sqlb::Join("left", m, "a.material_id = m.id"),
       sqlb::Join("left", u1, "a.create_user_id = u1.id"),
       sqlb::Join("left", u2, "a.update_user_id = u2.id"),
-  };
+  });
 }
 
-json Accessory::ins(json event, json args) {
+nlohmann::json Accessory::ins(nlohmann::json event, nlohmann::json args) {
   return insBase(event, args, "slug, name", "$1, $2",
                  args[0]["slug"].get<std::string>(),
                  args[0]["name"].get<std::string>());
 }
 
-json Accessory::upd(json event, json args) {
+nlohmann::json Accessory::upd(nlohmann::json event, nlohmann::json args) {
   return updBase(event, args, "slug, name", "$1, $2",
                  args[0]["slug"].get<std::string>(),
                  args[0]["name"].get<std::string>());

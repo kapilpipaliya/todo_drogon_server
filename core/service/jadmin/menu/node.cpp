@@ -9,7 +9,7 @@ Node::Node(JAdminContextPtr context_) : context(std::move(context_)) {
 
 void Node::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().selectedColumns() = {
+  getQuery().setSelectedColumns({
       sqlb::SelectedColumn({"Id", "id", "", "m", PG_TYPES::INT8, true}),
       sqlb::SelectedColumn(
           {"Parent", "parent_id", "", "m", PG_TYPES::INT4, true}),
@@ -35,19 +35,19 @@ void Node::setupTable() {
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
       sqlb::SelectedColumn({"Update Time", "updated_at", "", "m",
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-  };
+  });
 
   auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getQuery().joins() = {
+  getQuery().setJoins({
 
       sqlb::Join("left", u1, "m.create_user_id = u1.id"),
       sqlb::Join("left", u2, "m.update_user_id = u2.id"),
-  };
+  });
 }
 
-json Node::ins(json event, json args) {
+nlohmann::json Node::ins(nlohmann::json event, nlohmann::json args) {
   return insBase(
       event, args,
       "parent_id, rank, slug, label, active, url, web_icon, description, class",
@@ -59,7 +59,7 @@ json Node::ins(json event, json args) {
       args[0]["class"].get<std::string>());
 }
 
-json Node::upd(json event, json args) {
+nlohmann::json Node::upd(nlohmann::json event, nlohmann::json args) {
   return updBase(
       event, args,
       "parent_id, rank, slug, label, active, url, web_icon, description, class",

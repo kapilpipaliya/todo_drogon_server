@@ -9,8 +9,8 @@ using std::string;
 namespace madmin {
 class Catalog : public BaseServiceAbs {
  public:
-  MAdminContextPtr context;
   Catalog(MAdminContextPtr);
+  virtual ~Catalog() = default;
   void setupTable() override;
 
   /**
@@ -575,6 +575,8 @@ class Catalog : public BaseServiceAbs {
   // protected static function getSongTags($type, int id);
   // static void can_remove($libitem, $user = null);
   // static void process_action($action, $catalogs, $options = null);
+  MAdminContextPtr& getContext() { return context; }
+
  private:
   int $id{};
   string name;
@@ -592,6 +594,8 @@ class Catalog : public BaseServiceAbs {
   string f_update;
   string f_add;
   string f_clean;
+
+  MAdminContextPtr context;
 };
 }  // namespace madmin
 #endif  // CATALOG_H

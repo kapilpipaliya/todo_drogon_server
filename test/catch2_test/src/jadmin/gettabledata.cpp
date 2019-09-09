@@ -4,16 +4,16 @@
 #include <fmt/format.h>
 #include <catch2/catch.hpp>
 #include "json.hpp"
-using namespace nlohmann;
-using namespace fmt::v5;
+
 GetTableData::GetTableData(std::string table) : table(table) {}
 
 void GetTableData::connectToServer() {
   getWsPtr()->connectToServer(
       getReqPtr(),
-      [this](ReqResult r, [[maybe_unused]] const HttpResponsePtr &resp,
-             [[maybe_unused]] const WebSocketClientPtr &wsPtr) {
-        if (r == ReqResult::Ok) {
+      [this](drogon::ReqResult r,
+             [[maybe_unused]] const drogon::HttpResponsePtr &resp,
+             [[maybe_unused]] const drogon::WebSocketClientPtr &wsPtr) {
+        if (r == drogon::ReqResult::Ok) {
           //
           // a JSON value
           auto in = R"(
@@ -24,7 +24,7 @@ void GetTableData::connectToServer() {
                                             [["{1}","data",1000],[[],[],[0]]]
                                             ]
                                             )";
-          auto s = format(in, table, table);
+          auto s = fmt::format(in, table, table);
           SPDLOG_TRACE(s);
           auto j = jsonparse(s);
 
@@ -37,9 +37,9 @@ void GetTableData::connectToServer() {
 void GetTableData::setMessageHandler() {
   getWsPtr()->setMessageHandler(
       [this](const std::string &message,
-             [[maybe_unused]] const WebSocketClientPtr &wsPtr,
-             const WebSocketMessageType &type) {
-        if (type == WebSocketMessageType::Text) {
+             [[maybe_unused]] const drogon::WebSocketClientPtr &wsPtr,
+             const drogon::WebSocketMessageType &type) {
+        if (type == drogon::WebSocketMessageType::Text) {
           auto j = jsonparse(message);
           SPDLOG_TRACE(j.dump());
           // event

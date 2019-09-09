@@ -9,15 +9,16 @@
 #include "session.h"
 #include "spdlogfix.h"
 using namespace jadmin;
-using nlohmann::json;
+
 Auth::Auth(JAdminContextPtr context_) : context(std::move(context_)) {}
 
 void Auth::setupTable() {}
 
-json Auth::handleEvent(json event, unsigned long next, json args) {
+nlohmann::json Auth::handleEvent(nlohmann::json event, unsigned long next,
+                                 nlohmann::json args) {
   auto event_cmp = event[next].get<std::string>();
   if (event_cmp == "admin_login" || event == "user_login") {
-    json res = {{}, {}};
+    nlohmann::json res = {{}, {}};
     if (args.is_object() && args["user"].is_string() &&
         args["pass"].is_string()) {
       auto [session_id, user_id] = login(args["user"].get<std::string>(),
@@ -40,7 +41,8 @@ json Auth::handleEvent(json event, unsigned long next, json args) {
       return {simpleJsonSaveResult(event, true, "Done")};
     }
     return {simpleJsonSaveResult(event, false, "UnAuthorised")};
-  } else if (event_cmp == "image_meta_data") {
+  }
+  if (event_cmp == "image_meta_data") {
     return saveImageMeta(event, args);
     //    } else if (event_cmp  == "thumb_data") {
     //        return thumb_data(event, args);
@@ -127,16 +129,18 @@ void Auth::deleteuserSession() {
 }
 */
 
-json Auth::handleBinaryEvent(json event, int next, std::string &message) {
+nlohmann::json Auth::handleBinaryEvent(nlohmann::json event, int next,
+                                       std::string &message) {
   if (event[next].get<std::string>() == "save_attachment_data") {
     return save_setting_attachment(event, message);
   }
-  json ret;
+  nlohmann::json ret;
   return ret;
 }
 
 // Save Image meta on server temporary
-json Auth::saveFileMeta(const json &event, json args) {
+nlohmann::json Auth::saveFileMeta(const nlohmann::json &event,
+                                  nlohmann::json args) {
   long c = context->sessionId();
 
   // auto strSql = "INSERT INTO music.temp_file_meta ( session_id, event, name,
@@ -153,19 +157,20 @@ json Auth::saveFileMeta(const json &event, json args) {
     // auto r = Dba::writeInTrans(transPtr, strSql, c, args[0].dump(),
     // args[1].get<std::string>(), args[2].get<long>(),
     // args[3].get<std::string>());
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, true, "Done");
     return ret;
   } catch (const std::exception &e) {
     SPDLOG_TRACE(e.what());
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, false, "Error");
     return ret;
   }
 }
 
 // Save Image meta on server temporary
-json Auth::saveImageMeta(const json &event, json args) {
+nlohmann::json Auth::saveImageMeta(const nlohmann::json &event,
+                                   nlohmann::json args) {
   long c = context->sessionId();
 
   // auto strSql = "INSERT INTO user1.temp_image ( session_id, event, name,
@@ -183,12 +188,12 @@ json Auth::saveImageMeta(const json &event, json args) {
     // args[1].get<std::string>(), args[2].get<long>(),
     // args[3].get<std::string>());
     auto r = Dba::writeInTrans(transPtr, strSql_);
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, true, "Done");
     return ret;
   } catch (const std::exception &e) {
     SPDLOG_TRACE(e.what());
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, false, "Error");
     return ret;
   }
@@ -197,11 +202,11 @@ json Auth::saveImageMeta(const json &event, json args) {
 
 // ------------------
 /*
-json Auth::thumb_data( json event, json args)
+nlohmann::json Auth::thumb_data( nlohmann::json event, nlohmann::json args)
 {
     // send meta_data
     json batch;
-    json ret;
+    nlohmann::json ret;
 
     json data1;
     data1[0] = "take_image_meta";
@@ -232,27 +237,27 @@ x[0]["name"].c_str(), std::ios::in | std::ios::binary | std::ios::ate); if
 (file.is_open()) { auto memblock = read_all(file); file.close();
 
                 //SPDLOG_TRACE("the entire file content is in memory");
-                wsConnPtr->send(memblock, WebSocketMessageType::Binary); // Note
-when server not able to send this file, front end crash.
+                wsConnPtr->send(memblock, drogon::WebSocketMessageType::Binary);
+// Note when server not able to send this file, front end crash.
                 //delete[] memblock;
             }
         } else {
             // Fix simpleJsonSaveResult(event, true, "Done");
         }
-        return json(Json::nullValue);
+        return json(nlohmann::json::nullValue);
     } catch (const std::exception &e) {
 
         SPDLOG_TRACE(e.what());
         //simpleJsonSaveResult(event, false, e.what());
-        return json(Json::nullValue);
+        return json(nlohmann::json::nullValue);
     }
     //get binary data and send.
 }
 */
 
 // save image in disk and return temporary id:
-json Auth::save_setting_attachment(const json & /*event*/,
-                                   std::string &message) {
+nlohmann::json Auth::save_setting_attachment(const nlohmann::json & /*event*/,
+                                             std::string &message) {
   auto session_id = context->sessionId();
   auto strSql = sel_("user1.temp_image", "event,  name, size, type",
                      "where session_id = $1");
@@ -268,7 +273,7 @@ json Auth::save_setting_attachment(const json & /*event*/,
     // check if file exist else rename a file
     // convert this to json
 
-    auto event_json = json::parse(r[0]["event"].c_str());
+    auto event_json = nlohmann::json::parse(r[0]["event"].c_str());
 
     namespace fs = boost::filesystem;
     auto home = fs::path(getenv("HOME"));
@@ -310,8 +315,8 @@ json Auth::save_setting_attachment(const json & /*event*/,
     ReplaceAll2(strSql, "%1", temp_image_table.schema());
     ReplaceAll2(strSql, "%2", temp_image_table.name());
 
-    json ret;
-    json jresult;
+    nlohmann::json ret;
+    nlohmann::json jresult;
     jresult[0] = event_json;
     auto insert_result = Dba::writeInTrans(transPtr, strSql, name, size, type);
     jresult[1] = insert_result[0]["id"].as<long>();
@@ -322,7 +327,7 @@ json Auth::save_setting_attachment(const json & /*event*/,
 
   } catch (const std::exception &e) {
     SPDLOG_TRACE(e.what());
-    json ret;
+    nlohmann::json ret;
     return ret;
   }
 }

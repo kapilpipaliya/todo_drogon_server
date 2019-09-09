@@ -34,7 +34,7 @@ TEST_CASE("server reply error on string type of message.", "[WSTest]") {
   std::string str = "hello";
   nlohmann::json j = str;
   // Bind not work because reply is not an array
-  //    auto b = w2.bindOnce(j, [&a](json r){
+  //    auto b = w2.bindOnce(j, [&a](nlohmann::json r){
   //        REQUIRE(r== "Invalid Message only array handled: \"hello\"");
   //        a.quit();
   //    });
@@ -60,12 +60,12 @@ TEST_CASE("authorisation check without cookies", "[WSTest]") {
   int i = 0;
   QCoreApplication a(i, argv);
   auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/madmin")));
-  json event = json::array({"user", "is_logged_in", 0});
-  json payload = json::array({{event, {{}}}});
+  nlohmann::json event = nlohmann::json::array({"user", "is_logged_in", 0});
+  nlohmann::json payload = nlohmann::json::array({{event, {{}}}});
   //    json j = R"( [ [["user","is_logged_in",0],[[]]]] )"_json;
   SPDLOG_TRACE(payload.dump());
   bool r0 = false;
-  auto b = w2.bindOnce(event, [&r0](json r) {
+  auto b = w2.bindOnce(event, [&r0](nlohmann::json r) {
     SPDLOG_TRACE("This should be false");
     REQUIRE(r[0] == false);
     r0 = true;
@@ -88,12 +88,13 @@ TEST_CASE("login on backend with username and password", "[WSTest]") {
   int i = 0;
   QCoreApplication a(i, argv);
   auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/madmin")));
-  json event = json::array({"auth", "login", 0});
-  json payload = json::array(
-      {{event, json::object({{"user", "sadmin"}, {"pass", "123456"}})}});
+  nlohmann::json event = nlohmann::json::array({"auth", "login", 0});
+  nlohmann::json payload = nlohmann::json::array(
+      {{event,
+        nlohmann::json::object({{"user", "sadmin"}, {"pass", "123456"}})}});
   SPDLOG_TRACE(payload.dump());
   bool r0 = false;
-  auto b = w2.bindOnce(event, [&r0](json r) {
+  auto b = w2.bindOnce(event, [&r0](nlohmann::json r) {
     REQUIRE(r[0]["ok"] == true);
     r0 = true;
   });
@@ -120,37 +121,38 @@ TEST_CASE("check that all table Super Admin data are correctly replied",
   int i = 0;
   QCoreApplication a(i, argv);
   auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/madmin")));
-  json event1 = json::array({"auth", "login", 0});
-  json event11 = json::array({"auth", "set_cookie", 0});
-  json event2 = json::array({"auth", "is_logged_in", 0});
-  json event3 = json::array({"user", "header", 0});
-  json event4 = json::array({"user", "data", 0});
-  json payload = json::array({
-      {event1, json::object({{"user", "sadmin"}, {"pass", "123456"}})},
-      {event2, json::array({{}})},
-      {event3, json::array({{}})},
-      {event4, json::array({{}})},
+  nlohmann::json event1 = nlohmann::json::array({"auth", "login", 0});
+  nlohmann::json event11 = nlohmann::json::array({"auth", "set_cookie", 0});
+  nlohmann::json event2 = nlohmann::json::array({"auth", "is_logged_in", 0});
+  nlohmann::json event3 = nlohmann::json::array({"user", "header", 0});
+  nlohmann::json event4 = nlohmann::json::array({"user", "data", 0});
+  nlohmann::json payload = nlohmann::json::array({
+      {event1,
+       nlohmann::json::object({{"user", "sadmin"}, {"pass", "123456"}})},
+      {event2, nlohmann::json::array({{}})},
+      {event3, nlohmann::json::array({{}})},
+      {event4, nlohmann::json::array({{}})},
   });
 
   SPDLOG_TRACE(payload.dump());
   bool r0, r1, r2, r3, r4 = false;
-  auto b1 = w2.bindOnce(event1, [&r0](json r) {
+  auto b1 = w2.bindOnce(event1, [&r0](nlohmann::json r) {
     REQUIRE(r[0]["ok"] == true);
     r0 = true;
   });
-  auto b11 = w2.bindOnce(event11, [&r1](json r) {
+  auto b11 = w2.bindOnce(event11, [&r1](nlohmann::json r) {
     REQUIRE(r[0].is_number() == true);
     r1 = true;
   });
-  auto b2 = w2.bindOnce(event2, [&r2](json r) {
+  auto b2 = w2.bindOnce(event2, [&r2](nlohmann::json r) {
     REQUIRE(r[0] == true);
     r2 = true;
   });
-  auto b3 = w2.bindOnce(event3, [&r3](json r) {
+  auto b3 = w2.bindOnce(event3, [&r3](nlohmann::json r) {
     REQUIRE(r[0].size() == 6);
     r3 = true;
   });
-  auto b4 = w2.bindOnce(event4, [&r4](json r) {
+  auto b4 = w2.bindOnce(event4, [&r4](nlohmann::json r) {
     REQUIRE(r[1].size() >= 0);
     r4 = true;
   });
@@ -184,33 +186,34 @@ TEST_CASE("password change should work.") {
   int i = 0;
   QCoreApplication a(i, argv);
   auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/madmin")));
-  json event1 = json::array({"auth", "login", 0});
-  json event11 = json::array({"auth", "set_cookie", 0});
-  json event2 = json::array({"user", "update_password", 0});
-  json event3 = json::array({"user", "update_password", 1});
-  json payload = json::array({
-      {event1, json::object({{"user", "sadmin"}, {"pass", "123456"}})},
-      {event2, json::array({json::object(
+  nlohmann::json event1 = nlohmann::json::array({"auth", "login", 0});
+  nlohmann::json event11 = nlohmann::json::array({"auth", "set_cookie", 0});
+  nlohmann::json event2 = nlohmann::json::array({"user", "update_password", 0});
+  nlohmann::json event3 = nlohmann::json::array({"user", "update_password", 1});
+  nlohmann::json payload = nlohmann::json::array({
+      {event1,
+       nlohmann::json::object({{"user", "sadmin"}, {"pass", "123456"}})},
+      {event2, nlohmann::json::array({nlohmann::json::object(
                    {{"old_password", "123456"}, {"new_password", "999999"}})})},
-      {event3, json::array({json::object(
+      {event3, nlohmann::json::array({nlohmann::json::object(
                    {{"old_password", "999999"}, {"new_password", "123456"}})})},
   });
 
   SPDLOG_TRACE(payload.dump());
   bool r0, r1, r2, r3 = false;
-  auto b1 = w2.bindOnce(event1, [&r0](json r) {
+  auto b1 = w2.bindOnce(event1, [&r0](nlohmann::json r) {
     REQUIRE(r[0]["ok"] == true);
     r0 = true;
   });
-  auto b11 = w2.bindOnce(event11, [&r1](json r) {
+  auto b11 = w2.bindOnce(event11, [&r1](nlohmann::json r) {
     REQUIRE(r[0].is_number() == true);
     r1 = true;
   });
-  auto b2 = w2.bindOnce(event2, [&r2](json r) {
+  auto b2 = w2.bindOnce(event2, [&r2](nlohmann::json r) {
     REQUIRE(r[0]["ok"] == true);
     r2 = true;
   });
-  auto b3 = w2.bindOnce(event3, [&r3](json r) {
+  auto b3 = w2.bindOnce(event3, [&r3](nlohmann::json r) {
     REQUIRE(r[0]["ok"] == true);
     r3 = true;
   });
@@ -236,28 +239,30 @@ TEST_CASE("Logout successfull") {
   int i = 0;
   QCoreApplication a(i, argv);
   auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/madmin")));
-  json event1 = json::array({"auth", "login", 0});
-  json event11 = json::array({"auth", "set_cookie", 0});
-  json event2 = json::array({"auth", "logout", 0});
-  json event3 = json::array({"user", "is_logged_in", 0});
-  json payload = json::array({
-      {event1, json::object({{"user", "sadmin"}, {"pass", "123456"}})},
-      {event2, json::array()},
-      {event3, json::array()},
+  nlohmann::json event1 = nlohmann::json::array({"auth", "login", 0});
+  nlohmann::json event11 = nlohmann::json::array({"auth", "set_cookie", 0});
+  nlohmann::json event2 = nlohmann::json::array({"auth", "logout", 0});
+  nlohmann::json event3 = nlohmann::json::array({"user", "is_logged_in", 0});
+  nlohmann::json payload = nlohmann::json::array({
+      {event1,
+       nlohmann::json::object({{"user", "sadmin"}, {"pass", "123456"}})},
+      {event2, nlohmann::json::array()},
+      {event3, nlohmann::json::array()},
   });
 
   SPDLOG_TRACE(payload.dump());
   bool r0, r1, r2 = false;
-  auto b1 = w2.bindOnce(event1, [](json r) { REQUIRE(r[0]["ok"] == true); });
-  auto b11 = w2.bindOnce(event11, [&r0](json r) {
+  auto b1 = w2.bindOnce(event1,
+                        [](nlohmann::json r) { REQUIRE(r[0]["ok"] == true); });
+  auto b11 = w2.bindOnce(event11, [&r0](nlohmann::json r) {
     REQUIRE(r[0].is_number() == true);
     r0 = true;
   });
-  auto b2 = w2.bindOnce(event2, [&r1](json r) {
+  auto b2 = w2.bindOnce(event2, [&r1](nlohmann::json r) {
     REQUIRE(r[0]["ok"] == true);
     r1 = true;
   });
-  auto b3 = w2.bindOnce(event3, [&r2](json r) {
+  auto b3 = w2.bindOnce(event3, [&r2](nlohmann::json r) {
     REQUIRE(r[0] == false);
     r2 = true;
   });
@@ -315,48 +320,49 @@ TEST_CASE("create update delete successfull") {
   int i = 0;
   QCoreApplication a(i, argv);
   auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/madmin")));
-  json event1 = json::array({"auth", "login", 0});
-  json event11 = json::array({"auth", "set_cookie", 0});
-  json event2 = json::array({"user", "is_logged_in", 0});
-  json event3 = json::array({"song", "ins", 0});
-  json event4 = json::array({"song", "upd", 0});
-  json event5 = json::array({"song", "del", 0});
-  json payload = json::array({
-      {event1, json::object({{"user", "sadmin"}, {"pass", "123456"}})},
-      {event2, json::array()},
-      {event3, json::array({json::object(
+  nlohmann::json event1 = nlohmann::json::array({"auth", "login", 0});
+  nlohmann::json event11 = nlohmann::json::array({"auth", "set_cookie", 0});
+  nlohmann::json event2 = nlohmann::json::array({"user", "is_logged_in", 0});
+  nlohmann::json event3 = nlohmann::json::array({"song", "ins", 0});
+  nlohmann::json event4 = nlohmann::json::array({"song", "upd", 0});
+  nlohmann::json event5 = nlohmann::json::array({"song", "del", 0});
+  nlohmann::json payload = nlohmann::json::array({
+      {event1,
+       nlohmann::json::object({{"user", "sadmin"}, {"pass", "123456"}})},
+      {event2, nlohmann::json::array()},
+      {event3, nlohmann::json::array({nlohmann::json::object(
                    {{"title", "very_new_song"}, {"catalog_id", 2}})})},
-      {event4,
-       json::array(
-           {json::object({{"title", "very_new_song2"}, {"catalog_id", 2}}),
-            R"([null, null, null, null, "=very_new_song"])"_json})},
-      {event5,
-       json::array({R"([[null, null, null, null, "=very_new_song2"]])"_json})},
+      {event4, nlohmann::json::array(
+                   {nlohmann::json::object(
+                        {{"title", "very_new_song2"}, {"catalog_id", 2}}),
+                    R"([null, null, null, null, "=very_new_song"])"_json})},
+      {event5, nlohmann::json::array(
+                   {R"([[null, null, null, null, "=very_new_song2"]])"_json})},
   });
 
   SPDLOG_TRACE(payload.dump());
   bool r0, r1, r2, r3, r4, r5 = false;
-  auto b1 = w2.bindOnce(event1, [&r0](json r) {
+  auto b1 = w2.bindOnce(event1, [&r0](nlohmann::json r) {
     REQUIRE(r[0]["ok"] == true);
     r0 = true;
   });
-  auto b11 = w2.bindOnce(event11, [&r1](json r) {
+  auto b11 = w2.bindOnce(event11, [&r1](nlohmann::json r) {
     REQUIRE(r[0].is_number() == true);
     r1 = true;
   });
-  auto b2 = w2.bindOnce(event2, [&r2](json r) {
+  auto b2 = w2.bindOnce(event2, [&r2](nlohmann::json r) {
     REQUIRE(r[0] == true);
     r2 = true;
   });
-  auto b3 = w2.bindOnce(event3, [&r3](json r) {
+  auto b3 = w2.bindOnce(event3, [&r3](nlohmann::json r) {
     REQUIRE(r[0]["ok"] == true);
     r3 = true;
   });
-  auto b4 = w2.bindOnce(event4, [&r4](json r) {
+  auto b4 = w2.bindOnce(event4, [&r4](nlohmann::json r) {
     REQUIRE(r[0]["ok"] == true);
     r4 = true;
   });
-  auto b5 = w2.bindOnce(event5, [&r5](json r) {
+  auto b5 = w2.bindOnce(event5, [&r5](nlohmann::json r) {
     REQUIRE(r[0]["ok"] == true);
     r5 = true;
   });

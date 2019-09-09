@@ -4,13 +4,12 @@
 using namespace jadmin;
 
 Priority::Priority(JAdminContextPtr context_) : context(std::move(context_)) {
-  getQuery() =
-      sqlb::Query(sqlb::ObjectIdentifier("account", "priority", "a"));
+  getQuery() = sqlb::Query(sqlb::ObjectIdentifier("account", "priority", "a"));
 }
 
 void Priority::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().selectedColumns() = {
+  getQuery().setSelectedColumns({
       sqlb::SelectedColumn({"Id", "id", "", "a", PG_TYPES::INT8, false}),
       sqlb::SelectedColumn({"Rank", "rank", "", "a", PG_TYPES::INT4, false}),
       sqlb::SelectedColumn({"Code", "slug", "", "a", PG_TYPES::TEXT, true}),
@@ -29,23 +28,23 @@ void Priority::setupTable() {
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
       sqlb::SelectedColumn({"Update Time", "updated_at", "", "a",
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-  };
+  });
 
   auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getQuery().joins() = {
+  getQuery().setJoins({
       sqlb::Join("left", u1, "a.create_user_id = u1.id"),
       sqlb::Join("left", u2, "a.update_user_id = u2.id"),
-  };
+  });
 }
-json Priority::ins(json event, json args) {
+nlohmann::json Priority::ins(nlohmann::json event, nlohmann::json args) {
   return insBase(event, args, "rank, slug, name", "$1, $2, $3",
                  args[0]["rank"].get<int>(), args[0]["slug"].get<std::string>(),
                  args[0]["name"].get<std::string>());
 }
 
-json Priority::upd(json event, json args) {
+nlohmann::json Priority::upd(nlohmann::json event, nlohmann::json args) {
   return updBase(event, args, "rank, slug, name", "$1, $2, $3",
                  args[0]["rank"].get<int>(), args[0]["slug"].get<std::string>(),
                  args[0]["name"].get<std::string>());

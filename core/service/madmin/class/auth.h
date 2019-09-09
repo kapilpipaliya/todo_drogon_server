@@ -10,7 +10,8 @@ class Auth : public BaseServiceAbs {
  public:
   Auth(MAdminContextPtr);
   void setupTable() override;
-  json handleEvent(json event, unsigned long next, json args) override;
+  nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
+                             nlohmann::json args) override;
   /**
    * logout
    *
@@ -105,7 +106,7 @@ class Auth : public BaseServiceAbs {
    * @return array
    */
   // void openid_auth_2();
-  json saveFileMeta(const json& event, json args);
+  nlohmann::json saveFileMeta(const nlohmann::json& event, nlohmann::json args);
 
  private:
   MAdminContextPtr context;

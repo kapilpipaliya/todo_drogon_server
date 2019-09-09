@@ -10,7 +10,7 @@ Task::Task(JAdminContextPtr context_) : context(std::move(context_)) {
 // todo fix
 void Task::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().selectedColumns() = {
+  getQuery().setSelectedColumns({
       sqlb::SelectedColumn({"Id", "id", "", "m", PG_TYPES::INT8, false}),
       //        sqlb::SelectedColumn({"Rank", "rank", "", "m", PG_TYPES::INT4,
       //        false}),
@@ -35,21 +35,21 @@ void Task::setupTable() {
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
       sqlb::SelectedColumn({"Update Time", "updated_at", "", "m",
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-  };
+  });
 
   auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getQuery().joins() = {
+  getQuery().setJoins({
 
       sqlb::Join("left", u1, "m.create_user_id = u1.id"),
       sqlb::Join("left", u2, "m.update_user_id = u2.id"),
-  };
+  });
 }
-json Task::ins(json event, json args) {
+nlohmann::json Task::ins(nlohmann::json event, nlohmann::json args) {
   return insBase(event, args, "name", "$1", args[0]["name"].get<std::string>());
 }
 
-json Task::upd(json event, json args) {
+nlohmann::json Task::upd(nlohmann::json event, nlohmann::json args) {
   return updBase(event, args, "name", "$1", args[0]["name"].get<std::string>());
 }

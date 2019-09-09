@@ -51,8 +51,8 @@ MainActor::~MainActor() = default;
 
 caf::behavior MainActor::make_behavior() {
   return {[this](run_atom, MainActorType actortype,
-                 const WebSocketConnectionPtr &wsConnPtr, std::string message,
-                 const WebSocketMessageType &type) -> caf::result<void> {
+                 const drogon::WebSocketConnectionPtr &wsConnPtr, std::string message,
+                 const drogon::WebSocketMessageType &type) -> caf::result<void> {
             try {
               passToUser(actortype, wsConnPtr, std::move(message), type);
             } catch (const std::exception &e) {
@@ -60,7 +60,7 @@ caf::behavior MainActor::make_behavior() {
             }
             return {};
           },
-          [this](exit_atom, const WebSocketConnectionPtr &wsConnPtr) {
+          [this](exit_atom, const drogon::WebSocketConnectionPtr &wsConnPtr) {
             auto it = actorMap.find(wsConnPtr);
             if (it == actorMap.end()) {
               // not possible..
@@ -74,9 +74,9 @@ caf::behavior MainActor::make_behavior() {
 }
 
 void MainActor::passToUser(MainActorType actortype,
-                           const WebSocketConnectionPtr &wsConnPtr,
+                           const drogon::WebSocketConnectionPtr &wsConnPtr,
                            std::string &&message,
-                           const WebSocketMessageType &type) {
+                           const drogon::WebSocketMessageType &type) {
   switch (actortype) {
     case MainActorType::JAdmin: {
       auto it = actorMap.find(wsConnPtr);

@@ -14,13 +14,12 @@ using namespace jadmin;
   array += "}";
 
 Metal::Metal(JAdminContextPtr context_) : context(std::move(context_)) {
-  getQuery() =
-      sqlb::Query(sqlb::ObjectIdentifier("material", "metal", "m"));
+  getQuery() = sqlb::Query(sqlb::ObjectIdentifier("material", "metal", "m"));
 }
 
 void Metal::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().selectedColumns() = {
+  getQuery().setSelectedColumns({
       sqlb::SelectedColumn({"Id", "id", "", "m", PG_TYPES::INT8, false}),
       //        sqlb::SelectedColumn({"Rank", "rank", "", "m", PG_TYPES::INT4,
       //        false}),
@@ -45,19 +44,19 @@ void Metal::setupTable() {
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
       sqlb::SelectedColumn({"Update Time", "updated_at", "", "m",
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-  };
+  });
 
   auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getQuery().joins() = {
+  getQuery().setJoins({
 
       sqlb::Join("left", u1, "m.create_user_id = u1.id"),
       sqlb::Join("left", u2, "m.update_user_id = u2.id"),
-  };
+  });
 }
 
-json Metal::ins(json event, json args) {
+nlohmann::json Metal::ins(nlohmann::json event, nlohmann::json args) {
   auto metal_table = sqlb::ObjectIdentifier("material", "metal", "m");
 
   std::string strSql =
@@ -75,17 +74,17 @@ json Metal::ins(json event, json args) {
                       args[0]["price"].get<float>(),
                       args[0]["melting_point_in_c"].get<float>());
 
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, true, "Done");
     return ret;
   } catch (const std::exception &e) {
     SPDLOG_TRACE(e.what());
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, false, e.what());
     return ret;
   }
 }
-json Metal::upd(json event, json args) {
+nlohmann::json Metal::upd(nlohmann::json event, nlohmann::json args) {
   auto metal_table = sqlb::ObjectIdentifier("material", "metal", "m");
 
   if (args[0]["id"].get<long>()) {
@@ -194,17 +193,17 @@ json Metal::upd(json event, json args) {
 
       auto pr4 = Dba::writeInTrans(transPtr, pr_update4, id1, id2, id3);
 
-      json ret;
+      nlohmann::json ret;
       ret[0] = simpleJsonSaveResult(event, true, "Done");
       return ret;
     } catch (const std::exception &e) {
       SPDLOG_TRACE(e.what());
-      json ret;
+      nlohmann::json ret;
       ret[0] = simpleJsonSaveResult(event, false, e.what());
       return ret;
     }
   }
-  json ret;
+  nlohmann::json ret;
   ret[0] = simpleJsonSaveResult(event, false, "Not Valid Structure");
   return ret;
 }

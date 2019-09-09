@@ -12,7 +12,7 @@ nlohmann::json Auth::handleEvent(nlohmann::json event, unsigned long next,
                                  nlohmann::json args) {
   auto event_cmp = event[next].get<std::string>();
   if (event_cmp == "login") {
-    json res = {{}, {}};
+    nlohmann::json res = {{}, {}};
     if (args.is_object() && args["user"].is_string() &&
         args["pass"].is_string()) {
       auto isauthorised =
@@ -79,12 +79,12 @@ nlohmann::json Auth::saveFileMeta(const nlohmann::json& event,
     // auto r = Dba::writeInTrans(transPtr, strSql, c, args[0].dump(),
     // args[1].get<std::string>(), args[2].get<long>(),
     // args[3].get<std::string>());
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, true, "Done");
     return ret;
   } catch (const std::exception& e) {
     SPDLOG_TRACE(e.what());
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, false, "Error");
     return ret;
   }

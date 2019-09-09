@@ -72,15 +72,17 @@ JAdminActor::JAdminActor(caf::actor_config &cfg)
     : caf::event_based_actor(cfg) {}
 
 caf::behavior JAdminActor::make_behavior() {
-  return {[this](const WebSocketConnectionPtr &wsConnPtr, std::string message,
-                 const WebSocketMessageType &type) -> caf::result<void> {
-            blocking_run(wsConnPtr, std::move(message), type);
-            return {};
-          },
-          [this](exit_atom) -> caf::result<void> {
-            quit();
-            return {};
-          }};
+  return {
+      [this](const drogon::WebSocketConnectionPtr &wsConnPtr,
+             std::string message,
+             const drogon::WebSocketMessageType &type) -> caf::result<void> {
+        blocking_run(wsConnPtr, std::move(message), type);
+        return {};
+      },
+      [this](exit_atom) -> caf::result<void> {
+        quit();
+        return {};
+      }};
 }
 
 #define REGISTER(s, T)                                   \
@@ -91,10 +93,10 @@ caf::behavior JAdminActor::make_behavior() {
     if (!r.is_null()) return r;                          \
   }
 
-json JAdminActor::handleTextMessage(const WebSocketConnectionPtr &wsConnPtr,
-                                    json in) {
+nlohmann::json JAdminActor::handleTextMessage(
+    const drogon::WebSocketConnectionPtr &wsConnPtr, nlohmann::json in) {
   if (!in.is_array()) {
-    return json::array();
+    return nlohmann::json::array();
   }
 
   if constexpr (false) {
@@ -158,13 +160,13 @@ json JAdminActor::handleTextMessage(const WebSocketConnectionPtr &wsConnPtr,
   REGISTER("certified_by", CertifiedBy)
   REGISTER("policy", Policy)
   else {
-    return json::array();
+    return nlohmann::json::array();
   }
-  return json::array();
+  return nlohmann::json::array();
 }
-json JAdminActor::handleBinaryMessage(const WebSocketConnectionPtr &wsConnPtr,
-                                      std::string &message) {
-  json event;
+nlohmann::json JAdminActor::handleBinaryMessage(
+    const drogon::WebSocketConnectionPtr &wsConnPtr, std::string &message) {
+  nlohmann::json event;
   try {
     long c = wsConnPtr->getContext<JAdminContext>()->sessionId();
     auto sqlSession =
@@ -173,7 +175,7 @@ json JAdminActor::handleBinaryMessage(const WebSocketConnectionPtr &wsConnPtr,
     auto r = clientPtr->execSqlSync(sqlSession, c);
     if (!r.empty()) {
       try {
-        event = json::parse(r[0]["event"].c_str());
+        event = nlohmann::json::parse(r[0]["event"].c_str());
         // p.handleBinaryEvent creates new transaction.
         if (event[0] == "image") {
           auto contx = wsConnPtr->getContext<JAdminContext>();
@@ -183,7 +185,7 @@ json JAdminActor::handleBinaryMessage(const WebSocketConnectionPtr &wsConnPtr,
             return res;
           }
         }
-      } catch (json::parse_error &e) {
+      } catch (nlohmann::json::parse_error &e) {
         SPDLOG_TRACE("message: {}", e.what());
         SPDLOG_TRACE("exception id: {}", e.id);
         SPDLOG_TRACE("byte position of error:", e.byte);
@@ -194,11 +196,11 @@ json JAdminActor::handleBinaryMessage(const WebSocketConnectionPtr &wsConnPtr,
     }
   } catch (const std::exception &e) {
     SPDLOG_TRACE(e.what());
-    json jresult;
+    nlohmann::json jresult;
     jresult[0] = event;
     jresult[1] = e.what();
     return jresult;
   }
-  json ret;
+  nlohmann::json ret;
   return ret;
 }

@@ -4,13 +4,12 @@
 using namespace jadmin;
 
 PCategory::PCategory(JAdminContextPtr context_) : context(std::move(context_)) {
-  getQuery() =
-      sqlb::Query(sqlb::ObjectIdentifier("product", "category", "c"));
+  getQuery() = sqlb::Query(sqlb::ObjectIdentifier("product", "category", "c"));
 }
 
 void PCategory::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().selectedColumns() = {
+  getQuery().setSelectedColumns({
       sqlb::SelectedColumn({"Id", "id", "", "c", PG_TYPES::INT8, false}),
       sqlb::SelectedColumn(
           {"Parent", "parent_id", "", "c", PG_TYPES::INT8, true, 2, 1}),
@@ -38,20 +37,20 @@ void PCategory::setupTable() {
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
       sqlb::SelectedColumn({"Update Time", "updated_at", "", "c",
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-  };
+  });
 
   auto p = sqlb::ObjectIdentifier("product", "category", "p");
   auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getQuery().joins() = {
+  getQuery().setJoins({
       sqlb::Join("left", p, "c.parent_id = p.id"),
       sqlb::Join("left", u1, "c.create_user_id = u1.id"),
       sqlb::Join("left", u2, "c.update_user_id = u2.id"),
-  };
+  });
 }
 
-json PCategory::ins(json event, json args) {
+nlohmann::json PCategory::ins(nlohmann::json event, nlohmann::json args) {
   return insBase(
       event, args, "slug, name, description, display_type, parent_id, position",
       "$1, $2, $3, $4, NULLIF($5, 0::bigint), $6",
@@ -64,7 +63,7 @@ json PCategory::ins(json event, json args) {
       args[0]["position"].get<int>());
 }
 
-json PCategory::upd(json event, json args) {
+nlohmann::json PCategory::upd(nlohmann::json event, nlohmann::json args) {
   return updBase(
       event, args, "slug, name, description, display_type, parent_id, position",
       "$1, $2, $3, $4, NULLIF($5, 0::bigint), $6",

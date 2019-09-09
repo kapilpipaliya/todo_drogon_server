@@ -8,8 +8,10 @@ class Auth : public BaseServiceAbs {
  public:
   Auth(JAdminContextPtr);
   void setupTable() override;
-  json handleEvent(json event, unsigned long next, json args) override;
-  json handleBinaryEvent(json event, int next, std::string& message);
+  nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
+                             nlohmann::json args) override;
+  nlohmann::json handleBinaryEvent(nlohmann::json event, int next,
+                                   std::string& message);
   // void deleteuserSession();
   /**
    * logout
@@ -105,11 +107,13 @@ class Auth : public BaseServiceAbs {
    * @return array
    */
   // void openid_auth_2();
-  json saveFileMeta(const json& event, json args);
-  json saveImageMeta(const json& event, json args);
-  // json thumb_data( json event, json args);
+  nlohmann::json saveFileMeta(const nlohmann::json& event, nlohmann::json args);
+  nlohmann::json saveImageMeta(const nlohmann::json& event,
+                               nlohmann::json args);
+  // json thumb_data( nlohmann::json event, nlohmann::json args);
   // Binary functin:
-  json save_setting_attachment(const json& event, std::string& message);
+  nlohmann::json save_setting_attachment(const nlohmann::json& event,
+                                         std::string& message);
 
   JAdminContextPtr context;
 };

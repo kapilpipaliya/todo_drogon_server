@@ -7,7 +7,7 @@
 #include "json.hpp"
 #include "spdlogfix.h"
 
-using nlohmann::json;
+
 using std::string;
 /**
  * User Class
@@ -46,8 +46,8 @@ class User : public BaseServiceAbs {
   User(MAdminContextPtr);
   // User(int user_id);
   void setupTable() override;
-  json handleEvent(json event, unsigned long next, json args) override;
-  json getUserTypeFormData();
+  nlohmann::json handleEvent(nlohmann::json event, unsigned long next, nlohmann::json args) override;
+  nlohmann::json getUserTypeFormData();
 
   // static Count count();
   void load_playlist();
@@ -162,7 +162,7 @@ class User : public BaseServiceAbs {
    * set_preferences
    * sets the prefs for this specific user
    */
-  // void set_preferences();;
+  // void set_preferences();
   /**
    * get_favorites
    * returns an array of your type favorites

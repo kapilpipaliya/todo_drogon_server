@@ -5,8 +5,8 @@
 #include "./core/service/dba.h"
 #include "spdlogfix.h"
 
-JUserContext::JUserContext(const HttpRequestPtr &req,
-                           const WebSocketConnectionPtr &wsConnPtr_)
+JUserContext::JUserContext(const drogon::HttpRequestPtr &req,
+                           const drogon::WebSocketConnectionPtr &wsConnPtr_)
     : wsConnPtr(wsConnPtr_) {
   auto truple = generateContext(req, "user");
   current_session_id = std::get<0>(truple);
@@ -14,7 +14,7 @@ JUserContext::JUserContext(const HttpRequestPtr &req,
   if (current_session_id) setUser();
 }
 std::tuple<long, long> JUserContext::generateContext(
-    const HttpRequestPtr &req, const std::string &account_type) {
+    const drogon::HttpRequestPtr &req, const std::string &account_type) {
   auto c = req->getCookie(account_type);
   if (c.empty()) {
     return {0, 0};

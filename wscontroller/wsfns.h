@@ -4,14 +4,12 @@
 #include "json.hpp"
 #include "spdlogfix.h"
 
-using nlohmann::json;
-using namespace drogon;
-
 class WsFns {
  public:
   WsFns();
 
-  static void sendJson(const WebSocketConnectionPtr &wsConnPtr, json &j);
+  static void sendJson(const drogon::WebSocketConnectionPtr &wsConnPtr,
+                       nlohmann::json &j);
 };
 
 #endif  // WSFNS_H

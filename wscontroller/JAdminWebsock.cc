@@ -13,9 +13,9 @@
 
 using namespace caf;
 
-void EchoWebSocket::handleNewMessage(const WebSocketConnectionPtr &wsConnPtr,
-                                     std::string &&message,
-                                     const WebSocketMessageType &type) {
+void EchoWebSocket::handleNewMessage(
+    const drogon::WebSocketConnectionPtr &wsConnPtr, std::string &&message,
+    const drogon::WebSocketMessageType &type) {
   // std::chrono::seconds(10)
   globalCAF.communicateWithActors()
       ->request(globalCAF.mainActor(), caf::infinite, run_atom::value,
@@ -32,13 +32,14 @@ void EchoWebSocket::handleNewMessage(const WebSocketConnectionPtr &wsConnPtr,
           });
 }
 void EchoWebSocket::handleNewConnection(
-    const HttpRequestPtr &req, const WebSocketConnectionPtr &wsConnPtr) {
+    const drogon::HttpRequestPtr &req,
+    const drogon::WebSocketConnectionPtr &wsConnPtr) {
   std::shared_ptr<JAdminContext> context =
       std::make_shared<JAdminContext>(req, wsConnPtr);
   wsConnPtr->setContext(context);
 }
 void EchoWebSocket::handleConnectionClosed(
-    const WebSocketConnectionPtr &wsConnPtr) {
+    const drogon::WebSocketConnectionPtr &wsConnPtr) {
   globalCAF.communicateWithActors()->request(
       globalCAF.mainActor(), caf::infinite, exit_atom::value, wsConnPtr);
   // LOG_DEBUG << "connection closed!\n" <<wsConnPtr->peerAddr().toIp();

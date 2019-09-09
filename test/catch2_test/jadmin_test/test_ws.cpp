@@ -39,7 +39,7 @@ TEST_CASE("server reply error on string type of message.", "[WSTest]") {
   std::string str = "hello";
   nlohmann::json j = str;
   // Bind not work because reply is not an array
-  //    auto b = w2.bindOnce(j, [&a](json r){
+  //    auto b = w2.bindOnce(j, [&a](nlohmann::json r){
   //        REQUIRE(r== "Invalid Message only array handled: \"hello\"");
   //        a.quit();
   //    });
@@ -64,12 +64,12 @@ TEST_CASE("authorisation check without cookies", "[WSTest]") {
   int i = 0;
   QCoreApplication a(i, argv);
   auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/jadmin")));
-  json event = json::array({"user", "is_logged_in", 0});
-  json payload = json::array({{event, {{}}}});
-  //    json j = R"( [ [["user","is_logged_in",0],[[]]]] )"_json;
+  nlohmann::json event = nlohmann::json::array({"user", "is_logged_in", 0});
+  nlohmann::json payload = nlohmann::json::array({{event, {{}}}});
+  //    nlohmann::json j = R"( [ [["user","is_logged_in",0],[[]]]] )"_json;
   SPDLOG_TRACE(payload.dump());
   bool r0 = false;
-  auto b = w2.bindOnce(event, [&r0](json r) {
+  auto b = w2.bindOnce(event, [&r0](nlohmann::json r) {
     SPDLOG_TRACE("This should be false");
     REQUIRE(r[0] == false);
     r0 = true;
@@ -89,19 +89,19 @@ TEST_CASE("login on backend with username and password", "[WSTest]") {
   int i = 0;
   QCoreApplication a(i, argv);
   auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/jadmin")));
-  json event = json::array({"auth", "admin_login", 0});
-  json payload =
-      json::array({{event, json::object({{"user", "kapil.pipaliya@yahoo.com"},
-                                         {"pass", "3434"}})}});
+  nlohmann::json event = nlohmann::json::array({"auth", "admin_login", 0});
+  nlohmann::json payload = nlohmann::json::array(
+      {{event, nlohmann::json::object(
+                   {{"user", "kapil.pipaliya@yahoo.com"}, {"pass", "3434"}})}});
   SPDLOG_TRACE(payload.dump());
   bool r0 = false;
-  auto b = w2.bindOnce(event, [&r0](json r) {
+  auto b = w2.bindOnce(event, [&r0](nlohmann::json r) {
     REQUIRE(r[0]["ok"] == true);
     r0 = true;
   });
-  json event2 = json::array({"auth", "set_cookie", 0});
+  nlohmann::json event2 = nlohmann::json::array({"auth", "set_cookie", 0});
   bool r1 = false;
-  auto b1 = w2.bindOnce(event2, [&r1](json r) {
+  auto b1 = w2.bindOnce(event2, [&r1](nlohmann::json r) {
     REQUIRE(r[0].is_number() == true);
     r1 = true;
   });

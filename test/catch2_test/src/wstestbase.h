@@ -6,7 +6,6 @@
 #include <trantor/net/EventLoopThread.h>
 #include "json.hpp"
 
-using namespace drogon;
 using namespace std::chrono_literals;
 
 class WSTestBase {
@@ -35,8 +34,8 @@ class WSTestBase {
   auto getReqPtr() { return req; }
 
  private:
-  HttpRequestPtr req = HttpRequest::newHttpRequest();
-  WebSocketClientPtr wsPtr =
-      WebSocketClient::newWebSocketClient("127.0.0.1", 8400);
+  drogon::HttpRequestPtr req = drogon::HttpRequest::newHttpRequest();
+  drogon::WebSocketClientPtr wsPtr =
+      drogon::WebSocketClient::newWebSocketClient("127.0.0.1", 8400);
 };
 #endif  // WSTESTBASE_H

@@ -4,15 +4,17 @@
 
 UserActorBase::UserActorBase() = default;
 
-void UserActorBase::blocking_run(const WebSocketConnectionPtr &wsConnPtr,
-                                 std::string &&message,
-                                 const WebSocketMessageType &type) {
+UserActorBase::~UserActorBase() {}
+
+void UserActorBase::blocking_run(
+    const drogon::WebSocketConnectionPtr &wsConnPtr, std::string &&message,
+    const drogon::WebSocketMessageType &type) {
   switch (type) {
-    case WebSocketMessageType::Text: {
+    case drogon::WebSocketMessageType::Text: {
       try {
-        auto valin = json::parse(message);
+        auto valin = nlohmann::json::parse(message);
         if (valin.is_array()) {
-          json out(json::array());
+          nlohmann::json out(nlohmann::json::array());
           for (const auto &i : valin) {
             // printJson(valin);
             auto result = handleTextMessage(wsConnPtr, i);
@@ -34,7 +36,7 @@ void UserActorBase::blocking_run(const WebSocketConnectionPtr &wsConnPtr,
           nlohmann::json j = "Invalid Message only array handled: " + message;
           WsFns::sendJson(wsConnPtr, j);
         }
-      } catch (json::parse_error &e) {
+      } catch (nlohmann::json::parse_error &e) {
         SPDLOG_TRACE("message: {}", e.what());
         SPDLOG_TRACE("exception id: {}", e.id);
         SPDLOG_TRACE("byte position of error:", e.byte);
@@ -43,7 +45,7 @@ void UserActorBase::blocking_run(const WebSocketConnectionPtr &wsConnPtr,
       }
       break;
     }
-    case WebSocketMessageType::Binary: {
+    case drogon::WebSocketMessageType::Binary: {
       auto result = handleBinaryMessage(wsConnPtr, message);
       if (!result.is_null()) {
         WsFns::sendJson(wsConnPtr, result);

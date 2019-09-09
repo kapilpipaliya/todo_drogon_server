@@ -6,7 +6,7 @@ using MAdminContextPtr = std::shared_ptr<MAdminContext>;
 #include <fmt/format.h>
 #include "json.hpp"
 #include "spdlogfix.h"
-using nlohmann::json;
+
 
 // A collection of methods related to the user interface
 namespace madmin {
@@ -14,13 +14,13 @@ class UI : public BaseServiceAbs {
  public:
   UI(MAdminContextPtr);
   void setupTable() override;
-  json handleEvent(json event, unsigned long next, json args) override;
+  nlohmann::json handleEvent(nlohmann::json event, unsigned long next, nlohmann::json args) override;
 
-  json getMenuData();
+  nlohmann::json getMenuData();
   std::string getPageTitle();
   std::string getUserAccountType();
-  json getUserTypeData();
-  json getCatalogFilterData();
+  nlohmann::json getUserTypeData();
+  nlohmann::json getCatalogFilterData();
 
   // static classes_;
   // static ticker_;

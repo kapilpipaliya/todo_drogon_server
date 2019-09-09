@@ -14,7 +14,6 @@
 using namespace drogon::orm;
 
 #include "json.hpp"
-using nlohmann::json;
 
 enum PG_TYPES {
   BOOL = 16,
@@ -148,40 +147,45 @@ class Query {
   const std::vector<SelectedColumn>& selectedColumns() const {
     return m_selected_columns;
   }
-  std::vector<SelectedColumn>& selectedColumns() { return m_selected_columns; }
+  void setSelectedColumns(std::vector<SelectedColumn> columns) {
+    m_selected_columns = columns;
+  }
 
-  std::vector<Join>& joins() { return m_joins; }
-
+  const std::vector<Join>& joins() { return m_joins; }
+  void setJoins(const std::vector<Join>& join) { m_joins = join; }
   const std::unordered_map<size_t, std::string>& where() const {
     return m_where;
   }
-  std::unordered_map<size_t, std::string>& where() { return m_where; }
-
+  void setWhere(const std::unordered_map<size_t, std::string>& where) {
+    m_where = where;
+  }
   const std::vector<SortedColumn>& orderBy() const { return m_sort; }
-  std::vector<SortedColumn>& orderBy() { return m_sort; }
   void setOrderBy(const std::vector<SortedColumn>& columns) {
     m_sort = columns;
   }
-  Pagination& pagination() { return m_pagination; }
+  const Pagination& pagination() { return m_pagination; }
   void setPagination(const Pagination& p) { m_pagination = p; }
   const std::vector<GroupByColumn>& groupBy() const { return m_group; }
-  std::vector<GroupByColumn>& groupBy() { return m_group; }
+  void setGroupBy(const std::vector<GroupByColumn>& columns) {
+    m_group = columns;
+  }
   const SubQuery& subquery() const { return m_subquery; }
-  SubQuery& subquery() { return m_subquery; }
-  std::string& cusm_where() { return m_custm_where; }
+  void setSubquery(const SubQuery& query) { m_subquery = query; }
+  const std::string& cusm_where() { return m_custm_where; }
+  void setCustomWhere(const std::string& custom) { m_custm_where = custom; }
   size_t filterCount() const;
   bool select();
-  std::string getHeaderName(const unsigned long column) const;
+  std::string getHeaderName(unsigned long column) const;
   void sort(const std::vector<sqlb::SortedColumn>& columns);
 
-  json getJsonHeaderData();
-  json getJsonData();
+  nlohmann::json getJsonHeaderData();
+  nlohmann::json getJsonData();
 
-  json getAllData(json& args);
+  nlohmann::json getAllData(nlohmann::json& args);
 
-  void updateFilterBase(json filters);
-  void updateSortBase(json filters);
-  void updatePaginationBase(json filters);
+  void updateFilterBase(nlohmann::json filters);
+  void updateSortBase(nlohmann::json filters);
+  void updatePaginationBase(nlohmann::json filters);
   void updateFilter(int column, const std::string& whereClause);
 
  private:

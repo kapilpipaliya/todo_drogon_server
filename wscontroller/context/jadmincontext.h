@@ -2,8 +2,6 @@
 
 #include <drogon/WebSocketController.h>
 #include "json.hpp"
-using namespace drogon;
-using nlohmann::json;
 
 class JAdminContext {
   struct ContextUser {
@@ -12,10 +10,10 @@ class JAdminContext {
   };
 
  public:
-  JAdminContext(const HttpRequestPtr &req,
-                const WebSocketConnectionPtr &wsConnPtr_);
+  JAdminContext(const drogon::HttpRequestPtr &req,
+                const drogon::WebSocketConnectionPtr &wsConnPtr_);
 
-  std::tuple<long, long> generateContext(const HttpRequestPtr &req,
+  std::tuple<long, long> generateContext(const drogon::HttpRequestPtr &req,
                                          const std::string &account_type);
   void setUser();
   long sessionId() { return current_session_id; }
@@ -28,5 +26,5 @@ class JAdminContext {
   long current_session_id = 0;
   long user_id = 0;
   ContextUser user;
-  const WebSocketConnectionPtr &wsConnPtr;
+  const drogon::WebSocketConnectionPtr &wsConnPtr;
 };

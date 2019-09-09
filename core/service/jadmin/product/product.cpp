@@ -6,13 +6,12 @@
 using namespace jadmin;
 
 Product::Product(JAdminContextPtr context_) : context(std::move(context_)) {
-  getQuery() =
-      sqlb::Query(sqlb::ObjectIdentifier("post", "post", "post"));
+  getQuery() = sqlb::Query(sqlb::ObjectIdentifier("post", "post", "post"));
 }
 
 void Product::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().selectedColumns() = {
+  getQuery().setSelectedColumns({
       sqlb::SelectedColumn({"Id", "id", "", "post", PG_TYPES::INT8, true}),
       // sqlb::SelectedColumn({"Directory", "dir_path", "", "p", PG_TYPES::TEXT,
       // true}), sqlb::SelectedColumn({"File Name", " "",file_name", "p",
@@ -177,8 +176,8 @@ void Product::setupTable() {
       // sqlb::SelectedColumn({"Create Time", "inserted_at", "", "p",
       // PG_TYPES::TIMESTAMP, true, 0, 0, false}), sqlb::SelectedColumn({"Update
       // Time", "updated_at", "", "p", PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-  };
-  // select json_agg(json_build_array(a,b,c)) from (values (1, 'foo',
+  });
+  // select json_agg(nlohmann::json_build_array(a,b,c)) from (values (1, 'foo',
   // true),(2,'bar',false)) v(a,b,c); --> [[1, "foo", true], [2, "bar", false]]
   /*
     "id"
@@ -227,7 +226,7 @@ void Product::setupTable() {
   // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getQuery().joins() = {
+  getQuery().setJoins({
       // sqlb::Join("left", c, "p.color_id = c.id"),
       sqlb::Join("left", product, "p.post_id = post.id"),
       sqlb::Join("left", pc, "pc.post_id = post.id"),
@@ -269,15 +268,16 @@ void Product::setupTable() {
 
       // sqlb::Join("left", u1, "gt.create_user_id = u1.id"),
       // sqlb::Join("left", u2, "a.update_user_id = u2.id"),
-  };
+  });
 
-  getQuery().groupBy() = {
+  getQuery().setGroupBy({
       sqlb::GroupByColumn("post", "id"),
       sqlb::GroupByColumn("p", "id"),
-  };
+  });
 }
 
-json Product::handleEvent(json event, int next, const json& args) {
+nlohmann::json Product::handleEvent(nlohmann::json event, int next,
+                                    const nlohmann::json& args) {
   auto event_cmp = event[next].get<std::string>();
   if (event_cmp == "data") {
     return allData(event, args);
@@ -298,14 +298,14 @@ json Product::handleEvent(json event, int next, const json& args) {
   } else if (event_cmp == "categorytreedata") {
     return get_product_category_tree_data(event, args);
   } else {
-    json ret;
+    nlohmann::json ret;
     return ret;
   }
 }
 
 #define purejoinTableSave(f, t, inKey, id1, id2)                              \
-  void save_product_##f(json& args, std::shared_ptr<Transaction> transPtr,    \
-                        long idv1) {                                          \
+  void save_product_##f(nlohmann::json& args,                                 \
+                        std::shared_ptr<Transaction> transPtr, long idv1) {   \
     std::string strSqlPostCategories =                                        \
         "SELECT " id1 ", " id2 " FROM " t " where " id1 " = $1";              \
     std::string strSqlPostCategorySimpleFind =                                \
@@ -340,7 +340,7 @@ json Product::handleEvent(json event, int next, const json& args) {
     }                                                                         \
   }
 
-void purejoinTableSaveF(const std::string& t, json& args,
+void purejoinTableSaveF(const std::string& t, nlohmann::json& args,
                         const std::shared_ptr<Transaction>& transPtr,
                         const std::string& inKey, const std::string& id1,
                         const std::string& id2, long idv1) {
@@ -384,7 +384,7 @@ purejoinTableSave(policy, "product.post_policy", "p_policy_post_policy",
 
 void product_tags_process(const sqlb::ObjectIdentifier& tags_table,
                           const sqlb::ObjectIdentifier& post_tag_table,
-                          json& args,
+                          nlohmann::json& args,
                           const std::shared_ptr<Transaction>& transPtr,
                           long post_id) {
   std::string strSqlTag = "select id, name FROM %1.%2 where name = $1";
@@ -454,7 +454,7 @@ void product_tags_process(const sqlb::ObjectIdentifier& tags_table,
 }
 
 void save_product_categories(const sqlb::ObjectIdentifier& post_category_table,
-                             json& args,
+                             nlohmann::json& args,
                              const std::shared_ptr<Transaction>& transPtr,
                              long post_id) {
   std::string strSqlPostCategories =
@@ -509,7 +509,7 @@ void save_product_categories(const sqlb::ObjectIdentifier& post_category_table,
 }
 
 void save_product_clarities(const sqlb::ObjectIdentifier& post_clarity_table,
-                            json& args,
+                            nlohmann::json& args,
                             const std::shared_ptr<Transaction>& transPtr,
                             long post_id) {
   std::string strSqlPostCategories =
@@ -586,7 +586,8 @@ void save_product_clarities(const sqlb::ObjectIdentifier& post_clarity_table,
   }
 }
 
-void save_purity_tone_(json& args, const std::shared_ptr<Transaction>& transPtr,
+void save_purity_tone_(nlohmann::json& args,
+                       const std::shared_ptr<Transaction>& transPtr,
                        long post_id, long purity_id) {
   std::string strSqlPostCategories =
       sel_("product.purity_tone", "post_id, purity_id, tone_id",
@@ -657,7 +658,7 @@ void save_purity_tone_(json& args, const std::shared_ptr<Transaction>& transPtr,
 }
 
 void save_product_purities(const sqlb::ObjectIdentifier& post_purity_table,
-                           json& args,
+                           nlohmann::json& args,
                            const std::shared_ptr<Transaction>& transPtr,
                            long post_id) {
   std::string strSqlPostCategories =
@@ -688,7 +689,7 @@ void save_product_purities(const sqlb::ObjectIdentifier& post_purity_table,
   struct PostPurity {
     long purity_id;
     bool ismain;
-    json tones;
+    nlohmann::json tones;
   };
 
   std::vector<PostPurity> inVector;
@@ -732,7 +733,7 @@ void save_product_purities(const sqlb::ObjectIdentifier& post_purity_table,
   }
 }
 
-void save_diamond_price(json& args,
+void save_diamond_price(nlohmann::json& args,
                         const std::shared_ptr<Transaction>& transPtr,
                         long diamond_id) {
   std::string strSqlPostCategories =
@@ -802,8 +803,9 @@ void save_diamond_price(json& args,
 }
 
 void save_product_diamond_sizes(
-    const sqlb::ObjectIdentifier& /*post_diamond_sizes_table*/, json& args,
-    const std::shared_ptr<Transaction>& transPtr, long post_id) {
+    const sqlb::ObjectIdentifier& /*post_diamond_sizes_table*/,
+    nlohmann::json& args, const std::shared_ptr<Transaction>& transPtr,
+    long post_id) {
   std::string strSqlPostCategories =
       "SELECT id, post_id, shape_id, color_id, size_id, pcs FROM "
       "product.post_diamond_size where post_id = $1";
@@ -828,7 +830,7 @@ void save_product_diamond_sizes(
     int pcs;
     long setting_type_id;
     long dsize_id;
-    json clarity_price;
+    nlohmann::json clarity_price;
   };
   std::vector<PostDiamondSize>
       inNewAttachments;  // id Shape	Color	Size	Pcs
@@ -879,8 +881,8 @@ void save_product_diamond_sizes(
   }
 }
 
-void save_cs_price(json& args, const std::shared_ptr<Transaction>& transPtr,
-                   long cs_id) {
+void save_cs_price(nlohmann::json& args,
+                   const std::shared_ptr<Transaction>& transPtr, long cs_id) {
   std::string strSqlPostCategories =
       "SELECT cs_id, weight, total_weight, rate, price FROM product.cs_price "
       "where cs_id = $1";
@@ -941,8 +943,9 @@ void save_cs_price(json& args, const std::shared_ptr<Transaction>& transPtr,
 }
 
 void save_product_cs_sizes(
-    const sqlb::ObjectIdentifier& /*post_color_stone_size_table*/, json& args,
-    const std::shared_ptr<Transaction>& transPtr, long post_id) {
+    const sqlb::ObjectIdentifier& /*post_color_stone_size_table*/,
+    nlohmann::json& args, const std::shared_ptr<Transaction>& transPtr,
+    long post_id) {
   std::string strSqlPostCategories =
       "SELECT id, post_id, shape_id, color_id, size_id, pcs FROM "
       "product.post_color_stone_size where post_id = $1";
@@ -968,7 +971,7 @@ void save_product_cs_sizes(
     int pcs;
     long setting_type_id;
     long dsize_id;
-    json clarity_price;
+    nlohmann::json clarity_price;
   };
   std::vector<PostCSSize> inNewAttachments;  // id Shape	Color Size
                                              // Pcs
@@ -1020,7 +1023,7 @@ void save_product_cs_sizes(
 }
 
 void save_product_cs_total(
-    const sqlb::ObjectIdentifier& /*post_cs_total_table*/, json& args,
+    const sqlb::ObjectIdentifier& /*post_cs_total_table*/, nlohmann::json& args,
     const std::shared_ptr<Transaction>& transPtr, long post_id) {
   std::string strSqlPostCategories =
       "SELECT post_id, pcs, weight, price FROM product.post_cs_total where "
@@ -1083,7 +1086,7 @@ void save_product_cs_total(
 }
 
 void save_product_Attachments(
-    const sqlb::ObjectIdentifier& post_attachment_table, json& args,
+    const sqlb::ObjectIdentifier& post_attachment_table, nlohmann::json& args,
     const std::shared_ptr<Transaction>& transPtr, long post_id) {
   std::string strSqlPostCategories = "SELECT id FROM %1.%2 where post_id = $1";
   ReplaceAll2(strSqlPostCategories, "%1", post_attachment_table.schema());
@@ -1183,7 +1186,7 @@ void save_product_Attachments(
   }
 }
 
-json Product::ins(json event, json args) {
+nlohmann::json Product::ins(nlohmann::json event, nlohmann::json args) {
   auto product_table = sqlb::ObjectIdentifier("product", "product", "p");
   auto post_table = sqlb::ObjectIdentifier("post", "post", "p");
   auto tags_table = sqlb::ObjectIdentifier("post", "tag", "t");
@@ -1282,17 +1285,17 @@ json Product::ins(json event, json args) {
     purejoinTableSaveF("product.post_policy", args, transPtr,
                        "p_policy_post_policy", "post_id", "policy_id", post_id);
 
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, true, "Done");
     return ret;
   } catch (const std::exception& e) {
     SPDLOG_TRACE(e.what());
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, false, e.what());
     return ret;
   }
 }
-json Product::upd(json event, json args) {
+nlohmann::json Product::upd(nlohmann::json event, nlohmann::json args) {
   auto product_table = sqlb::ObjectIdentifier("product", "product", "p");
   auto post_table = sqlb::ObjectIdentifier("post", "post", "p");
   auto tags_table = sqlb::ObjectIdentifier("post", "tag", "t");
@@ -1383,7 +1386,7 @@ json Product::upd(json event, json args) {
                              post_id);
       } catch (const std::exception& e) {
         SPDLOG_TRACE(e.what());
-        json ret;
+        nlohmann::json ret;
         ret[0] = simpleJsonSaveResult(event, false, e.what());
         return ret;
       }
@@ -1391,7 +1394,7 @@ json Product::upd(json event, json args) {
         save_product_categories(post_category_table, args, transPtr, post_id);
       } catch (const std::exception& e) {
         SPDLOG_TRACE(e.what());
-        json ret;
+        nlohmann::json ret;
         ret[0] = simpleJsonSaveResult(event, false, e.what());
         return ret;
       }
@@ -1400,7 +1403,7 @@ json Product::upd(json event, json args) {
                            "p_tones_tone_id", "post_id", "tone_id", post_id);
       } catch (const std::exception& e) {
         SPDLOG_TRACE(e.what());
-        json ret;
+        nlohmann::json ret;
         ret[0] = simpleJsonSaveResult(event, false, e.what());
         return ret;
       }
@@ -1408,7 +1411,7 @@ json Product::upd(json event, json args) {
         save_product_clarities(post_clarity_table, args, transPtr, post_id);
       } catch (const std::exception& e) {
         SPDLOG_TRACE(e.what());
-        json ret;
+        nlohmann::json ret;
         ret[0] = simpleJsonSaveResult(event, false, e.what());
         return ret;
       }
@@ -1416,7 +1419,7 @@ json Product::upd(json event, json args) {
         save_product_purities(post_purity_table, args, transPtr, post_id);
       } catch (const std::exception& e) {
         SPDLOG_TRACE(e.what());
-        json ret;
+        nlohmann::json ret;
         ret[0] = simpleJsonSaveResult(event, false, e.what());
         return ret;
       }
@@ -1425,7 +1428,7 @@ json Product::upd(json event, json args) {
                                  post_id);
       } catch (const std::exception& e) {
         SPDLOG_TRACE(e.what());
-        json ret;
+        nlohmann::json ret;
         ret[0] = simpleJsonSaveResult(event, false, e.what());
         return ret;
       }
@@ -1434,7 +1437,7 @@ json Product::upd(json event, json args) {
                                    post_id);
       } catch (const std::exception& e) {
         SPDLOG_TRACE(e.what());
-        json ret;
+        nlohmann::json ret;
         ret[0] = simpleJsonSaveResult(event, false, e.what());
         return ret;
       }
@@ -1443,7 +1446,7 @@ json Product::upd(json event, json args) {
                               post_id);
       } catch (const std::exception& e) {
         SPDLOG_TRACE(e.what());
-        json ret;
+        nlohmann::json ret;
         ret[0] = simpleJsonSaveResult(event, false, e.what());
         return ret;
       }
@@ -1451,7 +1454,7 @@ json Product::upd(json event, json args) {
         save_product_cs_total(post_cs_total_table, args, transPtr, post_id);
       } catch (const std::exception& e) {
         SPDLOG_TRACE(e.what());
-        json ret;
+        nlohmann::json ret;
         ret[0] = simpleJsonSaveResult(event, false, e.what());
         return ret;
       }
@@ -1461,7 +1464,7 @@ json Product::upd(json event, json args) {
                            "certified_by_id", post_id);
       } catch (const std::exception& e) {
         SPDLOG_TRACE(e.what());
-        json ret;
+        nlohmann::json ret;
         ret[0] = simpleJsonSaveResult(event, false, e.what());
         return ret;
       }
@@ -1471,27 +1474,27 @@ json Product::upd(json event, json args) {
                            post_id);
       } catch (const std::exception& e) {
         SPDLOG_TRACE(e.what());
-        json ret;
+        nlohmann::json ret;
         ret[0] = simpleJsonSaveResult(event, false, e.what());
         return ret;
       }
 
-      json ret;
+      nlohmann::json ret;
       ret[0] = simpleJsonSaveResult(event, true, "Done");
       return ret;
     } catch (const std::exception& e) {
       SPDLOG_TRACE(e.what());
-      json ret;
+      nlohmann::json ret;
       ret[0] = simpleJsonSaveResult(event, false, e.what());
       return ret;
     }
   }
-  json ret;
+  nlohmann::json ret;
   ret[0] = simpleJsonSaveResult(event, false, "Not Valid Structure");
   return ret;
 }
 
-json Product::del(json event, json args) {
+nlohmann::json Product::del(nlohmann::json event, nlohmann::json args) {
   // to support global filter, get first all ids b selected filter and for each
   // id delete.
   auto clientPtr = drogon::app().getDbClient("sce");
@@ -1549,18 +1552,18 @@ json Product::del(json event, json args) {
     Dba::writeInTrans(transPtr, product_del, post_id);
     Dba::writeInTrans(transPtr, post_del, post_id);
 
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, true, "Done");
     return ret;
   } catch (const std::exception& e) {
     SPDLOG_TRACE(e.what());
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, false, e.what());
     return ret;
   }
 }
 
-json save_category(const json& event, json args) {
+nlohmann::json save_category(const nlohmann::json& event, nlohmann::json args) {
   auto product_table = sqlb::ObjectIdentifier("product", "category", "p");
 
   if (args[0]["id"].get<long>()) {
@@ -1582,12 +1585,12 @@ json save_category(const json& event, json args) {
                         args[0]["parent_id"].get<long>(),
                         args[0]["position"].get<int>());
 
-      json ret;
+      nlohmann::json ret;
       ret[0] = simpleJsonSaveResult(event, true, "Done");
       return ret;
     } catch (const std::exception& e) {
       SPDLOG_TRACE(e.what());
-      json ret;
+      nlohmann::json ret;
       ret[0] = simpleJsonSaveResult(event, false, e.what());
       return ret;
     }
@@ -1608,21 +1611,22 @@ json save_category(const json& event, json args) {
                         args[0]["parent_id"].get<long>(),
                         args[0]["position"].get<int>());
 
-      json ret;
+      nlohmann::json ret;
       ret[0] = simpleJsonSaveResult(event, true, "Done");
       return ret;
     } catch (const std::exception& e) {
       SPDLOG_TRACE(e.what());
-      json ret;
+      nlohmann::json ret;
       ret[0] = simpleJsonSaveResult(event, false, e.what());
       return ret;
     }
   }
 }
 
-json Product::get_product_diamond_price_data(json event, json args) {
-  json batch;
-  json jresult;
+nlohmann::json Product::get_product_diamond_price_data(nlohmann::json event,
+                                                       nlohmann::json args) {
+  nlohmann::json batch;
+  nlohmann::json jresult;
   jresult[0] = std::move(event);
 
   if (args.is_array() && args.size() >= 7) {
@@ -1650,9 +1654,9 @@ json Product::get_product_diamond_price_data(json event, json args) {
           "ANY($4::bigint[])";
       auto x = Dba::writeInTrans(transPtr, sql, shape, color, size, s);
 
-      json d(json::array());
+      nlohmann::json d(nlohmann::json::array());
       for (const auto& r : x) {
-        json row;
+        nlohmann::json row;
         row[0] = r["clarity_id"].as<long>();
         row[1] = "";
         row[2] = r["weight"].as<double>();
@@ -1668,15 +1672,16 @@ json Product::get_product_diamond_price_data(json event, json args) {
     } catch (const std::exception& e) {
       SPDLOG_TRACE(e.what());
       // simpleJsonSaveResult(event, false, e.what());
-      return json(Json::nullValue);
+      return nlohmann::json::array();
     }
   }
-  return json(Json::nullValue);
+  return nlohmann::json::array();
 }
 
-json Product::get_product_cs_price_data(json event, json args) {
-  json batch;
-  json jresult;
+nlohmann::json Product::get_product_cs_price_data(nlohmann::json event,
+                                                  nlohmann::json args) {
+  nlohmann::json batch;
+  nlohmann::json jresult;
   jresult[0] = std::move(event);
 
   if (args.is_array() && args.size() >= 7) {
@@ -1696,9 +1701,9 @@ json Product::get_product_cs_price_data(json event, json args) {
           "cs_type_id = $1 and shape_id = $2 AND size_id = $3";
       auto x = Dba::writeInTrans(transPtr, sql, type, shape, size);
 
-      json d(json::array());
+      nlohmann::json d(nlohmann::json::array());
       for (const auto& r : x) {
-        json row;
+        nlohmann::json row;
         row[0] = 0;
         row[1] = "";
         row[2] = r["weight"].as<double>();
@@ -1714,16 +1719,18 @@ json Product::get_product_cs_price_data(json event, json args) {
     } catch (const std::exception& e) {
       SPDLOG_TRACE(e.what());
       // simpleJsonSaveResult(event, false, e.what());
-      json ret;
+      nlohmann::json ret;
       return ret;
     }
   }
-  return json(Json::nullValue);
+  nlohmann::json r;
+  return r;
 }
 
-json Product::get_product_category_tree_data(json event, const json& /*args*/) {
-  json batch;
-  json jresult;
+nlohmann::json Product::get_product_category_tree_data(
+    nlohmann::json event, const nlohmann::json& /*args*/) {
+  nlohmann::json batch;
+  nlohmann::json jresult;
   jresult[0] = std::move(event);
 
   //    auto shape = args[1].get<long>();
@@ -1747,9 +1754,9 @@ select * ,
 )";
     auto x = Dba::writeInTrans(transPtr, sql);
 
-    json d(json::array());
+    nlohmann::json d(nlohmann::json::array());
     for (const auto& r : x) {
-      json row;
+      nlohmann::json row;
       row[0] = r["id"].as<long>();
       row[1] = r["label"].c_str();
       d.push_back(row);
@@ -1761,6 +1768,7 @@ select * ,
   } catch (const std::exception& e) {
     SPDLOG_TRACE(e.what());
     // simpleJsonSaveResult(event, false, e.what());
-    return json(Json::nullValue);
+    nlohmann::json r;
+    return r;
   }
 }

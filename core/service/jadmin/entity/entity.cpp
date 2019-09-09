@@ -6,62 +6,63 @@ using namespace jadmin;
 
 using S = sqlb::SelectedColumn;
 Entity::Entity(JAdminContextPtr context_) : context(std::move(context_)) {
-  getQuery() =
-      sqlb::Query(sqlb::ObjectIdentifier("entity", "entity", "e"));
+  getQuery() = sqlb::Query(sqlb::ObjectIdentifier("entity", "entity", "e"));
 }
 
 void Entity::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().selectedColumns() = {
-      S({"id", "id", "", "e", PG_TYPES::INT8}),
-      S({"Entity Type", "entity_type_id", "", "e", PG_TYPES::INT8, true, 1, 1}),
-      sqlb::SelectedColumn(
-          {"et_name", "name", "", "et", PG_TYPES::TEXT, false, 0, 0, false}),
-      S({"no", "no", "", "e", PG_TYPES::TEXT}),
-      S({"sequence_id", "sequence_id", "", "e", PG_TYPES::INT8, false}),
-      S({"Code", "slug", "", "e", PG_TYPES::TEXT}),
-      S({"Parent", "parent_id", "", "e", PG_TYPES::INT8}),
-      S({"Legal Name", "legal_name", "", "e", PG_TYPES::TEXT}),
-      S({"tax_no", "tax_no", "", "e", PG_TYPES::TEXT, false}),
-      S({"First Name", "first_name", "", "e", PG_TYPES::TEXT}),
-      S({"Middle Name", "middle_name", "", "e", PG_TYPES::TEXT}),
-      S({"Last Name", "last_name", "", "e", PG_TYPES::TEXT}),
-      S({"Email", "email", "", "e", PG_TYPES::TEXT, true}),
-      S({"Password", "password", "", "eu", PG_TYPES::TEXT, true}),
-      S({"Birth Date", "birth_date", "", "e", PG_TYPES::TIMESTAMP, false}),
-      S({"Start Date", "start_date", "", "e", PG_TYPES::TIMESTAMP}),
-      S({"End Date", "end_date", "", "e", PG_TYPES::TIMESTAMP}),
-      S({"Salary", "salary", "", "e", PG_TYPES::DOUBLE, false}),
-      S({"Rate", "rate", "", "e", PG_TYPES::DOUBLE, false}),
-      S({"Active", "active", "", "e", PG_TYPES::BOOL, false}),
-      S({"Pay To Name", "pay_to_name", "", "e", PG_TYPES::TEXT, false}),
-      S({"Threshold", "threshold", "", "e", PG_TYPES::DOUBLE, false}),
-      S({"Credit Limit", "credit_limit", "", "e", PG_TYPES::DOUBLE, false}),
-      S({"Terms", "terms", "", "e", PG_TYPES::INT4, false}),
-      S({"Discount", "discount", "", "e", PG_TYPES::DOUBLE, false}),
-      S({"Discount Terms", "discount_terms", "", "e", PG_TYPES::INT4, false}),
-      S({"discount_account_id", "discount_account_id", "", "e", PG_TYPES::INT8,
-         false}),
-      S({"ar_ap_account_id", "ar_ap_account_id", "", "e", PG_TYPES::INT8,
-         false}),
-      S({"cash_account_id", "cash_account_id", "", "e", PG_TYPES::INT8, false}),
-      S({"currency_id", "currency_id", "", "e", PG_TYPES::INT8, false}),
-      S({"price_group_id", "price_group_id", "", "e", PG_TYPES::INT8, false}),
-      S({"tax_included", "tax_included", "", "e", PG_TYPES::BOOL, false}),
+  getQuery().setSelectedColumns(
+      {S({"id", "id", "", "e", PG_TYPES::INT8}),
+       S({"Entity Type", "entity_type_id", "", "e", PG_TYPES::INT8, true, 1,
+          1}),
+       sqlb::SelectedColumn(
+           {"et_name", "name", "", "et", PG_TYPES::TEXT, false, 0, 0, false}),
+       S({"no", "no", "", "e", PG_TYPES::TEXT}),
+       S({"sequence_id", "sequence_id", "", "e", PG_TYPES::INT8, false}),
+       S({"Code", "slug", "", "e", PG_TYPES::TEXT}),
+       S({"Parent", "parent_id", "", "e", PG_TYPES::INT8}),
+       S({"Legal Name", "legal_name", "", "e", PG_TYPES::TEXT}),
+       S({"tax_no", "tax_no", "", "e", PG_TYPES::TEXT, false}),
+       S({"First Name", "first_name", "", "e", PG_TYPES::TEXT}),
+       S({"Middle Name", "middle_name", "", "e", PG_TYPES::TEXT}),
+       S({"Last Name", "last_name", "", "e", PG_TYPES::TEXT}),
+       S({"Email", "email", "", "e", PG_TYPES::TEXT, true}),
+       S({"Password", "password", "", "eu", PG_TYPES::TEXT, true}),
+       S({"Birth Date", "birth_date", "", "e", PG_TYPES::TIMESTAMP, false}),
+       S({"Start Date", "start_date", "", "e", PG_TYPES::TIMESTAMP}),
+       S({"End Date", "end_date", "", "e", PG_TYPES::TIMESTAMP}),
+       S({"Salary", "salary", "", "e", PG_TYPES::DOUBLE, false}),
+       S({"Rate", "rate", "", "e", PG_TYPES::DOUBLE, false}),
+       S({"Active", "active", "", "e", PG_TYPES::BOOL, false}),
+       S({"Pay To Name", "pay_to_name", "", "e", PG_TYPES::TEXT, false}),
+       S({"Threshold", "threshold", "", "e", PG_TYPES::DOUBLE, false}),
+       S({"Credit Limit", "credit_limit", "", "e", PG_TYPES::DOUBLE, false}),
+       S({"Terms", "terms", "", "e", PG_TYPES::INT4, false}),
+       S({"Discount", "discount", "", "e", PG_TYPES::DOUBLE, false}),
+       S({"Discount Terms", "discount_terms", "", "e", PG_TYPES::INT4, false}),
+       S({"discount_account_id", "discount_account_id", "", "e", PG_TYPES::INT8,
+          false}),
+       S({"ar_ap_account_id", "ar_ap_account_id", "", "e", PG_TYPES::INT8,
+          false}),
+       S({"cash_account_id", "cash_account_id", "", "e", PG_TYPES::INT8,
+          false}),
+       S({"currency_id", "currency_id", "", "e", PG_TYPES::INT8, false}),
+       S({"price_group_id", "price_group_id", "", "e", PG_TYPES::INT8, false}),
+       S({"tax_included", "tax_included", "", "e", PG_TYPES::BOOL, false}),
 
-      // S({"Created By", "create_user_id", "", "e", PG_TYPES::INT8, true, 1, 0,
-      // false}), S({"u1_username", "username", "", "u1", PG_TYPES::TEXT, false,
-      // 0, 0, false}), S({"Updated By", "update_user_id", "", "e",
-      // PG_TYPES::INT8, true, 1, 0, false}), S({"u2_username", "username", "",
-      // "u2", PG_TYPES::TEXT, false, 0, 0, false}), S({"Create Time",
-      // "inserted_at", "", "e", PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-      // S({"Update Time", "updated_at", "", "e", PG_TYPES::TIMESTAMP, true, 0,
-      // 0, false}),
-      S({"Addresses", "entity_address",
-         "json_agg(distinct jsonb_build_array(ea.id, ea.address_type_id, "
-         "ea.line1, ea.line2, ea.line3, ea.city, ea.state, ea.country, "
-         "ea.zipcode, ea.phone, ea.ismain ))",
-         "ea", PG_TYPES::PSJSON, false})};
+       // S({"Created By", "create_user_id", "", "e", PG_TYPES::INT8, true, 1,
+       // 0, false}), S({"u1_username", "username", "", "u1", PG_TYPES::TEXT,
+       // false, 0, 0, false}), S({"Updated By", "update_user_id", "", "e",
+       // PG_TYPES::INT8, true, 1, 0, false}), S({"u2_username", "username", "",
+       // "u2", PG_TYPES::TEXT, false, 0, 0, false}), S({"Create Time",
+       // "inserted_at", "", "e", PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+       // S({"Update Time", "updated_at", "", "e", PG_TYPES::TIMESTAMP, true, 0,
+       // 0, false}),
+       S({"Addresses", "entity_address",
+          "json_agg(distinct jsonb_build_array(ea.id, ea.address_type_id, "
+          "ea.line1, ea.line2, ea.line3, ea.city, ea.state, ea.country, "
+          "ea.zipcode, ea.phone, ea.ismain ))",
+          "ea", PG_TYPES::PSJSON, false})});
   auto entity_type = sqlb::ObjectIdentifier("entity", "entity_type", "et");
   auto entity_address =
       sqlb::ObjectIdentifier("entity", "entity_address", "ea");
@@ -69,21 +70,21 @@ void Entity::setupTable() {
   auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getQuery().joins() = {
+  getQuery().setJoins({
       sqlb::Join("inner", entity_type, "et.id = e.entity_type_id"),
       sqlb::Join("left", entity_address, "ea.entity_id = e.id"),
       sqlb::Join("left", entity_user, "eu.entity_id = e.id"),
       sqlb::Join("left", u1, "e.create_user_id = u1.id"),
       sqlb::Join("left", u2, "e.update_user_id = u2.id"),
-  };
-  getQuery().groupBy() = {
+  });
+  getQuery().setGroupBy({
       sqlb::GroupByColumn("et", "id"),
       sqlb::GroupByColumn("e", "id"),
       sqlb::GroupByColumn("eu", "id"),
-  };
+  });
 }
 
-void save_Entity_Address(json &args,
+void save_Entity_Address(nlohmann::json &args,
                          const std::shared_ptr<Transaction> &transPtr,
                          long entity_id) {
   std::string strSqlPostCategories =
@@ -158,7 +159,7 @@ void save_Entity_Address(json &args,
     }
   }
 }
-json Entity::ins(json event, json args) {
+nlohmann::json Entity::ins(nlohmann::json event, nlohmann::json args) {
   std::string strSql =
       "INSERT INTO entity.entity (  entity_type_id, no, sequence_id, slug, "
       "parent_id, legal_name, tax_no, first_name, middle_name, last_name, "
@@ -226,17 +227,17 @@ json Entity::ins(json event, json args) {
                       args[0]["eu_password"].get<std::string>());
     save_Entity_Address(args, transPtr, entity_id);
 
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, true, "Done");
     return ret;
   } catch (const std::exception &e) {
     SPDLOG_TRACE(e.what());
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, false, e.what());
     return ret;
   }
 }
-json Entity::upd(json event, json args) {
+nlohmann::json Entity::upd(nlohmann::json event, nlohmann::json args) {
   if (args[0]["id"].get<long>()) {
     std::string strSql =
         "update entity.entity set (  entity_type_id, no, sequence_id, slug, "
@@ -309,21 +310,21 @@ json Entity::upd(json event, json args) {
                         args[0]["eu_password"].get<std::string>());
       save_Entity_Address(args, transPtr, entity_id);
 
-      json ret;
+      nlohmann::json ret;
       ret[0] = simpleJsonSaveResult(event, true, "Done");
       return ret;
     } catch (const std::exception &e) {
       SPDLOG_TRACE(e.what());
-      json ret;
+      nlohmann::json ret;
       ret[0] = simpleJsonSaveResult(event, false, e.what());
       return ret;
     }
   }
-  json ret;
+  nlohmann::json ret;
   ret[0] = simpleJsonSaveResult(event, false, "Not Valid Structure");
   return ret;
 }
-json Entity::del(json event, json args) {
+nlohmann::json Entity::del(nlohmann::json event, nlohmann::json args) {
   // to support global filter, get first all ids b selected filter and for each
   // id delete.
   auto clientPtr = drogon::app().getDbClient("sce");
@@ -367,12 +368,12 @@ json Entity::del(json event, json args) {
     Dba::writeInTrans(transPtr, dele_("entity.entity", "where id = $1"),
                       entity_id);
 
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, true, "Done");
     return ret;
   } catch (const std::exception &e) {
     SPDLOG_TRACE(e.what());
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, false, e.what());
     return ret;
   }

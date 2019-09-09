@@ -12,7 +12,7 @@ DSize::DSize(JAdminContextPtr context_) : context(std::move(context_)) {
 
 void DSize::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().selectedColumns() = {
+  getQuery().setSelectedColumns({
       sqlb::SelectedColumn({"Id", "id", "", "sm", PG_TYPES::INT8, false}),
       sqlb::SelectedColumn(
           {"Clarity", "clarity_id", "", "sm", PG_TYPES::INT8, true, 2, 2}),
@@ -61,7 +61,7 @@ void DSize::setupTable() {
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
       sqlb::SelectedColumn({"Update Time", "updated_at", "", "sm",
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-  };
+  });
 
   auto size = sqlb::ObjectIdentifier("material", "size", "size");
   auto clarity = sqlb::ObjectIdentifier("material", "clarity", "clarity");
@@ -71,7 +71,7 @@ void DSize::setupTable() {
   auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getQuery().joins() = {
+  getQuery().setJoins({
       sqlb::Join("left", size, "size.id = sm.size_id"),
       sqlb::Join("left", clarity, "clarity.id = sm.clarity_id"),
       sqlb::Join("left", shape, "shape.id = sm.shape_id"),
@@ -79,10 +79,10 @@ void DSize::setupTable() {
       sqlb::Join("left", currency, "currency.id = sm.currency_id"),
       sqlb::Join("left", u1, "sm.create_user_id = u1.id"),
       sqlb::Join("left", u2, "sm.update_user_id = u2.id"),
-  };
+  });
 }
 
-json DSize::ins(json event, json args) {
+nlohmann::json DSize::ins(nlohmann::json event, nlohmann::json args) {
   // also update all the price of products too..
   // also update deleted size price too.
 
@@ -178,17 +178,17 @@ json DSize::ins(json event, json args) {
       }
     }
 
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, true, "Done");
     return ret;
   } catch (const std::exception& e) {
     SPDLOG_TRACE(e.what());
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, false, e.what());
     return ret;
   }
 }
-json DSize::upd(json event, json args) {
+nlohmann::json DSize::upd(nlohmann::json event, nlohmann::json args) {
   // also update all the price of products too..
   // also update deleted size price too.
 
@@ -309,22 +309,22 @@ json DSize::upd(json event, json args) {
         }
       }
 
-      json ret;
+      nlohmann::json ret;
       ret[0] = simpleJsonSaveResult(event, true, "Done");
       return ret;
     } catch (const std::exception& e) {
       SPDLOG_TRACE(e.what());
-      json ret;
+      nlohmann::json ret;
       ret[0] = simpleJsonSaveResult(event, false, e.what());
       return ret;
     }
   }
-  json ret;
+  nlohmann::json ret;
   ret[0] = simpleJsonSaveResult(event, false, "Not Valid Structure");
   return ret;
 }
 
-json DSize::del(json event, json args) {
+nlohmann::json DSize::del(nlohmann::json event, nlohmann::json args) {
   // to support global filter, get first all ids b selected filter and for each
   // id delete.
   auto clientPtr = drogon::app().getDbClient("sce");
@@ -358,12 +358,12 @@ json DSize::del(json event, json args) {
                         size_id);
     }
 
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, true, "Done");
     return ret;
   } catch (const std::exception& e) {
     SPDLOG_TRACE(e.what());
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, false, e.what());
     return ret;
   }

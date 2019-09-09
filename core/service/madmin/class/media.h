@@ -20,6 +20,7 @@ namespace madmin {
 class Media : public BaseServiceAbs {
  public:
   Media(MAdminContextPtr);
+  virtual ~Media() = default;
   void setupTable() override;
   /**
    * get_stream_types

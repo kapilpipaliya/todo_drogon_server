@@ -5,7 +5,9 @@
 #include "../sql/query.h"
 #include "dba.h"
 
-json BaseServiceAbs::handleEvent(json event, unsigned long next, json args) {
+nlohmann::json BaseServiceAbs::handleEvent(nlohmann::json event,
+                                           unsigned long next,
+                                           nlohmann::json args) {
   auto event_cmp = event[next].get<std::string>();
   if (event_cmp == "data") {
     return allData(event, args);
@@ -19,25 +21,27 @@ json BaseServiceAbs::handleEvent(json event, unsigned long next, json args) {
   } else if (event_cmp == "del") {
     return del(event, args);
   } else {
-    json ret;
+    nlohmann::json ret;
     return ret;
   }
 }
-json BaseServiceAbs::headerData(json event, [[maybe_unused]] const json &args) {
+nlohmann::json BaseServiceAbs::headerData(
+    nlohmann::json event, [[maybe_unused]] const nlohmann::json &args) {
   setupTable();
-  json jresult;
+  nlohmann::json jresult;
   jresult[0] = std::move(event);
   jresult[1] = query.getJsonHeaderData();
-  json ret;
+  nlohmann::json ret;
   ret[0] = jresult;
   return ret;
 }
-json BaseServiceAbs::allData(json event, json args) {
+nlohmann::json BaseServiceAbs::allData(nlohmann::json event,
+                                       nlohmann::json args) {
   setupTable();
-  json jresult;
+  nlohmann::json jresult;
   jresult[0] = std::move(event);
   jresult[1] = query.getAllData(args);
-  json ret;
+  nlohmann::json ret;
   ret[0] = jresult;
   return ret;
 }
@@ -48,7 +52,7 @@ nlohmann::json BaseServiceAbs::ins(nlohmann::json event, nlohmann::json args) {
     setupTable();
     strSql = query.buildInsQuery(std::move(args));
     if (strSql.empty()) {
-      json ret;
+      nlohmann::json ret;
       ret[0] = simpleJsonSaveResult(event, false, "UnValid Arguments");
       return ret;
     }
@@ -59,12 +63,12 @@ nlohmann::json BaseServiceAbs::ins(nlohmann::json event, nlohmann::json args) {
   try {
     auto clientPtr = drogon::app().getDbClient("sce");
     clientPtr->execSqlSync(strSql);
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, true, "Done");
     return ret;
   } catch (const std::exception &e) {
     SPDLOG_TRACE("error: {0}, sql: {1}", e.what(), strSql);
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, false, e.what());
     return ret;
   }
@@ -75,7 +79,7 @@ nlohmann::json BaseServiceAbs::upd(nlohmann::json event, nlohmann::json args) {
   query.updateFilterBase(args[1]);
   std::string strSql = query.buildUpdateQuery(args);
   if (strSql.empty()) {
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, false, "UnValid Arguments");
     return ret;
   }
@@ -86,18 +90,18 @@ nlohmann::json BaseServiceAbs::upd(nlohmann::json event, nlohmann::json args) {
       SPDLOG_TRACE("error: Argus Must update one row");
       throw("not valid arguments");
     }
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, true, "Done");
     return ret;
   } catch (const std::exception &e) {
     SPDLOG_TRACE("error: {0}, sql: {1}", e.what(), strSql);
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, false, e.what());
     return ret;
   }
 }
 
-json BaseServiceAbs::del(json event, json args) {
+nlohmann::json BaseServiceAbs::del(nlohmann::json event, nlohmann::json args) {
   try {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
@@ -111,12 +115,12 @@ json BaseServiceAbs::del(json event, json args) {
     // Dba::writeInTrans(transPtr, "DELETE FROM " +
     // query.m_table.toDisplayString()
     // + " WHERE id = $1", args[0]);
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, true, "Done");
     return ret;
   } catch (const std::exception &e) {
     SPDLOG_TRACE(e.what());
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, false, e.what());
     return ret;
   }
@@ -137,12 +141,12 @@ nlohmann::json BaseServiceAbs::count(nlohmann::json event,
     // Dba::writeInTrans(transPtr, "DELETE FROM " +
     // query.m_table.toDisplayString()
     // + " WHERE id = $1", args[0]);
-    json ret;
-    ret[0] = json::array({event, res[0]["count"].as<long>()});
+    nlohmann::json ret;
+    ret[0] = nlohmann::json::array({event, res[0]["count"].as<long>()});
     return ret;
   } catch (const std::exception &e) {
     SPDLOG_TRACE(e.what());
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, false, e.what());
     return ret;
   }

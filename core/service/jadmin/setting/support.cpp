@@ -4,13 +4,12 @@
 using namespace jadmin;
 
 Support::Support(JAdminContextPtr context_) : context(std::move(context_)) {
-  getQuery() =
-      sqlb::Query(sqlb::ObjectIdentifier("setting", "support", "a"));
+  getQuery() = sqlb::Query(sqlb::ObjectIdentifier("setting", "support", "a"));
 }
 
 void Support::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().selectedColumns() = {
+  getQuery().setSelectedColumns({
       sqlb::SelectedColumn({"Id", "id", "", "a", PG_TYPES::INT8, false}),
       sqlb::SelectedColumn({"Name", "name", "", "a", PG_TYPES::TEXT, true}),
       sqlb::SelectedColumn({"Email", "email", "", "a", PG_TYPES::TEXT, true}),
@@ -28,18 +27,18 @@ void Support::setupTable() {
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
       sqlb::SelectedColumn({"Update Time", "updated_at", "", "a",
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-  };
+  });
 
   // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getQuery().joins() = {
+  getQuery().setJoins({
       // sqlb::Join("left", u1, "gt.create_user_id = u1.id"),
       // sqlb::Join("left", u2, "a.update_user_id = u2.id"),
-  };
+  });
 }
 
-json Support::ins(json event, json args) {
+nlohmann::json Support::ins(nlohmann::json event, nlohmann::json args) {
   return insBase(event, args, "name, email, phone, message", "$1, $2, $3, $4",
                  args[0]["name"].get<std::string>(),
                  args[0]["email"].get<std::string>(),
@@ -47,7 +46,7 @@ json Support::ins(json event, json args) {
                  args[0]["message"].get<std::string>());
 }
 
-json Support::upd(json event, json args) {
+nlohmann::json Support::upd(nlohmann::json event, nlohmann::json args) {
   return updBase(event, args, "name, email, phone, message", "$1, $2, $3, $4",
                  args[0]["name"].get<std::string>(),
                  args[0]["email"].get<std::string>(),

@@ -30,43 +30,43 @@ nlohmann::json UI::handleEvent(nlohmann::json event, unsigned long next,
   } else if (event_cmp == "del") {
     return del(event, args);
   } else {
-    json ret;
+    nlohmann::json ret;
     return ret;
   }
 }
 
 nlohmann::json UI::getMenuData() {
   if (context->getUser().type == "super admin") {
-    json j =
-        json::array({json::array({"Dashboard", "music/dashboard"}),
-                     json::array({"Admins", "music/users"}),
-                     json::array({"Catalogs", "music/catalogs"}),
-                     json::array({"Music", "music/browse"}),
-                     //            json::array({"Profile", "music/profile"}),
-                     json::array({"Password Change", "music/update_password"}),
-                     json::array({"Logout", "music/logout"})});
+    nlohmann::json j = nlohmann::json::array(
+        {nlohmann::json::array({"Dashboard", "music/dashboard"}),
+         nlohmann::json::array({"Admins", "music/users"}),
+         nlohmann::json::array({"Catalogs", "music/catalogs"}),
+         nlohmann::json::array({"Music", "music/browse"}),
+         //            nlohmann::json::array({"Profile", "music/profile"}),
+         nlohmann::json::array({"Password Change", "music/update_password"}),
+         nlohmann::json::array({"Logout", "music/logout"})});
     return j;
   }
   if (context->getUser().type == "admin") {
-    json j =
-        json::array({json::array({"Dashboard", "music/dashboard"}),
-                     json::array({"Executives", "music/users"}),
-                     //            json::array({"Songs","music/browse"}),
-                     //            json::array({"Profile", "music/profile"}),
-                     json::array({"Password Change", "music/update_password"}),
-                     json::array({"Logout", "music/logout"})});
+    nlohmann::json j = nlohmann::json::array(
+        {nlohmann::json::array({"Dashboard", "music/dashboard"}),
+         nlohmann::json::array({"Executives", "music/users"}),
+         //            nlohmann::json::array({"Songs","music/browse"}),
+         //            nlohmann::json::array({"Profile", "music/profile"}),
+         nlohmann::json::array({"Password Change", "music/update_password"}),
+         nlohmann::json::array({"Logout", "music/logout"})});
     return j;
   } else if (context->getUser().type == "executive") {
-    json j = json::array(
-        {json::array({"Dashboard", "music/dashboard"}),
-         //                                 json::array({"Songs","music/browse"}),
-         //                                 json::array({"Profile",
+    nlohmann::json j = nlohmann::json::array(
+        {nlohmann::json::array({"Dashboard", "music/dashboard"}),
+         //                                 nlohmann::json::array({"Songs","music/browse"}),
+         //                                 nlohmann::json::array({"Profile",
          //                                 "music/profile"}),
-         json::array({"Password Change", "music/update_password"}),
-         json::array({"Logout", "music/logout"})});
+         nlohmann::json::array({"Password Change", "music/update_password"}),
+         nlohmann::json::array({"Logout", "music/logout"})});
     return j;
   } else {
-    return json::array();
+    return nlohmann::json::array();
   }
 }
 
@@ -94,33 +94,34 @@ std::string UI::getUserAccountType() {
 
 nlohmann::json UI::getUserTypeData() {
   if (context->getUser().type == "super admin") {
-    json j = json::array({
-        json::array({"All", nullptr}),
-        json::array({"Super Admin", "super admin"}),
-        json::array({"Admins", "admin"}),
-        json::array({"Executives", "executive"}),
+    nlohmann::json j = nlohmann::json::array({
+        nlohmann::json::array({"All", nullptr}),
+        nlohmann::json::array({"Super Admin", "super admin"}),
+        nlohmann::json::array({"Admins", "admin"}),
+        nlohmann::json::array({"Executives", "executive"}),
     });
     return j;
   }
   if (context->getUser().type == "admin") {
-    json j = json::array({
-        json::array({"All", nullptr}),
-        json::array({"Executives", "executive"}),
+    nlohmann::json j = nlohmann::json::array({
+        nlohmann::json::array({"All", nullptr}),
+        nlohmann::json::array({"Executives", "executive"}),
     });
     return j;
   } else {
-    return json::array();
+    return nlohmann::json::array();
   }
 }
 
 nlohmann::json UI::getCatalogFilterData() {
   std::string sql = "select id, name from music.catalog order by id";
   auto r = Dba::read(sql);
-  json out = json::array({json::array({"All", nullptr})});
+  nlohmann::json out =
+      nlohmann::json::array({nlohmann::json::array({"All", nullptr})});
   for (const auto& i : r) {
     auto id = i["id"].as<long>();
     auto name = i["name"].as<std::string>();
-    out.push_back(json::array({name, id}));
+    out.push_back(nlohmann::json::array({name, id}));
   }
 
   return out;

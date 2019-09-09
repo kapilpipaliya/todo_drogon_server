@@ -9,12 +9,13 @@ class Setting : public BaseServiceAbs {
  public:
   Setting(JAdminContextPtr);
 
-  json handleEvent(json event, int next, const json& args);
+  nlohmann::json handleEvent(nlohmann::json event, int next,
+                             const nlohmann::json& args);
 
  private:
   void setupTable() override;
-  json save(const json& event, json args);
-  json del(json event, json args) override;
+  nlohmann::json save(const nlohmann::json& event, nlohmann::json args);
+  nlohmann::json del(nlohmann::json event, nlohmann::json args) override;
   JAdminContextPtr context;
 };
 }  // namespace jadmin

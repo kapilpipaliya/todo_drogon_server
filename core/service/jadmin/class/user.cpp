@@ -6,8 +6,7 @@ using namespace jadmin;
 using namespace std::chrono;
 using S = sqlb::SelectedColumn;
 User::User(JAdminContextPtr context_) : context(std::move(context_)) {
-  getQuery() =
-      sqlb::Query(sqlb::ObjectIdentifier("music", "user", "e"));
+  getQuery() = sqlb::Query(sqlb::ObjectIdentifier("music", "user", "e"));
 }
 // User::User(long user_id)
 //{
@@ -24,7 +23,7 @@ nlohmann::json User::handleEvent(nlohmann::json event, unsigned long next,
                                  nlohmann::json args) {
   auto event_cmp = event[next].get<std::string>();
   if (event_cmp == "is_logged_in") {
-    json res = {{event}};
+    nlohmann::json res = {{event}};
     res[0][1] = is_logged_in();
     return res;
   }
@@ -37,7 +36,8 @@ nlohmann::json User::handleEvent(nlohmann::json event, unsigned long next,
       }
     }
     return {simpleJsonSaveResult(event, false, "UnAuthorised")};
-  } else if (event_cmp == "user_types_form_data") {
+  }
+  if (event_cmp == "user_types_form_data") {
     return {{event, getUserTypeFormData()}};
   } else if (event_cmp == "user_register") {
     return userRegister(event, args);
@@ -52,21 +52,20 @@ nlohmann::json User::handleEvent(nlohmann::json event, unsigned long next,
 
 nlohmann::json User::getUserTypeFormData() {
   if (context->getUser().type == "super admin") {
-    json j = json::array({
-        json::array({"Super Admin", "super admin"}),
-        json::array({"Admin", "admin"}),
-        json::array({"Executive", "executive"}),
+    nlohmann::json j = nlohmann::json::array({
+        nlohmann::json::array({"Super Admin", "super admin"}),
+        nlohmann::json::array({"Admin", "admin"}),
+        nlohmann::json::array({"Executive", "executive"}),
     });
     return j;
   }
   if (context->getUser().type == "admin") {
-    json j = json::array({
-        json::array({"Executive", "executive"}),
+    nlohmann::json j = nlohmann::json::array({
+        nlohmann::json::array({"Executive", "executive"}),
     });
     return j;
-  } else {
-    return json::array();
   }
+  return nlohmann::json::array();
 }
 
 User::Info User::get_info() {
@@ -238,7 +237,8 @@ bool User::update_password(std::string new_password) {
   return false;
 }
 
-json User::userRegister(const json& event, json args) {
+nlohmann::json User::userRegister(const nlohmann::json& event,
+                                  nlohmann::json args) {
   std::string strSql =
       "INSERT INTO entity.entity ( entity_type_id, no, legal_name, slug, "
       "email) values($1, $2, $3, $4, $5) returning id";
@@ -269,13 +269,14 @@ json User::userRegister(const json& event, json args) {
     return userLogin(event, args);
   } catch (const std::exception& e) {
     SPDLOG_TRACE(e.what());
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, false, e.what());
     return ret;
   }
 }
 
-json User::userLogin(const json& event, json args) {
+nlohmann::json User::userLogin(const nlohmann::json& event,
+                               nlohmann::json args) {
   auto sql =
       "select e.id from entity.entity e left join entity.entity_user as u on "
       "u.entity_id = e.id where e.email = $1 and u.password = $2";
@@ -286,47 +287,48 @@ json User::userLogin(const json& event, json args) {
                                args["pass"].get<std::string>());
 
     if (r.size() == 1) {
-      json j;
+      nlohmann::json j;
       j["value"] = r[0]["id"].as<long>();
       auto sqlSession =
           "INSERT INTO user1.session (key, value) VALUES ($1, $2) returning id";
-      // To serialize the json into a Json document, you should use a Json
-      // writer, or json::dump().
+      // To serialize the nlohmann::json into a Json document, you should use a
+      // Json writer, or json::dump().
       LOG_INFO << j.dump();
       auto rs = Dba::writeInTrans(transPtr, sqlSession, "user", j.dump());
-      json login_result = simpleJsonSaveResult(event, true, "Done");
+      nlohmann::json login_result = simpleJsonSaveResult(event, true, "Done");
 
       // ask to save cookie
-      json cookie_result;
-      json cookie_event;
+      nlohmann::json cookie_result;
+      nlohmann::json cookie_event;
       cookie_event[0] = "auth";
       cookie_event[1] = "set_cookie";
       cookie_event[2] = 0;  // must be zero
       cookie_result[0] = cookie_event;
-      json cookie_value;
+      nlohmann::json cookie_value;
       // auto s = get_serial_no();
       cookie_value["user"] = rs[0]["id"].as<long>();
       cookie_result[1] = cookie_value;
 
       context->setSessionId(rs[0]["id"].as<long>());
-      json final;
+      nlohmann::json final;
       final[0] = login_result;
       final[1] = cookie_result;
       return final;
     }
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, false, "Error");
     return ret;
 
   } catch (const std::exception& e) {
     SPDLOG_TRACE(e.what());
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, false, e.what());
     return ret;
   }
 }
 
-json User::userId(const json& event, const json&) {
+nlohmann::json User::userId(const nlohmann::json& event,
+                            const nlohmann::json&) {
   long c = context->sessionId();
   if (c != 0) {
     auto sqlSession = "SELECT key, value FROM user1.session where id = $1";
@@ -336,33 +338,34 @@ json User::userId(const json& event, const json&) {
       auto r = Dba::writeInTrans(transPtr, sqlSession, c);
       // send id
       // simpleJsonSaveResult(event, true, r[0][1].c_str());
-      json jresult;
+      nlohmann::json jresult;
       jresult[0] = event;
 
       try {
-        auto root = json::parse(r[0][1].c_str());
+        auto root = nlohmann::json::parse(r[0][1].c_str());
         jresult[1] = root["value"];
-      } catch (json::parse_error& e) {
+      } catch (nlohmann::json::parse_error& e) {
         jresult[1] = 0;
         SPDLOG_TRACE("message: {}", e.what());
         SPDLOG_TRACE("exception id: {}", e.id);
         SPDLOG_TRACE("byte position of error:", e.byte);
-        json j = std::string("cant parse json reason: ") + e.what();
+        nlohmann::json j = std::string("cant parse json reason: ") + e.what();
       }
       return jresult;
     } catch (const std::exception& e) {
       SPDLOG_TRACE(e.what());
-      json jresult;
+      nlohmann::json jresult;
       jresult[0] = event;
       jresult[1] = 0;
       return jresult;
     }
   }
-  json ret;
+  nlohmann::json ret;
   ret[0] = 0;
   return ret;
 }
-json User::checkout(const json& event, const json& /*args*/) {
+nlohmann::json User::checkout(const nlohmann::json& event,
+                              const nlohmann::json& /*args*/) {
   long c = context->sessionId();
   if (c != 0) {
     auto sqlSession = "SELECT key, value FROM user1.session where id = $1";
@@ -371,21 +374,21 @@ json User::checkout(const json& event, const json& /*args*/) {
       auto transPtr = clientPtr->newTransaction();
       auto r = Dba::writeInTrans(transPtr, sqlSession, c);
       // send id
-      json jresult;
+      nlohmann::json jresult;
       jresult[0] = event;
 
-      auto root = json::parse(r[0][1].c_str());
+      auto root = nlohmann::json::parse(r[0][1].c_str());
       jresult[1] = root["value"];
       return jresult;
     } catch (const std::exception& e) {
       SPDLOG_TRACE(e.what());
-      json jresult;
+      nlohmann::json jresult;
       jresult[0] = event;
       jresult[1] = 0;
       return jresult;
     }
   } else {
-    json ret;
+    nlohmann::json ret;
     return ret;
   }
 }

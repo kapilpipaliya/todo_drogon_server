@@ -69,18 +69,18 @@ void SslEchoClient::reconnect() {
   m_webSocket.open(url);
 }
 
-json SslEchoClient::jsonparse(std::string msg) {
+nlohmann::json SslEchoClient::jsonparse(std::string msg) {
   try {
-    auto j = json::parse(msg);
+    auto j = nlohmann::json::parse(msg);
     return j;
-  } catch ([[maybe_unused]] json::parse_error &e) {
+  } catch ([[maybe_unused]] nlohmann::json::parse_error &e) {
     // SPDLOG_TRACE("message: {}", e.what());
     // SPDLOG_TRACE("exception id: {}", e.id);
     // SPDLOG_TRACE("byte position of error:", e.byte);
     throw("Json can not be parsed");
   }
 }
-bool SslEchoClient::bind(const json &event,
+bool SslEchoClient::bind(const nlohmann::json &event,
                          std::function<void(nlohmann::json)> callback) {
   auto r = callbacks.insert({event.dump(), {1, callback}});
   return r.second;
@@ -92,7 +92,7 @@ bool SslEchoClient::bindOnce(const nlohmann::json &event,
   return r.second;
 }
 
-bool SslEchoClient::unbind(const json &event) {
+bool SslEchoClient::unbind(const nlohmann::json &event) {
   auto removed_elements = callbacks.erase(event.dump());
   if (removed_elements > 0) {
     return true;
@@ -100,7 +100,7 @@ bool SslEchoClient::unbind(const json &event) {
   return false;
 }
 
-void SslEchoClient::dispatch(json event, nlohmann::json data) {
+void SslEchoClient::dispatch(nlohmann::json event, nlohmann::json data) {
   auto search = callbacks.find(event.dump());
   if (search != callbacks.end()) {
     // Found

@@ -2,10 +2,8 @@
 #define MESSAGEHANDLE_H
 
 #include "json.hpp"
-using nlohmann::json;
 
 #include <drogon/WebSocketController.h>
-using namespace drogon;
 
 #include "./mainactortype.h"
 #include "caf/all.hpp"
@@ -20,8 +18,9 @@ class MainActor : public caf::event_based_actor {
 
  private:
   void passToUser(MainActorType actortype,
-                  const WebSocketConnectionPtr &wsConnPtr,
-                  std::string &&message, const WebSocketMessageType &type);
-  std::unordered_map<WebSocketConnectionPtr, caf::actor> actorMap;
+                  const drogon::WebSocketConnectionPtr &wsConnPtr,
+                  std::string &&message,
+                  const drogon::WebSocketMessageType &type);
+  std::unordered_map<drogon::WebSocketConnectionPtr, caf::actor> actorMap;
 };
 #endif  // MESSAGEHANDLE_H

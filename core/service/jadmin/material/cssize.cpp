@@ -13,7 +13,7 @@ CSSize::CSSize(JAdminContextPtr context_) : context(std::move(context_)) {
 
 void CSSize::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().selectedColumns() = {
+  getQuery().setSelectedColumns({
       sqlb::SelectedColumn({"Id", "id", "", "sm", PG_TYPES::INT8, false}),
       sqlb::SelectedColumn(
           {"Type", "cs_type_id", "", "sm", PG_TYPES::INT8, true, 1, 1}),
@@ -54,7 +54,7 @@ void CSSize::setupTable() {
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
       sqlb::SelectedColumn({"Update Time", "updated_at", "", "sm",
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-  };
+  });
 
   auto type = sqlb::ObjectIdentifier("material", "cs_type", "cs_type");
   auto size = sqlb::ObjectIdentifier("material", "size", "size");
@@ -65,7 +65,7 @@ void CSSize::setupTable() {
   auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getQuery().joins() = {
+  getQuery().setJoins({
       sqlb::Join("left", type, "cs_type.id = sm.cs_type_id"),
       sqlb::Join("left", size, "size.id = sm.size_id"),
       //        sqlb::Join("left", clarity, "clarity.id = sm.clarity_id"),
@@ -74,10 +74,10 @@ void CSSize::setupTable() {
       sqlb::Join("left", currency, "currency.id = sm.currency_id"),
       sqlb::Join("left", u1, "sm.create_user_id = u1.id"),
       sqlb::Join("left", u2, "sm.update_user_id = u2.id"),
-  };
+  });
 }
 
-json CSSize::ins(json event, json args) {
+nlohmann::json CSSize::ins(nlohmann::json event, nlohmann::json args) {
   auto size_table = sqlb::ObjectIdentifier("material", "size", "sh");
   auto size_meta_table =
       sqlb::ObjectIdentifier("material", "color_stone_size_meta", "sm");
@@ -160,18 +160,18 @@ json CSSize::ins(json event, json args) {
                         rsum[0]["sum_price"].as<double>());
     }
 
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, true, "Done");
     return ret;
   } catch (const std::exception &e) {
     SPDLOG_TRACE(e.what());
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, false, e.what());
     return ret;
   }
 }
 
-json CSSize::upd(json event, json args) {
+nlohmann::json CSSize::upd(nlohmann::json event, nlohmann::json args) {
   auto size_table = sqlb::ObjectIdentifier("material", "size", "sh");
   auto size_meta_table =
       sqlb::ObjectIdentifier("material", "color_stone_size_meta", "sm");
@@ -278,22 +278,22 @@ json CSSize::upd(json event, json args) {
                           rsum[0]["sum_price"].as<double>());
       }
 
-      json ret;
+      nlohmann::json ret;
       ret[0] = simpleJsonSaveResult(event, true, "Done");
       return ret;
     } catch (const std::exception &e) {
       SPDLOG_TRACE(e.what());
-      json ret;
+      nlohmann::json ret;
       ret[0] = simpleJsonSaveResult(event, false, e.what());
       return ret;
     }
   }
-  json ret;
+  nlohmann::json ret;
   ret[0] = simpleJsonSaveResult(event, false, "Not Valid Structure");
   return ret;
 }
 
-json CSSize::del(json event, json args) {
+nlohmann::json CSSize::del(nlohmann::json event, nlohmann::json args) {
   // to support global filter, get first all ids b selected filter and for each
   // id delete.
   auto clientPtr = drogon::app().getDbClient("sce");
@@ -327,12 +327,12 @@ json CSSize::del(json event, json args) {
                         size_id);
     }
 
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, true, "Done");
     return ret;
   } catch (const std::exception &e) {
     SPDLOG_TRACE(e.what());
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, false, e.what());
     return ret;
   }

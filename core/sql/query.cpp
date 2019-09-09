@@ -370,7 +370,7 @@ void Query::sort(const std::vector<SortedColumn>& columns) {
   if (orderBy() == columns) return;
 
   // Save sort order
-  orderBy() = columns;
+  m_sort = columns;
 
   // Set the new query (but only if a table has already been set
 
@@ -380,14 +380,14 @@ void Query::sort(const std::vector<SortedColumn>& columns) {
 }
 
 nlohmann::json Query::getJsonHeaderData() {
-  json ret(json::array());
+  nlohmann::json ret(nlohmann::json::array());
 
-  json jsonHeaderRow(json::array());
-  json jsonFormHeaderRow(json::array());
-  json jsonFormColumnTypesRow(json::array());
-  json jsonFormVisibleColumnsRow(json::array());
-  json jsonFormOffsetColumnsRow(json::array());
-  json jsonFormTooltipOffsetColumnsRow(json::array());
+  nlohmann::json jsonHeaderRow(nlohmann::json::array());
+  nlohmann::json jsonFormHeaderRow(nlohmann::json::array());
+  nlohmann::json jsonFormColumnTypesRow(nlohmann::json::array());
+  nlohmann::json jsonFormVisibleColumnsRow(nlohmann::json::array());
+  nlohmann::json jsonFormOffsetColumnsRow(nlohmann::json::array());
+  nlohmann::json jsonFormTooltipOffsetColumnsRow(nlohmann::json::array());
 
   for (unsigned long c = 0; c < selectedColumns().size(); c++) {
     jsonHeaderRow[c] = getHeaderName(c);
@@ -417,14 +417,14 @@ nlohmann::json Query::getJsonHeaderData() {
 }
 
 nlohmann::json Query::getJsonData() {
-  json jresult = json::array();
+  nlohmann::json jresult = nlohmann::json::array();
 
   for (unsigned long row = 0; row < result.size(); row++) {
-    json jsonRow;
+    nlohmann::json jsonRow;
     auto columns = result.columns();
     for (unsigned long column = 0; column < columns; column++) {
       if (result[row][column].isNull()) {
-        json j(nullptr);
+        nlohmann::json j(nullptr);
         jsonRow[column] = j;
         continue;
       }
@@ -448,7 +448,7 @@ nlohmann::json Query::getJsonData() {
           jsonRow[column] = result[row][column].as<double>();
           break;
         /*case PG_TYPES::ARRAYINT: {
-            auto jsonArray = json(json::array());
+            auto jsonArray = json(nlohmann::json::array());
             auto ar = result[row][column].as_array();
             auto jnc = ar.get_next();
             while (jnc.first != array_parser::done) {
@@ -463,7 +463,7 @@ nlohmann::json Query::getJsonData() {
         }
         break;
         case PG_TYPES::ARRAYTEXT: {
-            auto jsonArray = json(json::array());
+            auto jsonArray = json(nlohmann::json::array());
             auto ar = result[row][column].as_array();
             auto jnc = ar.get_next();
             while (jnc.first != array_parser::done) {
@@ -476,7 +476,7 @@ nlohmann::json Query::getJsonData() {
         }
         break;*/
         case PG_TYPES::PSJSON: {
-          auto valin = json::parse(result[row][column].c_str());
+          auto valin = nlohmann::json::parse(result[row][column].c_str());
           jsonRow[column] = valin;
         } break;
         case PG_TYPES::TEXT:
@@ -507,14 +507,14 @@ void Query::updateFilterBase(nlohmann::json filters) {
     std::string v;
     if (filters[i].is_null()) {
       v = "";
-    } else if (filters[i].type() == json::value_t::number_integer ||
-               filters[i].type() == json::value_t::number_unsigned) {
+    } else if (filters[i].type() == nlohmann::json::value_t::number_integer ||
+               filters[i].type() == nlohmann::json::value_t::number_unsigned) {
       v = std::to_string(filters[i].get<long>());
-    } else if (filters[i].type() == json::value_t::number_float) {
+    } else if (filters[i].type() == nlohmann::json::value_t::number_float) {
       v = std::to_string(filters[i].get<float>());
-    } else if (filters[i].type() == json::value_t::boolean) {
+    } else if (filters[i].type() == nlohmann::json::value_t::boolean) {
       v = filters[i].get<bool>() ? "true" : "false";
-    } else if (filters[i].type() == json::value_t::string) {
+    } else if (filters[i].type() == nlohmann::json::value_t::string) {
       v = filters[i].get<std::string>();
     } else {
       v = "";
@@ -525,9 +525,9 @@ void Query::updateFilterBase(nlohmann::json filters) {
     // column. Otherwise insert a new filter rule or replace the old one if
     // there is already one
     if (whereClause.empty())
-      where().erase(static_cast<size_t>(i));
+      m_where.erase(static_cast<size_t>(i));
     else
-      where()[static_cast<size_t>(i)] = whereClause;
+      m_where[static_cast<size_t>(i)] = whereClause;
   }
 }
 
@@ -540,9 +540,9 @@ void Query::updateSortBase(nlohmann::json filters) {
       continue;
     }
     if (filters[i].get<int>() == 0) {
-      orderBy().emplace_back(i, sqlb::Ascending);
+      m_sort.emplace_back(i, sqlb::Ascending);
     } else {
-      orderBy().emplace_back(i, sqlb::Descending);
+      m_sort.emplace_back(i, sqlb::Descending);
     }
   }
 }
@@ -552,13 +552,13 @@ void Query::updatePaginationBase(nlohmann::json filters) {
     return;
   }
   if (!filters[0].is_null()) {
-    pagination().limit = filters[0].get<int>();
+    m_pagination.limit = filters[0].get<int>();
   }
   if (!filters[1].is_null()) {
-    pagination().offset = filters[1].get<int>();
+    m_pagination.offset = filters[1].get<int>();
   }
   if (!filters[2].is_null()) {
-    pagination().current_page = filters[2].get<int>();
+    m_pagination.current_page = filters[2].get<int>();
   }
 }
 
@@ -567,9 +567,9 @@ void Query::updateFilter(int column, const std::string& whereClause) {
   // Otherwise insert a new filter rule or replace the old one if there is
   // already one
   if (whereClause.empty())
-    where().erase(static_cast<size_t>(column));
+    m_where.erase(static_cast<size_t>(column));
   else
-    where()[static_cast<size_t>(column)] = whereClause;
+    m_where[static_cast<size_t>(column)] = whereClause;
   // Build the new query
   // buildQuery();
 

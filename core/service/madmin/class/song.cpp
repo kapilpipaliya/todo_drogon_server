@@ -5,13 +5,12 @@
 using namespace madmin;
 using S = sqlb::SelectedColumn;
 Song::Song(MAdminContextPtr context_) : context(std::move(context_)) {
-  getQuery() =
-      sqlb::Query(sqlb::ObjectIdentifier("music", "song", "s"));
+  getQuery() = sqlb::Query(sqlb::ObjectIdentifier("music", "song", "s"));
 }
 
 void Song::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().selectedColumns() = {
+  getQuery().setSelectedColumns({
       S({"ID No", "id", "", "s", PG_TYPES::INT8}),
       S({"file", "file", "", "s", PG_TYPES::TEXT, false}),
       S({"Catalog", "catalog_id", "", "s", PG_TYPES::INT8, true, 1, 1}),
@@ -53,18 +52,16 @@ void Song::setupTable() {
       // "inserted_at", "", "s", PG_TYPES::TIMESTAMP, true, 0, 0, false}),
       // S({"Update Time", "updated_at", "", "s", PG_TYPES::TIMESTAMP, true, 0,
       // 0, false}),
-  };
+  });
   auto c = sqlb::ObjectIdentifier("music", "catalog", "c");
   // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getQuery().joins() = {
+  getQuery().setJoins({
       sqlb::Join("left", c, "c.id = s.catalog_id")
       // sqlb::Join("left", u1, "e.create_user_id = u1.id"),
       // sqlb::Join("left", u2, "e.update_user_id = u2.id"),
-  };
-
-  getQuery().groupBy() = {};
+  });
 }
 
 nlohmann::json Song::handleEvent(nlohmann::json event, unsigned long next,
@@ -101,18 +98,18 @@ nlohmann::json Song::handleEvent(nlohmann::json event, unsigned long next,
             return ins(event, args);
           }
         }
-        json ret;
+        nlohmann::json ret;
         ret[0] =
             simpleJsonSaveResult(event, false, "Please Upload Music First!");
         return ret;
       }
-      // json ret; ret[0] = simpleJsonSaveResult(event, false, "Please Upload
-      // Music First!"); return ret;
+      // nlohmann::json ret; ret[0] = simpleJsonSaveResult(event, false, "Please
+      // Upload Music First!"); return ret;
       return ins(event, args);  // Make this to pass test.
 
     } catch (const std::exception &e) {
       SPDLOG_TRACE(e.what());
-      json ret;
+      nlohmann::json ret;
       ret[0] = simpleJsonSaveResult(event, false, e.what());
       return ret;
     }
@@ -133,7 +130,7 @@ nlohmann::json Song::handleBinaryEvent(nlohmann::json event, unsigned long next,
   if (event[next].get<std::string>() == "song") {
     return save_song_binary(event, message);
   }
-  json ret;
+  nlohmann::json ret;
   return ret;
 }
 
@@ -154,7 +151,7 @@ nlohmann::json Song::save_song_binary(
     // check if file exist else rename a file
     // convert this to json
 
-    auto event_json = json::parse(r[0]["event"].c_str());
+    auto event_json = nlohmann::json::parse(r[0]["event"].c_str());
 
     namespace fs = boost::filesystem;
     auto home = fs::path(getenv("HOME"));
@@ -193,8 +190,8 @@ nlohmann::json Song::save_song_binary(
         "INSERT INTO music.temp_file (name, size, type) VALUES ($1, $2, $3) "
         "RETURNING id";
 
-    json ret;
-    json jresult;
+    nlohmann::json ret;
+    nlohmann::json jresult;
     jresult[0] = event_json;
     auto insert_result = Dba::writeInTrans(transPtr, strSql, name, size, type);
     jresult[1] = insert_result[0]["id"].as<long>();
@@ -205,7 +202,7 @@ nlohmann::json Song::save_song_binary(
 
   } catch (const std::exception &e) {
     SPDLOG_TRACE(e.what());
-    json null;
+    nlohmann::json null;
     return null;
   }
 }

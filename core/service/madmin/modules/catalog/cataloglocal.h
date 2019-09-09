@@ -13,7 +13,7 @@ class CatalogLocal : public Catalog {
  public:
   CatalogLocal(const MAdminContextPtr &);
   void setupTable() override;
-  json handleEvent(json event, unsigned long next, json args) override;
+  nlohmann::json handleEvent(nlohmann::json event, unsigned long next, nlohmann::json args) override;
   /**
    * Constructor
    *

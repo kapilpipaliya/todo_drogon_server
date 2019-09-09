@@ -71,15 +71,17 @@ using namespace jadmin;
 JUserActor::JUserActor(caf::actor_config &cfg) : caf::event_based_actor(cfg) {}
 
 caf::behavior JUserActor::make_behavior() {
-  return {[this](const WebSocketConnectionPtr &wsConnPtr, std::string message,
-                 const WebSocketMessageType &type) -> caf::result<void> {
-            blocking_run(wsConnPtr, std::move(message), type);
-            return {};
-          },
-          [this](exit_atom) -> caf::result<void> {
-            quit();
-            return {};
-          }};
+  return {
+      [this](const drogon::WebSocketConnectionPtr &wsConnPtr,
+             std::string message,
+             const drogon::WebSocketMessageType &type) -> caf::result<void> {
+        blocking_run(wsConnPtr, std::move(message), type);
+        return {};
+      },
+      [this](exit_atom) -> caf::result<void> {
+        quit();
+        return {};
+      }};
 }
 #define REGISTER(s, T)                                   \
   else if (in[0][0].get<std::string>() == (s)) {         \
@@ -90,9 +92,9 @@ caf::behavior JUserActor::make_behavior() {
   }
 
 nlohmann::json JUserActor::handleTextMessage(
-    const WebSocketConnectionPtr &wsConnPtr, nlohmann::json in) {
+    const drogon::WebSocketConnectionPtr &wsConnPtr, nlohmann::json in) {
   if (!in.is_array()) {
-    return json::array();
+    return nlohmann::json::array();
   }
 
   if constexpr (false) {
@@ -156,14 +158,15 @@ nlohmann::json JUserActor::handleTextMessage(
   REGISTER("certified_by", CertifiedBy)
   REGISTER("policy", Policy)
   else {
-    return json::array();
+    return nlohmann::json::array();
   }
-  return json::array();
+  return nlohmann::json::array();
 }
 
 nlohmann::json JUserActor::handleBinaryMessage(
-    const WebSocketConnectionPtr &wsConnPtr, std::string & /*message*/) {
-  json event;
+    const drogon::WebSocketConnectionPtr &wsConnPtr,
+    std::string & /*message*/) {
+  nlohmann::json event;
   try {
     long c = wsConnPtr->getContext<JUserContext>()->sessionId();
     auto sqlSession =
@@ -172,7 +175,7 @@ nlohmann::json JUserActor::handleBinaryMessage(
     auto r = clientPtr->execSqlSync(sqlSession, c);
     if (!r.empty()) {
       try {
-        event = json::parse(r[0]["event"].c_str());
+        event = nlohmann::json::parse(r[0]["event"].c_str());
         // p.handleBinaryEvent creates new transaction.
         if (event[0] == "image") {
           // auto contx = wsConnPtr->getContext<JUserContext>();
@@ -182,7 +185,7 @@ nlohmann::json JUserActor::handleBinaryMessage(
           //   return res;
           //}
         }
-      } catch (json::parse_error &e) {
+      } catch (nlohmann::json::parse_error &e) {
         SPDLOG_TRACE("message: {}", e.what());
         SPDLOG_TRACE("exception id: {}", e.id);
         SPDLOG_TRACE("byte position of error:", e.byte);
@@ -193,11 +196,11 @@ nlohmann::json JUserActor::handleBinaryMessage(
     }
   } catch (const std::exception &e) {
     SPDLOG_TRACE(e.what());
-    json jresult;
+    nlohmann::json jresult;
     jresult[0] = event;
     jresult[1] = e.what();
     return jresult;
   }
-  json ret;
+  nlohmann::json ret;
   return ret;
 }

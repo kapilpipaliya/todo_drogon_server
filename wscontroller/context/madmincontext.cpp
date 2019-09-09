@@ -2,8 +2,8 @@
 #include "./core/service/dba.h"
 #include "spdlogfix.h"
 
-MAdminContext::MAdminContext(const HttpRequestPtr &req,
-                             const WebSocketConnectionPtr &wsConnPtr_)
+MAdminContext::MAdminContext(const drogon::HttpRequestPtr &req,
+                             const drogon::WebSocketConnectionPtr &wsConnPtr_)
     : wsConnPtr(wsConnPtr_) {
   auto truple = generateContext(req);
   current_session_id = std::get<0>(truple);
@@ -12,7 +12,7 @@ MAdminContext::MAdminContext(const HttpRequestPtr &req,
 }
 
 std::tuple<long, long> MAdminContext::generateContext(
-    const HttpRequestPtr &req) {
+    const drogon::HttpRequestPtr &req) {
   auto c = req->getCookie("music");
   if (c.empty()) {
     return {0, 0};

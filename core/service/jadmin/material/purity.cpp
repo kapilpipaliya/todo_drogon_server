@@ -15,13 +15,12 @@ using namespace jadmin;
   array += "}";
 
 Purity::Purity(JAdminContextPtr context_) : context(std::move(context_)) {
-  getQuery() =
-      sqlb::Query(sqlb::ObjectIdentifier("material", "purity", "p"));
+  getQuery() = sqlb::Query(sqlb::ObjectIdentifier("material", "purity", "p"));
 }
 
 void Purity::setupTable() {
   // m_query.setRowIdColumn("id");
-  getQuery().selectedColumns() = {
+  getQuery().setSelectedColumns({
       sqlb::SelectedColumn({"Id", "id", "", "p", PG_TYPES::INT8, false}),
       //        sqlb::SelectedColumn({"Metal", "metal_id", "", "p",
       //        PG_TYPES::INT8, true, 1, 2}), sqlb::SelectedColumn({"m_slug",
@@ -60,7 +59,7 @@ void Purity::setupTable() {
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
       sqlb::SelectedColumn({"Update Time", "updated_at", "", "p",
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-  };
+  });
 
   auto pt = sqlb::ObjectIdentifier("material", "purity_tone", "pt");
   auto m = sqlb::ObjectIdentifier("material", "metal", "m");
@@ -68,7 +67,7 @@ void Purity::setupTable() {
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
   auto metal_purity = sqlb::ObjectIdentifier("material", "purity_metal", "mp");
 
-  getQuery().joins() = {
+  getQuery().setJoins({
       sqlb::Join("left", pt, "pt.purity_id = p.id"),
       sqlb::Join("left",
                  "( select pm.purity_id, pm.tone_id, jsonb_agg(distinct "
@@ -82,16 +81,16 @@ void Purity::setupTable() {
       sqlb::Join("left", m, "p.metal_id = m.id"),
       sqlb::Join("left", u1, "p.create_user_id = u1.id"),
       sqlb::Join("left", u2, "p.update_user_id = u2.id"),
-  };
-  getQuery().groupBy() = {
+  });
+  getQuery().setGroupBy({
       sqlb::GroupByColumn("p", "id"),
       sqlb::GroupByColumn("m", "id"),
       sqlb::GroupByColumn("u1", "id"),
       sqlb::GroupByColumn("u2", "id"),
-  };
+  });
 }
 
-void save_purity_metal_(json &args,
+void save_purity_metal_(nlohmann::json &args,
                         const std::shared_ptr<Transaction> &transPtr,
                         long purity_id, long tone_id) {
   std::string strSqlPostCategories =
@@ -152,7 +151,8 @@ void save_purity_metal_(json &args,
     }
   }
 }
-void save_purity_tone_(json &args, const std::shared_ptr<Transaction> &transPtr,
+void save_purity_tone_(nlohmann::json &args,
+                       const std::shared_ptr<Transaction> &transPtr,
                        long purity_id) {
   std::string strSqlPostCategories =
       "SELECT tone_id FROM material.purity_tone where purity_id = $1";
@@ -171,7 +171,7 @@ void save_purity_tone_(json &args, const std::shared_ptr<Transaction> &transPtr,
   struct PurityTone {
     long tone_id;
     double price;
-    json j;
+    nlohmann::json j;
   };
   std::vector<PurityTone> inVector;
   for (auto i : args[0]["pt_purity_tone"]) {
@@ -216,7 +216,7 @@ void save_purity_tone_(json &args, const std::shared_ptr<Transaction> &transPtr,
   }
 }
 
-json Purity::ins(json event, json args) {
+nlohmann::json Purity::ins(nlohmann::json event, nlohmann::json args) {
   auto metal_purity_table = sqlb::ObjectIdentifier("material", "purity", "p");
   auto purity_metal_table =
       sqlb::ObjectIdentifier("material", "purity_metal", "mp");
@@ -238,17 +238,17 @@ json Purity::ins(json event, json args) {
     auto purity_id = x[0]["id"].as<long>();
     save_purity_tone_(args, transPtr, purity_id);
 
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, true, "Done");
     return ret;
   } catch (const std::exception &e) {
     SPDLOG_TRACE(e.what());
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, false, e.what());
     return ret;
   }
 }
-json Purity::upd(json event, json args) {
+nlohmann::json Purity::upd(nlohmann::json event, nlohmann::json args) {
   auto metal_purity_table = sqlb::ObjectIdentifier("material", "purity", "p");
   auto purity_metal_table =
       sqlb::ObjectIdentifier("material", "purity_metal", "mp");
@@ -318,22 +318,22 @@ json Purity::upd(json event, json args) {
 
       auto pr = Dba::writeInTrans(transPtr, pr_update4, purity_id, ids);
 
-      json ret;
+      nlohmann::json ret;
       ret[0] = simpleJsonSaveResult(event, true, "Done");
       return ret;
     } catch (const std::exception &e) {
       SPDLOG_TRACE(e.what());
-      json ret;
+      nlohmann::json ret;
       ret[0] = simpleJsonSaveResult(event, false, e.what());
       return ret;
     }
   }
-  json ret;
+  nlohmann::json ret;
   ret[0] = simpleJsonSaveResult(event, false, "Not Valid Structure");
   return ret;
 }
 
-json Purity::del(json event, json args) {
+nlohmann::json Purity::del(nlohmann::json event, nlohmann::json args) {
   // to support global filter, get first all ids b selected filter and for each
   // id delete.
   auto clientPtr = drogon::app().getDbClient("sce");
@@ -356,12 +356,12 @@ json Purity::del(json event, json args) {
                       " WHERE id = $1",
                       post_id);
 
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, true, "Done");
     return ret;
   } catch (const std::exception &e) {
     SPDLOG_TRACE(e.what());
-    json ret;
+    nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, false, e.what());
     return ret;
   }

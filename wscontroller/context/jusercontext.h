@@ -1,7 +1,6 @@
 #pragma once
 
 #include <drogon/WebSocketController.h>
-using namespace drogon;
 
 class JUserContext {
   struct ContextUser {
@@ -10,9 +9,9 @@ class JUserContext {
   };
 
  public:
-  JUserContext(const HttpRequestPtr &req,
-               const WebSocketConnectionPtr &wsConnPtr_);
-  std::tuple<long, long> generateContext(const HttpRequestPtr &req,
+  JUserContext(const drogon::HttpRequestPtr &req,
+               const drogon::WebSocketConnectionPtr &wsConnPtr_);
+  std::tuple<long, long> generateContext(const drogon::HttpRequestPtr &req,
                                          const std::string &account_type);
   void setUser();
   long sessionId() { return current_session_id; }
@@ -25,5 +24,5 @@ class JUserContext {
   long current_session_id = 0;
   long user_id = 0;
   ContextUser user;
-  const WebSocketConnectionPtr &wsConnPtr;
+  const drogon::WebSocketConnectionPtr &wsConnPtr;
 };

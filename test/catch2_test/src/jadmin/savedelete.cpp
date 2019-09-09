@@ -1,4 +1,4 @@
-#include "savedelete.h".h "
+#include "savedelete.h"
 #include "spdlogfix.h"
 
 #include <catch2/catch.hpp>
@@ -7,7 +7,6 @@
 //#include <Poco/Format.h>
 // using Poco::format;
 #include <fmt/format.h>
-using namespace nlohmann;
 
 SaveDelete::SaveDelete(std::string table, std::string insert_query,
                        std::string update_query, std::string delete_query)
@@ -19,9 +18,10 @@ SaveDelete::SaveDelete(std::string table, std::string insert_query,
 void SaveDelete::connectToServer() {
   getWsPtr()->connectToServer(
       getReqPtr(),
-      [this](ReqResult r, [[maybe_unused]] const HttpResponsePtr &resp,
-             [[maybe_unused]] const WebSocketClientPtr &wsPtr) {
-        if (r == ReqResult::Ok) {
+      [this](drogon::ReqResult r,
+             [[maybe_unused]] const drogon::HttpResponsePtr &resp,
+             [[maybe_unused]] const drogon::WebSocketClientPtr &wsPtr) {
+        if (r == drogon::ReqResult::Ok) {
           //
           // a JSON value
           auto in = R"(
@@ -47,9 +47,9 @@ void SaveDelete::connectToServer() {
 void SaveDelete::setMessageHandler() {
   getWsPtr()->setMessageHandler(
       [this](const std::string &message,
-             [[maybe_unused]] const WebSocketClientPtr &wsPtr,
-             const WebSocketMessageType &type) {
-        if (type == WebSocketMessageType::Text) {
+             [[maybe_unused]] const drogon::WebSocketClientPtr &wsPtr,
+             const drogon::WebSocketMessageType &type) {
+        if (type == drogon::WebSocketMessageType::Text) {
           auto j = jsonparse(message);
           SPDLOG_TRACE(j.dump());
           // event

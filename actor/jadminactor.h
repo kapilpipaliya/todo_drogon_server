@@ -12,9 +12,9 @@ class JAdminActor : public caf::event_based_actor, public UserActorBase {
   caf::behavior make_behavior() override;
 
  private:
-  json handleTextMessage(const WebSocketConnectionPtr &wsConnPtr,
-                         json in) override;
-  json handleBinaryMessage(const WebSocketConnectionPtr &wsConnPtr,
+  nlohmann::json handleTextMessage(const drogon::WebSocketConnectionPtr &wsConnPtr,
+                         nlohmann::json in) override;
+  nlohmann::json handleBinaryMessage(const drogon::WebSocketConnectionPtr &wsConnPtr,
                            std::string &message) override;
   // std::map<std::string, WebSocketConnectionPtr> _clientsMap;
   // //UserID--->connection std::mutex _mapMtx;

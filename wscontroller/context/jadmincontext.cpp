@@ -5,8 +5,8 @@
 #include "./core/service/dba.h"
 #include "spdlogfix.h"
 
-JAdminContext::JAdminContext(const HttpRequestPtr &req,
-                             const WebSocketConnectionPtr &wsConnPtr_)
+JAdminContext::JAdminContext(const drogon::HttpRequestPtr &req,
+                             const drogon::WebSocketConnectionPtr &wsConnPtr_)
     : wsConnPtr(wsConnPtr_) {
   auto truple = generateContext(req, "admin");
   current_session_id = std::get<0>(truple);
@@ -14,7 +14,7 @@ JAdminContext::JAdminContext(const HttpRequestPtr &req,
   if (current_session_id) setUser();
 }
 std::tuple<long, long> JAdminContext::generateContext(
-    const HttpRequestPtr &req, const std::string &account_type) {
+    const drogon::HttpRequestPtr &req, const std::string &account_type) {
   auto c = req->getCookie(account_type);
   if (c.empty()) {
     return {0, 0};
