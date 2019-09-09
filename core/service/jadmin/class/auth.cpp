@@ -8,8 +8,8 @@
 #include "../../dba.h"
 #include "session.h"
 #include "spdlogfix.h"
-using namespace jadmin;
 
+namespace jadmin {
 Auth::Auth(JAdminContextPtr context_) : context(std::move(context_)) {
   setupTable();
 }
@@ -61,7 +61,8 @@ std::tuple<long, long> Auth::login(const std::string &username,
   if (!password.empty() && !username.empty()) {
     try {
       auto sql =
-          "select e.id from entity.entity e left join entity.entity_user as u "
+          "select e.id from entity.entity e left join entity.entity_user as "
+          "u "
           "on u.entity_id = e.id where e.email = $1 and u.password = $2";
       auto clientPtr = drogon::app().getDbClient("sce");
       auto transPtr = clientPtr->newTransaction();
@@ -70,7 +71,8 @@ std::tuple<long, long> Auth::login(const std::string &username,
       if (r.size() == 1) {
         user_id = r[0]["id"].as<long>();
         auto sqlSession =
-            "INSERT INTO user1.session (entity_id, expire, value) VALUES ($1, "
+            "INSERT INTO user1.session (entity_id, expire, value) VALUES "
+            "($1, "
             "$2, $3) returning id";
         auto rs = Dba::writeInTrans(transPtr, sqlSession, user_id, 0L, "");
         session_id = rs[0]["id"].as<long>();
@@ -145,10 +147,11 @@ nlohmann::json Auth::saveFileMeta(const nlohmann::json &event,
                                   nlohmann::json args) {
   long c = context->sessionId();
 
-  // auto strSql = "INSERT INTO music.temp_file_meta ( session_id, event, name,
-  // size, type ) VALUES( $1, $2, $3, $4, $5 )";
+  // auto strSql = "INSERT INTO music.temp_file_meta ( session_id, event,
+  // name, size, type ) VALUES( $1, $2, $3, $4, $5 )";
   auto strSql = fmt::format(
-      "INSERT INTO music.temp_file_meta ( session_id, event, name, size, type "
+      "INSERT INTO music.temp_file_meta ( session_id, event, name, size, "
+      "type "
       ") VALUES( {0}, '{1}','{2}', {3}, '{4}' )",
       c, args[0].dump(), args[1].get<std::string>(), args[2].get<long>(),
       args[3].get<std::string>());
@@ -230,8 +233,8 @@ nlohmann::json Auth::thumb_data( nlohmann::json event, nlohmann::json args)
         if (x.size() == 1) {
             std::streampos size;
             // http://www.cplusplus.com/doc/tutorial/files/
-            // What is the best way to read an entire file into a std::string in
-C++?
+            // What is the best way to read an entire file into a std::string
+in C++?
             //
 https://stackoverflow.com/questions/116038/what-is-the-best-way-to-read-an-entire-file-into-a-stdstring-in-c/116220#116220
             std::ifstream file(home.string() + "/fileuploads/" +
@@ -239,7 +242,8 @@ x[0]["name"].c_str(), std::ios::in | std::ios::binary | std::ios::ate); if
 (file.is_open()) { auto memblock = read_all(file); file.close();
 
                 //SPDLOG_TRACE("the entire file content is in memory");
-                wsConnPtr->send(memblock, drogon::WebSocketMessageType::Binary);
+                wsConnPtr->send(memblock,
+drogon::WebSocketMessageType::Binary);
 // Note when server not able to send this file, front end crash.
                 //delete[] memblock;
             }
@@ -293,8 +297,8 @@ nlohmann::json Auth::save_setting_attachment(const nlohmann::json & /*event*/,
     while (true) {
       if (boost::filesystem::exists(home.string() + "/fileuploads/" +
                                     new_name)) {
-        // new_name = path.parent_path().string() + "/" + path.stem().string() +
-        // std::to_string(i) + path.extension().string();
+        // new_name = path.parent_path().string() + "/" + path.stem().string()
+        // + std::to_string(i) + path.extension().string();
         new_name = path.stem().string() + std::to_string(i) +
                    path.extension().string();
       } else {
@@ -313,7 +317,8 @@ nlohmann::json Auth::save_setting_attachment(const nlohmann::json & /*event*/,
     auto temp_image_table =
         sqlb::ObjectIdentifier("setting", "temp_image_id", "pa");
     std::string strSql =
-        "INSERT INTO %1.%2 (name, size, type) VALUES ($1, $2, $3) RETURNING id";
+        "INSERT INTO %1.%2 (name, size, type) VALUES ($1, $2, $3) RETURNING "
+        "id";
     ReplaceAll2(strSql, "%1", temp_image_table.schema());
     ReplaceAll2(strSql, "%2", temp_image_table.name());
 
@@ -333,3 +338,4 @@ nlohmann::json Auth::save_setting_attachment(const nlohmann::json & /*event*/,
     return ret;
   }
 }
+}  // namespace jadmin

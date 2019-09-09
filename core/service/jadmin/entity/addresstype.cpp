@@ -1,8 +1,8 @@
 #include "addresstype.h"
 
 #include <utility>
-using namespace jadmin;
 
+namespace jadmin {
 AddressType::AddressType(JAdminContextPtr context_)
     : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("entity", "address_type", "a"));
@@ -51,3 +51,4 @@ nlohmann::json AddressType::upd(nlohmann::json event, nlohmann::json args) {
   return query.updBase(event, args, "name", "$1",
                        args[0]["name"].get<std::string>());
 }
+}  // namespace jadmin

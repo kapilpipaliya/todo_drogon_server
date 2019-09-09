@@ -1,8 +1,8 @@
 #include "tone.h"
 
 #include <utility>
-using namespace jadmin;
 
+namespace jadmin {
 Tone::Tone(JAdminContextPtr context_) : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("material", "tone", "c"));
   setupTable();
@@ -76,3 +76,4 @@ nlohmann::json Tone::upd(nlohmann::json event, nlohmann::json args) {
                        args[0]["slug"].get<std::string>(),
                        args[0]["name"].get<std::string>());
 }
+}  // namespace jadmin

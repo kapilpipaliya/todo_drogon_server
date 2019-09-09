@@ -2,7 +2,7 @@
 
 #include "../../dba.h"
 #include "./session.h"
-
+namespace jadmin {
 jadmin::Session::Session(JAdminContextPtr context_)
     : context(std::move(context_)) {
   setupTable();
@@ -55,3 +55,4 @@ bool jadmin::Session::destroy(long key) {
 
   // return true;
 }
+}  // namespace jadmin

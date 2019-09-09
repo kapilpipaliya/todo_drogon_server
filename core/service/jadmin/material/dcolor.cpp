@@ -1,8 +1,8 @@
 #include "dcolor.h"
 
 #include <utility>
-using namespace jadmin;
 
+namespace jadmin {
 DColor::DColor(JAdminContextPtr context_) : context(std::move(context_)) {
   query =
       sqlb::Query(sqlb::ObjectIdentifier("material", "diamond_color", "gt"));
@@ -70,3 +70,4 @@ nlohmann::json DColor::upd(nlohmann::json event, nlohmann::json args) {
                        args[0]["slug"].get<std::string>(),
                        args[0]["name"].get<std::string>());
 }
+}  // namespace jadmin

@@ -1,8 +1,8 @@
 #include "departmenttype.h"
 
 #include <utility>
-using namespace jadmin;
 
+namespace jadmin {
 DepartmentType::DepartmentType(JAdminContextPtr context_)
     : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("mfg", "department_type", "m"));
@@ -67,3 +67,4 @@ nlohmann::json DepartmentType::upd(nlohmann::json event, nlohmann::json args) {
   return query.updBase(event, args, "name", "$1",
                        args[0]["name"].get<std::string>());
 }
+}  // namespace jadmin

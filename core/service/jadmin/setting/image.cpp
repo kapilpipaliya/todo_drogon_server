@@ -2,8 +2,8 @@
 
 #include <utility>
 #include "../../dba.h"
-using namespace jadmin;
 
+namespace jadmin {
 Image::Image(JAdminContextPtr context_) : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("setting", "image", "a"));
   setupTable();
@@ -176,3 +176,4 @@ nlohmann::json Image::upd(nlohmann::json event, nlohmann::json args) {
   ret[0] = simpleJsonSaveResult(event, false, "Not Valid Structure");
   return ret;
 }
+}  // namespace jadmin

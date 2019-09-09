@@ -1,9 +1,9 @@
 #include "txn.h"
 
 #include <utility>
-using namespace jadmin;
-#include "../../dba.h"
 
+#include "../../dba.h"
+namespace jadmin {
 Txn::Txn(JAdminContextPtr context_) : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("account", "txn", "a"));
   setupTable();
@@ -289,3 +289,4 @@ nlohmann::json Txn::upd(nlohmann::json event, nlohmann::json args) {
   ret[0] = simpleJsonSaveResult(event, false, "Not Valid Structure");
   return ret;
 }
+}  // namespace jadmin

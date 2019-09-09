@@ -1,8 +1,8 @@
 #include "pshippingclass.h"
 
 #include <utility>
-using namespace jadmin;
 
+namespace jadmin {
 PShippingClass::PShippingClass(JAdminContextPtr context_)
     : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("product", "shipping_class", "t"));
@@ -76,3 +76,4 @@ nlohmann::json PShippingClass::upd(nlohmann::json event, nlohmann::json args) {
                        args[0]["name"].get<std::string>(),
                        args[0]["description"].get<std::string>());
 }
+}  // namespace jadmin

@@ -2,8 +2,8 @@
 
 #include <utility>
 #include "../../dba.h"
-using namespace jadmin;
 
+namespace jadmin {
 using S = sqlb::SelectedColumn;
 Entity::Entity(JAdminContextPtr context_) : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("entity", "entity", "e"));
@@ -399,3 +399,4 @@ nlohmann::json Entity::del(nlohmann::json event, nlohmann::json args) {
     return ret;
   }
 }
+}  // namespace jadmin

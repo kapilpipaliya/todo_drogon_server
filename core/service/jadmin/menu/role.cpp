@@ -1,8 +1,8 @@
 #include "role.h"
 
 #include <utility>
-using namespace jadmin;
 
+namespace jadmin {
 Role::Role(JAdminContextPtr context_) : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("menu", "role", "m"));
   setupTable();
@@ -76,3 +76,4 @@ nlohmann::json Role::upd(nlohmann::json event, nlohmann::json args) {
   return query.updBase(event, args, "name", "$1",
                        args[0]["name"].get<std::string>());
 }
+}  // namespace jadmin

@@ -2,9 +2,9 @@
 #include <chrono>
 #include <utility>
 #include "../../dba.h"
-using namespace jadmin;
+
 using namespace std::chrono;
-using S = sqlb::SelectedColumn;
+namespace jadmin {
 User::User(JAdminContextPtr context_) : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("music", "user", "e"));
   setupTable();
@@ -393,3 +393,4 @@ nlohmann::json User::checkout(const nlohmann::json& event,
     return ret;
   }
 }
+}  // namespace jadmin

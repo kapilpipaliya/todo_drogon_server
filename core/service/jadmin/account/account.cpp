@@ -1,7 +1,7 @@
 #include "account.h"
 
 #include <utility>
-using namespace jadmin;
+namespace jadmin {
 Account::Account(JAdminContextPtr context_) : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("account", "account", "a"));
   setupTable();
@@ -76,3 +76,5 @@ nlohmann::json Account::upd(nlohmann::json event, nlohmann::json args) {
                        args[0]["name"].get<std::string>(),
                        args[0]["description"].get<std::string>());
 }
+
+}  // namespace jadmin

@@ -3,7 +3,7 @@
 #include <utility>
 #include "../../../strfns.h"
 #include "../../dba.h"
-using namespace jadmin;
+
 #include "../../dba.h"
 
 #define ids2(s, array)                                 \
@@ -13,7 +13,7 @@ using namespace jadmin;
   }                                                    \
   if ((s).size() > 0) array.pop_back();                \
   array += "}";
-
+namespace jadmin {
 Purity::Purity(JAdminContextPtr context_) : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("material", "purity", "p"));
   setupTable();
@@ -111,9 +111,10 @@ void Purity::setupTable() {
   });
 }
 
-void save_purity_metal_(nlohmann::json &args,
-                        const std::shared_ptr<drogon::orm::Transaction> &transPtr,
-                        long purity_id, long tone_id) {
+void save_purity_metal_(
+    nlohmann::json &args,
+    const std::shared_ptr<drogon::orm::Transaction> &transPtr, long purity_id,
+    long tone_id) {
   std::string strSqlPostCategories =
       "SELECT metal_id FROM material.purity_metal where purity_id = $1 and "
       "tone_id = $2";
@@ -172,9 +173,9 @@ void save_purity_metal_(nlohmann::json &args,
     }
   }
 }
-void save_purity_tone_(nlohmann::json &args,
-                       const std::shared_ptr<drogon::orm::Transaction> &transPtr,
-                       long purity_id) {
+void save_purity_tone_(
+    nlohmann::json &args,
+    const std::shared_ptr<drogon::orm::Transaction> &transPtr, long purity_id) {
   std::string strSqlPostCategories =
       "SELECT tone_id FROM material.purity_tone where purity_id = $1";
   std::string strSqlPostCategorySimpleFind =
@@ -387,3 +388,4 @@ nlohmann::json Purity::del(nlohmann::json event, nlohmann::json args) {
     return ret;
   }
 }
+}  // namespace jadmin

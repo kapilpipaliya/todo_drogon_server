@@ -66,8 +66,6 @@
 #include "core/service/jadmin/class/auth.h"
 #include "core/service/jadmin/class/user.h"
 
-using namespace jadmin;
-
 JUserActor::JUserActor(caf::actor_config &cfg) : caf::event_based_actor(cfg) {}
 
 caf::behavior JUserActor::make_behavior() {
@@ -99,64 +97,64 @@ nlohmann::json JUserActor::handleTextMessage(
 
   if constexpr (false) {
   }
-  REGISTER("auth", Auth)
-  REGISTER("user", User)
-  REGISTER("account_type", AccountType)
-  REGISTER("account", Account)
-  REGISTER("account_heading", AccountHeading)
-  REGISTER("journal_type", JournalType)
-  REGISTER("txn", Txn)
-  REGISTER("priority", Priority)
+  REGISTER("auth", jadmin::Auth)
+  REGISTER("user", jadmin::User)
+  REGISTER("account_type", jadmin::AccountType)
+  REGISTER("account", jadmin::Account)
+  REGISTER("account_heading", jadmin::AccountHeading)
+  REGISTER("journal_type", jadmin::JournalType)
+  REGISTER("txn", jadmin::Txn)
+  REGISTER("priority", jadmin::Priority)
 
-  REGISTER("node", Node)
-  REGISTER("role", Role)
-  REGISTER("task", Task)
+  REGISTER("node", jadmin::Node)
+  REGISTER("role", jadmin::Role)
+  REGISTER("task", jadmin::Task)
 
-  REGISTER("department_type", DepartmentType)
-  REGISTER("department", Department)
-  REGISTER("casting", Casting)
-  REGISTER("wax_setting", WaxSetting)
-  REGISTER("metal_issue", MetalIssue)
-  REGISTER("MFG_txn", MfgTxn)
-  REGISTER("refining", Refining)
-  REGISTER("m_transfer", MTransfer)
+  REGISTER("department_type", jadmin::DepartmentType)
+  REGISTER("department", jadmin::Department)
+  REGISTER("casting", jadmin::Casting)
+  REGISTER("wax_setting", jadmin::WaxSetting)
+  REGISTER("metal_issue", jadmin::MetalIssue)
+  REGISTER("MFG_txn", jadmin::MfgTxn)
+  REGISTER("refining", jadmin::Refining)
+  REGISTER("m_transfer", jadmin::MTransfer)
 
-  REGISTER("metal", Metal)
-  REGISTER("purity", Purity)
-  REGISTER("tone", Tone)
-  REGISTER("accessory", Accessory)
+  REGISTER("metal", jadmin::Metal)
+  REGISTER("purity", jadmin::Purity)
+  REGISTER("tone", jadmin::Tone)
+  REGISTER("accessory", jadmin::Accessory)
 
-  REGISTER("clarity", Clarity)
-  REGISTER("shape", Shape)
-  REGISTER("d_color", DColor)
-  REGISTER("cs_color", CSColor)
-  REGISTER("cs_type", CSType)
-  REGISTER("size", Size)  // CRUD not required
-  REGISTER("d_size", DSize)
-  REGISTER("cs_size", CSSize)
+  REGISTER("clarity", jadmin::Clarity)
+  REGISTER("shape", jadmin::Shape)
+  REGISTER("d_color", jadmin::DColor)
+  REGISTER("cs_color", jadmin::CSColor)
+  REGISTER("cs_type", jadmin::CSType)
+  REGISTER("size", jadmin::Size)  // CRUD not required
+  REGISTER("d_size", jadmin::DSize)
+  REGISTER("cs_size", jadmin::CSSize)
 
-  REGISTER("address_type", AddressType)
-  REGISTER("contact_type", ContactType)
-  REGISTER("entity_type", EntityType)
-  REGISTER("entity", Entity)
+  REGISTER("address_type", jadmin::AddressType)
+  REGISTER("contact_type", jadmin::ContactType)
+  REGISTER("entity_type", jadmin::EntityType)
+  REGISTER("entity", jadmin::Entity)
 
-  REGISTER("setting", Setting)
-  REGISTER("currency", Currency)
-  REGISTER("log", Log)
-  REGISTER("support", Support)
-  REGISTER("image_collection", ImageCollection)
-  REGISTER("image", Image)
-  REGISTER("payment_method", PaymentMethod)
+  REGISTER("setting", jadmin::Setting)
+  REGISTER("currency", jadmin::Currency)
+  REGISTER("log", jadmin::Log)
+  REGISTER("support", jadmin::Support)
+  REGISTER("image_collection", jadmin::ImageCollection)
+  REGISTER("image", jadmin::Image)
+  REGISTER("payment_method", jadmin::PaymentMethod)
 
-  REGISTER("option", POption)  // CRUD Not required
-  REGISTER("product", Product)
-  REGISTER("post", Post1)
-  REGISTER("category", PCategory)
-  REGISTER("tag", Tag)
-  REGISTER("shipping_class", PShippingClass)
-  REGISTER("setting_type", SettingType)
-  REGISTER("certified_by", CertifiedBy)
-  REGISTER("policy", Policy)
+  REGISTER("option", jadmin::POption)  // CRUD Not required
+  REGISTER("product", jadmin::Product)
+  REGISTER("post", jadmin::Post1)
+  REGISTER("category", jadmin::PCategory)
+  REGISTER("tag", jadmin::Tag)
+  REGISTER("shipping_class", jadmin::PShippingClass)
+  REGISTER("setting_type", jadmin::SettingType)
+  REGISTER("certified_by", jadmin::CertifiedBy)
+  REGISTER("policy", jadmin::Policy)
   else {
     return nlohmann::json::array();
   }

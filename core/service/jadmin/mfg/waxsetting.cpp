@@ -1,8 +1,8 @@
 #include "waxsetting.h"
 
 #include <utility>
-using namespace jadmin;
 
+namespace jadmin {
 WaxSetting::WaxSetting(JAdminContextPtr context_)
     : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("mfg", "wax_setting", "m"));
@@ -97,3 +97,4 @@ nlohmann::json WaxSetting::upd(nlohmann::json event, nlohmann::json args) {
       args[0]["description"].get<std::string>(),
       args[0]["status_id"].get<std::string>());
 }
+}  // namespace jadmin

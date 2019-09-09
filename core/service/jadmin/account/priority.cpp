@@ -1,8 +1,8 @@
 #include "priority.h"
 
 #include <utility>
-using namespace jadmin;
 
+namespace jadmin {
 Priority::Priority(JAdminContextPtr context_) : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("account", "priority", "a"));
   setupTable();
@@ -70,3 +70,4 @@ nlohmann::json Priority::upd(nlohmann::json event, nlohmann::json args) {
       event, args, "rank, slug, name", "$1, $2, $3", args[0]["rank"].get<int>(),
       args[0]["slug"].get<std::string>(), args[0]["name"].get<std::string>());
 }
+}  // namespace jadmin

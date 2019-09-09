@@ -2,8 +2,8 @@
 
 #include <utility>
 #include "../../dba.h"
-using namespace jadmin;
 
+namespace jadmin {
 Setting::Setting(JAdminContextPtr context_) : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("setting", "setting", "gs"));
   setupTable();
@@ -125,3 +125,4 @@ nlohmann::json Setting::save(const nlohmann::json &event, nlohmann::json args) {
     }
   }
 }
+}  // namespace jadmin

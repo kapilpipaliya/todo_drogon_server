@@ -3,7 +3,6 @@
 #include <utility>
 #include "../../../strfns.h"
 #include "../../dba.h"
-using namespace jadmin;
 
 #define ids2(s, array)                                 \
   std::string array = "{";                             \
@@ -12,7 +11,7 @@ using namespace jadmin;
   }                                                    \
   if ((s).size() > 0) array.pop_back();                \
   array += "}";
-
+namespace jadmin {
 Metal::Metal(JAdminContextPtr context_) : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("material", "metal", "m"));
   setupTable();
@@ -228,3 +227,4 @@ nlohmann::json Metal::upd(nlohmann::json event, nlohmann::json args) {
   ret[0] = simpleJsonSaveResult(event, false, "Not Valid Structure");
   return ret;
 }
+}  // namespace jadmin

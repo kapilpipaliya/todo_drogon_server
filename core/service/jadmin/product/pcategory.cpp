@@ -1,7 +1,7 @@
 #include "pcategory.h"
 
 #include <utility>
-using namespace jadmin;
+namespace jadmin {
 
 PCategory::PCategory(JAdminContextPtr context_) : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("product", "category", "c"));
@@ -94,3 +94,4 @@ nlohmann::json PCategory::upd(nlohmann::json event, nlohmann::json args) {
       args[0]["parent_id"].get<long>(),  // why this ask for get<int>()?
       args[0]["position"].get<int>());
 }
+}  // namespace jadmin

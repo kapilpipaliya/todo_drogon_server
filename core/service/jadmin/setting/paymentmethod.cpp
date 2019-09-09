@@ -1,8 +1,8 @@
 #include "paymentmethod.h"
 #include <boost/filesystem.hpp>
 #include <utility>
-using namespace jadmin;
 
+namespace jadmin {
 PaymentMethod::PaymentMethod(JAdminContextPtr context_)
     : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("setting", "payment_method", "t"));
@@ -74,3 +74,4 @@ nlohmann::json PaymentMethod::upd(nlohmann::json event, nlohmann::json args) {
                        args[0]["url"].get<std::string>(),
                        args[0]["description"].get<std::string>());
 }
+}  // namespace jadmin

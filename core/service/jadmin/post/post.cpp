@@ -3,8 +3,8 @@
 #include <utility>
 #include "../../../strfns.h"
 #include "../../dba.h"
-using namespace jadmin;
 
+namespace jadmin {
 Post1::Post1(JAdminContextPtr context_) : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("post", "post", "post"));
   setupTable();
@@ -149,3 +149,4 @@ nlohmann::json Post1::upd(nlohmann::json event, nlohmann::json args) {
   ret[0] = simpleJsonSaveResult(event, false, "Not Valid Structure");
   return ret;
 }
+}  // namespace jadmin

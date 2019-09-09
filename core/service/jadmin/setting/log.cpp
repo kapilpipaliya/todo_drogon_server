@@ -1,8 +1,8 @@
 #include "log.h"
 
 #include <utility>
-using namespace jadmin;
 
+namespace jadmin {
 Log::Log(JAdminContextPtr context_) : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("setting", "simple_log", "a"));
   setupTable();
@@ -65,3 +65,4 @@ nlohmann::json Log::upd(nlohmann::json event, nlohmann::json args) {
   return query.updBase(event, args, "detail", "$1",
                        args[0]["detail"].get<std::string>());
 }
+}  // namespace jadmin

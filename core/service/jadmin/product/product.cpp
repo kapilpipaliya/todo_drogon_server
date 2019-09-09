@@ -3,8 +3,8 @@
 #include <utility>
 #include "../../../strfns.h"
 #include "../../dba.h"
-using namespace jadmin;
 
+namespace jadmin {
 Product::Product(JAdminContextPtr context_) : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("post", "post", "post"));
   setupTable();
@@ -1774,3 +1774,4 @@ select * ,
     return r;
   }
 }
+}  // namespace jadmin

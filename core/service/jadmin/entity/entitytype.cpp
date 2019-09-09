@@ -1,8 +1,8 @@
 #include "entitytype.h"
 
 #include <utility>
-using namespace jadmin;
 
+namespace jadmin {
 EntityType::EntityType(JAdminContextPtr context_)
     : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("entity", "entity_type", "a"));
@@ -50,3 +50,4 @@ nlohmann::json EntityType::upd(nlohmann::json event, nlohmann::json args) {
   return query.updBase(event, args, "name", "$1",
                        args[0]["name"].get<std::string>());
 }
+}  // namespace jadmin

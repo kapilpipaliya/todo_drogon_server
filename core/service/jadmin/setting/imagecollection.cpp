@@ -1,8 +1,8 @@
 #include "imagecollection.h"
 
 #include <utility>
-using namespace jadmin;
 
+namespace jadmin {
 ImageCollection::ImageCollection(JAdminContextPtr context_)
     : context(std::move(context_)) {
   query =
@@ -69,3 +69,4 @@ nlohmann::json ImageCollection::upd(nlohmann::json event, nlohmann::json args) {
   return query.updBase(event, args, "name", "$1",
                        args[0]["name"].get<std::string>());
 }
+}  // namespace jadmin

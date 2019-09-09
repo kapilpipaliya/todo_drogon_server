@@ -1,8 +1,8 @@
 #include "policy.h"
 
 #include <utility>
-using namespace jadmin;
 
+namespace jadmin {
 Policy::Policy(JAdminContextPtr context_) : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("product", "policy", "t"));
   setupTable();
@@ -73,3 +73,4 @@ nlohmann::json Policy::upd(nlohmann::json event, nlohmann::json args) {
                        args[0]["url"].get<std::string>(),
                        args[0]["description"].get<std::string>());
 }
+}  // namespace jadmin

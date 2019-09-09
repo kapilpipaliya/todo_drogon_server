@@ -1,8 +1,8 @@
 #include "support.h"
 
 #include <utility>
-using namespace jadmin;
 
+namespace jadmin {
 Support::Support(JAdminContextPtr context_) : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("setting", "support", "a"));
   setupTable();
@@ -74,3 +74,4 @@ nlohmann::json Support::upd(nlohmann::json event, nlohmann::json args) {
                        args[0]["phone"].get<std::string>(),
                        args[0]["message"].get<std::string>());
 }
+}  // namespace jadmin

@@ -4,8 +4,7 @@
 #include "../../../strfns.h"
 #include "../../dba.h"
 
-using namespace jadmin;
-
+namespace jadmin {
 CSSize::CSSize(JAdminContextPtr context_) : context(std::move(context_)) {
   query = sqlb::Query(
       sqlb::ObjectIdentifier("material", "color_stone_size_meta", "sm"));
@@ -358,3 +357,4 @@ nlohmann::json CSSize::del(nlohmann::json event, nlohmann::json args) {
     return ret;
   }
 }
+}  // namespace jadmin

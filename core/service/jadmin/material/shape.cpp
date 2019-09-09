@@ -1,8 +1,8 @@
 #include "shape.h"
 
 #include <utility>
-using namespace jadmin;
 
+namespace jadmin {
 Shape::Shape(JAdminContextPtr context_) : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("material", "shape", "gs"));
   setupTable();
@@ -76,3 +76,4 @@ nlohmann::json Shape::upd(nlohmann::json event, nlohmann::json args) {
                        args[0]["slug"].get<std::string>(),
                        args[0]["name"].get<std::string>());
 }
+}  // namespace jadmin

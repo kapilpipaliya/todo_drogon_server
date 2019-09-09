@@ -1,8 +1,8 @@
 #include "refining.h"
 
 #include <utility>
-using namespace jadmin;
 
+namespace jadmin {
 Refining::Refining(JAdminContextPtr context_) : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("mfg", "refining", "m"));
   setupTable();
@@ -75,3 +75,4 @@ nlohmann::json Refining::upd(nlohmann::json event, nlohmann::json args) {
   return query.updBase(event, args, "name", "$1",
                        args[0]["name"].get<std::string>());
 }
+}  // namespace jadmin

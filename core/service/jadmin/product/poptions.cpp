@@ -1,8 +1,8 @@
 #include "poptions.h"
 
 #include <utility>
-using namespace jadmin;
 
+namespace jadmin {
 POption::POption(JAdminContextPtr context_) : context(std::move(context_)) {
   query = sqlb::Query(sqlb::ObjectIdentifier("product", "option", "o"));
   setupTable();
@@ -70,3 +70,4 @@ nlohmann::json POption::upd(nlohmann::json event, nlohmann::json args) {
                        args[0]["value"].get<std::string>(),
                        args[0]["auoload"].get<std::string>());
 }
+}  // namespace jadmin
