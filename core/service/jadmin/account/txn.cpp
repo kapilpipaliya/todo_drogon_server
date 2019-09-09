@@ -5,14 +5,13 @@ using namespace jadmin;
 #include "../../dba.h"
 
 Txn::Txn(JAdminContextPtr context_) : context(std::move(context_)) {
-  t.m_table = sqlb::ObjectIdentifier("account", "txn", "a");
+  getTable().query() =
+      sqlb::Query(sqlb::ObjectIdentifier("account", "txn", "a"));
 }
 
 void Txn::setupTable() {
-  t.m_query = sqlb::Query(t.m_table);
-
   // m_query.setRowIdColumn("id");
-  t.m_query.selectedColumns() = {
+  getTable().query().selectedColumns() = {
       sqlb::SelectedColumn({"id", "id", "", "a", PG_TYPES::INT8}),
       sqlb::SelectedColumn({"Journal Type", "journal_type_id", "", "a",
                             PG_TYPES::INT8, true, 1, 1}),
@@ -102,14 +101,14 @@ void Txn::setupTable() {
   auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  t.m_query.joins() = {
+  getTable().query().joins() = {
       sqlb::Join("left", jt, "jt.id = a.journal_type_id"),
       sqlb::Join("left", party, "party.id = a.party_id"),
       sqlb::Join("left", order_item, "o_i.txn_id = a.id"),
       sqlb::Join("left", u1, "a.create_user_id = u1.id"),
       sqlb::Join("left", u2, "a.update_user_id = u2.id"),
   };
-  t.m_query.groupBy() = {
+  getTable().query().groupBy() = {
       sqlb::GroupByColumn("a", "id"),     sqlb::GroupByColumn("jt", "id"),
       sqlb::GroupByColumn("party", "id"), sqlb::GroupByColumn("u1", "id"),
       sqlb::GroupByColumn("u2", "id"),

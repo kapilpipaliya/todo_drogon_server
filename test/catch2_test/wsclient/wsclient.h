@@ -1,12 +1,12 @@
 #ifndef WSCLIENT_H
 #define WSCLIENT_H
 
-#include <QtCore/QObject>
-#include <QtWebSockets/QWebSocket>
-#include <QtNetwork/QSslError>
 #include <QtCore/QList>
+#include <QtCore/QObject>
 #include <QtCore/QString>
 #include <QtCore/QUrl>
+#include <QtNetwork/QSslError>
+#include <QtWebSockets/QWebSocket>
 
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
@@ -16,51 +16,51 @@
 #include <functional>
 
 #include "json.hpp"
-using nlohmann:: json;
+using nlohmann::json;
 
-class SslEchoClient : public QObject
-{
-    Q_OBJECT
-    static short int PING_INTERVAL;
-    static short int PING_INTERVAL_COUNT_MAX;
+class SslEchoClient : public QObject {
+  Q_OBJECT
 
-public:
-    explicit SslEchoClient(const QUrl &url, QObject *parent = nullptr);
-    void sendMessage(QString message);
-    bool bind(const nlohmann::json &event, std::function<void(json)> callback);
-    bool bindOnce(const nlohmann::json &event, std::function<void(json)> callback);
-    bool unbind(const nlohmann::json &event);
+ public:
+  explicit SslEchoClient(const QUrl &url, QObject *parent = nullptr);
+  void sendMessage(QString message);
+  bool bind(const nlohmann::json &event, std::function<void(json)> callback);
+  bool bindOnce(const nlohmann::json &event,
+                std::function<void(json)> callback);
+  bool unbind(const nlohmann::json &event);
+  QWebSocket &getWebSocket() { return m_webSocket; }
 
-    QWebSocket m_webSocket;
+ private Q_SLOTS:
+  void onConnected();
+  void onTextMessageReceived(QString message);
+  void onSslErrors(const QList<QSslError> &errors);
 
-private Q_SLOTS:
-    void onConnected();
-    void onTextMessageReceived(QString message);
-    void onSslErrors(const QList<QSslError> &errors);
+ private:
+  static short int PING_INTERVAL;
+  static short int PING_INTERVAL_COUNT_MAX;
 
-private:
-    QUrl url;
+  QWebSocket m_webSocket;
 
-    QTimer *ping_timer;
-    //QNetworkReply *reply = nullptr;
-    //QNetworkAccessManager qnam;
+  QUrl url;
 
-    short int intervals_from_last_pong;
+  QTimer *ping_timer;
+  // QNetworkReply *reply = nullptr;
+  // QNetworkAccessManager qnam;
 
-    std::map<std::string, std::tuple<int, std::function<void(json)>>> callbacks;
+  short int intervals_from_last_pong;
 
-    void reconnect();
+  std::map<std::string, std::tuple<int, std::function<void(json)>>> callbacks;
 
-    json jsonparse(std::string msg);
-    void dispatch(nlohmann::json event, json data);
+  void reconnect();
+
+  json jsonparse(std::string msg);
+  void dispatch(nlohmann::json event, json data);
 };
 
 class WsInst {
-public:
-    WsInst();
-    static SslEchoClient &getClient();
+ public:
+  WsInst();
+  static SslEchoClient &getClient();
 };
 
-
-
-#endif // WSCLIENT_H
+#endif  // WSCLIENT_H

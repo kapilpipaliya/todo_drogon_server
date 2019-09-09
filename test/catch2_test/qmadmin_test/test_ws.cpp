@@ -14,7 +14,7 @@ TEST_CASE("is connection possible", "[WSTest]") {
   auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/madmin")));
 
   bool r0 = false;
-  Once::connect(&w2.m_webSocket, &QWebSocket::connected, [&r0]() {
+  Once::connect(&w2.getWebSocket(), &QWebSocket::connected, [&r0]() {
     SPDLOG_TRACE("Connection successfull");
     REQUIRE(true);
     r0 = true;
@@ -41,7 +41,7 @@ TEST_CASE("server reply error on string type of message.", "[WSTest]") {
   //    REQUIRE(b);
   w2.sendMessage(QString::fromStdString(j.dump()));
   bool r0 = false;
-  Once::connect(&w2.m_webSocket, &QWebSocket::textMessageReceived, [&r0]() {
+  Once::connect(&w2.getWebSocket(), &QWebSocket::textMessageReceived, [&r0]() {
     SPDLOG_TRACE("Connection Not successfull");
     REQUIRE(true);
     r0 = true;
@@ -111,7 +111,7 @@ TEST_CASE("login on backend with username and password", "[WSTest]") {
 //// currently this not working.. but make this working in future.
 ////TEST_CASE("signup with a form.","[WSTest]") {
 ////    SignUp w1; w1.setpath("/madmin"); w1.init(); w1.run();
-///REQUIRE(w1.isTestSuccess() == true);
+/// REQUIRE(w1.isTestSuccess() == true);
 ////}
 
 TEST_CASE("check that all table Super Admin data are correctly replied",
@@ -176,7 +176,7 @@ TEST_CASE("check that all table Super Admin data are correctly replied",
 ////Temporary this not working..
 ////TEST_CASE("User Admin Menu Test","[WSTest]") {
 ////    GetMenuAdmin w1{"ui"}; w1.setpath("/madmin"); w1.init(); w1.run();
-///REQUIRE(w1.isTestSuccess() == true);
+/// REQUIRE(w1.isTestSuccess() == true);
 ////}
 
 TEST_CASE("password change should work.") {
@@ -284,12 +284,12 @@ TEST_CASE("create update delete successfull") {
   //// This test stopped working because now delete only accepts number.
   ////    SUD("user",
   ////
-  ///R"([{"username":"username","fullname":"fullname","email":"email@email.com","password":"password","disabled":true,"state":"state","city":"city"},[null]])",
+  /// R"([{"username":"username","fullname":"fullname","email":"email@email.com","password":"password","disabled":true,"state":"state","city":"city"},[null]])",
   ////        R"(
   ////        [
   ////
   ///{"type":"executive","parent_id":null,"p_username":0,"username":"user1","fullname":"fullname1","create_date":"2019-08-28
-  ///12:04:23.440921+05:30","disabled":true,"email":"email1@gmail.com","password":"pass1","state":"state1","city":"city1"},
+  /// 12:04:23.440921+05:30","disabled":true,"email":"email1@gmail.com","password":"pass1","state":"state1","city":"city1"},
   ////            [null, null, null, null, "=username"]
   ////        ])",
   ////        R"([[null, null, null, null, "=user1"]])")
@@ -383,6 +383,6 @@ TEST_CASE("create update delete successfull") {
 //// user count is not fixed now.
 ////TEST_CASE("create Count successfull") {
 ////    UserCount w1{"user"}; w1.setpath("/madmin"); w1.init(); w1.run();
-///REQUIRE(w1.isTestSuccess() == true);
+/// REQUIRE(w1.isTestSuccess() == true);
 ////
 /// }

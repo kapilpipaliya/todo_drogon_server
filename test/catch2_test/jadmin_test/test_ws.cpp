@@ -19,7 +19,7 @@ TEST_CASE("is connection possible", "[WSTest]") {
   auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/jadmin")));
 
   bool r0 = false;
-  Once::connect(&w2.m_webSocket, &QWebSocket::connected, [&r0]() {
+  Once::connect(&w2.getWebSocket(), &QWebSocket::connected, [&r0]() {
     SPDLOG_TRACE("Connection successfull");
     REQUIRE(true);
     r0 = true;
@@ -46,7 +46,7 @@ TEST_CASE("server reply error on string type of message.", "[WSTest]") {
   //    REQUIRE(b);
   w2.sendMessage(QString::fromStdString(j.dump()));
   bool r0 = false;
-  Once::connect(&w2.m_webSocket, &QWebSocket::textMessageReceived, [&r0]() {
+  Once::connect(&w2.getWebSocket(), &QWebSocket::textMessageReceived, [&r0]() {
     SPDLOG_TRACE("Connection Not successfull");
     REQUIRE(true);
     r0 = true;

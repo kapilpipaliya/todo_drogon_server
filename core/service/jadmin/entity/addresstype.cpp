@@ -5,13 +5,13 @@ using namespace jadmin;
 
 AddressType::AddressType(JAdminContextPtr context_)
     : context(std::move(context_)) {
-  t.m_table = sqlb::ObjectIdentifier("entity", "address_type", "a");
+  getTable().query() =
+      sqlb::Query(sqlb::ObjectIdentifier("entity", "address_type", "a"));
 }
 
 void AddressType::setupTable() {
-  t.m_query = sqlb::Query(t.m_table);
   // m_query.setRowIdColumn("id");
-  t.m_query.selectedColumns() = {
+  getTable().query().selectedColumns() = {
       sqlb::SelectedColumn({"Id", "id", "", "a", PG_TYPES::INT8, true}),
       sqlb::SelectedColumn({"Name", "name", "", "a", PG_TYPES::TEXT, true}),
       sqlb::SelectedColumn({"Create Time", "inserted_at", "", "a",

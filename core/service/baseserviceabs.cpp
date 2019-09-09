@@ -46,7 +46,7 @@ nlohmann::json BaseServiceAbs::ins(nlohmann::json event, nlohmann::json args) {
   std::string strSql;
   try {
     setupTable();
-    strSql = t.m_query.buildInsQuery(std::move(args));
+    strSql = getTable().query().buildInsQuery(std::move(args));
     if (strSql.empty()) {
       json ret;
       ret[0] = simpleJsonSaveResult(event, false, "UnValid Arguments");
@@ -73,7 +73,7 @@ nlohmann::json BaseServiceAbs::ins(nlohmann::json event, nlohmann::json args) {
 nlohmann::json BaseServiceAbs::upd(nlohmann::json event, nlohmann::json args) {
   setupTable();
   t.updateFilterBase(args[1]);
-  std::string strSql = t.m_query.buildUpdateQuery(args);
+  std::string strSql = getTable().query().buildUpdateQuery(args);
   if (strSql.empty()) {
     json ret;
     ret[0] = simpleJsonSaveResult(event, false, "UnValid Arguments");
@@ -103,12 +103,14 @@ json BaseServiceAbs::del(json event, json args) {
     auto transPtr = clientPtr->newTransaction();
     setupTable();
     t.updateFilterBase(args[0]);
-    auto res = Dba::writeInTrans(transPtr, t.m_query.buildDeleteQuery());
+    auto res =
+        Dba::writeInTrans(transPtr, getTable().query().buildDeleteQuery());
     if (res.size() > 1) {
       throw("not valid arguments");
     }
     // affected rows should be returned too.
-    // Dba::writeInTrans(transPtr, "DELETE FROM " + t.m_table.toDisplayString()
+    // Dba::writeInTrans(transPtr, "DELETE FROM " +
+    // t.m_table.toDisplayString()
     // + " WHERE id = $1", args[0]);
     json ret;
     ret[0] = simpleJsonSaveResult(event, true, "Done");
@@ -130,10 +132,12 @@ nlohmann::json BaseServiceAbs::count(nlohmann::json event,
     t.updateFilterBase(args[0]);
     t.updateSortBase(args[1]);
     t.updatePaginationBase(args[2]);
-    // SPDLOG_TRACE(t.m_query.buildCountQuery());
-    auto res = Dba::writeInTrans(transPtr, t.m_query.buildCountQuery());
+    // SPDLOG_TRACE(getTable().query().buildCountQuery());
+    auto res =
+        Dba::writeInTrans(transPtr, getTable().query().buildCountQuery());
     // affected rows should be returned too.
-    // Dba::writeInTrans(transPtr, "DELETE FROM " + t.m_table.toDisplayString()
+    // Dba::writeInTrans(transPtr, "DELETE FROM " +
+    // t.m_table.toDisplayString()
     // + " WHERE id = $1", args[0]);
     json ret;
     ret[0] = json::array({event, res[0]["count"].as<long>()});

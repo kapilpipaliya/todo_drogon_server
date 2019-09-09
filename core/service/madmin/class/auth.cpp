@@ -19,7 +19,7 @@ nlohmann::json Auth::handleEvent(nlohmann::json event, unsigned long next,
           "select (u.expiry > now()) as isexpired, u.disabled from music.user "
           "as u WHERE "
           "username = $1";
-      auto r = Dba::read(isauthorised, args["user"]);
+      auto r = Dba::read(isauthorised, args["user"].get<std::string>());
       if (r.empty()) {
         return {simpleJsonSaveResult(event, false, "Error")};
       } else if (!r[0]["isexpired"].isNull() && r[0]["isexpired"].as<bool>()) {
@@ -32,8 +32,8 @@ nlohmann::json Auth::handleEvent(nlohmann::json event, unsigned long next,
                                          args["pass"].get<std::string>());
       res[0][1] = session_id;
       if (session_id) {
-        context->current_session_id = session_id;
-        context->user_id = user_id;
+        context->setSessionId(session_id);
+        context->setUserId(user_id);
         context->setUser();
         res[0] = simpleJsonSaveResult(event, true, "Done");
         res[1] = {{"auth", "set_cookie", 0}, session_id};
@@ -63,7 +63,7 @@ nlohmann::json Auth::handleEvent(nlohmann::json event, unsigned long next,
 // Save Image meta on server temporary
 nlohmann::json Auth::saveFileMeta(const nlohmann::json& event,
                                   nlohmann::json args) {
-  long c = context->current_session_id;
+  long c = context->sessionId();
 
   // auto strSql = "INSERT INTO music.temp_file_meta ( session_id, event, name,
   // size, type ) VALUES( $1, $2, $3, $4, $5 )";
@@ -92,12 +92,12 @@ nlohmann::json Auth::saveFileMeta(const nlohmann::json& event,
 
 bool Auth::logout(long key, [[maybe_unused]] bool relogin) {
   // If no key is passed try to find the session id
-  key = key ? key : context->current_session_id;
+  key = key ? key : context->sessionId();
 
   // Nuke the cookie before all else
   auto r = Session::destroy(key);
   if (r) {
-    context->current_session_id = 0;
+    context->setSessionId(0);
     return true;
   }
   return false;

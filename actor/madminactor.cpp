@@ -102,7 +102,7 @@ nlohmann::json MAdminActor::handleBinaryMessage(
   json event;
   try {
     auto contx = wsConnPtr->getContext<MAdminContext>();
-    long c = contx->current_session_id;
+    long c = contx->sessionId();
     auto sqlSession =
         "SELECT event FROM music.temp_file_meta where session_id = $1";
     auto clientPtr = drogon::app().getDbClient("sce");

@@ -16,7 +16,6 @@ using namespace drogon;
 class BaseServiceAbs {
  public:
   virtual ~BaseServiceAbs() = default;
-  ;
   virtual json handleEvent(json event, unsigned long next, json args);
 
  protected:
@@ -27,13 +26,14 @@ class BaseServiceAbs {
   virtual json upd(json event, json args);
   virtual json del(json event, json args);
   virtual json count(json event, json args);
+  Table& getTable() { return t; }
 
   template <class... Args>
   json insBase(const json& event, const json& /*args*/,
                const std::string& column, const std::string& values,
                Args... args_bind) {
-    std::string strSql = "INSERT INTO " + t.m_table.toString() + " (" + column +
-                         ") values(" + values + ")";
+    std::string strSql = "INSERT INTO " + t.query().table().toString() + " (" +
+                         column + ") values(" + values + ")";
 
     try {
       auto clientPtr = drogon::app().getDbClient("sce");
@@ -54,8 +54,8 @@ class BaseServiceAbs {
                std::string values, Args... args_bind) {
     setupTable();
     t.updateFilterBase(args[1]);
-    std::string strSql =
-        t.m_query.buildUpdateQuery(std::move(column), std::move(values), "");
+    std::string strSql = getTable().query().buildUpdateQuery(
+        std::move(column), std::move(values), "");
     try {
       auto clientPtr = drogon::app().getDbClient("sce");
       clientPtr->execSqlSync(strSql, args_bind...);
@@ -69,6 +69,8 @@ class BaseServiceAbs {
       return ret;
     }
   }
+
+ private:
   Table t;
 };
 

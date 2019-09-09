@@ -4,17 +4,18 @@
 #include "caf/all.hpp"
 #include "json.hpp"
 
-class Permission : public caf::event_based_actor
-{
-public:
-    Permission( caf::actor_config &cfg, nlohmann::json in);
-private:
-    void blocking_run();
+class Permission : public caf::event_based_actor {
+ public:
+  Permission(caf::actor_config &cfg, nlohmann::json in);
 
-    nlohmann::json  in;
-    caf:: behavior    running_job; // initial behavior
-protected:
-   caf::behavior make_behavior() override;
+ protected:
+  caf::behavior make_behavior() override;
+
+ private:
+  void blocking_run();
+
+  nlohmann::json in;
+  caf::behavior running_job;  // initial behavior
 };
 
-#endif // PERMISSION_H
+#endif  // PERMISSION_H

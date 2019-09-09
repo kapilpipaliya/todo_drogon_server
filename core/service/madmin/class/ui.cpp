@@ -36,7 +36,7 @@ nlohmann::json UI::handleEvent(nlohmann::json event, unsigned long next,
 }
 
 nlohmann::json UI::getMenuData() {
-  if (context->user.type == "super admin") {
+  if (context->getUser().type == "super admin") {
     json j =
         json::array({json::array({"Dashboard", "music/dashboard"}),
                      json::array({"Admins", "music/users"}),
@@ -47,7 +47,7 @@ nlohmann::json UI::getMenuData() {
                      json::array({"Logout", "music/logout"})});
     return j;
   }
-  if (context->user.type == "admin") {
+  if (context->getUser().type == "admin") {
     json j =
         json::array({json::array({"Dashboard", "music/dashboard"}),
                      json::array({"Executives", "music/users"}),
@@ -56,7 +56,7 @@ nlohmann::json UI::getMenuData() {
                      json::array({"Password Change", "music/update_password"}),
                      json::array({"Logout", "music/logout"})});
     return j;
-  } else if (context->user.type == "executive") {
+  } else if (context->getUser().type == "executive") {
     json j = json::array(
         {json::array({"Dashboard", "music/dashboard"}),
          //                                 json::array({"Songs","music/browse"}),
@@ -71,10 +71,10 @@ nlohmann::json UI::getMenuData() {
 }
 
 std::string UI::getPageTitle() {
-  if (context->user.type == "super admin") {
+  if (context->getUser().type == "super admin") {
     return "Admins";
   }
-  if (context->user.type == "admin") {
+  if (context->getUser().type == "admin") {
     return "Executives";
   } else {
     return "";
@@ -82,10 +82,10 @@ std::string UI::getPageTitle() {
 }
 
 std::string UI::getUserAccountType() {
-  if (context->user.type == "super admin") {
+  if (context->getUser().type == "super admin") {
     return "Super Admin";
   }
-  if (context->user.type == "admin") {
+  if (context->getUser().type == "admin") {
     return "Admin";
   } else {
     return "Executive";
@@ -93,7 +93,7 @@ std::string UI::getUserAccountType() {
 }
 
 nlohmann::json UI::getUserTypeData() {
-  if (context->user.type == "super admin") {
+  if (context->getUser().type == "super admin") {
     json j = json::array({
         json::array({"All", nullptr}),
         json::array({"Super Admin", "super admin"}),
@@ -102,7 +102,7 @@ nlohmann::json UI::getUserTypeData() {
     });
     return j;
   }
-  if (context->user.type == "admin") {
+  if (context->getUser().type == "admin") {
     json j = json::array({
         json::array({"All", nullptr}),
         json::array({"Executives", "executive"}),

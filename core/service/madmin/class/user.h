@@ -17,10 +17,10 @@ using std::string;
  * it with a user_id from user.id
  *
  */
-#include "../../baseserviceabs.h"
 #include "../../../../wscontroller/context/madmincontext.h"
+#include "../../baseserviceabs.h"
 
-    using MAdminContextPtr = std::shared_ptr <MAdminContext>;
+using MAdminContextPtr = std::shared_ptr<MAdminContext>;
 namespace madmin {
 /**
  * User Class
@@ -41,8 +41,6 @@ class User : public BaseServiceAbs {
     int connected{0};
   };
   struct Catalog {};
-
-  MAdminContextPtr context;
 
  public:
   User(MAdminContextPtr);
@@ -443,6 +441,8 @@ class User : public BaseServiceAbs {
   // static void  stream_control(media_ids, User user = null);
 
  private:
+  MAdminContextPtr context;
+
   Info get_info();
   int id{};
   int playlist_id{};

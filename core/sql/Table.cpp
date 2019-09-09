@@ -64,7 +64,6 @@ std::string Table::getHeaderName(const unsigned long column) const {
 }
 void Table::reset() {
   m_query.clear();  // this will clear sort table everything on table...
-  m_sQuery.clear();
   // m_headers.clear();
   // m_vDataTypes.clear();
   // m_mCondFormats.clear();
@@ -91,7 +90,7 @@ json Table::getJsonHeaderData() {
     if (column.prefix.empty()) {
       jsonFormHeaderRow[c] = column.original_column;  // can change case
     } else {
-      if (column.prefix == m_table.as()) {
+      if (column.prefix == m_query.table().as()) {
         jsonFormHeaderRow[c] = column.selector;
       } else {
         jsonFormHeaderRow[c] = column.prefix + "_" + column.selector;

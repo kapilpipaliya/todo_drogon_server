@@ -4,14 +4,13 @@
 using namespace jadmin;
 
 Priority::Priority(JAdminContextPtr context_) : context(std::move(context_)) {
-  t.m_table = sqlb::ObjectIdentifier("account", "priority", "a");
+  getTable().query() =
+      sqlb::Query(sqlb::ObjectIdentifier("account", "priority", "a"));
 }
 
 void Priority::setupTable() {
-  t.m_query = sqlb::Query(t.m_table);
-
   // m_query.setRowIdColumn("id");
-  t.m_query.selectedColumns() = {
+  getTable().query().selectedColumns() = {
       sqlb::SelectedColumn({"Id", "id", "", "a", PG_TYPES::INT8, false}),
       sqlb::SelectedColumn({"Rank", "rank", "", "a", PG_TYPES::INT4, false}),
       sqlb::SelectedColumn({"Code", "slug", "", "a", PG_TYPES::TEXT, true}),
@@ -35,7 +34,7 @@ void Priority::setupTable() {
   auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  t.m_query.joins() = {
+  getTable().query().joins() = {
       sqlb::Join("left", u1, "a.create_user_id = u1.id"),
       sqlb::Join("left", u2, "a.update_user_id = u2.id"),
   };

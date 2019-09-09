@@ -4,14 +4,13 @@
 using namespace jadmin;
 
 Size::Size(JAdminContextPtr context_) : context(std::move(context_)) {
-  t.m_table = sqlb::ObjectIdentifier("material", "size", "s");
+  getTable().query() =
+      sqlb::Query(sqlb::ObjectIdentifier("material", "size", "s"));
 }
 
 void Size::setupTable() {
-  t.m_query = sqlb::Query(t.m_table);
-
   // m_query.setRowIdColumn("id");
-  t.m_query.selectedColumns() = {
+  getTable().query().selectedColumns() = {
       sqlb::SelectedColumn({"Id", "id", "", "s", PG_TYPES::INT8, false}),
       sqlb::SelectedColumn({"Name", "name", "", "s", PG_TYPES::TEXT, true}),
       // sqlb::SelectedColumn({"Created By", "create_user_id", "", "sm",
@@ -27,7 +26,7 @@ void Size::setupTable() {
   };
   auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
-  t.m_query.joins() = {};
+  getTable().query().joins() = {};
 }
 
 json Size::ins(json event, json args) {

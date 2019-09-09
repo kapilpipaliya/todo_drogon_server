@@ -6,8 +6,8 @@ using namespace jadmin;
 using namespace std::chrono;
 using S = sqlb::SelectedColumn;
 User::User(JAdminContextPtr context_) : context(std::move(context_)) {
-  t.m_table = sqlb::ObjectIdentifier("music", "user", "e");
-  t.m_query = sqlb::Query(t.m_table);
+  getTable().query() =
+      sqlb::Query(sqlb::ObjectIdentifier("music", "user", "e"));
 }
 // User::User(long user_id)
 //{
@@ -51,7 +51,7 @@ nlohmann::json User::handleEvent(nlohmann::json event, unsigned long next,
 }
 
 nlohmann::json User::getUserTypeFormData() {
-  if (context->user.type == "super admin") {
+  if (context->getUser().type == "super admin") {
     json j = json::array({
         json::array({"Super Admin", "super admin"}),
         json::array({"Admin", "admin"}),
@@ -59,7 +59,7 @@ nlohmann::json User::getUserTypeFormData() {
     });
     return j;
   }
-  if (context->user.type == "admin") {
+  if (context->getUser().type == "admin") {
     json j = json::array({
         json::array({"Executive", "executive"}),
     });
@@ -143,14 +143,14 @@ void User::get_valid_users() {
 
 bool User::is_logged_in() {
   // auto sql = "SELECT id,ip FROM session WHERE username=1 AND expire > now()";
-  return context->current_session_id != 0;
+  return context->sessionId() != 0;
 }
 string User::get_password() {
   auto sql = "SELECT * FROM music.user WHERE id = $1";
   try {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
-    auto r = Dba::writeInTrans(transPtr, sql, this->context->user_id);
+    auto r = Dba::writeInTrans(transPtr, sql, this->context->getUserId());
     if (r.size() == 1) {
       return r[0]["password"].as<std::string>();
     }
@@ -226,7 +226,7 @@ bool User::update_password(std::string new_password) {
   try {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
-    auto r = Dba::writeInTrans(transPtr, sql, this->context->user_id,
+    auto r = Dba::writeInTrans(transPtr, sql, this->context->getUserId(),
                                std::move(new_password));
     if (r.affectedRows() == 1) {
       return true;
@@ -308,7 +308,7 @@ json User::userLogin(const json& event, json args) {
       cookie_value["user"] = rs[0]["id"].as<long>();
       cookie_result[1] = cookie_value;
 
-      context->current_session_id = rs[0]["id"].as<long>();
+      context->setSessionId(rs[0]["id"].as<long>());
       json final;
       final[0] = login_result;
       final[1] = cookie_result;
@@ -327,7 +327,7 @@ json User::userLogin(const json& event, json args) {
 }
 
 json User::userId(const json& event, const json&) {
-  long c = context->current_session_id;
+  long c = context->sessionId();
   if (c != 0) {
     auto sqlSession = "SELECT key, value FROM user1.session where id = $1";
     try {
@@ -363,7 +363,7 @@ json User::userId(const json& event, const json&) {
   return ret;
 }
 json User::checkout(const json& event, const json& /*args*/) {
-  long c = context->current_session_id;
+  long c = context->sessionId();
   if (c != 0) {
     auto sqlSession = "SELECT key, value FROM user1.session where id = $1";
     try {

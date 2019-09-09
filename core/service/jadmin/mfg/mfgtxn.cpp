@@ -4,14 +4,13 @@
 using namespace jadmin;
 
 MfgTxn::MfgTxn(JAdminContextPtr context_) : context(std::move(context_)) {
-  t.m_table = sqlb::ObjectIdentifier("mfg", "mfg_txn", "m");
+  getTable().query() =
+      sqlb::Query(sqlb::ObjectIdentifier("mfg", "mfg_txn", "m"));
 }
 
 void MfgTxn::setupTable() {
-  t.m_query = sqlb::Query(t.m_table);
-
   // m_query.setRowIdColumn("id");
-  t.m_query.selectedColumns() = {
+  getTable().query().selectedColumns() = {
       sqlb::SelectedColumn({"Id", "id", "", "m", PG_TYPES::INT8, false}),
       //        sqlb::SelectedColumn({"Rank", "rank", "", "m", PG_TYPES::INT4,
       //        false}),
@@ -41,7 +40,7 @@ void MfgTxn::setupTable() {
   auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  t.m_query.joins() = {
+  getTable().query().joins() = {
 
       sqlb::Join("left", u1, "m.create_user_id = u1.id"),
       sqlb::Join("left", u2, "m.update_user_id = u2.id"),

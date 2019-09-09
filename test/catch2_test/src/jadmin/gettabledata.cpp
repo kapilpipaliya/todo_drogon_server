@@ -9,9 +9,10 @@ using namespace fmt::v5;
 GetTableData::GetTableData(std::string table) : table(table) {}
 
 void GetTableData::connectToServer() {
-  wsPtr->connectToServer(
-      req, [this](ReqResult r, [[maybe_unused]] const HttpResponsePtr &resp,
-                  [[maybe_unused]] const WebSocketClientPtr &wsPtr) {
+  getWsPtr()->connectToServer(
+      getReqPtr(),
+      [this](ReqResult r, [[maybe_unused]] const HttpResponsePtr &resp,
+             [[maybe_unused]] const WebSocketClientPtr &wsPtr) {
         if (r == ReqResult::Ok) {
           //
           // a JSON value
@@ -34,7 +35,7 @@ void GetTableData::connectToServer() {
       });
 }
 void GetTableData::setMessageHandler() {
-  wsPtr->setMessageHandler(
+  getWsPtr()->setMessageHandler(
       [this](const std::string &message,
              [[maybe_unused]] const WebSocketClientPtr &wsPtr,
              const WebSocketMessageType &type) {

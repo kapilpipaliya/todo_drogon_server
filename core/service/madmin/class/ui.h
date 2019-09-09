@@ -11,8 +11,6 @@ using nlohmann::json;
 // A collection of methods related to the user interface
 namespace madmin {
 class UI : public BaseServiceAbs {
-  MAdminContextPtr context;
-
  public:
   UI(MAdminContextPtr);
   void setupTable() override;
@@ -134,6 +132,8 @@ class UI : public BaseServiceAbs {
   // static void update_text($field, $value);
   // static void get_logo_url();
   // static void is_grid_view($type);
+ private:
+  MAdminContextPtr context;
 };
 }  // namespace madmin
 #endif  // UI_H

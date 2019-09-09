@@ -24,8 +24,8 @@ json Auth::handleEvent(json event, unsigned long next, json args) {
                                          args["pass"].get<std::string>());
       res[0][1] = session_id;
       if (session_id) {
-        context->current_session_id = session_id;
-        context->user_id = user_id;
+        context->setSessionId(session_id);
+        context->setUserId(user_id);
         context->setUser();
         res[0] = simpleJsonSaveResult(event, true, "Done");
         res[1] = {{"auth", "set_cookie", 0}, session_id};
@@ -80,12 +80,12 @@ std::tuple<long, long> Auth::login(const std::string &username,
 
 bool Auth::logout(long key, bool /*relogin*/) {
   // If no key is passed try to find the session id
-  key = key ? key : context->current_session_id;
+  key = key ? key : context->sessionId();
 
   // Nuke the cookie before all else
   auto r = Session::destroy(key);
   if (r) {
-    context->current_session_id = 0;
+    context->setSessionId(0);
     return true;
   }
   return false;
@@ -137,7 +137,7 @@ json Auth::handleBinaryEvent(json event, int next, std::string &message) {
 
 // Save Image meta on server temporary
 json Auth::saveFileMeta(const json &event, json args) {
-  long c = context->current_session_id;
+  long c = context->sessionId();
 
   // auto strSql = "INSERT INTO music.temp_file_meta ( session_id, event, name,
   // size, type ) VALUES( $1, $2, $3, $4, $5 )";
@@ -166,7 +166,7 @@ json Auth::saveFileMeta(const json &event, json args) {
 
 // Save Image meta on server temporary
 json Auth::saveImageMeta(const json &event, json args) {
-  long c = context->current_session_id;
+  long c = context->sessionId();
 
   // auto strSql = "INSERT INTO user1.temp_image ( session_id, event, name,
   // size, type ) VALUES( $1, $2, $3, $4, $5 )";
@@ -253,7 +253,7 @@ when server not able to send this file, front end crash.
 // save image in disk and return temporary id:
 json Auth::save_setting_attachment(const json & /*event*/,
                                    std::string &message) {
-  auto session_id = context->current_session_id;
+  auto session_id = context->sessionId();
   auto strSql = sel_("user1.temp_image", "event,  name, size, type",
                      "where session_id = $1");
   auto clientPtr = drogon::app().getDbClient("sce");

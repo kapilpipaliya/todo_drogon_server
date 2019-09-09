@@ -4,14 +4,13 @@
 using namespace jadmin;
 
 Policy::Policy(JAdminContextPtr context_) : context(std::move(context_)) {
-  t.m_table = sqlb::ObjectIdentifier("product", "policy", "t");
+  getTable().query() =
+      sqlb::Query(sqlb::ObjectIdentifier("product", "policy", "t"));
 }
 
 void Policy::setupTable() {
-  t.m_query = sqlb::Query(t.m_table);
-
   // m_query.setRowIdColumn("id");
-  t.m_query.selectedColumns() = {
+  getTable().query().selectedColumns() = {
       sqlb::SelectedColumn({"Id", "id", "", "t", PG_TYPES::INT8, false}),
       //            sqlb::SelectedColumn({"Code", "slug", "", "t",
       //            PG_TYPES::TEXT, true}),
@@ -35,7 +34,7 @@ void Policy::setupTable() {
   // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  t.m_query.joins() = {
+  getTable().query().joins() = {
       // sqlb::Join("left", u1, "t.create_user_id = u1.id"),
       // sqlb::Join("left", u2, "t.update_user_id = u2.id"),
   };

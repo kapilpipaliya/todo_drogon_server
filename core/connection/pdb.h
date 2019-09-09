@@ -24,16 +24,13 @@ enum PG_TYPES {
 };
 
 */
-class P_DB
-{
+class P_DB {
+ public:
+  explicit P_DB();
+  ~P_DB();
 
-public:
-    explicit P_DB();
-    ~P_DB();
-
-    connection *C;
-public:
-    bool init();
+  connection *C;
+  bool init();
 };
 
-#endif // PDB_H
+#endif  // PDB_H

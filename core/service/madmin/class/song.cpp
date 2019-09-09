@@ -5,13 +5,13 @@
 using namespace madmin;
 using S = sqlb::SelectedColumn;
 Song::Song(MAdminContextPtr context_) : context(std::move(context_)) {
-  t.m_table = sqlb::ObjectIdentifier("music", "song", "s");
-  t.m_query = sqlb::Query(t.m_table);
+  getTable().query() =
+      sqlb::Query(sqlb::ObjectIdentifier("music", "song", "s"));
 }
 
 void Song::setupTable() {
   // m_query.setRowIdColumn("id");
-  t.m_query.selectedColumns() = {
+  getTable().query().selectedColumns() = {
       S({"ID No", "id", "", "s", PG_TYPES::INT8}),
       S({"file", "file", "", "s", PG_TYPES::TEXT, false}),
       S({"Catalog", "catalog_id", "", "s", PG_TYPES::INT8, true, 1, 1}),
@@ -58,13 +58,13 @@ void Song::setupTable() {
   // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  t.m_query.joins() = {
+  getTable().query().joins() = {
       sqlb::Join("left", c, "c.id = s.catalog_id")
       // sqlb::Join("left", u1, "e.create_user_id = u1.id"),
       // sqlb::Join("left", u2, "e.update_user_id = u2.id"),
   };
 
-  t.m_query.groupBy() = {};
+  getTable().query().groupBy() = {};
 }
 
 nlohmann::json Song::handleEvent(nlohmann::json event, unsigned long next,
@@ -74,13 +74,13 @@ nlohmann::json Song::handleEvent(nlohmann::json event, unsigned long next,
     return headerData(event, args);
   }
   if (event_cmp == "data") {  // required
-                              // if(context->user.type == "super admin"){
+                              // if(context->getUser().type == "super admin"){
     return allData(event, args);
     //} else {
     // return {{event, "unauthorised"}};
     //}
   } else if (event_cmp == "ins") {
-    // args[0]["parent_id"] = context->user_id;
+    // args[0]["parent_id"] = context->getUserId();
 
     std::string strSqlTempImage =
         "SELECT name, size, type FROM music.temp_file WHERE id = $1";
@@ -139,7 +139,7 @@ nlohmann::json Song::handleBinaryEvent(nlohmann::json event, unsigned long next,
 
 nlohmann::json Song::save_song_binary(
     [[maybe_unused]] const nlohmann::json &event, std::string &message) {
-  auto session_id = context->current_session_id;
+  auto session_id = context->sessionId();
   auto strSql = sel_("music.temp_file_meta", "event,  name, size, type",
                      "where session_id = $1");
   auto clientPtr = drogon::app().getDbClient("sce");

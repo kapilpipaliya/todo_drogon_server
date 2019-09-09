@@ -3,21 +3,27 @@
 #include <drogon/WebSocketController.h>
 using namespace drogon;
 
-class JUserContext
-{
-struct ContextUser {
+class JUserContext {
+  struct ContextUser {
     long id{0};
     std::string type{""};
-};
-public:
-    JUserContext(const HttpRequestPtr &req, const WebSocketConnectionPtr &wsConnPtr_);
+  };
 
-    long current_session_id = 0;
-    long user_id = 0;
+ public:
+  JUserContext(const HttpRequestPtr &req,
+               const WebSocketConnectionPtr &wsConnPtr_);
+  std::tuple<long, long> generateContext(const HttpRequestPtr &req,
+                                         const std::string &account_type);
+  void setUser();
+  long sessionId() { return current_session_id; }
+  void setSessionId(long id) { current_session_id = id; }
+  void setUserId(long id) { user_id = id; }
+  ContextUser &getUser() { return user; }
+  long getUserId() { return user_id; }
 
-     std::tuple<long, long>  generateContext(const HttpRequestPtr &req, const std::string& account_type);
-     void setUser();
-
-     ContextUser user;
-     const WebSocketConnectionPtr& wsConnPtr;
+ private:
+  long current_session_id = 0;
+  long user_id = 0;
+  ContextUser user;
+  const WebSocketConnectionPtr &wsConnPtr;
 };

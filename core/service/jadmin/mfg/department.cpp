@@ -5,14 +5,13 @@ using namespace jadmin;
 
 Department::Department(JAdminContextPtr context_)
     : context(std::move(context_)) {
-  t.m_table = sqlb::ObjectIdentifier("mfg", "department", "m");
+  getTable().query() =
+      sqlb::Query(sqlb::ObjectIdentifier("mfg", "department", "m"));
 }
 
 void Department::setupTable() {
-  t.m_query = sqlb::Query(t.m_table);
-
   // m_query.setRowIdColumn("id");
-  t.m_query.selectedColumns() = {
+  getTable().query().selectedColumns() = {
       sqlb::SelectedColumn({"Id", "id", "", "m", PG_TYPES::INT8, false}),
       sqlb::SelectedColumn({"Rank", "rank", "", "m", PG_TYPES::INT4, false}),
       sqlb::SelectedColumn({"Code", "slug", "", "m", PG_TYPES::TEXT, true}),
@@ -41,7 +40,7 @@ void Department::setupTable() {
   auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  t.m_query.joins() = {
+  getTable().query().joins() = {
       sqlb::Join("left", dep_type, "dep_type.id = m.department_type_id"),
       sqlb::Join("left", u1, "m.create_user_id = u1.id"),
       sqlb::Join("left", u2, "m.update_user_id = u2.id"),

@@ -7,14 +7,13 @@
 using namespace jadmin;
 
 CSSize::CSSize(JAdminContextPtr context_) : context(std::move(context_)) {
-  t.m_table = sqlb::ObjectIdentifier("material", "color_stone_size_meta", "sm");
+  getTable().query() = sqlb::Query(
+      sqlb::ObjectIdentifier("material", "color_stone_size_meta", "sm"));
 }
 
 void CSSize::setupTable() {
-  t.m_query = sqlb::Query(t.m_table);
-
   // m_query.setRowIdColumn("id");
-  t.m_query.selectedColumns() = {
+  getTable().query().selectedColumns() = {
       sqlb::SelectedColumn({"Id", "id", "", "sm", PG_TYPES::INT8, false}),
       sqlb::SelectedColumn(
           {"Type", "cs_type_id", "", "sm", PG_TYPES::INT8, true, 1, 1}),
@@ -27,8 +26,8 @@ void CSSize::setupTable() {
       sqlb::SelectedColumn({"shape_name", "name", "", "shape", PG_TYPES::TEXT,
                             false, 0, 0, false}),
       // sqlb::SelectedColumn({"Rank", "rank", "", "sm", PG_TYPES::INT4,
-      // false}), sqlb::SelectedColumn({"Code", "slug", "", "sm", PG_TYPES::TEXT,
-      // true}),
+      // false}), sqlb::SelectedColumn({"Code", "slug", "", "sm",
+      // PG_TYPES::TEXT, true}),
       sqlb::SelectedColumn(
           {"Size", "size_id", "", "sm", PG_TYPES::INT8, true, 1, 1}),
       sqlb::SelectedColumn({"Name", "name", "", "size", PG_TYPES::TEXT, false}),
@@ -66,7 +65,7 @@ void CSSize::setupTable() {
   auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  t.m_query.joins() = {
+  getTable().query().joins() = {
       sqlb::Join("left", type, "cs_type.id = sm.cs_type_id"),
       sqlb::Join("left", size, "size.id = sm.size_id"),
       //        sqlb::Join("left", clarity, "clarity.id = sm.clarity_id"),

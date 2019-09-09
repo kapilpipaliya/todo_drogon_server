@@ -5,7 +5,8 @@
 using namespace jadmin;
 
 Setting::Setting(JAdminContextPtr context_) : context(std::move(context_)) {
-  t.m_table = sqlb::ObjectIdentifier("setting", "setting", "gs");
+  getTable().query() =
+      sqlb::Query(sqlb::ObjectIdentifier("setting", "setting", "gs"));
 }
 
 json Setting::handleEvent(json event, int next, const json &args) {
@@ -26,9 +27,8 @@ json Setting::handleEvent(json event, int next, const json &args) {
 }
 
 void Setting::setupTable() {
-  t.m_query = sqlb::Query(t.m_table);
   // m_query.setRowIdColumn("id");
-  t.m_query.selectedColumns() = {
+  getTable().query().selectedColumns() = {
       sqlb::SelectedColumn({"Key", "key", "", "gs", PG_TYPES::TEXT, true}),
       sqlb::SelectedColumn(
           {"Setting Type", "setting_type", "", "gs", PG_TYPES::TEXT, true}),
@@ -44,7 +44,7 @@ void Setting::setupTable() {
   // auto m = sqlb::ObjectIdentifier("material", "metal", "m");
   // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
-  t.m_query.joins() = {
+  getTable().query().joins() = {
       // sqlb::Join("left", m, "a.material_id = m.id"),
       // sqlb::Join("left", u1, "gt.create_user_id = u1.id"),
       // sqlb::Join("left", u2, "a.update_user_id = u2.id"),

@@ -4,14 +4,13 @@
 using namespace jadmin;
 
 CSType::CSType(JAdminContextPtr context_) : context(std::move(context_)) {
-  t.m_table = sqlb::ObjectIdentifier("material", "cs_type", "ct");
+  getTable().query() =
+      sqlb::Query(sqlb::ObjectIdentifier("material", "cs_type", "ct"));
 }
 
 void CSType::setupTable() {
-  t.m_query = sqlb::Query(t.m_table);
-
   // m_query.setRowIdColumn("id");
-  t.m_query.selectedColumns() = {
+  getTable().query().selectedColumns() = {
       sqlb::SelectedColumn({"Id", "id", "", "ct", PG_TYPES::INT8, false}),
       //            sqlb::SelectedColumn({"Rank", "rank", "", "ct",
       //            PG_TYPES::INT4, false}), sqlb::SelectedColumn({"Code",
@@ -34,7 +33,7 @@ void CSType::setupTable() {
   //    auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   //    auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  t.m_query.joins() = {
+  getTable().query().joins() = {
       //            sqlb::Join("left", u1, "ct.create_user_id = u1.id"),
       //            sqlb::Join("left", u2, "ct.update_user_id = u2.id"),
   };

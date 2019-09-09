@@ -17,10 +17,10 @@ using std::string;
  * it with a user_id from user.id
  *
  */
-#include "../../baseserviceabs.h"
 #include "../../../../wscontroller/context/jadmincontext.h"
+#include "../../baseserviceabs.h"
 
-    using JAdminContextPtr = std::shared_ptr <JAdminContext>;
+using JAdminContextPtr = std::shared_ptr<JAdminContext>;
 namespace jadmin {
 /**
  * User Class
@@ -41,8 +41,6 @@ class User : public BaseServiceAbs {
     int connected{0};
   };
   struct Catalog {};
-
-  JAdminContextPtr context;
 
  public:
   User(JAdminContextPtr);
@@ -447,6 +445,8 @@ class User : public BaseServiceAbs {
   json userLogin(const json& event, json args);
   json userId(const json& event, const json& args);
   json checkout(const json& event, const json& args);
+
+  JAdminContextPtr context;
 };
 }  // namespace jadmin
 #endif  // USER_H

@@ -6,13 +6,12 @@
 using namespace jadmin;
 
 Post1::Post1(JAdminContextPtr context_) : context(std::move(context_)) {
-  t.m_table = sqlb::ObjectIdentifier("post", "post", "post");
+  getTable().query() =
+      sqlb::Query(sqlb::ObjectIdentifier("post", "post", "post"));
 }
 
 void Post1::setupTable() {
-  t.m_query = sqlb::Query(t.m_table);
-
-  t.m_query.selectedColumns() = {
+  getTable().query().selectedColumns() = {
       sqlb::SelectedColumn({"Id", "id", "", "post", PG_TYPES::INT8, true}),
       sqlb::SelectedColumn(
           {"Post Type", "type", "", "post", PG_TYPES::ENUM, true}),
@@ -38,8 +37,8 @@ void Post1::setupTable() {
       sqlb::SelectedColumn(
           {"Modified", "modified", "", "post", PG_TYPES::TIMESTAMP, true}),
       // sqlb::SelectedColumn({"Parent", "parent", "", "post", PG_TYPES::INT8,
-      // true}), sqlb::SelectedColumn({"MIME Type", "post_mime_type", "", "post",
-      // PG_TYPES::ENUM, false}),
+      // true}), sqlb::SelectedColumn({"MIME Type", "post_mime_type", "",
+      // "post", PG_TYPES::ENUM, false}),
       sqlb::SelectedColumn(
           {"Comment Count", "comment_count", "", "post", PG_TYPES::INT8, true}),
   };

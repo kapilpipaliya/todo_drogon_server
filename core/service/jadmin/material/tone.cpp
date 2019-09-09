@@ -4,14 +4,13 @@
 using namespace jadmin;
 
 Tone::Tone(JAdminContextPtr context_) : context(std::move(context_)) {
-  t.m_table = sqlb::ObjectIdentifier("material", "tone", "c");
+  getTable().query() =
+      sqlb::Query(sqlb::ObjectIdentifier("material", "tone", "c"));
 }
 
 void Tone::setupTable() {
-  t.m_query = sqlb::Query(t.m_table);
-
   // m_query.setRowIdColumn("id");
-  t.m_query.selectedColumns() = {
+  getTable().query().selectedColumns() = {
       sqlb::SelectedColumn({"Id", "id", "", "c", PG_TYPES::INT8, false}),
       //        sqlb::SelectedColumn({"Material", "material_id", "", "c",
       //        PG_TYPES::INT8, true, 1, 2}), sqlb::SelectedColumn({"m_slug",
@@ -39,7 +38,7 @@ void Tone::setupTable() {
   auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  t.m_query.joins() = {
+  getTable().query().joins() = {
       // sqlb::Join("left", m, "c.material_id = m.id"),
       sqlb::Join("left", u1, "c.create_user_id = u1.id"),
       sqlb::Join("left", u2, "c.update_user_id = u2.id"),

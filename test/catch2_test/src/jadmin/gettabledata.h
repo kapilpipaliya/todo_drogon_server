@@ -3,16 +3,16 @@
 
 #include "../wstestbase.h"
 
-class GetTableData: public WSTestBase
-{
-public:
+class GetTableData : public WSTestBase {
+ public:
   GetTableData(std::string table);
-  protected:
+
+ protected:
   void connectToServer();
   void setMessageHandler();
 
-private:
+ private:
   std::string table;
 };
 
-#endif // GetTableData_H
+#endif  // GetTableData_H

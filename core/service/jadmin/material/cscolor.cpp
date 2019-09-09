@@ -4,14 +4,13 @@
 using namespace jadmin;
 
 CSColor::CSColor(JAdminContextPtr context_) : context(std::move(context_)) {
-  t.m_table = sqlb::ObjectIdentifier("material", "cs_color", "gt");
+  getTable().query() =
+      sqlb::Query(sqlb::ObjectIdentifier("material", "cs_color", "gt"));
 }
 
 void CSColor::setupTable() {
-  t.m_query = sqlb::Query(t.m_table);
-
   // m_query.setRowIdColumn("id");
-  t.m_query.selectedColumns() = {
+  getTable().query().selectedColumns() = {
       sqlb::SelectedColumn({"Id", "id", "", "gt", PG_TYPES::INT8, false}),
       sqlb::SelectedColumn({"Rank", "rank", "", "gt", PG_TYPES::INT4, false}),
       sqlb::SelectedColumn({"Code", "slug", "", "gt", PG_TYPES::TEXT, true}),
@@ -33,7 +32,7 @@ void CSColor::setupTable() {
   auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  t.m_query.joins() = {
+  getTable().query().joins() = {
       sqlb::Join("left", u1, "gt.create_user_id = u1.id"),
       sqlb::Join("left", u2, "gt.update_user_id = u2.id"),
   };

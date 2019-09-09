@@ -18,11 +18,11 @@ using std::chrono::seconds;
 MainActor::MainActor(caf::actor_config &cfg) : caf::event_based_actor(cfg) {
   set_error_handler([=]([[maybe_unused]] caf::error &err) {
     SPDLOG_TRACE("Main Actor Error :");
-    SPDLOG_TRACE(globalCAF.sys.render(err));
+    SPDLOG_TRACE(globalCAF.getReasonString(err));
   });
   set_down_handler([=](caf::down_msg &msg) {
     SPDLOG_TRACE("Main Actor Error Down Error :");
-    SPDLOG_TRACE(globalCAF.sys.render(msg.reason));
+    SPDLOG_TRACE(globalCAF.getReasonString(msg.reason));
   });
   // If this exception error occur: server freeze.
   set_exception_handler([=](caf::scheduled_actor *,

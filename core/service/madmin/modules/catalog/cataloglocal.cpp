@@ -4,13 +4,13 @@ using S = sqlb::SelectedColumn;
 
 CatalogLocal::CatalogLocal(const MAdminContextPtr &context_)
     : Catalog(context_) {
-  t.m_table = sqlb::ObjectIdentifier("music", "catalog", "c");
-  t.m_query = sqlb::Query(t.m_table);
+  getTable().query() =
+      sqlb::Query(sqlb::ObjectIdentifier("music", "catalog", "c"));
 }
 
 void CatalogLocal::setupTable() {
   // m_query.setRowIdColumn("id");
-  t.m_query.selectedColumns() = {
+  getTable().query().selectedColumns() = {
       S({"ID No", "id", "", "c", PG_TYPES::INT8}),
       // S({"Catalog Type", "catalog_type", "", "c", PG_TYPES::ENUM}),
       // S({"no", "no", "", "c", PG_TYPES::TEXT}),
@@ -36,13 +36,13 @@ void CatalogLocal::setupTable() {
   // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  t.m_query.joins() = {
+  getTable().query().joins() = {
       // sqlb::Join("left", p, "e.parent_id = p.id")
       // sqlb::Join("left", u1, "e.create_user_id = u1.id"),
       // sqlb::Join("left", u2, "e.update_user_id = u2.id"),
   };
 
-  t.m_query.groupBy() = {};
+  getTable().query().groupBy() = {};
 }
 
 nlohmann::json CatalogLocal::handleEvent(nlohmann::json event,
@@ -53,13 +53,13 @@ nlohmann::json CatalogLocal::handleEvent(nlohmann::json event,
     return headerData(event, args);
   }
   if (event_cmp == "data") {  // required
-    if (context->user.type == "super admin") {
+    if (context->getUser().type == "super admin") {
       return allData(event, args);
     }
     return {{event, "unauthorised"}};
 
   } else if (event_cmp == "ins") {
-    // args[0]["parent_id"] = context->user_id;
+    // args[0]["parent_id"] = context->getUserId();
     return ins(event, args);
   } else if (event_cmp == "upd") {
     return upd(event, args);

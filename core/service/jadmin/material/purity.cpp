@@ -15,14 +15,13 @@ using namespace jadmin;
   array += "}";
 
 Purity::Purity(JAdminContextPtr context_) : context(std::move(context_)) {
-  t.m_table = sqlb::ObjectIdentifier("material", "purity", "p");
+  getTable().query() =
+      sqlb::Query(sqlb::ObjectIdentifier("material", "purity", "p"));
 }
 
 void Purity::setupTable() {
-  t.m_query = sqlb::Query(t.m_table);
-
   // m_query.setRowIdColumn("id");
-  t.m_query.selectedColumns() = {
+  getTable().query().selectedColumns() = {
       sqlb::SelectedColumn({"Id", "id", "", "p", PG_TYPES::INT8, false}),
       //        sqlb::SelectedColumn({"Metal", "metal_id", "", "p",
       //        PG_TYPES::INT8, true, 1, 2}), sqlb::SelectedColumn({"m_slug",
@@ -42,7 +41,7 @@ void Purity::setupTable() {
                             "json_agg(distinct jsonb_build_array(pt.tone_id, "
                             "pu_metal.pt2, pt.price))",
                             //"json_agg(distinct jsonb_build_array(mp.metal_id,
-                            //mp.purity, mp.price, m.specific_density))",
+                            // mp.purity, mp.price, m.specific_density))",
                             "pt", PG_TYPES::PSJSON, false}),
       sqlb::SelectedColumn(
           {"Price", "price", "p.price", "p", PG_TYPES::DOUBLE, true}),
@@ -69,7 +68,7 @@ void Purity::setupTable() {
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
   auto metal_purity = sqlb::ObjectIdentifier("material", "purity_metal", "mp");
 
-  t.m_query.joins() = {
+  getTable().query().joins() = {
       sqlb::Join("left", pt, "pt.purity_id = p.id"),
       sqlb::Join("left",
                  "( select pm.purity_id, pm.tone_id, jsonb_agg(distinct "
@@ -84,7 +83,7 @@ void Purity::setupTable() {
       sqlb::Join("left", u1, "p.create_user_id = u1.id"),
       sqlb::Join("left", u2, "p.update_user_id = u2.id"),
   };
-  t.m_query.groupBy() = {
+  getTable().query().groupBy() = {
       sqlb::GroupByColumn("p", "id"),
       sqlb::GroupByColumn("m", "id"),
       sqlb::GroupByColumn("u1", "id"),

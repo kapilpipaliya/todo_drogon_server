@@ -6,14 +6,13 @@ using namespace jadmin;
 
 using S = sqlb::SelectedColumn;
 Entity::Entity(JAdminContextPtr context_) : context(std::move(context_)) {
-  t.m_table = sqlb::ObjectIdentifier("entity", "entity", "e");
+  getTable().query() =
+      sqlb::Query(sqlb::ObjectIdentifier("entity", "entity", "e"));
 }
 
 void Entity::setupTable() {
-  t.m_query = sqlb::Query(t.m_table);
-
   // m_query.setRowIdColumn("id");
-  t.m_query.selectedColumns() = {
+  getTable().query().selectedColumns() = {
       S({"id", "id", "", "e", PG_TYPES::INT8}),
       S({"Entity Type", "entity_type_id", "", "e", PG_TYPES::INT8, true, 1, 1}),
       sqlb::SelectedColumn(
@@ -70,14 +69,14 @@ void Entity::setupTable() {
   auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  t.m_query.joins() = {
+  getTable().query().joins() = {
       sqlb::Join("inner", entity_type, "et.id = e.entity_type_id"),
       sqlb::Join("left", entity_address, "ea.entity_id = e.id"),
       sqlb::Join("left", entity_user, "eu.entity_id = e.id"),
       sqlb::Join("left", u1, "e.create_user_id = u1.id"),
       sqlb::Join("left", u2, "e.update_user_id = u2.id"),
   };
-  t.m_query.groupBy() = {
+  getTable().query().groupBy() = {
       sqlb::GroupByColumn("et", "id"),
       sqlb::GroupByColumn("e", "id"),
       sqlb::GroupByColumn("eu", "id"),

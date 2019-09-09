@@ -5,14 +5,13 @@ using namespace jadmin;
 
 PaymentMethod::PaymentMethod(JAdminContextPtr context_)
     : context(std::move(context_)) {
-  t.m_table = sqlb::ObjectIdentifier("setting", "payment_method", "t");
+  getTable().query() =
+      sqlb::Query(sqlb::ObjectIdentifier("setting", "payment_method", "t"));
 }
 
 void PaymentMethod::setupTable() {
-  t.m_query = sqlb::Query(t.m_table);
-
   // m_query.setRowIdColumn("id");
-  t.m_query.selectedColumns() = {
+  getTable().query().selectedColumns() = {
       sqlb::SelectedColumn({"Id", "id", "", "t", PG_TYPES::INT8, false}),
       //            sqlb::SelectedColumn({"Code", "slug", "", "t",
       //            PG_TYPES::TEXT, true}),
@@ -27,15 +26,15 @@ void PaymentMethod::setupTable() {
       // By", "update_user_id", "", "t", PG_TYPES::INT8, true, 1, 0, false}),
       // sqlb::SelectedColumn({"u2_username", "username", "", "u2",
       // PG_TYPES::TEXT, false, 0, 0, false}), sqlb::SelectedColumn({"Create
-      // Time", "inserted_at", "", "t", PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-      // sqlb::SelectedColumn({"Update Time", "updated_at", "", "t",
+      // Time", "inserted_at", "", "t", PG_TYPES::TIMESTAMP, true, 0, 0,
+      // false}), sqlb::SelectedColumn({"Update Time", "updated_at", "", "t",
       // PG_TYPES::TIMESTAMP, true, 0, 0, false}),
   };
 
   // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  t.m_query.joins() = {
+  getTable().query().joins() = {
       // sqlb::Join("left", u1, "t.create_user_id = u1.id"),
       // sqlb::Join("left", u2, "t.update_user_id = u2.id"),
   };

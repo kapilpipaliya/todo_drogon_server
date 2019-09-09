@@ -165,7 +165,7 @@ nlohmann::json JUserActor::handleBinaryMessage(
     const WebSocketConnectionPtr &wsConnPtr, std::string & /*message*/) {
   json event;
   try {
-    long c = wsConnPtr->getContext<JUserContext>()->current_session_id;
+    long c = wsConnPtr->getContext<JUserContext>()->sessionId();
     auto sqlSession =
         "SELECT event FROM user1.temp_image where session_id = $1";
     auto clientPtr = drogon::app().getDbClient("sce");

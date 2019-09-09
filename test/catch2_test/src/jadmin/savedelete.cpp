@@ -17,9 +17,10 @@ SaveDelete::SaveDelete(std::string table, std::string insert_query,
       delete_query(delete_query) {}
 
 void SaveDelete::connectToServer() {
-  wsPtr->connectToServer(
-      req, [this](ReqResult r, [[maybe_unused]] const HttpResponsePtr &resp,
-                  [[maybe_unused]] const WebSocketClientPtr &wsPtr) {
+  getWsPtr()->connectToServer(
+      getReqPtr(),
+      [this](ReqResult r, [[maybe_unused]] const HttpResponsePtr &resp,
+             [[maybe_unused]] const WebSocketClientPtr &wsPtr) {
         if (r == ReqResult::Ok) {
           //
           // a JSON value
@@ -44,7 +45,7 @@ void SaveDelete::connectToServer() {
       });
 }
 void SaveDelete::setMessageHandler() {
-  wsPtr->setMessageHandler(
+  getWsPtr()->setMessageHandler(
       [this](const std::string &message,
              [[maybe_unused]] const WebSocketClientPtr &wsPtr,
              const WebSocketMessageType &type) {
@@ -65,7 +66,7 @@ void SaveDelete::setMessageHandler() {
           REQUIRE(c[1] == "set_cookie");
           REQUIRE(c[2] == 0);
 
-          REQUIRE(j[1][1]["admin"].is_number() == true);
+          REQUIRE(j[1][1].is_number() == true);
 
           // is_logged_in == true
           REQUIRE(j[2][1] == true);

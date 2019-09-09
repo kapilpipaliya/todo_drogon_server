@@ -3,22 +3,22 @@
 
 #include "../wstestbase.h"
 
-class SaveDelete: public WSTestBase
-{
-public:
-  SaveDelete(std::string table, std::string insert_query, std::string update_query, std::string delete_query);
+class SaveDelete : public WSTestBase {
+ public:
+  SaveDelete(std::string table, std::string insert_query,
+             std::string update_query, std::string delete_query);
 
-  int id = 0;
-protected:
+ protected:
   void connectToServer();
   void setMessageHandler();
 
-private:
+ private:
   std::string table;
   std::string insert_query;
   std::string update_query;
   std::string delete_query;
 
+  int id = 0;
 };
 
-#endif // SaveDelete_H
+#endif  // SaveDelete_H

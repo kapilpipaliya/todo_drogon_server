@@ -6,8 +6,8 @@ using namespace madmin;
 using namespace std::chrono;
 using S = sqlb::SelectedColumn;
 User::User(MAdminContextPtr context_) : context(std::move(context_)) {
-  t.m_table = sqlb::ObjectIdentifier("music", "user", "e");
-  t.m_query = sqlb::Query(t.m_table);
+  getTable().query() =
+      sqlb::Query(sqlb::ObjectIdentifier("music", "user", "e"));
 }
 // User::User(int user_id)
 //{
@@ -20,7 +20,7 @@ User::User(MAdminContextPtr context_) : context(std::move(context_)) {
 
 void User::setupTable() {
   // m_query.setRowIdColumn("id");
-  t.m_query.selectedColumns() = {
+  getTable().query().selectedColumns() = {
       S({"ID No", "id", "", "e", PG_TYPES::INT8}),
       S({"Account Type", "type", "", "e", PG_TYPES::ENUM}),
       // S({"no", "no", "", "e", PG_TYPES::TEXT}),
@@ -49,13 +49,13 @@ void User::setupTable() {
   // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  t.m_query.joins() = {
+  getTable().query().joins() = {
       sqlb::Join("left", p, "e.parent_id = p.id")
       // sqlb::Join("left", u1, "e.create_user_id = u1.id"),
       // sqlb::Join("left", u2, "e.update_user_id = u2.id"),
   };
 
-  t.m_query.groupBy() = {};
+  getTable().query().groupBy() = {};
 }
 
 nlohmann::json User::handleEvent(nlohmann::json event, unsigned long next,
@@ -69,18 +69,18 @@ nlohmann::json User::handleEvent(nlohmann::json event, unsigned long next,
   if (event_cmp == "header") {  // required
     return headerData(event, args);
   } else if (event_cmp == "data") {  // required
-    if (context->user.type == "super admin") {
+    if (context->getUser().type == "super admin") {
       return allData(event, args);
     }
-    if (context->user.type == "admin") {
-      t.m_query.cusm_where() =
-          fmt::format("e.parent_id = {}", context->user_id);
+    if (context->getUser().type == "admin") {
+      getTable().query().cusm_where() =
+          fmt::format("e.parent_id = {}", context->getUserId());
       return allData(event, args);
     } else {
       return {{event, "unauthorised"}};
     }
   } else if (event_cmp == "update_password") {
-    if (!args.is_array())
+    if (!args.is_array() && !args[0].is_object())
       return {simpleJsonSaveResult(event, false, "Not Valid Args")};
     if (get_password() == args[0]["old_password"].get<std::string>()) {
       if (update_password(args[0]["new_password"].get<std::string>())) {
@@ -91,7 +91,7 @@ nlohmann::json User::handleEvent(nlohmann::json event, unsigned long next,
   } else if (event_cmp == "user_types_form_data") {
     return {{event, getUserTypeFormData()}};
   } else if (event_cmp == "ins") {
-    args[0]["parent_id"] = context->user_id;
+    args[0]["parent_id"] = context->getUserId();
     return ins(event, args);
   } else if (event_cmp == "upd") {
     return upd(event, args);
@@ -113,7 +113,7 @@ nlohmann::json User::handleEvent(nlohmann::json event, unsigned long next,
 }
 
 nlohmann::json User::getUserTypeFormData() {
-  if (context->user.type == "super admin") {
+  if (context->getUser().type == "super admin") {
     json j = json::array({
         json::array({"Super Admin", "super admin"}),
         json::array({"Admin", "admin"}),
@@ -121,7 +121,7 @@ nlohmann::json User::getUserTypeFormData() {
     });
     return j;
   }
-  if (context->user.type == "admin") {
+  if (context->getUser().type == "admin") {
     json j = json::array({
         json::array({"Executive", "executive"}),
     });
@@ -213,14 +213,14 @@ void User::get_valid_users() {
 
 bool User::is_logged_in() {
   // auto sql = "SELECT id,ip FROM session WHERE username=1 AND expire > now()";
-  return context->current_session_id != 0;
+  return context->sessionId() != 0;
 }
 string User::get_password() {
   auto sql = "SELECT * FROM music.user WHERE id = $1";
   try {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
-    auto r = Dba::writeInTrans(transPtr, sql, this->context->user_id);
+    auto r = Dba::writeInTrans(transPtr, sql, this->context->getUserId());
     if (r.size() == 1) {
       return r[0]["password"].as<std::string>();
     }
@@ -296,7 +296,7 @@ bool User::update_password(std::string new_password) {
   try {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
-    auto r = Dba::writeInTrans(transPtr, sql, this->context->user_id,
+    auto r = Dba::writeInTrans(transPtr, sql, this->context->getUserId(),
                                std::move(new_password));
     if (r.affectedRows() == 1) {
       return true;

@@ -4,14 +4,13 @@
 using namespace jadmin;
 
 PCategory::PCategory(JAdminContextPtr context_) : context(std::move(context_)) {
-  t.m_table = sqlb::ObjectIdentifier("product", "category", "c");
+  getTable().query() =
+      sqlb::Query(sqlb::ObjectIdentifier("product", "category", "c"));
 }
 
 void PCategory::setupTable() {
-  t.m_query = sqlb::Query(t.m_table);
-
   // m_query.setRowIdColumn("id");
-  t.m_query.selectedColumns() = {
+  getTable().query().selectedColumns() = {
       sqlb::SelectedColumn({"Id", "id", "", "c", PG_TYPES::INT8, false}),
       sqlb::SelectedColumn(
           {"Parent", "parent_id", "", "c", PG_TYPES::INT8, true, 2, 1}),
@@ -45,7 +44,7 @@ void PCategory::setupTable() {
   auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  t.m_query.joins() = {
+  getTable().query().joins() = {
       sqlb::Join("left", p, "c.parent_id = p.id"),
       sqlb::Join("left", u1, "c.create_user_id = u1.id"),
       sqlb::Join("left", u2, "c.update_user_id = u2.id"),

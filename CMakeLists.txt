@@ -107,7 +107,7 @@ endforeach()
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 add_subdirectory(core)
-#add_subdirectory(test)
+add_subdirectory(test)
 #include_directories("$ENV{HOME}/k/jewelApp/src")
 #find_library(CONN_LIB libjewelconnection HINT "$ENV{HOME}/k/build-jewelApp-Desktop_Qt_5_13_0_GCC_64bit-Debug/src/core/connection")
 #find_library(CORE_LIB libjewelcore2 HINT "$ENV{HOME}/k/build-jewelApp-Desktop_Qt_5_13_0_GCC_64bit-Debug/src/core")

@@ -1,18 +1,18 @@
 #ifndef BOOKMARK_H
 #define BOOKMARK_H
 
-#include "../../baseserviceabs.h"
 #include "../../../../wscontroller/context/madmincontext.h"
+#include "../../baseserviceabs.h"
 
 using MAdminContextPtr = std::shared_ptr<MAdminContext>;
 namespace madmin {
-class Bookmark : public BaseServiceAbs
-{
-public:
-    Bookmark(MAdminContextPtr );
-    void setupTable() override;
-private:
-    MAdminContextPtr context;
+class Bookmark : public BaseServiceAbs {
+ public:
+  Bookmark(MAdminContextPtr);
+  void setupTable() override;
+
+ private:
+  MAdminContextPtr context;
 };
-}
-#endif // BOOKMARK_H
+}  // namespace madmin
+#endif  // BOOKMARK_H
