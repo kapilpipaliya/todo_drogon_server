@@ -5,13 +5,13 @@ using namespace jadmin;
 
 JournalType::JournalType(JAdminContextPtr context_)
     : context(std::move(context_)) {
-  getTable().query() =
+  getQuery() =
       sqlb::Query(sqlb::ObjectIdentifier("account", "journal_type", "a"));
 }
 
 void JournalType::setupTable() {
   // m_query.setRowIdColumn("id");
-  getTable().query().selectedColumns() = {
+  getQuery().selectedColumns() = {
       sqlb::SelectedColumn({"Id", "id", "", "a", PG_TYPES::INT8, true}),
       sqlb::SelectedColumn({"Rank", "rank", "", "a", PG_TYPES::INT4, false}),
       sqlb::SelectedColumn({"Name", "name", "", "a", PG_TYPES::TEXT, true}),
@@ -34,7 +34,7 @@ void JournalType::setupTable() {
   auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getTable().query().joins() = {
+  getQuery().joins() = {
       sqlb::Join("left", u1, "a.create_user_id = u1.id"),
       sqlb::Join("left", u2, "a.update_user_id = u2.id"),
   };

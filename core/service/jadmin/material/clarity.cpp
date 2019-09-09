@@ -4,13 +4,13 @@
 using namespace jadmin;
 
 Clarity::Clarity(JAdminContextPtr context_) : context(std::move(context_)) {
-  getTable().query() =
+  getQuery() =
       sqlb::Query(sqlb::ObjectIdentifier("material", "clarity", "g"));
 }
 
 void Clarity::setupTable() {
   // m_query.setRowIdColumn("id");
-  getTable().query().selectedColumns() = {
+  getQuery().selectedColumns() = {
       sqlb::SelectedColumn({"Id", "id", "", "g", PG_TYPES::INT8, false}),
       //        sqlb::SelectedColumn({"Material", "material_id", "", "g",
       //        PG_TYPES::INT8, true, 1, 2}), sqlb::SelectedColumn({"m_slug",
@@ -38,7 +38,7 @@ void Clarity::setupTable() {
   auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getTable().query().joins() = {
+  getQuery().joins() = {
       //        sqlb::Join("left", m, "g.material_id = m.id"),
       sqlb::Join("left", u1, "g.create_user_id = u1.id"),
       sqlb::Join("left", u2, "g.update_user_id = u2.id"),

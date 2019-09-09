@@ -5,13 +5,13 @@ using namespace jadmin;
 
 EntityType::EntityType(JAdminContextPtr context_)
     : context(std::move(context_)) {
-  getTable().query() =
+  getQuery() =
       sqlb::Query(sqlb::ObjectIdentifier("entity", "entity_type", "a"));
 }
 
 void EntityType::setupTable() {
   // m_query.setRowIdColumn("id");
-  getTable().query().selectedColumns() = {
+  getQuery().selectedColumns() = {
       sqlb::SelectedColumn({"Id", "id", "", "a", PG_TYPES::INT8, true}),
       sqlb::SelectedColumn({"Name", "name", "", "a", PG_TYPES::TEXT, true}),
       sqlb::SelectedColumn({"Create Time", "inserted_at", "", "a",

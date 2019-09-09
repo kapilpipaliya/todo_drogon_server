@@ -4,12 +4,12 @@
 using namespace jadmin;
 
 Role::Role(JAdminContextPtr context_) : context(std::move(context_)) {
-  getTable().query() = sqlb::Query(sqlb::ObjectIdentifier("menu", "role", "m"));
+  getQuery() = sqlb::Query(sqlb::ObjectIdentifier("menu", "role", "m"));
 }
 // todo fix
 void Role::setupTable() {
   // m_query.setRowIdColumn("id");
-  getTable().query().selectedColumns() = {
+  getQuery().selectedColumns() = {
       sqlb::SelectedColumn({"Id", "id", "", "m", PG_TYPES::INT8, false}),
       //        sqlb::SelectedColumn({"Rank", "rank", "", "m", PG_TYPES::INT4,
       //        false}),
@@ -39,7 +39,7 @@ void Role::setupTable() {
   auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getTable().query().joins() = {
+  getQuery().joins() = {
 
       sqlb::Join("left", u1, "m.create_user_id = u1.id"),
       sqlb::Join("left", u2, "m.update_user_id = u2.id"),

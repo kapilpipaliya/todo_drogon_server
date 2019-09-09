@@ -4,13 +4,13 @@
 using namespace jadmin;
 
 POption::POption(JAdminContextPtr context_) : context(std::move(context_)) {
-  getTable().query() =
+  getQuery() =
       sqlb::Query(sqlb::ObjectIdentifier("product", "option", "o"));
 }
 
 void POption::setupTable() {
   // m_query.setRowIdColumn("id");
-  getTable().query().selectedColumns() = {
+  getQuery().selectedColumns() = {
       sqlb::SelectedColumn({"Id", "id", "", "o", PG_TYPES::INT8, false}),
       sqlb::SelectedColumn({"Name", "name", "", "o", PG_TYPES::TEXT, true}),
       sqlb::SelectedColumn({"Value", "value", "", "o", PG_TYPES::TEXT, true}),
@@ -31,7 +31,7 @@ void POption::setupTable() {
   auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getTable().query().joins() = {
+  getQuery().joins() = {
       sqlb::Join("left", u1, "o.create_user_id = u1.id"),
       sqlb::Join("left", u2, "o.update_user_id = u2.id"),
   };

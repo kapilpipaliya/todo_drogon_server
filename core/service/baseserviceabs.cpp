@@ -27,7 +27,7 @@ json BaseServiceAbs::headerData(json event, [[maybe_unused]] const json &args) {
   setupTable();
   json jresult;
   jresult[0] = std::move(event);
-  jresult[1] = t.getJsonHeaderData();
+  jresult[1] = query.getJsonHeaderData();
   json ret;
   ret[0] = jresult;
   return ret;
@@ -36,7 +36,7 @@ json BaseServiceAbs::allData(json event, json args) {
   setupTable();
   json jresult;
   jresult[0] = std::move(event);
-  jresult[1] = t.getAllData(args);
+  jresult[1] = query.getAllData(args);
   json ret;
   ret[0] = jresult;
   return ret;
@@ -46,7 +46,7 @@ nlohmann::json BaseServiceAbs::ins(nlohmann::json event, nlohmann::json args) {
   std::string strSql;
   try {
     setupTable();
-    strSql = getTable().query().buildInsQuery(std::move(args));
+    strSql = query.buildInsQuery(std::move(args));
     if (strSql.empty()) {
       json ret;
       ret[0] = simpleJsonSaveResult(event, false, "UnValid Arguments");
@@ -72,8 +72,8 @@ nlohmann::json BaseServiceAbs::ins(nlohmann::json event, nlohmann::json args) {
 
 nlohmann::json BaseServiceAbs::upd(nlohmann::json event, nlohmann::json args) {
   setupTable();
-  t.updateFilterBase(args[1]);
-  std::string strSql = getTable().query().buildUpdateQuery(args);
+  query.updateFilterBase(args[1]);
+  std::string strSql = query.buildUpdateQuery(args);
   if (strSql.empty()) {
     json ret;
     ret[0] = simpleJsonSaveResult(event, false, "UnValid Arguments");
@@ -102,15 +102,14 @@ json BaseServiceAbs::del(json event, json args) {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     setupTable();
-    t.updateFilterBase(args[0]);
-    auto res =
-        Dba::writeInTrans(transPtr, getTable().query().buildDeleteQuery());
+    query.updateFilterBase(args[0]);
+    auto res = Dba::writeInTrans(transPtr, query.buildDeleteQuery());
     if (res.size() > 1) {
       throw("not valid arguments");
     }
     // affected rows should be returned too.
     // Dba::writeInTrans(transPtr, "DELETE FROM " +
-    // t.m_table.toDisplayString()
+    // query.m_table.toDisplayString()
     // + " WHERE id = $1", args[0]);
     json ret;
     ret[0] = simpleJsonSaveResult(event, true, "Done");
@@ -129,15 +128,14 @@ nlohmann::json BaseServiceAbs::count(nlohmann::json event,
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     setupTable();
-    t.updateFilterBase(args[0]);
-    t.updateSortBase(args[1]);
-    t.updatePaginationBase(args[2]);
-    // SPDLOG_TRACE(getTable().query().buildCountQuery());
-    auto res =
-        Dba::writeInTrans(transPtr, getTable().query().buildCountQuery());
+    query.updateFilterBase(args[0]);
+    query.updateSortBase(args[1]);
+    query.updatePaginationBase(args[2]);
+    // SPDLOG_TRACE(query.buildCountQuery());
+    auto res = Dba::writeInTrans(transPtr, query.buildCountQuery());
     // affected rows should be returned too.
     // Dba::writeInTrans(transPtr, "DELETE FROM " +
-    // t.m_table.toDisplayString()
+    // query.m_table.toDisplayString()
     // + " WHERE id = $1", args[0]);
     json ret;
     ret[0] = json::array({event, res[0]["count"].as<long>()});

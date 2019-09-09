@@ -6,7 +6,7 @@ using namespace jadmin;
 using namespace std::chrono;
 using S = sqlb::SelectedColumn;
 User::User(JAdminContextPtr context_) : context(std::move(context_)) {
-  getTable().query() =
+  getQuery() =
       sqlb::Query(sqlb::ObjectIdentifier("music", "user", "e"));
 }
 // User::User(long user_id)

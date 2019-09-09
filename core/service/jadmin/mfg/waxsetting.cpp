@@ -5,13 +5,13 @@ using namespace jadmin;
 
 WaxSetting::WaxSetting(JAdminContextPtr context_)
     : context(std::move(context_)) {
-  getTable().query() =
+  getQuery() =
       sqlb::Query(sqlb::ObjectIdentifier("mfg", "wax_setting", "m"));
 }
 
 void WaxSetting::setupTable() {
   // m_query.setRowIdColumn("id");
-  getTable().query().selectedColumns() = {
+  getQuery().selectedColumns() = {
       sqlb::SelectedColumn({"Id", "id", "", "m", PG_TYPES::INT8, false}),
       sqlb::SelectedColumn({"Rank", "rank", "", "m", PG_TYPES::INT4, true}),
       sqlb::SelectedColumn({"No", "no", "", "m", PG_TYPES::TEXT, true}),
@@ -52,7 +52,7 @@ void WaxSetting::setupTable() {
   auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getTable().query().joins() = {
+  getQuery().joins() = {
       sqlb::Join("left", dep, "dep.id = m.department_id"),
       sqlb::Join("left", e, "e.id = m.employee_id"),
       sqlb::Join("left", u1, "m.create_user_id = u1.id"),

@@ -5,13 +5,13 @@
 using namespace jadmin;
 
 Image::Image(JAdminContextPtr context_) : context(std::move(context_)) {
-  getTable().query() =
+  getQuery() =
       sqlb::Query(sqlb::ObjectIdentifier("setting", "image", "a"));
 }
 
 void Image::setupTable() {
   // m_query.setRowIdColumn("id");
-  getTable().query().selectedColumns() = {
+  getQuery().selectedColumns() = {
       sqlb::SelectedColumn({"Id", "id", "", "a", PG_TYPES::INT8, true}),
       sqlb::SelectedColumn({"Collection", "image_collection_id", "", "a",
                             PG_TYPES::INT8, true, 1, 1}),
@@ -44,7 +44,7 @@ void Image::setupTable() {
   // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getTable().query().joins() = {
+  getQuery().joins() = {
       sqlb::Join("left", c, "c.id = a.image_collection_id"),
       // sqlb::Join("left", u1, "gt.create_user_id = u1.id"),
       // sqlb::Join("left", u2, "a.update_user_id = u2.id"),

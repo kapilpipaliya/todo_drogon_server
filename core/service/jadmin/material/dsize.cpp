@@ -6,13 +6,13 @@
 using namespace jadmin;
 
 DSize::DSize(JAdminContextPtr context_) : context(std::move(context_)) {
-  getTable().query() = sqlb::Query(
+  getQuery() = sqlb::Query(
       sqlb::ObjectIdentifier("material", "diamond_size_meta", "sm"));
 }
 
 void DSize::setupTable() {
   // m_query.setRowIdColumn("id");
-  getTable().query().selectedColumns() = {
+  getQuery().selectedColumns() = {
       sqlb::SelectedColumn({"Id", "id", "", "sm", PG_TYPES::INT8, false}),
       sqlb::SelectedColumn(
           {"Clarity", "clarity_id", "", "sm", PG_TYPES::INT8, true, 2, 2}),
@@ -71,7 +71,7 @@ void DSize::setupTable() {
   auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getTable().query().joins() = {
+  getQuery().joins() = {
       sqlb::Join("left", size, "size.id = sm.size_id"),
       sqlb::Join("left", clarity, "clarity.id = sm.clarity_id"),
       sqlb::Join("left", shape, "shape.id = sm.shape_id"),

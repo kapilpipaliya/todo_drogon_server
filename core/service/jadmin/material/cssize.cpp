@@ -7,13 +7,13 @@
 using namespace jadmin;
 
 CSSize::CSSize(JAdminContextPtr context_) : context(std::move(context_)) {
-  getTable().query() = sqlb::Query(
+  getQuery() = sqlb::Query(
       sqlb::ObjectIdentifier("material", "color_stone_size_meta", "sm"));
 }
 
 void CSSize::setupTable() {
   // m_query.setRowIdColumn("id");
-  getTable().query().selectedColumns() = {
+  getQuery().selectedColumns() = {
       sqlb::SelectedColumn({"Id", "id", "", "sm", PG_TYPES::INT8, false}),
       sqlb::SelectedColumn(
           {"Type", "cs_type_id", "", "sm", PG_TYPES::INT8, true, 1, 1}),
@@ -65,7 +65,7 @@ void CSSize::setupTable() {
   auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getTable().query().joins() = {
+  getQuery().joins() = {
       sqlb::Join("left", type, "cs_type.id = sm.cs_type_id"),
       sqlb::Join("left", size, "size.id = sm.size_id"),
       //        sqlb::Join("left", clarity, "clarity.id = sm.clarity_id"),

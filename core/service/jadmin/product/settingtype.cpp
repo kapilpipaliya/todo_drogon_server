@@ -5,13 +5,13 @@ using namespace jadmin;
 
 SettingType::SettingType(JAdminContextPtr context_)
     : context(std::move(context_)) {
-  getTable().query() =
+  getQuery() =
       sqlb::Query(sqlb::ObjectIdentifier("product", "setting_type", "t"));
 }
 
 void SettingType::setupTable() {
   // m_query.setRowIdColumn("id");
-  getTable().query().selectedColumns() = {
+  getQuery().selectedColumns() = {
       sqlb::SelectedColumn({"Id", "id", "", "t", PG_TYPES::INT8, false}),
       //        sqlb::SelectedColumn({"Code", "slug", "", "t", PG_TYPES::TEXT,
       //        true}),
@@ -36,7 +36,7 @@ void SettingType::setupTable() {
   // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getTable().query().joins() = {
+  getQuery().joins() = {
       // sqlb::Join("left", m, "t.material_id = m.id"),
       // sqlb::Join("left", u1, "t.create_user_id = u1.id"),
       // sqlb::Join("left", u2, "t.update_user_id = u2.id"),

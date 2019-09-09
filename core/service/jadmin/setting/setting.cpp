@@ -5,7 +5,7 @@
 using namespace jadmin;
 
 Setting::Setting(JAdminContextPtr context_) : context(std::move(context_)) {
-  getTable().query() =
+  getQuery() =
       sqlb::Query(sqlb::ObjectIdentifier("setting", "setting", "gs"));
 }
 
@@ -28,7 +28,7 @@ json Setting::handleEvent(json event, int next, const json &args) {
 
 void Setting::setupTable() {
   // m_query.setRowIdColumn("id");
-  getTable().query().selectedColumns() = {
+  getQuery().selectedColumns() = {
       sqlb::SelectedColumn({"Key", "key", "", "gs", PG_TYPES::TEXT, true}),
       sqlb::SelectedColumn(
           {"Setting Type", "setting_type", "", "gs", PG_TYPES::TEXT, true}),
@@ -44,7 +44,7 @@ void Setting::setupTable() {
   // auto m = sqlb::ObjectIdentifier("material", "metal", "m");
   // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
-  getTable().query().joins() = {
+  getQuery().joins() = {
       // sqlb::Join("left", m, "a.material_id = m.id"),
       // sqlb::Join("left", u1, "gt.create_user_id = u1.id"),
       // sqlb::Join("left", u2, "a.update_user_id = u2.id"),

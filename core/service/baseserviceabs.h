@@ -9,7 +9,7 @@
 #include <utility>
 #include "../../wscontroller/context/madmincontext.h"
 #include "../jsonfns.h"
-#include "core/sql/Table.h"
+#include "core/sql/query.h"
 
 using namespace drogon;
 
@@ -26,13 +26,13 @@ class BaseServiceAbs {
   virtual json upd(json event, json args);
   virtual json del(json event, json args);
   virtual json count(json event, json args);
-  Table& getTable() { return t; }
+  sqlb::Query& getQuery() { return query; }
 
   template <class... Args>
   json insBase(const json& event, const json& /*args*/,
                const std::string& column, const std::string& values,
                Args... args_bind) {
-    std::string strSql = "INSERT INTO " + t.query().table().toString() + " (" +
+    std::string strSql = "INSERT INTO " + query.table().toString() + " (" +
                          column + ") values(" + values + ")";
 
     try {
@@ -53,9 +53,9 @@ class BaseServiceAbs {
   json updBase(const json& event, json args, std::string column,
                std::string values, Args... args_bind) {
     setupTable();
-    t.updateFilterBase(args[1]);
-    std::string strSql = getTable().query().buildUpdateQuery(
-        std::move(column), std::move(values), "");
+    query.updateFilterBase(args[1]);
+    std::string strSql =
+        query.buildUpdateQuery(std::move(column), std::move(values), "");
     try {
       auto clientPtr = drogon::app().getDbClient("sce");
       clientPtr->execSqlSync(strSql, args_bind...);
@@ -71,7 +71,7 @@ class BaseServiceAbs {
   }
 
  private:
-  Table t;
+  sqlb::Query query;
 };
 
 #endif  // BASESERVICEABS_H

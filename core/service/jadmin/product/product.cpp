@@ -6,13 +6,13 @@
 using namespace jadmin;
 
 Product::Product(JAdminContextPtr context_) : context(std::move(context_)) {
-  getTable().query() =
+  getQuery() =
       sqlb::Query(sqlb::ObjectIdentifier("post", "post", "post"));
 }
 
 void Product::setupTable() {
   // m_query.setRowIdColumn("id");
-  getTable().query().selectedColumns() = {
+  getQuery().selectedColumns() = {
       sqlb::SelectedColumn({"Id", "id", "", "post", PG_TYPES::INT8, true}),
       // sqlb::SelectedColumn({"Directory", "dir_path", "", "p", PG_TYPES::TEXT,
       // true}), sqlb::SelectedColumn({"File Name", " "",file_name", "p",
@@ -227,7 +227,7 @@ void Product::setupTable() {
   // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getTable().query().joins() = {
+  getQuery().joins() = {
       // sqlb::Join("left", c, "p.color_id = c.id"),
       sqlb::Join("left", product, "p.post_id = post.id"),
       sqlb::Join("left", pc, "pc.post_id = post.id"),
@@ -271,7 +271,7 @@ void Product::setupTable() {
       // sqlb::Join("left", u2, "a.update_user_id = u2.id"),
   };
 
-  getTable().query().groupBy() = {
+  getQuery().groupBy() = {
       sqlb::GroupByColumn("post", "id"),
       sqlb::GroupByColumn("p", "id"),
   };

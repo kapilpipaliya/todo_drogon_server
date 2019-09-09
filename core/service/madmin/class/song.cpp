@@ -5,13 +5,13 @@
 using namespace madmin;
 using S = sqlb::SelectedColumn;
 Song::Song(MAdminContextPtr context_) : context(std::move(context_)) {
-  getTable().query() =
+  getQuery() =
       sqlb::Query(sqlb::ObjectIdentifier("music", "song", "s"));
 }
 
 void Song::setupTable() {
   // m_query.setRowIdColumn("id");
-  getTable().query().selectedColumns() = {
+  getQuery().selectedColumns() = {
       S({"ID No", "id", "", "s", PG_TYPES::INT8}),
       S({"file", "file", "", "s", PG_TYPES::TEXT, false}),
       S({"Catalog", "catalog_id", "", "s", PG_TYPES::INT8, true, 1, 1}),
@@ -58,13 +58,13 @@ void Song::setupTable() {
   // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getTable().query().joins() = {
+  getQuery().joins() = {
       sqlb::Join("left", c, "c.id = s.catalog_id")
       // sqlb::Join("left", u1, "e.create_user_id = u1.id"),
       // sqlb::Join("left", u2, "e.update_user_id = u2.id"),
   };
 
-  getTable().query().groupBy() = {};
+  getQuery().groupBy() = {};
 }
 
 nlohmann::json Song::handleEvent(nlohmann::json event, unsigned long next,

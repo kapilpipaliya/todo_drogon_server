@@ -6,7 +6,7 @@ using namespace madmin;
 using namespace std::chrono;
 using S = sqlb::SelectedColumn;
 User::User(MAdminContextPtr context_) : context(std::move(context_)) {
-  getTable().query() =
+  getQuery() =
       sqlb::Query(sqlb::ObjectIdentifier("music", "user", "e"));
 }
 // User::User(int user_id)
@@ -20,7 +20,7 @@ User::User(MAdminContextPtr context_) : context(std::move(context_)) {
 
 void User::setupTable() {
   // m_query.setRowIdColumn("id");
-  getTable().query().selectedColumns() = {
+  getQuery().selectedColumns() = {
       S({"ID No", "id", "", "e", PG_TYPES::INT8}),
       S({"Account Type", "type", "", "e", PG_TYPES::ENUM}),
       // S({"no", "no", "", "e", PG_TYPES::TEXT}),
@@ -49,13 +49,13 @@ void User::setupTable() {
   // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getTable().query().joins() = {
+  getQuery().joins() = {
       sqlb::Join("left", p, "e.parent_id = p.id")
       // sqlb::Join("left", u1, "e.create_user_id = u1.id"),
       // sqlb::Join("left", u2, "e.update_user_id = u2.id"),
   };
 
-  getTable().query().groupBy() = {};
+  getQuery().groupBy() = {};
 }
 
 nlohmann::json User::handleEvent(nlohmann::json event, unsigned long next,
@@ -73,7 +73,7 @@ nlohmann::json User::handleEvent(nlohmann::json event, unsigned long next,
       return allData(event, args);
     }
     if (context->getUser().type == "admin") {
-      getTable().query().cusm_where() =
+      getQuery().cusm_where() =
           fmt::format("e.parent_id = {}", context->getUserId());
       return allData(event, args);
     } else {

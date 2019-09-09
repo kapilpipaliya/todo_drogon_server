@@ -15,13 +15,13 @@ using namespace jadmin;
   array += "}";
 
 Purity::Purity(JAdminContextPtr context_) : context(std::move(context_)) {
-  getTable().query() =
+  getQuery() =
       sqlb::Query(sqlb::ObjectIdentifier("material", "purity", "p"));
 }
 
 void Purity::setupTable() {
   // m_query.setRowIdColumn("id");
-  getTable().query().selectedColumns() = {
+  getQuery().selectedColumns() = {
       sqlb::SelectedColumn({"Id", "id", "", "p", PG_TYPES::INT8, false}),
       //        sqlb::SelectedColumn({"Metal", "metal_id", "", "p",
       //        PG_TYPES::INT8, true, 1, 2}), sqlb::SelectedColumn({"m_slug",
@@ -68,7 +68,7 @@ void Purity::setupTable() {
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
   auto metal_purity = sqlb::ObjectIdentifier("material", "purity_metal", "mp");
 
-  getTable().query().joins() = {
+  getQuery().joins() = {
       sqlb::Join("left", pt, "pt.purity_id = p.id"),
       sqlb::Join("left",
                  "( select pm.purity_id, pm.tone_id, jsonb_agg(distinct "
@@ -83,7 +83,7 @@ void Purity::setupTable() {
       sqlb::Join("left", u1, "p.create_user_id = u1.id"),
       sqlb::Join("left", u2, "p.update_user_id = u2.id"),
   };
-  getTable().query().groupBy() = {
+  getQuery().groupBy() = {
       sqlb::GroupByColumn("p", "id"),
       sqlb::GroupByColumn("m", "id"),
       sqlb::GroupByColumn("u1", "id"),

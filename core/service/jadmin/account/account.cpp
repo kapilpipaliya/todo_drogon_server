@@ -5,11 +5,10 @@ using namespace jadmin;
 Account::Account(JAdminContextPtr context_) : context(std::move(context_)) {}
 
 void Account::setupTable() {
-  getTable().query() =
-      sqlb::Query(sqlb::ObjectIdentifier("account", "account", "a"));
+  getQuery() = sqlb::Query(sqlb::ObjectIdentifier("account", "account", "a"));
 
   // m_query.setRowIdColumn("id");
-  getTable().query().selectedColumns() = {
+  getQuery().selectedColumns() = {
       sqlb::SelectedColumn({"Id", "id", "", "a", PG_TYPES::INT8, false}),
       sqlb::SelectedColumn(
           {"Material", "material_id", "", "a", PG_TYPES::INT8, true, 1, 2}),
@@ -36,7 +35,7 @@ void Account::setupTable() {
   auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getTable().query().joins() = {
+  getQuery().joins() = {
       sqlb::Join("left", m, "a.material_id = m.id"),
       sqlb::Join("left", u1, "a.create_user_id = u1.id"),
       sqlb::Join("left", u2, "a.update_user_id = u2.id"),

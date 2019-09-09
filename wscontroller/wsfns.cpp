@@ -1,5 +1,6 @@
 #include "wsfns.h"
 
+WsFns::WsFns() = default;
 void WsFns::sendJson(const WebSocketConnectionPtr &wsConnPtr,
                      nlohmann::json &j) {
   try {

@@ -10,6 +10,12 @@
 
 #include "json.hpp"
 
+#include <drogon/drogon.h>
+using namespace drogon::orm;
+
+#include "json.hpp"
+using nlohmann::json;
+
 enum PG_TYPES {
   BOOL = 16,
   //    ByTea = 17,
@@ -163,6 +169,20 @@ class Query {
   const SubQuery& subquery() const { return m_subquery; }
   SubQuery& subquery() { return m_subquery; }
   std::string& cusm_where() { return m_custm_where; }
+  size_t filterCount() const;
+  bool select();
+  std::string getHeaderName(const unsigned long column) const;
+  void sort(const std::vector<sqlb::SortedColumn>& columns);
+
+  json getJsonHeaderData();
+  json getJsonData();
+
+  json getAllData(json& args);
+
+  void updateFilterBase(json filters);
+  void updateSortBase(json filters);
+  void updatePaginationBase(json filters);
+  void updateFilter(int column, const std::string& whereClause);
 
  private:
   // std::vector<std::string> m_column_names;
@@ -176,6 +196,7 @@ class Query {
   Pagination m_pagination;
   SubQuery m_subquery;
   std::string m_custm_where{""};
+  drogon::orm::Result result{nullptr};
 
   std::vector<SelectedColumn>::iterator findSelectedColumnByName(
       const std::string& name);

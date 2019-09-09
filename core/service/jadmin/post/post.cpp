@@ -6,12 +6,12 @@
 using namespace jadmin;
 
 Post1::Post1(JAdminContextPtr context_) : context(std::move(context_)) {
-  getTable().query() =
+  getQuery() =
       sqlb::Query(sqlb::ObjectIdentifier("post", "post", "post"));
 }
 
 void Post1::setupTable() {
-  getTable().query().selectedColumns() = {
+  getQuery().selectedColumns() = {
       sqlb::SelectedColumn({"Id", "id", "", "post", PG_TYPES::INT8, true}),
       sqlb::SelectedColumn(
           {"Post Type", "type", "", "post", PG_TYPES::ENUM, true}),

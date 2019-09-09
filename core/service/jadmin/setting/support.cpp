@@ -4,13 +4,13 @@
 using namespace jadmin;
 
 Support::Support(JAdminContextPtr context_) : context(std::move(context_)) {
-  getTable().query() =
+  getQuery() =
       sqlb::Query(sqlb::ObjectIdentifier("setting", "support", "a"));
 }
 
 void Support::setupTable() {
   // m_query.setRowIdColumn("id");
-  getTable().query().selectedColumns() = {
+  getQuery().selectedColumns() = {
       sqlb::SelectedColumn({"Id", "id", "", "a", PG_TYPES::INT8, false}),
       sqlb::SelectedColumn({"Name", "name", "", "a", PG_TYPES::TEXT, true}),
       sqlb::SelectedColumn({"Email", "email", "", "a", PG_TYPES::TEXT, true}),
@@ -33,7 +33,7 @@ void Support::setupTable() {
   // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getTable().query().joins() = {
+  getQuery().joins() = {
       // sqlb::Join("left", u1, "gt.create_user_id = u1.id"),
       // sqlb::Join("left", u2, "a.update_user_id = u2.id"),
   };

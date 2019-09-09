@@ -11,7 +11,6 @@ find_package(PostgreSQL)
 #find_package(folly)
 
 set(JEWEL_HDR
-    sql/Table.h
     sql/condformat.h
 #    data.h
 
@@ -32,7 +31,6 @@ set(JEWEL_HDR
 )
 
 set(JEWEL_SRC
-    sql/Table.cpp
     sql/condformat.cpp
 #    data.cpp
 actor/permission.cpp

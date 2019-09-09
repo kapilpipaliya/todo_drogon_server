@@ -4,13 +4,13 @@ using S = sqlb::SelectedColumn;
 
 CatalogLocal::CatalogLocal(const MAdminContextPtr &context_)
     : Catalog(context_) {
-  getTable().query() =
+  getQuery() =
       sqlb::Query(sqlb::ObjectIdentifier("music", "catalog", "c"));
 }
 
 void CatalogLocal::setupTable() {
   // m_query.setRowIdColumn("id");
-  getTable().query().selectedColumns() = {
+  getQuery().selectedColumns() = {
       S({"ID No", "id", "", "c", PG_TYPES::INT8}),
       // S({"Catalog Type", "catalog_type", "", "c", PG_TYPES::ENUM}),
       // S({"no", "no", "", "c", PG_TYPES::TEXT}),
@@ -36,13 +36,13 @@ void CatalogLocal::setupTable() {
   // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getTable().query().joins() = {
+  getQuery().joins() = {
       // sqlb::Join("left", p, "e.parent_id = p.id")
       // sqlb::Join("left", u1, "e.create_user_id = u1.id"),
       // sqlb::Join("left", u2, "e.update_user_id = u2.id"),
   };
 
-  getTable().query().groupBy() = {};
+  getQuery().groupBy() = {};
 }
 
 nlohmann::json CatalogLocal::handleEvent(nlohmann::json event,

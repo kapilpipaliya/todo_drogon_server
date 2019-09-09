@@ -4,13 +4,13 @@
 using namespace jadmin;
 
 Currency::Currency(JAdminContextPtr context_) : context(std::move(context_)) {
-  getTable().query() =
+  getQuery() =
       sqlb::Query(sqlb::ObjectIdentifier("setting", "currency", "c"));
 }
 
 void Currency::setupTable() {
   // m_query.setRowIdColumn("id");
-  getTable().query().selectedColumns() = {
+  getQuery().selectedColumns() = {
       sqlb::SelectedColumn({"Id", "id", "", "c", PG_TYPES::INT8, false}),
       sqlb::SelectedColumn({"Code", "slug", "", "c", PG_TYPES::TEXT, true}),
       sqlb::SelectedColumn({"Name", "name", "", "c", PG_TYPES::TEXT, true}),
@@ -24,7 +24,7 @@ void Currency::setupTable() {
   // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
   // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
 
-  getTable().query().joins() = {
+  getQuery().joins() = {
       // sqlb::Join("left", m, "a.material_id = m.id"),
       // sqlb::Join("left", u1, "gt.create_user_id = u1.id"),
       // sqlb::Join("left", u2, "a.update_user_id = u2.id"),

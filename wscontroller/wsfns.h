@@ -14,6 +14,4 @@ class WsFns {
   static void sendJson(const WebSocketConnectionPtr &wsConnPtr, json &j);
 };
 
-inline WsFns::WsFns() = default;
-
 #endif  // WSFNS_H

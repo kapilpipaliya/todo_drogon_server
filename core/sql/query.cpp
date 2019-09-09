@@ -1,6 +1,7 @@
 #include "query.h"
 
 #include <algorithm>
+#include "condformat.h"
 #include "spdlogfix.h"
 
 namespace sqlb {
@@ -343,5 +344,253 @@ std::vector<SelectedColumn>::const_iterator Query::findSelectedColumnBySelector(
       m_selected_columns.begin(), m_selected_columns.end(),
       [name](const SelectedColumn& c) { return name == c.selector; });
 }
+size_t Query::filterCount() const { return where().size(); }
+bool Query::select() {
+  auto q = buildQuery(true);
+  // SPDLOG_TRACE(q);
+  // crash !! auto clientPtr = drogon::app().getFastDbClient("sce");
+  auto clientPtr = drogon::app().getDbClient("sce");
+  *clientPtr << q << Mode::Blocking >> [this](const Result& r) {
+    result = r;
+  } >> [q](const DrogonDbException& e) {
+    SPDLOG_TRACE("query: {}", q);
+    SPDLOG_TRACE(e.base().what());
+    // testOutput(false, "DbClient streaming-type interface(0)");
+    throw;
+  };
+  return true;
+}
 
+std::string Query::getHeaderName(const unsigned long column) const {
+  return selectedColumns().at(column).original_column;
+}
+
+void Query::sort(const std::vector<SortedColumn>& columns) {
+  // Don't do anything when the sort order hasn't changed
+  if (orderBy() == columns) return;
+
+  // Save sort order
+  orderBy() = columns;
+
+  // Set the new query (but only if a table has already been set
+
+  if (!table().isEmpty())
+    // buildQuery();
+    select();
+}
+
+nlohmann::json Query::getJsonHeaderData() {
+  json ret(json::array());
+
+  json jsonHeaderRow(json::array());
+  json jsonFormHeaderRow(json::array());
+  json jsonFormColumnTypesRow(json::array());
+  json jsonFormVisibleColumnsRow(json::array());
+  json jsonFormOffsetColumnsRow(json::array());
+  json jsonFormTooltipOffsetColumnsRow(json::array());
+
+  for (unsigned long c = 0; c < selectedColumns().size(); c++) {
+    jsonHeaderRow[c] = getHeaderName(c);
+    auto column = selectedColumns().at(c);
+    jsonFormColumnTypesRow[c] = column.column_type;
+    jsonFormVisibleColumnsRow[c] = column.isVisible;
+    jsonFormOffsetColumnsRow[c] = column.offset;
+    jsonFormTooltipOffsetColumnsRow[c] = column.tooltipOffset;
+
+    if (column.prefix.empty()) {
+      jsonFormHeaderRow[c] = column.original_column;  // can change case
+    } else {
+      if (column.prefix == table().as()) {
+        jsonFormHeaderRow[c] = column.selector;
+      } else {
+        jsonFormHeaderRow[c] = column.prefix + "_" + column.selector;
+      }
+    }
+  }
+  ret.push_back(jsonHeaderRow);
+  ret.push_back(jsonFormHeaderRow);
+  ret.push_back(jsonFormColumnTypesRow);
+  ret.push_back(jsonFormVisibleColumnsRow);
+  ret.push_back(jsonFormOffsetColumnsRow);
+  ret.push_back(jsonFormTooltipOffsetColumnsRow);
+  return ret;
+}
+
+nlohmann::json Query::getJsonData() {
+  json jresult = json::array();
+
+  for (unsigned long row = 0; row < result.size(); row++) {
+    json jsonRow;
+    auto columns = result.columns();
+    for (unsigned long column = 0; column < columns; column++) {
+      if (result[row][column].isNull()) {
+        json j(nullptr);
+        jsonRow[column] = j;
+        continue;
+      }
+      auto ctype = selectedColumns().at(column).column_type;
+      switch (ctype) {
+        case PG_TYPES::INT4:
+        case PG_TYPES::INT8:
+          // jsonRow[column] = (long)strtolong(row, column);
+          jsonRow[column] = result[row][column].as<long>();
+          break;
+        case PG_TYPES::BOOL: {
+          // jsonRow[column] = strbool(row, column);
+          auto r5 = result[row][column].as<std::string>();
+          // jsonRow[column] = result[row][column].as<bool>();
+          jsonRow[column] = result[row][column].as<std::string>() == "t";
+          break;
+        }
+          //          case PG_TYPES::
+        case PG_TYPES::DOUBLE:
+          // jsonRow[column] = strbool(row, column);
+          jsonRow[column] = result[row][column].as<double>();
+          break;
+        /*case PG_TYPES::ARRAYINT: {
+            auto jsonArray = json(json::array());
+            auto ar = result[row][column].as_array();
+            auto jnc = ar.get_next();
+            while (jnc.first != array_parser::done) {
+                if(jnc.first == array_parser::string_value) {
+                    int myint = stoi(jnc.second);
+                    jsonArray.push_back(myint);
+                }
+                jnc = ar.get_next();
+
+            }
+            jsonRow[column] = jsonArray;
+        }
+        break;
+        case PG_TYPES::ARRAYTEXT: {
+            auto jsonArray = json(json::array());
+            auto ar = result[row][column].as_array();
+            auto jnc = ar.get_next();
+            while (jnc.first != array_parser::done) {
+                if(jnc.first == array_parser::string_value)
+                    jsonArray.push_back(jnc.second);
+                jnc = ar.get_next();
+
+            }
+            jsonRow[column] = jsonArray;
+        }
+        break;*/
+        case PG_TYPES::PSJSON: {
+          auto valin = json::parse(result[row][column].c_str());
+          jsonRow[column] = valin;
+        } break;
+        case PG_TYPES::TEXT:
+        default:
+          // jsonRow[column] = getValue(row, column);
+          jsonRow[column] = result[row][column].c_str();
+      }
+    }
+    jresult.push_back(jsonRow);
+  }
+  return jresult;
+}
+
+nlohmann::json Query::getAllData(nlohmann::json& args) {
+  updateFilterBase(args[0]);
+  updateSortBase(args[1]);
+  updatePaginationBase(args[2]);
+  select();
+  return getJsonData();
+}
+
+void Query::updateFilterBase(nlohmann::json filters) {
+  if (filters.is_null() || filters.empty() || !filters.is_array()) {
+    return;
+  }
+  for (unsigned int i = 0; i < filters.size(); i++) {
+    //         == json::value_t::string
+    std::string v;
+    if (filters[i].is_null()) {
+      v = "";
+    } else if (filters[i].type() == json::value_t::number_integer ||
+               filters[i].type() == json::value_t::number_unsigned) {
+      v = std::to_string(filters[i].get<long>());
+    } else if (filters[i].type() == json::value_t::number_float) {
+      v = std::to_string(filters[i].get<float>());
+    } else if (filters[i].type() == json::value_t::boolean) {
+      v = filters[i].get<bool>() ? "true" : "false";
+    } else if (filters[i].type() == json::value_t::string) {
+      v = filters[i].get<std::string>();
+    } else {
+      v = "";
+    }
+    std::string whereClause = CondFormat::filterToSqlCondition(
+        v, selectedColumns().at(i).column_type, "");
+    // If the value was set to an empty string remove any filter for this
+    // column. Otherwise insert a new filter rule or replace the old one if
+    // there is already one
+    if (whereClause.empty())
+      where().erase(static_cast<size_t>(i));
+    else
+      where()[static_cast<size_t>(i)] = whereClause;
+  }
+}
+
+void Query::updateSortBase(nlohmann::json filters) {
+  if (filters.is_null() || filters.empty() || !filters.is_array()) {
+    return;
+  }
+  for (unsigned int i = 0; i < filters.size(); i++) {
+    if (filters[i].is_null()) {
+      continue;
+    }
+    if (filters[i].get<int>() == 0) {
+      orderBy().emplace_back(i, sqlb::Ascending);
+    } else {
+      orderBy().emplace_back(i, sqlb::Descending);
+    }
+  }
+}
+
+void Query::updatePaginationBase(nlohmann::json filters) {
+  if (filters.is_null() || filters.empty() || !filters.is_array()) {
+    return;
+  }
+  if (!filters[0].is_null()) {
+    pagination().limit = filters[0].get<int>();
+  }
+  if (!filters[1].is_null()) {
+    pagination().offset = filters[1].get<int>();
+  }
+  if (!filters[2].is_null()) {
+    pagination().current_page = filters[2].get<int>();
+  }
+}
+
+void Query::updateFilter(int column, const std::string& whereClause) {
+  // If the value was set to an empty string remove any filter for this column.
+  // Otherwise insert a new filter rule or replace the old one if there is
+  // already one
+  if (whereClause.empty())
+    where().erase(static_cast<size_t>(column));
+  else
+    where()[static_cast<size_t>(column)] = whereClause;
+  // Build the new query
+  // buildQuery();
+
+  select();
+}
 }  // namespace sqlb
+   /*
+    #include "../strfns.h"
+   // Convert a number to string using the Unicode superscript characters
+   template <class T>
+   static std::string toSuperScript(T number) {
+     std::string superScript = std::to_string(number);
+     ReplaceAll2(superScript, "0", "⁰");
+     ReplaceAll2(superScript, "1", "¹");
+     ReplaceAll2(superScript, "2", "²");
+     ReplaceAll2(superScript, "3", "³");
+     ReplaceAll2(superScript, "4", "⁴");
+     ReplaceAll2(superScript, "5", "⁵");
+     ReplaceAll2(superScript, "6", "⁶");
+     ReplaceAll2(superScript, "7", "⁷");
+     ReplaceAll2(superScript, "8", "⁸");
+     ReplaceAll2(superScript, "9", "⁹");
+     return superScript;
+   }*/
