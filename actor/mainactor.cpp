@@ -10,6 +10,7 @@
 #include "jadminactor.h"
 #include "juseractor.h"
 #include "madminactor.h"
+#include "todoactor.h"
 
 #include "caf.h"
 
@@ -118,6 +119,20 @@ void MainActor::passToUser(MainActorType actortype,
       } else {
         caf::actor userActor = it->second;
         request(userActor, caf::infinite, wsConnPtr, std::move(message), type);
+      }
+
+      break;
+    }
+    case MainActorType::TODO: {
+      auto it = actorMap.find(wsConnPtr);
+      if (it == actorMap.end()) {
+        caf::actor todoActor = spawn<TodoActor>();
+        monitor(todoActor);  // this will send message when it down
+        request(todoActor, caf::infinite, wsConnPtr, std::move(message), type);
+        actorMap.insert({wsConnPtr, todoActor});
+      } else {
+        caf::actor todoActor = it->second;
+        request(todoActor, caf::infinite, wsConnPtr, std::move(message), type);
       }
 
       break;

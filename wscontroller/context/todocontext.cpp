@@ -1,9 +1,10 @@
 #include "todocontext.h"
 #include "./core/service/dba.h"
 #include "spdlogfix.h"
+namespace todo {
 
 TodoContext::TodoContext(const drogon::HttpRequestPtr &req,
-                             const drogon::WebSocketConnectionPtr &wsConnPtr_)
+                         const drogon::WebSocketConnectionPtr &wsConnPtr_)
     : wsConnPtr(wsConnPtr_) {
   auto truple = generateContext(req);
   current_session_id = std::get<0>(truple);
@@ -50,3 +51,4 @@ void TodoContext::setUser() {
     SPDLOG_TRACE(e.what());
   }
 }
+}  // namespace todo

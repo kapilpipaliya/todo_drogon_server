@@ -1,9 +1,8 @@
-#ifndef CONTEXT_H
-#define CONTEXT_H
-
+#pragma once
 #include <string>
 
 #include <drogon/WebSocketController.h>
+namespace todo {
 
 struct ContextUser {
   long id{0};
@@ -13,7 +12,7 @@ struct ContextUser {
 class TodoContext {
  public:
   TodoContext(const drogon::HttpRequestPtr &req,
-                const drogon::WebSocketConnectionPtr &wsConnPtr_);
+              const drogon::WebSocketConnectionPtr &wsConnPtr_);
 
   std::tuple<long, long> generateContext(const drogon::HttpRequestPtr &req);
   void setUser();
@@ -29,5 +28,4 @@ class TodoContext {
   ContextUser user;
   const drogon::WebSocketConnectionPtr &wsConnPtr;
 };
-
-#endif  // CONTEXT_H
+}  // namespace todo

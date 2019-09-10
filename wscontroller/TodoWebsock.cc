@@ -32,8 +32,8 @@ void TodoWebsock::handleNewMessage(
 void TodoWebsock::handleNewConnection(
     const drogon::HttpRequestPtr& req,
     const drogon::WebSocketConnectionPtr& wsConnPtr) {
-  std::shared_ptr<TodoContext> context =
-      std::make_shared<TodoContext>(req, wsConnPtr);
+  std::shared_ptr<todo::TodoContext> context =
+      std::make_shared<todo::TodoContext>(req, wsConnPtr);
   wsConnPtr->setContext(context);
 }
 void TodoWebsock::handleConnectionClosed(
