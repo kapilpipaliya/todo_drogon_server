@@ -61,6 +61,7 @@ AUX_SOURCE_DIRECTORY(./service/jadmin/menu JEWEL_SRC)
 AUX_SOURCE_DIRECTORY(./service/jadmin/mfg JEWEL_SRC)
 AUX_SOURCE_DIRECTORY(./service/jadmin/product JEWEL_SRC)
 AUX_SOURCE_DIRECTORY(./service/jadmin/setting JEWEL_SRC)
+AUX_SOURCE_DIRECTORY(./service/todo JEWEL_SRC)
 
 AUX_SOURCE_DIRECTORY(./service/juser JEWEL_SRC)
 
