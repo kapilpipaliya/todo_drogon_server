@@ -1,9 +1,9 @@
 #include <QCoreApplication>
 #include <catch2/catch.hpp>
+#include "../src/BatchResultTest.h"
 #include "../wsclient/once.h"
 #include "../wsclient/wsclient.h"
 #include "spdlogfix.h"
-// To Benchmark do
 // https://github.com/catchorg/Catch2/blob/master/docs/benchmarks.md
 // BENCHMARK("MY FUNC") { return my_func(); };
 
@@ -51,8 +51,6 @@ TEST_CASE("server reply error on string type of message.", "[WSTest]") {
   timer->start(500);
   a.exec();
   REQUIRE(r0);
-  // FormatCheck w1;  w1.setpath("/todo"); w1.init(); w1.run();
-  // REQUIRE(w1.isTestSuccess() == true);
 }
 
 TEST_CASE("authorisation check without cookies", "[WSTest]") {
@@ -78,11 +76,8 @@ TEST_CASE("authorisation check without cookies", "[WSTest]") {
 
   a.exec();
   REQUIRE(r0);
-
-  // AuthCheck w1; w1.setpath("/todo"); w1.init(); w1.run();
-  // REQUIRE(w1.isTestSuccess() == true);
 }
-/*
+
 TEST_CASE("login on backend with username and password", "[WSTest]") {
   char **argv;
   int i = 0;
@@ -105,10 +100,30 @@ TEST_CASE("login on backend with username and password", "[WSTest]") {
   timer->start(500);
   a.exec();
   REQUIRE(r0);
-  // LogIn w1; w1.setpath("/todo"); w1.init(); w1.run();
-  // REQUIRE(w1.isTestSuccess() == true);
 }
-
+/*
+TEST_CASE("all events test", "[WSTest]") {
+  char **argv;
+  int i = 0;
+  QCoreApplication a(i, argv);
+  auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
+  nlohmann::json event = nlohmann::json::array({"auth", "login", 0});
+  nlohmann::json payload = nlohmann::json::array({{event, {}}});
+  bool r0 = false;
+  auto b = w2.bindOnce(event, [&r0](nlohmann::json r) {
+    REQUIRE(r[0]["ok"] == true);
+    r0 = true;
+  });
+  w2.sendMessage(QString::fromStdString(payload.dump()));
+  REQUIRE(b);
+  QTimer *timer = new QTimer();
+  QObject::connect(timer, SIGNAL(timeout()), &a, SLOT(quit()));
+  timer->start(500);
+  a.exec();
+  REQUIRE(r0);
+}
+*/
+/*
 //// currently this not working.. but make this working in future.
 ////TEST_CASE("signup with a form.","[WSTest]") {
 ////    SignUp w1; w1.setpath("/todo"); w1.init(); w1.run();

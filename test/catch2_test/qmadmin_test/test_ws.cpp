@@ -1,5 +1,6 @@
 #include <QCoreApplication>
 #include <catch2/catch.hpp>
+#include "../src/BatchResultTest.h"
 #include "../wsclient/once.h"
 #include "../wsclient/wsclient.h"
 #include "spdlogfix.h"
@@ -64,11 +65,12 @@ TEST_CASE("authorisation check without cookies", "[WSTest]") {
   nlohmann::json payload = nlohmann::json::array({{event, {{}}}});
   //    json j = R"( [ [["user","is_logged_in",0],[[]]]] )"_json;
   SPDLOG_TRACE(payload.dump());
-  bool r0 = false;
-  auto b = w2.bindOnce(event, [&r0](nlohmann::json r) {
+  BatchResultTest bt;
+  bt.addEvent(event.dump());
+  auto b = w2.bindOnce(event, [&bt, &event](nlohmann::json r) {
     SPDLOG_TRACE("This should be false");
     REQUIRE(r[0] == false);
-    r0 = true;
+    bt.setEventResult(event.dump(), true);
   });
   w2.sendMessage(QString::fromStdString(payload.dump()));
   REQUIRE(b);
@@ -77,7 +79,7 @@ TEST_CASE("authorisation check without cookies", "[WSTest]") {
   timer->start(500);
 
   a.exec();
-  REQUIRE(r0);
+  REQUIRE(bt.result());
 
   // AuthCheck w1; w1.setpath("/madmin"); w1.init(); w1.run();
   // REQUIRE(w1.isTestSuccess() == true);
