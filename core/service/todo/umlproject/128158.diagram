@@ -1,0 +1,58 @@
+format 221
+
+classcanvas 128030 class_ref 128158 // WorkModify
+  classdiagramsettings member_max_width 0 drawing_language c++ end
+  xyz 50 189 2000
+  constraint 128158
+    hidden
+    end
+    ""
+      xyzwh 154 339 2000 35 35
+end
+classcanvas 128414 class_ref 134686 // Project
+  classdiagramsettings member_max_width 0 end
+  xyz 214 193 2006
+  constraint 128542
+    hidden
+    end
+    ""
+      xyzwh 321 230 2000 35 35
+end
+classcanvas 128798 class_ref 135454 // TodoTask
+  classdiagramsettings member_max_width 0 end
+  xyz 525 54 2006
+  constraint 128926
+    hidden
+    end
+    ""
+      xyzwh 654 91 2000 35 35
+end
+classcanvas 129182 class_ref 135198 // TodoRole
+  classdiagramsettings member_max_width 0 end
+  xyz 525 166 2006
+  constraint 129310
+    hidden
+    end
+    ""
+      xyzwh 800 213 2000 35 35
+end
+classcanvas 129566 class_ref 135070 // TodoUser
+  classdiagramsettings member_max_width 0 end
+  xyz 521 270 2006
+  constraint 129694
+    hidden
+    end
+    ""
+      xyzwh 794 325 2000 35 35
+end
+line 128286 -_-_
+  from ref 128030 z 2001 to ref 128158
+line 128670 -_-_
+  from ref 128414 z 2007 to ref 128542
+line 129054 -_-_
+  from ref 128798 z 2007 to ref 128926
+line 129438 -_-_
+  from ref 129182 z 2007 to ref 129310
+line 129822 -_-_
+  from ref 129566 z 2007 to ref 129694
+end

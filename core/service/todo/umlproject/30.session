@@ -1,0 +1,19 @@
+window_sizes 856 1058 412 438 1006 0
+cleanlooks_style
+diagrams
+  active  classdiagram_ref 128158 // todo
+    969 804 100 A4 0 0
+  sequencediagram_ref 134814 // sequence
+    433 804 100 A4 0 0
+end
+show_stereotypes
+selected 
+  package_ref 129 // umlproject
+open
+  classview_ref 128158 // todo
+  deploymentview_ref 128158 // todo
+  classview_ref 134814 // rbac
+  deploymentview_ref 134686 // rbac
+end
+end
+verbose
