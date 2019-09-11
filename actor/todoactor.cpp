@@ -5,9 +5,7 @@
 
 #include "../wscontroller/context/todocontext.h"
 
-#include "core/service/todo/class/auth.h"
-#include "core/service/todo/class/ui.h"
-#include "core/service/todo/class/user.h"
+#include "inc/todoservices.h"
 
 TodoActor::TodoActor(caf::actor_config &cfg) : caf::event_based_actor(cfg) {}
 
