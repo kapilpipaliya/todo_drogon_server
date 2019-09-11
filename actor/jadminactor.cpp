@@ -1,9 +1,11 @@
 
 #include "jadminactor.h"
-#include "jadminservices.h"
 
-JAdminActor::JAdminActor(caf::actor_config &cfg)
-    : caf::event_based_actor(cfg) {}
+#include "jadminservices.h"
+#include "jadminservices.h"
+JAdminActor::JAdminActor(caf::actor_config & cfg)
+    : caf::event_based_actor(cfg) {
+}
 
 caf::behavior JAdminActor::make_behavior() {
   return {
@@ -19,8 +21,7 @@ caf::behavior JAdminActor::make_behavior() {
       }};
 }
 
-nlohmann::json JAdminActor::handleTextMessage(
-    const drogon::WebSocketConnectionPtr &wsConnPtr, const nlohmann::json &in) {
+nlohmann::json JAdminActor::handleTextMessage(const drogon::WebSocketConnectionPtr & wsConnPtr, const nlohmann::json & in) {
   try {
     if (!in.is_array()) {
       return nlohmann::json::array();
@@ -97,8 +98,7 @@ nlohmann::json JAdminActor::handleTextMessage(
   }
 }
 
-nlohmann::json JAdminActor::handleBinaryMessage(
-    const drogon::WebSocketConnectionPtr &wsConnPtr, std::string &message) {
+nlohmann::json JAdminActor::handleBinaryMessage(const drogon::WebSocketConnectionPtr & wsConnPtr, std::string & message) {
   nlohmann::json event;
   try {
     long c = wsConnPtr->getContext<JAdminContext>()->sessionId();
@@ -137,3 +137,4 @@ nlohmann::json JAdminActor::handleBinaryMessage(
   nlohmann::json ret;
   return ret;
 }
+

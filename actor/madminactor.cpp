@@ -1,9 +1,10 @@
 
 #include "madminactor.h"
-#include "madminservices.h"
 
-MAdminActor::MAdminActor(caf::actor_config &cfg)
-    : caf::event_based_actor(cfg) {}
+#include "madminservices.h"
+MAdminActor::MAdminActor(caf::actor_config & cfg)
+    : caf::event_based_actor(cfg) {
+}
 
 caf::behavior MAdminActor::make_behavior() {
   return {
@@ -19,8 +20,7 @@ caf::behavior MAdminActor::make_behavior() {
       }};
 }
 
-nlohmann::json MAdminActor::handleTextMessage(
-    const drogon::WebSocketConnectionPtr &wsConnPtr, const nlohmann::json &in) {
+nlohmann::json MAdminActor::handleTextMessage(const drogon::WebSocketConnectionPtr & wsConnPtr, const nlohmann::json & in) {
   if (!in.is_array() || !in[0].is_array() || !in[0][0].is_string()) {
     return nlohmann::json::array();
   }
@@ -41,8 +41,7 @@ nlohmann::json MAdminActor::handleTextMessage(
   }
 }
 
-nlohmann::json MAdminActor::handleBinaryMessage(
-    const drogon::WebSocketConnectionPtr &wsConnPtr, std::string &message) {
+nlohmann::json MAdminActor::handleBinaryMessage(const drogon::WebSocketConnectionPtr & wsConnPtr, std::string & message) {
   nlohmann::json event;
   try {
     auto contx = wsConnPtr->getContext<MAdminContext>();
@@ -80,3 +79,4 @@ nlohmann::json MAdminActor::handleBinaryMessage(
   nlohmann::json ret;
   return ret;
 }
+

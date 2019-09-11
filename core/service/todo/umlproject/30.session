@@ -7,11 +7,10 @@ diagrams
     433 804 100 A4 60 0
 end
 show_stereotypes
-selected artifact_ref 142110 // madminactor
+selected deploymentview_ref 141214 // actor
 open
   classview_ref 128158 // todo
   classview_ref 141342 // actor
-  deploymentview_ref 141214 // actor
 end
 end
 verbose
