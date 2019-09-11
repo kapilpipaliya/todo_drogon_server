@@ -36,6 +36,8 @@ class SslEchoClient : public QObject {
   void onSslErrors(const QList<QSslError> &errors);
 
  private:
+  template <typename T>
+  void bindOnce(T arg1, std::function<void(nlohmann::json)> callback);
   static short int PING_INTERVAL;
   static short int PING_INTERVAL_COUNT_MAX;
 

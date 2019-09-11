@@ -66,6 +66,11 @@ nlohmann::json todo::Auth::handleEvent(nlohmann::json event, unsigned long next,
 // Save Image meta on server temporary
 nlohmann::json todo::Auth::saveFileMeta(const nlohmann::json& event,
                                         nlohmann::json args) {
+  if (!args.is_array() || args.size() <= 3) {
+    nlohmann::json ret;
+    ret[0] = simpleJsonSaveResult(event, false, "No Valid arguments");
+    return ret;
+  }
   long c = context->sessionId();
 
   // auto strSql = "INSERT INTO music.temp_file_meta ( session_id, event, name,

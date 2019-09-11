@@ -39,32 +39,32 @@ nlohmann::json todo::UI::handleEvent(nlohmann::json event, unsigned long next,
 nlohmann::json todo::UI::getMenuData() {
   if (context->getUser().type == "super admin") {
     nlohmann::json j = nlohmann::json::array(
-        {nlohmann::json::array({"Dashboard", "music/dashboard"}),
-         nlohmann::json::array({"Admins", "music/users"}),
-         nlohmann::json::array({"Catalogs", "music/catalogs"}),
-         nlohmann::json::array({"Music", "music/browse"}),
-         //            nlohmann::json::array({"Profile", "music/profile"}),
-         nlohmann::json::array({"Password Change", "music/update_password"}),
-         nlohmann::json::array({"Logout", "music/logout"})});
+        {nlohmann::json::array({"Dashboard", "todo/dashboard"}),
+         nlohmann::json::array({"Admins", "todo/users"}),
+         nlohmann::json::array({"Catalogs", "todo/catalogs"}),
+         nlohmann::json::array({"todo", "todo/browse"}),
+         //            nlohmann::json::array({"Profile", "todo/profile"}),
+         nlohmann::json::array({"Password Change", "todo/update_password"}),
+         nlohmann::json::array({"Logout", "todo/logout"})});
     return j;
   }
   if (context->getUser().type == "admin") {
     nlohmann::json j = nlohmann::json::array(
-        {nlohmann::json::array({"Dashboard", "music/dashboard"}),
-         nlohmann::json::array({"Executives", "music/users"}),
-         //            nlohmann::json::array({"Songs","music/browse"}),
-         //            nlohmann::json::array({"Profile", "music/profile"}),
-         nlohmann::json::array({"Password Change", "music/update_password"}),
-         nlohmann::json::array({"Logout", "music/logout"})});
+        {nlohmann::json::array({"Dashboard", "todo/dashboard"}),
+         nlohmann::json::array({"Executives", "todo/users"}),
+         //            nlohmann::json::array({"Songs","todo/browse"}),
+         //            nlohmann::json::array({"Profile", "todo/profile"}),
+         nlohmann::json::array({"Password Change", "todo/update_password"}),
+         nlohmann::json::array({"Logout", "todo/logout"})});
     return j;
   } else if (context->getUser().type == "executive") {
     nlohmann::json j = nlohmann::json::array(
-        {nlohmann::json::array({"Dashboard", "music/dashboard"}),
-         //                                 nlohmann::json::array({"Songs","music/browse"}),
+        {nlohmann::json::array({"Dashboard", "todo/dashboard"}),
+         //                                 nlohmann::json::array({"Songs","todo/browse"}),
          //                                 nlohmann::json::array({"Profile",
-         //                                 "music/profile"}),
-         nlohmann::json::array({"Password Change", "music/update_password"}),
-         nlohmann::json::array({"Logout", "music/logout"})});
+         //                                 "todo/profile"}),
+         nlohmann::json::array({"Password Change", "todo/update_password"}),
+         nlohmann::json::array({"Logout", "todo/logout"})});
     return j;
   } else {
     return nlohmann::json::array();

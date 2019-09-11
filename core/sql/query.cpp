@@ -650,20 +650,31 @@ nlohmann::json Query::upd(nlohmann::json event, nlohmann::json args) {
 }
 
 nlohmann::json Query::del(nlohmann::json event, nlohmann::json args) {
+  if (!args.is_array()) {
+    nlohmann::json ret;
+    ret[0] =
+        simpleJsonSaveResult(event, false, "The argument must be an array");
+    return ret;
+  }
   try {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     updateFilterBase(args[0]);
-    auto res = Dba::writeInTrans(transPtr, buildDeleteQuery());
-    if (res.size() > 1) {
-      throw("not valid arguments");
+    if (m_where.size() > 0 && !m_custm_where.empty()) {
+      auto res = Dba::writeInTrans(transPtr, buildDeleteQuery());
+      if (res.size() > 1) {
+        throw("not valid arguments");
+      }
+      // affected rows should be returned too.
+      // Dba::writeInTrans(transPtr, "DELETE FROM " +
+      // m_table.toDisplayString()
+      // + " WHERE id = $1", args[0]);
+      nlohmann::json ret;
+      ret[0] = simpleJsonSaveResult(event, true, "Done");
+      return ret;
     }
-    // affected rows should be returned too.
-    // Dba::writeInTrans(transPtr, "DELETE FROM " +
-    // m_table.toDisplayString()
-    // + " WHERE id = $1", args[0]);
     nlohmann::json ret;
-    ret[0] = simpleJsonSaveResult(event, true, "Done");
+    ret[0] = simpleJsonSaveResult(event, false, "Invalid condition to delete");
     return ret;
   } catch (const std::exception& e) {
     SPDLOG_TRACE(e.what());

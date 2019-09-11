@@ -39,6 +39,7 @@ nlohmann::json TodoActor::handleTextMessage(
     if (!in.is_array()) {
       return nlohmann::json::array();
     }
+    // todo: check in[0][0] must be a string.
 
     if constexpr (false) {
     }
@@ -54,7 +55,9 @@ nlohmann::json TodoActor::handleTextMessage(
     return nlohmann::json::array();
   } catch (const std::exception &e) {
     SPDLOG_TRACE(e.what());
-    throw;
+    SPDLOG_TRACE(in.dump());
+    return nlohmann::json::array({{e.what()}});
+    // throw; // This actor must not die.
   }
 }
 

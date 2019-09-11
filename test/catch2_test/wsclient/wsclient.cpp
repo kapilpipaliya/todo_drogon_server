@@ -169,11 +169,19 @@ void SslEchoClient::onTextMessageReceived(QString message) {
 
   if (_message.is_array()) {
     for (auto &et : _message) {
-      auto event = et[0];
-      auto message = et;
-      message.erase(0);
-      dispatch(event, message);
+      if (et.is_array()) {
+        auto event = et[0];
+        auto message = et;
+        message.erase(0);
+        dispatch(event, message);
+      } else {
+        qDebug() << "result event must be array: "
+                 << QString::fromStdString(et.dump());
+      }
     }
+  } else {
+    qDebug() << "result must be array: "
+             << QString::fromStdString(_message.dump());
   }
 }
 

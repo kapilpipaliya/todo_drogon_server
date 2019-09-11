@@ -66,11 +66,11 @@ TEST_CASE("authorisation check without cookies", "[WSTest]") {
   //    json j = R"( [ [["user","is_logged_in",0],[[]]]] )"_json;
   SPDLOG_TRACE(payload.dump());
   BatchResultTest bt;
-  bt.addEvent(event.dump());
+  bt.addEvent(event, {});
   auto b = w2.bindOnce(event, [&bt, &event](nlohmann::json r) {
     SPDLOG_TRACE("This should be false");
     REQUIRE(r[0] == false);
-    bt.setEventResult(event.dump(), true);
+    bt.setResult(event.dump());
   });
   w2.sendMessage(QString::fromStdString(payload.dump()));
   REQUIRE(b);

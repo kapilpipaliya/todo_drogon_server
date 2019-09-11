@@ -89,7 +89,7 @@ nlohmann::json User::handleEvent(nlohmann::json event, unsigned long next,
       return {{event, "unauthorised"}};
     }
   } else if (event_cmp == "update_password") {
-    if (!args.is_array() && !args[0].is_object())
+    if (!args.is_array() || !args[0].is_object())
       return {simpleJsonSaveResult(event, false, "Not Valid Args")};
     if (get_password() == args[0]["old_password"].get<std::string>()) {
       if (update_password(args[0]["new_password"].get<std::string>())) {

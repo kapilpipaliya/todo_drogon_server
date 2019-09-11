@@ -95,7 +95,8 @@ nlohmann::json MAdminActor::handleTextMessage(
     return nlohmann::json::array();
   } catch (const std::exception &e) {
     SPDLOG_TRACE(e.what());
-    throw;
+    return nlohmann::json::array({{e.what()}});
+    // throw; // This actor must not die.
   }
 }
 

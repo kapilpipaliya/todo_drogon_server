@@ -101,28 +101,53 @@ TEST_CASE("login on backend with username and password", "[WSTest]") {
   a.exec();
   REQUIRE(r0);
 }
-/*
+
 TEST_CASE("all events test", "[WSTest]") {
   char **argv;
   int i = 0;
   QCoreApplication a(i, argv);
   auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
-  nlohmann::json event = nlohmann::json::array({"auth", "login", 0});
-  nlohmann::json payload = nlohmann::json::array({{event, {}}});
-  bool r0 = false;
-  auto b = w2.bindOnce(event, [&r0](nlohmann::json r) {
-    REQUIRE(r[0]["ok"] == true);
-    r0 = true;
-  });
-  w2.sendMessage(QString::fromStdString(payload.dump()));
-  REQUIRE(b);
+
+  BatchResultTest bt;
+  using nlohmann::json;
+  bt.addEvent(json::array({"auth", "login", 0}), json::array({}));
+  bt.addEvent(json::array({"auth", "logout", 0}), json::array({}));
+  bt.addEvent(json::array({"auth", "file_meta_data", 0}), json::array({}));
+  bt.addEvent(json::array({"auth", "ins", 0}), json::array({}));
+  bt.addEvent(json::array({"auth", "upd", 0}), json::array({}));
+  bt.addEvent(json::array({"auth", "del", 0}), json::array({}));
+
+  bt.addEvent(json::array({"user", "is_logged_in", 0}), json::array({}));
+  bt.addEvent(json::array({"user", "header", 0}), json::array({}));
+  bt.addEvent(json::array({"user", "data", 0}), json::array({}));
+  bt.addEvent(json::array({"user", "update_password", 0}), json::array({}));
+  bt.addEvent(json::array({"user", "user_types_form_data", 0}),
+              json::array({}));
+  bt.addEvent(json::array({"user", "ins", 0}), json::array({}));
+  bt.addEvent(json::array({"user", "upd", 0}), json::array({}));
+  bt.addEvent(json::array({"user", "del", 0}), json::array({}));
+
+  bt.addEvent(json::array({"ui", "menu_data", 0}), json::array({}));
+  bt.addEvent(json::array({"ui", "user_type", 0}), json::array({}));
+  bt.addEvent(json::array({"ui", "user_title", 0}), json::array({}));
+  bt.addEvent(json::array({"ui", "user_account_type", 0}), json::array({}));
+  bt.addEvent(json::array({"ui", "catalog_local", 0}), json::array({}));
+  bt.addEvent(json::array({"ui", "ins", 0}), json::array({}));
+  bt.addEvent(json::array({"ui", "upd", 0}), json::array({}));
+  bt.addEvent(json::array({"ui", "del", 0}), json::array({}));
+  for (auto &e : bt) {
+    REQUIRE(
+        w2.bindOnce(e.first, [&](nlohmann::json) { bt.setResult(e.first); }));
+  }
+
+  w2.sendMessage(QString::fromStdString(bt.generatePayload()));
   QTimer *timer = new QTimer();
   QObject::connect(timer, SIGNAL(timeout()), &a, SLOT(quit()));
   timer->start(500);
   a.exec();
-  REQUIRE(r0);
+  REQUIRE(bt.result());
 }
-*/
+
 /*
 //// currently this not working.. but make this working in future.
 ////TEST_CASE("signup with a form.","[WSTest]") {
