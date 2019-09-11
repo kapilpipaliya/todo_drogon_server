@@ -1,19 +1,17 @@
-window_sizes 1920 1056 241 1673 1004 0
+window_sizes 960 1058 301 653 1006 0
 cleanlooks_style
 diagrams
   active  classdiagram_ref 128158 // todo
-    969 804 100 A4 0 0
+    1494 791 95 B-Landscape 0 0
   sequencediagram_ref 134814 // sequence
-    433 804 100 A4 0 0
+    433 804 100 A4 60 0
 end
 show_stereotypes
-selected 
-  package_ref 129 // umlproject
+selected artifact_ref 142110 // madminactor
 open
   classview_ref 128158 // todo
-  deploymentview_ref 128158 // todo
-  classview_ref 134814 // rbac
-  deploymentview_ref 134686 // rbac
+  classview_ref 141342 // actor
+  deploymentview_ref 141214 // actor
 end
 end
 verbose

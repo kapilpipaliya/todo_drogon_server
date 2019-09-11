@@ -1,11 +1,5 @@
-
-#include "todoactor.h"
-
-#include "inc/todoservices.h"
-TodoActor::TodoActor(caf::actor_config & cfg) : caf::event_based_actor(cfg) {
-}
-
-caf::behavior TodoActor::make_behavior() {
+class MAdminActor
+!!!144158.cpp!!!	make_behavior() : caf::behavior
   return {
       [this](const drogon::WebSocketConnectionPtr &wsConnPtr,
              std::string message,
@@ -17,29 +11,29 @@ caf::behavior TodoActor::make_behavior() {
         quit();
         return {};
       }};
-}
-
-nlohmann::json TodoActor::handleTextMessage(const drogon::WebSocketConnectionPtr & wsConnPtr, const nlohmann::json & in) {
+!!!144286.cpp!!!	handleTextMessage(in wsConnPtr : drogon::WebSocketConnectionPtr, in in : nlohmann::json) : nlohmann::json
   if (!in.is_array() || !in[0].is_array() || !in[0][0].is_string()) {
     return nlohmann::json::array();
   }
-  auto contx = wsConnPtr->getContext<todo::TodoContext>();
+  auto contx = wsConnPtr->getContext<MAdminContext>();
   auto evt = in[0][0].get<std::string>();
   if (evt == "auth") {
-    return handleService<todo::Auth>(contx, in);
+    return handleService<madmin::Auth>(contx, in);
   } else if (evt == "user" || evt == "users") {
-    return handleService<todo::User>(contx, in);
+    return handleService<madmin::User>(contx, in);
   } else if (evt == "ui") {
-    return handleService<todo::UI>(contx, in);
+    return handleService<madmin::UI>(contx, in);
+  } else if (evt == "catalog_local") {
+    return handleService<madmin::CatalogLocal>(contx, in);
+  } else if (evt == "song") {
+    return handleService<madmin::Song>(contx, in);
   } else {
     return nlohmann::json::array();
   }
-}
-
-nlohmann::json TodoActor::handleBinaryMessage(const drogon::WebSocketConnectionPtr & wsConnPtr, std::string & message) {
+!!!144414.cpp!!!	handleBinaryMessage(in wsConnPtr : drogon::WebSocketConnectionPtr, inout message : std::string) : nlohmann::json
   nlohmann::json event;
   try {
-    auto contx = wsConnPtr->getContext<todo::TodoContext>();
+    auto contx = wsConnPtr->getContext<MAdminContext>();
     long c = contx->sessionId();
     auto sqlSession =
         "SELECT event FROM music.temp_file_meta where session_id = $1";
@@ -51,12 +45,9 @@ nlohmann::json TodoActor::handleBinaryMessage(const drogon::WebSocketConnectionP
         // p.handleBinaryEvent creates new transaction.
 
         if (event[0] == "song") {
-          //          todo::Song p{contx};
-          // auto r = p.handleBinaryEvent(event, 1, message);
-          // if (!r.is_null()) return r;
-          // temp:
-          nlohmann::json j;
-          return j;
+          madmin::Song p{contx};
+          auto r = p.handleBinaryEvent(event, 1, message);
+          if (!r.is_null()) return r;
         }
       } catch (nlohmann::json::parse_error &e) {
         SPDLOG_TRACE("message: {}", e.what());
@@ -76,5 +67,3 @@ nlohmann::json TodoActor::handleBinaryMessage(const drogon::WebSocketConnectionP
   }
   nlohmann::json ret;
   return ret;
-}
-

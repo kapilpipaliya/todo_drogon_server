@@ -1,4 +1,9 @@
- 
+#pragma once
+#include "../wscontroller/context/jadmincontext.h"
+#include "../wscontroller/wsfns.h"
+#include "mainactortype.h"
+#include "spdlogfix.h"
+
 #include "core/service/jadmin/account/account.h"
 #include "core/service/jadmin/account/accountheading.h"
 #include "core/service/jadmin/account/accounttype.h"
@@ -19,7 +24,7 @@
 #include "core/service/jadmin/material/dsize.h"
 #include "core/service/jadmin/material/shape.h"
 #include "core/service/jadmin/material/size.h"  // CRUD not required
-#pragma once
+
 #include "core/service/jadmin/mfg/casting.h"
 #include "core/service/jadmin/mfg/department.h"
 #include "core/service/jadmin/mfg/departmenttype.h"
@@ -59,3 +64,11 @@
 
 #include "core/service/jadmin/class/auth.h"
 #include "core/service/jadmin/class/user.h"
+
+#define REGISTER(s, T)                                   \
+  else if (in[0][0].get<std::string>() == (s)) {         \
+    auto contx = wsConnPtr->getContext<JAdminContext>(); \
+    T p{contx};                                          \
+    auto r = p.handleEvent(in[0], 1, in[1]);             \
+    if (!r.is_null()) return r;                          \
+  }

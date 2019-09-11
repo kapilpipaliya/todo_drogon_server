@@ -1,58 +1,190 @@
-format 221
+format 222
 
 classcanvas 128030 class_ref 128158 // WorkModify
   classdiagramsettings member_max_width 0 drawing_language c++ end
-  xyz 50 189 2000
-  constraint 128158
+  xyz 48.35 681.1 2000
+  constraint 135838
     hidden
     end
     ""
-      xyzwh 154 339 2000 35 35
+      xyzwh 184 817 2000 33 33
 end
 classcanvas 128414 class_ref 134686 // Project
   classdiagramsettings member_max_width 0 end
-  xyz 214 193 2006
-  constraint 128542
+  xyz 240.5 906.2 2006
+  constraint 136094
     hidden
     end
     ""
-      xyzwh 321 230 2000 35 35
+      xyzwh 347 943 2006 33 33
 end
 classcanvas 128798 class_ref 135454 // TodoTask
   classdiagramsettings member_max_width 0 end
-  xyz 525 54 2006
-  constraint 128926
+  xyz 50.25 906.2 2006
+  constraint 136350
     hidden
     end
     ""
-      xyzwh 654 91 2000 35 35
+      xyzwh 179 943 2006 33 33
 end
 classcanvas 129182 class_ref 135198 // TodoRole
   classdiagramsettings member_max_width 0 end
-  xyz 525 166 2006
-  constraint 129310
+  xyz 711.05 684.2 2006
+  constraint 136606
     hidden
     end
     ""
-      xyzwh 800 213 2000 35 35
+      xyzwh 847 730 2006 33 33
 end
 classcanvas 129566 class_ref 135070 // TodoUser
   classdiagramsettings member_max_width 0 end
-  xyz 521 270 2006
-  constraint 129694
+  xyz 526.3 681.75 2006
+  constraint 136862
     hidden
     end
     ""
-      xyzwh 794 325 2000 35 35
+      xyzwh 660 737 2006 33 33
 end
-line 128286 -_-_
-  from ref 128030 z 2001 to ref 128158
-line 128670 -_-_
-  from ref 128414 z 2007 to ref 128542
-line 129054 -_-_
-  from ref 128798 z 2007 to ref 128926
-line 129438 -_-_
-  from ref 129182 z 2007 to ref 129310
-line 129822 -_-_
-  from ref 129566 z 2007 to ref 129694
+classcanvas 129950 class_ref 141982 // JAdminActor
+  classdiagramsettings member_max_width 0 end
+  xyz 307.65 18.55 2006
+  constraint 137118
+    hidden
+    end
+    "1
+base
+base
+"
+      xyzwh 463.5 20 2006 33 33
+end
+classcanvas 130334 class_ref 142366 // JUserActor
+  classdiagramsettings member_max_width 0 end
+  xyz 308.8 118.25 2006
+  constraint 137374
+    hidden
+    end
+    "2
+base
+base
+"
+      xyzwh 465.85 123 2006 33 33
+end
+classcanvas 130718 class_ref 142494 // MAdminActor
+  classdiagramsettings member_max_width 0 end
+  xyz 308.8 218.7 2005
+  constraint 137630
+    hidden
+    end
+    "3
+base
+base
+"
+      xyzwh 461.7 220 2005 33 33
+end
+classcanvas 131102 class_ref 142622 // MainActor
+  classdiagramsettings member_max_width 0 end
+  xyz 245.25 679.85 2011
+  constraint 137886
+    hidden
+    end
+    ""
+      xyzwh 464 780 2011 33 33
+end
+classcanvas 131486 class_ref 143390 // TodoActor
+  classdiagramsettings member_max_width 0 end
+  xyz 308.8 319.4 2017
+  constraint 138142
+    hidden
+    end
+    "4
+base
+base
+"
+      xyzwh 466.5 322 2017 33 33
+end
+classcanvas 131870 class_ref 142238 // UserActorBase
+  classdiagramsettings member_max_width 0 end
+  xyz 16.4 74.2 2023
+  constraint 138398
+    hidden
+    end
+    "base
+"
+      xyzwh 170.2 72 2023 43 35
+end
+classcanvas 134174 class_ref 143518 // caf::event_based_actor
+  classdiagramsettings member_max_width 0 end
+  xyz 15.6 20.85 2031
+  constraint 138654
+    hidden
+    end
+    "base
+"
+      xyzwh 167.1 20 2031 49 35
+end
+relationcanvas 132254 relation_ref 134942 // <generalisation>
+  decenter_begin 470
+  decenter_end 470
+  from ref 130334 z 2024 to ref 131870
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 132382 relation_ref 134686 // <generalisation>
+  from ref 129950 z 2024 to ref 131870
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 132510 relation_ref 135198 // <generalisation>
+  from ref 130718 z 2024 to ref 131870
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 132638 relation_ref 135838 // <generalisation>
+  decenter_end 470
+  from ref 131486 z 2024 to ref 131870
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 134558 relation_ref 135966 // <generalisation>
+  decenter_begin 522
+  from ref 129950 z 2032 to ref 134174
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 134686 relation_ref 136094 // <generalisation>
+  decenter_begin 522
+  from ref 131486 z 2032 to ref 134174
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 134942 relation_ref 136350 // <generalisation>
+  decenter_begin 477
+  from ref 130718 z 2032 to ref 134174
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+line 135966 -_-_
+  from ref 128030 z 2001 to ref 135838
+line 136222 -_-_
+  from ref 128414 z 2007 to ref 136094
+line 136478 -_-_
+  from ref 128798 z 2007 to ref 136350
+line 136734 -_-_
+  from ref 129182 z 2007 to ref 136606
+line 136990 -_-_
+  from ref 129566 z 2007 to ref 136862
+line 137246 -_-_
+  from ref 129950 z 2007 to ref 137118
+line 137502 -_-_
+  from ref 130334 z 2007 to ref 137374
+line 137758 -_-_
+  from ref 130718 z 2006 to ref 137630
+line 138014 -_-_
+  from ref 131102 z 2012 to ref 137886
+line 138270 -_-_
+  from ref 131486 z 2018 to ref 138142
+line 138526 -_-_
+  from ref 131870 z 2024 to ref 138398
+line 138782 -_-_
+  from ref 134174 z 2032 to ref 138654
 end

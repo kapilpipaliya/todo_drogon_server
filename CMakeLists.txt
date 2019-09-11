@@ -105,6 +105,9 @@ foreach(cspFile ${SCP_LIST})
 endforeach()
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/actor)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/actor/inc)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/wscontroller)
 
 add_subdirectory(core)
 add_subdirectory(test)

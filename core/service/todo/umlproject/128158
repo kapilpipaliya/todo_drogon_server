@@ -1,6 +1,6 @@
-format 221
+format 222
 "todo" // todo
-  revision 4
+  revision 6
   modified_by 30 "kapili3"
   // class settings
   
@@ -53,8 +53,8 @@ format 221
      end
     associated_deployment_view deploymentview_ref 128158 // todo
     classdiagram 128158 "todo"
-      classdiagramsettings draw_all_relations yes hide_attributes no hide_operations no hide_getset_operations no hide_ports no show_members_full_definition yes show_members_visibility yes show_members_stereotype yes show_members_context namespace show_members_multiplicity yes show_members_initialization yes show_attribute_modifiers yes member_max_width 0 show_parameter_dir yes show_parameter_name yes package_name_in_tab yes class_drawing_mode class drawing_language c++ show_context_mode namespace auto_label_position yes show_relation_modifiers yes show_relation_visibility yes show_infonote yes shadow yes show_stereotype_properties yes end
-      size A4
+      classdiagramsettings draw_all_relations no hide_attributes no hide_operations no hide_getset_operations no hide_ports no show_members_full_definition no show_members_visibility yes show_members_stereotype yes show_members_context namespace show_members_multiplicity yes show_members_initialization yes show_attribute_modifiers yes member_max_width 0 show_parameter_dir yes show_parameter_name yes package_name_in_tab yes class_drawing_mode class drawing_language c++ show_context_mode namespace auto_label_position yes show_relation_modifiers yes show_relation_visibility yes show_infonote yes shadow yes show_stereotype_properties yes end
+      size B-Landscape
     end
 
     class 128158 "WorkModify"

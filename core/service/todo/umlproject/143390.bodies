@@ -1,11 +1,5 @@
-
-#include "todoactor.h"
-
-#include "inc/todoservices.h"
-TodoActor::TodoActor(caf::actor_config & cfg) : caf::event_based_actor(cfg) {
-}
-
-caf::behavior TodoActor::make_behavior() {
+class TodoActor
+!!!145182.cpp!!!	make_behavior() : caf::behavior
   return {
       [this](const drogon::WebSocketConnectionPtr &wsConnPtr,
              std::string message,
@@ -17,9 +11,7 @@ caf::behavior TodoActor::make_behavior() {
         quit();
         return {};
       }};
-}
-
-nlohmann::json TodoActor::handleTextMessage(const drogon::WebSocketConnectionPtr & wsConnPtr, const nlohmann::json & in) {
+!!!145310.cpp!!!	handleTextMessage(in wsConnPtr : drogon::WebSocketConnectionPtr, in in : nlohmann::json) : nlohmann::json
   if (!in.is_array() || !in[0].is_array() || !in[0][0].is_string()) {
     return nlohmann::json::array();
   }
@@ -34,9 +26,7 @@ nlohmann::json TodoActor::handleTextMessage(const drogon::WebSocketConnectionPtr
   } else {
     return nlohmann::json::array();
   }
-}
-
-nlohmann::json TodoActor::handleBinaryMessage(const drogon::WebSocketConnectionPtr & wsConnPtr, std::string & message) {
+!!!145438.cpp!!!	handleBinaryMessage(in wsConnPtr : drogon::WebSocketConnectionPtr, inout message : std::string) : nlohmann::json
   nlohmann::json event;
   try {
     auto contx = wsConnPtr->getContext<todo::TodoContext>();
@@ -76,5 +66,3 @@ nlohmann::json TodoActor::handleBinaryMessage(const drogon::WebSocketConnectionP
   }
   nlohmann::json ret;
   return ret;
-}
-

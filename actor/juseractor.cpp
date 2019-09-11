@@ -1,13 +1,9 @@
-#include "juseractor.h"
-#include "spdlogfix.h"
 
-#include "../wscontroller/context/jusercontext.h"
-#include "../wscontroller/wsfns.h"
-#include "mainactortype.h"
+#include "juseractor.h"
 
 #include "inc/juserervices.h"
-
-JUserActor::JUserActor(caf::actor_config &cfg) : caf::event_based_actor(cfg) {}
+JUserActor::JUserActor(caf::actor_config & cfg) : caf::event_based_actor(cfg) {
+}
 
 caf::behavior JUserActor::make_behavior() {
   return {
@@ -22,16 +18,8 @@ caf::behavior JUserActor::make_behavior() {
         return {};
       }};
 }
-#define REGISTER(s, T)                                   \
-  else if (in[0][0].get<std::string>() == (s)) {         \
-    auto contx = wsConnPtr->getContext<JAdminContext>(); \
-    T p{contx};                                          \
-    auto r = p.handleEvent(in[0], 1, in[1]);             \
-    if (!r.is_null()) return r;                          \
-  }
 
-nlohmann::json JUserActor::handleTextMessage(
-    const drogon::WebSocketConnectionPtr &wsConnPtr, nlohmann::json in) {
+nlohmann::json JUserActor::handleTextMessage(const drogon::WebSocketConnectionPtr & wsConnPtr, const nlohmann::json & in) {
   try {
     if (!in.is_array()) {
       return nlohmann::json::array();
@@ -108,9 +96,7 @@ nlohmann::json JUserActor::handleTextMessage(
   }
 }
 
-nlohmann::json JUserActor::handleBinaryMessage(
-    const drogon::WebSocketConnectionPtr &wsConnPtr,
-    std::string & /*message*/) {
+nlohmann::json JUserActor::handleBinaryMessage(const drogon::WebSocketConnectionPtr & wsConnPtr, std::string & message) {
   nlohmann::json event;
   try {
     long c = wsConnPtr->getContext<JUserContext>()->sessionId();
@@ -149,3 +135,4 @@ nlohmann::json JUserActor::handleBinaryMessage(
   nlohmann::json ret;
   return ret;
 }
+

@@ -1,11 +1,6 @@
+
 #include "madminactor.h"
-#include "../wscontroller/wsfns.h"
-#include "mainactortype.h"
-#include "spdlogfix.h"
-
-#include "../wscontroller/context/madmincontext.h"
-
-#include "inc/madminservices.h"
+#include "madminservices.h"
 
 MAdminActor::MAdminActor(caf::actor_config &cfg)
     : caf::event_based_actor(cfg) {}
@@ -24,22 +19,8 @@ caf::behavior MAdminActor::make_behavior() {
       }};
 }
 
-template <typename T>
-nlohmann::json handleService(std::shared_ptr<MAdminContext> contx,
-                             nlohmann::json in) {
-  try {
-    T p{contx};
-    auto r = p.handleEvent(in[0], 1, in[1]);
-    if (!r.is_null()) return r;
-    return nlohmann::json::array();
-  } catch (const std::exception &e) {
-    SPDLOG_TRACE(e.what());
-    return nlohmann::json::array({{e.what()}});
-  }
-}
-
 nlohmann::json MAdminActor::handleTextMessage(
-    const drogon::WebSocketConnectionPtr &wsConnPtr, nlohmann::json in) {
+    const drogon::WebSocketConnectionPtr &wsConnPtr, const nlohmann::json &in) {
   if (!in.is_array() || !in[0].is_array() || !in[0][0].is_string()) {
     return nlohmann::json::array();
   }

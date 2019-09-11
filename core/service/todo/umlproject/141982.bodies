@@ -1,11 +1,5 @@
-
-#include "jadminactor.h"
-#include "jadminservices.h"
-
-JAdminActor::JAdminActor(caf::actor_config &cfg)
-    : caf::event_based_actor(cfg) {}
-
-caf::behavior JAdminActor::make_behavior() {
+class JAdminActor
+!!!143134.cpp!!!	make_behavior() : caf::behavior
   return {
       [this](const drogon::WebSocketConnectionPtr &wsConnPtr,
              std::string message,
@@ -17,10 +11,7 @@ caf::behavior JAdminActor::make_behavior() {
         quit();
         return {};
       }};
-}
-
-nlohmann::json JAdminActor::handleTextMessage(
-    const drogon::WebSocketConnectionPtr &wsConnPtr, const nlohmann::json &in) {
+!!!143262.cpp!!!	handleTextMessage(in wsConnPtr : drogon::WebSocketConnectionPtr, in in : nlohmann::json) : nlohmann::json
   try {
     if (!in.is_array()) {
       return nlohmann::json::array();
@@ -95,10 +86,7 @@ nlohmann::json JAdminActor::handleTextMessage(
     return nlohmann::json::array({{e.what()}});
     // throw; // This actor must not die.
   }
-}
-
-nlohmann::json JAdminActor::handleBinaryMessage(
-    const drogon::WebSocketConnectionPtr &wsConnPtr, std::string &message) {
+!!!143390.cpp!!!	handleBinaryMessage(in wsConnPtr : drogon::WebSocketConnectionPtr, inout message : std::string) : nlohmann::json
   nlohmann::json event;
   try {
     long c = wsConnPtr->getContext<JAdminContext>()->sessionId();
@@ -136,4 +124,3 @@ nlohmann::json JAdminActor::handleBinaryMessage(
   }
   nlohmann::json ret;
   return ret;
-}

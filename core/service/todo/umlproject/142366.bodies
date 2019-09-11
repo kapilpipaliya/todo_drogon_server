@@ -1,11 +1,5 @@
-
-#include "jadminactor.h"
-#include "jadminservices.h"
-
-JAdminActor::JAdminActor(caf::actor_config &cfg)
-    : caf::event_based_actor(cfg) {}
-
-caf::behavior JAdminActor::make_behavior() {
+class JUserActor
+!!!143646.cpp!!!	make_behavior() : caf::behavior
   return {
       [this](const drogon::WebSocketConnectionPtr &wsConnPtr,
              std::string message,
@@ -17,10 +11,7 @@ caf::behavior JAdminActor::make_behavior() {
         quit();
         return {};
       }};
-}
-
-nlohmann::json JAdminActor::handleTextMessage(
-    const drogon::WebSocketConnectionPtr &wsConnPtr, const nlohmann::json &in) {
+!!!143774.cpp!!!	handleTextMessage(in wsConnPtr : drogon::WebSocketConnectionPtr, in in : nlohmann::json) : nlohmann::json
   try {
     if (!in.is_array()) {
       return nlohmann::json::array();
@@ -95,13 +86,10 @@ nlohmann::json JAdminActor::handleTextMessage(
     return nlohmann::json::array({{e.what()}});
     // throw; // This actor must not die.
   }
-}
-
-nlohmann::json JAdminActor::handleBinaryMessage(
-    const drogon::WebSocketConnectionPtr &wsConnPtr, std::string &message) {
+!!!143902.cpp!!!	handleBinaryMessage(in wsConnPtr : drogon::WebSocketConnectionPtr, inout message : std::string) : nlohmann::json
   nlohmann::json event;
   try {
-    long c = wsConnPtr->getContext<JAdminContext>()->sessionId();
+    long c = wsConnPtr->getContext<JUserContext>()->sessionId();
     auto sqlSession =
         "SELECT event FROM user1.temp_image where session_id = $1";
     auto clientPtr = drogon::app().getDbClient("sce");
@@ -111,12 +99,12 @@ nlohmann::json JAdminActor::handleBinaryMessage(
         event = nlohmann::json::parse(r[0]["event"].c_str());
         // p.handleBinaryEvent creates new transaction.
         if (event[0] == "image") {
-          auto contx = wsConnPtr->getContext<JAdminContext>();
-          jadmin::Auth p{contx};
-          auto res = p.handleBinaryEvent(event, 1, message);
-          if (!res.is_null()) {
-            return res;
-          }
+          // auto contx = wsConnPtr->getContext<JUserContext>();
+          // Auth p{contx};
+          // auto res = p.handleBinaryEvent(event, 2, message);
+          // if(!res.is_null()){
+          //   return res;
+          //}
         }
       } catch (nlohmann::json::parse_error &e) {
         SPDLOG_TRACE("message: {}", e.what());
@@ -136,4 +124,3 @@ nlohmann::json JAdminActor::handleBinaryMessage(
   }
   nlohmann::json ret;
   return ret;
-}
