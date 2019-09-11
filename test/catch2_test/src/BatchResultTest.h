@@ -25,5 +25,7 @@ class BatchResultTest {
  private:
   template <typename T>
   void addEvent(T event_, const nlohmann::json& payload);
+  template <typename T>
+  void setResult(T event_, bool res = true);
 };
 #endif

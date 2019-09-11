@@ -70,7 +70,7 @@ TEST_CASE("authorisation check without cookies", "[WSTest]") {
   auto b = w2.bindOnce(event, [&bt, &event](nlohmann::json r) {
     SPDLOG_TRACE("This should be false");
     REQUIRE(r[0] == false);
-    bt.setResult(event.dump());
+    bt.setResult(event);
   });
   w2.sendMessage(QString::fromStdString(payload.dump()));
   REQUIRE(b);

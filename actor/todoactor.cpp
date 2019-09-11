@@ -25,39 +25,35 @@ caf::behavior TodoActor::make_behavior() {
       }};
 }
 
-#define REGISTER(T, s)                                       \
-  else if (in[0][0].get<std::string>() == (s)) {             \
-    auto contx = wsConnPtr->getContext<todo::TodoContext>(); \
-    T p{contx};                                              \
-    auto r = p.handleEvent(in[0], 1, in[1]);                 \
-    if (!r.is_null()) return r;                              \
-  }
-
-nlohmann::json TodoActor::handleTextMessage(
-    const drogon::WebSocketConnectionPtr &wsConnPtr, nlohmann::json in) {
+template <typename T>
+nlohmann::json handleService(std::shared_ptr<todo::TodoContext> contx,
+                             nlohmann::json in) {
   try {
-    if (!in.is_array()) {
-      return nlohmann::json::array();
-    }
-    // todo: check in[0][0] must be a string.
-
-    if constexpr (false) {
-    }
-    REGISTER(todo::Auth, "auth")
-    REGISTER(todo::User, "user")
-    REGISTER(todo::User, "users")
-    REGISTER(todo::UI, "ui")
-    //    REGISTER(madmin::CatalogLocal, "catalog_local")
-    //    REGISTER(madmin::Song, "song")
-    else {
-      return nlohmann::json::array();
-    }
+    T p{contx};
+    auto r = p.handleEvent(in[0], 1, in[1]);
+    if (!r.is_null()) return r;
     return nlohmann::json::array();
   } catch (const std::exception &e) {
     SPDLOG_TRACE(e.what());
-    SPDLOG_TRACE(in.dump());
     return nlohmann::json::array({{e.what()}});
-    // throw; // This actor must not die.
+  }
+}
+
+nlohmann::json TodoActor::handleTextMessage(
+    const drogon::WebSocketConnectionPtr &wsConnPtr, nlohmann::json in) {
+  if (!in.is_array() || !in[0].is_array() || !in[0][0].is_string()) {
+    return nlohmann::json::array();
+  }
+  auto contx = wsConnPtr->getContext<todo::TodoContext>();
+  auto evt = in[0][0].get<std::string>();
+  if (evt == "auth") {
+    return handleService<todo::Auth>(contx, in);
+  } else if (evt == "user" || evt == "users") {
+    return handleService<todo::User>(contx, in);
+  } else if (evt == "ui") {
+    return handleService<todo::UI>(contx, in);
+  } else {
+    return nlohmann::json::array();
   }
 }
 
@@ -77,7 +73,7 @@ nlohmann::json TodoActor::handleBinaryMessage(
         // p.handleBinaryEvent creates new transaction.
 
         if (event[0] == "song") {
-          //          madmin::Song p{contx};
+          //          todo::Song p{contx};
           // auto r = p.handleBinaryEvent(event, 1, message);
           // if (!r.is_null()) return r;
           // temp:

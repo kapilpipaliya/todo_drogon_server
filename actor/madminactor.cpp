@@ -66,37 +66,39 @@ caf::behavior MAdminActor::make_behavior() {
       }};
 }
 
-#define REGISTER(T, s)                                   \
-  else if (in[0][0].get<std::string>() == (s)) {         \
-    auto contx = wsConnPtr->getContext<MAdminContext>(); \
-    T p{contx};                                          \
-    auto r = p.handleEvent(in[0], 1, in[1]);             \
-    if (!r.is_null()) return r;                          \
-  }
-
-nlohmann::json MAdminActor::handleTextMessage(
-    const drogon::WebSocketConnectionPtr &wsConnPtr, nlohmann::json in) {
+template <typename T>
+nlohmann::json handleService(std::shared_ptr<MAdminContext> contx,
+                             nlohmann::json in) {
   try {
-    if (!in.is_array()) {
-      return nlohmann::json::array();
-    }
-
-    if constexpr (false) {
-    }
-    REGISTER(madmin::Auth, "auth")
-    REGISTER(madmin::User, "user")
-    REGISTER(madmin::User, "users")
-    REGISTER(madmin::UI, "ui")
-    REGISTER(madmin::CatalogLocal, "catalog_local")
-    REGISTER(madmin::Song, "song")
-    else {
-      return nlohmann::json::array();
-    }
+    T p{contx};
+    auto r = p.handleEvent(in[0], 1, in[1]);
+    if (!r.is_null()) return r;
     return nlohmann::json::array();
   } catch (const std::exception &e) {
     SPDLOG_TRACE(e.what());
     return nlohmann::json::array({{e.what()}});
-    // throw; // This actor must not die.
+  }
+}
+
+nlohmann::json MAdminActor::handleTextMessage(
+    const drogon::WebSocketConnectionPtr &wsConnPtr, nlohmann::json in) {
+  if (!in.is_array() || !in[0].is_array() || !in[0][0].is_string()) {
+    return nlohmann::json::array();
+  }
+  auto contx = wsConnPtr->getContext<MAdminContext>();
+  auto evt = in[0][0].get<std::string>();
+  if (evt == "auth") {
+    return handleService<madmin::Auth>(contx, in);
+  } else if (evt == "user" || evt == "users") {
+    return handleService<madmin::User>(contx, in);
+  } else if (evt == "ui") {
+    return handleService<madmin::UI>(contx, in);
+  } else if (evt == "catalog_local") {
+    return handleService<madmin::CatalogLocal>(contx, in);
+  } else if (evt == "song") {
+    return handleService<madmin::Song>(contx, in);
+  } else {
+    return nlohmann::json::array();
   }
 }
 
