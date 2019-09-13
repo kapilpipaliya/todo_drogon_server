@@ -1,4 +1,4 @@
-window_sizes 960 1058 301 653 1006 0
+window_sizes 1920 1056 301 1613 1004 0
 cleanlooks_style
 diagrams
   active  classdiagram_ref 128158 // todo
@@ -7,10 +7,9 @@ diagrams
     433 804 100 A4 60 0
 end
 show_stereotypes
-selected deploymentview_ref 141214 // actor
+selected 
+  package_ref 129 // umlproject
 open
-  classview_ref 128158 // todo
-  classview_ref 141342 // actor
 end
 end
 verbose

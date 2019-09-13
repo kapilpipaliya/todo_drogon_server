@@ -194,6 +194,10 @@ class Query {
   nlohmann::json upd(nlohmann::json event, nlohmann::json args);
   nlohmann::json del(nlohmann::json event, nlohmann::json args);
   nlohmann::json count(nlohmann::json event, nlohmann::json args);
+  // std::string quote(std::string s){return "'" + addslashes(s) + "'";}
+  // std::string quoteForLike(std::string format, std::string s) {return '\''.
+  // sprintf($format, $s). '\'';}
+  // bool table_exists(std::string table) {}
 
   template <class... Args>
   nlohmann::json insBase(const nlohmann::json& event,
