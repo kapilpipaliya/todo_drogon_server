@@ -1,0 +1,61 @@
+namespace Queries::WorkPackages::Filter::OrFilterForWpMixin {
+  extend ActiveSupport::Concern
+
+  included {
+    validate :minimum_one_filter_valid
+  }
+
+   void filters() {
+    if ( @filters) {
+      update_instances
+    else
+      @filters = create_instances
+    }
+
+    @filters.keep_if ((&:validate)) {
+  }
+
+   void joins() {
+    filters.map(&:joins).flatten.compact
+  }
+
+   void includes() {
+    filters.map(&:includes).flatten.uniq.reject(&:blank?)
+  }
+
+   void where() {
+    filters.map(&:where).join(' OR ')
+  }
+
+   void filter_configurations() {
+    raise NotImplementedError
+  }
+
+   void create_instances() {
+    filter_configurations.map { |conf|
+      conf.filter_class.create!(name: conf.filter_name,
+                                context: context,
+                                operator: conf.operator,
+                                values: values)
+    }
+  }
+
+   void update_instances() {
+    configurations = filter_configurations
+
+    @filters.each_with_index { |filter, index|
+      filter.operator = configurations[index].operator
+      filter.values = values
+    }
+  }
+
+   void ar_object_filter?() {
+    false
+  }
+
+   void minimum_one_filter_valid() {
+    if ( filters.empty?) {
+      errors.add(:values, :invalid)
+    }
+  }
+}
