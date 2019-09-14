@@ -1,6 +1,6 @@
 class DeleteUserJob : public ApplicationJob {
    DeleteUserJob(user_id) {
-    @user_id = user_id
+    this->user_id = user_id
   }
 
    void perform() {
@@ -10,6 +10,6 @@ class DeleteUserJob : public ApplicationJob {
   private:
 
    void user() {
-    @user ||= User.find @user_id
+    this->user ||= User.find this->user_id
   }
 }

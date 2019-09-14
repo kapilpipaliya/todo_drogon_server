@@ -1,6 +1,6 @@
 class Reports::Report
    Report(project) {
-    @project = project
+    this->project = project
   }
 
    void report_type() {
@@ -12,7 +12,7 @@ class Reports::Report
   }
 
    void statuses() {
-    @statuses ||= Status.all
+    this->statuses ||= Status.all
   }
 
   // ---- every report needs to implement these methods to supply all needed data for a report -----

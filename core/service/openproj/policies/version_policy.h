@@ -2,17 +2,17 @@ class VersionPolicy : public BasePolicy {
   private:
 
    void cache(version) {
-    @cache ||= Hash.new { |hash, cached_version|
+    this->cache ||= Hash.new { |hash, cached_version|
       hash[cached_version] = {
         show: show_allowed?(cached_version)
       }
     }
 
-    @cache[version]
+    this->cache[version]
   }
 
    void show_allowed?(version) {
-    @show_cache ||= Hash.new { |hash, queried_version|
+    this->show_cache ||= Hash.new { |hash, queried_version|
       permissions = [:view_work_packages, :manage_versions]
 
       hash[queried_version] = permissions.any? { |permission|
@@ -20,6 +20,6 @@ class VersionPolicy : public BasePolicy {
       }
     }
 
-    @show_cache[version]
+    this->show_cache[version]
   }
 }

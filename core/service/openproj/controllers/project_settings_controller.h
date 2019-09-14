@@ -12,23 +12,23 @@ class ProjectSettingsController : public ApplicationController {
   private:
 
    void settings_info() {
-    @altered_project = @project
+    this->altered_project = this->project
   }
 
    void settings_custom_fields() {
-    @issue_custom_fields = WorkPackageCustomField.order("#{CustomField.table_name}.position")
+    this->issue_custom_fields = WorkPackageCustomField.order("#{CustomField.table_name}.position")
   }
 
    void settings_repository() {
-    @repository = @project.repository || new_repository
+    this->repository = this->project.repository || new_repository
   }
 
    void new_repository() {
     return unless params[:scm_vendor]
 
-    service = Scm::RepositoryFactoryService.new(@project, params)
+    service = Scm::RepositoryFactoryService.new(this->project, params)
     if ( service.build_temporary) {
-      @repository = service.repository
+      this->repository = service.repository
     else
       logger.error("Cannot create repository for #{params[:scm_vendor]}")
       flash[:error] = service.build_error
@@ -37,18 +37,18 @@ class ProjectSettingsController : public ApplicationController {
   }
 
    void settings_types() {
-    @types = ::Type.all
+    this->types = ::Type.all
   }
 
    void check_valid_tab() {
-    @selected_tab =
+    this->selected_tab =
       if ( params[:tab]) {
         helpers.project_settings_tabs.detect { |t| t[:name] == params[:tab] }
       else
         helpers.project_settings_tabs.first
       }
 
-    unless @selected_tab
+    unless this->selected_tab
       render_404
     }
   }
@@ -56,14 +56,14 @@ class ProjectSettingsController : public ApplicationController {
   //
   // Only load the needed elements for the current tab
    void get_tab_settings() {
-    callback = "settings_#{@selected_tab[:name]}"
+    callback = "settings_#{this->selected_tab[:name]}"
     if ( respond_to?(callback, true)) {
       send(callback)
     }
   }
 
    void find_project() {
-    @project = Project.find(params[:id])
+    this->project = Project.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     render_404
   }

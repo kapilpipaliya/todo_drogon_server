@@ -8,14 +8,14 @@ class Reports::CategoryReport : public Reports::Report {
   }
 
    void rows() {
-    @rows ||= @project.categories
+    this->rows ||= this->project.categories
   }
 
    void data() {
-    @data ||= WorkPackage.by_category(@project)
+    this->data ||= WorkPackage.by_category(this->project)
   }
 
    void title() {
-    @title ||= WorkPackage.human_attribute_name(:category)
+    this->title ||= WorkPackage.human_attribute_name(:category)
   }
 }

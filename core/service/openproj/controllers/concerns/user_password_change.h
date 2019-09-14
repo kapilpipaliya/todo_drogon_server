@@ -19,7 +19,7 @@ namespace Concerns::UserPasswordChange {
     }
 
     // Call the service to set the new password
-    call = ::Users::ChangePasswordService.new(current_user: @user, session: session).call(params)
+    call = ::Users::ChangePasswordService.new(current_user: this->user, session: session).call(params)
 
     // Yield the success to the caller
     if ( call.success?) {
@@ -54,8 +54,8 @@ namespace Concerns::UserPasswordChange {
    void render_password_change(user, message, show_user_name: false) {
     flash[:error] = message unless message.nil?
     flash[:_password_change_user_id] = user.id
-    @user = user
-    @username = user.login
+    this->user = user
+    this->username = user.login
     render 'my/password', locals: { show_user_name: show_user_name }
   }
 

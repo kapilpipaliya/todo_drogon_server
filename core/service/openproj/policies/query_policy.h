@@ -2,7 +2,7 @@ class QueryPolicy : public BasePolicy {
   private:
 
    void cache(query) {
-    @cache ||= Hash.new { |hash, cached_query|
+    this->cache ||= Hash.new { |hash, cached_query|
       hash[cached_query] = {
         show: viewable?(cached_query),
         update: persisted_and_own_or_public?(cached_query),
@@ -17,7 +17,7 @@ class QueryPolicy : public BasePolicy {
       }
     }
 
-    @cache[query]
+    this->cache[query]
   }
 
    void persisted_and_own_or_public?(query) {
@@ -61,34 +61,34 @@ class QueryPolicy : public BasePolicy {
   }
 
    void view_work_packages_allowed?(query) {
-    @view_work_packages_cache ||= Hash.new { |hash, project|
+    this->view_work_packages_cache ||= Hash.new { |hash, project|
       hash[project] = user.allowed_to?(:view_work_packages, project, global: project.nil?)
     }
 
-    @view_work_packages_cache[query.project]
+    this->view_work_packages_cache[query.project]
   }
 
    void edit_work_packages_allowed?(query) {
-    @edit_work_packages_cache ||= Hash.new { |hash, project|
+    this->edit_work_packages_cache ||= Hash.new { |hash, project|
       hash[project] = user.allowed_to?(:edit_work_packages, project, global: project.nil?)
     }
 
-    @edit_work_packages_cache[query.project]
+    this->edit_work_packages_cache[query.project]
   }
 
    void save_queries_allowed?(query) {
-    @save_queries_cache ||= Hash.new { |hash, project|
+    this->save_queries_cache ||= Hash.new { |hash, project|
       hash[project] = user.allowed_to?(:save_queries, project, global: project.nil?)
     }
 
-    @save_queries_cache[query.project]
+    this->save_queries_cache[query.project]
   }
 
    void manage_public_queries_allowed?(query) {
-    @manage_public_queries_cache ||= Hash.new { |hash, project|
+    this->manage_public_queries_cache ||= Hash.new { |hash, project|
       hash[project] = user.allowed_to?(:manage_public_queries, project, global: project.nil?)
     }
 
-    @manage_public_queries_cache[query.project]
+    this->manage_public_queries_cache[query.project]
   }
 }

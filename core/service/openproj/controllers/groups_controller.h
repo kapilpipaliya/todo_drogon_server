@@ -11,11 +11,11 @@ class GroupsController : public ApplicationController {
   // GET /groups
   // GET /groups.xml
    void index() {
-    @groups = Group.order(Arel.sql('lastname ASC'))
+    this->groups = Group.order(Arel.sql('lastname ASC'))
 
     respond_to { |format|
       format.html // index.html.erb
-      format.xml  { render xml: @groups }
+      format.xml  { render xml: this->groups }
     }
   }
 
@@ -24,24 +24,24 @@ class GroupsController : public ApplicationController {
    void show() {
     respond_to { |format|
       format.html // show.html.erb
-      format.xml  { render xml: @group }
+      format.xml  { render xml: this->group }
     }
   }
 
   // GET /groups/new
   // GET /groups/new.xml
    void new_() {
-    @group = Group.new
+    this->group = Group.new
 
     respond_to { |format|
       format.html // new.html.erb
-      format.xml  { render xml: @group }
+      format.xml  { render xml: this->group }
     }
   }
 
   // GET /groups/1/edit
    void edit() {
-    @group = Group.includes(:members, :users).find(params[:id])
+    this->group = Group.includes(:members, :users).find(params[:id])
 
     set_filters_for_user_autocompleter
   }
@@ -49,16 +49,16 @@ class GroupsController : public ApplicationController {
   // POST /groups
   // POST /groups.xml
    void create() {
-    @group = Group.new permitted_params.group
+    this->group = Group.new permitted_params.group
 
     respond_to { |format|
-      if ( @group.save) {
+      if ( this->group.save) {
         flash[:notice] = l(:notice_successful_create)
         format.html { redirect_to(groups_path) }
-        format.xml  { render xml: @group, status: :created, location: @group }
+        format.xml  { render xml: this->group, status: :created, location: this->group }
       else
         format.html { render action: 'new' }
-        format.xml  { render xml: @group.errors, status: :unprocessable_entity }
+        format.xml  { render xml: this->group.errors, status: :unprocessable_entity }
       }
     }
   }
@@ -66,16 +66,16 @@ class GroupsController : public ApplicationController {
   // PUT /groups/1
   // PUT /groups/1.xml
    void update() {
-    @group = Group.includes(:users).find(params[:id])
+    this->group = Group.includes(:users).find(params[:id])
 
     respond_to { |format|
-      if ( @group.update_attributes(permitted_params.group)) {
+      if ( this->group.update_attributes(permitted_params.group)) {
         flash[:notice] = l(:notice_successful_update)
         format.html { redirect_to(groups_path) }
         format.xml  { head :ok }
       else
         format.html { render action: 'edit' }
-        format.xml  { render xml: @group.errors, status: :unprocessable_entity }
+        format.xml  { render xml: this->group.errors, status: :unprocessable_entity }
       }
     }
   }
@@ -83,7 +83,7 @@ class GroupsController : public ApplicationController {
   // DELETE /groups/1
   // DELETE /groups/1.xml
    void destroy() {
-    @group.destroy
+    this->group.destroy
 
     respond_to { |format|
       flash[:notice] = l(:notice_successful_delete)
@@ -93,20 +93,20 @@ class GroupsController : public ApplicationController {
   }
 
    void add_users() {
-    @group = Group.includes(:users).find(params[:id])
-    @users = User.includes(:memberships).where(id: params[:user_ids])
-    @group.users << @users
+    this->group = Group.includes(:users).find(params[:id])
+    this->users = User.includes(:memberships).where(id: params[:user_ids])
+    this->group.users << this->users
 
     I18n.t :notice_successful_update
-    redirect_to controller: '/groups', action: 'edit', id: @group, tab: 'users'
+    redirect_to controller: '/groups', action: 'edit', id: this->group, tab: 'users'
   }
 
    void remove_user() {
-    @group = Group.includes(:users).find(params[:id])
-    @group.users.delete(User.includes(:memberships).find(params[:user_id]))
+    this->group = Group.includes(:users).find(params[:id])
+    this->group.users.delete(User.includes(:memberships).find(params[:user_id]))
 
     I18n.t :notice_successful_update
-    redirect_to controller: '/groups', action: 'edit', id: @group, tab: 'users'
+    redirect_to controller: '/groups', action: 'edit', id: this->group, tab: 'users'
   }
 
    void create_memberships() {
@@ -115,13 +115,13 @@ class GroupsController : public ApplicationController {
 
     if ( membership_id.present?) {
       key = :membership
-      @membership = Member.find(membership_id)
+      this->membership = Member.find(membership_id)
     else
       key = :new_membership
-      @membership = Member.new(principal: @group)
+      this->membership = Member.new(principal: this->group)
     }
 
-    service = ::Members::EditMembershipService.new(@membership, save: true, current_user: current_user)
+    service = ::Members::EditMembershipService.new(this->membership, save: true, current_user: current_user)
     result = service.call(attributes: membership_params[key])
 
     if ( result.success?) {
@@ -129,7 +129,7 @@ class GroupsController : public ApplicationController {
     else
       flash[:error] = result.errors.full_messages.join("\n")
     }
-    redirect_to controller: '/groups', action: 'edit', id: @group, tab: 'memberships'
+    redirect_to controller: '/groups', action: 'edit', id: this->group, tab: 'memberships'
   }
 
   alias :edit_membership :create_memberships
@@ -139,13 +139,13 @@ class GroupsController : public ApplicationController {
     Member.find(membership_params[:membership_id]).destroy
 
     flash[:notice] = I18n.t :notice_successful_delete
-    redirect_to controller: '/groups', action: 'edit', id: @group, tab: 'memberships'
+    redirect_to controller: '/groups', action: 'edit', id: this->group, tab: 'memberships'
   }
 
   protected:
 
    void find_group() {
-    @group = Group.find(params[:id])
+    this->group = Group.find(params[:id])
   }
 
    void default_breadcrumb() {

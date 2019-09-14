@@ -52,7 +52,7 @@ namespace Queries::WorkPackages::Filter::FilterForWpMixin {
   }
 
    void type_strategy() {
-    @type_strategy ||= Queries::Filters::Strategies::HugeList.new(self)
+    this->type_strategy ||= Queries::Filters::Strategies::HugeList.new(self)
   }
 
    void no_templated_values() {

@@ -7,7 +7,7 @@ namespace OAuth {
     // menu_item :access_token
 
      void index() {
-      @applications = ::Doorkeeper::Application.authorized_for(current_user)
+      this->applications = ::Doorkeeper::Application.authorized_for(current_user)
     }
 
      void revoke_application() {

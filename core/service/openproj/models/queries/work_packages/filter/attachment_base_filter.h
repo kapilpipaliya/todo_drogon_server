@@ -9,7 +9,7 @@ class Queries::WorkPackages::Filter::AttachmentBaseFilter : public Queries::Work
 
     // Generate a uniq suffix to add to the join table
     // because attachment filters may be used multiple times
-    @join_table_suffix = SecureRandom.hex(4)
+    this->join_table_suffix = SecureRandom.hex(4)
   }
 
    void type() {

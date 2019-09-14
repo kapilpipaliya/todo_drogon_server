@@ -26,21 +26,21 @@ class Scm::CreateManagedRepositoryService : public Scm::BaseRepositoryService {
 
     false
   rescue Errno::EACCES
-    @rejected = I18n.t('repositories.errors.path_permission_failed',
+    this->rejected = I18n.t('repositories.errors.path_permission_failed',
                        path: repository.root_url)
     false
   rescue SystemCallError => e
-    @rejected = I18n.t('repositories.errors.filesystem_access_failed',
+    this->rejected = I18n.t('repositories.errors.filesystem_access_failed',
                        message: e.message)
     false
   rescue OpenProject::Scm::Exceptions::ScmError => e
-    @rejected = e.message
+    this->rejected = e.message
     false
   }
 
   //
   // Returns the error symbol
    void localized_rejected_reason() {
-    @rejected ||= I18n.t('repositories.errors.not_manageable')
+    this->rejected ||= I18n.t('repositories.errors.not_manageable')
   }
 }

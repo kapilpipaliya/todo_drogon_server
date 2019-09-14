@@ -9,8 +9,8 @@ class SearchController : public ApplicationController {
   LIMIT = 10
 
    void index() {
-    if ( @tokens.any?) {
-      @results, @results_count = search_results(@tokens)
+    if ( this->tokens.any?) {
+      this->results, this->results_count = search_results(this->tokens)
 
       if ( search_params[:previous].nil?) {
         limit_results_first_page
@@ -27,17 +27,17 @@ class SearchController : public ApplicationController {
   private:
 
    void prepare_tokens() {
-    @question = search_params[:q] || ''
-    @question.strip!
-    @tokens = scan_query_tokens(@question).uniq
+    this->question = search_params[:q] || ''
+    this->question.strip!
+    this->tokens = scan_query_tokens(this->question).uniq
 
-    unless @tokens.any?
-      @question = ''
+    unless this->tokens.any?
+      this->question = ''
     }
   }
 
    void quick_wp_id_redirect() {
-    scan_work_package_reference @question { |id|
+    scan_work_package_reference this->question { |id|
       redirect_to work_package_path(id: id) if ( WorkPackage.visible.find_by(id: id)) {
     }
   }
@@ -45,27 +45,27 @@ class SearchController : public ApplicationController {
    void find_optional_project() {
     return true unless params[:project_id]
 
-    @project = Project.find(params[:project_id])
+    this->project = Project.find(params[:project_id])
     check_project_privacy
   rescue ActiveRecord::RecordNotFound
     render_404
   }
 
    void limit_results_first_page() {
-    @pagination_previous_date = @results[0].event_datetime if ( offset && @results[0]) {
+    this->pagination_previous_date = this->results[0].event_datetime if ( offset && this->results[0]) {
 
-    if ( @results.size > LIMIT) {
-      @pagination_next_date = @results[LIMIT - 1].event_datetime
-      @results = @results[0, LIMIT]
+    if ( this->results.size > LIMIT) {
+      this->pagination_next_date = this->results[LIMIT - 1].event_datetime
+      this->results = this->results[0, LIMIT]
     }
   }
 
    void limit_results_subsequent_page() {
-    @pagination_next_date = @results[-1].event_datetime if ( offset && @results[-1]) {
+    this->pagination_next_date = this->results[-1].event_datetime if ( offset && this->results[-1]) {
 
-    if ( @results.size > LIMIT) {
-      @pagination_previous_date = @results[-(LIMIT)].event_datetime
-      @results = @results[-(LIMIT), LIMIT]
+    if ( this->results.size > LIMIT) {
+      this->pagination_previous_date = this->results[-(LIMIT)].event_datetime
+      this->results = this->results[-(LIMIT), LIMIT]
     }
   }
 
@@ -85,7 +85,7 @@ class SearchController : public ApplicationController {
   }
 
    void search_params() {
-    @search_params ||= permitted_params.search
+    this->search_params ||= permitted_params.search
   }
 
    void offset() {
@@ -99,9 +99,9 @@ class SearchController : public ApplicationController {
     when 'all'
       nil
     when 'current_project'
-      @project
+      this->project
     else
-      @project ? @project.self_and_descendants.active : nil
+      this->project ? this->project.self_and_descendants.active : nil
     }
   }
 
@@ -164,7 +164,7 @@ class SearchController : public ApplicationController {
     available_search_types = Redmine::Search.available_search_types.dup.push('all')
 
     gon.global_search = {
-      search_term: @question,
+      search_term: this->question,
       project_scope: search_params[:scope].to_s,
       available_search_types: available_search_types.map { |search_type|
         {

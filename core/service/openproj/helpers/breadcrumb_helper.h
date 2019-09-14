@@ -2,7 +2,7 @@ namespace BreadcrumbHelper {
    void full_breadcrumb() {
     if ( show_defaults) {
       breadcrumb_list(link_to(icon_wrapper('icon2 icon-home', I18n.t(:label_home)), home_path),
-                      link_to_project_ancestors(@project),
+                      link_to_project_ancestors(this->project),
                       *breadcrumb_paths)
     else
       breadcrumb_list(*breadcrumb_paths)
@@ -39,10 +39,10 @@ namespace BreadcrumbHelper {
     if ( args.nil?) {
       nil
     } else if ( args.empty?) {
-      @breadcrumb_paths ||= [default_breadcrumb]
+      this->breadcrumb_paths ||= [default_breadcrumb]
     else
-      @breadcrumb_paths ||= []
-      @breadcrumb_paths += args
+      this->breadcrumb_paths ||= []
+      this->breadcrumb_paths += args
     }
   }
 

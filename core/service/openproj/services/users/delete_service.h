@@ -5,8 +5,8 @@ namespace Users {
     attr_reader :user, :actor
 
      DeleteService(user, actor) {
-      @user = user
-      @actor = actor
+      this->user = user
+      this->actor = actor
     }
 
     //

@@ -2,7 +2,7 @@ class Queries::WorkPackages::Filter::VersionFilter <
   Queries::WorkPackages::Filter::WorkPackageFilter
 
    void allowed_values() {
-    @allowed_values ||= begin
+    this->allowed_values ||= begin
       versions.sort.map { |s| ["#{s.project.name} - #{s.name}", s.id.to_s] }
     }
   }

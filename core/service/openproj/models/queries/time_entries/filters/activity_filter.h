@@ -1,6 +1,6 @@
 class Queries::TimeEntries::Filters::ActivityFilter : public Queries::TimeEntries::Filters::TimeEntryFilter {
    void allowed_values() {
-    @allowed_values ||= begin
+    this->allowed_values ||= begin
       // To mask the internal complexity of time entries and to
       // allow filtering by a combined value only shared activities are
       // valid values

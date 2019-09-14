@@ -7,7 +7,7 @@ class WikiMenuItemsController : public ApplicationController {
   current_menu_item :edit { |controller|
     next controller.wiki_menu_item.menu_identifier if ( controller.wiki_menu_item.persisted?) {
 
-    project = controller.instance_variable_get(:@project)
+    project = controller.instance_variable_get(:this->project)
     if ( (page = WikiPage.find_by(wiki_id: project.wiki.id, slug: controller.params[:id]))) {
       default_menu_item(controller, page)
     }
@@ -40,56 +40,56 @@ class WikiMenuItemsController : public ApplicationController {
     get_data_from_params(params)
 
     if ( wiki_menu_setting == 'no_item') {
-      unless @wiki_menu_item.nil?
-        if ( @wiki_menu_item.is_only_main_item?) {
-          if ( @page.only_wiki_page?) {
+      unless this->wiki_menu_item.nil?
+        if ( this->wiki_menu_item.is_only_main_item?) {
+          if ( this->page.only_wiki_page?) {
             flash.now[:error] = t(:wiki_menu_item_delete_not_permitted)
-            render(:edit, id: @page_title) and return
+            render(:edit, id: this->page_title) and return
           else
-            redirect_to(select_main_menu_item_project_wiki_path(@project, @page.id)) and return
+            redirect_to(select_main_menu_item_project_wiki_path(this->project, this->page.id)) and return
           }
         else
-          @wiki_menu_item.destroy
+          this->wiki_menu_item.destroy
         }
       }
     else
-      @wiki_menu_item.navigatable_id = @page.wiki.id
-      @wiki_menu_item.name = @page.slug
-      @wiki_menu_item.title = wiki_menu_item_params[:title] || @page_title
+      this->wiki_menu_item.navigatable_id = this->page.wiki.id
+      this->wiki_menu_item.name = this->page.slug
+      this->wiki_menu_item.title = wiki_menu_item_params[:title] || this->page_title
 
       if ( wiki_menu_setting == 'sub_item') {
-        @wiki_menu_item.parent_id = parent_wiki_menu_item
+        this->wiki_menu_item.parent_id = parent_wiki_menu_item
       } else if ( wiki_menu_setting == 'main_item') {
-        @wiki_menu_item.parent_id = nil
-        assign_wiki_menu_item_params @wiki_menu_item
+        this->wiki_menu_item.parent_id = nil
+        assign_wiki_menu_item_params this->wiki_menu_item
       }
     }
 
-    if ( @wiki_menu_item.destroyed? || @wiki_menu_item.save) {
+    if ( this->wiki_menu_item.destroyed? || this->wiki_menu_item.save) {
       // we may have just destroyed a new record
       // e.g. there was no menu_item before, and there is none now
-      if ( !@wiki_menu_item.new_record? && (@wiki_menu_item.changed? || @wiki_menu_item.destroyed?)) {
+      if ( !this->wiki_menu_item.new_record? && (this->wiki_menu_item.changed? || this->wiki_menu_item.destroyed?)) {
         flash[:notice] = t(:notice_successful_update)
       }
 
-      redirect_back_or_default(action: 'edit', id: @page)
+      redirect_back_or_default(action: 'edit', id: this->page)
     else
       respond_to { |format|
         format.html {
-          render action: 'edit', id: @page
+          render action: 'edit', id: this->page
         }
       }
     }
   }
 
    void select_main_menu_item() {
-    @page = WikiPage.find params[:id]
-    @possible_wiki_pages = @project
+    this->page = WikiPage.find params[:id]
+    this->possible_wiki_pages = this->project
                            .wiki
                            .pages
                            .includes(:parent)
                            .reject { |page|
-                             page != @page &&
+                             page != this->page &&
                                page.menu_item.present? &&
                                page.menu_item.is_main_item?
                            }
@@ -109,26 +109,26 @@ class WikiMenuItemsController : public ApplicationController {
   private:
 
    void wiki_menu_item_params() {
-    @wiki_menu_item_params ||= params.require(:menu_items_wiki_menu_item).permit(:name, :title, :navigatable_id, :parent_id, :setting, :new_wiki_page, :index_page)
+    this->wiki_menu_item_params ||= params.require(:menu_items_wiki_menu_item).permit(:name, :title, :navigatable_id, :parent_id, :setting, :new_wiki_page, :index_page)
   }
 
    void get_data_from_params(params) {
-    wiki = @project.wiki
+    wiki = this->project.wiki
 
-    @page = wiki.find_page(params[:id])
-    @page_title = @page.title
-    @wiki_menu_item = MenuItems::WikiMenuItem
-                      .where(navigatable_id: wiki.id, name: @page.slug)
-                      .first_or_initialize(title: @page_title)
+    this->page = wiki.find_page(params[:id])
+    this->page_title = this->page.title
+    this->wiki_menu_item = MenuItems::WikiMenuItem
+                      .where(navigatable_id: wiki.id, name: this->page.slug)
+                      .first_or_initialize(title: this->page_title)
 
-    possible_parent_menu_items = MenuItems::WikiMenuItem.main_items(wiki.id) - [@wiki_menu_item]
+    possible_parent_menu_items = MenuItems::WikiMenuItem.main_items(wiki.id) - [this->wiki_menu_item]
 
-    @parent_menu_item_options = possible_parent_menu_items.map { |item| [item.name, item.id] }
+    this->parent_menu_item_options = possible_parent_menu_items.map { |item| [item.name, item.id] }
 
-    @selected_parent_menu_item_id = if ( @wiki_menu_item.parent) {
-                                      @wiki_menu_item.parent.id
+    this->selected_parent_menu_item_id = if ( this->wiki_menu_item.parent) {
+                                      this->wiki_menu_item.parent.id
                                     else
-                                      @page.nearest_main_item.try :id
+                                      this->page.nearest_main_item.try :id
     }
   }
 

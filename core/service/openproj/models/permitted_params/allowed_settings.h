@@ -4,8 +4,8 @@ class PermittedParams
       attr_reader :restricted_keys, :condition
 
        Restriction(restricted_keys, condition) {
-        @restricted_keys = restricted_keys
-        @condition = condition
+        this->restricted_keys = restricted_keys
+        this->condition = condition
       }
 
        void applicable?() {
@@ -36,7 +36,7 @@ class PermittedParams
     }
 
      void restrictions() {
-      @restrictions ||= []
+      this->restrictions ||= []
     }
 
      void init!() {

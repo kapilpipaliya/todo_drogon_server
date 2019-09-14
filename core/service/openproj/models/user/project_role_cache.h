@@ -22,10 +22,10 @@ class User::ProjectRoleCache
   }
 
    void cache() {
-    @cache ||= {}
+    this->cache ||= {}
   }
 
    void all_givable_roles() {
-    @all_givable_roles ||= Role.givable.to_a
+    this->all_givable_roles ||= Role.givable.to_a
   }
 }

@@ -23,11 +23,11 @@ class Reports::ReportsService
 
    ReportsService(project) {
     raise 'You must provide a project to report upon' unless project&.is_a?(Project)
-    @project = project
+    this->project = project
   }
 
    void report_for(report_type) {
     report_klass = this->class.report_types[report_type]
-    report_klass&.new(@project)
+    report_klass&.new(this->project)
   }
 }

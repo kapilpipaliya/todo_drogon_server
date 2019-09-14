@@ -13,7 +13,7 @@ class JournalManager
     }
 
      void reset_notification() {
-      @send_notification = true
+      this->send_notification = true
     }
 
     private:
@@ -210,7 +210,7 @@ class JournalManager
 
     version = increment_version!(journable_type, journable.id)
 
-    Rails.logger.debug "Inserting new journal for #{journable_type} ##{journable.id} @ #{version}"
+    Rails.logger.debug "Inserting new journal for #{journable_type} ##{journable.id} this-> #{version}"
 
     journal_attributes = { journable_id: journable.id,
                            journable_type: journal_class_name(journable.class),

@@ -5,7 +5,7 @@ namespace TimelogHelper {
   // is optional and will be used to check if the selected TimeEntryActivity
   // is active.
    void activity_collection_for_select_options(time_entry = nil, project = nil) {
-    project ||= @project
+    project ||= this->project
     activities =
       if ( project.nil?) {
         TimeEntryActivity.shared.active
@@ -94,7 +94,7 @@ namespace TimelogHelper {
    void format_criteria_value(criteria, value) {
     if ( value.blank?) {
       l(:label_none)
-    } else if ( k = @available_criterias[criteria][:klass]) {
+    } else if ( k = this->available_criterias[criteria][:klass]) {
       obj = k.find_by(id: value.to_i)
       if ( obj.is_a?(WorkPackage)) {
         obj.visible? ? h("#{obj.type} ##{obj.id}: #{obj.subject}") : h("##{obj.id}")
@@ -102,7 +102,7 @@ namespace TimelogHelper {
         obj
       }
     else
-      format_value(value, @available_criterias[criteria][:format])
+      format_value(value, this->available_criterias[criteria][:format])
     }
   }
 
@@ -110,7 +110,7 @@ namespace TimelogHelper {
     export = CSV.generate(col_sep: l(:general_csv_separator)) { |csv|
       // Column headers
       headers = criterias.map { |criteria|
-        label = @available_criterias[criteria][:label]
+        label = this->available_criterias[criteria][:label]
         label.is_a?(Symbol) ? l(label) : label
       }
       headers += periods
@@ -122,7 +122,7 @@ namespace TimelogHelper {
       row = [l(:label_total)] + [''] * (criterias.size - 1)
       total = 0
       periods.each { |period|
-        sum = sum_hours(select_hours(hours, @columns, period.to_s))
+        sum = sum_hours(select_hours(hours, this->columns, period.to_s))
         total += sum
         row << (sum > 0 ? '%.2f' % sum : '')
       }
@@ -141,7 +141,7 @@ namespace TimelogHelper {
       row += [''] * (criterias.length - level - 1)
       total = 0
       periods.each { |period|
-        sum = sum_hours(select_hours(hours_for_value, @columns, period.to_s))
+        sum = sum_hours(select_hours(hours_for_value, this->columns, period.to_s))
         total += sum
         row << (sum > 0 ? '%.2f' % sum : '')
       }
@@ -171,63 +171,63 @@ namespace TimelogHelper {
 
   // Retrieves the date range based on predefined ranges or specific from/to param dates
    void retrieve_date_range(allow_nil: false) {
-    @free_period = false
-    @from = nil
-    @to = nil
+    this->free_period = false
+    this->from = nil
+    this->to = nil
 
     if ( params[:period_type] == '1' || (params[:period_type].nil? && !params[:period].nil?)) {
       case params[:period].to_s
       when 'today'
-        @from = @to = Date.today
+        this->from = this->to = Date.today
       when 'yesterday'
-        @from = @to = Date.today - 1
+        this->from = this->to = Date.today - 1
       when 'current_week'
-        @from = Date.today - (Date.today.cwday - 1) % 7
-        @to = @from + 6
+        this->from = Date.today - (Date.today.cwday - 1) % 7
+        this->to = this->from + 6
       when 'last_week'
-        @from = Date.today - 7 - (Date.today.cwday - 1) % 7
-        @to = @from + 6
+        this->from = Date.today - 7 - (Date.today.cwday - 1) % 7
+        this->to = this->from + 6
       when '7_days'
-        @from = Date.today - 7
-        @to = Date.today
+        this->from = Date.today - 7
+        this->to = Date.today
       when 'current_month'
-        @from = Date.civil(Date.today.year, Date.today.month, 1)
-        @to = (@from >> 1) - 1
+        this->from = Date.civil(Date.today.year, Date.today.month, 1)
+        this->to = (this->from >> 1) - 1
       when 'last_month'
-        @from = Date.civil(Date.today.year, Date.today.month, 1) << 1
-        @to = (@from >> 1) - 1
+        this->from = Date.civil(Date.today.year, Date.today.month, 1) << 1
+        this->to = (this->from >> 1) - 1
       when '30_days'
-        @from = Date.today - 30
-        @to = Date.today
+        this->from = Date.today - 30
+        this->to = Date.today
       when 'current_year'
-        @from = Date.civil(Date.today.year, 1, 1)
-        @to = Date.civil(Date.today.year, 12, 31)
+        this->from = Date.civil(Date.today.year, 1, 1)
+        this->to = Date.civil(Date.today.year, 12, 31)
       }
     } else if ( params[:period_type] == '2' || (params[:period_type].nil? && (!params[:from].nil? || !params[:to].nil?))) {
-      begin; @from = params[:from].to_s.to_date unless params[:from].blank?; rescue; }
-      begin; @to = params[:to].to_s.to_date unless params[:to].blank?; rescue; }
-      @free_period = true
+      begin; this->from = params[:from].to_s.to_date unless params[:from].blank?; rescue; }
+      begin; this->to = params[:to].to_s.to_date unless params[:to].blank?; rescue; }
+      this->free_period = true
       // default
     }
 
-    @from, @to = @to, @from if ( @from && @to && @from > @to) {
+    this->from, this->to = this->to, this->from if ( this->from && this->to && this->from > this->to) {
 
     unless allow_nil
-      @from ||= (TimeEntry.earliest_date_for_project(@project) || Date.today)
-      @to ||= (TimeEntry.latest_date_for_project(@project) || Date.today)
+      this->from ||= (TimeEntry.earliest_date_for_project(this->project) || Date.today)
+      this->to ||= (TimeEntry.latest_date_for_project(this->project) || Date.today)
     }
   }
 
    void find_optional_project() {
     if ( !params[:issue_id].blank?) {
-      @issue = WorkPackage.find(params[:issue_id])
-      @project = @issue.project
+      this->issue = WorkPackage.find(params[:issue_id])
+      this->project = this->issue.project
     } else if ( !params[:work_package_id].blank?) {
-      @issue = WorkPackage.find(params[:work_package_id])
-      @project = @issue.project
+      this->issue = WorkPackage.find(params[:work_package_id])
+      this->project = this->issue.project
     } else if ( !params[:project_id].blank?) {
-      @project = Project.find(params[:project_id])
+      this->project = Project.find(params[:project_id])
     }
-    deny_access unless User.current.allowed_to?(:view_time_entries, @project, global: true)
+    deny_access unless User.current.allowed_to?(:view_time_entries, this->project, global: true)
   }
 }

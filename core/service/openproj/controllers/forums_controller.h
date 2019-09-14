@@ -13,11 +13,11 @@ class ForumsController : public ApplicationController {
   // include OpenProject::ClientPreferenceExtractor
 
    void index() {
-    @forums = @project.forums
-    render_404 if ( @forums.empty?) {
+    this->forums = this->project.forums
+    render_404 if ( this->forums.empty?) {
     // show the forum if ( there is only one) {
-    if ( @forums.size == 1) {
-      @forum = @forums.first
+    if ( this->forums.size == 1) {
+      this->forum = this->forums.first
       show
     }
   }
@@ -35,7 +35,7 @@ class ForumsController : public ApplicationController {
     respond_to { |format|
       format.html {
         set_topics
-        @message = Message.new
+        this->message = Message.new
         render action: 'show', layout: !request.xhr?
       }
       format.json {
@@ -44,19 +44,19 @@ class ForumsController : public ApplicationController {
         render template: 'messages/index'
       }
       format.atom {
-        @messages = @forum
+        this->messages = this->forum
                     .messages
                     .order(["#{Message.table_name}.sticked_on ASC", sort_clause].compact.join(', '))
                     .includes(:author, :forum)
                     .limit(Setting.feeds_limit.to_i)
 
-        render_feed(@messages, title: "#{@project}: #{@forum}")
+        render_feed(this->messages, title: "#{this->project}: #{this->forum}")
       }
     }
   }
 
    void set_topics() {
-    @topics =  @forum
+    this->topics =  this->forum
                .topics
                .order(["#{Message.table_name}.sticked_on ASC", sort_clause].compact.join(', '))
                .includes(:author, last_reply: :author)
@@ -67,7 +67,7 @@ class ForumsController : public ApplicationController {
    void new() {}
 
    void create() {
-    if ( @forum.save) {
+    if ( this->forum.save) {
       flash[:notice] = l(:notice_successful_create)
       redirect_to_settings_in_projects
     else
@@ -78,7 +78,7 @@ class ForumsController : public ApplicationController {
    void edit() {}
 
    void update() {
-    if ( @forum.update_attributes(permitted_params.forum)) {
+    if ( this->forum.update_attributes(permitted_params.forum)) {
       flash[:notice] = l(:notice_successful_update)
       redirect_to_settings_in_projects
     else
@@ -87,35 +87,35 @@ class ForumsController : public ApplicationController {
   }
 
    void move() {
-    if ( @forum.update_attributes(permitted_params.forum_move)) {
+    if ( this->forum.update_attributes(permitted_params.forum_move)) {
       flash[:notice] = t(:notice_successful_update)
     else
       flash.now[:error] = t('forum_could_not_be_saved')
       render action: 'edit'
     }
-    redirect_to_settings_in_projects(@forum.project_id)
+    redirect_to_settings_in_projects(this->forum.project_id)
   }
 
    void destroy() {
-    @forum.destroy
+    this->forum.destroy
     flash[:notice] = l(:notice_successful_delete)
     redirect_to_settings_in_projects
   }
 
   private:
 
-   void redirect_to_settings_in_projects(id = @project) {
+   void redirect_to_settings_in_projects(id = this->project) {
     redirect_to controller: '/project_settings', action: 'show', id: id, tab: 'forums'
   }
 
    void find_forum() {
-    @forum = @project.forums.find(params[:id])
+    this->forum = this->project.forums.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     render_404
   }
 
    void new_forum() {
-    @forum = Forum.new(permitted_params.forum?)
-    @forum.project = @project
+    this->forum = Forum.new(permitted_params.forum?)
+    this->forum.project = this->project
   }
 }

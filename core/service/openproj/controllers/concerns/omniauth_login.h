@@ -124,7 +124,7 @@ namespace Concerns::OmniauthLogin {
     // Create on the fly
     register_user_according_to_setting(user, opts) {
       // Allow registration form to show provider-specific title
-      @omniauth_strategy = auth_hash[:provider]
+      this->omniauth_strategy = auth_hash[:provider]
 
       // Store a timestamp so we can later make sure that authentication information can
       // only be reused for a short time.

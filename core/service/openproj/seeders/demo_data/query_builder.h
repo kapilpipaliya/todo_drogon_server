@@ -4,8 +4,8 @@ namespace DemoData {
     attr_reader :project
 
      QueryBuilder(config, project) {
-      @config = config
-      @project = project
+      this->config = config
+      this->project = project
     }
 
      void create!() {
@@ -69,7 +69,7 @@ namespace DemoData {
     }
 
      void columns() {
-      @columns ||= Array(config[:columns]).map(&:to_s)
+      this->columns ||= Array(config[:columns]).map(&:to_s)
     }
 
      void set_sort_by!(attr) {
@@ -139,9 +139,9 @@ namespace DemoData {
     }
 
      void backlogs_present?() {
-      @backlogs_present = defined? OpenProject::Backlogs if ( @backlogs_present.nil?) {
+      this->backlogs_present = defined? OpenProject::Backlogs if ( this->backlogs_present.nil?) {
 
-      @backlogs_present
+      this->backlogs_present
     }
   }
 }

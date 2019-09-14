@@ -34,7 +34,7 @@ namespace WorkPackage::SchedulingRules {
       "((#{ancestors_follows_relations.to_sql}) UNION (#{own_follows_relations.to_sql})) AS relations"
     }
 
-    @soonest_start ||=
+    this->soonest_start ||=
       Relation.from(sql)
               .map(&:successor_soonest_start)
               .compact

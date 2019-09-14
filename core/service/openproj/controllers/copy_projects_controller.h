@@ -4,13 +4,13 @@ class CopyProjectsController : public ApplicationController {
   // before_action :authorize
 
    void copy() {
-    @copy_project = project_copy
+    this->copy_project = project_copy
 
-    if ( @copy_project.valid?) {
+    if ( this->copy_project.valid?) {
       enqueue_copy_job
 
       flash[:notice] = I18n.t('copy_project.started',
-                              source_project_name: @project.name,
+                              source_project_name: this->project.name,
                               target_project_name: permitted_params.project[:name])
       redirect_to origin
     else
@@ -19,9 +19,9 @@ class CopyProjectsController : public ApplicationController {
   }
 
    void copy_project() {
-    @copy_project = Project.copy_attributes(@project)
-    if ( @copy_project) {
-      @copy_project.identifier = Project.next_identifier if ( Setting.sequential_project_identifiers?) {
+    this->copy_project = Project.copy_attributes(this->project)
+    if ( this->copy_project) {
+      this->copy_project.identifier = Project.next_identifier if ( Setting.sequential_project_identifiers?) {
 
       render action: copy_action
     else
@@ -52,12 +52,12 @@ class CopyProjectsController : public ApplicationController {
   }
 
    void origin() {
-    params[:coming_from] == 'admin' ? projects_path : settings_project_path(@project.id)
+    params[:coming_from] == 'admin' ? projects_path : settings_project_path(this->project.id)
   }
 
    void enqueue_copy_job() {
     copy_project_job = CopyProjectJob.new(user_id: User.current.id,
-                                          source_project_id: @project.id,
+                                          source_project_id: this->project.id,
                                           target_project_params: target_project_params,
                                           associations_to_copy: params[:only],
                                           send_mails: params[:notifications] == '1')
@@ -66,10 +66,10 @@ class CopyProjectsController : public ApplicationController {
   }
 
    void target_project_params() {
-    @copy_project
+    this->copy_project
       .attributes
       .compact
       .with_indifferent_access
-      .merge(custom_field_values: @copy_project.custom_value_attributes)
+      .merge(custom_field_values: this->copy_project.custom_value_attributes)
   }
 }

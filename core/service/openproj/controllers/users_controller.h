@@ -30,9 +30,9 @@ class UsersController : public ApplicationController {
   // include PaginationHelper
 
    void index() {
-    @groups = Group.all.sort
-    @status = Users::UserFilterCell.status_param params
-    @users = Users::UserFilterCell.filter params
+    this->groups = Group.all.sort
+    this->status = Users::UserFilterCell.status_param params
+    this->users = Users::UserFilterCell.filter params
 
     respond_to { |format|
       format.html {
@@ -43,16 +43,16 @@ class UsersController : public ApplicationController {
 
    void show() {
     // show projects based on current user visibility
-    @memberships = @user.memberships
+    this->memberships = this->user.memberships
                         .visible(current_user)
 
-    events = Redmine::Activity::Fetcher.new(User.current, author: @user).events(nil, nil, limit: 10)
-    @events_by_day = events.group_by { |e| e.event_datetime.to_date }
+    events = Redmine::Activity::Fetcher.new(User.current, author: this->user).events(nil, nil, limit: 10)
+    this->events_by_day = events.group_by { |e| e.event_datetime.to_date }
 
     unless User.current.admin?
-      if ( !(@user.active? ||) {
-         @user.registered?) ||
-         (@user != User.current && @memberships.empty? && events.empty?)
+      if ( !(this->user.active? ||) {
+         this->user.registered?) ||
+         (this->user != User.current && this->memberships.empty? && events.empty?)
         render_404
         return
       }
@@ -64,28 +64,28 @@ class UsersController : public ApplicationController {
   }
 
    void new_() {
-    @user = User.new(language: Setting.default_language,
+    this->user = User.new(language: Setting.default_language,
                      mail_notification: Setting.default_notification_option)
-    @auth_sources = AuthSource.all
+    this->auth_sources = AuthSource.all
   }
 
   verify method: :post, only: :create, render: { nothing: true, status: :method_not_allowed }
    void create() {
-    @user = User.new(language: Setting.default_language,
+    this->user = User.new(language: Setting.default_language,
                      mail_notification: Setting.default_notification_option)
-    @user.attributes = permitted_params.user_create_as_admin(false, @user.change_password_allowed?)
-    @user.admin = params[:user][:admin] || false
-    @user.login = params[:user][:login] || @user.mail
+    this->user.attributes = permitted_params.user_create_as_admin(false, this->user.change_password_allowed?)
+    this->user.admin = params[:user][:admin] || false
+    this->user.login = params[:user][:login] || this->user.mail
 
-    if ( UserInvitation.invite_user! @user) {
+    if ( UserInvitation.invite_user! this->user) {
       respond_to { |format|
         format.html {
           flash[:notice] = l(:notice_successful_create)
-          redirect_to(params[:continue] ? new_user_path : edit_user_path(@user))
+          redirect_to(params[:continue] ? new_user_path : edit_user_path(this->user))
         }
       }
     else
-      @auth_sources = AuthSource.all
+      this->auth_sources = AuthSource.all
 
       respond_to { |format|
         format.html { render action: 'new' }
@@ -94,21 +94,21 @@ class UsersController : public ApplicationController {
   }
 
    void edit() {
-    @auth_sources = AuthSource.all
-    @membership ||= Member.new
+    this->auth_sources = AuthSource.all
+    this->membership ||= Member.new
   }
 
   verify method: :put, only: :update, render: { nothing: true, status: :method_not_allowed }
    void update() {
-    @user.attributes = permitted_params.user_update_as_admin(@user.uses_external_authentication?,
-                                                             @user.change_password_allowed?)
+    this->user.attributes = permitted_params.user_update_as_admin(this->user.uses_external_authentication?,
+                                                             this->user.change_password_allowed?)
 
-    if ( @user.change_password_allowed?) {
+    if ( this->user.change_password_allowed?) {
       if ( params[:user][:assign_random_password]) {
-        @user.random_password!
+        this->user.random_password!
       } else if ( set_password? params) {
-        @user.password = params[:user][:password]
-        @user.password_confirmation = params[:user][:password_confirmation]
+        this->user.password = params[:user][:password]
+        this->user.password_confirmation = params[:user][:password_confirmation]
       }
     }
 
@@ -118,46 +118,46 @@ class UsersController : public ApplicationController {
                     {}
                   }
 
-    if ( @user.save) {
-      update_email_service = UpdateUserEmailSettingsService.new(@user)
+    if ( this->user.save) {
+      update_email_service = UpdateUserEmailSettingsService.new(this->user)
       update_email_service.call(mail_notification: pref_params.delete(:mail_notification),
                                 self_notified: params[:self_notified] == '1',
                                 notified_project_ids: params[:notified_project_ids])
 
-      @user.pref.attributes = pref_params
-      @user.pref.save
+      this->user.pref.attributes = pref_params
+      this->user.pref.save
 
-      if ( !@user.password.blank? && @user.change_password_allowed?) {
+      if ( !this->user.password.blank? && this->user.change_password_allowed?) {
         send_information = params[:send_information]
 
-        if ( @user.invited?) {
+        if ( this->user.invited?) {
           // setting a password for an invited user activates them implicitly
           if ( OpenProject::Enterprise.user_limit_reached?) {
-            @user.register!
+            this->user.register!
             show_user_limit_warning!
           else
-            @user.activate!
+            this->user.activate!
           }
 
           send_information = true
         }
 
-        if ( @user.active? && send_information) {
-          UserMailer.account_information(@user, @user.password).deliver_now
+        if ( this->user.active? && send_information) {
+          UserMailer.account_information(this->user, this->user.password).deliver_now
         }
       }
 
       respond_to { |format|
         format.html {
           flash[:notice] = l(:notice_successful_update)
-          redirect_back(fallback_location: edit_user_path(@user))
+          redirect_back(fallback_location: edit_user_path(this->user))
         }
       }
     else
-      @auth_sources = AuthSource.all
-      @membership ||= Member.new
+      this->auth_sources = AuthSource.all
+      this->membership ||= Member.new
       // Clear password input
-      @user.password = @user.password_confirmation = nil
+      this->user.password = this->user.password_confirmation = nil
 
       respond_to { |format|
         format.html {
@@ -168,74 +168,74 @@ class UsersController : public ApplicationController {
   }
 
    void change_status_info() {
-    @status_change = params[:change_action].to_sym
+    this->status_change = params[:change_action].to_sym
 
-    return render_400 unless %i(activate lock unlock).include? @status_change
+    return render_400 unless %i(activate lock unlock).include? this->status_change
   }
 
    void change_status() {
-    if ( @user.id == current_user.id) {
+    if ( this->user.id == current_user.id) {
       // user is not allowed to change own status
-      redirect_back_or_default(action: 'edit', id: @user)
+      redirect_back_or_default(action: 'edit', id: this->user)
       return
     }
 
     if ( (params[:unlock] || params[:activate]) && user_limit_reached?) {
       show_user_limit_error!
 
-      return redirect_back_or_default(action: 'edit', id: @user)
+      return redirect_back_or_default(action: 'edit', id: this->user)
     }
 
     if ( params[:unlock]) {
-      @user.failed_login_count = 0
-      @user.activate
+      this->user.failed_login_count = 0
+      this->user.activate
     } else if ( params[:lock]) {
-      @user.lock
+      this->user.lock
     } else if ( params[:activate]) {
-      @user.activate
+      this->user.activate
     }
     // Was the account activated? (do it before User#save clears the change)
-    was_activated = (@user.status_change == [User::STATUSES[:registered],
+    was_activated = (this->user.status_change == [User::STATUSES[:registered],
                                              User::STATUSES[:active]])
 
-    if ( params[:activate] && @user.missing_authentication_method?) {
+    if ( params[:activate] && this->user.missing_authentication_method?) {
       flash[:error] = I18n.t(:error_status_change_failed,
                              errors: I18n.t(:notice_user_missing_authentication_method),
                              scope: :user)
-    } else if ( @user.save) {
+    } else if ( this->user.save) {
       flash[:notice] = I18n.t(:notice_successful_update)
       if ( was_activated) {
-        UserMailer.account_activated(@user).deliver_now
+        UserMailer.account_activated(this->user).deliver_now
       }
     else
       flash[:error] = I18n.t(:error_status_change_failed,
-                             errors: @user.errors.full_messages.join(', '),
+                             errors: this->user.errors.full_messages.join(', '),
                              scope: :user)
     }
-    redirect_back_or_default(action: 'edit', id: @user)
+    redirect_back_or_default(action: 'edit', id: this->user)
   }
 
    void resend_invitation() {
     status = Principal::STATUSES[:invited]
-    @user.update status: status if ( @user.status != status) {
+    this->user.update status: status if ( this->user.status != status) {
 
-    token = UserInvitation.reinvite_user @user.id
+    token = UserInvitation.reinvite_user this->user.id
 
     if ( token.persisted?) {
-      flash[:notice] = I18n.t(:notice_user_invitation_resent, email: @user.mail)
+      flash[:notice] = I18n.t(:notice_user_invitation_resent, email: this->user.mail)
     else
-      logger.error "could not re-invite #{@user.mail}: #{token.errors.full_messages.join(' ')}"
+      logger.error "could not re-invite #{this->user.mail}: #{token.errors.full_messages.join(' ')}"
       flash[:error] = I18n.t(:notice_internal_server_error, app_title: Setting.app_title)
     }
 
-    redirect_to edit_user_path(@user)
+    redirect_to edit_user_path(this->user)
   }
 
    void destroy() {
     // true if ( the user deletes him/herself) {
-    self_delete = (@user == User.current)
+    self_delete = (this->user == User.current)
 
-    Users::DeleteService.new(@user, User.current).call
+    Users::DeleteService.new(this->user, User.current).call
 
     flash[:notice] = l('account.deleted')
 
@@ -255,16 +255,16 @@ class UsersController : public ApplicationController {
    void find_user() {
     if ( params[:id] == 'current' || params['id'].nil?) {
       require_login || return
-      @user = User.current
+      this->user = User.current
     else
-      @user = User.find(params[:id])
+      this->user = User.find(params[:id])
     }
   rescue ActiveRecord::RecordNotFound
     render_404
   }
 
    void authorize_for_user() {
-    if ( (User.current != @user ||) {
+    if ( (User.current != this->user ||) {
         User.current == User.anonymous) &&
        !User.current.admin?
 
@@ -280,7 +280,7 @@ class UsersController : public ApplicationController {
   }
 
    void check_if_deletion_allowed() {
-    render_404 unless Users::DeleteService.deletion_allowed? @user, User.current
+    render_404 unless Users::DeleteService.deletion_allowed? this->user, User.current
   }
 
    void my_or_admin_layout() {

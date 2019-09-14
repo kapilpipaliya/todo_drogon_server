@@ -3,7 +3,7 @@ namespace CustomActions::Actions::Strategies::Associated {
   // include CustomActions::ValuesToInteger
 
    void allowed_values() {
-    @allowed_values ||= begin
+    this->allowed_values ||= begin
       options = associated
                 .map { |value, label| { value: value, label: label } }
 

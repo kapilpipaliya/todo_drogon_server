@@ -4,18 +4,18 @@ class Reports::ResponsibleReport : public Reports::Report {
   }
 
    void field() {
-    @field ||= 'responsible_id'
+    this->field ||= 'responsible_id'
   }
 
    void rows() {
-    @rows ||= @project.members.map(&:user).sort
+    this->rows ||= this->project.members.map(&:user).sort
   }
 
    void data() {
-    @data ||= WorkPackage.by_responsible(@project)
+    this->data ||= WorkPackage.by_responsible(this->project)
   }
 
    void title() {
-    @title ||= WorkPackage.human_attribute_name(:responsible)
+    this->title ||= WorkPackage.human_attribute_name(:responsible)
   }
 }

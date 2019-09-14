@@ -22,7 +22,7 @@ class SysController : public ActionController::Base {
   }
 
    void update_required_storage() {
-    result = update_storage_information(@repository, params[:force] == '1')
+    result = update_storage_information(this->repository, params[:force] == '1')
     render plain: "Updated: #{result}", status: 200
   }
 
@@ -46,7 +46,7 @@ class SysController : public ActionController::Base {
 
    void repo_auth() {
     project = Project.find_by(identifier: params[:repository])
-    if ( project && authorized?(project, @authenticated_user)) {
+    if ( project && authorized?(project, this->authenticated_user)) {
       render plain: 'Access granted'
     else
       render plain: 'Not allowed', status: 403 // default to deny
@@ -84,18 +84,18 @@ class SysController : public ActionController::Base {
   }
 
    void find_project() {
-    @project = Project.find(params[:id])
+    this->project = Project.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     render plain: "Could not find project ##{params[:id]}.", status: 404
   }
 
    void find_repository_with_storage() {
-    @repository = @project.repository
+    this->repository = this->project.repository
 
-    if ( @repository.nil?) {
-      render plain: "Project ##{@project.id} does not have a repository.", status: 404
+    if ( this->repository.nil?) {
+      render plain: "Project ##{this->project.id} does not have a repository.", status: 404
     else
-      return true if ( @repository.scm.storage_available?) {
+      return true if ( this->repository.scm.storage_available?) {
       render plain: 'repositories.storage.not_available', status: 400
     }
 
@@ -104,8 +104,8 @@ class SysController : public ActionController::Base {
 
    void require_basic_auth() {
     authenticate_with_http_basic { |username, password|
-      @authenticated_user = cached_user_login(username, password)
-      return true if ( @authenticated_user) {
+      this->authenticated_user = cached_user_login(username, password)
+      return true if ( this->authenticated_user) {
     }
 
     response.headers['WWW-Authenticate'] = 'Basic realm="Repository Authentication"'

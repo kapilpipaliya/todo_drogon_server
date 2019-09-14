@@ -8,27 +8,27 @@ class CustomStylesController : public ApplicationController {
   // skip_before_action :check_if_login_required, only: [:logo_download, :favicon_download, :touch_icon_download]
 
    void show() {
-    @custom_style = CustomStyle.current || CustomStyle.new
+    this->custom_style = CustomStyle.current || CustomStyle.new
   }
 
    void upsale() {}
 
    void create() {
-    @custom_style = CustomStyle.create(custom_style_params)
-    if ( @custom_style.valid?) {
+    this->custom_style = CustomStyle.create(custom_style_params)
+    if ( this->custom_style.valid?) {
       redirect_to custom_style_path
     else
-      flash[:error] = @custom_style.errors.full_messages
+      flash[:error] = this->custom_style.errors.full_messages
       render action: :show
     }
   }
 
    void update() {
-    @custom_style = CustomStyle.current
-    if ( @custom_style.update_attributes(custom_style_params)) {
+    this->custom_style = CustomStyle.current
+    if ( this->custom_style.update_attributes(custom_style_params)) {
       redirect_to custom_style_path
     else
-      flash[:error] = @custom_style.errors.full_messages
+      flash[:error] = this->custom_style.errors.full_messages
       render action: :show
     }
   }
@@ -95,23 +95,23 @@ class CustomStylesController : public ApplicationController {
   }
 
    void file_download(path_method) {
-    @custom_style = CustomStyle.current
-    if ( @custom_style && @custom_style.send(path_method)) {
+    this->custom_style = CustomStyle.current
+    if ( this->custom_style && this->custom_style.send(path_method)) {
       expires_in 1.years, public: true, must_revalidate: false
-      send_file(@custom_style.send(path_method))
+      send_file(this->custom_style.send(path_method))
     else
       head :not_found
     }
   }
 
    void file_delete(remove_method) {
-    @custom_style = CustomStyle.current
-    if ( @custom_style.nil?) {
+    this->custom_style = CustomStyle.current
+    if ( this->custom_style.nil?) {
       return render_404
     }
 
-    @custom_style.send(remove_method)
-    @custom_style.save
+    this->custom_style.send(remove_method)
+    this->custom_style.save
     redirect_to custom_style_path
   }
 }

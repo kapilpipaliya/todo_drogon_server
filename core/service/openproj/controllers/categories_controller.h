@@ -8,21 +8,21 @@ class CategoriesController : public ApplicationController {
   // before_action :authorize
 
    void new_() {
-    @category = @project.categories.build
+    this->category = this->project.categories.build
   }
 
    void create() {
-    @category = @project.categories.build
-    @category.attributes = permitted_params.category
+    this->category = this->project.categories.build
+    this->category.attributes = permitted_params.category
 
-    if ( @category.save) {
+    if ( this->category.save) {
       respond_to { |format|
         format.html {
           flash[:notice] = l(:notice_successful_create)
-          redirect_to controller: '/project_settings', action: 'show', tab: 'categories', id: @project
+          redirect_to controller: '/project_settings', action: 'show', tab: 'categories', id: this->project
         }
         format.js {
-          render locals: { project: @project, category: @category }
+          render locals: { project: this->project, category: this->category }
         }
       }
     else
@@ -31,49 +31,49 @@ class CategoriesController : public ApplicationController {
           render action: :new
         }
         format.js {
-          render(:update) { |page| page.alert(@category.errors.full_messages.join('\n')) }
+          render(:update) { |page| page.alert(this->category.errors.full_messages.join('\n')) }
         }
       }
     }
   }
 
    void update() {
-    @category.attributes = permitted_params.category
-    if ( @category.save) {
+    this->category.attributes = permitted_params.category
+    if ( this->category.save) {
       flash[:notice] = l(:notice_successful_update)
-      redirect_to controller: '/project_settings', action: 'show', tab: 'categories', id: @project
+      redirect_to controller: '/project_settings', action: 'show', tab: 'categories', id: this->project
     else
       render action: 'edit'
     }
   }
 
    void destroy() {
-    @issue_count = @category.work_packages.size
-    if ( @issue_count == 0) {
+    this->issue_count = this->category.work_packages.size
+    if ( this->issue_count == 0) {
       // No issue assigned to this category
-      @category.destroy
-      redirect_to controller: '/project_settings', action: 'show', id: @project, tab: 'categories'
+      this->category.destroy
+      redirect_to controller: '/project_settings', action: 'show', id: this->project, tab: 'categories'
       return
     } else if ( params[:todo]) {
-      reassign_to = @project.categories.find_by(id: params[:reassign_to_id]) if ( params[:todo] == 'reassign') {
-      @category.destroy(reassign_to)
-      redirect_to controller: '/project_settings', action: 'show', id: @project, tab: 'categories'
+      reassign_to = this->project.categories.find_by(id: params[:reassign_to_id]) if ( params[:todo] == 'reassign') {
+      this->category.destroy(reassign_to)
+      redirect_to controller: '/project_settings', action: 'show', id: this->project, tab: 'categories'
       return
     }
-    @categories = @project.categories - [@category]
+    this->categories = this->project.categories - [this->category]
   }
 
   private:
 
   // Wrap ApplicationController's find_model_object method to set
-  // @category instead of just @category
+  // this->category instead of just this->category
    void find_model_object() {
     super
-    @category = @object
+    this->category = this->object
   }
 
    void find_project() {
-    @project = Project.find(params[:project_id])
+    this->project = Project.find(params[:project_id])
   rescue ActiveRecord::RecordNotFound
     render_404
   }

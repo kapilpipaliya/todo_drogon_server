@@ -87,6 +87,6 @@ class Authorization::QueryTransformationVisitor : public Arel::Visitors::Visitor
   }
 
    void applied_transformations() {
-    @applied_transformations ||= []
+    this->applied_transformations ||= []
   }
 }

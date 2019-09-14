@@ -3,8 +3,8 @@ namespace DemoData {
     attr_reader :project, :key
 
      WikiSeeder(project, key) {
-      @project = project
-      @key = key
+      this->project = project
+      this->key = key
     }
 
      void seed_data!() {

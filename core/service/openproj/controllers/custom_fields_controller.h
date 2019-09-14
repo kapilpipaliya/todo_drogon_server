@@ -9,23 +9,23 @@ class CustomFieldsController : public ApplicationController {
 
    void index() {
     // loading wp cfs exclicity to allow for eager loading
-    @custom_fields_by_type = CustomField.all.where.not(type: 'WorkPackageCustomField').group_by { |f| f.class.name }
-    @custom_fields_by_type['WorkPackageCustomField'] = WorkPackageCustomField.includes(:types).all
+    this->custom_fields_by_type = CustomField.all.where.not(type: 'WorkPackageCustomField').group_by { |f| f.class.name }
+    this->custom_fields_by_type['WorkPackageCustomField'] = WorkPackageCustomField.includes(:types).all
 
-    @tab = params[:tab] || 'WorkPackageCustomField'
+    this->tab = params[:tab] || 'WorkPackageCustomField'
   }
 
    void new_() {
-    @custom_field = careful_new_custom_field permitted_params.custom_field_type
+    this->custom_field = careful_new_custom_field permitted_params.custom_field_type
   }
 
    void create() {
-    @custom_field = careful_new_custom_field permitted_params.custom_field_type, get_custom_field_params
+    this->custom_field = careful_new_custom_field permitted_params.custom_field_type, get_custom_field_params
 
-    if ( @custom_field.save) {
+    if ( this->custom_field.save) {
       flash[:notice] = l(:notice_successful_create)
-      call_hook(:controller_custom_fields_new_after_save, custom_field: @custom_field)
-      redirect_to custom_fields_path(tab: @custom_field.class.name)
+      call_hook(:controller_custom_fields_new_after_save, custom_field: this->custom_field)
+      redirect_to custom_fields_path(tab: this->custom_field.class.name)
     else
       render action: 'new'
     }
@@ -34,12 +34,12 @@ class CustomFieldsController : public ApplicationController {
    void edit() {}
 
    void update() {
-    @custom_field.attributes = get_custom_field_params
+    this->custom_field.attributes = get_custom_field_params
 
-    if ( @custom_field.save) {
+    if ( this->custom_field.save) {
       flash[:notice] = t(:notice_successful_update)
-      call_hook(:controller_custom_fields_edit_after_save, custom_field: @custom_field)
-      redirect_back_or_default edit_custom_field_path(id: @custom_field.id)
+      call_hook(:controller_custom_fields_edit_after_save, custom_field: this->custom_field)
+      redirect_back_or_default edit_custom_field_path(id: this->custom_field.id)
     else
       render action: 'edit'
     }
@@ -47,25 +47,25 @@ class CustomFieldsController : public ApplicationController {
 
    void destroy() {
     begin
-      @custom_field.destroy
+      this->custom_field.destroy
     rescue
       flash[:error] = l(:error_can_not_delete_custom_field)
     }
-    redirect_to custom_fields_path(tab: @custom_field.class.name)
+    redirect_to custom_fields_path(tab: this->custom_field.class.name)
   }
 
    void delete_option() {
-    if ( @custom_option.destroy) {
-      num_deleted = delete_custom_values! @custom_option
+    if ( this->custom_option.destroy) {
+      num_deleted = delete_custom_values! this->custom_option
 
       flash[:notice] = I18n.t(
-        :notice_custom_options_deleted, option_value: @custom_option.value, num_deleted: num_deleted
+        :notice_custom_options_deleted, option_value: this->custom_option.value, num_deleted: num_deleted
       )
     else
-      flash[:error] = @custom_option.errors.full_messages
+      flash[:error] = this->custom_option.errors.full_messages
     }
 
-    redirect_to edit_custom_field_path(id: @custom_field.id)
+    redirect_to edit_custom_field_path(id: this->custom_field.id)
   }
 
   private:
@@ -81,7 +81,7 @@ class CustomFieldsController : public ApplicationController {
   }
 
    void find_custom_option() {
-    @custom_option = CustomOption.find params[:option_id]
+    this->custom_option = CustomOption.find params[:option_id]
   rescue ActiveRecord::RecordNotFound
     render_404
   }
@@ -117,7 +117,7 @@ class CustomFieldsController : public ApplicationController {
   }
 
    void find_custom_field() {
-    @custom_field = CustomField.find(params[:id])
+    this->custom_field = CustomField.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     render_404
   }

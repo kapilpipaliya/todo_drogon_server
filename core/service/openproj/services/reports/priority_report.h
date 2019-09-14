@@ -8,14 +8,14 @@ class Reports::PriorityReport : public Reports::Report {
   }
 
    void rows() {
-    @rows ||= IssuePriority.all
+    this->rows ||= IssuePriority.all
   }
 
    void data() {
-    @data ||= WorkPackage.by_priority(@project)
+    this->data ||= WorkPackage.by_priority(this->project)
   }
 
    void title() {
-    @title ||= WorkPackage.human_attribute_name(:priority)
+    this->title ||= WorkPackage.human_attribute_name(:priority)
   }
 }

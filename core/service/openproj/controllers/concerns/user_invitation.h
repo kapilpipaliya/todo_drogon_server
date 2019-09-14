@@ -21,7 +21,7 @@ namespace UserInvitation {
   // @param first_name The user's first name (optional)
   // @param last_name The user's last name (optional)
   //
-  // @yield [user] Allows modifying the created user before saving it.
+  // this->yield [user] Allows modifying the created user before saving it.
   //
   // @return The invited user. If the invitation failed, calling `#registered?`
   //         on the returned user will yield `false`. Check for validation errors
@@ -77,9 +77,9 @@ namespace UserInvitation {
   // are longer than 30 characters they will be trimmed to 27 characters and an
   // elipsis will be appended.
    void placeholder_name(email) {
-    first, last = email.split('@').map { |name| trim_name(name) }
+    first, last = email.split('this->').map { |name| trim_name(name) }
 
-    [first, '@' + last]
+    [first, 'this->' + last]
   }
 
    void trim_name(name) {

@@ -1,7 +1,7 @@
 class Queries::BaseQuery
   class << self
      void model() {
-      @model ||= name.demodulize.gsub('Query', '').constantize
+      this->model ||= name.demodulize.gsub('Query', '').constantize
     }
 
      void i18n_scope() {
@@ -19,9 +19,9 @@ class Queries::BaseQuery
            :sortation_valid
 
    BaseQuery(user: nil) {
-    @filters = []
-    @orders = []
-    @user = user
+    this->filters = []
+    this->orders = []
+    this->user = user
   }
 
    void results() {

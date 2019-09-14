@@ -1,7 +1,7 @@
 namespace NoResultsHelper {
   // Helper to render the /common/no_results partial custamizable content.
   // Example usage:
-  // no_results_box action_url: new_project_version_path(@project),
+  // no_results_box action_url: new_project_version_path(this->project),
   //                display_action: authorize_for('messages', 'new')
   //
   // All arguments are optional.

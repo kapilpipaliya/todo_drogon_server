@@ -4,8 +4,8 @@ namespace Users {
     // attr_accessor :session
 
      ChangePasswordService(current_user:, session:) {
-      @current_user = current_user
-      @session = session
+      this->current_user = current_user
+      this->session = session
     }
 
      void call(params) {

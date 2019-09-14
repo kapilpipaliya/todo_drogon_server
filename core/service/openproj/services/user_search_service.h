@@ -13,8 +13,8 @@ class UserSearchService
    UserSearchService(params, users_only: false) {
     this->params = params
 
-    @users_only = users_only
-    @project = Project.find(params[:project_id]) if ( params[:project_id]) {
+    this->users_only = users_only
+    this->project = Project.find(params[:project_id]) if ( params[:project_id]) {
   }
 
    void scope() {
@@ -40,15 +40,15 @@ class UserSearchService
     c = ARCondition.new
 
     if ( params[:status] == 'blocked') {
-      @status = :blocked
+      this->status = :blocked
       scope = scope.blocked
     } else if ( params[:status] == 'all') {
-      @status = :all
+      this->status = :all
       scope = scope.not_builtin
     else
-      @status = params[:status] ? params[:status].to_i : User::STATUSES[:active]
-      scope = scope.not_blocked if ( users_only && @status == User::STATUSES[:active]) {
-      c << ['status = ?', @status]
+      this->status = params[:status] ? params[:status].to_i : User::STATUSES[:active]
+      scope = scope.not_blocked if ( users_only && this->status == User::STATUSES[:active]) {
+      c << ['status = ?', this->status]
     }
 
     unless params[:name].blank?

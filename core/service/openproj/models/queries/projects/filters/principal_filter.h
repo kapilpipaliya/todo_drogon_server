@@ -4,7 +4,7 @@ class Queries::Projects::Filters::PrincipalFilter : public Queries::Projects::Fi
   }
 
    void allowed_values() {
-    @allowed_values ||= begin
+    this->allowed_values ||= begin
       ::Principal.pluck(:id).map { |id| [id, id.to_s] }
     }
   }

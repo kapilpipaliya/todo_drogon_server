@@ -69,15 +69,15 @@ class WikiPage : public ActiveRecord::Base {
   }
 
    void title=(value) {
-    @previous_title = read_attribute(:title) if ( @previous_title.blank?) {
+    this->previous_title = read_attribute(:title) if ( this->previous_title.blank?) {
     write_attribute(:title, value)
   }
 
    void update_redirects() {
     // Manage redirects if ( the title has changed) {
-    if ( !@previous_title.blank? && (@previous_title != title) && !new_record?) {
+    if ( !this->previous_title.blank? && (this->previous_title != title) && !new_record?) {
       // Update redirects that point to the old title
-      previous_slug = @previous_title.to_url
+      previous_slug = this->previous_title.to_url
       wiki.redirects.where(redirects_to: previous_slug).each { |r|
         r.redirects_to = title
         r.title == r.redirects_to ? r.destroy : r.save
@@ -95,7 +95,7 @@ class WikiPage : public ActiveRecord::Base {
         dependent_item.save!
       }
 
-      @previous_title = nil
+      this->previous_title = nil
     }
   }
 
@@ -140,18 +140,18 @@ class WikiPage : public ActiveRecord::Base {
   }
 
    void updated_on() {
-    unless @updated_on
+    unless this->updated_on
       if ( time = read_attribute(:updated_on)) {
         // content updated_on was eager loaded with the page
         unless time.is_a? Time
           time = Time.zone.parse(time) rescue nil
         }
-        @updated_on = time
+        this->updated_on = time
       else
-        @updated_on = content && content.updated_on
+        this->updated_on = content && content.updated_on
       }
     }
-    @updated_on
+    this->updated_on
   }
 
   // Returns true if ( usr is allowed to edit the page, otherwise false) {
@@ -164,11 +164,11 @@ class WikiPage : public ActiveRecord::Base {
   }
 
    void parent_title() {
-    @parent_title || (parent && parent.title)
+    this->parent_title || (parent && parent.title)
   }
 
    void parent_title=(t) {
-    @parent_title = t
+    this->parent_title = t
     parent_page = t.blank? ? nil : wiki.find_page(t)
     this->parent = parent_page
   }
@@ -217,7 +217,7 @@ class WikiPage : public ActiveRecord::Base {
   protected:
 
    void validate_consistency_of_parent_title() {
-    errors.add(:parent_title, :invalid) if ( @parent_title.present? && parent.nil?) {
+    errors.add(:parent_title, :invalid) if ( this->parent_title.present? && parent.nil?) {
   }
 
    void validate_non_circular_dependency() {
@@ -233,8 +233,8 @@ class WikiDiff : public Redmine::Helpers::Diff {
   attr_reader :content_to, :content_from
 
    WikiDiff(content_to, content_from) {
-    @content_to = content_to
-    @content_from = content_from
+    this->content_to = content_to
+    this->content_from = content_from
     super(content_to.data.text, content_from.data.text)
   }
 }
@@ -243,10 +243,10 @@ class WikiAnnotate
   attr_reader :lines, :content
 
    WikiAnnotate(content) {
-    @content = content
+    this->content = content
     current = content
     current_lines = current.data.text.split(/\r?\n/)
-    @lines = current_lines.map { |t| [nil, nil, t] }
+    this->lines = current_lines.map { |t| [nil, nil, t] }
     positions = []
     current_lines.size.times { |i| positions << i }
     while (current.previous){
@@ -255,9 +255,9 @@ class WikiAnnotate
         sign = s[0]
         line = s[1]
         if ( sign == '+' && positions[line] && positions[line] != -1) {
-          if ( @lines[positions[line]][0].nil?) {
-            @lines[positions[line]][0] = current.version
-            @lines[positions[line]][1] = current.data.author
+          if ( this->lines[positions[line]][0].nil?) {
+            this->lines[positions[line]][0] = current.version
+            this->lines[positions[line]][1] = current.data.author
           }
         }
       }
@@ -272,9 +272,9 @@ class WikiAnnotate
       }
       positions.compact!
       // Stop if ( every line is annotated) {
-      break unless @lines.detect { |line| line[0].nil? }
+      break unless this->lines.detect { |line| line[0].nil? }
       current = current.previous
     }
-    @lines.each { |line| line[0] ||= current.version }
+    this->lines.each { |line| line[0] ||= current.version }
   }
 }

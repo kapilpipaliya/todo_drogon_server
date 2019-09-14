@@ -7,8 +7,8 @@ namespace BaseServices {
                 :model
 
      Update(user:, model:, contract_class: nil) {
-      @user = user
-      @model = model
+      this->user = user
+      this->model = model
       this->contract_class = contract_class || default_contract_class
     }
 

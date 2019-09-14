@@ -52,12 +52,12 @@ namespace ::Query::Sums {
   }
 
    void caching_issue(issue) {
-    @cached_issue = issue unless @cached_issue == issue
+    this->cached_issue = issue unless this->cached_issue == issue
     block_given? ? yield(issue) : issue
   }
 
    void cached_issue() {
-    @cached_issue
+    this->cached_issue
   }
 
    void mapping_for(column) {
@@ -65,7 +65,7 @@ namespace ::Query::Sums {
       method(:number_to_currency)
     else
       // respond_to? :call, but do nothing
-      @nilproc ||= Proc.new { |val| val }
+      this->nilproc ||= Proc.new { |val| val }
     }
   }
 
@@ -74,7 +74,7 @@ namespace ::Query::Sums {
     Float(format '%.2f', num.to_f)
   }
 
-   void group_for_issue(issue = @current_issue) {
+   void group_for_issue(issue = this->current_issue) {
     caching_issue issue { |issue|
       work_packages.select { |is|
         query.group_by_column.value(issue) == query.group_by_column.value(is)

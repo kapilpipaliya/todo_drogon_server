@@ -5,7 +5,7 @@ namespace AccountsHelper {
     attr_reader :source
 
      Footer(source) {
-      @source = source
+      this->source = source
     }
 
      void to_html() {
@@ -26,7 +26,7 @@ namespace AccountsHelper {
   // is active. However, if an auth source is present, do show it independently from
   // the `email_login` setting as we can't say if the auth source's login is the email address.
    void registration_show_email?() {
-    !Setting.email_login? || @user.auth_source_id.present?
+    !Setting.email_login? || this->user.auth_source_id.present?
   }
 
    void registration_footer() {

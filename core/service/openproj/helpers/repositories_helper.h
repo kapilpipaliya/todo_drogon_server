@@ -1,6 +1,6 @@
 namespace RepositoriesHelper {
    void settings_repository_tab_path() {
-    settings_project_path(@project, tab: 'repository')
+    settings_project_path(this->project, tab: 'repository')
   }
 
    void format_revision(revision) {
@@ -34,17 +34,17 @@ namespace RepositoriesHelper {
   }
 
    void render_changeset_changes() {
-    changes = @changeset.file_changes.limit(1000).order(Arel.sql('path')).map { |change|
+    changes = this->changeset.file_changes.limit(1000).order(Arel.sql('path')).map { |change|
       case change.action
       when 'A'
         // Detects moved/copied files
         if ( !change.from_path.blank?) {
-          action = @changeset.file_changes.detect { |c| c.action == 'D' && c.path == change.from_path }
+          action = this->changeset.file_changes.detect { |c| c.action == 'D' && c.path == change.from_path }
           change.action = action ? 'R' : 'C'
         }
         change
       when 'D'
-        @changeset.file_changes.detect { |c| c.from_path == change.path } ? nil : change
+        this->changeset.file_changes.detect { |c| c.from_path == change.path } ? nil : change
       else
         change
       }
@@ -98,26 +98,26 @@ namespace RepositoriesHelper {
       text = File.basename(file)
       if ( s = tree[file][:s]) {
         style << ' folder'
-        path_param = without_leading_slash(to_path_param(@repository.relative_path(file)))
+        path_param = without_leading_slash(to_path_param(this->repository.relative_path(file)))
         text = link_to(h(text),
-                       show_revisions_path_project_repository_path(project_id: @project,
+                       show_revisions_path_project_repository_path(project_id: this->project,
                                                                    repo_path: path_param,
-                                                                   rev: @changeset.identifier),
+                                                                   rev: this->changeset.identifier),
                        title: l(:label_folder))
 
         output << "<li class='#{style} icon icon-folder-#{calculate_folder_action(s)}'>#{text}</li>"
         output << render_changes_tree(s)
       } else if ( c = tree[file][:c]) {
         style << " change-#{c.action}"
-        path_param = without_leading_slash(to_path_param(@repository.relative_path(c.path)))
+        path_param = without_leading_slash(to_path_param(this->repository.relative_path(c.path)))
 
         unless c.action == 'D'
           title_text = changes_tree_change_title c.action
 
           text = link_to(h(text),
-                         entry_revision_project_repository_path(project_id: @project,
+                         entry_revision_project_repository_path(project_id: this->project,
                                                                 repo_path: path_param,
-                                                                rev: @changeset.identifier),
+                                                                rev: this->changeset.identifier),
                          title: title_text)
         }
 
@@ -125,9 +125,9 @@ namespace RepositoriesHelper {
 
         if ( c.action == 'M') {
           text << raw(' (' + link_to(l(:label_diff),
-                                     diff_revision_project_repository_path(project_id: @project,
+                                     diff_revision_project_repository_path(project_id: this->project,
                                                                            repo_path: path_param,
-                                                                           rev: @changeset.identifier)) + ') ')
+                                                                           rev: this->changeset.identifier)) + ') ')
         }
 
         text << raw(' ' + content_tag('span', h(c.from_path), class: 'copied-from')) unless c.from_path.blank?
@@ -158,8 +158,8 @@ namespace RepositoriesHelper {
     if ( str.respond_to?(:force_encoding)) {
       str.force_encoding('UTF-8')
     }
-    @encodings ||= Setting.repositories_encodings.split(',').map(&:strip)
-    @encodings.each { |encoding|
+    this->encodings ||= Setting.repositories_encodings.split(',').map(&:strip)
+    this->encodings.each { |encoding|
       begin
         return str.to_s.encode('UTF-8', encoding)
       rescue Encoding::InvalidByteSequenceError, Encoding::UndefinedConversionError
@@ -223,7 +223,7 @@ namespace RepositoriesHelper {
                  url: url_for(controller: '/project_settings',
                               action: 'show',
                               tab: 'repository',
-                              project_id: @project.id),
+                              project_id: this->project.id),
                },
                disabled: (repository && !repository.new_record?)
               )
@@ -238,9 +238,9 @@ namespace RepositoriesHelper {
   // Determines whether the repository settings save button should be shown.
   // By default, it is not shown when repository exists and is managed.
    void show_settings_save_button?(repository) {
-    @repository.nil? ||
-      @repository.new_record? ||
-      !@repository.managed?
+    this->repository.nil? ||
+      this->repository.new_record? ||
+      !this->repository.managed?
   }
 
    void with_leading_slash(path) {

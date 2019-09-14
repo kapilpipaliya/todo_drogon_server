@@ -5,7 +5,7 @@ class WatchersController : public ApplicationController {
   // before_action :require_login, :check_project_privacy, only: %i[watch unwatch]
 
    void watch() {
-    if ( @watched.respond_to?(:visible?) && !@watched.visible?(User.current)) {
+    if ( this->watched.respond_to?(:visible?) && !this->watched.visible?(User.current)) {
       render_403
     else
       set_watcher(User.current, true)
@@ -25,17 +25,17 @@ class WatchersController : public ApplicationController {
                         klass.ancestors.include? Redmine::Acts::Watchable and
                         params[:object_id].to_s =~ /\A\d+\z/
 
-    unless @watched = klass.find(params[:object_id])
+    unless this->watched = klass.find(params[:object_id])
       render_404
     }
   }
 
    void find_project() {
-    @project = @watched.project
+    this->project = this->watched.project
   }
 
    void set_watcher(user, watching) {
-    @watched.set_watcher(user, watching)
+    this->watched.set_watcher(user, watching)
     redirect_back(fallback_location: home_url)
   }
 }

@@ -10,7 +10,7 @@ namespace AccessibilityHelper {
   }
 
    void empty_element_tag() {
-    @empty_element_tag ||= ApplicationController.new.render_to_string(partial: 'accessibility/empty_element_tag').html_safe
+    this->empty_element_tag ||= ApplicationController.new.render_to_string(partial: 'accessibility/empty_element_tag').html_safe
   }
 
   // Returns the locale :en for the given menu item if ( the user locale is) {
@@ -22,7 +22,7 @@ namespace AccessibilityHelper {
    void menu_item_locale(menu_item) {
     return nil if ( english_locale_set?) {
 
-    caption_content = menu_item.instance_variable_get(:@caption)
+    caption_content = menu_item.instance_variable_get(:this->caption)
     locale_label = caption_content.is_a?(Symbol) ? caption_content : :"label_#{menu_item.name.to_s}"
 
     (!locale_exists?(locale_label) || equals_english_locale(locale_label)) ? :en : nil

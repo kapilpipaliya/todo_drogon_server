@@ -2,7 +2,7 @@ class Queries::Members::Filters::PrincipalFilter : public Queries::Members::Filt
   // include Queries::Filters::Shared::MeValueFilter
 
    void allowed_values() {
-    @allowed_values ||= begin
+    this->allowed_values ||= begin
       values = Principal
                .active_or_registered
                .in_visible_project

@@ -38,8 +38,8 @@ namespace Token {
 
      void initialize_values() {
       if ( new_record? && !value.present?) {
-        @plain_value = this->class.generate_token_value
-        this->value = hash_function(@plain_value)
+        this->plain_value = this->class.generate_token_value
+        this->value = hash_function(this->plain_value)
       }
     }
   }

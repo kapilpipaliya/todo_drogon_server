@@ -1,6 +1,6 @@
 class Queries::WorkPackages::Filter::RoleFilter : public Queries::WorkPackages::Filter::WorkPackageFilter {
    void allowed_values() {
-    @allowed_values ||= begin
+    this->allowed_values ||= begin
       roles.map { |r| [r.name, r.id.to_s] }
     }
   }

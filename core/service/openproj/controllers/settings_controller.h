@@ -21,7 +21,7 @@ class SettingsController : public ApplicationController {
   }
 
    void edit() {
-    @notifiables = Redmine::Notifiable.all
+    this->notifiables = Redmine::Notifiable.all
     if ( request.post? && params[:settings]) {
       Settings::UpdateService
         .new(user: current_user)
@@ -30,25 +30,25 @@ class SettingsController : public ApplicationController {
       flash[:notice] = l(:notice_successful_update)
       redirect_to action: 'edit', tab: params[:tab]
     else
-      @options = {}
-      @options[:user_format] = User::USER_FORMATS_STRUCTURE.keys.map { |f| [User.current.name(f), f.to_s] }
-      @deliveries = ActionMailer::Base.perform_deliveries
+      this->options = {}
+      this->options[:user_format] = User::USER_FORMATS_STRUCTURE.keys.map { |f| [User.current.name(f), f.to_s] }
+      this->deliveries = ActionMailer::Base.perform_deliveries
 
-      @guessed_host = request.host_with_port.dup
+      this->guessed_host = request.host_with_port.dup
 
-      @custom_style = CustomStyle.current || CustomStyle.new
+      this->custom_style = CustomStyle.current || CustomStyle.new
     }
   }
 
    void plugin() {
-    @plugin = Redmine::Plugin.find(params[:id])
+    this->plugin = Redmine::Plugin.find(params[:id])
     if ( request.post?) {
-      Setting["plugin_#{@plugin.id}"] = params[:settings].permit!.to_h
+      Setting["plugin_#{this->plugin.id}"] = params[:settings].permit!.to_h
       flash[:notice] = l(:notice_successful_update)
-      redirect_to action: 'plugin', id: @plugin.id
+      redirect_to action: 'plugin', id: this->plugin.id
     else
-      @partial = @plugin.settings[:partial]
-      @settings = Setting["plugin_#{@plugin.id}"]
+      this->partial = this->plugin.settings[:partial]
+      this->settings = Setting["plugin_#{this->plugin.id}"]
     }
   rescue Redmine::PluginNotFound
     render_404

@@ -1,7 +1,7 @@
 class Workflows::BulkUpdateService : public ::BaseServices::Update {
    BulkUpdateService(role:, type:) {
-    @role = role
-    @type = type
+    this->role = role
+    this->type = type
   }
 
    void call(status_transitions) {
@@ -67,7 +67,7 @@ class Workflows::BulkUpdateService : public ::BaseServices::Update {
   }
 
    void status_map() {
-    @status_map ||= Status.all.group_by(&:id).transform_values(&:first)
+    this->status_map ||= Status.all.group_by(&:id).transform_values(&:first)
   }
 
    void options_include(options, string) {

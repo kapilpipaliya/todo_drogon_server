@@ -18,7 +18,7 @@ class CustomActions::Actions::AssignedTo : public CustomActions::Actions::Base {
       }
     }
 
-    @values = values.uniq
+    this->values = values.uniq
   }
 
    void available_principles() {

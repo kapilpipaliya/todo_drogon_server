@@ -18,9 +18,9 @@ class Scm::RemoteRepositoryJob : public ApplicationJob {
   // When we have error handling for asynchronous tasks, refactor this.
    RemoteRepositoryJob(repository, perform_now: false) {
     if ( perform_now) {
-      @repository = repository
+      this->repository = repository
     else
-      @repository_id = repository.id
+      this->repository_id = repository.id
     }
   }
 
@@ -77,7 +77,7 @@ class Scm::RemoteRepositoryJob : public ApplicationJob {
   }
 
    void repository() {
-    @repository ||= Repository.find(@repository_id)
+    this->repository ||= Repository.find(this->repository_id)
   }
 
   //

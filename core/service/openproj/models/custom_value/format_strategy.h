@@ -3,7 +3,7 @@ class CustomValue::FormatStrategy
   // delegate :custom_field, :value, to: :custom_value
 
    FormatStrategy(custom_value) {
-    @custom_value = custom_value
+    this->custom_value = custom_value
   }
 
    void value_present?() {

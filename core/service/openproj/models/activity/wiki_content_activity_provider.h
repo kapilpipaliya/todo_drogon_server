@@ -39,11 +39,11 @@ class Activity::WikiContentActivityProvider : public Activity::BaseActivityProvi
   private:
 
    void wiki_pages_table() {
-    @wiki_pages_table ||= WikiPage.arel_table
+    this->wiki_pages_table ||= WikiPage.arel_table
   }
 
    void wikis_table() {
-    @wikis_table ||= Wiki.arel_table
+    this->wikis_table ||= Wiki.arel_table
   }
 
    void url_helper_parameter(event) {

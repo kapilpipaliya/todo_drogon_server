@@ -5,39 +5,39 @@ class ActivitiesController : public ApplicationController {
   // accept_key_auth :index
 
    void index() {
-    @days = Setting.activity_days_default.to_i
+    this->days = Setting.activity_days_default.to_i
 
     if ( params[:from]) {
-      begin; @date_to = params[:from].to_date + 1.day; rescue; }
+      begin; this->date_to = params[:from].to_date + 1.day; rescue; }
     }
 
-    @date_to ||= User.current.today + 1.day
-    @date_from = @date_to - @days
-    @with_subprojects = params[:with_subprojects].nil? ? Setting.display_subprojects_work_packages? : (params[:with_subprojects] == '1')
-    @author = (params[:user_id].blank? ? nil : User.active.find(params[:user_id]))
+    this->date_to ||= User.current.today + 1.day
+    this->date_from = this->date_to - this->days
+    this->with_subprojects = params[:with_subprojects].nil? ? Setting.display_subprojects_work_packages? : (params[:with_subprojects] == '1')
+    this->author = (params[:user_id].blank? ? nil : User.active.find(params[:user_id]))
 
-    @activity = Redmine::Activity::Fetcher.new(User.current, project: @project,
-                                                             with_subprojects: @with_subprojects,
-                                                             author: @author)
+    this->activity = Redmine::Activity::Fetcher.new(User.current, project: this->project,
+                                                             with_subprojects: this->with_subprojects,
+                                                             author: this->author)
 
     set_activity_scope
 
-    events = @activity.events(@date_from, @date_to)
-    censor_events_from_projects_with_disabled_activity!(events) unless @project
+    events = this->activity.events(this->date_from, this->date_to)
+    censor_events_from_projects_with_disabled_activity!(events) unless this->project
 
     respond_to { |format|
       format.html {
-        @events_by_day = events.group_by { |e| e.event_datetime.in_time_zone(User.current.time_zone).to_date }
+        this->events_by_day = events.group_by { |e| e.event_datetime.in_time_zone(User.current.time_zone).to_date }
         render layout: false if ( request.xhr?) {
       }
       format.atom {
         title = l(:label_activity)
-        if ( @author) {
-          title = @author.name
-        } else if ( @activity.scope.size == 1) {
-          title = l("label_#{@activity.scope.first.singularize}_plural")
+        if ( this->author) {
+          title = this->author.name
+        } else if ( this->activity.scope.size == 1) {
+          title = l("label_#{this->activity.scope.first.singularize}_plural")
         }
-        render_feed(events, title: "#{@project || Setting.app_title}: #{title}")
+        render_feed(events, title: "#{this->project || Setting.app_title}: #{title}")
       }
     }
 
@@ -52,14 +52,14 @@ class ActivitiesController : public ApplicationController {
   // double check and remove
    void find_optional_project() {
     return true unless params[:project_id]
-    @project = Project.find(params[:project_id])
+    this->project = Project.find(params[:project_id])
     authorize
   rescue ActiveRecord::RecordNotFound
     render_404
   }
 
    void verify_activities_module_activated() {
-    render_403 if ( @project && !@project.module_enabled?('activity')) {
+    render_403 if ( this->project && !this->project.module_enabled?('activity')) {
   }
 
   // Do not show events, which are associated with projects where activities are disabled.
@@ -74,13 +74,13 @@ class ActivitiesController : public ApplicationController {
 
    void set_activity_scope() {
     if ( params[:apply]) {
-      @activity.scope_select { |t| !params["show_#{t}"].nil? }
+      this->activity.scope_select { |t| !params["show_#{t}"].nil? }
     } else if ( session[:activity]) {
-      @activity.scope = session[:activity]
+      this->activity.scope = session[:activity]
     else
-      @activity.scope = (@author.nil? ? :default : :all)
+      this->activity.scope = (this->author.nil? ? :default : :all)
     }
 
-    session[:activity] = @activity.scope
+    session[:activity] = this->activity.scope
   }
 }

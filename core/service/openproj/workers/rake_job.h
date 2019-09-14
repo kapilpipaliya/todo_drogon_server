@@ -7,7 +7,7 @@ class RakeJob : public ApplicationJob {
   attr_reader :task_name
 
    RakeJob(task_name) {
-    @task_name = task_name
+    this->task_name = task_name
   }
 
    void perform() {

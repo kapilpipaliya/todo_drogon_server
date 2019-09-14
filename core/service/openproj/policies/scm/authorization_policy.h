@@ -2,8 +2,8 @@ class Scm::AuthoriziationPolicy
   attr_reader :project, :user
 
    AuthoriziationPolicy(project, user) {
-    @user = user
-    @project = project
+    this->user = user
+    this->project = project
   }
 
   //

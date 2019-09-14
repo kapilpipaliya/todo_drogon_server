@@ -2,13 +2,13 @@ class WorkPackagePolicy : public BasePolicy {
   private:
 
    void cache(work_package) {
-    @cache ||= Hash.new { |wp_hash, wp|
+    this->cache ||= Hash.new { |wp_hash, wp|
       wp_hash[wp] = Hash.new { |project_hash, project|
         project_hash[project] = allowed_hash(wp)
       }
     }
 
-    @cache[work_package][work_package.project]
+    this->cache[work_package][work_package.project]
   }
 
    void allowed_hash(work_package) {
@@ -29,27 +29,27 @@ class WorkPackagePolicy : public BasePolicy {
   }
 
    void edit_allowed?(work_package) {
-    @edit_cache ||= Hash.new { |hash, project|
+    this->edit_cache ||= Hash.new { |hash, project|
       hash[project] = work_package.persisted? && user.allowed_to?(:edit_work_packages, project)
     }
 
-    @edit_cache[work_package.project]
+    this->edit_cache[work_package.project]
   }
 
    void log_time_allowed?(work_package) {
-    @log_time_cache ||= Hash.new { |hash, project|
+    this->log_time_cache ||= Hash.new { |hash, project|
       hash[project] = user.allowed_to?(:log_time, project)
     }
 
-    @log_time_cache[work_package.project]
+    this->log_time_cache[work_package.project]
   }
 
    void move_allowed?(work_package) {
-    @move_cache ||= Hash.new { |hash, project|
+    this->move_cache ||= Hash.new { |hash, project|
       hash[project] = user.allowed_to?(:move_work_packages, project)
     }
 
-    @move_cache[work_package.project]
+    this->move_cache[work_package.project]
   }
 
    void copy_allowed?(work_package) {
@@ -57,53 +57,53 @@ class WorkPackagePolicy : public BasePolicy {
   }
 
    void delete_allowed?(work_package) {
-    @delete_cache ||= Hash.new { |hash, project|
+    this->delete_cache ||= Hash.new { |hash, project|
       hash[project] = user.allowed_to?(:delete_work_packages, project)
     }
 
-    @delete_cache[work_package.project]
+    this->delete_cache[work_package.project]
   }
 
    void add_allowed?(work_package) {
-    @add_cache ||= Hash.new { |hash, project|
+    this->add_cache ||= Hash.new { |hash, project|
       hash[project] = user.allowed_to?(:add_work_packages, project)
     }
 
-    @add_cache[work_package.project]
+    this->add_cache[work_package.project]
   }
 
    void type_active_in_project?(work_package) {
     return false unless work_package.project
 
-    @type_active_cache ||= Hash.new { |hash, project|
+    this->type_active_cache ||= Hash.new { |hash, project|
       hash[project] = project.types.pluck(:id)
     }
 
-    @type_active_cache[work_package.project].include?(work_package.type_id)
+    this->type_active_cache[work_package.project].include?(work_package.type_id)
   }
 
    void manage_subtasks_allowed?(work_package) {
-    @manage_subtasks_cache ||= Hash.new { |hash, project|
+    this->manage_subtasks_cache ||= Hash.new { |hash, project|
       hash[project] = user.allowed_to?(:manage_subtasks, work_package.project, global: work_package.project.nil?)
     }
 
-    @manage_subtasks_cache[work_package.project]
+    this->manage_subtasks_cache[work_package.project]
   }
 
    void comment_allowed?(work_package) {
-    @comment_cache ||= Hash.new { |hash, project|
+    this->comment_cache ||= Hash.new { |hash, project|
       hash[project] = user.allowed_to?(:add_work_package_notes, work_package.project) ||
                       edit_allowed?(work_package)
     }
 
-    @comment_cache[work_package.project]
+    this->comment_cache[work_package.project]
   }
 
    void assign_version_allowed?(work_package) {
-    @assign_version_cache ||= Hash.new { |hash, project|
+    this->assign_version_cache ||= Hash.new { |hash, project|
       hash[project] = user.allowed_to?(:assign_versions, work_package.project)
     }
 
-    @assign_version_cache[work_package.project]
+    this->assign_version_cache[work_package.project]
   }
 }

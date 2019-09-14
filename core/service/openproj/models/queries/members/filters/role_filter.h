@@ -1,6 +1,6 @@
 class Queries::Members::Filters::RoleFilter : public Queries::Members::Filters::MemberFilter {
    void allowed_values() {
-    @allowed_values ||= begin
+    this->allowed_values ||= begin
       Role.pluck(:name, :id).map { |name, id| [name, id] }
     }
   }

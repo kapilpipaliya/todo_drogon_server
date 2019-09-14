@@ -70,7 +70,7 @@ class Activity::ChangesetActivityProvider : public Activity::BaseActivityProvide
   private:
 
    void repositories_table() {
-    @repositories_table ||= Repository.arel_table
+    this->repositories_table ||= Repository.arel_table
   }
 
    void format_revision(event) {

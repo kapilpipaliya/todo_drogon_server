@@ -93,10 +93,10 @@ class User : public Principal {
   // validates_uniqueness_of :login, if (: Proc.new { |user| !user.login.blank? }, case_sensitive: false) {
   // validates_uniqueness_of :mail, allow_blank: true, case_sensitive: false
   // Login must contain letters, numbers, underscores only
-  // validates_format_of :login, with: /\A[a-z0-9_\-@\.+ ]*\z/i
+  // validates_format_of :login, with: /\A[a-z0-9_\-this->\.+ ]*\z/i
   // validates_length_of :login, maximum: 256
   // validates_length_of :firstname, :lastname, maximum: 30
-  // validates_format_of :mail, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, allow_blank: true
+  // validates_format_of :mail, with: /\A([^this->\s]+)this->((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, allow_blank: true
   // validates_length_of :mail, maximum: 60, allow_nil: true
   // validates_confirmation_of :password, allow_nil: true
   // validates_inclusion_of :mail_notification, in: MAIL_NOTIFICATION_OPTIONS.map(&:first), allow_blank: true
@@ -167,10 +167,10 @@ class User : public Principal {
   }
 
    void reload(*args) {
-    @name = nil
-    @projects_by_role = nil
-    @authorization_service = ::Authorization::UserAllowedService.new(self)
-    @project_role_cache = ::User::ProjectRoleCache.new(self)
+    this->name = nil
+    this->projects_by_role = nil
+    this->authorization_service = ::Authorization::UserAllowedService.new(self)
+    this->project_role_cache = ::User::ProjectRoleCache.new(self)
 
     super
   }
@@ -415,7 +415,7 @@ class User : public Principal {
   }
 
    void time_zone() {
-    @time_zone ||= (pref.time_zone.blank? ? nil : ActiveSupport::TimeZone[pref.time_zone])
+    this->time_zone ||= (pref.time_zone.blank? ? nil : ActiveSupport::TimeZone[pref.time_zone])
   }
 
    void wants_comments_in_reverse_order?() {
@@ -424,7 +424,7 @@ class User : public Principal {
 
   // Return an array of project ids for which the user has explicitly turned mail notifications on
    void notified_projects_ids() {
-    @notified_projects_ids ||= memberships.reload.select(&:mail_notification?).map(&:project_id)
+    this->notified_projects_ids ||= memberships.reload.select(&:mail_notification?).map(&:project_id)
   }
 
    void notified_project_ids=(ids) {
@@ -438,7 +438,7 @@ class User : public Principal {
         .update_all(mail_notification: true)
     }
 
-    @notified_projects_ids = nil
+    this->notified_projects_ids = nil
     notified_projects_ids
   }
 
@@ -448,7 +448,7 @@ class User : public Principal {
 
   // Only users that belong to more than 1 project can select projects for which they are notified
    void valid_notification_options(user = nil) {
-    // Note that @user.membership.size would fail since AR ignores
+    // Note that this->user.membership.size would fail since AR ignores
     // :include association option when doing a count
     if ( user.nil? || user.memberships.length < 1) {
       MAIL_NOTIFICATION_OPTIONS.reject { |option| option.first == 'selected' }
@@ -559,19 +559,19 @@ class User : public Principal {
 
   // Returns a hash of user's projects grouped by roles
    void projects_by_role() {
-    return @projects_by_role if ( @projects_by_role) {
+    return this->projects_by_role if ( this->projects_by_role) {
 
-    @projects_by_role = Hash.new { |h, k| h[k] = [] }
+    this->projects_by_role = Hash.new { |h, k| h[k] = [] }
     memberships.each { |membership|
       membership.roles.each { |role|
-        @projects_by_role[role] << membership.project if ( membership.project) {
+        this->projects_by_role[role] << membership.project if ( membership.project) {
       }
     }
-    @projects_by_role.each { |_role, projects|
+    this->projects_by_role.each { |_role, projects|
       projects.uniq!
     }
 
-    @projects_by_role
+    this->projects_by_role
   }
 
   // Returns true if user is arg or belongs to arg
@@ -721,19 +721,19 @@ class User : public Principal {
 
    void mail_regexp(mail) {
     separators = Regexp.escape(Setting.mail_suffix_separators)
-    recipient, domain = mail.split('@').map { |part| Regexp.escape(part) }
+    recipient, domain = mail.split('this->').map { |part| Regexp.escape(part) }
     skip_suffix_check = recipient.nil? || Setting.mail_suffix_separators.empty? || recipient.match?(/.+[#{separators}].+/)
-    regexp = "#{recipient}([#{separators}][^@]+)*@#{domain}"
+    regexp = "#{recipient}([#{separators}][^this->]+)*this->#{domain}"
 
     [skip_suffix_check, regexp]
   }
 
    void authorization_service() {
-    @authorization_service ||= ::Authorization::UserAllowedService.new(self, role_cache: project_role_cache)
+    this->authorization_service ||= ::Authorization::UserAllowedService.new(self, role_cache: project_role_cache)
   }
 
    void project_role_cache() {
-    @project_role_cache ||= ::User::ProjectRoleCache.new(self)
+    this->project_role_cache ||= ::User::ProjectRoleCache.new(self)
   }
 
    void former_passwords_include?(password) {

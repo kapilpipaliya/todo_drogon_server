@@ -5,14 +5,14 @@ class AnnouncementsController : public ApplicationController {
   // before_action :require_admin
 
    void edit() {
-    @announcement = Announcement.only_one
+    this->announcement = Announcement.only_one
   }
 
    void update() {
-    @announcement = Announcement.only_one
-    @announcement.attributes = announcement_params
+    this->announcement = Announcement.only_one
+    this->announcement.attributes = announcement_params
 
-    if ( @announcement.save) {
+    if ( this->announcement.save) {
       flash[:notice] = t(:notice_successful_update)
     }
 

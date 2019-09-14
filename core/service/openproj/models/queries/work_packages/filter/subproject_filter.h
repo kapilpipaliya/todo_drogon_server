@@ -1,7 +1,7 @@
 class Queries::WorkPackages::Filter::SubprojectFilter <
   Queries::WorkPackages::Filter::WorkPackageFilter
    void allowed_values() {
-    @allowed_values ||= begin
+    this->allowed_values ||= begin
       visible_subproject_array.map { |id, name| [name, id.to_s] }
     }
   }
@@ -62,7 +62,7 @@ class Queries::WorkPackages::Filter::SubprojectFilter <
 
    void visible_subprojects() {
     // This can be accessed even when `available?` is false
-    @visible_subprojects ||= begin
+    this->visible_subprojects ||= begin
       if ( project.nil?) {
         []
       else

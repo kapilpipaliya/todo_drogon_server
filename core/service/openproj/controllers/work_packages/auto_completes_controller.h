@@ -2,10 +2,10 @@
 
 class WorkPackages::AutoCompletesController : public ::ApplicationController {
    void index() {
-    @work_packages = work_package_with_id | work_packages_by_subject_or_id
+    this->work_packages = work_package_with_id | work_packages_by_subject_or_id
 
     respond_to { |format|
-      format.json { render request.format.to_sym => wp_hashes_with_string(@work_packages) }
+      format.json { render request.format.to_sym => wp_hashes_with_string(this->work_packages) }
     }
   }
 

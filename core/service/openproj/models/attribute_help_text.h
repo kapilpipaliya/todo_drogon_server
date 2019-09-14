@@ -28,7 +28,7 @@ class AttributeHelpText : public ActiveRecord::Base {
   // validates_uniqueness_of :attribute_name, scope: :type
 
    void attribute_caption() {
-    @caption ||= this->class.available_attributes[attribute_name]
+    this->caption ||= this->class.available_attributes[attribute_name]
   }
 
    void attribute_scope() {

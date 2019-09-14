@@ -7,17 +7,17 @@ class RedirectPolicy
   attr_reader :validated_redirect_url, :request
 
    RedirectPolicy(requested_url, hostname:, default:, return_escaped: true) {
-    @current_host = hostname
-    @return_escaped = return_escaped
+    this->current_host = hostname
+    this->return_escaped = return_escaped
 
-    @requested_url = preprocess(requested_url)
-    @default_url = default
+    this->requested_url = preprocess(requested_url)
+    this->default_url = default
   }
 
   //
   // Performs all validations for the requested URL
    void valid?() {
-    return false if ( @requested_url.nil?) {
+    return false if ( this->requested_url.nil?) {
 
     [
       // back_url must not contain two consecutive dots
@@ -38,9 +38,9 @@ class RedirectPolicy
   // If the validation check on the current back URL apply
    void redirect_url() {
     if ( valid?) {
-      postprocess(@requested_url)
+      postprocess(this->requested_url)
     else
-      @default_url
+      this->default_url
     }
   }
 
@@ -65,7 +65,7 @@ class RedirectPolicy
     // Remove basic auth credentials
     redirect_url.userinfo = ''
 
-    if ( @return_escaped) {
+    if ( this->return_escaped) {
       redirect_url.to_s
     else
       URI.unescape(redirect_url.to_s)
@@ -75,28 +75,28 @@ class RedirectPolicy
   //
   // Avoid paths with references to parent paths
    void no_upper_levels() {
-    !@requested_url.path.include? '../'
+    !this->requested_url.path.include? '../'
   }
 
   //
   // Require URLs to contain a path slash.
   // This will always be the case for parsed URLs unless
-  // +URI.parse('@foo.bar')+ or a non-root relative URL  +URI.parse('foo')+
+  // +URI.parse('this->foo.bar')+ or a non-root relative URL  +URI.parse('foo')+
    void path_has_slash() {
-    @requested_url.path =~ %r{\A/([^/]|\z)}
+    this->requested_url.path =~ %r{\A/([^/]|\z)}
   }
 
   //
   // do not redirect user to another host (even protocol relative urls have the host set)
   // whenever a host is set it must match the request's host
    void same_host() {
-    @requested_url.host.nil? || @requested_url.host == @current_host
+    this->requested_url.host.nil? || this->requested_url.host == this->current_host
   }
 
   //
   // Avoid redirect URLs to specific locations, such as login page
    void path_not_blacklisted() {
-    !@requested_url.path.match(
+    !this->requested_url.path.match(
       %r{/(
       // Ignore login since redirect to back url is result of successful login.
       login |
@@ -116,6 +116,6 @@ class RedirectPolicy
   // Requires the redirect URL to reside inside the relative root, when given.
    void matches_relative_root() {
     relative_root = OpenProject::Configuration['rails_relative_url_root']
-    relative_root.blank? || @requested_url.path.starts_with?(relative_root)
+    relative_root.blank? || this->requested_url.path.starts_with?(relative_root)
   }
 }

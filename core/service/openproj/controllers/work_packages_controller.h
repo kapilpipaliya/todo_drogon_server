@@ -39,7 +39,7 @@ class WorkPackagesController : public ApplicationController {
    void index() {
     respond_to { |format|
       format.html {
-        render :index, locals: { query: @query, project: @project, menu_name: project_or_wp_query_menu },
+        render :index, locals: { query: this->query, project: this->project, menu_name: project_or_wp_query_menu },
                        // layout: 'angular'
       }
 
@@ -62,7 +62,7 @@ class WorkPackagesController : public ApplicationController {
 
    void export_list(mime_type) {
     exporter = WorkPackage::Exporter.for_list(mime_type)
-    exporter.list(@query, params) { |export|
+    exporter.list(this->query, params) { |export|
       render_export_response export, fallback_path: index_redirect_path
     }
   }
@@ -83,8 +83,8 @@ class WorkPackagesController : public ApplicationController {
   }
 
    void atom_list() {
-    render_feed(@work_packages,
-                title: "#{@project || Setting.app_title}: #{l(:label_work_package_plural)}")
+    render_feed(this->work_packages,
+                title: "#{this->project || Setting.app_title}: #{l(:label_work_package_plural)}")
   }
 
   private:
@@ -116,7 +116,7 @@ class WorkPackagesController : public ApplicationController {
 
    void protect_from_unauthorized_export() {
     if ( supported_export_formats.include?(params[:format]) &&) {
-      !User.current.allowed_to?(:export_work_packages, @project, global: @project.nil?)
+      !User.current.allowed_to?(:export_work_packages, this->project, global: this->project.nil?)
 
       deny_access
       false
@@ -128,12 +128,12 @@ class WorkPackagesController : public ApplicationController {
   }
 
    void load_and_validate_query() {
-    @query ||= retrieve_query
+    this->query ||= retrieve_query
 
-    unless @query.valid?
+    unless this->query.valid?
       // Ensure outputting a html response
       request.format = 'html'
-      return render_400(message: @query.errors.full_messages.join(". "))
+      return render_400(message: this->query.errors.full_messages.join(". "))
     }
 
   rescue ActiveRecord::RecordNotFound
@@ -150,15 +150,15 @@ class WorkPackagesController : public ApplicationController {
   }
 
    void project() {
-    @project ||= work_package ? work_package.project : nil
+    this->project ||= work_package ? work_package.project : nil
   }
 
    void work_package() {
-    @work_package ||= WorkPackage.visible(current_user).find_by(id: params[:id])
+    this->work_package ||= WorkPackage.visible(current_user).find_by(id: params[:id])
   }
 
    void journals() {
-    @journals ||= begin
+    this->journals ||= begin
       order =
         if ( current_user.wants_comments_in_reverse_order?) {
           Journal.arel_table['created_at'].desc
@@ -175,17 +175,17 @@ class WorkPackagesController : public ApplicationController {
   }
 
    void index_redirect_path() {
-    if ( @project) {
-      project_work_packages_path(@project)
+    if ( this->project) {
+      project_work_packages_path(this->project)
     else
       work_packages_path
     }
   }
 
    void load_work_packages() {
-    @results = @query.results
-    @work_packages = if ( @query.valid?) {
-                       @results
+    this->results = this->query.results
+    this->work_packages = if ( this->query.valid?) {
+                       this->results
                          .sorted_work_packages
                          .page(page_param)
                          .per_page(per_page_param)

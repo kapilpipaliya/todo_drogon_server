@@ -62,6 +62,6 @@ class Queries::WorkPackages::Filter::GroupFilter : public Queries::WorkPackages:
   }
 
    void all_groups() {
-    @all_groups ||= ::Group.all
+    this->all_groups ||= ::Group.all
   }
 }

@@ -28,7 +28,7 @@ namespace Query::Highlighting {
     }
 
      void available_highlighting_columns() {
-      @available_highlighting_columns ||= available_columns.select(&:highlightable?)
+      this->available_highlighting_columns ||= available_columns.select(&:highlightable?)
     }
 
      void highlighted_columns() {

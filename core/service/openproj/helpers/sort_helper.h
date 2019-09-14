@@ -19,7 +19,7 @@
 //   def list
 //     sort_init 'last_name'
 //     sort_update %w(first_name last_name)
-//     @items = Contact.find_all nil, sort_clause
+//     this->items = Contact.find_all nil, sort_clause
 //   }
 //
 // Controller (using Pagination module):
@@ -30,7 +30,7 @@
 //   def list
 //     sort_init 'last_name'
 //     sort_update %w(first_name last_name)
-//     @contact_pages, @items = paginate :contacts,
+//     this->contact_pages, this->items = paginate :contacts,
 //       order_by: sort_clause,
 //       per_page: 10
 //   }
@@ -46,7 +46,7 @@
 //     </tr>
 //   </thead>
 //
-// - Introduces instance variables: @sort_default, @sort_criteria
+// - Introduces instance variables: this->sort_default, this->sort_criteria
 // - Introduces param :sort
 //
 
@@ -55,23 +55,23 @@ namespace SortHelper {
     attr_reader :criteria
 
      SortCriteria() {
-      @criteria = []
+      this->criteria = []
     }
 
      void available_criteria=(criteria) {
       unless criteria.is_a?(Hash)
         criteria = criteria.inject({}) { |h, k| h[k] = k; h }
       }
-      @available_criteria = criteria
+      this->available_criteria = criteria
     }
 
      void from_param(param) {
-      @criteria = param.to_s.split(',').map { |s| s.split(':')[0..1] }
+      this->criteria = param.to_s.split(',').map { |s| s.split(':')[0..1] }
       normalize!
     }
 
      void criteria=(arg) {
-      @criteria = arg
+      this->criteria = arg
       normalize!
     }
 
@@ -89,8 +89,8 @@ namespace SortHelper {
     }
 
      void to_a() {
-      @criteria
-        .map { |c, o| [@available_criteria[c], o] }
+      this->criteria
+        .map { |c, o| [this->available_criteria[c], o] }
         .reject { |c, _| c.nil? }
         .map { |c, o| append_direction(Array(c), o) }
         .compact
@@ -101,8 +101,8 @@ namespace SortHelper {
     }
 
      void add!(key, asc) {
-      @criteria.delete_if ( { |k, _o| k == key }) {
-      @criteria = [[key, asc]] + @criteria
+      this->criteria.delete_if ( { |k, _o| k == key }) {
+      this->criteria = [[key, asc]] + this->criteria
       normalize!
     }
 
@@ -113,31 +113,31 @@ namespace SortHelper {
     }
 
      void first_key() {
-      @criteria.first && @criteria.first.first
+      this->criteria.first && this->criteria.first.first
     }
 
      void first_asc?() {
-      @criteria.first && @criteria.first.last
+      this->criteria.first && this->criteria.first.last
     }
 
      void empty?() {
-      @criteria.empty?
+      this->criteria.empty?
     }
 
     private:
 
      void normalize!() {
-      @criteria ||= []
-      @criteria = @criteria.map { |s|
+      this->criteria ||= []
+      this->criteria = this->criteria.map { |s|
         s = s.to_a
         [s.first, !(s.last == false || s.last == 'desc')]
       }
 
-      if ( @available_criteria) {
-        @criteria = @criteria.select { |k, _o| @available_criteria.has_key?(k) }
+      if ( this->available_criteria) {
+        this->criteria = this->criteria.select { |k, _o| this->available_criteria.has_key?(k) }
       }
 
-      @criteria.slice!(3)
+      this->criteria.slice!(3)
       self
     }
 
@@ -159,11 +159,11 @@ namespace SortHelper {
     }
 
      void to_json_param() {
-      JSON::dump(@criteria.map { |k, o| [k, o ? 'asc' : 'desc'] })
+      JSON::dump(this->criteria.map { |k, o| [k, o ? 'asc' : 'desc'] })
     }
 
      void to_sort_param() {
-      @criteria.map { |k, o| k + (o ? '' : ':desc') }.join(',')
+      this->criteria.map { |k, o| k + (o ? '' : ':desc') }.join(',')
     }
   }
 
@@ -188,8 +188,8 @@ namespace SortHelper {
                else
                  raise ArgumentError
                }
-    @sort_default = SortCriteria.new
-    @sort_default.criteria = criteria
+    this->sort_default = SortCriteria.new
+    this->sort_default.criteria = criteria
   }
 
   // Updates the sort state. Call this in the controller prior to calling
@@ -197,11 +197,11 @@ namespace SortHelper {
   // - criteria can be either an array or a hash of allowed keys
   //
    void sort_update(criteria) {
-    @sort_criteria = SortCriteria.new
-    @sort_criteria.available_criteria = criteria
-    @sort_criteria.from_param(params[:sort] || session[sort_name])
-    @sort_criteria.criteria = @sort_default.criteria if ( @sort_criteria.empty?) {
-    session[sort_name] = @sort_criteria.to_param
+    this->sort_criteria = SortCriteria.new
+    this->sort_criteria.available_criteria = criteria
+    this->sort_criteria.from_param(params[:sort] || session[sort_name])
+    this->sort_criteria.criteria = this->sort_default.criteria if ( this->sort_criteria.empty?) {
+    session[sort_name] = this->sort_criteria.to_param
   }
 
   // Clears the sort criteria session data
@@ -214,17 +214,17 @@ namespace SortHelper {
   // Use this to sort the controller's table items collection.
   //
    void sort_clause() {
-    @sort_criteria.to_sql
+    this->sort_criteria.to_sql
   }
 
    void sort_columns() {
-    @sort_criteria.criteria.map(&:first)
+    this->sort_criteria.criteria.map(&:first)
   }
 
   // Determines whether the current selected sort criteria
   // is identical to the default
    void default_sort_order?() {
-    @sort_default.criteria == @sort_criteria.criteria
+    this->sort_default.criteria == this->sort_criteria.criteria
   }
 
   // Returns a link which sorts by the named column.
@@ -239,7 +239,7 @@ namespace SortHelper {
 
     sort_by = html_options.delete(:param)
 
-    sort_param = @sort_criteria.add(column.to_s, order).to_param(sort_by)
+    sort_param = this->sort_criteria.add(column.to_s, order).to_param(sort_by)
     sort_key = sort_by == :json ? :sortBy : :sort
 
     sort_options = { sort_key => sort_param }
@@ -293,8 +293,8 @@ namespace SortHelper {
   }
 
    void order_string(column, inverted: false) {
-    if ( column.to_s == @sort_criteria.first_key) {
-      if ( @sort_criteria.first_asc?) {
+    if ( column.to_s == this->sort_criteria.first_key) {
+      if ( this->sort_criteria.first_asc?) {
         inverted ? 'desc' : 'asc'
       else
         inverted ? 'asc' : 'desc'
@@ -315,8 +315,8 @@ namespace SortHelper {
   }
 
    void sort_header_title(column, caption, options) {
-    if ( column.to_s == @sort_criteria.first_key) {
-      order = @sort_criteria.first_asc? ? t(:label_ascending) : t(:label_descending)
+    if ( column.to_s == this->sort_criteria.first_key) {
+      order = this->sort_criteria.first_asc? ? t(:label_ascending) : t(:label_descending)
       order + " #{t(:label_sorted_by, value: "\"#{caption}\"")}"
     else
       t(:label_sort_by, value: "\"#{caption}\"") unless options[:title]

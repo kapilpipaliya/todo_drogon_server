@@ -1,7 +1,7 @@
 class DeliverNotificationJob : public ApplicationJob {
    DeliverNotificationJob(recipient_id, sender_id) {
-    @recipient_id = recipient_id
-    @sender_id = sender_id
+    this->recipient_id = recipient_id
+    this->sender_id = sender_id
   }
 
    void perform() {
@@ -33,10 +33,10 @@ class DeliverNotificationJob : public ApplicationJob {
   }
 
    void recipient() {
-    @recipient ||= User.find_by(id: @recipient_id)
+    this->recipient ||= User.find_by(id: this->recipient_id)
   }
 
    void sender() {
-    @sender ||= User.find_by(id: @sender_id) || DeletedUser.first
+    this->sender ||= User.find_by(id: this->sender_id) || DeletedUser.first
   }
 }

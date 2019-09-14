@@ -20,11 +20,11 @@ class FogFileUploader : public CarrierWave::Uploader::Base {
   }
 
    void remote_file() {
-    @remote_file || file
+    this->remote_file || file
   }
 
    void local_file() {
-    @remote_file ||= file
+    this->remote_file ||= file
     cache_stored_file!
     super
   }

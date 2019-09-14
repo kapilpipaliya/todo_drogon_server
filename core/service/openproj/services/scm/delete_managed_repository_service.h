@@ -15,7 +15,7 @@ class Scm::DeleteManagedRepositoryService : public Scm::BaseRepositoryService {
       delete_local_repository
     }
   rescue OpenProject::Scm::Exceptions::ScmError => e
-    @rejected = e.message
+    this->rejected = e.message
     false
   }
 
@@ -37,7 +37,7 @@ class Scm::DeleteManagedRepositoryService : public Scm::BaseRepositoryService {
 
     true
   rescue SystemCallError => e
-    @rejected = I18n.t('repositories.errors.managed_delete_local',
+    this->rejected = I18n.t('repositories.errors.managed_delete_local',
                        path: repository.root_url,
                        error_message: e.message)
     false
@@ -46,6 +46,6 @@ class Scm::DeleteManagedRepositoryService : public Scm::BaseRepositoryService {
   //
   // Returns the error symbol
    void localized_rejected_reason() {
-    @rejected ||= I18n.t('repositories.errors.managed_delete')
+    this->rejected ||= I18n.t('repositories.errors.managed_delete')
   }
 }

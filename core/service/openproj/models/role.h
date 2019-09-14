@@ -144,11 +144,11 @@ class Role : public ActiveRecord::Base {
   private:
 
    void allowed_permissions() {
-    @allowed_permissions ||= permissions + OpenProject::AccessControl.public_permissions.map(&:name)
+    this->allowed_permissions ||= permissions + OpenProject::AccessControl.public_permissions.map(&:name)
   }
 
    void allowed_actions() {
-    @actions_allowed ||= allowed_permissions.map { |permission|
+    this->actions_allowed ||= allowed_permissions.map { |permission|
       OpenProject::AccessControl.allowed_actions(permission)
     }.flatten
   }

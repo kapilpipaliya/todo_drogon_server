@@ -33,7 +33,7 @@ namespace Projects {
     }
 
      void delete_project!() {
-      OpenProject::Notifications.send('project_deletion_imminent', project: @project_to_destroy)
+      OpenProject::Notifications.send('project_deletion_imminent', project: this->project_to_destroy)
 
       if ( project.destroy) {
         ProjectMailer.delete_project_completed(project, user: user).deliver_now

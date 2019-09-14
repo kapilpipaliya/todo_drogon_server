@@ -46,7 +46,7 @@ class Activity::MessageActivityProvider : public Activity::BaseActivityProvider 
   private:
 
    void forums_table() {
-    @forums_table ||= Forum.arel_table
+    this->forums_table ||= Forum.arel_table
   }
 
    void url_helper_parameter(event) {

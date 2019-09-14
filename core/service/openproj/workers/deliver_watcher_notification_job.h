@@ -1,7 +1,7 @@
 class DeliverWatcherNotificationJob : public DeliverNotificationJob {
 
    DeliverWatcherNotificationJob(watcher_id, recipient_id, watcher_setter_id) {
-    @watcher_id = watcher_id
+    this->watcher_id = watcher_id
 
     super(recipient_id, watcher_setter_id)
   }
@@ -15,6 +15,6 @@ class DeliverWatcherNotificationJob : public DeliverNotificationJob {
   private:
 
    void watcher() {
-    @watcher ||= Watcher.find_by(id: @watcher_id)
+    this->watcher ||= Watcher.find_by(id: this->watcher_id)
   }
 }

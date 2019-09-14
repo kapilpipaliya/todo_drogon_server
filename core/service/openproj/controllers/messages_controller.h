@@ -13,47 +13,47 @@ class MessagesController : public ApplicationController {
 
   // Show a topic and its replies
    void show() {
-    @topic = @message.root
+    this->topic = this->message.root
 
     page = params[:page]
     // Find the page of the requested reply
     if ( params[:r] && page.nil?) {
-      offset = @topic.children.where(["#{Message.table_name}.id < ?", params[:r].to_i]).count
+      offset = this->topic.children.where(["#{Message.table_name}.id < ?", params[:r].to_i]).count
       page = 1 + offset / REPLIES_PER_PAGE
     }
 
-    @replies = @topic.children.includes(:author, :attachments, forum: :project)
+    this->replies = this->topic.children.includes(:author, :attachments, forum: :project)
                      .order("#{Message.table_name}.created_on ASC")
                      .page(page)
                      .per_page(per_page_param)
 
-    @reply = Message.new(subject: "RE: #{@message.subject}", parent: @topic)
+    this->reply = Message.new(subject: "RE: #{this->message.subject}", parent: this->topic)
     render action: 'show', layout: !request.xhr?
   }
 
   // new topic
    void new_() {
-    @message = Message.new.tap { |m|
+    this->message = Message.new.tap { |m|
       m.author = User.current
-      m.forum = @forum
+      m.forum = this->forum
     }
   }
 
   // Create a new topic
    void create() {
-    @message = Message.new.tap { |m|
+    this->message = Message.new.tap { |m|
       m.author = User.current
-      m.forum = @forum
+      m.forum = this->forum
     }
 
-    @message.attributes = permitted_params.message(@message)
-    @message.attach_files(permitted_params.attachments.to_h)
+    this->message.attributes = permitted_params.message(this->message)
+    this->message.attach_files(permitted_params.attachments.to_h)
 
-    if ( @message.save) {
-      render_attachment_warning_if_needed(@message)
-      call_hook(:controller_messages_new_after_save, params: params, message: @message)
+    if ( this->message.save) {
+      render_attachment_warning_if_needed(this->message)
+      call_hook(:controller_messages_new_after_save, params: params, message: this->message)
 
-      redirect_to topic_path(@message)
+      redirect_to topic_path(this->message)
     else
       render action: 'new'
     }
@@ -61,40 +61,40 @@ class MessagesController : public ApplicationController {
 
   // Reply to a topic
    void reply() {
-    @topic = @message.root
+    this->topic = this->message.root
 
-    @reply = Message.new
-    @reply.author = User.current
-    @reply.forum = @forum
-    @reply.attributes = permitted_params.reply
-    @reply.attach_files(permitted_params.attachments.to_h)
+    this->reply = Message.new
+    this->reply.author = User.current
+    this->reply.forum = this->forum
+    this->reply.attributes = permitted_params.reply
+    this->reply.attach_files(permitted_params.attachments.to_h)
 
-    @topic.children << @reply
-    unless @reply.new_record?
-      render_attachment_warning_if_needed(@reply)
-      call_hook(:controller_messages_reply_after_save, params: params, message: @reply)
+    this->topic.children << this->reply
+    unless this->reply.new_record?
+      render_attachment_warning_if_needed(this->reply)
+      call_hook(:controller_messages_reply_after_save, params: params, message: this->reply)
     }
-    redirect_to topic_path(@topic, r: @reply)
+    redirect_to topic_path(this->topic, r: this->reply)
   }
 
   // Edit a message
    void edit() {
-    return render_403 unless @message.editable_by?(User.current)
-    @message.attributes = permitted_params.message(@message)
+    return render_403 unless this->message.editable_by?(User.current)
+    this->message.attributes = permitted_params.message(this->message)
   }
 
   // Edit a message
    void update() {
-    return render_403 unless @message.editable_by?(User.current)
+    return render_403 unless this->message.editable_by?(User.current)
 
-    @message.attributes = permitted_params.message(@message)
-    @message.attach_files(permitted_params.attachments.to_h)
+    this->message.attributes = permitted_params.message(this->message)
+    this->message.attach_files(permitted_params.attachments.to_h)
 
-    if ( @message.save) {
-      render_attachment_warning_if_needed(@message)
+    if ( this->message.save) {
+      render_attachment_warning_if_needed(this->message)
       flash[:notice] = l(:notice_successful_update)
-      @message.reload
-      redirect_to topic_path(@message.root, r: (@message.parent_id && @message.id))
+      this->message.reload
+      redirect_to topic_path(this->message.root, r: (this->message.parent_id && this->message.id))
     else
       render action: 'edit'
     }
@@ -102,22 +102,22 @@ class MessagesController : public ApplicationController {
 
   // Delete a messages
    void destroy() {
-    return render_403 unless @message.destroyable_by?(User.current)
-    @message.destroy
+    return render_403 unless this->message.destroyable_by?(User.current)
+    this->message.destroy
     flash[:notice] = l(:notice_successful_delete)
-    redirect_target = if ( @message.parent.nil?) {
-                        { controller: '/forums', action: 'show', project_id: @project, id: @forum }
+    redirect_target = if ( this->message.parent.nil?) {
+                        { controller: '/forums', action: 'show', project_id: this->project, id: this->forum }
                       else
-                        { action: 'show', id: @message.parent, r: @message }
+                        { action: 'show', id: this->message.parent, r: this->message }
                       }
 
     redirect_to redirect_target
   }
 
    void quote() {
-    user = @message.author
-    text = @message.content
-    subject = @message.subject.gsub('"', '\"')
+    user = this->message.author
+    text = this->message.content
+    subject = this->message.subject.gsub('"', '\"')
     subject = "RE: #{subject}" unless subject.starts_with?('RE:')
     content = "#{ll(Setting.default_language, :text_user_wrote, user)}\n> "
     content << text.to_s.strip.gsub(%r{<pre>((.|\s)*?)</pre>}m, '[...]').gsub('"', '\"').gsub(/(\r?\n|\r\n?)/, "\n> ") + "\n\n"

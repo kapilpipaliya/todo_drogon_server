@@ -8,14 +8,14 @@ class Reports::AuthorReport : public Reports::Report {
   }
 
    void rows() {
-    @rows ||= @project.members.map(&:user).sort
+    this->rows ||= this->project.members.map(&:user).sort
   }
 
    void data() {
-    @data ||= WorkPackage.by_author(@project)
+    this->data ||= WorkPackage.by_author(this->project)
   }
 
    void title() {
-    @title ||= WorkPackage.human_attribute_name(:author)
+    this->title ||= WorkPackage.human_attribute_name(:author)
   }
 }

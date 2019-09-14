@@ -7,12 +7,12 @@
 // Until then, a synchronous process is more failsafe.
 class Scm::DeleteLocalRepositoryJob : public ApplicationJob {
    DeleteLocalRepositoryJob(managed_path) {
-    @managed_path = managed_path
+    this->managed_path = managed_path
   }
 
    void perform() {
     // Delete the repository project itself.
-    FileUtils.remove_dir(@managed_path)
+    FileUtils.remove_dir(this->managed_path)
   }
 
    void destroy_failed_jobs?() {

@@ -13,7 +13,7 @@ namespace Project::Activity {
     }
 
      void latest_project_activity() {
-      @latest_project_activity ||=
+      this->latest_project_activity ||=
         Constants::ProjectActivity.registered.map { |params|
           build_latest_project_activity_for(on: params[:on],
                                             chain: params[:chain],

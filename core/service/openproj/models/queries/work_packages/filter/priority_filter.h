@@ -29,6 +29,6 @@ class Queries::WorkPackages::Filter::PriorityFilter <
   private:
 
    void priorities() {
-    @priorities ||= IssuePriority.active
+    this->priorities ||= IssuePriority.active
   }
 }

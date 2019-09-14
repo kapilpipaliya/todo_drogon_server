@@ -148,12 +148,12 @@ namespace PaginationHelper {
     }
 
      void previous_page() {
-      num = @collection.current_page > 1 && @collection.current_page - 1
+      num = this->collection.current_page > 1 && this->collection.current_page - 1
       previous_or_next_page(num, I18n.t(:label_previous), '-prev')
     }
 
      void next_page() {
-      num = @collection.current_page < total_pages && @collection.current_page + 1
+      num = this->collection.current_page < total_pages && this->collection.current_page + 1
       previous_or_next_page(num, I18n.t(:label_next), '-next')
     }
 

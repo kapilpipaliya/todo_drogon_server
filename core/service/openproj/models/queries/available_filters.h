@@ -83,11 +83,11 @@ namespace Queries::AvailableFilters {
   }
 
    void already_initialized_filters() {
-    @already_initialized_filters ||= []
+    this->already_initialized_filters ||= []
   }
 
    void initialized_filters() {
-    @initialized_filters ||= []
+    this->initialized_filters ||= []
   }
 
    void registered_filters() {

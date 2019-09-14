@@ -1,7 +1,7 @@
 class Queries::WorkPackages::Filter::TypeFilter <
   Queries::WorkPackages::Filter::WorkPackageFilter
    void allowed_values() {
-    @allowed_values ||= begin
+    this->allowed_values ||= begin
       types.map { |s| [s.name, s.id.to_s] }
     }
   }

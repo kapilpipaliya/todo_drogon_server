@@ -17,7 +17,7 @@ class Queries::WorkPackages::Filter::DatesIntervalFilter : public Queries::WorkP
   }
 
    void type_strategy() {
-    @type_strategy ||= Queries::Filters::Strategies::DateInterval.new(self)
+    this->type_strategy ||= Queries::Filters::Strategies::DateInterval.new(self)
   }
 
    void connection() {

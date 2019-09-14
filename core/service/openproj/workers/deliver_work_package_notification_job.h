@@ -1,6 +1,6 @@
 class DeliverWorkPackageNotificationJob : public DeliverNotificationJob {
    DeliverWorkPackageNotificationJob(journal_id, recipient_id, author_id) {
-    @journal_id = journal_id
+    this->journal_id = journal_id
     super(recipient_id, author_id)
   }
 
@@ -23,7 +23,7 @@ class DeliverWorkPackageNotificationJob : public DeliverNotificationJob {
   private:
 
    void raw_journal() {
-    @raw_journal ||= Journal.find_by(id: @journal_id)
+    this->raw_journal ||= Journal.find_by(id: this->journal_id)
   }
 
    void find_aggregated_journal() {
@@ -32,6 +32,6 @@ class DeliverWorkPackageNotificationJob : public DeliverNotificationJob {
   }
 
    void work_package() {
-    @work_package ||= raw_journal.journable
+    this->work_package ||= raw_journal.journable
   }
 }

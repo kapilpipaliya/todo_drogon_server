@@ -8,11 +8,11 @@ class Reports::SubprojectReport : public Reports::Report {
   }
 
    void rows() {
-    @project.descendants.visible
+    this->project.descendants.visible
   }
 
    void data() {
-    WorkPackage.by_subproject(@project) || []
+    WorkPackage.by_subproject(this->project) || []
   }
 
    void title() {

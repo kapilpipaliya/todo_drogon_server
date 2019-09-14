@@ -4,9 +4,9 @@ class WorkPackages::ReportsController : public ApplicationController {
   // before_action :find_project_by_project_id, :authorize
 
    void report() {
-    reports_service = Reports::ReportsService.new(@project)
+    reports_service = Reports::ReportsService.new(this->project)
 
-    @reports = [
+    this->reports = [
       reports_service.report_for('type'),
       reports_service.report_for('priority'),
       reports_service.report_for('assigned_to'),
@@ -16,19 +16,19 @@ class WorkPackages::ReportsController : public ApplicationController {
       reports_service.report_for('category')
     ]
 
-    @reports << reports_service.report_for('subproject') if ( @project.children.any?) {
+    this->reports << reports_service.report_for('subproject') if ( this->project.children.any?) {
   }
 
    void report_details() {
-    @report = Reports::ReportsService
-              .new(@project)
+    this->report = Reports::ReportsService
+              .new(this->project)
               .report_for(params[:detail])
 
     respond_to { |format|
-      if ( @report) {
+      if ( this->report) {
         format.html
       else
-        format.html { redirect_to report_project_work_packages_path(@project) }
+        format.html { redirect_to report_project_work_packages_path(this->project) }
       }
     }
   }

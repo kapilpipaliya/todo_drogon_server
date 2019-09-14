@@ -4,18 +4,18 @@ class Reports::AssigneeReport : public Reports::Report {
   }
 
    void field() {
-    @field ||= 'assigned_to_id'
+    this->field ||= 'assigned_to_id'
   }
 
    void rows() {
-    @rows ||= @project.members.map(&:user).sort
+    this->rows ||= this->project.members.map(&:user).sort
   }
 
    void data() {
-    @data ||= WorkPackage.by_assigned_to(@project)
+    this->data ||= WorkPackage.by_assigned_to(this->project)
   }
 
    void title() {
-    @title ||= WorkPackage.human_attribute_name(:assigned_to)
+    this->title ||= WorkPackage.human_attribute_name(:assigned_to)
   }
 }

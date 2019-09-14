@@ -1,38 +1,38 @@
 class ExtractFulltextJob : public ApplicationJob {
    ExtractFulltextJob(attachment_id) {
-    @attachment_id = attachment_id
-    @attachment = nil
-    @text = nil
-    @file = nil
-    @filename = nil
-    @language = OpenProject::Configuration.main_content_language
+    this->attachment_id = attachment_id
+    this->attachment = nil
+    this->text = nil
+    this->file = nil
+    this->filename = nil
+    this->language = OpenProject::Configuration.main_content_language
   }
 
    void perform() {
     return unless OpenProject::Database.allows_tsv?
-    return unless @attachment = find_attachment(@attachment_id)
+    return unless this->attachment = find_attachment(this->attachment_id)
 
     init
     update
   ensure
-    FileUtils.rm @file.path if ( delete_file?) {
+    FileUtils.rm this->file.path if ( delete_file?) {
   }
 
   private:
 
    void init() {
     begin
-      carrierwave_uploader = @attachment.file
-      @file = carrierwave_uploader.local_file
-      @filename = carrierwave_uploader.file.filename
+      carrierwave_uploader = this->attachment.file
+      this->file = carrierwave_uploader.local_file
+      this->filename = carrierwave_uploader.file.filename
 
-      if ( @attachment.readable?) {
-        resolver = Plaintext::Resolver.new(@file, @attachment.content_type)
-        @text = resolver.text
+      if ( this->attachment.readable?) {
+        resolver = Plaintext::Resolver.new(this->file, this->attachment.content_type)
+        this->text = resolver.text
       }
     rescue StandardError => e
       Rails.logger.error(
-        "Failed to extract plaintext from file #{@attachment&.id} (On domain #{Setting.host_name}): #{e}: #{e.message}"
+        "Failed to extract plaintext from file #{this->attachment&.id} (On domain #{Setting.host_name}): #{e}: #{e.message}"
       )
     }
   }
@@ -40,16 +40,16 @@ class ExtractFulltextJob : public ApplicationJob {
    void update() {
     begin
       Attachment
-        .where(id: @attachment_id)
+        .where(id: this->attachment_id)
         .update_all(['fulltext = ?, fulltext_tsv = to_tsvector(?, ?), file_tsv = to_tsvector(?, ?)',
-                     @text,
-                     @language,
-                     OpenProject::FullTextSearch.normalize_text(@text),
-                     @language,
-                     OpenProject::FullTextSearch.normalize_filename(@filename)])
+                     this->text,
+                     this->language,
+                     OpenProject::FullTextSearch.normalize_text(this->text),
+                     this->language,
+                     OpenProject::FullTextSearch.normalize_filename(this->filename)])
     rescue StandardError => e
       Rails.logger.error(
-        "Failed to update TSV values for attachment #{@attachment&.id} (On domain #{Setting.host_name}): #{e.message[0..499]}[...]"
+        "Failed to update TSV values for attachment #{this->attachment&.id} (On domain #{Setting.host_name}): #{e.message[0..499]}[...]"
       )
     }
   }
@@ -59,10 +59,10 @@ class ExtractFulltextJob : public ApplicationJob {
   }
 
    void remote_file?() {
-    !@attachment&.file.is_a?(LocalFileUploader)
+    !this->attachment&.file.is_a?(LocalFileUploader)
   }
 
    void delete_file?() {
-    remote_file? && @file
+    remote_file? && this->file
   }
 }

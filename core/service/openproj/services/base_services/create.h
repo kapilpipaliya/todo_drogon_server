@@ -6,7 +6,7 @@ namespace BaseServices {
     attr_reader :user
 
      Create(user:, contract_class: nil) {
-      @user = user
+      this->user = user
       this->contract_class = contract_class || default_contract_class
     }
 

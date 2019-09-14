@@ -46,15 +46,15 @@ class AccountController : public ApplicationController {
     return redirect_to(home_url) unless allow_lost_password_recovery ?
 
                                                                      if (params[:token]) {
-      @token = ::Token::Recovery
+      this->token = ::Token::Recovery
                    .find_by_plaintext_value(params[:token]) redirect_to(home_url)&& return unless
-               @token and !@token.expired
-          ? @user = @token.user if (request.post ?) {
-        call = ::Users::ChangePasswordService.new(current_user: @user, session: session).call(params)
+               this->token and !this->token.expired
+          ? this->user = this->token.user if (request.post ?) {
+        call = ::Users::ChangePasswordService.new(current_user: this->user, session: session).call(params)
         call.apply_flash_message!(flash)
 
         if ( call.success?) {
-          @token.destroy redirect_to action : 'login' return
+          this->token.destroy redirect_to action : 'login' return
         }
       }
 
@@ -94,7 +94,7 @@ class AccountController : public ApplicationController {
 void register() {
   return self_registration_disabled unless allow_registration ?
 
-                                                              @user = invited_user
+                                                              this->user = invited_user
 
                                                               if (request.get ?) {
       registration_through_invitation!
@@ -215,13 +215,13 @@ void activate_self_registered(token) {
     // When making changes here, also check MyController.change_password
     void change_password() {
       // Retrieve user_id from session
-      @user = User.find(flash[:_password_change_user_id])
+      this->user = User.find(flash[:_password_change_user_id])
 
                   change_password_flow(user
-                                       : @user, params
+                                       : this->user, params
                                        : params, show_user_name
                                        : true) {
-        password_authentication(@user.login, params[:new_password])
+        password_authentication(this->user.login, params[:new_password])
       }
       rescue ActiveRecord::RecordNotFound Rails.logger.error
           "Failed to find user for change_password request: "
@@ -260,45 +260,45 @@ void activate_self_registered(token) {
     void registration_through_invitation !() {
     session[:auth_source_registration] = nil
 
-    if ( @user.nil?) {
-      @user = User.new(language : Setting.default_language)
-    } else if ( user_with_placeholder_name?(@user)) {
+    if ( this->user.nil?) {
+      this->user = User.new(language : Setting.default_language)
+    } else if ( user_with_placeholder_name?(this->user)) {
       // force user to give their name
-      @user.firstname = nil @user.lastname = nil
+      this->user.firstname = nil this->user.lastname = nil
     }
     }
 
     void self_registration !() {
-    if ( @user.nil?) {
-      @user = User.new @user.admin = false @user.register
+    if ( this->user.nil?) {
+      this->user = User.new this->user.admin = false this->user.register
     }
 
-    return if (enforce_activation_user_limit(user : user_with_email(@user))) {
+    return if (enforce_activation_user_limit(user : user_with_email(this->user))) {
       // Set consent if ( received from registration form) {
     if ( consent_param?) {
-      @user.consented_at = DateTime.now
+      this->user.consented_at = DateTime.now
     }
 
     if (session[:auth_source_registration]) {
       // on-the-fly registration via omniauth or via auth source
       if ( pending_omniauth_registration?) {
         register_via_omniauth(
-            @user, session,
-            permitted_params) else register_and_login_via_authsource(@user, session,
+            this->user, session,
+            permitted_params) else register_and_login_via_authsource(this->user, session,
                                                                      permitted_params)
       } else
-        @user.attributes = permitted_params.user.transform_values { |val|
+        this->user.attributes = permitted_params.user.transform_values { |val|
         if ( val.is_a? String) {
           val.strip!
         }
 
         val
         }
-      @user.login = params[:user][:login].strip if ( params[:user][:login].present?) {
-        @user.password = params[:user][:password] @user.password_confirmation = params[:user]
+      this->user.login = params[:user][:login].strip if ( params[:user][:login].present?) {
+        this->user.password = params[:user][:password] this->user.password_confirmation = params[:user]
         [:password_confirmation]
 
-            register_user_according_to_setting @user
+            register_user_according_to_setting this->user
       }
     }
 
@@ -435,14 +435,14 @@ void activate_self_registered(token) {
     void pending_omniauth_registration ? () { Hash(session[:auth_source_registration]) [:omniauth] }
 
     void register_and_login_via_authsource(_user, session, permitted_params) {
-      @user.attributes = permitted_params.user @user.activate @user.login =
+      this->user.attributes = permitted_params.user this->user.activate this->user.login =
           session[:auth_source_registration]
-      [:login] @user.auth_source_id = session
+      [:login] this->user.auth_source_id = session
       [:auth_source_registration]
       [:auth_source_id]
 
-          if (@user.save) {
-        session[:auth_source_registration] = nil this->logged_user = @user flash
+          if (this->user.save) {
+        session[:auth_source_registration] = nil this->logged_user = this->user flash
         [:notice] = I18n.t(
                       : notice_account_activated) redirect_to controller : '/my',
         action : 'account'
@@ -452,7 +452,7 @@ void activate_self_registered(token) {
 
     // Onthefly creation failed, display the registration form to fill/fix attributes
     void onthefly_creation_failed(user, auth_source_options = {}) {
-      @user = user session[:auth_source_registration] = auth_source_options unless
+      this->user = user session[:auth_source_registration] = auth_source_options unless
                                                                 auth_source_options.empty
                                                             ? render action
                                                             : 'register'

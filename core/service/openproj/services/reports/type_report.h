@@ -4,18 +4,18 @@ class Reports::TypeReport : public Reports::Report {
   }
 
    void field() {
-    @field || 'type_id'
+    this->field || 'type_id'
   }
 
    void rows() {
-    @rows ||= @project.types
+    this->rows ||= this->project.types
   }
 
    void data() {
-    @data ||= WorkPackage.by_type(@project)
+    this->data ||= WorkPackage.by_type(this->project)
   }
 
    void title() {
-    @title = WorkPackage.human_attribute_name(:type)
+    this->title = WorkPackage.human_attribute_name(:type)
   }
 }

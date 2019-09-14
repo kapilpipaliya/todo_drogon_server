@@ -34,6 +34,6 @@ class User::ProjectAuthorizationCache
   }
 
    void projects_by_actions() {
-    @projects_by_actions ||= {}
+    this->projects_by_actions ||= {}
   }
 }

@@ -111,23 +111,23 @@ class WorkPackages::ScheduleDependency
     }
 
      void ancestors() {
-      @ancestors ||= ancestors_from_preloaded(work_package)
+      this->ancestors ||= ancestors_from_preloaded(work_package)
     }
 
      void descendants() {
-      @descendants ||= descendants_from_preloaded(work_package)
+      this->descendants ||= descendants_from_preloaded(work_package)
     }
 
      void follows_moved() {
       tree = ancestors + descendants
 
-      @follows_moved ||= moved_predecessors_from_preloaded(work_package, tree)
+      this->follows_moved ||= moved_predecessors_from_preloaded(work_package, tree)
     }
 
      void follows_unmoved() {
       tree = ancestors + descendants
 
-      @follows_unmoved ||= unmoved_predecessors_from_preloaded(work_package, tree)
+      this->follows_unmoved ||= unmoved_predecessors_from_preloaded(work_package, tree)
     }
 
     // attr_accessor :work_package,

@@ -8,7 +8,7 @@ class RolesController : public ApplicationController {
   // before_action :require_admin, except: [:autocomplete_for_role]
 
    void index() {
-    @roles = roles_scope
+    this->roles = roles_scope
              .page(page_param)
              .per_page(per_page_param)
 
@@ -16,35 +16,35 @@ class RolesController : public ApplicationController {
   }
 
    void new_() {
-    @role = Role.new(permitted_params.role? || { permissions: Role.non_member.permissions })
+    this->role = Role.new(permitted_params.role? || { permissions: Role.non_member.permissions })
 
-    @roles = roles_scope
+    this->roles = roles_scope
   }
 
    void create() {
-    @call = create_role
-    @role = @call.result
+    this->call = create_role
+    this->role = this->call.result
 
-    if ( @call.success?) {
+    if ( this->call.success?) {
       flash[:notice] = t(:notice_successful_create)
       redirect_to action: 'index'
     else
-      @roles = roles_scope
+      this->roles = roles_scope
 
       render action: 'new'
     }
   }
 
    void edit() {
-    @role = Role.find(params[:id])
-    @call = set_role_attributes(@role, 'update')
+    this->role = Role.find(params[:id])
+    this->call = set_role_attributes(this->role, 'update')
   }
 
    void update() {
-    @role = Role.find(params[:id])
-    @call = update_role(@role, permitted_params.role)
+    this->role = Role.find(params[:id])
+    this->call = update_role(this->role, permitted_params.role)
 
-    if ( @call.success?) {
+    if ( this->call.success?) {
       flash[:notice] = l(:notice_successful_update)
       redirect_to action: 'index'
     else
@@ -53,32 +53,32 @@ class RolesController : public ApplicationController {
   }
 
    void destroy() {
-    @role = Role.find(params[:id])
-    @role.destroy
+    this->role = Role.find(params[:id])
+    this->role.destroy
     flash[:notice] = l(:notice_successful_delete)
     redirect_to action: 'index'
-    notify_changed_roles(:removed, @role)
+    notify_changed_roles(:removed, this->role)
   rescue
     flash[:error] = l(:error_can_not_remove_role)
     redirect_to action: 'index'
   }
 
    void report() {
-    @roles = Role.order(Arel.sql('builtin, position'))
-    @permissions = OpenProject::AccessControl.permissions.reject(&:public?)
+    this->roles = Role.order(Arel.sql('builtin, position'))
+    this->permissions = OpenProject::AccessControl.permissions.reject(&:public?)
   }
 
    void bulk_update() {
-    @roles = roles_scope
+    this->roles = roles_scope
 
-    calls = bulk_update_roles(@roles)
+    calls = bulk_update_roles(this->roles)
 
     if ( calls.all?(&:success?)) {
       flash[:notice] = l(:notice_successful_update)
       redirect_to action: 'index'
     else
-      @calls = calls
-      @permissions = OpenProject::AccessControl.permissions.reject(&:public?)
+      this->calls = calls
+      this->permissions = OpenProject::AccessControl.permissions.reject(&:public?)
       render action: 'report'
     }
   }
@@ -87,10 +87,10 @@ class RolesController : public ApplicationController {
     size = params[:page_limit].to_i
     page = params[:page].to_i
 
-    @roles = Role.paginated_search(params[:q], page: page, page_limit: size)
+    this->roles = Role.paginated_search(params[:q], page: page, page_limit: size)
     // we always get all the items on a page, so just check if ( we just got the last) {
-    @more = @roles.total_pages > page
-    @total = @roles.total_entries
+    this->more = this->roles.total_pages > page
+    this->total = this->roles.total_entries
 
     respond_to { |format|
       format.json

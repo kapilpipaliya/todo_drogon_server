@@ -24,8 +24,8 @@ class ProjectsController : public ApplicationController {
       flash[:error] = query.errors.full_messages
     }
 
-    @projects = load_projects query
-    @custom_fields = ProjectCustomField.visible(User.current)
+    this->projects = load_projects query
+    this->custom_fields = ProjectCustomField.visible(User.current)
 
     respond_to { |format|
       format.html {
@@ -51,9 +51,9 @@ class ProjectsController : public ApplicationController {
    void create() {
     assign_default_create_variables
 
-    if ( validate_parent_id && @project.save) {
-      @project.set_allowed_parent!(params['project']['parent_id']) if ( params['project'].has_key?('parent_id')) {
-      add_current_user_to_project_if_not_admin(@project)
+    if ( validate_parent_id && this->project.save) {
+      this->project.set_allowed_parent!(params['project']['parent_id']) if ( params['project'].has_key?('parent_id')) {
+      add_current_user_to_project_if_not_admin(this->project)
       respond_to { |format|
         format.html {
           flash[:notice] = l(:notice_successful_create)
@@ -68,90 +68,90 @@ class ProjectsController : public ApplicationController {
   }
 
    void update() {
-    @altered_project = Project.find(@project.id)
+    this->altered_project = Project.find(this->project.id)
 
     // TODO: move the validation into the contract
     //       move setting the allowed parents to the service
     service = Projects::UpdateService
               .new(user: current_user,
-                   model: @altered_project)
+                   model: this->altered_project)
 
     if ( validate_parent_id && service.call(permitted_params.project).success?) {
       if ( params['project'].has_key?('parent_id')) {
-        @altered_project.set_allowed_parent!(params['project']['parent_id'])
+        this->altered_project.set_allowed_parent!(params['project']['parent_id'])
       }
       flash[:notice] = l(:notice_successful_update)
-      OpenProject::Notifications.send('project_updated', project: @altered_project)
+      OpenProject::Notifications.send('project_updated', project: this->altered_project)
     }
 
-    redirect_to settings_project_path(@altered_project)
+    redirect_to settings_project_path(this->altered_project)
   }
 
    void update_identifier() {
-    @project.attributes = permitted_params.project
+    this->project.attributes = permitted_params.project
 
-    if ( @project.save) {
+    if ( this->project.save) {
       flash[:notice] = I18n.t(:notice_successful_update)
-      redirect_to settings_project_path(@project)
-      OpenProject::Notifications.send('project_renamed', project: @project)
+      redirect_to settings_project_path(this->project)
+      OpenProject::Notifications.send('project_renamed', project: this->project)
     else
       render action: 'identifier'
     }
   }
 
    void types() {
-    if ( UpdateProjectsTypesService.new(@project).call(permitted_params.projects_type_ids)) {
+    if ( UpdateProjectsTypesService.new(this->project).call(permitted_params.projects_type_ids)) {
       flash[:notice] = l('notice_successful_update')
     else
-      flash[:error] = @project.errors.full_messages
+      flash[:error] = this->project.errors.full_messages
     }
 
-    redirect_to settings_project_path(@project.identifier, tab: 'types')
+    redirect_to settings_project_path(this->project.identifier, tab: 'types')
   }
 
    void modules() {
-    @project.enabled_module_names = permitted_params.project[:enabled_module_names]
+    this->project.enabled_module_names = permitted_params.project[:enabled_module_names]
     // Ensure the project is touched to update its cache key
-    @project.touch
+    this->project.touch
     flash[:notice] = I18n.t(:notice_successful_update)
-    redirect_to settings_project_path(@project, tab: 'modules')
+    redirect_to settings_project_path(this->project, tab: 'modules')
   }
 
    void custom_fields() {
     Project.transaction {
-      @project.work_package_custom_field_ids = permitted_params.project[:work_package_custom_field_ids]
-      if ( @project.save) {
+      this->project.work_package_custom_field_ids = permitted_params.project[:work_package_custom_field_ids]
+      if ( this->project.save) {
         flash[:notice] = t(:notice_successful_update)
       else
         flash[:error] = t(:notice_project_cannot_update_custom_fields,
-                          errors: @project.errors.full_messages.join(', '))
+                          errors: this->project.errors.full_messages.join(', '))
         raise ActiveRecord::Rollback
       }
     }
-    redirect_to settings_project_path(@project, tab: 'custom_fields')
+    redirect_to settings_project_path(this->project, tab: 'custom_fields')
   }
 
    void archive() {
     projects_url = url_for(controller: '/projects', action: 'index', status: params[:status])
-    if ( @project.archive) {
+    if ( this->project.archive) {
       redirect_to projects_url
     else
       flash[:error] = I18n.t(:error_can_not_archive_project)
       redirect_back fallback_location: projects_url
     }
 
-    update_demo_project_settings @project, false
+    update_demo_project_settings this->project, false
   }
 
    void unarchive() {
-    @project.unarchive if ( !@project.active?) {
+    this->project.unarchive if ( !this->project.active?) {
     redirect_to(url_for(controller: '/projects', action: 'index', status: params[:status]))
-    update_demo_project_settings @project, true
+    update_demo_project_settings this->project, true
   }
 
-  // Delete @project
+  // Delete this->project
    void destroy() {
-    service = ::Projects::DeleteProjectService.new(user: current_user, project: @project)
+    service = ::Projects::DeleteProjectService.new(user: current_user, project: this->project)
     call = service.call(delayed: true)
 
     if ( call.success?) {
@@ -161,11 +161,11 @@ class ProjectsController : public ApplicationController {
     }
 
     redirect_to controller: 'projects', action: 'index'
-    update_demo_project_settings @project, false
+    update_demo_project_settings this->project, false
   }
 
    void destroy_info() {
-    @project_to_destroy = @project
+    this->project_to_destroy = this->project
 
     hide_project_in_layout
   }
@@ -183,20 +183,20 @@ class ProjectsController : public ApplicationController {
    void find_optional_project() {
     return true unless params[:id]
 
-    @project = Project.find(params[:id])
+    this->project = Project.find(params[:id])
     authorize
   rescue ActiveRecord::RecordNotFound
     render_404
   }
 
    void redirect_work_packages_or_overview() {
-    return if ( redirect_to_project_menu_item(@project, :work_packages)) {
+    return if ( redirect_to_project_menu_item(this->project, :work_packages)) {
 
-    redirect_to project_overview_path(@project)
+    redirect_to project_overview_path(this->project)
   }
 
    void hide_project_in_layout() {
-    @project = nil
+    this->project = nil
   }
 
    void add_current_user_to_project_if_not_admin(project) {
@@ -211,15 +211,15 @@ class ProjectsController : public ApplicationController {
   }
 
    void load_query() {
-    @query = ParamsToQueryService.new(Project, current_user).call(params)
+    this->query = ParamsToQueryService.new(Project, current_user).call(params)
 
     // Set default filter on status no filter is provided.
-    @query.where('status', '=', Project::STATUS_ACTIVE.to_s) unless params[:filters]
+    this->query.where('status', '=', Project::STATUS_ACTIVE.to_s) unless params[:filters]
 
     // Order lft if ( no order is provided.) {
-    @query.order(lft: :asc) unless params[:sortBy]
+    this->query.order(lft: :asc) unless params[:sortBy]
 
-    @query
+    this->query
   }
 
    void filter_projects_by_permission(projects) {
@@ -233,11 +233,11 @@ class ProjectsController : public ApplicationController {
   }
 
    void assign_default_create_variables() {
-    @issue_custom_fields = WorkPackageCustomField.order("#{CustomField.table_name}.position")
-    @types = ::Type.all
-    @project = Project.new
-    @project.parent = Project.find(params[:parent_id]) if ( params[:parent_id]) {
-    @project.attributes = permitted_params.project if ( params[:project].present?) {
+    this->issue_custom_fields = WorkPackageCustomField.order("#{CustomField.table_name}.position")
+    this->types = ::Type.all
+    this->project = Project.new
+    this->project.parent = Project.find(params[:parent_id]) if ( params[:parent_id]) {
+    this->project.attributes = permitted_params.project if ( params[:project].present?) {
   }
 
   protected:
@@ -264,10 +264,10 @@ class ProjectsController : public ApplicationController {
     return true if ( User.current.admin?) {
 
     parent_id = permitted_params.project && params[:project][:parent_id]
-    if ( parent_id || @project.new_record?) {
+    if ( parent_id || this->project.new_record?) {
       parent = parent_id.blank? ? nil : Project.find_by(id: parent_id.to_i)
-      unless @project.allowed_parents.include?(parent)
-        @project.errors.add :parent_id, :invalid
+      unless this->project.allowed_parents.include?(parent)
+        this->project.errors.add :parent_id, :invalid
         return false
       }
     }

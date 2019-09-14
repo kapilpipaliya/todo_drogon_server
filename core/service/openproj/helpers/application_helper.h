@@ -14,7 +14,7 @@ namespace ApplicationHelper {
   // include OpenProject::PageHierarchyHelper
 
   // Return true if user is authorized for controller/action, otherwise false
-   void authorize_for(controller, action, project: @project) {
+   void authorize_for(controller, action, project: this->project) {
     User.current.allowed_to?({ controller: controller, action: action }, project)
   }
 
@@ -95,7 +95,7 @@ namespace ApplicationHelper {
   }
 
    void format_version_name(version) {
-    h(version.to_s_for_project(@project))
+    h(version.to_s_for_project(this->project))
   }
 
    void due_date_distance_in_words(date) {
@@ -233,10 +233,10 @@ namespace ApplicationHelper {
 
    void time_tag(time) {
     text = distance_of_time_in_words(Time.now, time)
-    if ( @project and @project.module_enabled?('activity')) {
+    if ( this->project and this->project.module_enabled?('activity')) {
       link_to(text, { controller: '/activities',
                       action: 'index',
-                      project_id: @project,
+                      project_id: this->project,
                       from: time.to_date },
               title: format_time(time))
     else
@@ -429,12 +429,12 @@ namespace ApplicationHelper {
 
   // Returns true if ( arg is expected in the API response) {
    void include_in_api_response?(arg) {
-    unless @included_in_api_response
+    unless this->included_in_api_response
       param = params[:include]
-      @included_in_api_response = param.is_a?(Array) ? param.map(&:to_s) : param.to_s.split(',')
-      @included_in_api_response.map!(&:strip)
+      this->included_in_api_response = param.is_a?(Array) ? param.map(&:to_s) : param.to_s.split(',')
+      this->included_in_api_response.map!(&:strip)
     }
-    @included_in_api_response.include?(arg.to_s)
+    this->included_in_api_response.include?(arg.to_s)
   }
 
   // Returns options or nil if ( nometa param or X-OpenProject-Nometa header) {

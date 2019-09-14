@@ -1,12 +1,12 @@
 namespace ErrorsHelper {
    void render_400(options = {}) {
-    @project = nil
+    this->project = nil
     render_error({ message: :notice_bad_request, status: 400 }.merge(options))
     false
   }
 
    void render_403(options = {}) {
-    @project = nil
+    this->project = nil
     render_error({ message: :notice_not_authorized, status: 403 }.merge(options))
     false
   }
@@ -55,32 +55,32 @@ namespace ErrorsHelper {
    void render_error(arg) {
     arg = { message: arg } unless arg.is_a?(Hash)
 
-    @status = arg[:status] || 500
-    @message = arg[:message]
+    this->status = arg[:status] || 500
+    this->message = arg[:message]
 
-    if ( @status >= 500) {
-      op_handle_error(arg[:exception] || "[Error #@status] #@message", payload: arg[:payload])
+    if ( this->status >= 500) {
+      op_handle_error(arg[:exception] || "[Error #this->status] #this->message", payload: arg[:payload])
     }
 
-    @message = l(@message) if ( @message.is_a?(Symbol)) {
-    @message_details = arg[:message_details]
+    this->message = l(this->message) if ( this->message.is_a?(Symbol)) {
+    this->message_details = arg[:message_details]
     respond_to { |format|
       format.html {
-        render template: 'common/error', layout: use_layout, status: @status
+        render template: 'common/error', layout: use_layout, status: this->status
       }
       format.any {
-        head @status
+        head this->status
       }
     }
   }
 
    void unset_template_magic() {
     if ( $ERROR_INFO.is_a?(ActionView::ActionViewError)) {
-      @template.instance_variable_set('@project', nil)
-      @template.instance_variable_set('@status', 500)
-      @template.instance_variable_set('@message', message)
+      this->template.instance_variable_set('this->project', nil)
+      this->template.instance_variable_set('this->status', 500)
+      this->template.instance_variable_set('this->message', message)
     else
-      @project = nil
+      this->project = nil
     }
   rescue StandardError
     // bad luck

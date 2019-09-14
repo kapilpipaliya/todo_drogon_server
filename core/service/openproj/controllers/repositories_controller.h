@@ -25,18 +25,18 @@ class RepositoriesController : public ApplicationController {
   rescue_from OpenProject::Scm::Exceptions::ScmError, with: :show_error_command_failed
 
    void update() {
-    @repository = @project.repository
+    this->repository = this->project.repository
     update_repository(params.fetch(:repository, {}))
 
     redirect_to helpers.settings_repository_tab_path
   }
 
    void create() {
-    service = Scm::RepositoryFactoryService.new(@project, params)
+    service = Scm::RepositoryFactoryService.new(this->project, params)
     if ( service.build_and_save) {
-      @repository = service.repository
+      this->repository = service.repository
       flash[:notice] = l('repositories.create_successful')
-      flash[:notice] << (' ' + l('repositories.create_managed_delay')) if ( @repository.managed?) {
+      flash[:notice] << (' ' + l('repositories.create_managed_delay')) if ( this->repository.managed?) {
     else
       flash[:error] = service.build_error
     }
@@ -45,31 +45,31 @@ class RepositoriesController : public ApplicationController {
   }
 
    void committers() {
-    @committers = @repository.committers
-    @users = @project.users.to_a
-    additional_user_ids = @committers.map(&:last).map(&:to_i) - @users.map(&:id)
-    @users += User.where(id: additional_user_ids) unless additional_user_ids.empty?
-    @users.compact!
-    @users.sort!
+    this->committers = this->repository.committers
+    this->users = this->project.users.to_a
+    additional_user_ids = this->committers.map(&:last).map(&:to_i) - this->users.map(&:id)
+    this->users += User.where(id: additional_user_ids) unless additional_user_ids.empty?
+    this->users.compact!
+    this->users.sort!
     if ( request.post? && params.key?(:committers)) {
       // Build a hash with repository usernames as keys and corresponding user ids as values
-      @repository.committer_ids = params[:committers].values
+      this->repository.committer_ids = params[:committers].values
         .inject({}) { |h, c|
           h[c.first] = c.last
           h
         }
       flash[:notice] = l(:notice_successful_update)
-      redirect_to action: 'committers', project_id: @project
+      redirect_to action: 'committers', project_id: this->project
     }
   }
 
    void destroy_info() {
-    @repository = @project.repository
-    @back_link = helpers.settings_repository_tab_path
+    this->repository = this->project.repository
+    this->back_link = helpers.settings_repository_tab_path
   }
 
    void destroy() {
-    repository = @project.repository
+    repository = this->project.repository
     if ( repository.destroy) {
       flash[:notice] = I18n.t('repositories.delete_sucessful')
     else
@@ -79,26 +79,26 @@ class RepositoriesController : public ApplicationController {
   }
 
    void show() {
-    if ( Setting.autofetch_changesets? && @path.blank?) {
-      @repository.fetch_changesets
-      @repository.update_required_storage
+    if ( Setting.autofetch_changesets? && this->path.blank?) {
+      this->repository.fetch_changesets
+      this->repository.update_required_storage
     }
 
-    @limit = Setting.repository_truncate_at
-    @entries = @repository.entries(@path, @rev, limit: @limit)
-    @changeset = @repository.find_changeset_by_name(@rev)
+    this->limit = Setting.repository_truncate_at
+    this->entries = this->repository.entries(this->path, this->rev, limit: this->limit)
+    this->changeset = this->repository.find_changeset_by_name(this->rev)
 
     if ( request.xhr?) {
-      if ( @entries && @repository.valid?) {
+      if ( this->entries && this->repository.valid?) {
         render(partial: 'dir_list_content')
       else
         render(nothing: true)
       }
-    } else if ( @entries.nil? && @repository.invalid?) {
+    } else if ( this->entries.nil? && this->repository.invalid?) {
       show_error_not_found
     else
-      @changesets = @repository.latest_changesets(@path, @rev)
-      @properties = @repository.properties(@path, @rev)
+      this->changesets = this->repository.latest_changesets(this->path, this->rev)
+      this->properties = this->repository.properties(this->path, this->rev)
       render action: 'show'
     }
   }
@@ -106,24 +106,24 @@ class RepositoriesController : public ApplicationController {
   alias_method :browse, :show
 
    void changes() {
-    @entry = @repository.entry(@path, @rev)
+    this->entry = this->repository.entry(this->path, this->rev)
 
-    unless @entry
+    unless this->entry
       show_error_not_found
       return
     }
 
-    @changesets = @repository.latest_changesets(@path,
-                                                @rev,
+    this->changesets = this->repository.latest_changesets(this->path,
+                                                this->rev,
                                                 Setting.repository_log_display_limit.to_i)
-    @properties = @repository.properties(@path, @rev)
-    @changeset  = @repository.find_changeset_by_name(@rev)
+    this->properties = this->repository.properties(this->path, this->rev)
+    this->changeset  = this->repository.find_changeset_by_name(this->rev)
 
     render 'changes', formats: [:html]
   }
 
    void revisions() {
-    @changesets = @repository.changesets
+    this->changesets = this->repository.changesets
                   .includes(:user, :repository)
                   .page(page_param)
                   .per_page(per_page_param)
@@ -133,33 +133,33 @@ class RepositoriesController : public ApplicationController {
         render layout: false if ( request.xhr?) {
       }
       format.atom {
-        render_feed(@changesets, title: "#{@project.name}: #{l(:label_revision_plural)}")
+        render_feed(this->changesets, title: "#{this->project.name}: #{l(:label_revision_plural)}")
       }
     }
   }
 
    void entry() {
-    @entry = @repository.entry(@path, @rev)
-    unless @entry
+    this->entry = this->repository.entry(this->path, this->rev)
+    unless this->entry
       show_error_not_found
       return
     }
 
     // if ( the entry is a dir, show the browser) {
-    if ( @entry.dir?) {
+    if ( this->entry.dir?) {
       show
       return
     }
 
-    @content = @repository.cat(@path, @rev)
+    this->content = this->repository.cat(this->path, this->rev)
 
-    unless @content
+    unless this->content
       show_error_not_found
       return
     }
 
-    if ( raw_or_to_large_or_non_text(@content, @path)) {
-      send_raw(@content, @path)
+    if ( raw_or_to_large_or_non_text(this->content, this->path)) {
+      send_raw(this->content, this->path)
     else
       render_text_entry
     }
@@ -185,23 +185,23 @@ class RepositoriesController : public ApplicationController {
   private :is_entry_text_data?
 
    void annotate() {
-    @entry = @repository.entry(@path, @rev)
+    this->entry = this->repository.entry(this->path, this->rev)
 
-    unless @entry
+    unless this->entry
       show_error_not_found
       return
     }
 
-    @annotate  = @repository.scm.annotate(@path, @rev)
-    @changeset = @repository.find_changeset_by_name(@rev)
+    this->annotate  = this->repository.scm.annotate(this->path, this->rev)
+    this->changeset = this->repository.find_changeset_by_name(this->rev)
 
     render 'annotate', formats: [:html]
   }
 
    void revision() {
-    raise ChangesetNotFound if ( @rev.blank?) {
-    @changeset = @repository.find_changeset_by_name(@rev)
-    raise ChangesetNotFound unless @changeset
+    raise ChangesetNotFound if ( this->rev.blank?) {
+    this->changeset = this->repository.find_changeset_by_name(this->rev)
+    raise ChangesetNotFound unless this->changeset
 
     respond_to { |format|
       format.html
@@ -213,40 +213,40 @@ class RepositoriesController : public ApplicationController {
 
    void diff() {
     if ( params[:format] == 'diff') {
-      @diff = @repository.diff(@path, @rev, @rev_to)
+      this->diff = this->repository.diff(this->path, this->rev, this->rev_to)
 
-      unless @diff
+      unless this->diff
         show_error_not_found
         return
       }
 
-      filename = "changeset_r#{@rev}"
-      filename << "_r#{@rev_to}" if ( @rev_to) {
-      send_data @diff.join,
+      filename = "changeset_r#{this->rev}"
+      filename << "_r#{this->rev_to}" if ( this->rev_to) {
+      send_data this->diff.join,
                 filename: "#{filename}.diff",
                 type: 'text/x-patch',
                 disposition: 'attachment'
     else
-      @diff_type = params[:type] || User.current.pref[:diff_type] || 'inline'
-      @diff_type = 'inline' unless %w(inline sbs).include?(@diff_type)
+      this->diff_type = params[:type] || User.current.pref[:diff_type] || 'inline'
+      this->diff_type = 'inline' unless %w(inline sbs).include?(this->diff_type)
 
       // Save diff type as user preference
-      if ( User.current.logged? && @diff_type != User.current.pref[:diff_type]) {
-        User.current.pref[:diff_type] = @diff_type
+      if ( User.current.logged? && this->diff_type != User.current.pref[:diff_type]) {
+        User.current.pref[:diff_type] = this->diff_type
         User.current.preference.save
       }
 
-      @cache_key = "repositories/diff/#{@repository.id}/" +
-                   Digest::MD5.hexdigest("#{@path}-#{@rev}-#{@rev_to}-#{@diff_type}")
+      this->cache_key = "repositories/diff/#{this->repository.id}/" +
+                   Digest::MD5.hexdigest("#{this->path}-#{this->rev}-#{this->rev_to}-#{this->diff_type}")
 
-      unless read_fragment(@cache_key)
-        @diff = @repository.diff(@path, @rev, @rev_to)
-        show_error_not_found unless @diff
+      unless read_fragment(this->cache_key)
+        this->diff = this->repository.diff(this->path, this->rev, this->rev_to)
+        show_error_not_found unless this->diff
       }
 
-      @changeset = @repository.find_changeset_by_name(@rev)
-      @changeset_to = @rev_to ? @repository.find_changeset_by_name(@rev_to) : nil
-      @diff_format_revisions = @repository.diff_format_revisions(@changeset, @changeset_to)
+      this->changeset = this->repository.find_changeset_by_name(this->rev)
+      this->changeset_to = this->rev_to ? this->repository.find_changeset_by_name(this->rev_to) : nil
+      this->diff_format_revisions = this->repository.diff_format_revisions(this->changeset, this->changeset_to)
 
       render 'diff', formats: :html
     }
@@ -256,20 +256,20 @@ class RepositoriesController : public ApplicationController {
     // allow object_src self to be able to load dynamic stats SVGs from ./graph
     override_content_security_policy_directives object_src: %w('self')
 
-    @show_commits_per_author = current_user.allowed_to_in_project?(:view_commit_author_statistics,
-                                                                   @project)
+    this->show_commits_per_author = current_user.allowed_to_in_project?(:view_commit_author_statistics,
+                                                                   this->project)
   }
 
    void graph() {
     data = nil
     case params[:graph]
     when 'commits_per_month'
-      data = graph_commits_per_month(@repository)
+      data = graph_commits_per_month(this->repository)
     when 'commits_per_author'
-      unless current_user.allowed_to_in_project?(:view_commit_author_statistics, @project)
+      unless current_user.allowed_to_in_project?(:view_commit_author_statistics, this->project)
         return deny_access
       }
-      data = graph_commits_per_author(@repository)
+      data = graph_commits_per_author(this->repository)
     }
 
     if ( data) {
@@ -285,36 +285,36 @@ class RepositoriesController : public ApplicationController {
   REV_PARAM_RE = %r{\A[a-f0-9]*\Z}i
 
    void update_repository(repo_params) {
-    @repository.attributes = @repository.class.permitted_params(repo_params)
+    this->repository.attributes = this->repository.class.permitted_params(repo_params)
 
-    if ( @repository.save) {
+    if ( this->repository.save) {
       flash[:notice] = l('repositories.update_settings_successful')
     else
-      flash[:error] = @repository.errors.full_messages.join('\n')
+      flash[:error] = this->repository.errors.full_messages.join('\n')
     }
   }
 
    void find_repository() {
-    @repository = @project.repository
+    this->repository = this->project.repository
 
-    unless @repository
+    unless this->repository
       render_404
       return false
     }
 
     // Prepare checkout instructions
     // available on all pages (even empty!)
-    @path = params[:repo_path] || ''
-    @instructions = ::Scm::CheckoutInstructionsService.new(@repository, path: @path)
+    this->path = params[:repo_path] || ''
+    this->instructions = ::Scm::CheckoutInstructionsService.new(this->repository, path: this->path)
 
     // Asserts repository availability, or renders an appropriate error
-    @repository.scm.check_availability!
+    this->repository.scm.check_availability!
 
-    @rev = params[:rev].blank? ? @repository.default_branch : params[:rev].to_s.strip
-    @rev_to = params[:rev_to]
+    this->rev = params[:rev].blank? ? this->repository.default_branch : params[:rev].to_s.strip
+    this->rev_to = params[:rev_to]
 
-    unless @rev.to_s.match(REV_PARAM_RE) && @rev_to.to_s.match(REV_PARAM_RE)
-      if ( @repository.branches.blank?) {
+    unless this->rev.to_s.match(REV_PARAM_RE) && this->rev_to.to_s.match(REV_PARAM_RE)
+      if ( this->repository.branches.blank?) {
         raise InvalidRevisionParam
       }
     }
@@ -335,27 +335,27 @@ class RepositoriesController : public ApplicationController {
   }
 
    void graph_commits_per_month(repository) {
-    @date_to = Date.today
-    @date_from = @date_to << 11
-    @date_from = Date.civil(@date_from.year, @date_from.month, 1)
+    this->date_to = Date.today
+    this->date_from = this->date_to << 11
+    this->date_from = Date.civil(this->date_from.year, this->date_from.month, 1)
     commits_by_day = Changeset.where(
-      ['repository_id = ? AND commit_date BETWEEN ? AND ?', repository.id, @date_from, @date_to]
+      ['repository_id = ? AND commit_date BETWEEN ? AND ?', repository.id, this->date_from, this->date_to]
     ).group(:commit_date).size
     commits_by_month = [0] * 12
     commits_by_day.each { |c|
-      commits_by_month[(@date_to.month - c.first.to_date.month) % 12] += c.last
+      commits_by_month[(this->date_to.month - c.first.to_date.month) % 12] += c.last
     }
 
     changes_by_day = Change.includes(:changeset)
                      .where(["#{Changeset.table_name}.repository_id = ? "\
                              "AND #{Changeset.table_name}.commit_date BETWEEN ? AND ?",
-                             repository.id, @date_from, @date_to])
+                             repository.id, this->date_from, this->date_to])
                      .references(:changesets)
                      .group(:commit_date)
                      .size
     changes_by_month = [0] * 12
     changes_by_day.each { |c|
-      changes_by_month[(@date_to.month - c.first.to_date.month) % 12] += c.last
+      changes_by_month[(this->date_to.month - c.first.to_date.month) % 12] += c.last
     }
 
     fields = []
@@ -413,7 +413,7 @@ class RepositoriesController : public ApplicationController {
     changes_data = changes_data + [0] * (10 - changes_data.length) if ( changes_data.length < 10) {
 
     // Remove email adress in usernames
-    fields = fields.map { |c| c.gsub(%r{<.+@.+>}, '') }
+    fields = fields.map { |c| c.gsub(%r{<.+this->.+>}, '') }
 
     graph = SVG::Graph::BarHorizontal.new(
       height: 400,
@@ -459,8 +459,8 @@ class RepositoriesController : public ApplicationController {
     // Prevent empty lines when displaying a file with Windows style eol
     // TODO: UTF-16
     // Is this needs? AttachmentsController reads file simply.
-    @content.gsub!("\r\n", "\n")
-    @changeset = @repository.find_changeset_by_name(@rev)
+    this->content.gsub!("\r\n", "\n")
+    this->changeset = this->repository.find_changeset_by_name(this->rev)
 
     // Forcing html format here to avoid
     // rails looking for e.g text when .txt is asked for

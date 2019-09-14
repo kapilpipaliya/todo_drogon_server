@@ -3,8 +3,8 @@ class WorkPackage::SpentTime
                 :work_package
 
    SpentTime(user, work_package = nil) {
-    @user = user
-    @work_package = work_package
+    this->user = user
+    this->work_package = work_package
   }
 
    void scope() {
@@ -84,18 +84,18 @@ class WorkPackage::SpentTime
   }
 
    void wp_table() {
-    @wp_table ||= WorkPackage.arel_table
+    this->wp_table ||= WorkPackage.arel_table
   }
 
    void relations_table() {
-    @relations || Relation.arel_table
+    this->relations || Relation.arel_table
   }
 
    void wp_descendants() {
-    @wp_descendants ||= wp_table.alias('descendants')
+    this->wp_descendants ||= wp_table.alias('descendants')
   }
 
    void time_entries_table() {
-    @time_entries_table ||= TimeEntry.arel_table
+    this->time_entries_table ||= TimeEntry.arel_table
   }
 }

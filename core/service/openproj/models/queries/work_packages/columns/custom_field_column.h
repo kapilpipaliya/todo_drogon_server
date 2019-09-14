@@ -7,7 +7,7 @@ class Queries::WorkPackages::Columns::CustomFieldColumn : public Queries::WorkPa
     set_groupable! custom_field
     set_summable! custom_field
 
-    @cf = custom_field
+    this->cf = custom_field
   }
 
    void set_name!(custom_field) {
@@ -32,15 +32,15 @@ class Queries::WorkPackages::Columns::CustomFieldColumn : public Queries::WorkPa
   }
 
    void caption() {
-    @cf.name
+    this->cf.name
   }
 
    void custom_field() {
-    @cf
+    this->cf
   }
 
    void value(work_package) {
-    work_package.formatted_custom_value_for(@cf.id)
+    work_package.formatted_custom_value_for(this->cf.id)
   }
 
    void sum_of(work_packages) {
@@ -48,7 +48,7 @@ class Queries::WorkPackages::Columns::CustomFieldColumn : public Queries::WorkPa
       // we can't perform the aggregation on the SQL side. Try to filter useless rows to reduce work.
       work_packages = work_packages
                       .joins(:custom_values)
-                      .where(custom_values: { custom_field: @cf })
+                      .where(custom_values: { custom_field: this->cf })
                       .where("#{CustomValue.table_name}.value IS NOT NULL")
                       .where("#{CustomValue.table_name}.value != ''")
     }

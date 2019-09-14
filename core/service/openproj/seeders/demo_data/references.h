@@ -4,7 +4,7 @@ namespace DemoData {
     module_function
 
      void url_helpers() {
-      @url_helpers ||= OpenProject::StaticRouting::StaticRouter.new.url_helpers
+      this->url_helpers ||= OpenProject::StaticRouting::StaticRouter.new.url_helpers
     }
 
      void api_url_helpers() {

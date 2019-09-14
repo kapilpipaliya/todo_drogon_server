@@ -7,29 +7,29 @@ class ColorsController : public ApplicationController {
   // menu_item :colors
 
    void index() {
-    @colors = Color.all
+    this->colors = Color.all
     respond_to { |format|
       format.html
     }
   }
 
    void show() {
-    @color = Color.find(params[:id])
+    this->color = Color.find(params[:id])
     respond_to { |_format|
     }
   }
 
    void new_() {
-    @color = Color.new
+    this->color = Color.new
     respond_to { |format|
       format.html
     }
   }
 
    void create() {
-    @color = Color.new(permitted_params.color)
+    this->color = Color.new(permitted_params.color)
 
-    if ( @color.save) {
+    if ( this->color.save) {
       flash[:notice] = l(:notice_successful_create)
       redirect_to colors_path
     else
@@ -39,16 +39,16 @@ class ColorsController : public ApplicationController {
   }
 
    void edit() {
-    @color = Color.find(params[:id])
+    this->color = Color.find(params[:id])
     respond_to { |format|
       format.html
     }
   }
 
    void update() {
-    @color = Color.find(params[:id])
+    this->color = Color.find(params[:id])
 
-    if ( @color.update_attributes(permitted_params.color)) {
+    if ( this->color.update_attributes(permitted_params.color)) {
       flash[:notice] = l(:notice_successful_update)
       redirect_to colors_path
     else
@@ -58,15 +58,15 @@ class ColorsController : public ApplicationController {
   }
 
    void confirm_destroy() {
-    @color = Color.find(params[:id])
+    this->color = Color.find(params[:id])
     respond_to { |format|
       format.html
     }
   }
 
    void destroy() {
-    @color = Color.find(params[:id])
-    @color.destroy
+    this->color = Color.find(params[:id])
+    this->color.destroy
 
     flash[:notice] = l(:notice_successful_delete)
     redirect_to colors_path

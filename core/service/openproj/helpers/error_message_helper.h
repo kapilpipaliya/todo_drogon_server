@@ -28,7 +28,7 @@ namespace ErrorMessageHelper {
     options = params.extract_options!.symbolize_keys
 
     objects = Array.wrap(options.delete(:object) || params).map { |object|
-      object = instance_variable_get("@#{object}") unless object.respond_to?(:to_model)
+      object = instance_variable_get("this->#{object}") unless object.respond_to?(:to_model)
       object = convert_to_model(object)
       options[:object] ||= object
 

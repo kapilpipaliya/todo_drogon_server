@@ -18,8 +18,8 @@ class PermittedParams
   attr_reader :params, :current_user
 
    PermittedParams(params, current_user) {
-    @params = params
-    @current_user = current_user
+    this->params = params
+    this->current_user = current_user
   }
 
    void permit(key, *params) {
@@ -405,7 +405,7 @@ class PermittedParams
   }
 
    void permitted_attributes() {
-    @whitelisted_params ||= begin
+    this->whitelisted_params ||= begin
       params = {
         attribute_help_text: %i(
           type

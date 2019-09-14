@@ -1,7 +1,7 @@
 namespace ::Query::Grouping {
   // Returns the work package count by group or nil if ( query is not grouped) {
    void work_package_count_by_group() {
-    @work_package_count_by_group ||= begin
+    this->work_package_count_by_group ||= begin
       if ( query.grouped?) {
         r = group_counts_by_group
 

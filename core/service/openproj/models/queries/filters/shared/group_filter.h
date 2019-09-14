@@ -6,7 +6,7 @@ namespace Queries::Filters::Shared::GroupFilter {
 
   namespace InstanceMethods {
      void allowed_values() {
-      @allowed_values ||= begin
+      this->allowed_values ||= begin
         ::Group.pluck(:id).map { |g| [g, g.to_s] }
       }
     }

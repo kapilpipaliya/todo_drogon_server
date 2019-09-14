@@ -13,9 +13,9 @@ class NewsController : public ApplicationController {
   // accept_key_auth :index
 
    void index() {
-    scope = @project ? @project.news : News.all
+    scope = this->project ? this->project.news : News.all
 
-    @newss = scope.merge(News.latest_for(current_user, count: 0))
+    this->newss = scope.merge(News.latest_for(current_user, count: 0))
                   .page(page_param)
                   .per_page(per_page_param)
 
@@ -24,8 +24,8 @@ class NewsController : public ApplicationController {
         render layout: layout_non_or_no_menu
       }
       format.atom {
-        render_feed(@newss,
-                    title: (@project ? @project.name : Setting.app_title) + ": #{l(:label_news_plural)}")
+        render_feed(this->newss,
+                    title: (this->project ? this->project.name : Setting.app_title) + ": #{l(:label_news_plural)}")
       }
     }
   }
@@ -35,20 +35,20 @@ class NewsController : public ApplicationController {
   }
 
    void show() {
-    @comments = @news.comments
-    @comments.reverse_order if ( User.current.wants_comments_in_reverse_order?) {
+    this->comments = this->news.comments
+    this->comments.reverse_order if ( User.current.wants_comments_in_reverse_order?) {
   }
 
    void new_() {
-    @news = News.new(project: @project, author: User.current)
+    this->news = News.new(project: this->project, author: User.current)
   }
 
    void create() {
-    @news = News.new(project: @project, author: User.current)
-    @news.attributes = permitted_params.news
-    if ( @news.save) {
+    this->news = News.new(project: this->project, author: User.current)
+    this->news.attributes = permitted_params.news
+    if ( this->news.save) {
       flash[:notice] = l(:notice_successful_create)
-      redirect_to controller: '/news', action: 'index', project_id: @project
+      redirect_to controller: '/news', action: 'index', project_id: this->project
     else
       render action: 'new'
     }
@@ -57,38 +57,38 @@ class NewsController : public ApplicationController {
    void edit() {}
 
    void update() {
-    @news.attributes = permitted_params.news
-    if ( @news.save) {
+    this->news.attributes = permitted_params.news
+    if ( this->news.save) {
       flash[:notice] = l(:notice_successful_update)
-      redirect_to action: 'show', id: @news
+      redirect_to action: 'show', id: this->news
     else
       render action: 'edit'
     }
   }
 
    void destroy() {
-    @news.destroy
+    this->news.destroy
     flash[:notice] = l(:notice_successful_delete)
-    redirect_to action: 'index', project_id: @project
+    redirect_to action: 'index', project_id: this->project
   }
 
   private:
 
    void find_news_object() {
-    @news = @object = News.find(params[:id].to_i)
+    this->news = this->object = News.find(params[:id].to_i)
   rescue ActiveRecord::RecordNotFound
     render_404
   }
 
    void find_project() {
-    @project = Project.find(params[:project_id])
+    this->project = Project.find(params[:project_id])
   rescue ActiveRecord::RecordNotFound
     render_404
   }
 
    void find_optional_project() {
     return true unless params[:project_id]
-    @project = Project.find(params[:project_id])
+    this->project = Project.find(params[:project_id])
     authorize
   rescue ActiveRecord::RecordNotFound
     render_404

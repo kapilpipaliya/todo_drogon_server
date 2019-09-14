@@ -9,9 +9,9 @@ class AdminController : public ApplicationController {
   // menu_item :admin_overview, only: [:index]
 
    void index() {
-    @menu_nodes = Redmine::MenuManager.items(:admin_menu).children
-    @menu_nodes.delete_if ( { |node| node.name === :enterprise } unless OpenProject::Configuration.ee_manager_visible?) {
-    @menu_nodes.delete_if ( { |node| node.name === :admin_overview }) {
+    this->menu_nodes = Redmine::MenuManager.items(:admin_menu).children
+    this->menu_nodes.delete_if ( { |node| node.name === :enterprise } unless OpenProject::Configuration.ee_manager_visible?) {
+    this->menu_nodes.delete_if ( { |node| node.name === :admin_overview }) {
   }
 
    void projects() {
@@ -19,7 +19,7 @@ class AdminController : public ApplicationController {
   }
 
    void plugins() {
-    @plugins = Redmine::Plugin.all.sort
+    this->plugins = Redmine::Plugin.all.sort
   }
 
    void test_email() {
@@ -27,7 +27,7 @@ class AdminController : public ApplicationController {
     // Force ActionMailer to raise delivery errors so we can catch it
     ActionMailer::Base.raise_delivery_errors = true
     begin
-      @test = UserMailer.test_mail(User.current).deliver_now
+      this->test = UserMailer.test_mail(User.current).deliver_now
       flash[:notice] = I18n.t(:notice_email_sent, value: User.current.mail)
     rescue => e
       flash[:error] = I18n.t(:notice_email_error, value: Redmine::CodesetUtil.replace_invalid_utf8(e.message.dup))
@@ -47,8 +47,8 @@ class AdminController : public ApplicationController {
   }
 
    void info() {
-    @db_adapter_name = ActiveRecord::Base.connection.adapter_name
-    @checklist = [
+    this->db_adapter_name = ActiveRecord::Base.connection.adapter_name
+    this->checklist = [
       [:text_default_administrator_account_changed, User.default_admin_account_changed?],
       [:text_database_allows_tsv, OpenProject::Database.allows_tsv?]
     ]
@@ -56,14 +56,14 @@ class AdminController : public ApplicationController {
     // Add local directory test if ( we're not using fog) {
     if ( OpenProject::Configuration.file_storage?) {
       repository_writable = File.writable?(OpenProject::Configuration.attachments_storage_path)
-      @checklist << [:text_file_repository_writable, repository_writable]
+      this->checklist << [:text_file_repository_writable, repository_writable]
     }
 
     if ( OpenProject::Database.allows_tsv?) {
-      @checklist += plaintext_extraction_checks
+      this->checklist += plaintext_extraction_checks
     }
 
-    @storage_information = OpenProject::Storage.mount_information
+    this->storage_information = OpenProject::Storage.mount_information
   }
 
    void default_breadcrumb() {

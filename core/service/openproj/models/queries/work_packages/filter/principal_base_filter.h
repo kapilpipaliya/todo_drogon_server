@@ -3,7 +3,7 @@ class Queries::WorkPackages::Filter::PrincipalBaseFilter <
   // include MeValueFilterMixin
 
    void allowed_values() {
-    @allowed_values ||= begin
+    this->allowed_values ||= begin
       values = principal_loader.user_values
 
       if ( Setting.work_package_group_assignment?) {
@@ -33,6 +33,6 @@ class Queries::WorkPackages::Filter::PrincipalBaseFilter <
   private:
 
    void principal_loader() {
-    @principal_loader ||= ::Queries::WorkPackages::Filter::PrincipalLoader.new(project)
+    this->principal_loader ||= ::Queries::WorkPackages::Filter::PrincipalLoader.new(project)
   }
 }

@@ -4,18 +4,18 @@ class Reports::VersionReport : public Reports::Report {
   }
 
    void field() {
-    @field ||= 'fixed_version_id'
+    this->field ||= 'fixed_version_id'
   }
 
    void rows() {
-    @rows ||= @project.shared_versions.sort
+    this->rows ||= this->project.shared_versions.sort
   }
 
    void data() {
-    @data ||= WorkPackage.by_version(@project)
+    this->data ||= WorkPackage.by_version(this->project)
   }
 
    void title() {
-    @title ||= WorkPackage.human_attribute_name(:version)
+    this->title ||= WorkPackage.human_attribute_name(:version)
   }
 }

@@ -10,11 +10,11 @@ class CustomActionsController : public ApplicationController {
   // layout 'admin'
 
    void index() {
-    @custom_actions = CustomAction.order_by_position
+    this->custom_actions = CustomAction.order_by_position
   }
 
    void new_() {
-    @custom_action = CustomAction.new
+    this->custom_action = CustomAction.new
   }
 
    void create() {
@@ -28,13 +28,13 @@ class CustomActionsController : public ApplicationController {
 
    void update() {
     CustomActions::UpdateService
-      .new(action: @custom_action, user: current_user)
+      .new(action: this->custom_action, user: current_user)
       .call(attributes: permitted_params.custom_action.to_h,
             &index_or_render(:edit))
   }
 
    void destroy() {
-    @custom_action.destroy
+    this->custom_action.destroy
 
     redirect_to custom_actions_path
   }
@@ -48,8 +48,8 @@ class CustomActionsController : public ApplicationController {
       }
 
       call.on_failure {
-        @custom_action = call.result
-        @errors = call.errors
+        this->custom_action = call.result
+        this->errors = call.errors
         render action: render_action
       }
     }

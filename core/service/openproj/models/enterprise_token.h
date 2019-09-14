@@ -44,8 +44,8 @@ class EnterpriseToken : public ActiveRecord::Base {
   //          to: :token_object
 
    void token_object() {
-    load_token! unless defined?(@token_object)
-    @token_object
+    load_token! unless defined?(this->token_object)
+    this->token_object
   }
 
    void allows_to?(action) {
@@ -60,7 +60,7 @@ class EnterpriseToken : public ActiveRecord::Base {
   private:
 
    void load_token!() {
-    @token_object = OpenProject::Token.import(encoded_token)
+    this->token_object = OpenProject::Token.import(encoded_token)
   rescue OpenProject::Token::ImportError => error
     Rails.logger.error "Failed to load EE token: #{error}"
     nil

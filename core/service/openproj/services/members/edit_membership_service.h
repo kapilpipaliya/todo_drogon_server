@@ -3,9 +3,9 @@ namespace Members {
     attr_reader :current_user, :member, :do_save
 
      EditMembershipService(member, save:, current_user:) {
-      @current_user = current_user
-      @member = member
-      @do_save = save
+      this->current_user = current_user
+      this->member = member
+      this->do_save = save
     }
 
      void call(attributes: {}) {

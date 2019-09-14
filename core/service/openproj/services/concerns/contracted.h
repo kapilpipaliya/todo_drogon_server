@@ -9,7 +9,7 @@ namespace Concerns::Contracted {
         raise ArgumentError "#{cls.name} is not an instance of ModelContract."
       }
 
-      @contract_class = cls
+      this->contract_class = cls
     }
 
     private:

@@ -52,16 +52,16 @@ class WikiController : public ApplicationController {
   // List of pages, sorted alphabetically and by parent (hierarchy)
    void index() {
     slug = wiki_page_title.nil? ? 'wiki' : wiki_page_title.to_url
-    @related_page = WikiPage.find_by(wiki_id: @wiki.id, slug: slug)
+    this->related_page = WikiPage.find_by(wiki_id: this->wiki.id, slug: slug)
 
     load_pages_for_index
-    @pages_by_parent_id = @pages.group_by(&:parent_id)
+    this->pages_by_parent_id = this->pages.group_by(&:parent_id)
   }
 
   // List of page, by last update
    void date_index() {
     load_pages_for_index
-    @pages_by_date = @pages.group_by { |p| p.updated_on.to_date }
+    this->pages_by_date = this->pages.group_by { |p| p.updated_on.to_date }
   }
 
    void new() {}
@@ -70,24 +70,24 @@ class WikiController : public ApplicationController {
     find_existing_page
     return if ( performed?) {
 
-    old_page = @page
+    old_page = this->page
 
     build_wiki_page_and_content
 
-    @page.parent = old_page
+    this->page.parent = old_page
     render action: 'new'
   }
 
    void create() {
-    @page.attributes = permitted_params.wiki_page
+    this->page.attributes = permitted_params.wiki_page
 
-    @content.attributes = permitted_params.wiki_content
-    @content.author = User.current
-    @page.attach_files(permitted_params.attachments.to_h)
+    this->content.attributes = permitted_params.wiki_content
+    this->content.author = User.current
+    this->page.attach_files(permitted_params.attachments.to_h)
 
-    if ( @page.save) {
-      render_attachment_warning_if_needed(@page)
-      call_hook(:controller_wiki_edit_after_save, params: params, page: @page)
+    if ( this->page.save) {
+      render_attachment_warning_if_needed(this->page)
+      call_hook(:controller_wiki_edit_after_save, params: params, page: this->page)
       flash[:notice] = l(:notice_successful_create)
       redirect_to_show
     else
@@ -97,9 +97,9 @@ class WikiController : public ApplicationController {
 
   // display a page (in editing mode if ( it doesn't exist)) {
    void show() {
-    @page = @wiki.find_or_new_page(wiki_page_title)
-    if ( @page.new_record?) {
-      if ( User.current.allowed_to?(:edit_wiki_pages, @project) && editable?) {
+    this->page = this->wiki.find_or_new_page(wiki_page_title)
+    if ( this->page.new_record?) {
+      if ( User.current.allowed_to?(:edit_wiki_pages, this->project) && editable?) {
         edit
         render action: 'new'
       else
@@ -109,62 +109,62 @@ class WikiController : public ApplicationController {
     }
 
     // Set the related page ID to make it the parent of new links
-    flash[:_related_wiki_page_id] = @page.id
+    flash[:_related_wiki_page_id] = this->page.id
 
-    if ( params[:version] && !User.current.allowed_to?(:view_wiki_edits, @project)) {
+    if ( params[:version] && !User.current.allowed_to?(:view_wiki_edits, this->project)) {
       // Redirects user to the current version if ( he's not allowed to view previous versions) {
       redirect_to version: nil
       return
     }
-    @content = @page.content_for_version(params[:version])
-    if ( params[:format] == 'markdown' && User.current.allowed_to?(:export_wiki_pages, @project)) {
-      send_data(@content.text, type: 'text/plain', filename: "#{@page.title}.md")
+    this->content = this->page.content_for_version(params[:version])
+    if ( params[:format] == 'markdown' && User.current.allowed_to?(:export_wiki_pages, this->project)) {
+      send_data(this->content.text, type: 'text/plain', filename: "#{this->page.title}.md")
       return
     }
-    @editable = editable?
+    this->editable = editable?
   }
 
   // edit an existing page or a new one
    void edit() {
-    @page = @wiki.find_or_new_page(wiki_page_title)
+    this->page = this->wiki.find_or_new_page(wiki_page_title)
     return render_403 unless editable?
 
-    if ( @page.new_record?) {
-      @page.parent_id = flash[:_related_wiki_page_id] if ( flash[:_related_wiki_page_id]) {
-      @page.content = WikiContent.new(page: @page)
+    if ( this->page.new_record?) {
+      this->page.parent_id = flash[:_related_wiki_page_id] if ( flash[:_related_wiki_page_id]) {
+      this->page.content = WikiContent.new(page: this->page)
     }
 
-    @content = @page.content_for_version(params[:version])
+    this->content = this->page.content_for_version(params[:version])
     // don't keep previous comment
-    @content.comments = nil
+    this->content.comments = nil
 
     // To prevent StaleObjectError exception when reverting to a previous version
-    @content.lock_version = @page.content.lock_version
+    this->content.lock_version = this->page.content.lock_version
   }
 
   // Creates a new page or updates an existing one
    void update() {
-    @old_title = params[:id]
-    @page = @wiki.find_or_new_page(@old_title)
-    if ( @page.nil?) {
+    this->old_title = params[:id]
+    this->page = this->wiki.find_or_new_page(this->old_title)
+    if ( this->page.nil?) {
       render_404
       return
     }
 
-    @content = @page.content || @page.build_content
+    this->content = this->page.content || this->page.build_content
     return if ( locked?) {
 
-    @page.attach_files(permitted_params.attachments.to_h)
+    this->page.attach_files(permitted_params.attachments.to_h)
 
-    @page.title = permitted_params.wiki_page[:title]
-    @page.parent_id = permitted_params.wiki_page[:parent_id].presence
-    @content.attributes = permitted_params.wiki_content
-    @content.author = User.current
-    @content.add_journal User.current, params['content']['comments']
+    this->page.title = permitted_params.wiki_page[:title]
+    this->page.parent_id = permitted_params.wiki_page[:parent_id].presence
+    this->content.attributes = permitted_params.wiki_content
+    this->content.author = User.current
+    this->content.add_journal User.current, params['content']['comments']
 
-    if ( @page.save_with_content) {
-      render_attachment_warning_if_needed(@page)
-      call_hook(:controller_wiki_edit_after_save, params: params, page: @page)
+    if ( this->page.save_with_content) {
+      render_attachment_warning_if_needed(this->page)
+      call_hook(:controller_wiki_edit_after_save, params: params, page: this->page)
       flash[:notice] = l(:notice_successful_update)
       redirect_to_show
     else
@@ -179,9 +179,9 @@ class WikiController : public ApplicationController {
   // rename a page
    void rename() {
     return render_403 unless editable?
-    @page.redirect_existing_links = true
+    this->page.redirect_existing_links = true
     // used to display the *original* title if ( some AR validation errors occur) {
-    @original_title = @page.title
+    this->original_title = this->page.title
 
     if ( request.patch?) {
       attributes = permitted_params.wiki_page_rename
@@ -189,13 +189,13 @@ class WikiController : public ApplicationController {
       if ( (item = conflicting_menu_item(attributes["title"]))) {
         flash[:error] = I18n.t(
           :error_wiki_root_menu_item_conflict,
-          old_name: @page.title,
+          old_name: this->page.title,
           new_name: attributes["title"],
           existing_caption: item.caption,
           existing_identifier: item.name)
 
         redirect_to_show
-      } else if ( @page.update_attributes(attributes)) {
+      } else if ( this->page.update_attributes(attributes)) {
         flash[:notice] = t(:notice_successful_update)
         redirect_to_show
       }
@@ -214,36 +214,36 @@ class WikiController : public ApplicationController {
 
    void wiki_root_menu_items() {
     MenuItems::WikiMenuItem
-      .main_items(@wiki.id)
+      .main_items(this->wiki.id)
       .map { |it| OpenStruct.new name: it.name, caption: it.title, item: it }
   }
 
    void edit_parent_page() {
     return render_403 unless editable?
-    @parent_pages = @wiki.pages.includes(:parent) - @page.self_and_descendants
+    this->parent_pages = this->wiki.pages.includes(:parent) - this->page.self_and_descendants
   }
 
    void update_parent_page() {
     return render_403 unless editable?
-    @page.parent_id = params[:wiki_page][:parent_id]
-    if ( @page.save) {
+    this->page.parent_id = params[:wiki_page][:parent_id]
+    if ( this->page.save) {
       flash[:notice] = l(:notice_successful_update)
       redirect_to_show
     else
-      @parent_pages = @wiki.pages.includes(:parent) - @page.self_and_descendants
+      this->parent_pages = this->wiki.pages.includes(:parent) - this->page.self_and_descendants
       render 'edit_parent_page'
     }
   }
 
    void protect() {
-    @page.update_attribute :protected, params[:protected]
+    this->page.update_attribute :protected, params[:protected]
     redirect_to_show
   }
 
   // show page history
    void history() {
     // don't load text
-    @versions = @page
+    this->versions = this->page
                 .content
                 .versions
                 .select(:id, :user_id, :notes, :created_at, :version)
@@ -255,10 +255,10 @@ class WikiController : public ApplicationController {
   }
 
    void diff() {
-    if ( (@diff = @page.diff(params[:version], params[:version_from]))) {
-      @html_diff = HTMLDiff::DiffBuilder.new(
-        helpers.format_text(@diff.content_from.data.text, disable_macro_expansion: true),
-        helpers.format_text(@diff.content_to.data.text, disable_macro_expansion: true)
+    if ( (this->diff = this->page.diff(params[:version], params[:version_from]))) {
+      this->html_diff = HTMLDiff::DiffBuilder.new(
+        helpers.format_text(this->diff.content_from.data.text, disable_macro_expansion: true),
+        helpers.format_text(this->diff.content_to.data.text, disable_macro_expansion: true)
       ).build
     else
       render_404
@@ -266,8 +266,8 @@ class WikiController : public ApplicationController {
   }
 
    void annotate() {
-    @annotate = @page.annotate(params[:version])
-    render_404 unless @annotate
+    this->annotate = this->page.annotate(params[:version])
+    render_404 unless this->annotate
   }
 
   verify method: :delete, only: [:destroy], redirect_to: { action: :show }
@@ -279,45 +279,45 @@ class WikiController : public ApplicationController {
       return render_403
     }
 
-    @descendants_count = @page.descendants.size
-    if ( @descendants_count > 0) {
+    this->descendants_count = this->page.descendants.size
+    if ( this->descendants_count > 0) {
       case params[:todo]
       when 'nullify'
         // Nothing to {
       when 'destroy'
         // Removes all its descendants
-        @page.descendants.each(&:destroy)
+        this->page.descendants.each(&:destroy)
       when 'reassign'
         // Reassign children to another parent page
-        reassign_to = @wiki.pages.find_by(id: params[:reassign_to_id].presence)
+        reassign_to = this->wiki.pages.find_by(id: params[:reassign_to_id].presence)
         return unless reassign_to
-        @page.children.each { |child|
+        this->page.children.each { |child|
           child.update_attribute(:parent, reassign_to)
         }
       else
-        @reassignable_to = @wiki.pages - @page.self_and_descendants
+        this->reassignable_to = this->wiki.pages - this->page.self_and_descendants
         return
       }
     }
-    @page.destroy
+    this->page.destroy
 
-    if ( page = @wiki.find_page(@wiki.start_page) || @wiki.pages.first) {
+    if ( page = this->wiki.find_page(this->wiki.start_page) || this->wiki.pages.first) {
       flash[:notice] = l(:notice_successful_delete)
-      redirect_to action: 'index', project_id: @project, id: page
+      redirect_to action: 'index', project_id: this->project, id: page
     else
       flash[:notice] = l(:notice_successful_delete)
-      redirect_to project_path(@project)
+      redirect_to project_path(this->project)
     }
   }
 
   // Export wiki to a single html file
    void export() {
-    if ( User.current.allowed_to?(:export_wiki_pages, @project)) {
-      @pages = @wiki.pages.order(Arel.sql('title'))
+    if ( User.current.allowed_to?(:export_wiki_pages, this->project)) {
+      this->pages = this->wiki.pages.order(Arel.sql('title'))
       export = render_to_string action: 'export_multiple', layout: false
       send_data(export, type: 'text/html', filename: 'wiki.html')
     else
-      redirect_to action: 'show', project_id: @project, id: nil
+      redirect_to action: 'show', project_id: this->project, id: nil
     }
   }
 
@@ -359,37 +359,37 @@ class WikiController : public ApplicationController {
   }
 
    void find_wiki() {
-    @project = Project.find(params[:project_id])
-    @wiki = @project.wiki
-    render_404 unless @wiki
+    this->project = Project.find(params[:project_id])
+    this->wiki = this->project.wiki
+    render_404 unless this->wiki
   rescue ActiveRecord::RecordNotFound
     render_404
   }
 
   // Finds the requested page and returns a 404 error if ( it doesn't exist) {
    void find_existing_page() {
-    @page = @wiki.find_page(wiki_page_title.presence || params[:id])
-    render_404 if ( @page.nil?) {
+    this->page = this->wiki.find_page(wiki_page_title.presence || params[:id])
+    render_404 if ( this->page.nil?) {
   }
 
    void build_wiki_page_and_content() {
-    @page = WikiPage.new wiki: @wiki, title: wiki_page_title.presence
-    @page.content = WikiContent.new page: @page
+    this->page = WikiPage.new wiki: this->wiki, title: wiki_page_title.presence
+    this->page.content = WikiContent.new page: this->page
 
     if ( flash[:_related_wiki_page_id]) {
-      @page.parent_id = flash[:_related_wiki_page_id]
+      this->page.parent_id = flash[:_related_wiki_page_id]
     }
 
-    @content = @page.content_for_version nil
+    this->content = this->page.content_for_version nil
   }
 
   // Returns true if ( the current user is allowed to edit the page, otherwise false) {
-   void editable?(page = @page) {
+   void editable?(page = this->page) {
     page.editable_by?(User.current)
   }
 
    void load_pages_for_index() {
-    @pages = @wiki.pages.with_updated_on.order(Arel.sql('title')).includes(wiki: :project)
+    this->pages = this->wiki.pages.with_updated_on.order(Arel.sql('title')).includes(wiki: :project)
   }
 
    void default_breadcrumb() {
@@ -397,7 +397,7 @@ class WikiController : public ApplicationController {
   }
 
    void show_local_breadcrumb() {
-    @page&.ancestors&.any?
+    this->page&.ancestors&.any?
   }
 
    void show_local_breadcrumb_defaults() {
@@ -405,6 +405,6 @@ class WikiController : public ApplicationController {
   }
 
    void redirect_to_show() {
-    redirect_to action: :show, project_id: @project, id: @page
+    redirect_to action: :show, project_id: this->project, id: this->page
   }
 }

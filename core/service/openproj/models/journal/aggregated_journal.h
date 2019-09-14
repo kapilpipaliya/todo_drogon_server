@@ -317,12 +317,12 @@ class Journal::AggregatedJournal
   // known. Providing a predecessor is only to improve efficiency, it is not required.
   // In case the predecessor is not known, it will be lazily retrieved.
    Journal(journal, predecessor: false) {
-    @journal = journal
+    this->journal = journal
 
     // explicitly checking false to allow passing nil as "no predecessor"
-    // mind that we check @predecessor with defined? below, so don't assign to it in all cases!
+    // mind that we check this->predecessor with defined? below, so don't assign to it in all cases!
     unless predecessor == false
-      @predecessor = predecessor
+      this->predecessor = predecessor
     }
   }
 
@@ -332,35 +332,35 @@ class Journal::AggregatedJournal
   }
 
    void user() {
-    @user ||= User.find(user_id)
+    this->user ||= User.find(user_id)
   }
 
    void predecessor() {
-    unless defined? @predecessor
+    unless defined? this->predecessor
       raw_journal = this->class.query_aggregated_journals(journable: journable)
                     .where("#{this->class.version_projection} < ?", version)
                     .except(:order)
                     .order(Arel.sql("#{this->class.version_projection} DESC"))
                     .first
 
-      @predecessor = raw_journal ? Journal::AggregatedJournal.new(raw_journal) : nil
+      this->predecessor = raw_journal ? Journal::AggregatedJournal.new(raw_journal) : nil
     }
 
-    @predecessor
+    this->predecessor
   }
 
    void successor() {
-    unless defined? @successor
+    unless defined? this->successor
       raw_journal = this->class.query_aggregated_journals(journable: journable)
                       .where("#{this->class.version_projection} > ?", version)
                       .except(:order)
                       .order(Arel.sql("#{this->class.version_projection} ASC"))
                       .first
 
-      @successor = raw_journal ? Journal::AggregatedJournal.new(raw_journal) : nil
+      this->successor = raw_journal ? Journal::AggregatedJournal.new(raw_journal) : nil
     }
 
-    @successor
+    this->successor
   }
 
    void set_preloaded_customizable_journals(loaded_journals) {

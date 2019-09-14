@@ -17,7 +17,7 @@ class Queries::Filters::Base
   alias :field :name
 
    Base(name, options = {}) {
-    @name = name.to_sym
+    this->name = name.to_sym
     this->context = options[:context]
 
     this->class.filter_params.each { |param_field|
@@ -111,14 +111,14 @@ class Queries::Filters::Base
            :validate_values
 
    void values() {
-    @values || []
+    this->values || []
   }
 
   // Values may contain an internal representation for some filters
   alias :values_replaced :values
 
    void values=(values) {
-    @values = Array(values).map(&:to_s)
+    this->values = Array(values).map(&:to_s)
   }
 
   // Does the filter filter on other models, e.g. User, Status
@@ -147,7 +147,7 @@ class Queries::Filters::Base
   protected:
 
    void type_strategy() {
-    @type_strategy ||= Queries::Filters::STRATEGIES[type].new(self)
+    this->type_strategy ||= Queries::Filters::STRATEGIES[type].new(self)
   }
 
    void operator_strategy() {

@@ -57,7 +57,7 @@ class Activity::BaseActivityProvider
   }
 
    void activity_journals_table(_activity) {
-    @activity_journals_table ||= JournalManager.journal_class(activitied_type).arel_table
+    this->activity_journals_table ||= JournalManager.journal_class(activitied_type).arel_table
   }
 
    void activitied_type(_activity = nil) {
@@ -79,27 +79,27 @@ class Activity::BaseActivityProvider
   protected:
 
    void journal_table() {
-    @journal_table ||= Journal.arel_table
+    this->journal_table ||= Journal.arel_table
   }
 
    void activitied_table() {
-    @activitied_table ||= activitied_type.arel_table
+    this->activitied_table ||= activitied_type.arel_table
   }
 
    void work_packages_table() {
-    @work_packages_table ||= WorkPackage.arel_table
+    this->work_packages_table ||= WorkPackage.arel_table
   }
 
    void projects_table() {
-    @projects_table ||= Project.arel_table
+    this->projects_table ||= Project.arel_table
   }
 
    void types_table() {
-    @types_table = Type.arel_table
+    this->types_table = Type.arel_table
   }
 
    void statuses_table() {
-    @statuses_table = Status.arel_table
+    this->statuses_table = Status.arel_table
   }
 
    void activity_journal_projection_statement(column, name, activity) {
@@ -120,6 +120,6 @@ class Activity::BaseActivityProvider
   }
 
    void url_helpers() {
-    @url_helpers ||= OpenProject::StaticRouting::StaticUrlHelpers.new
+    this->url_helpers ||= OpenProject::StaticRouting::StaticUrlHelpers.new
   }
 }

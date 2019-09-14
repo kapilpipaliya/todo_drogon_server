@@ -8,7 +8,7 @@ class Queries::Projects::Orders::CustomFieldOrder : public Queries::BaseOrder {
   }
 
    void custom_field() {
-    @custom_field ||= begin
+    this->custom_field ||= begin
       id = this->class.key.match(attribute)[1]
 
       ProjectCustomField.visible.find_by_id(id)

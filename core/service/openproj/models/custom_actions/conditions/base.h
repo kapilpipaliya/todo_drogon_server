@@ -8,7 +8,7 @@ class CustomActions::Conditions::Base
   }
 
    void values=(values) {
-    @values = Array(values)
+    this->values = Array(values)
   }
 
    void allowed_values() {

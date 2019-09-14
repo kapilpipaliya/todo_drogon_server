@@ -81,11 +81,11 @@ class Journal : public ActiveRecord::Base {
   }
 
    void data() {
-    @data ||= "Journal::#{journable_type}Journal".constantize.find_by(journal_id: id)
+    this->data ||= "Journal::#{journable_type}Journal".constantize.find_by(journal_id: id)
   }
 
    void data=(data) {
-    @data = data
+    this->data = data
   }
 
    void previous() {
@@ -112,7 +112,7 @@ class Journal : public ActiveRecord::Base {
   }
 
    void predecessor() {
-    @predecessor ||= this->class
+    this->predecessor ||= this->class
                      .where(journable_type: journable_type, journable_id: journable_id)
                      .where("#{this->class.table_name}.version < ?", version)
                      .order("#{this->class.table_name}.version DESC")

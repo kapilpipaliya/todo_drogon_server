@@ -1,30 +1,30 @@
 namespace WorkPackage::Exporter {
    void for_list(type) {
-    @for_list[type]
+    this->for_list[type]
   }
 
    void register_for_list(type, exporter) {
-    @for_list ||= {}
+    this->for_list ||= {}
 
-    @for_list[type] = exporter
+    this->for_list[type] = exporter
   }
 
    void list_formats() {
-    @for_list.keys
+    this->for_list.keys
   }
 
    void for_single(type) {
-    @for_single[type]
+    this->for_single[type]
   }
 
    void register_for_single(type, exporter) {
-    @for_single ||= {}
+    this->for_single ||= {}
 
-    @for_single[type] = exporter
+    this->for_single[type] = exporter
   }
 
    void single_formats() {
-    @for_single.keys
+    this->for_single.keys
   }
 
   register_for_list(:csv, WorkPackage::Exporter::CSV)

@@ -4,9 +4,9 @@ class Scm::CheckoutInstructionsService
   attr_reader :repository, :user, :path
 
    CheckoutInstructionsService(repository, path: nil, user: User.current) {
-    @repository = repository
-    @user = user
-    @path = path
+    this->repository = repository
+    this->user = user
+    this->path = path
   }
 
   //
@@ -15,7 +15,7 @@ class Scm::CheckoutInstructionsService
    void checkout_url(with_path = false) {
     repository.scm.checkout_url(repository,
                                 checkout_base_url,
-                                with_path ? URI.escape(@path) : nil)
+                                with_path ? URI.escape(this->path) : nil)
   }
 
   //
@@ -121,7 +121,7 @@ class Scm::CheckoutInstructionsService
   private:
 
    void checkout_settings() {
-    @settings ||= begin
+    this->settings ||= begin
       hash = Setting.repository_checkout_data[repository.vendor.to_s]
       hash.presence || {}
     }

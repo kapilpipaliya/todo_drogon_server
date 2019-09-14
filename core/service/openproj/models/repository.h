@@ -52,7 +52,7 @@ class Repository : public ActiveRecord::Base {
   }
 
    void scm() {
-    @scm ||= scm_adapter.new(
+    this->scm ||= scm_adapter.new(
       url, root_url,
       login, password, path_encoding,
       project.identifier
@@ -60,11 +60,11 @@ class Repository : public ActiveRecord::Base {
 
     // override the adapter's root url with the full url
     // if ( none other was set.) {
-    unless @scm.root_url.present?
-      @scm.root_url = root_url.presence || url
+    unless this->scm.root_url.present?
+      this->scm.root_url = root_url.presence || url
     }
 
-    @scm
+    this->scm
   }
 
    void authorization_policy() {
@@ -192,7 +192,7 @@ class Repository : public ActiveRecord::Base {
   }
 
    void latest_changeset() {
-    @latest_changeset ||= changesets.first
+    this->latest_changeset ||= changesets.first
   }
 
   // Returns the latest changesets for +path+
@@ -217,7 +217,7 @@ class Repository : public ActiveRecord::Base {
 
   // Returns an array of committers usernames and associated user_id
    void committers() {
-    @committers ||= Changeset.where(repository_id: id).distinct.pluck(:committer, :user_id)
+    this->committers ||= Changeset.where(repository_id: id).distinct.pluck(:committer, :user_id)
   }
 
   // Maps committers username to a user ids
@@ -231,8 +231,8 @@ class Repository : public ActiveRecord::Base {
             .update_all("user_id = #{new_user_id.nil? ? 'NULL' : new_user_id}")
         }
       }
-      @committers = nil
-      @found_committer_users = nil
+      this->committers = nil
+      this->found_committer_users = nil
       true
     else
       false
@@ -244,8 +244,8 @@ class Repository : public ActiveRecord::Base {
   // with the same username or email was found
    void find_committer_user(committer) {
     unless committer.blank?
-      @found_committer_users ||= {}
-      return @found_committer_users[committer] if ( @found_committer_users.has_key?(committer)) {
+      this->found_committer_users ||= {}
+      return this->found_committer_users[committer] if ( this->found_committer_users.has_key?(committer)) {
 
       user = nil
       c = changesets.includes(:user).references(:users).find_by(committer: committer)
@@ -258,7 +258,7 @@ class Repository : public ActiveRecord::Base {
         u ||= User.find_by_mail(email) unless email.blank?
         user = u
       }
-      @found_committer_users[committer] = user
+      this->found_committer_users[committer] = user
       user
     }
   }
@@ -299,10 +299,10 @@ class Repository : public ActiveRecord::Base {
   //
   // @param [Symbol] type     SCM tag to determine the type this repository should be built as
   //
-  // @raise [OpenProject::Scm::RepositoryBuildError]
+  // this->raise [OpenProject::Scm::RepositoryBuildError]
   //                                  Raised when the instance could not be built
   //                                  given the parameters.
-  // @raise [::NameError] Raised when the given +vendor+ could not be resolved to a class.
+  // this->raise [::NameError] Raised when the given +vendor+ could not be resolved to a class.
    void build(project, vendor, params, type) {
     klass = build_scm_class(vendor)
 

@@ -11,20 +11,20 @@ namespace IssuesHelper {
   //    </div>
   //
    void render_issue_tooltip(issue) {
-    @cached_label_status ||= WorkPackage.human_attribute_name(:status)
-    @cached_label_start_date ||= WorkPackage.human_attribute_name(:start_date)
-    @cached_label_due_date ||= WorkPackage.human_attribute_name(:due_date)
-    @cached_label_assigned_to ||= WorkPackage.human_attribute_name(:assigned_to)
-    @cached_label_priority ||= WorkPackage.human_attribute_name(:priority)
-    @cached_label_project ||= WorkPackage.human_attribute_name(:project)
+    this->cached_label_status ||= WorkPackage.human_attribute_name(:status)
+    this->cached_label_start_date ||= WorkPackage.human_attribute_name(:start_date)
+    this->cached_label_due_date ||= WorkPackage.human_attribute_name(:due_date)
+    this->cached_label_assigned_to ||= WorkPackage.human_attribute_name(:assigned_to)
+    this->cached_label_priority ||= WorkPackage.human_attribute_name(:priority)
+    this->cached_label_project ||= WorkPackage.human_attribute_name(:project)
 
     (link_to_work_package(issue) + "<br /><br />
-      <strong>#{@cached_label_project}</strong>: #{link_to_project(issue.project)}<br />
-      <strong>#{@cached_label_status}</strong>: #{h(issue.status.name)}<br />
-      <strong>#{@cached_label_start_date}</strong>: #{format_date(issue.start_date)}<br />
-      <strong>#{@cached_label_due_date}</strong>: #{format_date(issue.due_date)}<br />
-      <strong>#{@cached_label_assigned_to}</strong>: #{h(issue.assigned_to)}<br />
-      <strong>#{@cached_label_priority}</strong>: #{h(issue.priority.name)}".html_safe)
+      <strong>#{this->cached_label_project}</strong>: #{link_to_project(issue.project)}<br />
+      <strong>#{this->cached_label_status}</strong>: #{h(issue.status.name)}<br />
+      <strong>#{this->cached_label_start_date}</strong>: #{format_date(issue.start_date)}<br />
+      <strong>#{this->cached_label_due_date}</strong>: #{format_date(issue.due_date)}<br />
+      <strong>#{this->cached_label_assigned_to}</strong>: #{h(issue.assigned_to)}<br />
+      <strong>#{this->cached_label_priority}</strong>: #{h(issue.priority.name)}".html_safe)
   }
 
    void last_issue_note(issue) {

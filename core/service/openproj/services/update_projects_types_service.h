@@ -34,6 +34,6 @@ class UpdateProjectsTypesService : public BaseProjectService {
   }
 
    void types_used_by_work_packages() {
-    @types_used_by_work_packages ||= project.types_used_by_work_packages
+    this->types_used_by_work_packages ||= project.types_used_by_work_packages
   }
 }

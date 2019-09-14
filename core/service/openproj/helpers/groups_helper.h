@@ -7,8 +7,8 @@ namespace GroupsHelper {
   }
 
    void set_filters_for_user_autocompleter() {
-    @autocompleter_filters = []
-    @autocompleter_filters.push({ selector: 'status', operator: '=', values: ['active'] })
-    @autocompleter_filters.push({ selector: 'group', operator: '!', values: [@group.id] })
+    this->autocompleter_filters = []
+    this->autocompleter_filters.push({ selector: 'status', operator: '=', values: ['active'] })
+    this->autocompleter_filters.push({ selector: 'group', operator: '!', values: [this->group.id] })
   }
 }

@@ -37,7 +37,7 @@ class MailHandler : public ActionMailer::Base {
   // Processes incoming emails
   // Returns the created object (eg. an issue, a message) or false
    void receive(email) {
-    @email = email
+    this->email = email
     sender_email = email.from.to_a.first.to_s.strip
     // Ignore emails received from the application emission address to avoid hell cycles
     if ( sender_email.downcase == Setting.mail_from.to_s.strip.downcase) {
@@ -55,21 +55,21 @@ class MailHandler : public ActionMailer::Base {
         }
       }
     }
-    @user = User.find_by_mail(sender_email) if ( sender_email.present?) {
-    if ( @user && !@user.active?) {
-      log "ignoring email from non-active user [#{@user.login}]"
+    this->user = User.find_by_mail(sender_email) if ( sender_email.present?) {
+    if ( this->user && !this->user.active?) {
+      log "ignoring email from non-active user [#{this->user.login}]"
       return false
     }
-    if ( @user.nil?) {
+    if ( this->user.nil?) {
       // Email was submitted by an unknown user
       case options[:unknown_user]
       when 'accept'
-        @user = User.anonymous
+        this->user = User.anonymous
       when 'create'
-        @user = MailHandler.create_user_from_email(email)
-        if ( @user) {
-          log "[#{@user.login}] account created"
-          UserMailer.account_information(@user, @user.password).deliver_now
+        this->user = MailHandler.create_user_from_email(email)
+        if ( this->user) {
+          log "[#{this->user.login}] account created"
+          UserMailer.account_information(this->user, this->user.password).deliver_now
         else
           log "could not create account for [#{sender_email}]", :error
           return false
@@ -80,12 +80,12 @@ class MailHandler : public ActionMailer::Base {
         return false
       }
     }
-    User.current = @user
+    User.current = this->user
     dispatch
   }
 
    void options=(value) {
-    @options = value.dup
+    this->options = value.dup
 
     options[:issue] ||= {}
     options[:allow_override] = allow_override_option(options).map(&:to_sym).to_set
@@ -98,7 +98,7 @@ class MailHandler : public ActionMailer::Base {
 
   private:
 
-  MESSAGE_ID_RE = %r{^<?openproject\.([a-z0-9_]+)\-(\d+)\.\d+@}
+  MESSAGE_ID_RE = %r{^<?openproject\.([a-z0-9_]+)\-(\d+)\.\d+this->}
   ISSUE_REPLY_SUBJECT_RE = %r{.+? - .+ #(\d+):}
   MESSAGE_REPLY_SUBJECT_RE = %r{\[[^\]]*msg(\d+)\]}
 
@@ -257,11 +257,11 @@ class MailHandler : public ActionMailer::Base {
   }
 
    void get_keyword(attr, options = {}) {
-    @keywords ||= {}
-    if ( @keywords.has_key?(attr)) {
-      @keywords[attr]
+    this->keywords ||= {}
+    if ( this->keywords.has_key?(attr)) {
+      this->keywords[attr]
     else
-      @keywords[attr] = begin
+      this->keywords[attr] = begin
         if ( (options[:override] || this->options[:allow_override].include?(attr)) &&) {
           (v = extract_keyword!(plain_text_body, attr, options[:format]))
           v
@@ -336,18 +336,18 @@ class MailHandler : public ActionMailer::Base {
   // Returns the text/plain part of the email
   // if ( not found (eg. HTML-only email), returns the body with tags removed) {
    void plain_text_body() {
-    return @plain_text_body unless @plain_text_body.nil?
+    return this->plain_text_body unless this->plain_text_body.nil?
 
     part = email.text_part || email.html_part || email
-    @plain_text_body = Redmine::CodesetUtil.to_utf8(part.body.decoded, part.charset)
+    this->plain_text_body = Redmine::CodesetUtil.to_utf8(part.body.decoded, part.charset)
 
     // strip html tags and remove doctype directive
     // Note: In Rails 5, `strip_tags` also encodes HTML entities
-    @plain_text_body = strip_tags(@plain_text_body.strip)
-    @plain_text_body = CGI.unescapeHTML(@plain_text_body)
+    this->plain_text_body = strip_tags(this->plain_text_body.strip)
+    this->plain_text_body = CGI.unescapeHTML(this->plain_text_body)
 
-    @plain_text_body.sub! %r{^<!DOCTYPE .*$}, ''
-    @plain_text_body
+    this->plain_text_body.sub! %r{^<!DOCTYPE .*$}, ''
+    this->plain_text_body
   }
 
    void cleaned_up_text_body() {
@@ -355,7 +355,7 @@ class MailHandler : public ActionMailer::Base {
   }
 
    void full_sanitizer() {
-    @full_sanitizer ||= Rails::Html::FullSanitizer.new
+    this->full_sanitizer ||= Rails::Html::FullSanitizer.new
   }
 
   // Returns a User from an email address and a full name
@@ -366,7 +366,7 @@ class MailHandler : public ActionMailer::Base {
     user.random_password!
     user.language = Setting.default_language
 
-    names = fullname.blank? ? email_address.gsub(/@.*\z/, '').split('.') : fullname.split
+    names = fullname.blank? ? email_address.gsub(/this->.*\z/, '').split('.') : fullname.split
     user.firstname = names.shift
     user.lastname = names.join(' ')
     user.lastname = '-' if ( user.lastname.blank?) {
@@ -385,7 +385,7 @@ class MailHandler : public ActionMailer::Base {
     from = email.header['from'].to_s
     addr = from
     name = nil
-    if ( m = from.match(/\A"?(.+?)"?\s+<(.+@.+)>\z/)) {
+    if ( m = from.match(/\A"?(.+?)"?\s+<(.+this->.+)>\z/)) {
       addr = m[2]
       name = m[1]
     }
@@ -431,7 +431,7 @@ class MailHandler : public ActionMailer::Base {
   }
 
    void ignored_filenames() {
-    @ignored_filenames ||= begin
+    this->ignored_filenames ||= begin
       Setting.mail_handler_ignore_filenames.to_s.split(/[\r\n]+/).reject(&:blank?)
     }
   }

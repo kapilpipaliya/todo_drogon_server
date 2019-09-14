@@ -89,7 +89,7 @@ class ParamsToQueryService
   }
 
    void conversion_model() {
-    @conversion_model ||= ::API::Utilities::QueryFiltersNameConverterContext.new(query_class)
+    this->conversion_model ||= ::API::Utilities::QueryFiltersNameConverterContext.new(query_class)
   }
 
    void set_query_class(query_class, model) {

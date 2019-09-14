@@ -41,7 +41,7 @@ class WorkPackage::Exporter::Base
   }
 
    void work_packages() {
-    @work_packages ||= query
+    this->work_packages ||= query
                        .results
                        .sorted_work_packages
                        .page(page)

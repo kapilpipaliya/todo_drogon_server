@@ -8,8 +8,8 @@ namespace OAuth {
     attr_reader :application, :current_user
 
      PersistApplicationService(model, user:) {
-      @application = model
-      @current_user = user
+      this->application = model
+      this->current_user = user
 
       this->contract_class = Oauth::ApplicationContract
     }

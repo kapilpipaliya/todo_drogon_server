@@ -127,11 +127,11 @@ class Changeset : public ActiveRecord::Base {
   }
 
    void short_comments() {
-    @short_comments || split_comments.first
+    this->short_comments || split_comments.first
   }
 
    void long_comments() {
-    @long_comments || split_comments.last
+    this->long_comments || split_comments.last
   }
 
    void text_tag() {
@@ -144,12 +144,12 @@ class Changeset : public ActiveRecord::Base {
 
   // Returns the previous changeset
    void previous() {
-    @previous ||= Changeset.where(['id < ? AND repository_id = ?', id, repository_id]).order(Arel.sql('id DESC')).first
+    this->previous ||= Changeset.where(['id < ? AND repository_id = ?', id, repository_id]).order(Arel.sql('id DESC')).first
   }
 
   // Returns the next changeset
    void next() {
-    @next ||= Changeset.where(['id > ? AND repository_id = ?', id, repository_id]).order(Arel.sql('id ASC')).first
+    this->next ||= Changeset.where(['id > ? AND repository_id = ?', id, repository_id]).order(Arel.sql('id ASC')).first
   }
 
   // Creates a new Change from it's common parameters
@@ -219,9 +219,9 @@ class Changeset : public ActiveRecord::Base {
 
    void split_comments() {
     comments =~ /\A(.+?)\r?\n(.*)\z/m
-    @short_comments = $1 || comments
-    @long_comments = $2.to_s.strip
-    [@short_comments, @long_comments]
+    this->short_comments = $1 || comments
+    this->long_comments = $2.to_s.strip
+    [this->short_comments, this->long_comments]
   }
 
   public:

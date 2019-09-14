@@ -14,21 +14,21 @@ class JournalsController : public ApplicationController {
    void index() {
     retrieve_query
     sort_init 'id', 'desc'
-    sort_update(@query.sortable_key_by_column_name)
+    sort_update(this->query.sortable_key_by_column_name)
 
-    if ( @query.valid?) {
-      @journals = @query.work_package_journals(order: "#{Journal.table_name}.created_at DESC",
+    if ( this->query.valid?) {
+      this->journals = this->query.work_package_journals(order: "#{Journal.table_name}.created_at DESC",
                                                limit: 25)
     }
 
-    title = (@project ? @project.name : Setting.app_title) + ': ' + (@query.new_record? ? l(:label_changes_details) : @query.name)
+    title = (this->project ? this->project.name : Setting.app_title) + ': ' + (this->query.new_record? ? l(:label_changes_details) : this->query.name)
 
     respond_to { |format|
       format.atom {
         render layout: false,
                content_type: 'application/atom+xml',
                locals: { title: title,
-                         journals: @journals }
+                         journals: this->journals }
       }
     }
   rescue ActiveRecord::RecordNotFound
@@ -36,7 +36,7 @@ class JournalsController : public ApplicationController {
   }
 
    void diff() {
-    journal = Journal::AggregatedJournal.for_journal(@journal)
+    journal = Journal::AggregatedJournal.for_journal(this->journal)
     field = params[:field].parameterize.underscore.to_sym
 
     unless valid_diff?
@@ -50,12 +50,12 @@ class JournalsController : public ApplicationController {
     from = journal.details[field][0]
     to = journal.details[field][1]
 
-    @diff = Redmine::Helpers::Diff.new(to, from)
-    @journable = journal.journable
+    this->diff = Redmine::Helpers::Diff.new(to, from)
+    this->journable = journal.journable
     respond_to { |format|
       format.html
       format.js {
-        render partial: 'diff', locals: { diff: @diff }
+        render partial: 'diff', locals: { diff: this->diff }
       }
     }
   }
@@ -63,8 +63,8 @@ class JournalsController : public ApplicationController {
   private:
 
    void find_journal() {
-    @journal = Journal.find(params[:id])
-    @project = @journal.journable.project
+    this->journal = Journal.find(params[:id])
+    this->project = this->journal.journable.project
   rescue ActiveRecord::RecordNotFound
     render_404
   }
@@ -76,6 +76,6 @@ class JournalsController : public ApplicationController {
 
    void valid_diff?() {
     return false unless valid_field?(params[:field])
-    @journal.journable.class == WorkPackage
+    this->journal.journable.class == WorkPackage
   }
 }

@@ -2,7 +2,7 @@ class Queries::TimeEntries::Filters::UserFilter : public Queries::TimeEntries::F
   // include Queries::Filters::Shared::MeValueFilter
 
    void allowed_values() {
-    @allowed_values ||= begin
+    this->allowed_values ||= begin
       // We don't care for the first value as we do not display the values visibly
       me_allowed_value + ::Principal
                          .in_visible_project

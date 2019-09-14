@@ -17,7 +17,7 @@ class Scm::CreateLocalRepositoryJob : public ApplicationJob {
     // TODO currently uses the full repository object,
     // as the Job is performed synchronously.
     // Change this to serialize the ID once its turned to process asynchronously.
-    @repository = repository
+    this->repository = repository
   }
 
    void perform() {
@@ -65,11 +65,11 @@ class Scm::CreateLocalRepositoryJob : public ApplicationJob {
   }
 
    void config() {
-    @config ||= repository.class.scm_config
+    this->config ||= repository.class.scm_config
   }
 
    void repository() {
-    @repository
+    this->repository
   }
 
    void default_mode() {

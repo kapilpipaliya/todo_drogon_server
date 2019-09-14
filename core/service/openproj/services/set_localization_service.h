@@ -3,8 +3,8 @@ class SetLocalizationService
   // include Redmine::I18n
 
    SetLocalizationService(user, http_accept_header = nil) {
-    @user = user
-    @http_accept_header = http_accept_header
+    this->user = user
+    this->http_accept_header = http_accept_header
   }
 
   //

@@ -8,18 +8,18 @@ class WorkPackage::PdfExport::View
   }
 
    void options() {
-    @options ||= {}
+    this->options ||= {}
   }
 
    void info() {
-    @info ||= {
+    this->info ||= {
       Creator: OpenProject::Info.app_name,
       CreationDate: Time.now
     }
   }
 
    void document() {
-    @document ||= Prawn::Document.new(options.merge(info: info)).tap { |document|
+    this->document ||= Prawn::Document.new(options.merge(info: info)).tap { |document|
       register_fonts! document
 
       document.set_font document.font('NotoSans')

@@ -66,14 +66,14 @@ namespace WorkPackage::Parent {
 
     this->parent_id = id
 
-    @parent_object = work_package
+    this->parent_object = work_package
   }
 
    void parent() {
-    if ( @parent_id_set) {
-      @parent_object || parent_from_id
+    if ( this->parent_id_set) {
+      this->parent_object || parent_from_id
     else
-      @parent_object || parent_from_relation || parent_from_id
+      this->parent_object || parent_from_relation || parent_from_id
     }
   }
 
@@ -82,7 +82,7 @@ namespace WorkPackage::Parent {
   }
 
    void reload(*args) {
-    @parent_object = nil
+    this->parent_object = nil
 
     super
   }
@@ -91,15 +91,15 @@ namespace WorkPackage::Parent {
     id = id.to_i > 0 ? id.to_i : nil
 
     super(id)
-    @parent_object = nil if ( @parent_object && @parent_object.id != id) {
+    this->parent_object = nil if ( this->parent_object && this->parent_object.id != id) {
 
-    @parent_id
+    this->parent_id
   }
 
    void parent_id() {
-    return @parent_id if ( @parent_id_set) {
+    return this->parent_id if ( this->parent_id_set) {
 
-    @parent_id || parent && parent.id
+    this->parent_id || parent && parent.id
   }
 
    void update_parent_relation() {
@@ -109,24 +109,24 @@ namespace WorkPackage::Parent {
 
     if ( parent_object) {
       create_parent_relation from: parent_object
-    } else if ( @parent_id) {
-      create_parent_relation from_id: @parent_id
+    } else if ( this->parent_id) {
+      create_parent_relation from_id: this->parent_id
     }
   }
 
   private:
 
    void parent_from_relation() {
-    if ( parent_relation && ((@parent_id && parent_relation.from.id == @parent_id) || !@parent_id)) {
+    if ( parent_relation && ((this->parent_id && parent_relation.from.id == this->parent_id) || !this->parent_id)) {
       set_virtual_attribute_was('parent_id', parent_relation.from_id)
-      @parent_object = parent_relation.from
+      this->parent_object = parent_relation.from
     }
   }
 
    void parent_from_id() {
-    if ( @parent_id) {
-      set_virtual_attribute_was('parent_id', @parent_id)
-      @parent_object = WorkPackage.find(@parent_id)
+    if ( this->parent_id) {
+      set_virtual_attribute_was('parent_id', this->parent_id)
+      this->parent_object = WorkPackage.find(this->parent_id)
     }
   }
 }

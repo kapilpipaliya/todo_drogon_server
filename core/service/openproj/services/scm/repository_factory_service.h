@@ -4,8 +4,8 @@ class Scm::RepositoryFactoryService
   attr_reader :project, :params, :repository
 
    RepositoryFactoryService(project, params) {
-    @project = project
-    @params = params
+    this->project = project
+    this->params = params
   }
 
   //
@@ -38,7 +38,7 @@ class Scm::RepositoryFactoryService
   }
 
    void build_error() {
-    I18n.t('repositories.errors.build_failed', reason: @build_failed_msg)
+    I18n.t('repositories.errors.build_failed', reason: this->build_failed_msg)
   }
 
   private:
@@ -59,10 +59,10 @@ class Scm::RepositoryFactoryService
   }
 
    void build_guarded() {
-    @repository = yield
-    @repository.present?
+    this->repository = yield
+    this->repository.present?
   rescue OpenProject::Scm::Exceptions::RepositoryBuildError => e
-    @build_failed_msg = e.message
+    this->build_failed_msg = e.message
     nil
   }
 }

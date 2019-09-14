@@ -1,10 +1,10 @@
 #include "application_controller.h"
 class OnboardingController : public ApplicationController {
    void user_settings() {
-    @user = User.current
+    this->user = User.current
 
     result = Users::UpdateService
-             .new(current_user: @user)
+             .new(current_user: this->user)
              .call(permitted_params, params)
 
     if ( result.success?) {

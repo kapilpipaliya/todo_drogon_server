@@ -1,7 +1,7 @@
 class UserMailer : public BaseMailer {
 
    void test_mail(user) {
-    @welcome_url = url_for(controller: '/homescreen')
+    this->welcome_url = url_for(controller: '/homescreen')
 
     headers['X-OpenProject-Type'] = 'Test'
 
@@ -13,8 +13,8 @@ class UserMailer : public BaseMailer {
    void work_package_added(user, journal, author) {
     User.execute_as user {
       work_package = journal.journable.reload
-      @issue = work_package // instance variable is used in the view
-      @journal = journal
+      this->issue = work_package // instance variable is used in the view
+      this->journal = journal
 
       set_work_package_headers(work_package)
 
@@ -31,8 +31,8 @@ class UserMailer : public BaseMailer {
       work_package = journal.journable.reload
 
       // instance variables are used in the view
-      @issue = work_package
-      @journal = journal
+      this->issue = work_package
+      this->journal = journal
 
       set_work_package_headers(work_package)
 
@@ -47,8 +47,8 @@ class UserMailer : public BaseMailer {
 
    void work_package_watcher_added(work_package, user, watcher_setter) {
     User.execute_as user {
-      @issue = work_package
-      @watcher_setter = watcher_setter
+      this->issue = work_package
+      this->watcher_setter = watcher_setter
 
       set_work_package_headers(work_package)
       message_id work_package, user
@@ -63,14 +63,14 @@ class UserMailer : public BaseMailer {
    void password_lost(token) {
     return unless token.user // token's can have no user
 
-    @token = token
-    @reset_password_url = url_for(controller: '/account',
+    this->token = token
+    this->reset_password_url = url_for(controller: '/account',
                                   action:     :lost_password,
-                                  token:      @token.value)
+                                  token:      this->token.value)
 
     open_project_headers 'Type' => 'Account'
 
-    user = @token.user
+    user = this->token.user
     with_locale_for(user) {
       subject = t(:mail_subject_lost_password, value: Setting.app_title)
       mail to: user.mail, subject: subject
@@ -78,9 +78,9 @@ class UserMailer : public BaseMailer {
   }
 
    void copy_project_failed(user, source_project, target_project_name, errors) {
-    @source_project = source_project
-    @target_project_name = target_project_name
-    @errors = errors
+    this->source_project = source_project
+    this->target_project_name = target_project_name
+    this->errors = errors
 
     open_project_headers 'Source-Project' => source_project.identifier,
                          'Author'         => user.login
@@ -95,9 +95,9 @@ class UserMailer : public BaseMailer {
   }
 
    void copy_project_succeeded(user, source_project, target_project, errors) {
-    @source_project = source_project
-    @target_project = target_project
-    @errors = errors
+    this->source_project = source_project
+    this->target_project = target_project
+    this->errors = errors
 
     open_project_headers 'Source-Project' => source_project.identifier,
                          'Target-Project' => target_project.identifier,
@@ -113,16 +113,16 @@ class UserMailer : public BaseMailer {
   }
 
    void news_added(user, news, author) {
-    @news = news
+    this->news = news
 
     open_project_headers 'Type'    => 'News'
-    open_project_headers 'Project' => @news.project.identifier if ( @news.project) {
+    open_project_headers 'Project' => this->news.project.identifier if ( this->news.project) {
 
-    message_id @news, user
+    message_id this->news, user
 
     with_locale_for(user) {
-      subject = "#{News.model_name.human}: #{@news.title}"
-      subject = "[#{@news.project.name}] #{subject}" if ( @news.project) {
+      subject = "#{News.model_name.human}: #{this->news.title}"
+      subject = "[#{this->news.project.name}] #{subject}" if ( this->news.project) {
       mail_for_author author, to: user.mail, subject: subject
     }
   }
@@ -130,10 +130,10 @@ class UserMailer : public BaseMailer {
    void user_signed_up(token) {
     return unless token.user
 
-    @token = token
-    @activation_url = url_for(controller: '/account',
+    this->token = token
+    this->activation_url = url_for(controller: '/account',
                               action:     :activate,
-                              token:      @token.value)
+                              token:      this->token.value)
 
     open_project_headers 'Type' => 'Account'
 
@@ -145,76 +145,76 @@ class UserMailer : public BaseMailer {
   }
 
    void news_comment_added(user, comment, author) {
-    @comment = comment
-    @news    = @comment.commented
+    this->comment = comment
+    this->news    = this->comment.commented
 
-    open_project_headers 'Project' => @news.project.identifier if ( @news.project) {
+    open_project_headers 'Project' => this->news.project.identifier if ( this->news.project) {
 
-    message_id @comment, user
-    references @news, user
+    message_id this->comment, user
+    references this->news, user
 
     with_locale_for(user) {
-      subject = "#{News.model_name.human}: #{@news.title}"
-      subject = "Re: [#{@news.project.name}] #{subject}" if ( @news.project) {
+      subject = "#{News.model_name.human}: #{this->news.title}"
+      subject = "Re: [#{this->news.project.name}] #{subject}" if ( this->news.project) {
       mail_for_author author, to: user.mail, subject: subject
     }
   }
 
    void wiki_content_added(user, wiki_content, author) {
-    @wiki_content = wiki_content
+    this->wiki_content = wiki_content
 
-    open_project_headers 'Project'      => @wiki_content.project.identifier,
-                         'Wiki-Page-Id' => @wiki_content.page.id,
+    open_project_headers 'Project'      => this->wiki_content.project.identifier,
+                         'Wiki-Page-Id' => this->wiki_content.page.id,
                          'Type'         => 'Wiki'
 
-    message_id @wiki_content, user
+    message_id this->wiki_content, user
 
     with_locale_for(user) {
-      subject = "[#{@wiki_content.project.name}] #{t(:mail_subject_wiki_content_added, id: @wiki_content.page.title)}"
+      subject = "[#{this->wiki_content.project.name}] #{t(:mail_subject_wiki_content_added, id: this->wiki_content.page.title)}"
       mail_for_author author, to: user.mail, subject: subject
     }
   }
 
    void wiki_content_updated(user, wiki_content, author) {
-    @wiki_content  = wiki_content
-    @wiki_diff_url = url_for(controller: '/wiki',
+    this->wiki_content  = wiki_content
+    this->wiki_diff_url = url_for(controller: '/wiki',
                              action:     :diff,
                              project_id: wiki_content.project,
                              id:         wiki_content.page.slug,
                              // using wiki_content.version + 1 because at this point the journal is not saved yet
                              version:    wiki_content.version + 1)
 
-    open_project_headers 'Project'      => @wiki_content.project.identifier,
-                         'Wiki-Page-Id' => @wiki_content.page.id,
+    open_project_headers 'Project'      => this->wiki_content.project.identifier,
+                         'Wiki-Page-Id' => this->wiki_content.page.id,
                          'Type'         => 'Wiki'
 
-    message_id @wiki_content, user
+    message_id this->wiki_content, user
 
     with_locale_for(user) {
-      subject = "[#{@wiki_content.project.name}] #{t(:mail_subject_wiki_content_updated, id: @wiki_content.page.title)}"
+      subject = "[#{this->wiki_content.project.name}] #{t(:mail_subject_wiki_content_updated, id: this->wiki_content.page.title)}"
       mail_for_author author, to: user.mail, subject: subject
     }
   }
 
    void message_posted(user, message, author) {
-    @message     = message
-    @message_url = topic_url(@message.root, r: @message.id, anchor: "message-#{@message.id}")
+    this->message     = message
+    this->message_url = topic_url(this->message.root, r: this->message.id, anchor: "message-#{this->message.id}")
 
-    open_project_headers 'Project'      => @message.project.identifier,
-                         'Wiki-Page-Id' => @message.parent_id || @message.id,
+    open_project_headers 'Project'      => this->message.project.identifier,
+                         'Wiki-Page-Id' => this->message.parent_id || this->message.id,
                          'Type'         => 'Forum'
 
-    message_id @message, user
-    references @message.parent, user if ( @message.parent) {
+    message_id this->message, user
+    references this->message.parent, user if ( this->message.parent) {
 
     with_locale_for(user) {
-      subject = "[#{@message.forum.project.name} - #{@message.forum.name} - msg#{@message.root.id}] #{@message.subject}"
+      subject = "[#{this->message.forum.project.name} - #{this->message.forum.name} - msg#{this->message.root.id}] #{this->message.subject}"
       mail_for_author author, to: user.mail, subject: subject
     }
   }
 
    void account_activated(user) {
-    @user = user
+    this->user = user
 
     open_project_headers 'Type' => 'Account'
 
@@ -225,8 +225,8 @@ class UserMailer : public BaseMailer {
   }
 
    void account_information(user, password) {
-    @user     = user
-    @password = password
+    this->user     = user
+    this->password = password
 
     open_project_headers 'Type' => 'Account'
 
@@ -237,8 +237,8 @@ class UserMailer : public BaseMailer {
   }
 
    void account_activation_requested(admin, user) {
-    @user           = user
-    @activation_url = url_for(controller: '/users',
+    this->user           = user
+    this->activation_url = url_for(controller: '/users',
                               action:     :index,
                               status:     'registered',
                               sort:       'created_at:desc')
@@ -252,10 +252,10 @@ class UserMailer : public BaseMailer {
   }
 
    void reminder_mail(user, issues, days) {
-    @issues = issues
-    @days   = days
+    this->issues = issues
+    this->days   = days
 
-    @assigned_issues_url = url_for(controller:     :work_packages,
+    this->assigned_issues_url = url_for(controller:     :work_packages,
                                    action:         :index,
                                    set_filter:     1,
                                    assigned_to_id: user.id,
@@ -264,7 +264,7 @@ class UserMailer : public BaseMailer {
     open_project_headers 'Type' => 'Issue'
 
     with_locale_for(user) {
-      subject = t(:mail_subject_reminder, count: @issues.size, days: @days)
+      subject = t(:mail_subject_reminder, count: this->issues.size, days: this->days)
       mail to: user.mail, subject: subject
     }
   }
@@ -275,7 +275,7 @@ class UserMailer : public BaseMailer {
   // @param [String] user_email E-Mail of user who could not activate their account.
   // @param [User] admin Admin to be notified of this issue.
    void activation_limit_reached(user_email, admin) {
-    @email = user_email
+    this->email = user_email
 
     with_locale_for(admin) {
       mail to: admin.mail, subject: t("mail_user_activation_limit_reached.subject")

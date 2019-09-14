@@ -14,7 +14,7 @@ class EnumerationsController : public ApplicationController {
    void new_() {
     enum_class = enumeration_class(permitted_params.enumeration_type)
     if ( enum_class) {
-      @enumeration = enum_class.new
+      this->enumeration = enum_class.new
     else
       render_400 // bad request
     }
@@ -23,13 +23,13 @@ class EnumerationsController : public ApplicationController {
    void create() {
     enum_params = permitted_params.enumerations
     type = permitted_params.enumeration_type
-    @enumeration = (enumeration_class(type) || Enumeration).new { |e|
+    this->enumeration = (enumeration_class(type) || Enumeration).new { |e|
       e.attributes = enum_params
     }
 
-    if ( @enumeration.save) {
+    if ( this->enumeration.save) {
       flash[:notice] = l(:notice_successful_create)
-      redirect_to action: 'index', type: @enumeration.type
+      redirect_to action: 'index', type: this->enumeration.type
     else
       render action: 'new'
     }
@@ -38,29 +38,29 @@ class EnumerationsController : public ApplicationController {
    void update() {
     enum_params = permitted_params.enumerations
     type = permitted_params.enumeration_type
-    @enumeration.type = enumeration_class(type).try(:name) || @enumeration.type
-    if ( @enumeration.update_attributes enum_params) {
+    this->enumeration.type = enumeration_class(type).try(:name) || this->enumeration.type
+    if ( this->enumeration.update_attributes enum_params) {
       flash[:notice] = l(:notice_successful_update)
-      redirect_to enumerations_path(type: @enumeration.type)
+      redirect_to enumerations_path(type: this->enumeration.type)
     else
       render action: 'edit'
     }
   }
 
    void destroy() {
-    if ( !@enumeration.in_use?) {
+    if ( !this->enumeration.in_use?) {
       // No associated objects
-      @enumeration.destroy
+      this->enumeration.destroy
       redirect_to action: 'index'
       return
     } else if ( params[:reassign_to_id]) {
-      if ( reassign_to = @enumeration.class.find_by(id: params[:reassign_to_id])) {
-        @enumeration.destroy(reassign_to)
+      if ( reassign_to = this->enumeration.class.find_by(id: params[:reassign_to_id])) {
+        this->enumeration.destroy(reassign_to)
         redirect_to action: 'index'
         return
       }
     }
-    @enumerations = @enumeration.class.all - [@enumeration]
+    this->enumerations = this->enumeration.class.all - [this->enumeration]
   }
 
   protected:
@@ -78,7 +78,7 @@ class EnumerationsController : public ApplicationController {
   }
 
    void find_enumeration() {
-    @enumeration = Enumeration.find(params[:id])
+    this->enumeration = Enumeration.find(params[:id])
   }
 
   //

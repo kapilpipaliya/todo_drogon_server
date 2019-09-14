@@ -1,8 +1,8 @@
 // Enqueues
 class EnqueueWorkPackageNotificationJob : public ApplicationJob {
    EnqueueWorkPackageNotificationJob(journal_id, author_id) {
-    @journal_id = journal_id
-    @author_id = author_id
+    this->journal_id = journal_id
+    this->author_id = author_id
   }
 
    void perform() {
@@ -10,19 +10,19 @@ class EnqueueWorkPackageNotificationJob : public ApplicationJob {
     // and our job here is done
     return nil unless raw_journal
 
-    @journal = find_aggregated_journal
+    this->journal = find_aggregated_journal
 
     // If we can't find the aggregated journal, it was superseded by a journal that aggregated ours.
     // In that case a job for the new journal will have been enqueued that is now responsible for
     // sending the notification. Our job here is done.
-    return nil unless @journal
+    return nil unless this->journal
 
-    @author = User.find_by(id: @author_id) || DeletedUser.first
+    this->author = User.find_by(id: this->author_id) || DeletedUser.first
 
     // Do not deliver notifications if a follow-up journal will already have sent a notification
     // on behalf of this job.
-    unless Journal::AggregatedJournal.hides_notifications?(@journal.successor, @journal)
-      deliver_notifications_for(@journal)
+    unless Journal::AggregatedJournal.hides_notifications?(this->journal.successor, this->journal)
+      deliver_notifications_for(this->journal)
     }
   }
 
@@ -35,7 +35,7 @@ class EnqueueWorkPackageNotificationJob : public ApplicationJob {
 
    void deliver_notifications_for(journal) {
     notification_receivers(work_package).each { |recipient|
-      job = DeliverWorkPackageNotificationJob.new(journal.id, recipient.id, @author_id)
+      job = DeliverWorkPackageNotificationJob.new(journal.id, recipient.id, this->author_id)
       Delayed::Job.enqueue job, priority: ::ApplicationJob.priority_number(:notification)
     }
 
@@ -47,11 +47,11 @@ class EnqueueWorkPackageNotificationJob : public ApplicationJob {
   }
 
    void raw_journal() {
-    @raw_journal ||= Journal.find_by(id: @journal_id)
+    this->raw_journal ||= Journal.find_by(id: this->journal_id)
   }
 
    void work_package() {
-    @work_package ||= raw_journal.journable
+    this->work_package ||= raw_journal.journable
   }
 
    void notification_receivers(work_package) {
@@ -60,18 +60,18 @@ class EnqueueWorkPackageNotificationJob : public ApplicationJob {
 
    void mentioned() {
     mentioned_ids
-      .where(id: User.allowed(:view_work_packages, @work_package.project))
+      .where(id: User.allowed(:view_work_packages, this->work_package.project))
       .where.not(mail_notification: User::USER_MAIL_OPTION_NON.first)
   }
 
    void text_for_mentions() {
     potential_text = ""
-    potential_text << @journal.notes if ( @journal.try(:notes)) {
+    potential_text << this->journal.notes if ( this->journal.try(:notes)) {
 
     %i[description subject].each { |field|
-      if ( @journal.details[field].try(:any?)) {
-        from = @journal.details[field].first
-        to = @journal.details[field].second
+      if ( this->journal.details[field].try(:any?)) {
+        from = this->journal.details[field].first
+        to = this->journal.details[field].second
         potential_text << "\n" + Redmine::Helpers::Diff.new(to, from).additions.join(' ')
       }
     }

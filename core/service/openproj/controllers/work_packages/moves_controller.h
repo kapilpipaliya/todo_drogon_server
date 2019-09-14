@@ -11,53 +11,53 @@ class WorkPackages::MovesController : public ApplicationController {
    void create() {
     prepare_for_work_package_move
 
-    new_type = params[:new_type_id].blank? ? nil : @target_project.types.find_by(id: params[:new_type_id])
+    new_type = params[:new_type_id].blank? ? nil : this->target_project.types.find_by(id: params[:new_type_id])
 
     unsaved_work_package_ids = []
     moved_work_packages = []
 
-    @work_packages.each { |work_package|
+    this->work_packages.each { |work_package|
       work_package.reload
 
       call_hook(:controller_work_packages_move_before_save,
                 params: params,
                 work_package: work_package,
-                target_project: @target_project,
-                copy: !!@copy)
+                target_project: this->target_project,
+                copy: !!this->copy)
 
       service_call = WorkPackages::MoveService
                      .new(work_package, current_user)
-                     .call(@target_project,
+                     .call(this->target_project,
                            new_type,
-                           copy: @copy,
+                           copy: this->copy,
                            attributes: permitted_create_params,
-                           journal_note: @notes)
+                           journal_note: this->notes)
 
       if ( service_call.success?) {
         moved_work_packages << service_call.result
-      } else if ( @copy) {
+      } else if ( this->copy) {
         unsaved_work_package_ids.concat dependent_error_ids(work_package.id, service_call)
       else
         unsaved_work_package_ids << work_package.id
       }
     }
 
-    set_flash_from_bulk_work_package_save(@work_packages, unsaved_work_package_ids)
+    set_flash_from_bulk_work_package_save(this->work_packages, unsaved_work_package_ids)
 
     if ( params[:follow]) {
-      if ( @work_packages.size == 1 && moved_work_packages.size == 1) {
+      if ( this->work_packages.size == 1 && moved_work_packages.size == 1) {
         redirect_to work_package_path(moved_work_packages.first)
       else
-        redirect_to project_work_packages_path(@target_project || @project)
+        redirect_to project_work_packages_path(this->target_project || this->project)
       }
     else
-      redirect_back_or_default(project_work_packages_path(@project))
+      redirect_back_or_default(project_work_packages_path(this->project))
     }
   }
 
    void set_flash_from_bulk_work_package_save(work_packages, unsaved_work_package_ids) {
     if ( unsaved_work_package_ids.empty? and not work_packages.empty?) {
-      flash[:notice] = @copy ? l(:notice_successful_create) : l(:notice_successful_update)
+      flash[:notice] = this->copy ? l(:notice_successful_create) : l(:notice_successful_update)
     else
       flash[:error] = l(:notice_failed_to_save_work_packages,
                         count: unsaved_work_package_ids.size,
@@ -90,7 +90,7 @@ class WorkPackages::MovesController : public ApplicationController {
 
   // Check if ( project is unique before bulk operations) {
    void check_project_uniqueness() {
-    unless @project
+    unless this->project
       // TODO: let users bulk move/copy work packages from different projects
       render_error message: :'work_packages.move.unsupported_for_multiple_projects', status: 400
       return false
@@ -98,29 +98,29 @@ class WorkPackages::MovesController : public ApplicationController {
   }
 
    void prepare_for_work_package_move() {
-    @work_packages = @work_packages.includes(:ancestors)
-    @copy = params.has_key? :copy
-    @allowed_projects = WorkPackage.allowed_target_projects_on_move(current_user)
-    @target_project = @allowed_projects.detect { |p| p.id.to_s == params[:new_project_id].to_s } if ( params[:new_project_id]) {
-    @target_project ||= @project
-    @types = @target_project.types
-    @available_statuses = Workflow.available_statuses(@project)
-    @notes = params[:notes]
-    @notes ||= ''
+    this->work_packages = this->work_packages.includes(:ancestors)
+    this->copy = params.has_key? :copy
+    this->allowed_projects = WorkPackage.allowed_target_projects_on_move(current_user)
+    this->target_project = this->allowed_projects.detect { |p| p.id.to_s == params[:new_project_id].to_s } if ( params[:new_project_id]) {
+    this->target_project ||= this->project
+    this->types = this->target_project.types
+    this->available_statuses = Workflow.available_statuses(this->project)
+    this->notes = params[:notes]
+    this->notes ||= ''
 
     // When copying, avoid copying elements when any of their ancestors
     // are in the set to be copied
-    if ( @copy) {
-      @work_packages = remove_hierarchy_duplicates
+    if ( this->copy) {
+      this->work_packages = remove_hierarchy_duplicates
     }
   }
 
   // Check if a parent work package is also selected for copying
    void remove_hierarchy_duplicates() {
     // Get all ancestors of the work_packages to copy
-    selected_ids = @work_packages.pluck(:id)
+    selected_ids = this->work_packages.pluck(:id)
 
-    @work_packages.reject { |wp|
+    this->work_packages.reject { |wp|
       wp.ancestors.where(id: selected_ids).exists?
     }
   }

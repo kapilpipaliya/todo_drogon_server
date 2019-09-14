@@ -15,6 +15,6 @@ class Queries::Queries::Filters::HiddenFilter : public Queries::Queries::Filters
   }
 
    void type_strategy() {
-    @type_strategy ||= ::Queries::Filters::Strategies::BooleanList.new self
+    this->type_strategy ||= ::Queries::Filters::Strategies::BooleanList.new self
   }
 }

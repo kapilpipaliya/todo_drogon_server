@@ -40,7 +40,7 @@ class Queries::WorkPackages::Filter::StatusFilter : public Queries::WorkPackages
   private:
 
    void all_statuses() {
-    @all_statuses ||= Status.all
+    this->all_statuses ||= Status.all
   }
 
    void operator_strategy() {

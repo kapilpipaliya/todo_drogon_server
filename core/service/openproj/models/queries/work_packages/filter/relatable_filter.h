@@ -10,7 +10,7 @@ class Queries::WorkPackages::Filter::RelatableFilter : public Queries::WorkPacka
   }
 
    void type_strategy() {
-    @type_strategy ||= Queries::Filters::Strategies::Relation.new(self)
+    this->type_strategy ||= Queries::Filters::Strategies::Relation.new(self)
   }
 
    void where() {

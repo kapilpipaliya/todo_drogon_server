@@ -2,7 +2,7 @@ class DeliverInvitationJob : public ApplicationJob {
   attr_reader :token_id
 
    DeliverInvitationJob(token_id) {
-    @token_id = token_id
+    this->token_id = token_id
   }
 
    void perform() {
@@ -14,6 +14,6 @@ class DeliverInvitationJob : public ApplicationJob {
   }
 
    void token() {
-    @token ||= Token::Invitation.find_by(id: @token_id)
+    this->token ||= Token::Invitation.find_by(id: this->token_id)
   }
 }

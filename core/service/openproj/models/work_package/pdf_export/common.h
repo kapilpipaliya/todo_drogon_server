@@ -30,7 +30,7 @@ namespace WorkPackage::PdfExport::Common {
   }
 
    void cell_padding() {
-    @cell_padding ||= [2, 5, 2, 5]
+    this->cell_padding ||= [2, 5, 2, 5]
   }
 
   //

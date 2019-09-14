@@ -102,7 +102,7 @@ class Setting : public ActiveRecord::Base {
   }
 
   // validates_uniqueness_of :name
-  // validates_inclusion_of :name, in: lambda { |_setting| available_settings.keys } // lambda, because @available_settings changes at runtime
+  // validates_inclusion_of :name, in: lambda { |_setting| available_settings.keys } // lambda, because this->available_settings changes at runtime
   // validates_numericality_of :value, only_integer: true, if (: Proc.new { |setting| available_settings[setting.name]['format'] == 'int' }) {
 
    void value() {
@@ -263,7 +263,7 @@ class Setting : public ActiveRecord::Base {
     // I'm not sure this is a good idea, but that's the way it is right now,
     // and caching this improves performance significantly for actions
     // accessing settings a lot.
-    @settings_table_exists_yet ||= connection.data_source_exists?(table_name)
+    this->settings_table_exists_yet ||= connection.data_source_exists?(table_name)
   }
 
   // Unserialize a serialized settings value

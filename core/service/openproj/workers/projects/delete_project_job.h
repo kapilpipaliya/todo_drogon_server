@@ -6,8 +6,8 @@ namespace Projects {
                 :project_id
 
      DeleteProjectJob(user_id:, project_id:) {
-      @user_id = user_id
-      @project_id = project_id
+      this->user_id = user_id
+      this->project_id = project_id
     }
 
      void perform() {
@@ -25,11 +25,11 @@ namespace Projects {
     private:
 
      void user() {
-      @user ||= User.find user_id
+      this->user ||= User.find user_id
     }
 
      void project() {
-      @project ||= Project.find project_id
+      this->project ||= Project.find project_id
     }
 
      void logger() {

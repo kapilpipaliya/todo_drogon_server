@@ -107,6 +107,6 @@ class Repository::Subversion : public Repository {
   //     url      = file:///var/svn/foo/bar
   //     => returns /bar
    void relative_url() {
-    @relative_url ||= url.gsub(Regexp.new("^#{Regexp.escape(root_url || scm.root_url)}", Regexp::IGNORECASE), '')
+    this->relative_url ||= url.gsub(Regexp.new("^#{Regexp.escape(root_url || scm.root_url)}", Regexp::IGNORECASE), '')
   }
 }

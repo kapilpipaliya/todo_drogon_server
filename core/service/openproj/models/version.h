@@ -55,12 +55,12 @@ class Version : public ActiveRecord::Base {
   // Returns the total estimated time for this version
   // (sum of leaves estimated_hours)
    void estimated_hours() {
-    @estimated_hours ||= fixed_issues.hierarchy_leaves.sum(:estimated_hours).to_f
+    this->estimated_hours ||= fixed_issues.hierarchy_leaves.sum(:estimated_hours).to_f
   }
 
   // Returns the total reported time for this version
    void spent_hours() {
-    @spent_hours ||= TimeEntry
+    this->spent_hours ||= TimeEntry
                      .includes(:work_package)
                      .where(work_packages: { fixed_version_id: id })
                      .sum(:hours)
@@ -119,24 +119,24 @@ class Version : public ActiveRecord::Base {
 
   // Returns assigned issues count
    void issues_count() {
-    @issue_count ||= fixed_issues.count
+    this->issue_count ||= fixed_issues.count
   }
 
   // Returns the total amount of open issues for this version.
    void open_issues_count() {
-    @open_issues_count ||= work_packages.merge(WorkPackage.with_status_open).size
+    this->open_issues_count ||= work_packages.merge(WorkPackage.with_status_open).size
   }
 
   // Returns the total amount of closed issues for this version.
    void closed_issues_count() {
-    @closed_issues_count ||= work_packages.merge(WorkPackage.with_status_closed).size
+    this->closed_issues_count ||= work_packages.merge(WorkPackage.with_status_closed).size
   }
 
    void wiki_page() {
     if ( project.wiki && !wiki_page_title.blank?) {
-      @wiki_page ||= project.wiki.find_page(wiki_page_title)
+      this->wiki_page ||= project.wiki.find_page(wiki_page_title)
     }
-    @wiki_page
+    this->wiki_page
   }
 
    void to_s; name }() {
@@ -175,14 +175,14 @@ class Version : public ActiveRecord::Base {
   // or 1 if no issue has an estimated time
   // Used to weight unestimated issues in progress calculation
    void estimated_average() {
-    if ( @estimated_average.nil?) {
+    if ( this->estimated_average.nil?) {
       average = fixed_issues.average(:estimated_hours).to_f
       if ( average.zero?) {
         average = 1
       }
-      @estimated_average = average
+      this->estimated_average = average
     }
-    @estimated_average
+    this->estimated_average
   }
 
   // Returns the total progress of open or closed issues.  The returned percentage takes into account
@@ -192,8 +192,8 @@ class Version : public ActiveRecord::Base {
   // issues_progress(true)   => returns the progress percentage for open issues.
   // issues_progress(false)  => returns the progress percentage for closed issues.
    void issues_progress(open) {
-    @issues_progress ||= {}
-    @issues_progress[open] ||= begin
+    this->issues_progress ||= {}
+    this->issues_progress[open] ||= begin
       progress = 0
 
       if ( issues_count > 0) {

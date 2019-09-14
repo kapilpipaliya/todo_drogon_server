@@ -8,7 +8,7 @@ namespace Users {
     attr_reader :current_user
 
      CreateUserService(current_user:) {
-      @current_user = current_user
+      this->current_user = current_user
       this->contract_class = Users::CreateContract
     }
 

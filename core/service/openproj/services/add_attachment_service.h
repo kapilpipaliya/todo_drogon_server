@@ -2,8 +2,8 @@ class AddAttachmentService
   attr_reader :container, :author
 
    AddAttachmentService(container, author:) {
-    @container = container
-    @author = author
+    this->container = container
+    this->author = author
   }
 
   //

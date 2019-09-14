@@ -6,7 +6,7 @@ namespace Queries::Filters::Shared::ProjectFilter {
 
   namespace InstanceMethods {
      void allowed_values() {
-      @allowed_values ||= begin
+      this->allowed_values ||= begin
         // We don't care for the first value as we do not display the values visibly
         ::Project.visible.pluck(:id).map { |id| [id, id.to_s] }
       }
@@ -21,7 +21,7 @@ namespace Queries::Filters::Shared::ProjectFilter {
       // to see we only check that the value is an integer.  Non valid ids
       // will then simply create an empty result but will not cause any
       // harm.
-      @type_strategy ||= ::Queries::Filters::Strategies::IntegerListOptional.new(self)
+      this->type_strategy ||= ::Queries::Filters::Strategies::IntegerListOptional.new(self)
     }
   }
 

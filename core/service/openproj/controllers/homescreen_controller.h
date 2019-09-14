@@ -5,15 +5,15 @@ class HomescreenController : public ApplicationController {
   // layout 'no_menu'
 
    void index() {
-    @newest_projects = Project.visible.newest.take(3)
-    @newest_users = User.active.newest.take(3)
-    @news = News.latest(count: 3)
-    @announcement = Announcement.active_and_current
+    this->newest_projects = Project.visible.newest.take(3)
+    this->newest_users = User.active.newest.take(3)
+    this->news = News.latest(count: 3)
+    this->announcement = Announcement.active_and_current
 
-    @homescreen = OpenProject::Static::Homescreen
+    this->homescreen = OpenProject::Static::Homescreen
   }
 
    void robots() {
-    @projects = Project.active.public_projects
+    this->projects = Project.active.public_projects
   }
 }

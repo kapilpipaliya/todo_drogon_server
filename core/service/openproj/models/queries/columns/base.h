@@ -32,15 +32,15 @@ class Queries::Columns::Base
   }
 
    void groupable=(value) {
-    @groupable = name_or_value_or_false(value)
+    this->groupable = name_or_value_or_false(value)
   }
 
    void sortable=(value) {
-    @sortable =  name_or_value_or_false(value)
+    this->sortable =  name_or_value_or_false(value)
   }
 
    void association=(value) {
-    @association = value
+    this->association = value
   }
 
   // Returns true if the column is sortable, otherwise false

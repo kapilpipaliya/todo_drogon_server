@@ -1,6 +1,6 @@
 class Queries::WorkPackages::Filter::ProjectFilter : public Queries::WorkPackages::Filter::WorkPackageFilter {
    void allowed_values() {
-    @allowed_values ||= begin
+    this->allowed_values ||= begin
       project_values = []
       Project.project_tree(visible_projects) { |p, level|
         prefix = (level > 0 ? ('--' * level + ' ') : '')
@@ -36,6 +36,6 @@ class Queries::WorkPackages::Filter::ProjectFilter : public Queries::WorkPackage
   private:
 
    void visible_projects() {
-    @visible_projects ||= Project.visible
+    this->visible_projects ||= Project.visible
   }
 }

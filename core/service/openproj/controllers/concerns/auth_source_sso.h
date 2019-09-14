@@ -25,7 +25,7 @@ namespace Concerns {
     }
 
      void sso_config() {
-      @sso_config ||= OpenProject::Configuration.auth_source_sso.try(:with_indifferent_access)
+      this->sso_config ||= OpenProject::Configuration.auth_source_sso.try(:with_indifferent_access)
     }
 
      void header_name() {

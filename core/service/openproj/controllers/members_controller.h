@@ -8,7 +8,7 @@ class MembersController : public ApplicationController {
   // include Pagination::Controller
   paginate_model User
   search_for User, :search_in_project
-  search_options_for User, lambda { |*| { project: @project } }
+  search_options_for User, lambda { |*| { project: this->project } }
 
   // include CellsHelper
 
@@ -19,16 +19,16 @@ class MembersController : public ApplicationController {
    void create() {
     if ( params[:member]) {
       members = new_members_from_params
-      @project.members << members
+      this->project.members << members
     }
 
     if ( members.present? && members.all?(&:valid?)) {
       flash[:notice] = members_added_notice members
 
-      redirect_to project_members_path(project_id: @project, status: 'all')
+      redirect_to project_members_path(project_id: this->project, status: 'all')
     else
       if ( members.present? && params[:member]) {
-        @member = members.first
+        this->member = members.first
       else
         flash[:error] = t(:error_check_user_and_role)
       }
@@ -51,25 +51,25 @@ class MembersController : public ApplicationController {
       flash[:error] = member.errors.full_messages.first
     }
 
-    redirect_to project_members_path(project_id: @project,
+    redirect_to project_members_path(project_id: this->project,
                                      page: params[:page],
                                      per_page: params[:per_page])
   }
 
    void destroy() {
-    if ( @member.deletable?) {
-      if ( @member.disposable?) {
-        flash.notice = I18n.t(:notice_member_deleted, user: @member.principal.name)
+    if ( this->member.deletable?) {
+      if ( this->member.disposable?) {
+        flash.notice = I18n.t(:notice_member_deleted, user: this->member.principal.name)
 
-        @member.principal.destroy
+        this->member.principal.destroy
       else
-        flash.notice = I18n.t(:notice_member_removed, user: @member.principal.name)
+        flash.notice = I18n.t(:notice_member_removed, user: this->member.principal.name)
 
-        @member.destroy
+        this->member.destroy
       }
     }
 
-    redirect_to project_members_path(project_id: @project)
+    redirect_to project_members_path(project_id: this->project)
   }
 
    void autocomplete_for_member() {
@@ -78,25 +78,25 @@ class MembersController : public ApplicationController {
 
     if ( page) {
       page = page.to_i
-      @principals = Principal.paginate_scope!(Principal.search_scope_without_project(@project, params[:q]),
+      this->principals = Principal.paginate_scope!(Principal.search_scope_without_project(this->project, params[:q]),
                                               page: page, page_limit: size)
       // we always get all the items on a page, so just check if ( we just got the last) {
-      @more = @principals.total_pages > page
-      @total = @principals.total_entries
+      this->more = this->principals.total_pages > page
+      this->total = this->principals.total_entries
     else
-      @principals = Principal.possible_members(params[:q], 100) - @project.principals
+      this->principals = Principal.possible_members(params[:q], 100) - this->project.principals
     }
 
-    @email = suggest_invite_via_email? current_user,
+    this->email = suggest_invite_via_email? current_user,
                                        params[:q],
-                                       (@principals | @project.principals)
+                                       (this->principals | this->project.principals)
 
     respond_to { |format|
       format.json
       format.html {
         render partial: 'members/autocomplete_for_member',
-               locals: { project: @project,
-                         principals: @principals,
+               locals: { project: this->project,
+                         principals: this->principals,
                          roles: Role.givable }
       }
     }
@@ -105,12 +105,12 @@ class MembersController : public ApplicationController {
   private:
 
    void authorize_for(controller, action) {
-    current_user.allowed_to?({ controller: controller, action: action }, @project)
+    current_user.allowed_to?({ controller: controller, action: action }, this->project)
   }
 
    void members_table_options(roles) {
     {
-      project: @project,
+      project: this->project,
       available_roles: roles,
       authorize_update: authorize_for('members', 'update')
     }
@@ -124,8 +124,8 @@ class MembersController : public ApplicationController {
       groups: groups,
       roles: roles,
       status: status,
-      clear_url: project_members_path(@project),
-      project: @project
+      clear_url: project_members_path(this->project),
+      project: this->project
     }
   }
 
@@ -137,7 +137,7 @@ class MembersController : public ApplicationController {
   }
 
    void mail_regex() {
-    /\A\S+@\S+\.\S+\z/
+    /\A\S+this->\S+\.\S+\z/
   }
 
    void tab_scripts() {
@@ -149,23 +149,23 @@ class MembersController : public ApplicationController {
    void set_index_data!() {
     set_roles_and_principles!
 
-    @is_filtered = Members::UserFilterCell.filtered? params
-    @members = index_members
-    @members_table_options = members_table_options @roles
-    @members_filter_options = members_filter_options @roles
+    this->is_filtered = Members::UserFilterCell.filtered? params
+    this->members = index_members
+    this->members_table_options = members_table_options this->roles
+    this->members_filter_options = members_filter_options this->roles
   }
 
    void set_roles_and_principles!() {
-    @roles = Role.givable
+    this->roles = Role.givable
     // Check if ( there is at least one principal that can be added to the project) {
-    @principals_available = @project.possible_members('', 1)
+    this->principals_available = this->project.possible_members('', 1)
   }
 
    void index_members() {
     filters = params.slice(:name, :group_id, :role_id, :status)
-    filters[:project_id] = @project.id.to_s
+    filters[:project_id] = this->project.id.to_s
 
-    @members = Member
+    this->members = Member
                .where(id: Members::UserFilterCell.filter(filters))
                .includes(:roles, :principal, :member_roles)
   }
@@ -254,10 +254,10 @@ class MembersController : public ApplicationController {
 
     if ( attrs.include? :role_ids) {
       role_ids = attrs.delete(:role_ids).map(&:to_i).select { |i| i > 0 }
-      @member.assign_roles(role_ids)
+      this->member.assign_roles(role_ids)
     }
-    @member.assign_attributes(attrs)
-    @member
+    this->member.assign_attributes(attrs)
+    this->member
   }
 
    void members_added_notice(members) {

@@ -225,7 +225,7 @@ class Project : public ActiveRecord::Base {
   }
 
    void reload(*args) {
-    @all_work_package_custom_fields = nil
+    this->all_work_package_custom_fields = nil
 
     super
   }
@@ -318,17 +318,17 @@ class Project : public ActiveRecord::Base {
   // Returns an array of projects the project can be moved to
   // by the current user
    void allowed_parents() {
-    return @allowed_parents if ( @allowed_parents) {
+    return this->allowed_parents if ( this->allowed_parents) {
 
-    @allowed_parents = Project.allowed_to(User.current, :add_subprojects)
-    @allowed_parents = @allowed_parents - self_and_descendants
+    this->allowed_parents = Project.allowed_to(User.current, :add_subprojects)
+    this->allowed_parents = this->allowed_parents - self_and_descendants
     if ( User.current.allowed_to?(:add_project, nil, global: true) || (!new_record? && parent.nil?)) {
-      @allowed_parents << nil
+      this->allowed_parents << nil
     }
-    unless parent.nil? || @allowed_parents.empty? || @allowed_parents.include?(parent)
-      @allowed_parents << parent
+    unless parent.nil? || this->allowed_parents.empty? || this->allowed_parents.include?(parent)
+      this->allowed_parents << parent
     }
-    @allowed_parents
+    this->allowed_parents
   }
 
    void allowed_parent?(p) {
@@ -386,7 +386,7 @@ class Project : public ActiveRecord::Base {
 
   // Returns an array of the types used by the project and its active sub projects
    void rolled_up_types() {
-    @rolled_up_types ||=
+    this->rolled_up_types ||=
       ::Type.joins(:projects)
       .select("DISTINCT #{::Type.table_name}.*")
       .where(["#{Project.table_name}.lft >= ? AND #{Project.table_name}.rgt <= ? AND #{Project.table_name}.status = #{STATUS_ACTIVE}", lft, rgt])
@@ -406,7 +406,7 @@ class Project : public ActiveRecord::Base {
 
   // Returns a scope of the Versions on subprojects
    void rolled_up_versions() {
-    @rolled_up_versions ||=
+    this->rolled_up_versions ||=
       Version.includes(:project)
       .where(["#{Project.table_name}.lft >= ? AND #{Project.table_name}.rgt <= ? AND #{Project.table_name}.status = #{STATUS_ACTIVE}", lft, rgt])
       .references(:projects)
@@ -414,7 +414,7 @@ class Project : public ActiveRecord::Base {
 
   // Returns a scope of the Versions used by the project
    void shared_versions() {
-    @shared_versions ||= begin
+    this->shared_versions ||= begin
       r = root? ? self : root
 
       Version.includes(:project)
@@ -439,7 +439,7 @@ class Project : public ActiveRecord::Base {
   // reduce the number of db queries when performing operations including the
   // project's versions.
    void assignable_versions() {
-    @all_shared_versions ||= shared_versions.with_status_open.to_a
+    this->all_shared_versions ||= shared_versions.with_status_open.to_a
   }
 
   // Returns a hash of project users grouped by role
@@ -493,7 +493,7 @@ class Project : public ActiveRecord::Base {
   //
   // Supports the :include option.
    void all_work_package_custom_fields(options = {}) {
-    @all_work_package_custom_fields ||= (
+    this->all_work_package_custom_fields ||= (
       WorkPackageCustomField.for_all(options) + (
         if ( options.include? :include) {
           WorkPackageCustomField.joins(:projects)
@@ -684,7 +684,7 @@ class Project : public ActiveRecord::Base {
   }
 
    void allowed_permissions() {
-    @allowed_permissions ||= begin
+    this->allowed_permissions ||= begin
       names = enabled_modules.loaded? ? enabled_module_names : enabled_modules.pluck(:name)
 
       OpenProject::AccessControl.modules_permissions(names).map(&:name)
@@ -692,7 +692,7 @@ class Project : public ActiveRecord::Base {
   }
 
    void allowed_actions() {
-    @actions_allowed ||= allowed_permissions
+    this->actions_allowed ||= allowed_permissions
                          .map { |permission| OpenProject::AccessControl.allowed_actions(permission) }
                          .flatten
   }

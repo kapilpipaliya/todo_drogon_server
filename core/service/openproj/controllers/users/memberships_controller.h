@@ -14,21 +14,21 @@ class Users::MembershipsController : public ApplicationController {
   }
 
    void destroy() {
-    @membership = @user.memberships.find(params[:id])
+    this->membership = this->user.memberships.find(params[:id])
 
-    if ( @membership.deletable? && request.delete?) {
-      @membership.destroy && @membership = nil
+    if ( this->membership.deletable? && request.delete?) {
+      this->membership.destroy && this->membership = nil
       flash[:notice] = I18n.t(:notice_successful_delete)
     }
 
-    redirect_to controller: '/users', action: 'edit', id: @user, tab: 'memberships'
+    redirect_to controller: '/users', action: 'edit', id: this->user, tab: 'memberships'
   }
 
   private:
 
    void update_or_create(save_record, message) {
-    @membership = params[:id].present? ? Member.find(params[:id]) : Member.new(principal: @user)
-    service = ::Members::EditMembershipService.new(@membership, save: save_record, current_user: current_user)
+    this->membership = params[:id].present? ? Member.find(params[:id]) : Member.new(principal: this->user)
+    service = ::Members::EditMembershipService.new(this->membership, save: save_record, current_user: current_user)
     result = service.call(attributes: permitted_params.membership)
 
     if ( result.success?) {
@@ -36,11 +36,11 @@ class Users::MembershipsController : public ApplicationController {
     else
       flash[:error] = result.errors.full_messages.join("\n")
     }
-    redirect_to controller: '/users', action: 'edit', id: @user, tab: 'memberships'
+    redirect_to controller: '/users', action: 'edit', id: this->user, tab: 'memberships'
   }
 
    void find_user() {
-    @user = User.find(params[:user_id])
+    this->user = User.find(params[:user_id])
   rescue ActiveRecord::RecordNotFound
     render_404
   }

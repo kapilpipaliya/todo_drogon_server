@@ -3,7 +3,7 @@ namespace Queries {
     namespace Filters {
       class TypeFilter : public ::Queries::Projects::Filters::ProjectFilter {
          void allowed_values() {
-          @allowed_values ||= Type.pluck(:name, :id)
+          this->allowed_values ||= Type.pluck(:name, :id)
         }
 
          void joins() {
@@ -29,7 +29,7 @@ namespace Queries {
           // to see we only check that the value is an integer.  Non valid ids
           // will then simply create an empty result but will not cause any
           // harm.
-          @type_strategy ||= ::Queries::Filters::Strategies::IntegerList.new(self)
+          this->type_strategy ||= ::Queries::Filters::Strategies::IntegerList.new(self)
         }
       }
     }

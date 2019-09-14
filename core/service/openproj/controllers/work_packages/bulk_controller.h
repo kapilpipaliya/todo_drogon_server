@@ -14,27 +14,27 @@ class WorkPackages::BulkController : public ApplicationController {
   }
 
    void update() {
-    @call = ::WorkPackages::Bulk::UpdateService
-      .new(user: current_user, work_packages: @work_packages)
+    this->call = ::WorkPackages::Bulk::UpdateService
+      .new(user: current_user, work_packages: this->work_packages)
       .call(params: params)
 
-    if ( @call.success?) {
+    if ( this->call.success?) {
       flash[:notice] = t(:notice_successful_update)
-      redirect_back_or_default(controller: '/work_packages', action: :index, project_id: @project)
+      redirect_back_or_default(controller: '/work_packages', action: :index, project_id: this->project)
     else
-      @bulk_errors = @call.errors
+      this->bulk_errors = this->call.errors
       setup_edit
       render action: :edit
     }
   }
 
    void destroy() {
-    unless WorkPackage.cleanup_associated_before_destructing_if_required(@work_packages, current_user, params[:to_do])
+    unless WorkPackage.cleanup_associated_before_destructing_if_required(this->work_packages, current_user, params[:to_do])
 
       respond_to { |format|
         format.html {
-          render locals: { work_packages: @work_packages,
-                           associated: WorkPackage.associated_classes_to_address_before_destruction_of(@work_packages) }
+          render locals: { work_packages: this->work_packages,
+                           associated: WorkPackage.associated_classes_to_address_before_destruction_of(this->work_packages) }
         }
         format.json {
           render json: { error_message: 'Clean up of associated objects required' }, status: 420
@@ -43,11 +43,11 @@ class WorkPackages::BulkController : public ApplicationController {
 
     else
 
-      destroy_work_packages(@work_packages)
+      destroy_work_packages(this->work_packages)
 
       respond_to { |format|
         format.html {
-          redirect_back_or_default(project_work_packages_path(@work_packages.first.project))
+          redirect_back_or_default(project_work_packages_path(this->work_packages.first.project))
         }
         format.json {
           head :ok
@@ -59,11 +59,11 @@ class WorkPackages::BulkController : public ApplicationController {
   private:
 
    void setup_edit() {
-    @available_statuses = @projects.map { |p| Workflow.available_statuses(p) }.inject { |memo, w| memo & w }
-    @custom_fields = @projects.map(&:all_work_package_custom_fields).inject { |memo, c| memo & c }
-    @assignables = @projects.map(&:possible_assignees).inject { |memo, a| memo & a }
-    @responsibles = @projects.map(&:possible_responsibles).inject { |memo, a| memo & a }
-    @types = @projects.map(&:types).inject { |memo, t| memo & t }
+    this->available_statuses = this->projects.map { |p| Workflow.available_statuses(p) }.inject { |memo, w| memo & w }
+    this->custom_fields = this->projects.map(&:all_work_package_custom_fields).inject { |memo, c| memo & c }
+    this->assignables = this->projects.map(&:possible_assignees).inject { |memo, a| memo & a }
+    this->responsibles = this->projects.map(&:possible_responsibles).inject { |memo, a| memo & a }
+    this->types = this->projects.map(&:types).inject { |memo, t| memo & t }
   }
 
    void destroy_work_packages(work_packages) {

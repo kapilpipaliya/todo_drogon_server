@@ -5,7 +5,7 @@ namespace Concerns::Layout {
      void layout_non_or_no_menu() {
       if ( request.xhr?) {
         false
-      } else if ( @project) {
+      } else if ( this->project) {
         true
       else
         'no_menu'
@@ -13,7 +13,7 @@ namespace Concerns::Layout {
     }
 
      void project_or_wp_query_menu() {
-      if ( @project) {
+      if ( this->project) {
         :project_menu
       else
         :wp_query_menu

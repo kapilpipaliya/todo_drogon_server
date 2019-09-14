@@ -11,8 +11,8 @@ namespace Queries::Filters::Shared {
        Base(custom_field:, custom_field_context:, **options) {
         name = :"cf_#{custom_field.id}"
 
-        @custom_field = custom_field
-        @custom_field_context = custom_field_context
+        this->custom_field = custom_field
+        this->custom_field_context = custom_field_context
         this->model = custom_field_context.model
         super(name, options)
       }
@@ -42,7 +42,7 @@ namespace Queries::Filters::Shared {
       }
 
        void type_strategy() {
-        @type_strategy ||= type_strategy_class.new(self)
+        this->type_strategy ||= type_strategy_class.new(self)
       }
 
        void strategies() {

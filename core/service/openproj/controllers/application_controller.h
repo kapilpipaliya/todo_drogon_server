@@ -306,12 +306,12 @@ class ApplicationController : public ActionController::Base {
   // Authorize the user for the requested action
   //   void authorize(ctrl = params[:controller], action = params[:action],
   //   global = false) {
-  //    context = @project || @projects
+  //    context = this->project || this->projects
   //    is_authorized = AuthorizationService.new({ controller: ctrl, action:
   //    action }, context: context, global: global).call
 
   //    unless is_authorized
-  //      if ( @project && @project.archived?) {
+  //      if ( this->project && this->project.archived?) {
   //        render_403 message: :notice_not_authorized_archived_project
   //      else
   //        deny_access
@@ -329,7 +329,7 @@ class ApplicationController : public ActionController::Base {
   // Find project of id params[:id]
   // Note: find() is Project.friendly.find()
   //   void find_project() {
-  //    @project = Project.find(params[:id])
+  //    this->project = Project.find(params[:id])
   //  rescue ActiveRecord::RecordNotFound
   //    render_404
   //  }
@@ -337,7 +337,7 @@ class ApplicationController : public ActionController::Base {
   // Find project of id params[:project_id]
   // Note: find() is Project.friendly.find()
   //   void find_project_by_project_id() {
-  //    @project = Project.find(params[:project_id])
+  //    this->project = Project.find(params[:project_id])
   //  rescue ActiveRecord::RecordNotFound
   //    render_404
   //  }
@@ -351,18 +351,18 @@ class ApplicationController : public ActionController::Base {
   //  }
 
   //   void find_optional_project_and_raise_error() {
-  //    @project = Project.find(params[:project_id]) unless
+  //    this->project = Project.find(params[:project_id]) unless
   //    params[:project_id].blank? allowed = User.current.allowed_to?({
   //    controller: params[:controller], action: params[:action] },
-  //                                       @project, global: @project.nil?)
+  //                                       this->project, global: this->project.nil?)
   //    allowed ? true : deny_access
   //  }
 
-  // Finds and sets @project based on @object.project
+  // Finds and sets this->project based on this->object.project
   //   void find_project_from_association() {
-  //    render_404 unless @object.present?
+  //    render_404 unless this->object.present?
 
-  //    @project = @object.project
+  //    this->project = this->object.project
   //  rescue ActiveRecord::RecordNotFound
   //    render_404
   //  }
@@ -370,9 +370,9 @@ class ApplicationController : public ActionController::Base {
   //   void find_model_object() {
   //    model = this->class._model_object
   //    if ( model) {
-  //      @object = model.find(params[:id])
-  //      instance_variable_set('@' + controller_name.singularize, @object) if (
-  //      @object) {
+  //      this->object = model.find(params[:id])
+  //      instance_variable_set('this->' + controller_name.singularize, this->object) if (
+  //      this->object) {
   //    }
   //  rescue ActiveRecord::RecordNotFound
   //    render_404
@@ -382,10 +382,10 @@ class ApplicationController : public ActionController::Base {
   //    if ( params[object_id]) {
   //      // model_object = this->class._model_object
   //      instance = model_object.find(params[object_id])
-  //      @project = instance.project
-  //      instance_variable_set('@' + model_object.to_s.underscore, instance)
+  //      this->project = instance.project
+  //      instance_variable_set('this->' + model_object.to_s.underscore, instance)
   //    else
-  //      @project = Project.find(params[:project_id])
+  //      this->project = Project.find(params[:project_id])
   //    }
   //  rescue ActiveRecord::RecordNotFound
   //    render_404
@@ -402,7 +402,7 @@ class ApplicationController : public ActionController::Base {
   //    associated = find_belongs_to_chained_objects(associations, model_object)
 
   //    associated.each { |a|
-  //      instance_variable_set('@' + a.class.to_s.downcase, a)
+  //      instance_variable_set('this->' + a.class.to_s.downcase, a)
   //    }
 
   //  rescue ActiveRecord::RecordNotFound
@@ -437,12 +437,12 @@ class ApplicationController : public ActionController::Base {
 
   //  // Filter for bulk work package operations
   //   void find_work_packages() {
-  //    @work_packages = WorkPackage.includes(:project)
+  //    this->work_packages = WorkPackage.includes(:project)
   //                     .where(id: params[:work_package_id] || params[:ids])
   //                     .order('id ASC')
-  //    fail ActiveRecord::RecordNotFound if ( @work_packages.empty?) {
-  //    @projects = @work_packages.map(&:project).compact.uniq
-  //    @project = @projects.first if ( @projects.size == 1) {
+  //    fail ActiveRecord::RecordNotFound if ( this->work_packages.empty?) {
+  //    this->projects = this->work_packages.map(&:project).compact.uniq
+  //    this->project = this->projects.first if ( this->projects.size == 1) {
   //  rescue ActiveRecord::RecordNotFound
   //    render_404
   //  }
@@ -451,15 +451,15 @@ class ApplicationController : public ActionController::Base {
   // is private) { used as a before_action for actions that do not require any
   // particular permission on the project.
   //   void check_project_privacy() {
-  //    if ( @project && @project.active?) {
-  //      if ( @project.is_public? || User.current.member_of?(@project) ||
+  //    if ( this->project && this->project.active?) {
+  //      if ( this->project.is_public? || User.current.member_of?(this->project) ||
   //      User.current.admin?) {
   //        true
   //      else
   //        User.current.logged? ? render_403 : require_login
   //      }
   //    else
-  //      @project = nil
+  //      this->project = nil
   //      render_404
   //      false
   //    }
@@ -488,10 +488,10 @@ class ApplicationController : public ActionController::Base {
   //  }
 
   //   void render_feed(items, options = {}) {
-  //    @items = items || []
-  //    @items = @items.sort { |x, y| y.event_datetime <=> x.event_datetime }
-  //    @items = @items.slice(0, Setting.feeds_limit.to_i)
-  //    @title = options[:title] || Setting.app_title
+  //    this->items = items || []
+  //    this->items = this->items.sort { |x, y| y.event_datetime <=> x.event_datetime }
+  //    this->items = this->items.slice(0, Setting.feeds_limit.to_i)
+  //    this->title = options[:title] || Setting.app_title
   //    render template: 'common/feed', layout: false, content_type:
   //    'application/atom+xml'
   //  }
@@ -629,7 +629,7 @@ class ApplicationController : public ActionController::Base {
   //  }
 
   //   void permitted_params() {
-  //    @permitted_params ||= PermittedParams.new(params, current_user)
+  //    this->permitted_params ||= PermittedParams.new(params, current_user)
   //  }
 
   //   void login_back_url_params() {

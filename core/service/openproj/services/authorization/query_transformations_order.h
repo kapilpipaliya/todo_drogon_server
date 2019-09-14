@@ -38,17 +38,17 @@ class Authorization::QueryTransformationsOrder
   }
 
    void shift_first_if_its_turn(order, partial_orders) {
-    @rejected ||= []
+    this->rejected ||= []
 
     if ( first_not_included_or_first_everywhere(order, partial_orders)) {
       partial_orders.select { |o| o[0] == order[0] }.each(&:shift)
 
-      @rejected.clear
+      this->rejected.clear
       yield order.shift
     else
-      raise "Cannot sort #{order} into the list of transformations" if ( @rejected.include?(order)) {
+      raise "Cannot sort #{order} into the list of transformations" if ( this->rejected.include?(order)) {
 
-      @rejected << order
+      this->rejected << order
     }
   }
 

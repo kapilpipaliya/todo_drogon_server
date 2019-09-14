@@ -8,7 +8,7 @@ class Queries::Projects::Filters::ParentFilter : public Queries::Projects::Filte
   }
 
    void allowed_values() {
-    @allowed_values ||= begin
+    this->allowed_values ||= begin
       ::Project.visible.pluck(:id).map { |id| [id, id.to_s] }
     }
   }

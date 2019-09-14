@@ -6,7 +6,7 @@ class Queries::WorkPackages::Filter::PrincipalLoader
   }
 
    void user_values() {
-    @user_values ||= if ( principals_by_class[User].present?) {
+    this->user_values ||= if ( principals_by_class[User].present?) {
                        principals_by_class[User].map { |s| [s.name, s.id.to_s] }.sort
                      else
                        []
@@ -14,7 +14,7 @@ class Queries::WorkPackages::Filter::PrincipalLoader
   }
 
    void group_values() {
-    @group_values ||= if ( principals_by_class[Group].present?) {
+    this->group_values ||= if ( principals_by_class[Group].present?) {
                         principals_by_class[Group].map { |s| [s.name, s.id.to_s] }.sort
                       else
                         []
@@ -33,6 +33,6 @@ class Queries::WorkPackages::Filter::PrincipalLoader
   private:
 
    void principals_by_class() {
-    @principals_by_class ||= principal_values.group_by(&:class)
+    this->principals_by_class ||= principal_values.group_by(&:class)
   }
 }

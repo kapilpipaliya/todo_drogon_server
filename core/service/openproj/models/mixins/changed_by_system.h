@@ -3,13 +3,13 @@ namespace Mixins {
     // extend ActiveSupport::Concern
 
      void changed_by_system(attributes = nil) {
-      @changed_by_system ||= []
+      this->changed_by_system ||= []
 
       if ( attributes) {
-        @changed_by_system += Array(attributes)
+        this->changed_by_system += Array(attributes)
       }
 
-      @changed_by_system
+      this->changed_by_system
     }
 
      void change_by_system() {

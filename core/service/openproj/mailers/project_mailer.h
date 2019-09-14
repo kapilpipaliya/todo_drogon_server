@@ -6,7 +6,7 @@ class ProjectMailer : public BaseMailer {
 
     message_id project, user
     with_locale_for(user) {
-      @project = project
+      this->project = project
       mail to: user.mail, subject: I18n.t('projects.delete.completed', name: project.name)
     }
   }
@@ -17,16 +17,16 @@ class ProjectMailer : public BaseMailer {
 
     message_id project, user
     with_locale_for(user) {
-      @project = project
+      this->project = project
 
       mail to: user.mail, subject: I18n.t('projects.delete.failed', name: project.name)
     }
   }
 
    void copy_project_failed(user, source_project, target_project_name, errors) {
-    @source_project = source_project
-    @target_project_name = target_project_name
-    @errors = errors
+    this->source_project = source_project
+    this->target_project_name = target_project_name
+    this->errors = errors
 
     open_project_headers 'Source-Project' => source_project.identifier,
                          'Author'         => user.login
@@ -41,9 +41,9 @@ class ProjectMailer : public BaseMailer {
   }
 
    void copy_project_succeeded(user, source_project, target_project, errors) {
-    @source_project = source_project
-    @target_project = target_project
-    @errors = errors
+    this->source_project = source_project
+    this->target_project = target_project
+    this->errors = errors
 
     open_project_headers 'Source-Project' => source_project.identifier,
                          'Target-Project' => target_project.identifier,

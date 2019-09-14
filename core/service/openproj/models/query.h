@@ -191,13 +191,13 @@ class Query : public ActiveRecord::Base {
   }
 
    void available_columns() {
-    if ( @available_columns &&) {
-       (@available_columns_project == (project && project.cache_key || 0))
-      return @available_columns
+    if ( this->available_columns &&) {
+       (this->available_columns_project == (project && project.cache_key || 0))
+      return this->available_columns
     }
 
-    @available_columns_project = project && project.cache_key || 0
-    @available_columns = ::Query.available_columns(project)
+    this->available_columns_project = project && project.cache_key || 0
+    this->available_columns = ::Query.available_columns(project)
   }
 
    void available_columns(project = nil) {
@@ -387,7 +387,7 @@ class Query : public ActiveRecord::Base {
   private:
 
    void for_all?() {
-    @for_all ||= project.nil?
+    this->for_all ||= project.nil?
   }
 
    void statement_filters() {

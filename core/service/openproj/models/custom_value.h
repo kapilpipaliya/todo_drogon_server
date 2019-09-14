@@ -70,6 +70,6 @@ class CustomValue : public ActiveRecord::Base {
   }
 
    void strategy() {
-    @strategy ||= OpenProject::CustomFieldFormat.find_by_name(custom_field.field_format).formatter.new(self)
+    this->strategy ||= OpenProject::CustomFieldFormat.find_by_name(custom_field.field_format).formatter.new(self)
   }
 }

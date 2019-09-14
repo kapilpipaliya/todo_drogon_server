@@ -94,7 +94,7 @@ class Relation : public ActiveRecord::Base {
    TYPE_REQUIRES,
    TYPE_HIERARCHY].each { |type|
     define_method "#{type}=" { |value|
-      instance_variable_set(:"@relation_type_set", nil)
+      instance_variable_set(:"this->relation_type_set", nil)
       super(value)
     }
   }

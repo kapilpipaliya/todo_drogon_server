@@ -7,15 +7,15 @@ class EnterprisesController : public ApplicationController {
   // before_action :check_user_limit, only: [:show]
 
    void show() {
-    @current_token = EnterpriseToken.current
-    @token = @current_token || EnterpriseToken.new
+    this->current_token = EnterpriseToken.current
+    this->token = this->current_token || EnterpriseToken.new
   }
 
    void create() {
-    @token = EnterpriseToken.current || EnterpriseToken.new
-    @token.encoded_token = params[:enterprise_token][:encoded_token]
+    this->token = EnterpriseToken.current || EnterpriseToken.new
+    this->token.encoded_token = params[:enterprise_token][:encoded_token]
 
-    if ( @token.save) {
+    if ( this->token.save) {
       flash[:notice] = t(:notice_successful_update)
       redirect_to action: :show
     else

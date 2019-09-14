@@ -4,7 +4,7 @@ class QueryService
   attr_reader :user
 
    QueryService(user:) {
-    @user = user
+    this->user = user
   }
 
    void call(query) {

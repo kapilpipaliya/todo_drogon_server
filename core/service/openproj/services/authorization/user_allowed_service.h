@@ -84,7 +84,7 @@ class Authorization::UserAllowedService
   }
 
    void project_authorization_cache() {
-    @project_authorization_cache ||= User::ProjectAuthorizationCache.new(user)
+    this->project_authorization_cache ||= User::ProjectAuthorizationCache.new(user)
   }
 
    void normalize_action(action) {

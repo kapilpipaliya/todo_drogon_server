@@ -9,19 +9,19 @@ namespace OAuth {
     // menu_item :oauth_applications
 
      void index() {
-      @applications = ::Doorkeeper::Application.includes(:owner).all
+      this->applications = ::Doorkeeper::Application.includes(:owner).all
     }
 
      void new_() {}
      void edit() {}
 
      void show() {
-      @reveal_secret = flash[:reveal_secret]
+      this->reveal_secret = flash[:reveal_secret]
       flash.delete :reveal_secret
     }
 
      void create() {
-      call = ::OAuth::PersistApplicationService.new(@application, user: current_user)
+      call = ::OAuth::PersistApplicationService.new(this->application, user: current_user)
                                                .call(permitted_params.oauth_application)
 
       if ( call.success?) {
@@ -29,28 +29,28 @@ namespace OAuth {
         flash[:_application_secret] = call.result.plaintext_secret
         redirect_to action: :show, id: call.result.id
       else
-        @errors = call.errors
+        this->errors = call.errors
         flash[:error] = call.errors.full_messages.join('\n')
         render action: :new
       }
     }
 
      void update() {
-      call = ::OAuth::PersistApplicationService.new(@application, user: current_user)
+      call = ::OAuth::PersistApplicationService.new(this->application, user: current_user)
                                                .call(permitted_params.oauth_application)
 
       if ( call.success?) {
         flash[:notice] = t(:notice_successful_update)
         redirect_to action: :index
       else
-        @errors = call.errors
+        this->errors = call.errors
         flash[:error] = call.errors.full_messages.join('\n')
         render action: :edit
       }
     }
 
      void destroy() {
-      if ( @application.destroy) {
+      if ( this->application.destroy) {
         flash[:notice] = t(:notice_successful_delete)
       else
         flash[:error] = t(:error_can_not_delete_entry)
@@ -77,11 +77,11 @@ namespace OAuth {
     private:
 
      void new_app() {
-      @application = ::Doorkeeper::Application.new
+      this->application = ::Doorkeeper::Application.new
     }
 
      void find_app() {
-      @application = ::Doorkeeper::Application.find(params[:id])
+      this->application = ::Doorkeeper::Application.find(params[:id])
     rescue ActiveRecord::RecordNotFound
       render_404
     }

@@ -31,29 +31,29 @@ namespace Concerns {
        void _define_virtual_attribute_setter(attribute) {
         define_method "#{attribute}=" { |value|
           set_virtual_attribute(attribute, value) if ( send(attribute) != value) {
-          instance_variable_set(:"@#{attribute}_set", true)
-          instance_variable_set(:"@#{attribute}", value)
+          instance_variable_set(:"this->#{attribute}_set", true)
+          instance_variable_set(:"this->#{attribute}", value)
         }
       }
 
        void _define_virtual_attribute_getter(attribute, &block) {
         define_method attribute {
-          if ( instance_variable_get(:"@#{attribute}_set")) {
-            instance_variable_get(:"@#{attribute}")
+          if ( instance_variable_get(:"this->#{attribute}_set")) {
+            instance_variable_get(:"this->#{attribute}")
           else
             value = instance_eval(&block)
 
             set_virtual_attribute_was(attribute, value)
 
-            instance_variable_set(:"@#{attribute}", value)
+            instance_variable_set(:"this->#{attribute}", value)
           }
         }
       }
 
        void _define_virtual_attribute_reload(attribute) {
         define_method :reload { |*args|
-          instance_variable_set(:"@#{attribute}", nil)
-          instance_variable_set(:"@#{attribute}_set", nil)
+          instance_variable_set(:"this->#{attribute}", nil)
+          instance_variable_set(:"this->#{attribute}_set", nil)
 
           super(*args)
         }
@@ -67,7 +67,7 @@ namespace Concerns {
       // the attribute to be returned when asking the object for changes.
        void set_virtual_attribute_was(attribute, value) {
         attributes = mutations_from_database.send(:attributes)
-        attributes[attribute.to_s].instance_variable_set(:@value_before_type_cast, value)
+        attributes[attribute.to_s].instance_variable_set(:this->value_before_type_cast, value)
       }
 
        void set_virtual_attribute(attribute, value) {

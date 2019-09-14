@@ -19,7 +19,7 @@ namespace BasicData {
     }
 
      void data() {
-      @settings ||= begin
+      this->settings ||= begin
         settings = Setting.available_settings.each_with_object({}) { |(k, v), hash|
           hash[k] = v['default'] || ''
         }
@@ -50,7 +50,7 @@ namespace BasicData {
     }
 
      void settings_in_db() {
-      @settings_in_db ||= Setting.all.pluck(:name)
+      this->settings_in_db ||= Setting.all.pluck(:name)
     }
 
      void settings_not_in_db() {

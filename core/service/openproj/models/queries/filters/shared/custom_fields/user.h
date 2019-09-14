@@ -9,7 +9,7 @@ namespace Queries::Filters::Shared {
       // include ::Queries::WorkPackages::Filter::MeValueFilterMixin
 
        void allowed_values() {
-        @allowed_values ||= begin
+        this->allowed_values ||= begin
           me_allowed_value + super
         }
       }

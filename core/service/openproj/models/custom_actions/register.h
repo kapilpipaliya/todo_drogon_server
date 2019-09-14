@@ -1,15 +1,15 @@
 namespace CustomActions::Register {
   class << self
      void action(action) {
-      @actions ||= []
+      this->actions ||= []
 
-      @actions << action
+      this->actions << action
     }
 
      void condition(condition) {
-      @conditions ||= []
+      this->conditions ||= []
 
-      @conditions << condition
+      this->conditions << condition
     }
 
     // attr_accessor :actions,

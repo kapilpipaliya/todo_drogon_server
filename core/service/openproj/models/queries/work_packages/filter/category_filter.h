@@ -30,6 +30,6 @@ class Queries::WorkPackages::Filter::CategoryFilter <
   private:
 
    void all_project_categories() {
-    @all_project_categories ||= project.categories
+    this->all_project_categories ||= project.categories
   }
 }

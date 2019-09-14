@@ -6,8 +6,8 @@ namespace DemoData {
     attr_reader :project
 
      VersionBuilder(config, project) {
-      @config = config
-      @project = project
+      this->config = config
+      this->project = project
     }
 
      void create!() {

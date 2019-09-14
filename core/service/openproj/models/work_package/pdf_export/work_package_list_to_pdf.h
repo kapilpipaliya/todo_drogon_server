@@ -8,7 +8,7 @@ class WorkPackage::PdfExport::WorkPackageListToPdf : public WorkPackage::Exporte
    WorkPackageListToPdf(object, options = {}) {
     super
 
-    @cell_padding = options.delete(:cell_padding)
+    this->cell_padding = options.delete(:cell_padding)
 
     this->pdf = get_pdf(current_language)
 

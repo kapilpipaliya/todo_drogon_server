@@ -9,7 +9,7 @@ class Journal::BaseJournal : public ActiveRecord::Base {
   }
 
    void journaled_attributes() {
-    @journaled_attributes ||= column_names.map(&:to_sym) - excluded_attributes
+    this->journaled_attributes ||= column_names.map(&:to_sym) - excluded_attributes
   }
 
    void excluded_attributes() {

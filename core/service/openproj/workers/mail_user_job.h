@@ -21,8 +21,8 @@ class MailUserJob : public ApplicationJob {
   attr_reader :mail
 
    MailUserJob(mail, *args) {
-    @mail = mail
-    @serialized_params = args.map { |arg| serialize_param arg }
+    this->mail = mail
+    this->serialized_params = args.map { |arg| serialize_param arg }
   }
 
    void perform() {
@@ -30,7 +30,7 @@ class MailUserJob : public ApplicationJob {
   }
 
    void params() {
-    @params ||= @serialized_params.map { |type, param, model_name|
+    this->params ||= this->serialized_params.map { |type, param, model_name|
       if ( type == :model) {
         deserialize_model param, model_name
       else

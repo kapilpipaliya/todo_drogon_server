@@ -1,6 +1,6 @@
 class Scm::StorageUpdaterJob : public ApplicationJob {
    StorageUpdaterJob(repository) {
-    @id = repository.id
+    this->id = repository.id
 
     unless repository.scm.storage_available?
       raise OpenProject::Scm::Exceptions::ScmError.new(
@@ -10,7 +10,7 @@ class Scm::StorageUpdaterJob : public ApplicationJob {
   }
 
    void perform() {
-    repository = Repository.find @id
+    repository = Repository.find this->id
     bytes = repository.scm.count_repository!
 
     repository.update_attributes!(
@@ -18,7 +18,7 @@ class Scm::StorageUpdaterJob : public ApplicationJob {
       storage_updated_at: Time.now,
     )
   rescue ActiveRecord::RecordNotFound
-    Rails.logger.warn("StorageUpdater requested for Repository ##{@id}, which could not be found.")
+    Rails.logger.warn("StorageUpdater requested for Repository ##{this->id}, which could not be found.")
   }
 
   //

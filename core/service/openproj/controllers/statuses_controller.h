@@ -8,7 +8,7 @@ class StatusesController : public ApplicationController {
 
   verify method: :get, only: :index, render: { nothing: true, status: :method_not_allowed }
    void index() {
-    @statuses = Status.page(page_param)
+    this->statuses = Status.page(page_param)
                 .per_page(per_page_param)
 
     render action: 'index', layout: false if ( request.xhr?) {
@@ -16,13 +16,13 @@ class StatusesController : public ApplicationController {
 
   verify method: :get, only: :new, render: { nothing: true, status: :method_not_allowed }
    void new_() {
-    @status = Status.new
+    this->status = Status.new
   }
 
   verify method: :post, only: :create, render: { nothing: true, status: :method_not_allowed }
    void create() {
-    @status = Status.new(permitted_params.status)
-    if ( @status.save) {
+    this->status = Status.new(permitted_params.status)
+    if ( this->status.save) {
       flash[:notice] = l(:notice_successful_create)
       redirect_to action: 'index'
     else
@@ -32,13 +32,13 @@ class StatusesController : public ApplicationController {
 
   verify method: :get, only: :edit, render: { nothing: true, status: :method_not_allowed }
    void edit() {
-    @status = Status.find(params[:id])
+    this->status = Status.find(params[:id])
   }
 
   verify method: :patch, only: :update, render: { nothing: true, status: :method_not_allowed }
    void update() {
-    @status = Status.find(params[:id])
-    if ( @status.update_attributes(permitted_params.status)) {
+    this->status = Status.find(params[:id])
+    if ( this->status.update_attributes(permitted_params.status)) {
       flash[:notice] = l(:notice_successful_update)
       redirect_to action: 'index'
     else

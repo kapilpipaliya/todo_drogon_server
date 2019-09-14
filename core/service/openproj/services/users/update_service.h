@@ -5,7 +5,7 @@ namespace Users {
     // attr_accessor :current_user
 
      UpdateService(current_user:) {
-      @current_user = current_user
+      this->current_user = current_user
     }
 
      void call(permitted_params, params) {

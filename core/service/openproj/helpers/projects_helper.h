@@ -68,7 +68,7 @@ namespace ProjectsHelper {
         label: :label_work_package_types
       }
     ]
-    tabs.select { |tab| User.current.allowed_to?(tab[:action], @project) }
+    tabs.select { |tab| User.current.allowed_to?(tab[:action], this->project) }
   }
 
   // Returns a set of options for a select field, grouped by project.
@@ -233,13 +233,13 @@ namespace ProjectsHelper {
   // lft from the sort criteria as lft is mutually exclusive with
   // the other criteria.
    void projects_sort_header_tag(*args) {
-    former_criteria = @sort_criteria.criteria.dup
+    former_criteria = this->sort_criteria.criteria.dup
 
-    @sort_criteria.criteria.reject! { |a, _| a == 'lft' }
+    this->sort_criteria.criteria.reject! { |a, _| a == 'lft' }
 
     sort_header_tag(*args)
   ensure
-    @sort_criteria.criteria = former_criteria
+    this->sort_criteria.criteria = former_criteria
   }
 
    void deactivate_class_on_lft_sort() {
@@ -255,6 +255,6 @@ namespace ProjectsHelper {
   }
 
    void sorted_by_lft?() {
-    @sort_criteria.first_key == 'lft'
+    this->sort_criteria.first_key == 'lft'
   }
 }

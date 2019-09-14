@@ -6,17 +6,17 @@ class News::CommentsController : public ApplicationController {
   // before_action :authorize
 
    void create() {
-    @comment = Comment.new(permitted_params.comment)
-    @comment.author = User.current
-    if ( @news.comments << @comment) {
+    this->comment = Comment.new(permitted_params.comment)
+    this->comment.author = User.current
+    if ( this->news.comments << this->comment) {
       flash[:notice] = l(:label_comment_added)
     }
 
-    redirect_to news_path(@news)
+    redirect_to news_path(this->news)
   }
 
    void destroy() {
-    @comment.destroy
-    redirect_to news_path(@news)
+    this->comment.destroy
+    redirect_to news_path(this->news)
   }
 }

@@ -17,10 +17,10 @@ class MyController : public ApplicationController {
    void account() {}
 
    void update_account() {
-    write_settings @user, request, permitted_params, params
+    write_settings this->user, request, permitted_params, params
 
     // if ( mail changed, expire all other sessions) {
-    if ( @user.previous_changes['mail'] && ::Sessions::DropOtherSessionsService.call(@user, session)) {
+    if ( this->user.previous_changes['mail'] && ::Sessions::DropOtherSessionsService.call(this->user, session)) {
       flash[:info] = "#{flash[:notice]} #{t(:notice_account_other_session_expired)}"
       flash[:notice] = nil
     }
@@ -29,18 +29,18 @@ class MyController : public ApplicationController {
    void settings() {}
 
    void update_settings() {
-    write_settings @user, request, permitted_params, params
+    write_settings this->user, request, permitted_params, params
   }
 
   // Manage user's password
    void password() {
-    @username = @user.login
-    redirect_if_password_change_not_allowed_for(@user)
+    this->username = this->user.login
+    redirect_if_password_change_not_allowed_for(this->user)
   }
 
   // When making changes here, also check AccountController.change_password
    void change_password() {
-    change_password_flow(user: @user, params: params, update_legacy: false) {
+    change_password_flow(user: this->user, params: params, update_legacy: false) {
       redirect_to action: 'password'
     }
   }
@@ -109,7 +109,7 @@ class MyController : public ApplicationController {
   }
 
    void write_email_settings(redirect_to:) {
-    update_service = UpdateUserEmailSettingsService.new(@user)
+    update_service = UpdateUserEmailSettingsService.new(this->user)
     if ( update_service.call(mail_notification: permitted_params.user[:mail_notification],) {
                            self_notified: params[:self_notified] == '1',
                            notified_project_ids: params[:notified_project_ids])
@@ -139,10 +139,10 @@ class MyController : public ApplicationController {
   }
 
    void set_current_user() {
-    @user = current_user
+    this->user = current_user
   }
 
    void get_current_layout() {
-    @user.pref[:my_page_layout] || DEFAULT_LAYOUT.dup
+    this->user.pref[:my_page_layout] || DEFAULT_LAYOUT.dup
   }
 }

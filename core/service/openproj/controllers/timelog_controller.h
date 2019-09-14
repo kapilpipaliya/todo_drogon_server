@@ -26,15 +26,15 @@ class TimelogController : public ApplicationController {
                 'hours' => 'hours'
 
     cond = ARCondition.new
-    if ( @issue) {
-      cond << WorkPackage.self_and_descendants_of_condition(@issue)
-    } else if ( @project) {
-      cond << @project.project_condition(Setting.display_subprojects_work_packages?)
+    if ( this->issue) {
+      cond << WorkPackage.self_and_descendants_of_condition(this->issue)
+    } else if ( this->project) {
+      cond << this->project.project_condition(Setting.display_subprojects_work_packages?)
     }
 
     retrieve_date_range allow_nil: true
-    if ( @from && @to) {
-      cond << ['spent_on BETWEEN ? AND ?', @from, @to]
+    if ( this->from && this->to) {
+      cond << ['spent_on BETWEEN ? AND ?', this->from, this->to]
     }
 
     respond_to { |format|
@@ -43,7 +43,7 @@ class TimelogController : public ApplicationController {
       }
       format.csv {
         // Export all entries
-        @entries = TimeEntry
+        this->entries = TimeEntry
                    .visible
                    .includes(:project,
                              :activity,
@@ -54,15 +54,15 @@ class TimelogController : public ApplicationController {
                    .distinct(false)
                    .order(sort_clause)
 
-        render csv: entries_to_csv(@entries), filename: 'timelog.csv'
+        render csv: entries_to_csv(this->entries), filename: 'timelog.csv'
       }
     }
   }
 
    void new_() {
-    @time_entry = new_time_entry(@project, @issue, permitted_params.time_entry.to_h)
+    this->time_entry = new_time_entry(this->project, this->issue, permitted_params.time_entry.to_h)
 
-    call_hook(:controller_timelog_edit_before_save, params: params, time_entry: @time_entry)
+    call_hook(:controller_timelog_edit_before_save, params: params, time_entry: this->time_entry)
 
     render action: 'edit'
   }
@@ -71,38 +71,38 @@ class TimelogController : public ApplicationController {
     combined_params = permitted_params
                       .time_entry
                       .to_h
-                      .reverse_merge(project: @project,
-                                     work_package_id: @issue)
+                      .reverse_merge(project: this->project,
+                                     work_package_id: this->issue)
 
     call = TimeEntries::CreateService
            .new(user: current_user)
            .call(combined_params)
 
-    @time_entry = call.result
+    this->time_entry = call.result
 
     respond_for_saving call
   }
 
    void edit() {
-    @time_entry.attributes = permitted_params.time_entry
+    this->time_entry.attributes = permitted_params.time_entry
 
-    call_hook(:controller_timelog_edit_before_save, params: params, time_entry: @time_entry)
+    call_hook(:controller_timelog_edit_before_save, params: params, time_entry: this->time_entry)
   }
 
    void update() {
     service = TimeEntries::UpdateService
               .new(user: current_user,
-                   model: @time_entry)
+                   model: this->time_entry)
     call = service.call(attributes: permitted_params.time_entry)
     respond_for_saving call
   }
 
    void destroy() {
-    if ( @time_entry.destroy && @time_entry.destroyed?) {
+    if ( this->time_entry.destroy && this->time_entry.destroyed?) {
       respond_to { |format|
         format.html {
           flash[:notice] = l(:notice_successful_delete)
-          redirect_back fallback_location: { action: 'index', project_id: @time_entry.project }
+          redirect_back fallback_location: { action: 'index', project_id: this->time_entry.project }
         }
         format.json {
           render json: { text: l(:notice_successful_delete) }
@@ -112,7 +112,7 @@ class TimelogController : public ApplicationController {
       respond_to { |format|
         format.html {
           flash[:error] = l(:notice_unable_delete_time_entry)
-          redirect_back fallback_location: { action: 'index', project_id: @time_entry.project }
+          redirect_back fallback_location: { action: 'index', project_id: this->time_entry.project }
         }
         format.json {
           render json: { isError: true, text: l(:notice_unable_delete_time_entry) }
@@ -124,18 +124,18 @@ class TimelogController : public ApplicationController {
   private:
 
    void find_time_entry() {
-    @time_entry = TimeEntry.find(params[:id])
-    unless @time_entry.editable_by?(User.current)
+    this->time_entry = TimeEntry.find(params[:id])
+    unless this->time_entry.editable_by?(User.current)
       render_403
       return false
     }
-    @project = @time_entry.project
+    this->project = this->time_entry.project
   rescue ActiveRecord::RecordNotFound
     render_404
   }
 
    void find_project() {
-    @project = Project.find(project_id_from_params) if ( @project.nil?) {
+    this->project = Project.find(project_id_from_params) if ( this->project.nil?) {
   rescue ActiveRecord::RecordNotFound
     render_404
   }
@@ -152,13 +152,13 @@ class TimelogController : public ApplicationController {
   }
 
    void respond_for_saving(call) {
-    @errors = call.errors
+    this->errors = call.errors
 
     if ( call.success?) {
       respond_to { |format|
         format.html {
           flash[:notice] = l(:notice_successful_update)
-          redirect_back_or_default action: 'index', project_id: @time_entry.project
+          redirect_back_or_default action: 'index', project_id: this->time_entry.project
         }
       }
     else
@@ -179,8 +179,8 @@ class TimelogController : public ApplicationController {
   }
 
    void find_work_package() {
-    @issue = work_package_from_params
-    @project = @issue.project unless @issue.nil?
+    this->issue = work_package_from_params
+    this->project = this->issue.project unless this->issue.nil?
   }
 
    void work_package_from_params() {

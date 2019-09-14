@@ -37,35 +37,35 @@ namespace FileUploader {
 
    // store! nil's the cache_id after it finishes so we need to remember it for deletion
   void remember_cache_id(_new_file) {
-    @cache_id_was = cache_id
+    this->cache_id_was = cache_id
   }
 
    void delete_tmp_dir(_new_file) {
     // make sure we don't delete other things accidentally by checking the name pattern
-    if ( @cache_id_was.present? && @cache_id_was =~ /\A[\d]{8}\-[\d]{4}\-[\d]+\-[\d]{4}\z/) {
-      FileUtils.rm_rf(File.join(cache_dir, @cache_id_was))
+    if ( this->cache_id_was.present? && this->cache_id_was =~ /\A[\d]{8}\-[\d]{4}\-[\d]+\-[\d]{4}\z/) {
+      FileUtils.rm_rf(File.join(cache_dir, this->cache_id_was))
     }
   rescue => e
-    Rails.logger.error "Failed cleanup of upload file #{@cache_id_was}: #{e}"
+    Rails.logger.error "Failed cleanup of upload file #{this->cache_id_was}: #{e}"
   }
 
   // remember the tmp file
    void cache!(new_file = sanitized_file) {
     super
-    @old_tmp_file = new_file
+    this->old_tmp_file = new_file
   rescue => e
     Rails.logger.error "Failed cache! of temporary upload file: #{e}"
   }
 
    void delete_old_tmp_file(_dummy) {
-    @old_tmp_file.try :delete
+    this->old_tmp_file.try :delete
   rescue => e
     Rails.logger.error "Failed cleanup of temporary upload file: #{e}"
   }
 
   namespace ClassMethods {
      void cache_dir() {
-      @cache_dir ||= File.join(Dir.tmpdir, 'op_uploaded_files')
+      this->cache_dir ||= File.join(Dir.tmpdir, 'op_uploaded_files')
     }
   }
 }

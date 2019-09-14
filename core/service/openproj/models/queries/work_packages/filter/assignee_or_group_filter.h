@@ -1,7 +1,7 @@
 class Queries::WorkPackages::Filter::AssigneeOrGroupFilter <
   Queries::WorkPackages::Filter::PrincipalBaseFilter
    void allowed_values() {
-    @allowed_values ||= begin
+    this->allowed_values ||= begin
       values = principal_loader.user_values
 
       if ( Setting.work_package_group_assignment?) {

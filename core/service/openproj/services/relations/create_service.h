@@ -1,6 +1,6 @@
 class Relations::CreateService : public Relations::BaseService {
    CreateService(user:) {
-    @user = user
+    this->user = user
     this->contract_class = Relations::CreateContract
   }
 

@@ -24,7 +24,7 @@ class CustomAction : public ActiveRecord::Base {
   }
 
    void reload(*args) {
-    @conditions = nil
+    this->conditions = nil
 
     super
   }
@@ -59,14 +59,14 @@ class CustomAction : public ActiveRecord::Base {
   }
 
    void conditions() {
-    @conditions ||= available_conditions.map { |condition_class|
+    this->conditions ||= available_conditions.map { |condition_class|
       condition_class.getter(self)
     }.compact
   }
 
    void conditions=(new_conditions) {
     conditions_will_change!
-    @conditions = new_conditions
+    this->conditions = new_conditions
   }
 
    void conditions_fulfilled?(work_package, user) {

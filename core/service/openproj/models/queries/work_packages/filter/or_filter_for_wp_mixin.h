@@ -6,13 +6,13 @@ namespace Queries::WorkPackages::Filter::OrFilterForWpMixin {
   }
 
    void filters() {
-    if ( @filters) {
+    if ( this->filters) {
       update_instances
     else
-      @filters = create_instances
+      this->filters = create_instances
     }
 
-    @filters.keep_if ((&:validate)) {
+    this->filters.keep_if ((&:validate)) {
   }
 
    void joins() {
@@ -43,7 +43,7 @@ namespace Queries::WorkPackages::Filter::OrFilterForWpMixin {
    void update_instances() {
     configurations = filter_configurations
 
-    @filters.each_with_index { |filter, index|
+    this->filters.each_with_index { |filter, index|
       filter.operator = configurations[index].operator
       filter.values = values
     }

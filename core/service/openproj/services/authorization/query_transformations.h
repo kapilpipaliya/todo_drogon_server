@@ -44,11 +44,11 @@ class Authorization::QueryTransformations
   }
 
    void transformations() {
-    @transformations ||= {}
+    this->transformations ||= {}
   }
 
    void transformation_order() {
-    @transformation_order ||= ::Authorization::QueryTransformationsOrder.new
+    this->transformation_order ||= ::Authorization::QueryTransformationsOrder.new
   }
 
    void add_transformation(transformation) {

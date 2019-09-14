@@ -9,11 +9,11 @@ class CopyProjectJob : public ApplicationJob {
 
    CopyProjectJob(user_id:, source_project_id:, target_project_params:,
                  associations_to_copy:, send_mails: false)
-    @user_id               = user_id
-    @source_project_id     = source_project_id
-    @target_project_params = target_project_params.with_indifferent_access
-    @associations_to_copy  = associations_to_copy
-    @send_mails            = send_mails
+    this->user_id               = user_id
+    this->source_project_id     = source_project_id
+    this->target_project_params = target_project_params.with_indifferent_access
+    this->associations_to_copy  = associations_to_copy
+    this->send_mails            = send_mails
   }
 
    void perform() {
@@ -42,11 +42,11 @@ class CopyProjectJob : public ApplicationJob {
   private:
 
    void user() {
-    @user ||= User.find user_id
+    this->user ||= User.find user_id
   }
 
    void source_project() {
-    @project ||= Project.find source_project_id
+    this->project ||= Project.find source_project_id
   }
 
    void create_project_copy(source_project,
@@ -71,7 +71,7 @@ class CopyProjectJob : public ApplicationJob {
         // But some objects might not have been copied due to validation failures
         error_objects = (target_project.compiled_errors.flatten + [target_project.errors]).flatten
         error_objects.each { |error_object|
-          base = error_object.instance_variable_get(:@base)
+          base = error_object.instance_variable_get(:this->base)
           error_prefix = base.is_a?(Project) ? '' : "#{base.class.model_name.human} '#{base}': "
 
           error_object.full_messages.flatten.each { |error|
