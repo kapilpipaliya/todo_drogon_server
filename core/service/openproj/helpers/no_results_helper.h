@@ -15,19 +15,19 @@ namespace NoResultsHelper {
   // Displays the box with the title and link to the passed in url.
   // The title and action_text are found using the locales key lookup unless
   // custom_title and custom_action_text are provided.
-   void no_results_box(action_url:         nil,
-                     display_action:     false,
-                     custom_title:       nil,
-                     custom_action_text: nil)
+//   void no_results_box(action_url:         nil,
+//                     display_action:     false,
+//                     custom_title:       nil,
+//                     custom_action_text: nil)
 
-    title = custom_title || t('.no_results_title_text', cascade: true)
-    action_text = custom_action_text || t('.no_results_content_text')
+//    title = custom_title || t('.no_results_title_text', cascade: true)
+//    action_text = custom_action_text || t('.no_results_content_text')
 
-    render partial: '/common/no_results',
-           locals: {
-             title_text:  title,
-             action_text: display_action ? action_text : '',
-             action_url:  action_url || ''
-           }
-  }
+//    render partial: '/common/no_results',
+//           locals: {
+//             title_text:  title,
+//             action_text: display_action ? action_text : '',
+//             action_url:  action_url || ''
+//           }
+//  }
 }

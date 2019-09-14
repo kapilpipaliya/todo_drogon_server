@@ -51,125 +51,125 @@
 //
 
 namespace SortHelper {
-  class SortCriteria
-    attr_reader :criteria
+  class SortCriteria{
+//    attr_reader :criteria
 
-     SortCriteria() {
-      this->criteria = []
-    }
+//     SortCriteria() {
+//      this->criteria = []
+//    }
 
-     void available_criteria=(criteria) {
-      unless criteria.is_a?(Hash)
-        criteria = criteria.inject({}) { |h, k| h[k] = k; h }
-      }
-      this->available_criteria = criteria
-    }
+//     void available_criteria=(criteria) {
+//      unless criteria.is_a?(Hash)
+//        criteria = criteria.inject({}) { |h, k| h[k] = k; h }
+//      }
+//      this->available_criteria = criteria
+//    }
 
-     void from_param(param) {
-      this->criteria = param.to_s.split(',').map { |s| s.split(':')[0..1] }
-      normalize!
-    }
+//     void from_param(param) {
+//      this->criteria = param.to_s.split(',').map { |s| s.split(':')[0..1] }
+//      normalize!
+//    }
 
-     void criteria=(arg) {
-      this->criteria = arg
-      normalize!
-    }
+//     void criteria=(arg) {
+//      this->criteria = arg
+//      normalize!
+//    }
 
-     void to_param(format = nil) {
-      if ( format == :json) {
-        to_json_param
-      else
-        to_sort_param
-      }
-    }
+//     void to_param(format = nil) {
+//      if ( format == :json) {
+//        to_json_param
+//      else
+//        to_sort_param
+//      }
+//    }
 
-     void to_sql() {
-      sql = to_a.join(', ')
-      sql.blank? ? nil : sql
-    }
+//     void to_sql() {
+//      sql = to_a.join(', ')
+//      sql.blank? ? nil : sql
+//    }
 
-     void to_a() {
-      this->criteria
-        .map { |c, o| [this->available_criteria[c], o] }
-        .reject { |c, _| c.nil? }
-        .map { |c, o| append_direction(Array(c), o) }
-        .compact
-    }
+//     void to_a() {
+//      this->criteria
+//        .map { |c, o| [this->available_criteria[c], o] }
+//        .reject { |c, _| c.nil? }
+//        .map { |c, o| append_direction(Array(c), o) }
+//        .compact
+//    }
 
-     void map_each() {
-      to_a.map { |criteria| yield criteria }
-    }
+//     void map_each() {
+//      to_a.map { |criteria| yield criteria }
+//    }
 
-     void add!(key, asc) {
-      this->criteria.delete_if ( { |k, _o| k == key }) {
-      this->criteria = [[key, asc]] + this->criteria
-      normalize!
-    }
+//     void add!(key, asc) {
+//      this->criteria.delete_if ( { |k, _o| k == key }) {
+//      this->criteria = [[key, asc]] + this->criteria
+//      normalize!
+//    }
 
-     void add(*args) {
-      r = this->class.new.from_param(to_param)
-      r.add!(*args)
-      r
-    }
+//     void add(*args) {
+//      r = this->class.new.from_param(to_param)
+//      r.add!(*args)
+//      r
+//    }
 
-     void first_key() {
-      this->criteria.first && this->criteria.first.first
-    }
+//     void first_key() {
+//      this->criteria.first && this->criteria.first.first
+//    }
 
-     void first_asc?() {
-      this->criteria.first && this->criteria.first.last
-    }
+//     void first_asc?() {
+//      this->criteria.first && this->criteria.first.last
+//    }
 
-     void empty?() {
-      this->criteria.empty?
-    }
+//     void empty?() {
+//      this->criteria.empty?
+//    }
 
-    private:
+//    private:
 
-     void normalize!() {
-      this->criteria ||= []
-      this->criteria = this->criteria.map { |s|
-        s = s.to_a
-        [s.first, !(s.last == false || s.last == 'desc')]
-      }
+//     void normalize!() {
+//      this->criteria ||= []
+//      this->criteria = this->criteria.map { |s|
+//        s = s.to_a
+//        [s.first, !(s.last == false || s.last == 'desc')]
+//      }
 
-      if ( this->available_criteria) {
-        this->criteria = this->criteria.select { |k, _o| this->available_criteria.has_key?(k) }
-      }
+//      if ( this->available_criteria) {
+//        this->criteria = this->criteria.select { |k, _o| this->available_criteria.has_key?(k) }
+//      }
 
-      this->criteria.slice!(3)
-      self
-    }
+//      this->criteria.slice!(3)
+//      self
+//    }
 
-     void append_direction(criterion, asc = true) {
-      if ( asc) {
-        criterion
-      else
-        criterion.map { |c| append_desc(c) }
-      }
-    }
+//     void append_direction(criterion, asc = true) {
+//      if ( asc) {
+//        criterion
+//      else
+//        criterion.map { |c| append_desc(c) }
+//      }
+//    }
 
-    // Appends DESC to the sort criterion unless it has a fixed order
-     void append_desc(criterion) {
-      if ( criterion =~ / (asc|desc)\z/i) {
-        criterion
-      else
-        "#{criterion} DESC"
-      }
-    }
+//    // Appends DESC to the sort criterion unless it has a fixed order
+//     void append_desc(criterion) {
+//      if ( criterion =~ / (asc|desc)\z/i) {
+//        criterion
+//      else
+//        "#{criterion} DESC"
+//      }
+//    }
 
-     void to_json_param() {
-      JSON::dump(this->criteria.map { |k, o| [k, o ? 'asc' : 'desc'] })
-    }
+//     void to_json_param() {
+//      JSON::dump(this->criteria.map { |k, o| [k, o ? 'asc' : 'desc'] })
+//    }
 
-     void to_sort_param() {
-      this->criteria.map { |k, o| k + (o ? '' : ':desc') }.join(',')
-    }
-  }
+//     void to_sort_param() {
+//      this->criteria.map { |k, o| k + (o ? '' : ':desc') }.join(',')
+//    }
+//  }
 
-   void sort_name() {
-    controller_name + '_' + action_name + '_sort'
-  }
+//   void sort_name() {
+//    controller_name + '_' + action_name + '_sort'
+//  }
 
   // Initializes the default sort.
   // Examples:
@@ -179,53 +179,53 @@ namespace SortHelper {
   //   sort_init ['name', ['id', 'desc']]
   //   sort_init [['name', 'desc'], ['id', 'desc']]
   //
-   void sort_init(*args) {
-    criteria = case args.size
-               when 1
-                 args.first.is_a?(Array) ? args.first : [[args.first]]
-               when 2
-                 [[args.first, args.last]]
-               else
-                 raise ArgumentError
-               }
-    this->sort_default = SortCriteria.new
-    this->sort_default.criteria = criteria
-  }
+//   void sort_init(*args) {
+//    criteria = case args.size
+//               when 1
+//                 args.first.is_a?(Array) ? args.first : [[args.first]]
+//               when 2
+//                 [[args.first, args.last]]
+//               else
+//                 raise ArgumentError
+//               }
+//    this->sort_default = SortCriteria.new
+//    this->sort_default.criteria = criteria
+//  }
 
   // Updates the sort state. Call this in the controller prior to calling
   // sort_clause.
   // - criteria can be either an array or a hash of allowed keys
   //
-   void sort_update(criteria) {
-    this->sort_criteria = SortCriteria.new
-    this->sort_criteria.available_criteria = criteria
-    this->sort_criteria.from_param(params[:sort] || session[sort_name])
-    if ( this->sort_criteria.empty?) { this->sort_criteria.criteria = this->sort_default.criteria ;}
-    session[sort_name] = this->sort_criteria.to_param
-  }
+//   void sort_update(criteria) {
+//    this->sort_criteria = SortCriteria.new
+//    this->sort_criteria.available_criteria = criteria
+//    this->sort_criteria.from_param(params[:sort] || session[sort_name])
+//    if ( this->sort_criteria.empty?) { this->sort_criteria.criteria = this->sort_default.criteria ;}
+//    session[sort_name] = this->sort_criteria.to_param
+//  }
 
   // Clears the sort criteria session data
   //
-   void sort_clear() {
-    session[sort_name] = nil
-  }
+//   void sort_clear() {
+//    session[sort_name] = nil
+//  }
 
   // Returns an SQL sort clause corresponding to the current sort state.
   // Use this to sort the controller's table items collection.
   //
-   void sort_clause() {
-    this->sort_criteria.to_sql
-  }
+//   void sort_clause() {
+//    this->sort_criteria.to_sql
+//  }
 
-   void sort_columns() {
-    this->sort_criteria.criteria.map(&:first)
-  }
+//   void sort_columns() {
+//    this->sort_criteria.criteria.map(&:first)
+//  }
 
   // Determines whether the current selected sort criteria
   // is identical to the default
-   void default_sort_order?() {
-    this->sort_default.criteria == this->sort_criteria.criteria
-  }
+//   void default_sort_order?() {
+//    this->sort_default.criteria == this->sort_criteria.criteria
+//  }
 
   // Returns a link which sorts by the named column.
   //
@@ -233,20 +233,20 @@ namespace SortHelper {
   // - the optional caption explicitly specifies the displayed link text.
   // - 2 CSS classes reflect the state of the link: sort and asc or desc
   //
-   void sort_link(column, caption, default_order, html_options = {}) {
-    order = order_string(column, inverted: true) || default_order
-    caption ||= column.to_s.humanize
+//   void sort_link(column, caption, default_order, html_options = {}) {
+//    order = order_string(column, inverted: true) || default_order
+//    caption ||= column.to_s.humanize
 
-    sort_by = html_options.delete(:param)
+//    sort_by = html_options.delete(:param)
 
-    sort_param = this->sort_criteria.add(column.to_s, order).to_param(sort_by)
-    sort_key = sort_by == :json ? :sortBy : :sort
+//    sort_param = this->sort_criteria.add(column.to_s, order).to_param(sort_by)
+//    sort_key = sort_by == :json ? :sortBy : :sort
 
-    sort_options = { sort_key => sort_param }
+//    sort_options = { sort_key => sort_param }
 
-    // Don't lose other params.
-    link_to_content_update(h(caption), safe_query_params(%w{filters page per_page expand}).merge(sort_options), html_options)
-  }
+//    // Don't lose other params.
+//    link_to_content_update(h(caption), safe_query_params(%w{filters page per_page expand}).merge(sort_options), html_options)
+//  }
 
   // Returns a table header <th> tag with a sort link for the named column
   // attribute.
@@ -272,64 +272,65 @@ namespace SortHelper {
   //       </div>
   //     </th>
   //
-   void sort_header_tag(column, options = {}) {
-    caption = get_caption(column, options)
+//   void sort_header_tag(column, options = {}) {
+//    caption = get_caption(column, options)
 
-    default_order = options.delete(:default_order) || 'asc'
-    lang = options.delete(:lang) || nil
-    param = options.delete(:param) || :sort
+//    default_order = options.delete(:default_order) || 'asc'
+//    lang = options.delete(:lang) || nil
+//    param = options.delete(:param) || :sort
 
-    options[:title] = sort_header_title(column, caption, options)
+//    options[:title] = sort_header_title(column, caption, options)
 
-    within_sort_header_tag_hierarchy(options, sort_class(column)) {
-      sort_link(column, caption, default_order, param: param, lang: lang, title: options[:title])
-    }
-  }
+//    within_sort_header_tag_hierarchy(options, sort_class(column)) {
+//      sort_link(column, caption, default_order, param: param, lang: lang, title: options[:title])
+//    }
+//  }
 
-   void sort_class(column) {
-    order = order_string(column)
+//   void sort_class(column) {
+//    order = order_string(column)
 
-    order.nil? ? nil : "sort #{order}"
-  }
+//    order.nil? ? nil : "sort #{order}"
+//  }
 
-   void order_string(column, inverted: false) {
-    if ( column.to_s == this->sort_criteria.first_key) {
-      if ( this->sort_criteria.first_asc?) {
-        inverted ? 'desc' : 'asc'
-      else
-        inverted ? 'asc' : 'desc'
-      }
-    }
-  }
+//   void order_string(column, inverted: false) {
+//    if ( column.to_s == this->sort_criteria.first_key) {
+//      if ( this->sort_criteria.first_asc?) {
+//        inverted ? 'desc' : 'asc'
+//      else
+//        inverted ? 'asc' : 'desc'
+//      }
+//    }
+//  }
 
-   void within_sort_header_tag_hierarchy(options, classes) {
-    content_tag 'th', options {
-      content_tag 'div', class: 'generic-table--sort-header-outer' {
-        content_tag 'div', class: 'generic-table--sort-header' {
-          content_tag 'span', class: classes {
-            yield
-          }
-        }
-      }
-    }
-  }
+//   void within_sort_header_tag_hierarchy(options, classes) {
+//    content_tag 'th', options {
+//      content_tag 'div', class: 'generic-table--sort-header-outer' {
+//        content_tag 'div', class: 'generic-table--sort-header' {
+//          content_tag 'span', class: classes {
+//            yield
+//          }
+//        }
+//      }
+//    }
+//  }
 
-   void sort_header_title(column, caption, options) {
-    if ( column.to_s == this->sort_criteria.first_key) {
-      order = this->sort_criteria.first_asc? ? t(:label_ascending) : t(:label_descending)
-      order + " #{t(:label_sorted_by, value: "\"#{caption}\"")}"
-    else
-      t(:label_sort_by, value: "\"#{caption}\"") unless options[:title]
-    }
-  }
+//   void sort_header_title(column, caption, options) {
+//    if ( column.to_s == this->sort_criteria.first_key) {
+//      order = this->sort_criteria.first_asc? ? t(:label_ascending) : t(:label_descending)
+//      order + " #{t(:label_sorted_by, value: "\"#{caption}\"")}"
+//    else
+//      t(:label_sort_by, value: "\"#{caption}\"") unless options[:title]
+//    }
+//  }
 
-   void get_caption(column, options) {
-    caption = options.delete(:caption)
+//   void get_caption(column, options) {
+//    caption = options.delete(:caption)
 
-    if ( caption.blank?) {
-      caption = defined?(model) ? model.human_attribute_name(column.to_s) : column.humanize
-    }
+//    if ( caption.blank?) {
+//      caption = defined?(model) ? model.human_attribute_name(column.to_s) : column.humanize
+//    }
 
-    caption
-  }
+//    caption
+//  }
+};
 }

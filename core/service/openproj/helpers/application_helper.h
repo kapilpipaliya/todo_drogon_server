@@ -1,5 +1,6 @@
-#include "forwardable"
-#include "cgi"
+//#include "forwardable"
+//#include "cgi"
+#include <string>
 
 namespace ApplicationHelper {
   // include OpenProject::TextFormatting
@@ -14,9 +15,9 @@ namespace ApplicationHelper {
   // include OpenProject::PageHierarchyHelper
 
   // Return true if user is authorized for controller/action, otherwise false
-   void authorize_for(controller, action, project: this->project) {
-    User.current.allowed_to?({ controller: controller, action: action }, project)
-  }
+//   void authorize_for(controller, action, project: this->project) {
+//    User.current.allowed_to?({ controller: controller, action: action }, project)
+//  }
 
   // Display a link if user is authorized
   //
@@ -26,328 +27,328 @@ namespace ApplicationHelper {
   // @param [optional, Hash] parameters_for_method_reference Extra parameters for link_to
   //
   // When a block is given, skip the name parameter
-   void link_to_if_authorized(*args, &block) {
-    name = args.shift unless block_given?
-    options = args.shift || {}
-    html_options = args.shift
-    parameters_for_method_reference = args
+//   void link_to_if_authorized(*args, &block) {
+//    name = args.shift unless block_given?
+//    options = args.shift || {}
+//    html_options = args.shift
+//    parameters_for_method_reference = args
 
-    return unless authorize_for(options[:controller] || params[:controller], options[:action])
+//    return unless authorize_for(options[:controller] || params[:controller], options[:action])
 
-    if ( block_given?) {
-      link_to(options, html_options, *parameters_for_method_reference, &block)
-    else
-      link_to(name, options, html_options, *parameters_for_method_reference)
-    }
-  }
+//    if ( block_given?) {
+//      link_to(options, html_options, *parameters_for_method_reference, &block)
+//    else
+//      link_to(name, options, html_options, *parameters_for_method_reference)
+//    }
+//  }
 
-   void required_field_name(name = '') {
-    safe_join [name, ' ', content_tag('span', '*', class: 'required')]
-  }
+//   void required_field_name(name = '') {
+//    safe_join [name, ' ', content_tag('span', '*', class: 'required')]
+//  }
 
-   void li_unless_nil(link, options = {}) {
-    content_tag(:li, link, options) if ( link) {
-  }
+//   void li_unless_nil(link, options = {}) {
+//    content_tag(:li, link, options) if ( link) {
+//  }
 
   // Show a sorted linkified (if ( active) comma-joined list of users) {
-   void list_users(users, options = {}) {
-    users.sort.map { |u| link_to_user(u, options) }.join(', ')
-  }
+//   void list_users(users, options = {}) {
+//    users.sort.map { |u| link_to_user(u, options) }.join(', ')
+//  }
 
   // returns a class name based on the user's status
-   void user_status_class(user) {
-    'status_' + user.status_name
-  }
+//   void user_status_class(user) {
+//    'status_' + user.status_name
+//  }
 
-   void user_status_i18n(user) {
-    t "status_#{user.status_name}"
-  }
+//   void user_status_i18n(user) {
+//    t "status_#{user.status_name}"
+//  }
 
-   void toggle_link(name, id, options = {}, html_options = {}) {
-    onclick = "jQuery('##{id}').toggle(); "
-    onclick << (options[:focus] ? "jQuery('##{options[:focus]}').focus(); " : 'this.blur(); ')
-    onclick << 'return false;'
-    link_to_function(name, onclick, html_options)
-  }
+//   void toggle_link(name, id, options = {}, html_options = {}) {
+//    onclick = "jQuery('##{id}').toggle(); "
+//    onclick << (options[:focus] ? "jQuery('##{options[:focus]}').focus(); " : 'this.blur(); ')
+//    onclick << 'return false;'
+//    link_to_function(name, onclick, html_options)
+//  }
 
-   void delete_link(url, options = {}) {
-    options = {
-      method: :delete,
-      data: { confirm: I18n.t(:text_are_you_sure) },
-      class: 'icon icon-delete'
-    }.merge(options)
+//   void delete_link(url, options = {}) {
+//    options = {
+//      method: :delete,
+//      data: { confirm: I18n.t(:text_are_you_sure) },
+//      class: 'icon icon-delete'
+//    }.merge(options)
 
-    link_to I18n.t(:button_delete), url, options
-  }
+//    link_to I18n.t(:button_delete), url, options
+//  }
 
-   void format_activity_title(text) {
-    h(truncate_single_line(text, length: 100))
-  }
+//   void format_activity_title(text) {
+//    h(truncate_single_line(text, length: 100))
+//  }
 
-   void format_activity_day(date) {
-    date == User.current.today ? l(:label_today).titleize : format_date(date)
-  }
+//   void format_activity_day(date) {
+//    date == User.current.today ? l(:label_today).titleize : format_date(date)
+//  }
 
-   void format_activity_description(text) {
-    html_escape_once(truncate(text.to_s, length: 120).gsub(%r{[\r\n]*<(pre|code)>.*$}m, '...'))
-      .gsub(/[\r\n]+/, '<br />')
-      .html_safe
-  }
+//   void format_activity_description(text) {
+//    html_escape_once(truncate(text.to_s, length: 120).gsub(%r{[\r\n]*<(pre|code)>.*$}m, '...'))
+//      .gsub(/[\r\n]+/, '<br />')
+//      .html_safe
+//  }
 
-   void format_version_name(version) {
-    h(version.to_s_for_project(this->project))
-  }
+//   void format_version_name(version) {
+//    h(version.to_s_for_project(this->project))
+//  }
 
-   void due_date_distance_in_words(date) {
-    if ( date) {
-      label = date < Date.today ? :label_roadmap_overdue : :label_roadmap_due_in
-      l(label, distance_of_date_in_words(Date.today, date))
-    }
-  }
+//   void due_date_distance_in_words(date) {
+//    if ( date) {
+//      label = date < Date.today ? :label_roadmap_overdue : :label_roadmap_due_in
+//      l(label, distance_of_date_in_words(Date.today, date))
+//    }
+//  }
 
   // Renders flash messages
-   void render_flash_messages() {
-    flash
-      .reject { |k,_| k.start_with? '_' }
-      .map { |k, v| render_flash_message(k, v) }.join.html_safe
-  }
+//   void render_flash_messages() {
+//    flash
+//      .reject { |k,_| k.start_with? '_' }
+//      .map { |k, v| render_flash_message(k, v) }.join.html_safe
+//  }
 
-   void join_flash_messages(messages) {
-    if ( messages.respond_to?(:join)) {
-      messages.join('<br />').html_safe
-    else
-      messages
-    }
-  }
+//   void join_flash_messages(messages) {
+//    if ( messages.respond_to?(:join)) {
+//      messages.join('<br />').html_safe
+//    else
+//      messages
+//    }
+//  }
 
-   void render_flash_message(type, message, html_options = {}) {
-    css_classes  = ["flash #{type} icon icon-#{type}", html_options.delete(:class)]
+//   void render_flash_message(type, message, html_options = {}) {
+//    css_classes  = ["flash #{type} icon icon-#{type}", html_options.delete(:class)]
 
-    // Add autohide class to notice flashes if ( configured) {
-    if ( type.to_s == 'notice' && User.current.pref.auto_hide_popups?) {
-      css_classes << 'autohide-notification'
-    }
+//    // Add autohide class to notice flashes if ( configured) {
+//    if ( type.to_s == 'notice' && User.current.pref.auto_hide_popups?) {
+//      css_classes << 'autohide-notification'
+//    }
 
-    html_options = { class: css_classes.join(' '), role: 'alert' }.merge(html_options)
+//    html_options = { class: css_classes.join(' '), role: 'alert' }.merge(html_options)
 
-    content_tag :div, html_options {
-      concat(join_flash_messages(message))
-      concat(content_tag(:i, '', class: 'icon-close close-handler',
-                                 tabindex: '0',
-                                 role: 'button',
-                                 aria: { label: ::I18n.t('js.close_popup_title') }))
-    }
-  }
+//    content_tag :div, html_options {
+//      concat(join_flash_messages(message))
+//      concat(content_tag(:i, '', class: 'icon-close close-handler',
+//                                 tabindex: '0',
+//                                 role: 'button',
+//                                 aria: { label: ::I18n.t('js.close_popup_title') }))
+//    }
+//  }
 
-   void project_tree_options_for_select(projects, selected: nil, disabled: {}, &_block) {
-    options = ''.html_safe
-    Project.project_level_list(projects).each { |element|
-      identifier = element[:project].id
-      tag_options = {
-        value: h(identifier),
-        title: h(element[:project].name),
-      }
+//   void project_tree_options_for_select(projects, selected: nil, disabled: {}, &_block) {
+//    options = ''.html_safe
+//    Project.project_level_list(projects).each { |element|
+//      identifier = element[:project].id
+//      tag_options = {
+//        value: h(identifier),
+//        title: h(element[:project].name),
+//      }
 
-      if ( !selected.nil? && selected.id == identifier) {
-        tag_options[:selected] = true
-      }
+//      if ( !selected.nil? && selected.id == identifier) {
+//        tag_options[:selected] = true
+//      }
 
-      tag_options[:disabled] = true if ( disabled.include? identifier) {
+//      tag_options[:disabled] = true if ( disabled.include? identifier) {
 
-      content = ''.html_safe
-      content << ('&nbsp;' * 3 * element[:level] + '&#187; ').html_safe if ( element[:level] > 0) {
-      content << element[:project].name
+//      content = ''.html_safe
+//      content << ('&nbsp;' * 3 * element[:level] + '&#187; ').html_safe if ( element[:level] > 0) {
+//      content << element[:project].name
 
-      options << content_tag('option', content, tag_options)
-    }
+//      options << content_tag('option', content, tag_options)
+//    }
 
-    options
-  }
+//    options
+//  }
 
   // Yields the given block for each project with its level in the tree
   //
   // Wrapper for Project#project_tree
-   void project_tree(projects, &block) {
-    Project.project_tree(projects, &block)
-  }
+//   void project_tree(projects, &block) {
+//    Project.project_tree(projects, &block)
+//  }
 
-   void project_nested_ul(projects, &_block) {
-    s = ''
-    if ( projects.any?) {
-      ancestors = []
-      Project.project_tree(projects) { |project, _level|
-        if ( ancestors.empty? || project.is_descendant_of?(ancestors.last)) {
-          s << "<ul>\n"
-        else
-          ancestors.pop
-          s << '</li>'
-          while (ancestors.any? && !project.is_descendant_of?(ancestors.last)) {
-            ancestors.pop
-            s << "</ul></li>\n"
-          }
-        }
-        s << '<li>'
-        s << yield(project).to_s
-        ancestors << project
-      }
-      s << ("</li></ul>\n" * ancestors.size)
-    }
-    s.html_safe
-  }
+//   void project_nested_ul(projects, &_block) {
+//    s = ''
+//    if ( projects.any?) {
+//      ancestors = []
+//      Project.project_tree(projects) { |project, _level|
+//        if ( ancestors.empty? || project.is_descendant_of?(ancestors.last)) {
+//          s << "<ul>\n"
+//        else
+//          ancestors.pop
+//          s << '</li>'
+//          while (ancestors.any? && !project.is_descendant_of?(ancestors.last)) {
+//            ancestors.pop
+//            s << "</ul></li>\n"
+//          }
+//        }
+//        s << '<li>'
+//        s << yield(project).to_s
+//        ancestors << project
+//      }
+//      s << ("</li></ul>\n" * ancestors.size)
+//    }
+//    s.html_safe
+//  }
 
-   void principals_check_box_tags(name, principals) {
-    labeled_check_box_tags(name, principals,
-                           title: :user_status_i18n,
-                           class: :user_status_class)
-  }
+//   void principals_check_box_tags(name, principals) {
+//    labeled_check_box_tags(name, principals,
+//                           title: :user_status_i18n,
+//                           class: :user_status_class)
+//  }
 
-   void labeled_check_box_tags(name, collection, options = {}) {
-    collection.sort.map { |object|
-      id = name.gsub(/[\[\]]+/, '_') + object.id.to_s
+//   void labeled_check_box_tags(name, collection, options = {}) {
+//    collection.sort.map { |object|
+//      id = name.gsub(/[\[\]]+/, '_') + object.id.to_s
 
-      object_options = options.inject({}) { |h, (k, v)|
-        h[k] = v.is_a?(Symbol) ? send(v, object) : v
-        h
-      }
+//      object_options = options.inject({}) { |h, (k, v)|
+//        h[k] = v.is_a?(Symbol) ? send(v, object) : v
+//        h
+//      }
 
-      object_options[:class] = Array(object_options[:class]) + %w(form--label-with-check-box)
+//      object_options[:class] = Array(object_options[:class]) + %w(form--label-with-check-box)
 
-      content_tag :div, class: 'form--field' {
-        label_tag(id, object, object_options) {
-          styled_check_box_tag(name, object.id, false, id: id) + object
-        }
-      }
-    }.join.html_safe
-  }
+//      content_tag :div, class: 'form--field' {
+//        label_tag(id, object, object_options) {
+//          styled_check_box_tag(name, object.id, false, id: id) + object
+//        }
+//      }
+//    }.join.html_safe
+//  }
 
-   void html_hours(text) {
-    text.gsub(%r{(\d+)\.(\d+)},
-              '<span class="hours hours-int">\1</span><span class="hours hours-dec">.\2</span>')
-      .html_safe
-  }
+//   void html_hours(text) {
+//    text.gsub(%r{(\d+)\.(\d+)},
+//              '<span class="hours hours-int">\1</span><span class="hours hours-dec">.\2</span>')
+//      .html_safe
+//  }
 
-   void authoring(created, author, options = {}) {
-    label = options[:label] || :label_added_time_by
-    l(label, author: link_to_user(author), age: time_tag(created)).html_safe
-  }
+//   void authoring(created, author, options = {}) {
+//    label = options[:label] || :label_added_time_by
+//    l(label, author: link_to_user(author), age: time_tag(created)).html_safe
+//  }
 
-   void time_tag(time) {
-    text = distance_of_time_in_words(Time.now, time)
-    if ( this->project and this->project.module_enabled?('activity')) {
-      link_to(text, { controller: '/activities',
-                      action: 'index',
-                      project_id: this->project,
-                      from: time.to_date },
-              title: format_time(time))
-    else
-      datetime = time.acts_like?(:time) ? time.xmlschema : time.iso8601
-      content_tag(:time, text, datetime: datetime,
-                               title: format_time(time), class: 'timestamp')
-    }
-  }
+//   void time_tag(time) {
+//    text = distance_of_time_in_words(Time.now, time)
+//    if ( this->project and this->project.module_enabled?('activity')) {
+//      link_to(text, { controller: '/activities',
+//                      action: 'index',
+//                      project_id: this->project,
+//                      from: time.to_date },
+//              title: format_time(time))
+//    else
+//      datetime = time.acts_like?(:time) ? time.xmlschema : time.iso8601
+//      content_tag(:time, text, datetime: datetime,
+//                               title: format_time(time), class: 'timestamp')
+//    }
+//  }
 
-   void syntax_highlight(name, content) {
-    highlighted = OpenProject::SyntaxHighlighting.highlight_by_filename(content, name)
-    highlighted.each_line { |line|
-      yield highlighted.html_safe? ? line.html_safe : line
-    }
-  }
+//   void syntax_highlight(name, content) {
+//    highlighted = OpenProject::SyntaxHighlighting.highlight_by_filename(content, name)
+//    highlighted.each_line { |line|
+//      yield highlighted.html_safe? ? line.html_safe : line
+//    }
+//  }
 
-   void to_path_param(path) {
-    path.to_s
-  }
+//   void to_path_param(path) {
+//    path.to_s
+//  }
 
-   void other_formats_links(&block) {
-    formats = capture(Redmine::Views::OtherFormatsBuilder.new(self), &block)
-    unless formats.nil? || formats.strip.empty?
-      content_tag 'p', class: 'other-formats' {
-        (l(:label_export_to) + formats).html_safe
-      }
-    }
-  }
+//   void other_formats_links(&block) {
+//    formats = capture(Redmine::Views::OtherFormatsBuilder.new(self), &block)
+//    unless formats.nil? || formats.strip.empty?
+//      content_tag 'p', class: 'other-formats' {
+//        (l(:label_export_to) + formats).html_safe
+//      }
+//    }
+//  }
 
   // Returns the theme, controller name, and action as css classes for the
   // HTML body.
-   void body_css_classes() {
-    css = ['theme-' + OpenProject::Design.identifier.to_s]
+//   void body_css_classes() {
+//    css = ['theme-' + OpenProject::Design.identifier.to_s]
 
-    if ( params[:controller] && params[:action]) {
-      css << 'controller-' + params[:controller]
-      css << 'action-' + params[:action]
-    }
+//    if ( params[:controller] && params[:action]) {
+//      css << 'controller-' + params[:controller]
+//      css << 'action-' + params[:action]
+//    }
 
-    css << "ee-banners-#{EnterpriseToken.show_banners? ? 'visible' : 'hidden'}"
+//    css << "ee-banners-#{EnterpriseToken.show_banners? ? 'visible' : 'hidden'}"
 
-    // Add browser specific classes to aid css fixes
-    css += browser_specific_classes
+//    // Add browser specific classes to aid css fixes
+//    css += browser_specific_classes
 
-    css.join(' ')
-  }
+//    css.join(' ')
+//  }
 
-   void accesskey(s) {
-    OpenProject::AccessKeys.key_for s
-  }
+//   void accesskey(s) {
+//    OpenProject::AccessKeys.key_for s
+//  }
 
   // Same as Rails' simple_format helper without using paragraphs
-   void simple_format_without_paragraph(text) {
-    text.to_s
-      .gsub(/\r\n?/, "\n")                    // \r\n and \r -> \n
-      .gsub(/\n\n+/, '<br /><br />')          // 2+ newline  -> 2 br
-      .gsub(/([^\n]\n)(?=[^\n])/, '\1<br />')  // 1 newline   -> br
-      .html_safe
-  }
+//   void simple_format_without_paragraph(text) {
+//    text.to_s
+//      .gsub(/\r\n?/, "\n")                    // \r\n and \r -> \n
+//      .gsub(/\n\n+/, '<br /><br />')          // 2+ newline  -> 2 br
+//      .gsub(/([^\n]\n)(?=[^\n])/, '\1<br />')  // 1 newline   -> br
+//      .html_safe
+//  }
 
-   void lang_options_for_select(blank = true) {
-    auto = if ( blank && (valid_languages - all_languages) == (all_languages - valid_languages)) {
-             [['(auto)', '']]
-           else
-             []
-           }
+//   void lang_options_for_select(blank = true) {
+//    auto = if ( blank && (valid_languages - all_languages) == (all_languages - valid_languages)) {
+//             [['(auto)', '']]
+//           else
+//             []
+//           }
 
-    mapped_languages = valid_languages.map { |lang| translate_language(lang) }
+//    mapped_languages = valid_languages.map { |lang| translate_language(lang) }
 
-    auto + mapped_languages.sort_by(&:last)
-  }
+//    auto + mapped_languages.sort_by(&:last)
+//  }
 
-   void all_lang_options_for_select(blank = true) {
-    initial_lang_options = blank ? [['(auto)', '']] : []
+//   void all_lang_options_for_select(blank = true) {
+//    initial_lang_options = blank ? [['(auto)', '']] : []
 
-    mapped_languages = all_languages.map { |lang| translate_language(lang) }
+//    mapped_languages = all_languages.map { |lang| translate_language(lang) }
 
-    initial_lang_options + mapped_languages.sort_by(&:last)
-  }
+//    initial_lang_options + mapped_languages.sort_by(&:last)
+//  }
 
-   void labelled_tabular_form_for(record, options = {}, &block) {
-    options.reverse_merge!(builder: TabularFormBuilder, html: {})
-    options[:html][:class] = 'form' unless options[:html].has_key?(:class)
-    form_for(record, options, &block)
-  }
+//   void labelled_tabular_form_for(record, options = {}, &block) {
+//    options.reverse_merge!(builder: TabularFormBuilder, html: {})
+//    options[:html][:class] = 'form' unless options[:html].has_key?(:class)
+//    form_for(record, options, &block)
+//  }
 
-   void back_url_hidden_field_tag() {
-    back_url = params[:back_url] || request.env['HTTP_REFERER']
-    back_url = CGI.unescape(back_url.to_s)
-    hidden_field_tag('back_url', CGI.escape(back_url), id: nil) unless back_url.blank?
-  }
+//   void back_url_hidden_field_tag() {
+//    back_url = params[:back_url] || request.env['HTTP_REFERER']
+//    back_url = CGI.unescape(back_url.to_s)
+//    hidden_field_tag('back_url', CGI.escape(back_url), id: nil) unless back_url.blank?
+//  }
 
-   void back_url_to_current_page_hidden_field_tag() {
-    back_url = params[:back_url]
-    if ( back_url.present?) {
-      back_url = back_url.to_s
-    } else if ( request.get? and !params.blank?) {
-      back_url = request.url
-    }
+//   void back_url_to_current_page_hidden_field_tag() {
+//    back_url = params[:back_url]
+//    if ( back_url.present?) {
+//      back_url = back_url.to_s
+//    } else if ( request.get? and !params.blank?) {
+//      back_url = request.url
+//    }
 
-    hidden_field_tag('back_url', back_url) unless back_url.blank?
-  }
+//    hidden_field_tag('back_url', back_url) unless back_url.blank?
+//  }
 
-   void check_all_links(form_name) {
-    link_to_function(l(:button_check_all), "checkAll('#{form_name}', true)") +
-      ' | ' +
-      link_to_function(l(:button_uncheck_all), "checkAll('#{form_name}', false)")
-  }
+//   void check_all_links(form_name) {
+//    link_to_function(l(:button_check_all), "checkAll('#{form_name}', true)") +
+//      ' | ' +
+//      link_to_function(l(:button_uncheck_all), "checkAll('#{form_name}', false)")
+//  }
 
    void current_layout() {
-    controller.send :_layout, ["html"]
+//    controller.send :_layout, ["html"]
   }
 
   // Generates the HTML for a progress bar
@@ -361,138 +362,138 @@ namespace ApplicationHelper {
   //   A hash containing the following keys:
   //   * width: (default '100px') the css-width for the progress bar
   //   * legend: (default: '') the text displayed alond with the progress bar
-   void progress_bar(pcts, options = {}) {
-    pcts = Array(pcts).map(&:round)
-    closed = pcts[0]
-    done   = (pcts[1] || closed) - closed
-    width = options[:width] || '100px;'
-    legend = options[:legend] || ''
-    total_progress = options[:hide_total_progress] ? '' : t(:total_progress)
-    percent_sign = options[:hide_percent_sign] ? '' : '%'
+//   void progress_bar(pcts, options = {}) {
+//    pcts = Array(pcts).map(&:round)
+//    closed = pcts[0]
+//    done   = (pcts[1] || closed) - closed
+//    width = options[:width] || '100px;'
+//    legend = options[:legend] || ''
+//    total_progress = options[:hide_total_progress] ? '' : t(:total_progress)
+//    percent_sign = options[:hide_percent_sign] ? '' : '%'
 
-    content_tag :span {
-      progress = content_tag :span, class: 'progress-bar', style: "width: #{width}" {
-        concat content_tag(:span, '', class: 'inner-progress closed', style: "width: #{closed}%")
-        concat content_tag(:span, '', class: 'inner-progress done',   style: "width: #{done}%")
-      }
-      progress + content_tag(:span, "#{legend}#{percent_sign} #{total_progress}", class: 'progress-bar-legend')
-    }
+//    content_tag :span {
+//      progress = content_tag :span, class: 'progress-bar', style: "width: #{width}" {
+//        concat content_tag(:span, '', class: 'inner-progress closed', style: "width: #{closed}%")
+//        concat content_tag(:span, '', class: 'inner-progress done',   style: "width: #{done}%")
+//      }
+//      progress + content_tag(:span, "#{legend}#{percent_sign} #{total_progress}", class: 'progress-bar-legend')
+//    }
+//  }
+
+   void checked_image(bool checked = true) {
+//    if ( checked) {
+//      icon_wrapper('icon-context icon-checkmark', t(:label_checked))
+//    }
   }
 
-   void checked_image(checked = true) {
-    if ( checked) {
-      icon_wrapper('icon-context icon-checkmark', t(:label_checked))
-    }
-  }
+//   void calendar_for(*args) {
+//    ActiveSupport::Deprecation.warn "calendar_for has been removed. Please add the class '-augmented-datepicker' instead.", caller
+//  }
 
-   void calendar_for(*args) {
-    ActiveSupport::Deprecation.warn "calendar_for has been removed. Please add the class '-augmented-datepicker' instead.", caller
-  }
-
-   void locale_first_day_of_week() {
-    case Setting.start_of_week.to_i
-    when 1
-      '1' // Monday
-    when 7
-      '0' // Sunday
-    when 6
-      '6' // Saturday
-    else
-      // use language (pass a blank string into the JSON object,
-      // as the datepicker implementation checks for numbers in
-      // /frontend/app/misc/datepicker-defaults.js:34)
-      ''
-    }
-  }
+//   void locale_first_day_of_week() {
+//    case Setting.start_of_week.to_i
+//    when 1
+//      '1' // Monday
+//    when 7
+//      '0' // Sunday
+//    when 6
+//      '6' // Saturday
+//    else
+//      // use language (pass a blank string into the JSON object,
+//      // as the datepicker implementation checks for numbers in
+//      // /frontend/app/misc/datepicker-defaults.js:34)
+//      ''
+//    }
+//  }
 
   // To avoid the menu flickering, disable it
   // by default unless we're in test mode
-   void initial_menu_styles() {
-    Rails.env.test? ? '' : 'display:none'
+   std::string initial_menu_styles() {
+//    Rails.env.test? ? '' : 'display:none'
   }
 
-   void initial_menu_classes(side_displayed, show_decoration) {
-    classes = 'can-hide-navigation'
-    classes << ' nosidebar' unless side_displayed
-    classes << ' nomenus' unless show_decoration
+//   void initial_menu_classes(side_displayed, show_decoration) {
+//    classes = 'can-hide-navigation'
+//    classes << ' nosidebar' unless side_displayed
+//    classes << ' nomenus' unless show_decoration
 
-    classes
-  }
+//    classes
+//  }
 
   // Add a HTML meta tag to control robots (web spiders)
   //
   // @param [optional, String] content the content of the ROBOTS tag.
   //   defaults to no index, follow, and no archive
-   void robot_exclusion_tag(content = 'NOINDEX,FOLLOW,NOARCHIVE') {
-    "<meta name='ROBOTS' content='#{h(content)}' />".html_safe
-  }
+//   void robot_exclusion_tag(content = 'NOINDEX,FOLLOW,NOARCHIVE') {
+//    "<meta name='ROBOTS' content='#{h(content)}' />".html_safe
+//  }
 
   // Returns true if ( arg is expected in the API response) {
-   void include_in_api_response?(arg) {
-    unless this->included_in_api_response
-      param = params[:include]
-      this->included_in_api_response = param.is_a?(Array) ? param.map(&:to_s) : param.to_s.split(',')
-      this->included_in_api_response.map!(&:strip)
-    }
-    this->included_in_api_response.include?(arg.to_s)
-  }
+//   void include_in_api_response?(arg) {
+//    unless this->included_in_api_response
+//      param = params[:include]
+//      this->included_in_api_response = param.is_a?(Array) ? param.map(&:to_s) : param.to_s.split(',')
+//      this->included_in_api_response.map!(&:strip)
+//    }
+//    this->included_in_api_response.include?(arg.to_s)
+//  }
 
   // Returns options or nil if ( nometa param or X-OpenProject-Nometa header) {
   // was set in the request
-   void api_meta(options) {
-    if ( params[:nometa].present? || request.headers['X-OpenProject-Nometa']) {
-      // compatibility mode for activeresource clients that raise
-      // an error when deserializing an array with attributes
-      nil
-    else
-      options
-    }
-  }
+//   void api_meta(options) {
+//    if ( params[:nometa].present? || request.headers['X-OpenProject-Nometa']) {
+//      // compatibility mode for activeresource clients that raise
+//      // an error when deserializing an array with attributes
+//      nil
+//    else
+//      options
+//    }
+//  }
 
   //
   // Returns the footer text displayed in the layout file.
   //
    void footer_content() {
-    elements = []
-    elements << I18n.t(:text_powered_by, link: link_to(OpenProject::Info.app_name,
-                                                       OpenProject::Info.url))
-    unless OpenProject::Footer.content.nil?
-      OpenProject::Footer.content.each { |name, value|
-        content = value.respond_to?(:call) ? value.call : value
-        if ( content) {
-          elements << content_tag(:span, content, class: "footer_#{name}")
-        }
-      }
-    }
-    if ( Setting.additional_footer_content.present?) { elements << Setting.additional_footer_content ;}
-    elements.join(', ').html_safe
+//    elements = []
+//    elements << I18n.t(:text_powered_by, link: link_to(OpenProject::Info.app_name,
+//                                                       OpenProject::Info.url))
+//    unless OpenProject::Footer.content.nil?
+//      OpenProject::Footer.content.each { |name, value|
+//        content = value.respond_to?(:call) ? value.call : value
+//        if ( content) {
+//          elements << content_tag(:span, content, class: "footer_#{name}")
+//        }
+//      }
+//    }
+//    if ( Setting.additional_footer_content.present?) { elements << Setting.additional_footer_content ;}
+//    elements.join(', ').html_safe
   }
 
    void permitted_params() {
-    PermittedParams.new(params, current_user)
+//    PermittedParams.new(params, current_user)
   }
 
-   void translate_language(lang_code) {
-    // rename in-context translation language name for the language select box
-    if ( lang_code == Redmine::I18n::IN_CONTEXT_TRANSLATION_CODE &&) {
-       ::I18n.locale != Redmine::I18n::IN_CONTEXT_TRANSLATION_CODE
-      [Redmine::I18n::IN_CONTEXT_TRANSLATION_NAME, lang_code.to_s]
-    else
-      [ll(lang_code.to_s, :general_lang_name), lang_code.to_s]
-    }
-  }
+//   void translate_language(lang_code) {
+//    // rename in-context translation language name for the language select box
+//    if ( lang_code == Redmine::I18n::IN_CONTEXT_TRANSLATION_CODE &&) {
+//       ::I18n.locale != Redmine::I18n::IN_CONTEXT_TRANSLATION_CODE
+//      [Redmine::I18n::IN_CONTEXT_TRANSLATION_NAME, lang_code.to_s]
+//    else
+//      [ll(lang_code.to_s, :general_lang_name), lang_code.to_s]
+//    }
+//  }
 
-   void link_to_content_update(text, url_params = {}, html_options = {}) {
-    link_to(text, url_params, html_options)
-  }
+//   void link_to_content_update(text, url_params = {}, html_options = {}) {
+//    link_to(text, url_params, html_options)
+//  }
 
    void password_complexity_requirements() {
-    rules = OpenProject::Passwords::Evaluator.rules_description
-    // use 0..0, so this doesn't fail if ( rules is an empty string) {
-    rules[0] = rules[0..0].upcase
+//    rules = OpenProject::Passwords::Evaluator.rules_description
+//    // use 0..0, so this doesn't fail if ( rules is an empty string) {
+//    rules[0] = rules[0..0].upcase
 
-    s = raw '<em>' + OpenProject::Passwords::Evaluator.min_length_description + '</em>'
-    s += raw '<br /><em>' + rules + '</em>' unless rules.empty?
-    s
+//    s = raw '<em>' + OpenProject::Passwords::Evaluator.min_length_description + '</em>'
+//    s += raw '<br /><em>' + rules + '</em>' unless rules.empty?
+//    s
   }
 }

@@ -1,6 +1,6 @@
 namespace OmniauthHelper {
-   void omniauth_direct_login?() {
-    direct_login_provider.is_a? String
+   bool omniauth_direct_login() {
+//    direct_login_provider.is_a? String
   }
 
   //
@@ -14,6 +14,6 @@ namespace OmniauthHelper {
   // If this option is active /login will lead directly to the configured omniauth provider
   // and so will a click on 'Sign in' (as opposed to opening the drop down menu).
    void direct_login_provider() {
-    OpenProject::Configuration['omniauth_direct_login_provider']
+//    OpenProject::Configuration['omniauth_direct_login_provider']
   }
 }
