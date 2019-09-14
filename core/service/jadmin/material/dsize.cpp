@@ -1,14 +1,14 @@
 #include "dsize.h"
 
 #include <utility>
+#include "../../../sql/dba.h"
 #include "../../../strfns.h"
-#include "../../dba.h"
 
 namespace jadmin {
-DSize::DSize(std::shared_ptr<JAdminContext> context_)
+DSize::DSize(std::shared_ptr<websocket::JAdminContext> context_)
     : context(std::move(context_)) {
-  query = sqlb::Query(
-      sqlb::ObjectIdentifier("material", "diamond_size_meta", "sm"));
+  query =
+      sql::Query(sql::ObjectIdentifier("material", "diamond_size_meta", "sm"));
   setupTable();
 }
 
@@ -35,72 +35,72 @@ nlohmann::json DSize::handleEvent(nlohmann::json event, unsigned long next,
 void DSize::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
-      sqlb::SelectedColumn({"Id", "id", "", "sm", PG_TYPES::INT8, false}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn({"Id", "id", "", "sm", PG_TYPES::INT8, false}),
+      sql::SelectedColumn(
           {"Clarity", "clarity_id", "", "sm", PG_TYPES::INT8, true, 2, 2}),
-      sqlb::SelectedColumn({"clarity_slug", "slug", "", "clarity",
-                            PG_TYPES::TEXT, false, 0, 0, false}),
-      sqlb::SelectedColumn({"clarity_name", "name", "", "clarity",
-                            PG_TYPES::TEXT, false, 0, 0, false}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn({"clarity_slug", "slug", "", "clarity",
+                           PG_TYPES::TEXT, false, 0, 0, false}),
+      sql::SelectedColumn({"clarity_name", "name", "", "clarity",
+                           PG_TYPES::TEXT, false, 0, 0, false}),
+      sql::SelectedColumn(
           {"Shape", "shape_id", "", "sm", PG_TYPES::INT8, true, 2, 2}),
-      sqlb::SelectedColumn({"shape_slug", "slug", "", "shape", PG_TYPES::TEXT,
-                            false, 0, 0, false}),
-      sqlb::SelectedColumn({"shape_name", "name", "", "shape", PG_TYPES::TEXT,
-                            false, 0, 0, false}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn({"shape_slug", "slug", "", "shape", PG_TYPES::TEXT,
+                           false, 0, 0, false}),
+      sql::SelectedColumn({"shape_name", "name", "", "shape", PG_TYPES::TEXT,
+                           false, 0, 0, false}),
+      sql::SelectedColumn(
           {"Color", "color_id", "", "sm", PG_TYPES::INT8, true, 2, 2}),
-      sqlb::SelectedColumn({"color_slug", "slug", "", "color", PG_TYPES::TEXT,
-                            false, 0, 0, false}),
-      sqlb::SelectedColumn({"color_name", "name", "", "color", PG_TYPES::TEXT,
-                            false, 0, 0, false}),
-      // sqlb::SelectedColumn({"Rank", "rank", "", "sm", PG_TYPES::INT4,
-      // false}), sqlb::SelectedColumn({"Code", "slug", "", "sm",
+      sql::SelectedColumn({"color_slug", "slug", "", "color", PG_TYPES::TEXT,
+                           false, 0, 0, false}),
+      sql::SelectedColumn({"color_name", "name", "", "color", PG_TYPES::TEXT,
+                           false, 0, 0, false}),
+      // sql::SelectedColumn({"Rank", "rank", "", "sm", PG_TYPES::INT4,
+      // false}), sql::SelectedColumn({"Code", "slug", "", "sm",
       // PG_TYPES::TEXT, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Size", "size_id", "", "sm", PG_TYPES::INT8, true, 1, 1}),
-      sqlb::SelectedColumn({"Name", "name", "", "size", PG_TYPES::TEXT, false}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn({"Name", "name", "", "size", PG_TYPES::TEXT, false}),
+      sql::SelectedColumn(
           {"Weight", "weight", "", "sm", PG_TYPES::DOUBLE, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Currency", "currency_id", "", "sm", PG_TYPES::INT8, true, 1, 2}),
-      sqlb::SelectedColumn({"currency_slug", "slug", "", "currency",
-                            PG_TYPES::TEXT, false, 0, 0, false}),
-      sqlb::SelectedColumn({"currency_name", "name", "", "currency",
-                            PG_TYPES::TEXT, false, 0, 0, false}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn({"currency_slug", "slug", "", "currency",
+                           PG_TYPES::TEXT, false, 0, 0, false}),
+      sql::SelectedColumn({"currency_name", "name", "", "currency",
+                           PG_TYPES::TEXT, false, 0, 0, false}),
+      sql::SelectedColumn(
           {"Rate_On", "rate_on_id", "", "sm", PG_TYPES::ENUM, true}),
-      sqlb::SelectedColumn({"Rate", "rate", "", "sm", PG_TYPES::DOUBLE, true}),
-      sqlb::SelectedColumn({"Created By", "create_user_id", "", "sm",
-                            PG_TYPES::INT8, true, 1, 0, false}),
-      sqlb::SelectedColumn({"u1_username", "username", "", "u1", PG_TYPES::TEXT,
-                            false, 0, 0, false}),
-      sqlb::SelectedColumn({"Updated By", "update_user_id", "", "sm",
-                            PG_TYPES::INT8, true, 1, 0, false}),
-      sqlb::SelectedColumn({"u2_username", "username", "", "u2", PG_TYPES::TEXT,
-                            false, 0, 0, false}),
-      sqlb::SelectedColumn({"Create Time", "inserted_at", "", "sm",
-                            PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-      sqlb::SelectedColumn({"Update Time", "updated_at", "", "sm",
-                            PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+      sql::SelectedColumn({"Rate", "rate", "", "sm", PG_TYPES::DOUBLE, true}),
+      sql::SelectedColumn({"Created By", "create_user_id", "", "sm",
+                           PG_TYPES::INT8, true, 1, 0, false}),
+      sql::SelectedColumn({"u1_username", "username", "", "u1", PG_TYPES::TEXT,
+                           false, 0, 0, false}),
+      sql::SelectedColumn({"Updated By", "update_user_id", "", "sm",
+                           PG_TYPES::INT8, true, 1, 0, false}),
+      sql::SelectedColumn({"u2_username", "username", "", "u2", PG_TYPES::TEXT,
+                           false, 0, 0, false}),
+      sql::SelectedColumn({"Create Time", "inserted_at", "", "sm",
+                           PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+      sql::SelectedColumn({"Update Time", "updated_at", "", "sm",
+                           PG_TYPES::TIMESTAMP, true, 0, 0, false}),
   });
 
-  auto size = sqlb::ObjectIdentifier("material", "size", "size");
-  auto clarity = sqlb::ObjectIdentifier("material", "clarity", "clarity");
-  auto shape = sqlb::ObjectIdentifier("material", "shape", "shape");
-  auto color = sqlb::ObjectIdentifier("material", "diamond_color", "color");
-  auto currency = sqlb::ObjectIdentifier("setting", "currency", "currency");
-  auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
-  auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
+  auto size = sql::ObjectIdentifier("material", "size", "size");
+  auto clarity = sql::ObjectIdentifier("material", "clarity", "clarity");
+  auto shape = sql::ObjectIdentifier("material", "shape", "shape");
+  auto color = sql::ObjectIdentifier("material", "diamond_color", "color");
+  auto currency = sql::ObjectIdentifier("setting", "currency", "currency");
+  auto u1 = sql::ObjectIdentifier("entity", "entity_user", "u1");
+  auto u2 = sql::ObjectIdentifier("entity", "entity_user", "u2");
 
   query.setJoins({
-      sqlb::Join("left", size, "size.id = sm.size_id"),
-      sqlb::Join("left", clarity, "clarity.id = sm.clarity_id"),
-      sqlb::Join("left", shape, "shape.id = sm.shape_id"),
-      sqlb::Join("left", color, "color.id = sm.color_id"),
-      sqlb::Join("left", currency, "currency.id = sm.currency_id"),
-      sqlb::Join("left", u1, "sm.create_user_id = u1.id"),
-      sqlb::Join("left", u2, "sm.update_user_id = u2.id"),
+      sql::Join("left", size, "size.id = sm.size_id"),
+      sql::Join("left", clarity, "clarity.id = sm.clarity_id"),
+      sql::Join("left", shape, "shape.id = sm.shape_id"),
+      sql::Join("left", color, "color.id = sm.color_id"),
+      sql::Join("left", currency, "currency.id = sm.currency_id"),
+      sql::Join("left", u1, "sm.create_user_id = u1.id"),
+      sql::Join("left", u2, "sm.update_user_id = u2.id"),
   });
 }
 
@@ -108,9 +108,9 @@ nlohmann::json DSize::ins(nlohmann::json event, nlohmann::json args) {
   // also update all the price of products too..
   // also update deleted size price too.
 
-  auto size_table = sqlb::ObjectIdentifier("material", "size", "sh");
+  auto size_table = sql::ObjectIdentifier("material", "size", "sh");
   auto size_meta_table =
-      sqlb::ObjectIdentifier("material", "diamond_size_meta", "sm");
+      sql::ObjectIdentifier("material", "diamond_size_meta", "sm");
 
   // first insert size then insert on meta ...................
   auto size_name = args[0]["size_name"].get<std::string>();
@@ -214,9 +214,9 @@ nlohmann::json DSize::upd(nlohmann::json event, nlohmann::json args) {
   // also update all the price of products too..
   // also update deleted size price too.
 
-  auto size_table = sqlb::ObjectIdentifier("material", "size", "sh");
+  auto size_table = sql::ObjectIdentifier("material", "size", "sh");
   auto size_meta_table =
-      sqlb::ObjectIdentifier("material", "diamond_size_meta", "sm");
+      sql::ObjectIdentifier("material", "diamond_size_meta", "sm");
 
   // first insert size then insert on meta ...................
   auto size_name = args[0]["size_name"].get<std::string>();

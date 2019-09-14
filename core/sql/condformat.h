@@ -5,6 +5,8 @@
 
 // Conditional formatting for given format to table cells based on a specified
 // condition.
+namespace sql {
+
 class CondFormat {
  public:
   CondFormat() = default;
@@ -22,5 +24,5 @@ class CondFormat {
   std::string m_sqlCondition;
   std::string m_filter;
 };
-
+}  // namespace sql
 #endif  // CONDFORMAT_H

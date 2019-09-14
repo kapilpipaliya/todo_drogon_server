@@ -8,7 +8,7 @@
 namespace madmin {
 class Auth {
  public:
-  Auth(std::shared_ptr<MAdminContext>);
+  Auth(std::shared_ptr<websocket::MAdminContext>);
   void setupTable();
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
@@ -109,8 +109,8 @@ class Auth {
   nlohmann::json saveFileMeta(const nlohmann::json& event, nlohmann::json args);
 
  private:
-  std::shared_ptr<MAdminContext> context;
-  sqlb::Query query;
+  std::shared_ptr<websocket::MAdminContext> context;
+  sql::Query query;
 };
 }  // namespace madmin
 #endif  // AUTH_H

@@ -1,54 +1,54 @@
 #include "image.h"
 
 #include <utility>
-#include "../../dba.h"
+#include "../../../sql/dba.h"
 
 namespace jadmin {
-Image::Image(std::shared_ptr<JAdminContext> context_)
+Image::Image(std::shared_ptr<websocket::JAdminContext> context_)
     : context(std::move(context_)) {
-  query = sqlb::Query(sqlb::ObjectIdentifier("setting", "image", "a"));
+  query = sql::Query(sql::ObjectIdentifier("setting", "image", "a"));
   setupTable();
 }
 
 void Image::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
-      sqlb::SelectedColumn({"Id", "id", "", "a", PG_TYPES::INT8, true}),
-      sqlb::SelectedColumn({"Collection", "image_collection_id", "", "a",
+      sql::SelectedColumn({"Id", "id", "", "a", PG_TYPES::INT8, true}),
+      sql::SelectedColumn({"Collection", "image_collection_id", "", "a",
                             PG_TYPES::INT8, true, 1, 1}),
-      sqlb::SelectedColumn({"Name", "name", "", "c", PG_TYPES::TEXT, false}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn({"Name", "name", "", "c", PG_TYPES::TEXT, false}),
+      sql::SelectedColumn(
           {"Position", "position", "", "a", PG_TYPES::INT4, true}),
-      sqlb::SelectedColumn({"Title", "title", "", "a", PG_TYPES::TEXT, true}),
-      sqlb::SelectedColumn({"Url", "url", "", "a", PG_TYPES::TEXT, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn({"Title", "title", "", "a", PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"Url", "url", "", "a", PG_TYPES::TEXT, true}),
+      sql::SelectedColumn(
           {"Description", "description", "", "a", PG_TYPES::TEXT, true}),
-      sqlb::SelectedColumn({"Name", "name", "", "a", PG_TYPES::TEXT, true}),
-      sqlb::SelectedColumn({"Size", "size", "", "a", PG_TYPES::INT8, true}),
-      sqlb::SelectedColumn({"Type", "type", "", "a", PG_TYPES::TEXT, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn({"Name", "name", "", "a", PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"Size", "size", "", "a", PG_TYPES::INT8, true}),
+      sql::SelectedColumn({"Type", "type", "", "a", PG_TYPES::TEXT, true}),
+      sql::SelectedColumn(
           {"Version", "version", "", "a", PG_TYPES::TEXT, false}),
-      // sqlb::SelectedColumn({"Created By", "create_user_id", "", "a",
+      // sql::SelectedColumn({"Created By", "create_user_id", "", "a",
       // PG_TYPES::INT8, true, 1, 0, false}),
-      // sqlb::SelectedColumn({"u1_username", "username", "", "u1",
-      // PG_TYPES::TEXT, false, 0, 0, false}), sqlb::SelectedColumn({"Updated
+      // sql::SelectedColumn({"u1_username", "username", "", "u1",
+      // PG_TYPES::TEXT, false, 0, 0, false}), sql::SelectedColumn({"Updated
       // By", "update_user_id", "", "a", PG_TYPES::INT8, true, 1, 0, false}),
-      // sqlb::SelectedColumn({"u2_username", "username", "", "u2",
+      // sql::SelectedColumn({"u2_username", "username", "", "u2",
       // PG_TYPES::TEXT, false, 0, 0, false}),
-      sqlb::SelectedColumn({"Create Time", "inserted_at", "", "a",
+      sql::SelectedColumn({"Create Time", "inserted_at", "", "a",
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-      sqlb::SelectedColumn({"Update Time", "updated_at", "", "a",
+      sql::SelectedColumn({"Update Time", "updated_at", "", "a",
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
   });
 
-  auto c = sqlb::ObjectIdentifier("setting", "image_collection", "c");
-  // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
-  // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
+  auto c = sql::ObjectIdentifier("setting", "image_collection", "c");
+  // auto u1 = sql::ObjectIdentifier("entity", "entity_user", "u1");
+  // auto u2 = sql::ObjectIdentifier("entity", "entity_user", "u2");
 
   query.setJoins({
-      sqlb::Join("left", c, "c.id = a.image_collection_id"),
-      // sqlb::Join("left", u1, "gt.create_user_id = u1.id"),
-      // sqlb::Join("left", u2, "a.update_user_id = u2.id"),
+      sql::Join("left", c, "c.id = a.image_collection_id"),
+      // sql::Join("left", u1, "gt.create_user_id = u1.id"),
+      // sql::Join("left", u2, "a.update_user_id = u2.id"),
   });
 }
 
@@ -74,7 +74,7 @@ nlohmann::json Image::handleEvent(nlohmann::json event, int next,
 
 // this is normal images..
 nlohmann::json Image::ins(nlohmann::json event, nlohmann::json args) {
-  auto metal_purity_table = sqlb::ObjectIdentifier("setting", "image", "c");
+  auto metal_purity_table = sql::ObjectIdentifier("setting", "image", "c");
   std::string t = "setting.image";
   std::string c =
       "image_collection_id, name, size, type, title, description, url, "
@@ -121,7 +121,7 @@ nlohmann::json Image::ins(nlohmann::json event, nlohmann::json args) {
 }
 // this is normal images..
 nlohmann::json Image::upd(nlohmann::json event, nlohmann::json args) {
-  auto metal_purity_table = sqlb::ObjectIdentifier("setting", "image", "c");
+  auto metal_purity_table = sql::ObjectIdentifier("setting", "image", "c");
   std::string t = "setting.image";
   std::string c =
       "image_collection_id, name, size, type, title, description, url, "

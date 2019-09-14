@@ -2,7 +2,7 @@
 
 #include <utility>
 
-madmin::Recommandation::Recommandation(std::shared_ptr<MAdminContext> context_)
+madmin::Recommandation::Recommandation(std::shared_ptr<websocket::MAdminContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }

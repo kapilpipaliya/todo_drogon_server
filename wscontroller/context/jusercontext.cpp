@@ -2,9 +2,9 @@
 #include <boost/filesystem.hpp>
 #include "../../core/sql/query.h"
 #include "../../core/strfns.h"
-#include "./core/service/dba.h"
+#include "./core/sql/dba.h"
 #include "spdlogfix.h"
-
+namespace websocket {
 JUserContext::JUserContext(const drogon::HttpRequestPtr &req,
                            const drogon::WebSocketConnectionPtr &wsConnPtr_)
     : wsConnPtr(wsConnPtr_) {
@@ -52,3 +52,4 @@ void JUserContext::setUser() {
     SPDLOG_TRACE(e.what());
   }
 }
+}  // namespace websocket

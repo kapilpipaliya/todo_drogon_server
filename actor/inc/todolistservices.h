@@ -11,7 +11,7 @@
 #include "core/service/todo/class/user.h"
 
 template <typename T>
-nlohmann::json handleService(std::shared_ptr<todo::TodoContext> contx,
+nlohmann::json handleService(std::shared_ptr<websocket::todo::TodoContext> contx,
                              nlohmann::json in) {
   try {
     T p{contx};

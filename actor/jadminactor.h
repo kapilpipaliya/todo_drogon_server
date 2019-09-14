@@ -1,20 +1,25 @@
 #ifndef _JADMINACTOR_H
 #define _JADMINACTOR_H
 
-
 #include "caf/all.hpp"
 
 #include "useractorbase.h"
+namespace superactor {
 
 class JAdminActor : public caf::event_based_actor, public UserActorBase {
-  public:
-    JAdminActor(caf::actor_config & cfg);
+ public:
+  JAdminActor(caf::actor_config& cfg);
 
-  protected:
-    caf::behavior make_behavior() override;
+ protected:
+  caf::behavior make_behavior() override;
 
-  private:
-    nlohmann::json handleTextMessage(const drogon::WebSocketConnectionPtr & wsConnPtr, const nlohmann::json & in) override;
-    nlohmann::json handleBinaryMessage(const drogon::WebSocketConnectionPtr & wsConnPtr, std::string & message) override;
+ private:
+  nlohmann::json handleTextMessage(
+      const drogon::WebSocketConnectionPtr& wsConnPtr,
+      const nlohmann::json& in) override;
+  nlohmann::json handleBinaryMessage(
+      const drogon::WebSocketConnectionPtr& wsConnPtr,
+      std::string& message) override;
 };
+}  // namespace superactor
 #endif

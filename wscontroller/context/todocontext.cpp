@@ -1,6 +1,7 @@
 #include "todocontext.h"
-#include "./core/service/dba.h"
+#include "./core/sql/dba.h"
 #include "spdlogfix.h"
+namespace websocket {
 namespace todo {
 
 TodoContext::TodoContext(const drogon::HttpRequestPtr &req,
@@ -52,3 +53,4 @@ void TodoContext::setUser() {
   }
 }
 }  // namespace todo
+}  // namespace websocket

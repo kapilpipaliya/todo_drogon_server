@@ -10,7 +10,7 @@
 namespace todo {
 class UI {
  public:
-  UI(std::shared_ptr<todo::TodoContext>);
+  UI(std::shared_ptr<websocket::todo::TodoContext>);
   void setupTable();
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
@@ -132,7 +132,7 @@ class UI {
   // static void get_logo_url();
   // static void is_grid_view($type);
  private:
-  std::shared_ptr<TodoContext> context;
-  sqlb::Query query;
+  std::shared_ptr<websocket::todo::TodoContext> context;
+  sql::Query query;
 };
-}
+}  // namespace todo

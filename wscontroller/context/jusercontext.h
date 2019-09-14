@@ -1,7 +1,7 @@
 #pragma once
 
 #include <drogon/WebSocketController.h>
-
+namespace websocket {
 class JUserContext {
   struct ContextUser {
     long id{0};
@@ -26,3 +26,4 @@ class JUserContext {
   ContextUser user;
   const drogon::WebSocketConnectionPtr &wsConnPtr;
 };
+}  // namespace websocket

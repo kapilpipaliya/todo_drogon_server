@@ -24,7 +24,7 @@ bool compare_ci(const T& a, const T& b) {
                     });
 }
 
-namespace sqlb {
+namespace sql {
 
 using StringVector = std::vector<std::string>;
 

@@ -8,7 +8,7 @@
 namespace madmin {
 class Catalog {
  public:
-  Catalog(std::shared_ptr<MAdminContext>);
+  Catalog(std::shared_ptr<websocket::MAdminContext>);
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
   virtual ~Catalog() = default;
@@ -576,7 +576,7 @@ class Catalog {
   // protected static function getSongTags($type, int id);
   // static void can_remove($libitem, $user = null);
   // static void process_action($action, $catalogs, $options = null);
-  std::shared_ptr<MAdminContext>& getContext() { return context; }
+  std::shared_ptr<websocket::MAdminContext>& getContext() { return context; }
 
  private:
   int $id{};
@@ -596,8 +596,8 @@ class Catalog {
   std::string f_add;
   std::string f_clean;
 
-  std::shared_ptr<MAdminContext> context;
-  sqlb::Query query;
+  std::shared_ptr<websocket::MAdminContext> context;
+  sql::Query query;
 };
 }  // namespace madmin
 #endif  // CATALOG_H

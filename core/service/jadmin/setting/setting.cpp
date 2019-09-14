@@ -1,12 +1,12 @@
 #include "setting.h"
 
 #include <utility>
-#include "../../dba.h"
+#include "../../../sql/dba.h"
 
 namespace jadmin {
-Setting::Setting(std::shared_ptr<JAdminContext> context_)
+Setting::Setting(std::shared_ptr<websocket::JAdminContext> context_)
     : context(std::move(context_)) {
-  query = sqlb::Query(sqlb::ObjectIdentifier("setting", "setting", "gs"));
+  query = sql::Query(sql::ObjectIdentifier("setting", "setting", "gs"));
   setupTable();
 }
 
@@ -31,25 +31,25 @@ nlohmann::json Setting::handleEvent(nlohmann::json event, unsigned long next,
 void Setting::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
-      sqlb::SelectedColumn({"Key", "key", "", "gs", PG_TYPES::TEXT, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn({"Key", "key", "", "gs", PG_TYPES::TEXT, true}),
+      sql::SelectedColumn(
           {"Setting Type", "setting_type", "", "gs", PG_TYPES::TEXT, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Integer", "value_int", "", "gs", PG_TYPES::INT8, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Decimal", "value_num", "", "gs", PG_TYPES::DOUBLE, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Text", "value_text", "", "gs", PG_TYPES::TEXT, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Internal", "setting", "", "gs", PG_TYPES::PSJSON, true}),
   });
-  // auto m = sqlb::ObjectIdentifier("material", "metal", "m");
-  // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
-  // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
+  // auto m = sql::ObjectIdentifier("material", "metal", "m");
+  // auto u1 = sql::ObjectIdentifier("entity", "entity_user", "u1");
+  // auto u2 = sql::ObjectIdentifier("entity", "entity_user", "u2");
   query.setJoins({
-      // sqlb::Join("left", m, "a.material_id = m.id"),
-      // sqlb::Join("left", u1, "gt.create_user_id = u1.id"),
-      // sqlb::Join("left", u2, "a.update_user_id = u2.id"),
+      // sql::Join("left", m, "a.material_id = m.id"),
+      // sql::Join("left", u1, "gt.create_user_id = u1.id"),
+      // sql::Join("left", u2, "a.update_user_id = u2.id"),
   });
 }
 

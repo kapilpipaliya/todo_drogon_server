@@ -1,10 +1,10 @@
 #include "./auth.h"
 
 #include <utility>
-#include "../../dba.h"
+#include "../../../sql/dba.h"
 #include "./session.h"
 
-todo::Auth::Auth(std::shared_ptr<TodoContext> context_)
+todo::Auth::Auth(std::shared_ptr<websocket::todo::TodoContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }

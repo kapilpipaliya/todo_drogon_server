@@ -3,9 +3,9 @@
 #include <utility>
 
 namespace jadmin {
-JournalType::JournalType(std::shared_ptr<JAdminContext> context_)
+JournalType::JournalType(std::shared_ptr<websocket::JAdminContext> context_)
     : context(std::move(context_)) {
-  query = sqlb::Query(sqlb::ObjectIdentifier("account", "journal_type", "a"));
+  query = sql::Query(sql::ObjectIdentifier("account", "journal_type", "a"));
   setupTable();
 }
 
@@ -33,31 +33,31 @@ nlohmann::json JournalType::handleEvent(nlohmann::json event,
 void JournalType::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
-      sqlb::SelectedColumn({"Id", "id", "", "a", PG_TYPES::INT8, true}),
-      sqlb::SelectedColumn({"Rank", "rank", "", "a", PG_TYPES::INT4, false}),
-      sqlb::SelectedColumn({"Name", "name", "", "a", PG_TYPES::TEXT, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn({"Id", "id", "", "a", PG_TYPES::INT8, true}),
+      sql::SelectedColumn({"Rank", "rank", "", "a", PG_TYPES::INT4, false}),
+      sql::SelectedColumn({"Name", "name", "", "a", PG_TYPES::TEXT, true}),
+      sql::SelectedColumn(
           {"Description", "description", "", "a", PG_TYPES::TEXT, true}),
-      sqlb::SelectedColumn({"Created By", "create_user_id", "", "a",
-                            PG_TYPES::INT8, true, 1, 0, false}),
-      sqlb::SelectedColumn({"u1_username", "username", "", "u1", PG_TYPES::TEXT,
-                            false, 0, 0, false}),
-      sqlb::SelectedColumn({"Updated By", "update_user_id", "", "a",
-                            PG_TYPES::INT8, true, 1, 0, false}),
-      sqlb::SelectedColumn({"u2_username", "username", "", "u2", PG_TYPES::TEXT,
-                            false, 0, 0, false}),
-      sqlb::SelectedColumn({"Create Time", "inserted_at", "", "a",
-                            PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-      sqlb::SelectedColumn({"Update Time", "updated_at", "", "a",
-                            PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+      sql::SelectedColumn({"Created By", "create_user_id", "", "a",
+                           PG_TYPES::INT8, true, 1, 0, false}),
+      sql::SelectedColumn({"u1_username", "username", "", "u1", PG_TYPES::TEXT,
+                           false, 0, 0, false}),
+      sql::SelectedColumn({"Updated By", "update_user_id", "", "a",
+                           PG_TYPES::INT8, true, 1, 0, false}),
+      sql::SelectedColumn({"u2_username", "username", "", "u2", PG_TYPES::TEXT,
+                           false, 0, 0, false}),
+      sql::SelectedColumn({"Create Time", "inserted_at", "", "a",
+                           PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+      sql::SelectedColumn({"Update Time", "updated_at", "", "a",
+                           PG_TYPES::TIMESTAMP, true, 0, 0, false}),
   });
 
-  auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
-  auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
+  auto u1 = sql::ObjectIdentifier("entity", "entity_user", "u1");
+  auto u2 = sql::ObjectIdentifier("entity", "entity_user", "u2");
 
   query.setJoins({
-      sqlb::Join("left", u1, "a.create_user_id = u1.id"),
-      sqlb::Join("left", u2, "a.update_user_id = u2.id"),
+      sql::Join("left", u1, "a.create_user_id = u1.id"),
+      sql::Join("left", u2, "a.update_user_id = u2.id"),
   });
 }
 nlohmann::json JournalType::ins(nlohmann::json event, nlohmann::json args) {

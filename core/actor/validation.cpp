@@ -3,7 +3,7 @@
 #include <utility>
 
 using check_validation = caf::atom_constant<caf::atom("permis")>;
-
+namespace actor {
 Validation::Validation(caf::actor_config &cfg, nlohmann::json in)
     : caf::event_based_actor(cfg), in(std::move(in)) {
   running_job.assign([=, this](check_validation) { blocking_run(); });
@@ -21,3 +21,4 @@ caf::behavior Validation::make_behavior() {
     become(running_job);
   });
 }
+}  // namespace actor

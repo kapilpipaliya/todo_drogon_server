@@ -12,7 +12,7 @@
 namespace madmin {
 class Session {
  public:
-  Session(std::shared_ptr<MAdminContext>);
+  Session(std::shared_ptr<websocket::MAdminContext>);
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
   void setupTable();
@@ -166,7 +166,7 @@ class Session {
    */
   // static void ungimp_ie();
  private:
-  std::shared_ptr<MAdminContext> context;
-  sqlb::Query query;
+  std::shared_ptr<websocket::MAdminContext> context;
+  sql::Query query;
 };
 }  // namespace madmin

@@ -3,9 +3,9 @@
 #include <utility>
 
 namespace jadmin {
-WaxSetting::WaxSetting(std::shared_ptr<JAdminContext> context_)
+WaxSetting::WaxSetting(std::shared_ptr<websocket::JAdminContext> context_)
     : context(std::move(context_)) {
-  query = sqlb::Query(sqlb::ObjectIdentifier("mfg", "wax_setting", "m"));
+  query = sql::Query(sql::ObjectIdentifier("mfg", "wax_setting", "m"));
   setupTable();
 }
 
@@ -32,51 +32,51 @@ nlohmann::json WaxSetting::handleEvent(nlohmann::json event, unsigned long next,
 void WaxSetting::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
-      sqlb::SelectedColumn({"Id", "id", "", "m", PG_TYPES::INT8, false}),
-      sqlb::SelectedColumn({"Rank", "rank", "", "m", PG_TYPES::INT4, true}),
-      sqlb::SelectedColumn({"No", "no", "", "m", PG_TYPES::TEXT, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn({"Id", "id", "", "m", PG_TYPES::INT8, false}),
+      sql::SelectedColumn({"Rank", "rank", "", "m", PG_TYPES::INT4, true}),
+      sql::SelectedColumn({"No", "no", "", "m", PG_TYPES::TEXT, true}),
+      sql::SelectedColumn(
           {"Sequence", "sequence_id", "", "m", PG_TYPES::INT8, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Date", "date", "", "m", PG_TYPES::TIMESTAMP, true}),
-      sqlb::SelectedColumn({"Department", "department_id", "", "m",
+      sql::SelectedColumn({"Department", "department_id", "", "m",
                             PG_TYPES::INT8, false, 1, 1}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Name", "name", "", "dep", PG_TYPES::TEXT, false, 0, 0, false}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Employee", "employee_id", "", "m", PG_TYPES::INT8, false, 1, 1}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"e_name", "slug", "", "e", PG_TYPES::TEXT, false, 0, 0, false}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Description", "description", "", "m", PG_TYPES::TEXT, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Status", "status_id", "", "m", PG_TYPES::TEXT, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Branch", "branch_id", "", "m", PG_TYPES::INT8, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Created By", "create_user_id", "", "m", PG_TYPES::INT8, true, 1}),
-      sqlb::SelectedColumn({"u1_username", "username", "", "u1", PG_TYPES::TEXT,
+      sql::SelectedColumn({"u1_username", "username", "", "u1", PG_TYPES::TEXT,
                             false, 0, 0, false}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Updated By", "update_user_id", "", "m", PG_TYPES::INT8, true, 1}),
-      sqlb::SelectedColumn({"u2_username", "username", "", "u2", PG_TYPES::TEXT,
+      sql::SelectedColumn({"u2_username", "username", "", "u2", PG_TYPES::TEXT,
                             false, 0, 0, false}),
-      sqlb::SelectedColumn({"Create Time", "inserted_at", "", "m",
+      sql::SelectedColumn({"Create Time", "inserted_at", "", "m",
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-      sqlb::SelectedColumn({"Update Time", "updated_at", "", "m",
+      sql::SelectedColumn({"Update Time", "updated_at", "", "m",
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
   });
 
-  auto dep = sqlb::ObjectIdentifier("mfg", "department", "dep");
-  auto e = sqlb::ObjectIdentifier("entity", "entity", "e");
-  auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
-  auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
+  auto dep = sql::ObjectIdentifier("mfg", "department", "dep");
+  auto e = sql::ObjectIdentifier("entity", "entity", "e");
+  auto u1 = sql::ObjectIdentifier("entity", "entity_user", "u1");
+  auto u2 = sql::ObjectIdentifier("entity", "entity_user", "u2");
 
   query.setJoins({
-      sqlb::Join("left", dep, "dep.id = m.department_id"),
-      sqlb::Join("left", e, "e.id = m.employee_id"),
-      sqlb::Join("left", u1, "m.create_user_id = u1.id"),
-      sqlb::Join("left", u2, "m.update_user_id = u2.id"),
+      sql::Join("left", dep, "dep.id = m.department_id"),
+      sql::Join("left", e, "e.id = m.employee_id"),
+      sql::Join("left", u1, "m.create_user_id = u1.id"),
+      sql::Join("left", u2, "m.update_user_id = u2.id"),
   });
 }
 

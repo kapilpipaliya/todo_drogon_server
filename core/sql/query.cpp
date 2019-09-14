@@ -1,11 +1,11 @@
 #include "query.h"
 
 #include <algorithm>
-#include "../service/dba.h"
+#include "../sql/dba.h"
 #include "condformat.h"
 #include "spdlogfix.h"
 
-namespace sqlb {
+namespace sql {
 
 void Query::clear() {
   m_table.clear();
@@ -28,7 +28,7 @@ std::string Query::buildWherePart() const {
 
       std::string column =
           m_selected_columns.at(i.first).prefix + "." +
-          sqlb::escapeIdentifier(m_selected_columns.at(i.first).selector);
+          sql::escapeIdentifier(m_selected_columns.at(i.first).selector);
 
       // if findbyname then use it..
       //            if(it != m_selected_columns.cend() && it->selector !=
@@ -75,7 +75,7 @@ std::string Query::buildGroupByPart() const {
   std::string group_by;
   for (const auto& group_by_column : m_group) {
     group_by += group_by_column.prefix + "." +
-                sqlb::escapeIdentifier(group_by_column.column) + " " + ",";
+                sql::escapeIdentifier(group_by_column.column) + " " + ",";
   }
   if (!group_by.empty()) {
     group_by.pop_back();
@@ -90,9 +90,9 @@ std::string Query::buildOrderByByPart() const  // Sorting
   for (const auto& sorted_column : m_sort) {
     if (sorted_column.column < m_selected_columns.size()) {
       auto c2 = m_selected_columns.at(sorted_column.column);
-      order_by +=
-          c2.prefix + "." + sqlb::escapeIdentifier(c2.selector) + " " +
-          (sorted_column.direction == sqlb::Ascending ? "ASC" : "DESC") + ",";
+      order_by += c2.prefix + "." + sql::escapeIdentifier(c2.selector) + " " +
+                  (sorted_column.direction == sql::Ascending ? "ASC" : "DESC") +
+                  ",";
     }
   }
   if (!order_by.empty()) {
@@ -132,9 +132,9 @@ std::string Query::buildSelectorPart(
       if(m_rowid_columns.size() == 1)
       {
           selector = m_table.as() + "." +
-  sqlb::escapeIdentifier(m_rowid_columns.at(0)) + ","; } else { selector +=
+  sql::escapeIdentifier(m_rowid_columns.at(0)) + ","; } else { selector +=
   "sqlb_make_single_value("; for(size_t i=0;i<m_rowid_columns.size();i++)
-              selector += sqlb::escapeIdentifier(m_rowid_columns.at(i)) + ",";
+              selector += sql::escapeIdentifier(m_rowid_columns.at(i)) + ",";
           selector.pop_back();    // Remove the last comma
           selector += "),";
       }
@@ -149,9 +149,9 @@ std::string Query::buildSelectorPart(
         if (it.original_column != it.selector)
           // note not escapeIdentifier selector here!
           selector += it.selector + " AS " +
-                      sqlb::escapeIdentifier(it.original_column) + ",";
+                      sql::escapeIdentifier(it.original_column) + ",";
         else
-          selector += sqlb::escapeIdentifier(it.original_column) + ",";
+          selector += sql::escapeIdentifier(it.original_column) + ",";
       } else {
         selector += it.calculated + ",";
       }
@@ -541,9 +541,9 @@ void Query::updateSortBase(nlohmann::json filters) {
       continue;
     }
     if (filters[i].get<int>() == 0) {
-      m_sort.emplace_back(i, sqlb::Ascending);
+      m_sort.emplace_back(i, sql::Ascending);
     } else {
-      m_sort.emplace_back(i, sqlb::Descending);
+      m_sort.emplace_back(i, sql::Descending);
     }
   }
 }
@@ -707,7 +707,7 @@ nlohmann::json Query::count(nlohmann::json event, nlohmann::json args) {
     return ret;
   }
 }
-}  // namespace sqlb
+}  // namespace sql
    /*
     #include "../strfns.h"
    // Convert a number to string using the Unicode superscript characters

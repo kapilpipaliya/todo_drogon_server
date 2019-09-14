@@ -8,14 +8,14 @@
 namespace madmin {
 class SongPreview {
  public:
-  SongPreview(std::shared_ptr<MAdminContext>);
+  SongPreview(std::shared_ptr<websocket::MAdminContext>);
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
   void setupTable();
 
  private:
-  std::shared_ptr<MAdminContext> context;
-  sqlb::Query query;
+  std::shared_ptr<websocket::MAdminContext> context;
+  sql::Query query;
 };
 }  // namespace madmin
 #endif  // SONGPREVIEW_H

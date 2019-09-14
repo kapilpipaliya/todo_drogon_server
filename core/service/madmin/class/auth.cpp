@@ -1,10 +1,10 @@
 #include "auth.h"
 
 #include <utility>
-#include "../../dba.h"
+#include "../../../sql/dba.h"
 #include "session.h"
 
-madmin::Auth::Auth(std::shared_ptr<MAdminContext> context_) : context(std::move(context_)) {
+madmin::Auth::Auth(std::shared_ptr<websocket::MAdminContext> context_) : context(std::move(context_)) {
   setupTable();
 }
 

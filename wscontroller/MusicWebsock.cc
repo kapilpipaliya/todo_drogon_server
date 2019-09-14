@@ -10,34 +10,39 @@
 #include "../actor/mainactortype.h"
 
 #include "context/madmincontext.h"
-
+namespace websocket {
 void MusicWebsock::handleNewMessage(
     const drogon::WebSocketConnectionPtr& wsConnPtr, std::string&& message,
     const drogon::WebSocketMessageType& type) {
   // std::chrono::seconds(10)
-  globalCAF.communicateWithActors()
-      ->request(globalCAF.mainActor(), caf::infinite, run_atom::value,
-                MainActorType::MAdmin, wsConnPtr, std::move(message), type)
+  superactor::globalCAF.communicateWithActors()
+      ->request(superactor::globalCAF.mainActor(), caf::infinite,
+                run_atom::value, MainActorType::MAdmin, wsConnPtr,
+                std::move(message), type)
       .receive(
           [&]() {
             // SPDLOG_TRACE("Output: {}", message.c_str());
           },
           [&](caf::error& err) {
-            aout(globalCAF.communicateWithActors())
+            aout(superactor::globalCAF.communicateWithActors())
                 << " -> "
-                << globalCAF.communicateWithActors()->system().render(err)
+                << superactor::globalCAF.communicateWithActors()
+                       ->system()
+                       .render(err)
                 << err.code() << std::endl;
           });
 }
 void MusicWebsock::handleNewConnection(
     const drogon::HttpRequestPtr& req,
     const drogon::WebSocketConnectionPtr& wsConnPtr) {
-  std::shared_ptr<MAdminContext> context =
+  std::shared_ptr<websocket::MAdminContext> context =
       std::make_shared<MAdminContext>(req, wsConnPtr);
   wsConnPtr->setContext(context);
 }
 void MusicWebsock::handleConnectionClosed(
     const drogon::WebSocketConnectionPtr& wsConnPtr) {
-  globalCAF.communicateWithActors()->request(
-      globalCAF.mainActor(), caf::infinite, exit_atom::value, wsConnPtr);
+  superactor::globalCAF.communicateWithActors()->request(
+      superactor::globalCAF.mainActor(), caf::infinite, exit_atom::value,
+      wsConnPtr);
 }
+}  // namespace websocket

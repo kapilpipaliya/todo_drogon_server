@@ -1,13 +1,13 @@
 #include "tag.h"
 
 #include <utility>
+#include "../../../sql/dba.h"
 #include "../../../strfns.h"
-#include "../../dba.h"
 
 namespace jadmin {
-Tag::Tag(std::shared_ptr<JAdminContext> context_)
+Tag::Tag(std::shared_ptr<websocket::JAdminContext> context_)
     : context(std::move(context_)) {
-  query = sqlb::Query(sqlb::ObjectIdentifier("post", "tag", "t"));
+  query = sql::Query(sql::ObjectIdentifier("post", "tag", "t"));
   setupTable();
 }
 
@@ -34,36 +34,36 @@ nlohmann::json Tag::handleEvent(nlohmann::json event, unsigned long next,
 void Tag::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
-      sqlb::SelectedColumn({"Id", "id", "", "t", PG_TYPES::INT8, false}),
-      sqlb::SelectedColumn({"Slug", "slug", "", "t", PG_TYPES::TEXT, true}),
-      sqlb::SelectedColumn({"Name", "name", "", "t", PG_TYPES::TEXT, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn({"Id", "id", "", "t", PG_TYPES::INT8, false}),
+      sql::SelectedColumn({"Slug", "slug", "", "t", PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"Name", "name", "", "t", PG_TYPES::TEXT, true}),
+      sql::SelectedColumn(
           {"Description", "description", "", "t", PG_TYPES::TEXT, true}),
-      // sqlb::SelectedColumn({"Created By", "create_user_id", "", "t",
+      // sql::SelectedColumn({"Created By", "create_user_id", "", "t",
       // PG_TYPES::INT8, true, 1, 0, false}),
-      // sqlb::SelectedColumn({"u1_username", "username", "", "u1",
-      // PG_TYPES::TEXT, false, 0, 0, false}), sqlb::SelectedColumn({"Updated
+      // sql::SelectedColumn({"u1_username", "username", "", "u1",
+      // PG_TYPES::TEXT, false, 0, 0, false}), sql::SelectedColumn({"Updated
       // By", "update_user_id", "", "t", PG_TYPES::INT8, true, 1, 0, false}),
-      // sqlb::SelectedColumn({"u2_username", "username", "", "u2",
-      // PG_TYPES::TEXT, false, 0, 0, false}), sqlb::SelectedColumn({"Create
+      // sql::SelectedColumn({"u2_username", "username", "", "u2",
+      // PG_TYPES::TEXT, false, 0, 0, false}), sql::SelectedColumn({"Create
       // Time", "inserted_at", "", "t", PG_TYPES::TIMESTAMP, true, 0, 0,
-      // false}), sqlb::SelectedColumn({"Update Time", "updated_at", "", "t",
+      // false}), sql::SelectedColumn({"Update Time", "updated_at", "", "t",
       // PG_TYPES::TIMESTAMP, true, 0, 0, false}),
   });
 
-  auto m = sqlb::ObjectIdentifier("material", "metal", "m");
-  // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
-  // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
+  auto m = sql::ObjectIdentifier("material", "metal", "m");
+  // auto u1 = sql::ObjectIdentifier("entity", "entity_user", "u1");
+  // auto u2 = sql::ObjectIdentifier("entity", "entity_user", "u2");
 
   query.setJoins({
-      // sqlb::Join("left", m, "a.material_id = m.id"),
-      // sqlb::Join("left", u1, "gt.create_user_id = u1.id"),
-      // sqlb::Join("left", u2, "a.update_user_id = u2.id"),
+      // sql::Join("left", m, "a.material_id = m.id"),
+      // sql::Join("left", u1, "gt.create_user_id = u1.id"),
+      // sql::Join("left", u2, "a.update_user_id = u2.id"),
   });
 }
 
 nlohmann::json Tag::ins(nlohmann::json event, nlohmann::json args) {
-  auto product_table = sqlb::ObjectIdentifier("post", "tag", "t");
+  auto product_table = sql::ObjectIdentifier("post", "tag", "t");
 
   std::string strSql =
       "INSERT INTO %1.%2 (slug, name, description) values($1, $2, $3)";
@@ -88,7 +88,7 @@ nlohmann::json Tag::ins(nlohmann::json event, nlohmann::json args) {
   }
 }
 nlohmann::json Tag::upd(nlohmann::json event, nlohmann::json args) {
-  auto product_table = sqlb::ObjectIdentifier("post", "tag", "t");
+  auto product_table = sql::ObjectIdentifier("post", "tag", "t");
 
   if (args[0]["id"].get<long>()) {
     std::string strSql =

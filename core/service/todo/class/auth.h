@@ -6,7 +6,7 @@
 namespace todo {
 class Auth {
  public:
-  Auth(std::shared_ptr<TodoContext>);
+  Auth(std::shared_ptr<websocket::todo::TodoContext>);
   void setupTable();
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
@@ -107,7 +107,7 @@ class Auth {
   nlohmann::json saveFileMeta(const nlohmann::json& event, nlohmann::json args);
 
  private:
-  std::shared_ptr<TodoContext> context;
-  sqlb::Query query;
+  std::shared_ptr<websocket::todo::TodoContext> context;
+  sql::Query query;
 };
-}  // namespace madmin
+}  // namespace todo

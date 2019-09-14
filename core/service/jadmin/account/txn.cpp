@@ -2,10 +2,11 @@
 
 #include <utility>
 
-#include "../../dba.h"
+#include "../../../sql/dba.h"
 namespace jadmin {
-Txn::Txn(std::shared_ptr<JAdminContext> context_) : context(std::move(context_)) {
-  query = sqlb::Query(sqlb::ObjectIdentifier("account", "txn", "a"));
+Txn::Txn(std::shared_ptr<websocket::JAdminContext> context_)
+    : context(std::move(context_)) {
+  query = sql::Query(sql::ObjectIdentifier("account", "txn", "a"));
   setupTable();
 }
 
@@ -32,108 +33,107 @@ nlohmann::json Txn::handleEvent(nlohmann::json event, unsigned long next,
 void Txn::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
-      sqlb::SelectedColumn({"id", "id", "", "a", PG_TYPES::INT8}),
-      sqlb::SelectedColumn({"Journal Type", "journal_type_id", "", "a",
-                            PG_TYPES::INT8, true, 1, 1}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn({"id", "id", "", "a", PG_TYPES::INT8}),
+      sql::SelectedColumn({"Journal Type", "journal_type_id", "", "a",
+                           PG_TYPES::INT8, true, 1, 1}),
+      sql::SelectedColumn(
           {"jt_name", "name", "", "jt", PG_TYPES::TEXT, false, 0, 0, false}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Party", "party_id", "", "a", PG_TYPES::INT8, true, 1, 1}),
-      sqlb::SelectedColumn({"party_slug", "slug", "", "party", PG_TYPES::TEXT,
-                            false, 0, 0, false}),
-      sqlb::SelectedColumn({"no", "no", "", "a", PG_TYPES::TEXT}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn({"party_slug", "slug", "", "party", PG_TYPES::TEXT,
+                           false, 0, 0, false}),
+      sql::SelectedColumn({"no", "no", "", "a", PG_TYPES::TEXT}),
+      sql::SelectedColumn(
           {"sequence_id", "sequence_id", "", "a", PG_TYPES::INT8}),
-      sqlb::SelectedColumn({"Date", "date", "", "a", PG_TYPES::TIMESTAMP}),
-      sqlb::SelectedColumn({"entity_id", "entity_id", "", "a", PG_TYPES::INT8}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn({"Date", "date", "", "a", PG_TYPES::TIMESTAMP}),
+      sql::SelectedColumn({"entity_id", "entity_id", "", "a", PG_TYPES::INT8}),
+      sql::SelectedColumn(
           {"account_id", "account_id", "", "a", PG_TYPES::INT8}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"tax_included", "tax_included", "", "a", PG_TYPES::BOOL}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"due_date", "due_date", "", "a", PG_TYPES::TIMESTAMP}),
-      sqlb::SelectedColumn({"till", "till", "", "a", PG_TYPES::TEXT}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn({"till", "till", "", "a", PG_TYPES::TEXT}),
+      sql::SelectedColumn(
           {"order_number", "order_number", "", "a", PG_TYPES::TEXT}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"quo_number", "quo_number", "", "a", PG_TYPES::TEXT}),
-      sqlb::SelectedColumn(
-          {"Currency", "currency_id", "", "a", PG_TYPES::INT8}),
-      sqlb::SelectedColumn({"invoice", "invoice", "", "a", PG_TYPES::BOOL}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn({"Currency", "currency_id", "", "a", PG_TYPES::INT8}),
+      sql::SelectedColumn({"invoice", "invoice", "", "a", PG_TYPES::BOOL}),
+      sql::SelectedColumn(
           {"amount_bc", "amount_bc", "", "a", PG_TYPES::DOUBLE}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"amount_tc", "amount_tc", "", "a", PG_TYPES::DOUBLE}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"net_amount_bc", "net_amount_bc", "", "a", PG_TYPES::DOUBLE}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"net_amount_tc", "net_amount_tc", "", "a", PG_TYPES::DOUBLE}),
-      sqlb::SelectedColumn({"notes", "notes", "", "a", PG_TYPES::TEXT}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn({"notes", "notes", "", "a", PG_TYPES::TEXT}),
+      sql::SelectedColumn(
           {"internal_notes", "internal_notes", "", "a", PG_TYPES::TEXT}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"description", "description", "", "a", PG_TYPES::TEXT}),
-      sqlb::SelectedColumn({"status_id", "status_id", "", "a", PG_TYPES::TEXT}),
-      sqlb::SelectedColumn({"branch_id", "branch_id", "", "a", PG_TYPES::INT8}),
-      sqlb::SelectedColumn({"ship_via", "ship_via", "", "a", PG_TYPES::TEXT}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn({"status_id", "status_id", "", "a", PG_TYPES::TEXT}),
+      sql::SelectedColumn({"branch_id", "branch_id", "", "a", PG_TYPES::INT8}),
+      sql::SelectedColumn({"ship_via", "ship_via", "", "a", PG_TYPES::TEXT}),
+      sql::SelectedColumn(
           {"language_code", "language_code", "", "a", PG_TYPES::TEXT}),
-      sqlb::SelectedColumn({"po_number", "po_number", "", "a", PG_TYPES::TEXT}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn({"po_number", "po_number", "", "a", PG_TYPES::TEXT}),
+      sql::SelectedColumn(
           {"shipping_point", "shipping_point", "", "a", PG_TYPES::TEXT}),
-      sqlb::SelectedColumn({"on_hold", "on_hold", "", "a", PG_TYPES::BOOL}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn({"on_hold", "on_hold", "", "a", PG_TYPES::BOOL}),
+      sql::SelectedColumn(
           {"force_closed", "force_closed", "", "a", PG_TYPES::BOOL}),
-      sqlb::SelectedColumn({"reverse", "reverse", "", "a", PG_TYPES::BOOL}),
-      sqlb::SelectedColumn({"terms", "terms", "", "a", PG_TYPES::INT4}),
-      sqlb::SelectedColumn({"is_return", "is_return", "", "a", PG_TYPES::BOOL}),
-      // sqlb::SelectedColumn({"created_date", "created_date", "", "a",
+      sql::SelectedColumn({"reverse", "reverse", "", "a", PG_TYPES::BOOL}),
+      sql::SelectedColumn({"terms", "terms", "", "a", PG_TYPES::INT4}),
+      sql::SelectedColumn({"is_return", "is_return", "", "a", PG_TYPES::BOOL}),
+      // sql::SelectedColumn({"created_date", "created_date", "", "a",
       // PG_TYPES::date}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"is_approved", "is_approved", "", "a", PG_TYPES::BOOL}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"approved_by_id", "approved_by_id", "", "a", PG_TYPES::INT8}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"approved_at", "approved_at", "", "a", PG_TYPES::TIMESTAMP}),
-      sqlb::SelectedColumn({"order_item", "order_item",
-                            "json_agg( distinct jsonb_build_array(o_i.id, "
-                            "o_i.post_id, o_i.pcs, o_i.purity_id, o_i.tone_id, "
-                            "o_i.clarity_id, o_i.price, o_i.instruction))",
-                            "o_i", PG_TYPES::PSJSON, false}),
+      sql::SelectedColumn({"order_item", "order_item",
+                           "json_agg( distinct jsonb_build_array(o_i.id, "
+                           "o_i.post_id, o_i.pcs, o_i.purity_id, o_i.tone_id, "
+                           "o_i.clarity_id, o_i.price, o_i.instruction))",
+                           "o_i", PG_TYPES::PSJSON, false}),
 
-      sqlb::SelectedColumn({"Created By", "create_user_id", "", "a",
-                            PG_TYPES::INT8, true, 1, 0, false}),
-      sqlb::SelectedColumn({"u1_username", "username", "", "u1", PG_TYPES::TEXT,
-                            false, 0, 0, false}),
-      sqlb::SelectedColumn({"Updated By", "update_user_id", "", "a",
-                            PG_TYPES::INT8, true, 1, 0, false}),
-      sqlb::SelectedColumn({"u2_username", "username", "", "u2", PG_TYPES::TEXT,
-                            false, 0, 0, false}),
-      sqlb::SelectedColumn({"Create Time", "inserted_at", "", "a",
-                            PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-      sqlb::SelectedColumn({"Update Time", "updated_at", "", "a",
-                            PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+      sql::SelectedColumn({"Created By", "create_user_id", "", "a",
+                           PG_TYPES::INT8, true, 1, 0, false}),
+      sql::SelectedColumn({"u1_username", "username", "", "u1", PG_TYPES::TEXT,
+                           false, 0, 0, false}),
+      sql::SelectedColumn({"Updated By", "update_user_id", "", "a",
+                           PG_TYPES::INT8, true, 1, 0, false}),
+      sql::SelectedColumn({"u2_username", "username", "", "u2", PG_TYPES::TEXT,
+                           false, 0, 0, false}),
+      sql::SelectedColumn({"Create Time", "inserted_at", "", "a",
+                           PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+      sql::SelectedColumn({"Update Time", "updated_at", "", "a",
+                           PG_TYPES::TIMESTAMP, true, 0, 0, false}),
   });
 
-  auto jt = sqlb::ObjectIdentifier("account", "journal_type", "jt");
-  auto party = sqlb::ObjectIdentifier("entity", "entity", "party");
-  auto order_item = sqlb::ObjectIdentifier("order1", "order_item", "o_i");
-  auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
-  auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
+  auto jt = sql::ObjectIdentifier("account", "journal_type", "jt");
+  auto party = sql::ObjectIdentifier("entity", "entity", "party");
+  auto order_item = sql::ObjectIdentifier("order1", "order_item", "o_i");
+  auto u1 = sql::ObjectIdentifier("entity", "entity_user", "u1");
+  auto u2 = sql::ObjectIdentifier("entity", "entity_user", "u2");
 
   query.setJoins({
-      sqlb::Join("left", jt, "jt.id = a.journal_type_id"),
-      sqlb::Join("left", party, "party.id = a.party_id"),
-      sqlb::Join("left", order_item, "o_i.txn_id = a.id"),
-      sqlb::Join("left", u1, "a.create_user_id = u1.id"),
-      sqlb::Join("left", u2, "a.update_user_id = u2.id"),
+      sql::Join("left", jt, "jt.id = a.journal_type_id"),
+      sql::Join("left", party, "party.id = a.party_id"),
+      sql::Join("left", order_item, "o_i.txn_id = a.id"),
+      sql::Join("left", u1, "a.create_user_id = u1.id"),
+      sql::Join("left", u2, "a.update_user_id = u2.id"),
   });
   query.setGroupBy({
-      sqlb::GroupByColumn("a", "id"),
-      sqlb::GroupByColumn("jt", "id"),
-      sqlb::GroupByColumn("party", "id"),
-      sqlb::GroupByColumn("u1", "id"),
-      sqlb::GroupByColumn("u2", "id"),
+      sql::GroupByColumn("a", "id"),
+      sql::GroupByColumn("jt", "id"),
+      sql::GroupByColumn("party", "id"),
+      sql::GroupByColumn("u1", "id"),
+      sql::GroupByColumn("u2", "id"),
   });
 }
 

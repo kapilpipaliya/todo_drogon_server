@@ -51,7 +51,7 @@ inline std::string dele_(const std::string& t, const std::string& w) {
 /*
  * This file's classes should not talk to database directly
  * */
-namespace sqlb {
+namespace sql {
 
 enum SortDirection { Ascending, Descending };
 
@@ -90,8 +90,7 @@ struct SelectedColumn {
   bool isEditable = true;
 };
 struct Join {
-  Join(std::string join_type, sqlb::ObjectIdentifier table,
-       std::string condition)
+  Join(std::string join_type, ObjectIdentifier table, std::string condition)
       : m_table(std::move(table)),
         join_type(std::move(join_type)),
         condition(std::move(condition)) {}
@@ -100,7 +99,7 @@ struct Join {
         join_type(std::move(join_type)),
         condition(std::move(condition)) {}
 
-  sqlb::ObjectIdentifier m_table;
+  ObjectIdentifier m_table;
   std::string lateral;
   std::string join_type;
   std::string condition;
@@ -118,7 +117,7 @@ struct Pagination {
 class Query {
  public:
   Query() = default;
-  explicit Query(sqlb::ObjectIdentifier table) : m_table(std::move(table)) {}
+  explicit Query(ObjectIdentifier table) : m_table(std::move(table)) {}
 
   void clear();
   std::string buildQuery(bool withRowid) const;
@@ -134,8 +133,8 @@ class Query {
   // m_column_names = column_names; } std::vector<std::string> columnNames()
   // const { return m_column_names; }
 
-  void setTable(const sqlb::ObjectIdentifier& table) { m_table = table; }
-  sqlb::ObjectIdentifier table() const { return m_table; }
+  void setTable(const ObjectIdentifier& table) { m_table = table; }
+  ObjectIdentifier table() const { return m_table; }
 
   // void setRowIdColumns(const std::vector<std::string>& rowids) {
   // m_rowid_columns = rowids; } std::vector<std::string> rowIdColumns() const {
@@ -176,7 +175,7 @@ class Query {
   size_t filterCount() const;
   bool select();
   std::string getHeaderName(unsigned long column) const;
-  void sort(const std::vector<sqlb::SortedColumn>& columns);
+  void sort(const std::vector<SortedColumn>& columns);
 
   nlohmann::json getJsonHeaderData();
   nlohmann::json getJsonData();
@@ -243,7 +242,7 @@ class Query {
 
  private:
   // std::vector<std::string> m_column_names;
-  sqlb::ObjectIdentifier m_table;
+  ObjectIdentifier m_table;
   // std::vector<std::string> m_rowid_columns;
   std::vector<SelectedColumn> m_selected_columns;
   std::unordered_map<size_t, std::string> m_where;
@@ -272,6 +271,6 @@ class Query {
       std::vector<SelectedColumn>& m_selected_columns_) const;
 };
 
-}  // namespace sqlb
+}  // namespace sql
 
 #endif

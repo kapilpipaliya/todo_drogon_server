@@ -3,9 +3,9 @@
 #include <utility>
 
 namespace jadmin {
-Currency::Currency(std::shared_ptr<JAdminContext> context_)
+Currency::Currency(std::shared_ptr<websocket::JAdminContext> context_)
     : context(std::move(context_)) {
-  query = sqlb::Query(sqlb::ObjectIdentifier("setting", "currency", "c"));
+  query = sql::Query(sql::ObjectIdentifier("setting", "currency", "c"));
   setupTable();
 }
 
@@ -32,23 +32,23 @@ nlohmann::json Currency::handleEvent(nlohmann::json event, unsigned long next,
 void Currency::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
-      sqlb::SelectedColumn({"Id", "id", "", "c", PG_TYPES::INT8, false}),
-      sqlb::SelectedColumn({"Code", "slug", "", "c", PG_TYPES::TEXT, true}),
-      sqlb::SelectedColumn({"Name", "name", "", "c", PG_TYPES::TEXT, true}),
-      sqlb::SelectedColumn({"Symbol", "symbol", "", "c", PG_TYPES::TEXT, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn({"Id", "id", "", "c", PG_TYPES::INT8, false}),
+      sql::SelectedColumn({"Code", "slug", "", "c", PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"Name", "name", "", "c", PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"Symbol", "symbol", "", "c", PG_TYPES::TEXT, true}),
+      sql::SelectedColumn(
           {"Rounding", "rounding", "", "c", PG_TYPES::DOUBLE, true}),
-      sqlb::SelectedColumn({"Active", "active", "", "c", PG_TYPES::BOOL, true}),
+      sql::SelectedColumn({"Active", "active", "", "c", PG_TYPES::BOOL, true}),
   });
 
-  // auto m = sqlb::ObjectIdentifier("material", "metal", "m");
-  // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
-  // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
+  // auto m = sql::ObjectIdentifier("material", "metal", "m");
+  // auto u1 = sql::ObjectIdentifier("entity", "entity_user", "u1");
+  // auto u2 = sql::ObjectIdentifier("entity", "entity_user", "u2");
 
   query.setJoins({
-      // sqlb::Join("left", m, "a.material_id = m.id"),
-      // sqlb::Join("left", u1, "gt.create_user_id = u1.id"),
-      // sqlb::Join("left", u2, "a.update_user_id = u2.id"),
+      // sql::Join("left", m, "a.material_id = m.id"),
+      // sql::Join("left", u1, "gt.create_user_id = u1.id"),
+      // sql::Join("left", u2, "a.update_user_id = u2.id"),
   });
 }
 

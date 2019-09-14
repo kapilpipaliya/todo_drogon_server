@@ -2,8 +2,8 @@
 #include "todoactor.h"
 
 #include "inc/todoservices.h"
-TodoActor::TodoActor(caf::actor_config & cfg) : caf::event_based_actor(cfg) {
-}
+namespace superactor {
+TodoActor::TodoActor(caf::actor_config &cfg) : caf::event_based_actor(cfg) {}
 
 caf::behavior TodoActor::make_behavior() {
   return {
@@ -19,11 +19,12 @@ caf::behavior TodoActor::make_behavior() {
       }};
 }
 
-nlohmann::json TodoActor::handleTextMessage(const drogon::WebSocketConnectionPtr & wsConnPtr, const nlohmann::json & in) {
+nlohmann::json TodoActor::handleTextMessage(
+    const drogon::WebSocketConnectionPtr &wsConnPtr, const nlohmann::json &in) {
   if (!in.is_array() || !in[0].is_array() || !in[0][0].is_string()) {
     return nlohmann::json::array();
   }
-  auto contx = wsConnPtr->getContext<todo::TodoContext>();
+  auto contx = wsConnPtr->getContext<websocket::todo::TodoContext>();
   auto evt = in[0][0].get<std::string>();
   if (evt == "auth") {
     return handleService<todo::Auth>(contx, in);
@@ -36,10 +37,11 @@ nlohmann::json TodoActor::handleTextMessage(const drogon::WebSocketConnectionPtr
   }
 }
 
-nlohmann::json TodoActor::handleBinaryMessage(const drogon::WebSocketConnectionPtr & wsConnPtr, std::string & message) {
+nlohmann::json TodoActor::handleBinaryMessage(
+    const drogon::WebSocketConnectionPtr &wsConnPtr, std::string &message) {
   nlohmann::json event;
   try {
-    auto contx = wsConnPtr->getContext<todo::TodoContext>();
+    auto contx = wsConnPtr->getContext<websocket::todo::TodoContext>();
     long c = contx->sessionId();
     auto sqlSession =
         "SELECT event FROM music.temp_file_meta where session_id = $1";
@@ -64,7 +66,7 @@ nlohmann::json TodoActor::handleBinaryMessage(const drogon::WebSocketConnectionP
         SPDLOG_TRACE("byte position of error:", e.byte);
         nlohmann::json j =
             std::string("cant parse json reason: ") + e.what() + event.dump();
-        WsFns::sendJson(wsConnPtr, j);
+        websocket::WsFns::sendJson(wsConnPtr, j);
       }
     }
   } catch (const std::exception &e) {
@@ -78,3 +80,4 @@ nlohmann::json TodoActor::handleBinaryMessage(const drogon::WebSocketConnectionP
   return ret;
 }
 
+}  // namespace superactor

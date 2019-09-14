@@ -6,7 +6,7 @@
 namespace jadmin {
 class Support {
  public:
-  Support(std::shared_ptr<JAdminContext>);
+  Support(std::shared_ptr<websocket::JAdminContext>);
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
 
@@ -14,7 +14,7 @@ class Support {
   void setupTable();
   nlohmann::json ins(nlohmann::json event, nlohmann::json args);
   nlohmann::json upd(nlohmann::json event, nlohmann::json args);
-  std::shared_ptr<JAdminContext> context;
-  sqlb::Query query;
+  std::shared_ptr<websocket::JAdminContext> context;
+  sql::Query query;
 };
 }  // namespace jadmin

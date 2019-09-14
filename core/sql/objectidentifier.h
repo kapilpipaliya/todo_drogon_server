@@ -3,7 +3,7 @@
 
 #include <string>
 #include <utility>
-namespace sqlb {
+namespace sql {
 
 enum escapeQuoting { DoubleQuotes, GraveAccents, SquareBrackets };
 
@@ -52,11 +52,9 @@ class ObjectIdentifier {
 
   // This returns a string which can be used in SQL statements
   [[nodiscard]] std::string toString(bool shortName = false) const {
-    if (shortName && m_schema == "public")
-      return sqlb::escapeIdentifier(m_name);
+    if (shortName && m_schema == "public") return escapeIdentifier(m_name);
 
-    return sqlb::escapeIdentifier(m_schema) + "." +
-           sqlb::escapeIdentifier(m_name);
+    return escapeIdentifier(m_schema) + "." + escapeIdentifier(m_name);
   }
 
   // This returns a string which can be used in the user interface
@@ -80,6 +78,6 @@ class ObjectIdentifier {
   std::string m_as;
 };
 
-}  // namespace sqlb
+}  // namespace sql
 
 #endif

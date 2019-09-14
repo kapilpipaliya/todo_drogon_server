@@ -2,181 +2,181 @@
 #include <boost/filesystem.hpp>
 #include <utility>
 #include "../../../strfns.h"
-#include "../../dba.h"
+#include "../../../sql/dba.h"
 
 namespace jadmin {
-Product::Product(std::shared_ptr<JAdminContext> context_)
+Product::Product(std::shared_ptr<websocket::JAdminContext> context_)
     : context(std::move(context_)) {
-  query = sqlb::Query(sqlb::ObjectIdentifier("post", "post", "post"));
+  query = sql::Query(sql::ObjectIdentifier("post", "post", "post"));
   setupTable();
 }
 
 void Product::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
-      sqlb::SelectedColumn({"Id", "id", "", "post", PG_TYPES::INT8, true}),
-      // sqlb::SelectedColumn({"Directory", "dir_path", "", "p", PG_TYPES::TEXT,
-      // true}), sqlb::SelectedColumn({"File Name", " "",file_name", "p",
-      // PG_TYPES::TEXT, true}), sqlb::SelectedColumn({"Color", "color_id", "",
-      // "p", PG_TYPES::INT8, true, 1, 2}), sqlb::SelectedColumn({"C_slug",
+      sql::SelectedColumn({"Id", "id", "", "post", PG_TYPES::INT8, true}),
+      // sql::SelectedColumn({"Directory", "dir_path", "", "p", PG_TYPES::TEXT,
+      // true}), sql::SelectedColumn({"File Name", " "",file_name", "p",
+      // PG_TYPES::TEXT, true}), sql::SelectedColumn({"Color", "color_id", "",
+      // "p", PG_TYPES::INT8, true, 1, 2}), sql::SelectedColumn({"C_slug",
       // "slug", "", "c", PG_TYPES::TEXT, false, 0, 0, false}),
-      // sqlb::SelectedColumn({"C_name", "name", "", "c", PG_TYPES::TEXT, false,
-      // 0, 0, false}), sqlb::SelectedColumn({"Category", "part_group_id", "",
-      // "p", PG_TYPES::INT8, true, 1, 2}), sqlb::SelectedColumn({"Pg_slug",
+      // sql::SelectedColumn({"C_name", "name", "", "c", PG_TYPES::TEXT, false,
+      // 0, 0, false}), sql::SelectedColumn({"Category", "part_group_id", "",
+      // "p", PG_TYPES::INT8, true, 1, 2}), sql::SelectedColumn({"Pg_slug",
       // "slug", "", "pg", PG_TYPES::TEXT, false, 0, 0, false}),
-      // sqlb::SelectedColumn({"Pg_name", "name", "", "pg", PG_TYPES::TEXT,
+      // sql::SelectedColumn({"Pg_name", "name", "", "pg", PG_TYPES::TEXT,
       // false, 0, 0, false}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Purchase_Note", "purchase_note", "", "p", PG_TYPES::TEXT, false}),
 
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Product Id", "id", "p.id", "p", PG_TYPES::INT8, false}),
-      sqlb::SelectedColumn({"Product_short_description", "excerpt", "", "post",
+      sql::SelectedColumn({"Product_short_description", "excerpt", "", "post",
                             PG_TYPES::TEXT, false}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Product_Content", "content", "", "post", PG_TYPES::TEXT, false}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Menu_Order", "menu_order", "", "post", PG_TYPES::INT8, false}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Date", "date", "", "post", PG_TYPES::TIMESTAMP, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Title", "title", "", "post", PG_TYPES::TEXT, true}),
-      sqlb::SelectedColumn({"Slug", "name", "", "post", PG_TYPES::TEXT, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn({"Slug", "name", "", "post", PG_TYPES::TEXT, true}),
+      sql::SelectedColumn(
           {"Status", "status", "", "post", PG_TYPES::ENUM, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Comment", "comment_status", "", "post", PG_TYPES::BOOL, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Password", "password", "", "post", PG_TYPES::TEXT, false}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Modified", "modified", "", "post", PG_TYPES::TIMESTAMP, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Parent", "parent", "", "post", PG_TYPES::INT8, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Post Type", "type", "", "post", PG_TYPES::ENUM, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"MIME Type", "post_mime_type", "", "post", PG_TYPES::ENUM, false}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Comment Count", "comment_count", "", "post", PG_TYPES::INT8, true}),
 
-      sqlb::SelectedColumn({"SKU", "sku", "", "p", PG_TYPES::TEXT, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn({"SKU", "sku", "", "p", PG_TYPES::TEXT, true}),
+      sql::SelectedColumn(
           {"Virtual", "virtual", "", "p", PG_TYPES::BOOL, false}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Downloadable", "downloadable", "", "p", PG_TYPES::BOOL, false}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Min Price", "min_price", "", "p", PG_TYPES::DOUBLE, false}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Max Price", "max_price", "", "p", PG_TYPES::DOUBLE, false}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Weight", "weight", "", "p", PG_TYPES::DOUBLE, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Purity", "purity_id", "", "p", PG_TYPES::INT8, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Length", "length", "", "p", PG_TYPES::DOUBLE, true}),
-      sqlb::SelectedColumn({"Width", "width", "", "p", PG_TYPES::DOUBLE, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn({"Width", "width", "", "p", PG_TYPES::DOUBLE, true}),
+      sql::SelectedColumn(
           {"Height", "height", "", "p", PG_TYPES::DOUBLE, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"On sale", "onsale", "", "p", PG_TYPES::BOOL, true}),
-      sqlb::SelectedColumn({"Stock Quantity", "stock_quantity", "", "p",
+      sql::SelectedColumn({"Stock Quantity", "stock_quantity", "", "p",
                             PG_TYPES::DOUBLE, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Stock Status", "stock_status", "", "p", PG_TYPES::ENUM, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Rating Count", "rating_count", "", "p", PG_TYPES::INT4, true}),
-      sqlb::SelectedColumn({"Average Rating", "average_rating", "", "p",
+      sql::SelectedColumn({"Average Rating", "average_rating", "", "p",
                             PG_TYPES::DOUBLE, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Total Sales", "total_sales", "", "p", PG_TYPES::INT8, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Featured", "featured", "", "p", PG_TYPES::BOOL, true}),
-      sqlb::SelectedColumn({"Shipping Class", "shipping_class_id", "", "p",
+      sql::SelectedColumn({"Shipping Class", "shipping_class_id", "", "p",
                             PG_TYPES::INT8, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Manage Stock", "manage_stock", "", "p", PG_TYPES::BOOL, false}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Visibility", "visibility", "", "post", PG_TYPES::ENUM, true}),
-      sqlb::SelectedColumn({"Catalog Visibility", "catalog_visibility", "", "p",
+      sql::SelectedColumn({"Catalog Visibility", "catalog_visibility", "", "p",
                             PG_TYPES::ENUM, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Backorders", "backorders", "", "p", PG_TYPES::ENUM, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Product Type", "product_type", "", "p", PG_TYPES::ENUM, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Tags", "name",
            "json_agg(distinct tags.name ORDER BY tags.name ASC)", "tags",
            PG_TYPES::PSJSON, true}),
-      sqlb::SelectedColumn({"category_id", "category_id",
+      sql::SelectedColumn({"category_id", "category_id",
                             "json_agg(distinct pc.category_id)", "pc",
                             PG_TYPES::PSJSON, false}),
-      sqlb::SelectedColumn({"Categories", "category_id_name",
+      sql::SelectedColumn({"Categories", "category_id_name",
                             "json_agg(distinct c.name)", "pc", PG_TYPES::PSJSON,
                             true}),  // This is to Display on Main Table only.
-      sqlb::SelectedColumn({"tone_id", "tone_id",
+      sql::SelectedColumn({"tone_id", "tone_id",
                             "json_agg(distinct p_tones.tone_id)", "p_tones",
                             PG_TYPES::PSJSON, false}),
-      sqlb::SelectedColumn({"Tones", "tone_id_name",
+      sql::SelectedColumn({"Tones", "tone_id_name",
                             "json_agg(distinct tones.name)", "tones",
                             PG_TYPES::PSJSON, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"clarity_id", "clarity_id",
            "json_agg(distinct jsonb_build_array(p_clarity.clarity_id, "
            "p_clarity.pcs, p_clarity.weight, p_clarity.price, "
            "p_clarity.ismain))",
            "p_clarity", PG_TYPES::PSJSON, false}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"purity_id", "purity_id",
            "json_agg(distinct jsonb_build_array(p_purities.purity_id, "
            "COALESCE(pu_tone.pt2, jsonb_build_array()), p_purities.ismain))",
            "p_purities", PG_TYPES::PSJSON, false}),
-      sqlb::SelectedColumn({"Purities", "purity_id_name",
+      sql::SelectedColumn({"Purities", "purity_id_name",
                             "json_agg(distinct purities.name)", "purities",
                             PG_TYPES::PSJSON,
                             true}),  // This is to Display on Main Table only.
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"attachement_id", "attachement_id",
            "json_agg( distinct jsonb_build_array(p_attachments.id, "
            "p_attachments.tone_id, 0, p_attachments.main_image, version))",
            "p_attachments", PG_TYPES::PSJSON, false}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"diamond_size_id", "diamond_size_id",
            "json_agg( distinct jsonb_build_array(p_d_size.id, "
            "p_d_size.shape_id, p_d_size.color_id, p_d_size.size_id, "
            "p_d_size.pcs, p_d_size.setting_type_id, diamond_price.pa))",
            "p_d_size", PG_TYPES::PSJSON, false}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"cs_size_id", "cs_size_id",
            "json_agg( distinct jsonb_build_array(p_cs_size.id, "
            "p_cs_size.cs_type_id, p_cs_size.shape_id, p_cs_size.color_id, "
            "p_cs_size.size_id, p_cs_size.pcs, p_cs_size.setting_type_id, "
            "cs_price.pa))",
            "p_cs_size", PG_TYPES::PSJSON, false}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"p_cs_total", "p_cs_total",
            "json_agg( distinct jsonb_build_array(p_cs_total.pcs, "
            "p_cs_total.weight, p_cs_total.price))",
            "p_cs_total", PG_TYPES::PSJSON, false}),
-      sqlb::SelectedColumn({"Low Stock Amount", "low_stock_amount", "", "p",
+      sql::SelectedColumn({"Low Stock Amount", "low_stock_amount", "", "p",
                             PG_TYPES::INT4, true}),
-      sqlb::SelectedColumn({"Sold Individually", "sold_individually", "", "p",
+      sql::SelectedColumn({"Sold Individually", "sold_individually", "", "p",
                             PG_TYPES::BOOL, false}),
-      sqlb::SelectedColumn({"Making Charges", "making_charges", "", "p",
+      sql::SelectedColumn({"Making Charges", "making_charges", "", "p",
                             PG_TYPES::DOUBLE, false}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Discount Per", "discount_per", "", "p", PG_TYPES::DOUBLE, false}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Volume", "volume", "", "p", PG_TYPES::DOUBLE, false}),
-      sqlb::SelectedColumn({"Tone", "tone_id", "", "p", PG_TYPES::INT8, false}),
-      sqlb::SelectedColumn({"Certified By", "certified_by",
+      sql::SelectedColumn({"Tone", "tone_id", "", "p", PG_TYPES::INT8, false}),
+      sql::SelectedColumn({"Certified By", "certified_by",
                             "json_agg(distinct p_certified_by.certified_by_id)",
                             "p_certified_by", PG_TYPES::PSJSON, false}),
-      sqlb::SelectedColumn({"Policy", "post_policy",
+      sql::SelectedColumn({"Policy", "post_policy",
                             "json_agg(distinct p_policy.policy_id)", "p_policy",
                             PG_TYPES::PSJSON, false}),
 
-      // sqlb::SelectedColumn({"Create Time", "inserted_at", "", "p",
-      // PG_TYPES::TIMESTAMP, true, 0, 0, false}), sqlb::SelectedColumn({"Update
+      // sql::SelectedColumn({"Create Time", "inserted_at", "", "p",
+      // PG_TYPES::TIMESTAMP, true, 0, 0, false}), sql::SelectedColumn({"Update
       // Time", "updated_at", "", "p", PG_TYPES::TIMESTAMP, true, 0, 0, false}),
   });
   // select json_agg(nlohmann::json_build_array(a,b,c)) from (values (1, 'foo',
@@ -200,61 +200,61 @@ void Product::setupTable() {
     "p_inserted_at"
     "p_updated_at"
 */
-  auto product = sqlb::ObjectIdentifier("product", "product", "p");
-  auto pc = sqlb::ObjectIdentifier("product", "post_category", "pc");
-  auto category = sqlb::ObjectIdentifier("product", "category", "c");
-  auto post_tag = sqlb::ObjectIdentifier("post", "post_tag", "post_tag");
-  auto tags = sqlb::ObjectIdentifier("post", "tag", "tags");
-  auto ptones = sqlb::ObjectIdentifier("product", "post_tone", "p_tones");
-  auto tones = sqlb::ObjectIdentifier("material", "tone", "tones");
+  auto product = sql::ObjectIdentifier("product", "product", "p");
+  auto pc = sql::ObjectIdentifier("product", "post_category", "pc");
+  auto category = sql::ObjectIdentifier("product", "category", "c");
+  auto post_tag = sql::ObjectIdentifier("post", "post_tag", "post_tag");
+  auto tags = sql::ObjectIdentifier("post", "tag", "tags");
+  auto ptones = sql::ObjectIdentifier("product", "post_tone", "p_tones");
+  auto tones = sql::ObjectIdentifier("material", "tone", "tones");
   auto pclarity =
-      sqlb::ObjectIdentifier("product", "post_clarity", "p_clarity");
+      sql::ObjectIdentifier("product", "post_clarity", "p_clarity");
   auto ppurities =
-      sqlb::ObjectIdentifier("product", "post_purity", "p_purities");
-  auto purities = sqlb::ObjectIdentifier("material", "purity", "purities");
+      sql::ObjectIdentifier("product", "post_purity", "p_purities");
+  auto purities = sql::ObjectIdentifier("material", "purity", "purities");
   auto post_attachment =
-      sqlb::ObjectIdentifier("product", "post_attachment", "p_attachments");
+      sql::ObjectIdentifier("product", "post_attachment", "p_attachments");
   auto p_d_size =
-      sqlb::ObjectIdentifier("product", "post_diamond_size", "p_d_size");
-  // auto diamond_price = sqlb::ObjectIdentifier("product", "diamond_price",
+      sql::ObjectIdentifier("product", "post_diamond_size", "p_d_size");
+  // auto diamond_price = sql::ObjectIdentifier("product", "diamond_price",
   // "diamond_price");
   auto p_cs_size =
-      sqlb::ObjectIdentifier("product", "post_color_stone_size", "p_cs_size");
+      sql::ObjectIdentifier("product", "post_color_stone_size", "p_cs_size");
   auto p_cs_total =
-      sqlb::ObjectIdentifier("product", "post_cs_total", "p_cs_total");
+      sql::ObjectIdentifier("product", "post_cs_total", "p_cs_total");
   auto p_certified_by =
-      sqlb::ObjectIdentifier("product", "post_certified_by", "p_certified_by");
-  auto p_policy = sqlb::ObjectIdentifier("product", "post_policy", "p_policy");
-  // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
-  // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
+      sql::ObjectIdentifier("product", "post_certified_by", "p_certified_by");
+  auto p_policy = sql::ObjectIdentifier("product", "post_policy", "p_policy");
+  // auto u1 = sql::ObjectIdentifier("entity", "entity_user", "u1");
+  // auto u2 = sql::ObjectIdentifier("entity", "entity_user", "u2");
 
   query.setJoins({
-      // sqlb::Join("left", c, "p.color_id = c.id"),
-      sqlb::Join("left", product, "p.post_id = post.id"),
-      sqlb::Join("left", pc, "pc.post_id = post.id"),
-      sqlb::Join("left", category, "c.id = pc.category_id"),
-      sqlb::Join("left", post_tag, "post_tag.post_id = post.id"),
-      sqlb::Join("left", tags, "tags.id = post_tag.tag_id"),
-      sqlb::Join("left", ptones, "p_tones.post_id = post.id"),
-      sqlb::Join("left", tones, "tones.id = p_tones.tone_id"),
-      sqlb::Join("left", pclarity, "p_clarity.post_id = post.id"),
-      sqlb::Join("left", ppurities, "p_purities.post_id = post.id"),
-      sqlb::Join("left",
+      // sql::Join("left", c, "p.color_id = c.id"),
+      sql::Join("left", product, "p.post_id = post.id"),
+      sql::Join("left", pc, "pc.post_id = post.id"),
+      sql::Join("left", category, "c.id = pc.category_id"),
+      sql::Join("left", post_tag, "post_tag.post_id = post.id"),
+      sql::Join("left", tags, "tags.id = post_tag.tag_id"),
+      sql::Join("left", ptones, "p_tones.post_id = post.id"),
+      sql::Join("left", tones, "tones.id = p_tones.tone_id"),
+      sql::Join("left", pclarity, "p_clarity.post_id = post.id"),
+      sql::Join("left", ppurities, "p_purities.post_id = post.id"),
+      sql::Join("left",
                  "( select pt.post_id, pt.purity_id, jsonb_agg(distinct "
                  "jsonb_build_array(pt.tone_id, pt.weight, pt.price, "
                  "pt.ismain)) as pt2 from product.purity_tone pt group by "
                  "pt.post_id, pt.purity_id) as pu_tone",
                  "(pu_tone.post_id = p_purities.post_id and pu_tone.purity_id "
                  "= p_purities.purity_id)"),
-      sqlb::Join("left", purities, "purities.id = p_purities.purity_id"),
-      sqlb::Join("left", post_attachment, "p_attachments.post_id = post.id"),
-      sqlb::Join("left", p_d_size, "p_d_size.post_id = post.id"),
-      sqlb::Join("left", p_cs_size, "p_cs_size.post_id = post.id"),
-      sqlb::Join("left", p_cs_total, "p_cs_total.post_id = post.id"),
-      sqlb::Join("left", p_certified_by, "p_certified_by.post_id = post.id"),
-      sqlb::Join("left", p_policy, "p_policy.post_id = post.id"),
+      sql::Join("left", purities, "purities.id = p_purities.purity_id"),
+      sql::Join("left", post_attachment, "p_attachments.post_id = post.id"),
+      sql::Join("left", p_d_size, "p_d_size.post_id = post.id"),
+      sql::Join("left", p_cs_size, "p_cs_size.post_id = post.id"),
+      sql::Join("left", p_cs_total, "p_cs_total.post_id = post.id"),
+      sql::Join("left", p_certified_by, "p_certified_by.post_id = post.id"),
+      sql::Join("left", p_policy, "p_policy.post_id = post.id"),
 
-      sqlb::Join(
+      sql::Join(
           "left",
           "(SELECT dp.diamond_id, jsonb_agg( distinct "
           "jsonb_build_array(dp.clarity_id, mc.name, dp.weight, "
@@ -262,19 +262,19 @@ void Product::setupTable() {
           "product.diamond_price dp left join material.clarity mc on mc.id = "
           "dp.clarity_id group by dp.diamond_id) as diamond_price",
           "diamond_price.diamond_id = p_d_size.id"),
-      sqlb::Join("left",
+      sql::Join("left",
                  "(SELECT dp.cs_id, jsonb_agg( distinct jsonb_build_array(0, "
                  "'', dp.weight, dp.total_weight, dp.rate, dp.price)) AS pa "
                  "FROM product.cs_price dp group by dp.cs_id) as cs_price",
                  "cs_price.cs_id = p_cs_size.id"),
 
-      // sqlb::Join("left", u1, "gt.create_user_id = u1.id"),
-      // sqlb::Join("left", u2, "a.update_user_id = u2.id"),
+      // sql::Join("left", u1, "gt.create_user_id = u1.id"),
+      // sql::Join("left", u2, "a.update_user_id = u2.id"),
   });
 
   query.setGroupBy({
-      sqlb::GroupByColumn("post", "id"),
-      sqlb::GroupByColumn("p", "id"),
+      sql::GroupByColumn("post", "id"),
+      sql::GroupByColumn("p", "id"),
   });
 }
 
@@ -387,8 +387,8 @@ purejoinTableSave(policy, "product.post_policy", "p_policy_post_policy",
                   "post_id", "policy_id");
 
 void product_tags_process(
-    const sqlb::ObjectIdentifier& tags_table,
-    const sqlb::ObjectIdentifier& post_tag_table, nlohmann::json& args,
+    const sql::ObjectIdentifier& tags_table,
+    const sql::ObjectIdentifier& post_tag_table, nlohmann::json& args,
     const std::shared_ptr<drogon::orm::Transaction>& transPtr, long post_id) {
   std::string strSqlTag = "select id, name FROM %1.%2 where name = $1";
   ReplaceAll2(strSqlTag, "%1", tags_table.schema());
@@ -457,7 +457,7 @@ void product_tags_process(
 }
 
 void save_product_categories(
-    const sqlb::ObjectIdentifier& post_category_table, nlohmann::json& args,
+    const sql::ObjectIdentifier& post_category_table, nlohmann::json& args,
     const std::shared_ptr<drogon::orm::Transaction>& transPtr, long post_id) {
   std::string strSqlPostCategories =
       "select post_id, category_id FROM %1.%2 where post_id = $1";
@@ -511,7 +511,7 @@ void save_product_categories(
 }
 
 void save_product_clarities(
-    const sqlb::ObjectIdentifier& post_clarity_table, nlohmann::json& args,
+    const sql::ObjectIdentifier& post_clarity_table, nlohmann::json& args,
     const std::shared_ptr<drogon::orm::Transaction>& transPtr, long post_id) {
   std::string strSqlPostCategories =
       "SELECT clarity_id FROM %1.%2 where post_id = $1";
@@ -660,7 +660,7 @@ void save_purity_tone_(
 }
 
 void save_product_purities(
-    const sqlb::ObjectIdentifier& post_purity_table, nlohmann::json& args,
+    const sql::ObjectIdentifier& post_purity_table, nlohmann::json& args,
     const std::shared_ptr<drogon::orm::Transaction>& transPtr, long post_id) {
   std::string strSqlPostCategories =
       "SELECT purity_id FROM %1.%2 where post_id = $1";
@@ -805,7 +805,7 @@ void save_diamond_price(
 }
 
 void save_product_diamond_sizes(
-    const sqlb::ObjectIdentifier& /*post_diamond_sizes_table*/,
+    const sql::ObjectIdentifier& /*post_diamond_sizes_table*/,
     nlohmann::json& args,
     const std::shared_ptr<drogon::orm::Transaction>& transPtr, long post_id) {
   std::string strSqlPostCategories =
@@ -946,7 +946,7 @@ void save_cs_price(nlohmann::json& args,
 }
 
 void save_product_cs_sizes(
-    const sqlb::ObjectIdentifier& /*post_color_stone_size_table*/,
+    const sql::ObjectIdentifier& /*post_color_stone_size_table*/,
     nlohmann::json& args,
     const std::shared_ptr<drogon::orm::Transaction>& transPtr, long post_id) {
   std::string strSqlPostCategories =
@@ -1026,7 +1026,7 @@ void save_product_cs_sizes(
 }
 
 void save_product_cs_total(
-    const sqlb::ObjectIdentifier& /*post_cs_total_table*/, nlohmann::json& args,
+    const sql::ObjectIdentifier& /*post_cs_total_table*/, nlohmann::json& args,
     const std::shared_ptr<drogon::orm::Transaction>& transPtr, long post_id) {
   std::string strSqlPostCategories =
       "SELECT post_id, pcs, weight, price FROM product.post_cs_total where "
@@ -1089,7 +1089,7 @@ void save_product_cs_total(
 }
 
 void save_product_Attachments(
-    const sqlb::ObjectIdentifier& post_attachment_table, nlohmann::json& args,
+    const sql::ObjectIdentifier& post_attachment_table, nlohmann::json& args,
     const std::shared_ptr<drogon::orm::Transaction>& transPtr, long post_id) {
   std::string strSqlPostCategories = "SELECT id FROM %1.%2 where post_id = $1";
   ReplaceAll2(strSqlPostCategories, "%1", post_attachment_table.schema());
@@ -1190,26 +1190,26 @@ void save_product_Attachments(
 }
 
 nlohmann::json Product::ins(nlohmann::json event, nlohmann::json args) {
-  auto product_table = sqlb::ObjectIdentifier("product", "product", "p");
-  auto post_table = sqlb::ObjectIdentifier("post", "post", "p");
-  auto tags_table = sqlb::ObjectIdentifier("post", "tag", "t");
-  auto post_tag_table = sqlb::ObjectIdentifier("post", "post_tag", "pt");
+  auto product_table = sql::ObjectIdentifier("product", "product", "p");
+  auto post_table = sql::ObjectIdentifier("post", "post", "p");
+  auto tags_table = sql::ObjectIdentifier("post", "tag", "t");
+  auto post_tag_table = sql::ObjectIdentifier("post", "post_tag", "pt");
   auto post_category_table =
-      sqlb::ObjectIdentifier("product", "post_category", "pt");
+      sql::ObjectIdentifier("product", "post_category", "pt");
   auto post_tone_table =
-      sqlb::ObjectIdentifier("product", "post_tone", "p_tones");
+      sql::ObjectIdentifier("product", "post_tone", "p_tones");
   auto post_clarity_table =
-      sqlb::ObjectIdentifier("product", "post_clarity", "p_clarity");
+      sql::ObjectIdentifier("product", "post_clarity", "p_clarity");
   auto post_purity_table =
-      sqlb::ObjectIdentifier("product", "post_purity", "p_purities");
+      sql::ObjectIdentifier("product", "post_purity", "p_purities");
   auto post_attachment_table =
-      sqlb::ObjectIdentifier("product", "post_attachment", "p_attachments");
-  auto post_diamond_sizes_table = sqlb::ObjectIdentifier(
+      sql::ObjectIdentifier("product", "post_attachment", "p_attachments");
+  auto post_diamond_sizes_table = sql::ObjectIdentifier(
       "product", "post_diamond_size", "post_diamond_sizes");
   auto post_cs_total_table =
-      sqlb::ObjectIdentifier("product", "post_cs_total", "post_cs_total");
+      sql::ObjectIdentifier("product", "post_cs_total", "post_cs_total");
   auto post_certified_by =
-      sqlb::ObjectIdentifier("product", "post_certified_by", "p_certified_by");
+      sql::ObjectIdentifier("product", "post_certified_by", "p_certified_by");
 
   std::string strSqlPost =
       "INSERT INTO %1.%2 "
@@ -1299,26 +1299,26 @@ nlohmann::json Product::ins(nlohmann::json event, nlohmann::json args) {
   }
 }
 nlohmann::json Product::upd(nlohmann::json event, nlohmann::json args) {
-  auto product_table = sqlb::ObjectIdentifier("product", "product", "p");
-  auto post_table = sqlb::ObjectIdentifier("post", "post", "p");
-  auto tags_table = sqlb::ObjectIdentifier("post", "tag", "t");
-  auto post_tag_table = sqlb::ObjectIdentifier("post", "post_tag", "pt");
+  auto product_table = sql::ObjectIdentifier("product", "product", "p");
+  auto post_table = sql::ObjectIdentifier("post", "post", "p");
+  auto tags_table = sql::ObjectIdentifier("post", "tag", "t");
+  auto post_tag_table = sql::ObjectIdentifier("post", "post_tag", "pt");
   auto post_category_table =
-      sqlb::ObjectIdentifier("product", "post_category", "pt");
+      sql::ObjectIdentifier("product", "post_category", "pt");
   auto post_tone_table =
-      sqlb::ObjectIdentifier("product", "post_tone", "p_tones");
+      sql::ObjectIdentifier("product", "post_tone", "p_tones");
   auto post_clarity_table =
-      sqlb::ObjectIdentifier("product", "post_clarity", "p_clarity");
+      sql::ObjectIdentifier("product", "post_clarity", "p_clarity");
   auto post_purity_table =
-      sqlb::ObjectIdentifier("product", "post_purity", "p_purities");
+      sql::ObjectIdentifier("product", "post_purity", "p_purities");
   auto post_attachment_table =
-      sqlb::ObjectIdentifier("product", "post_attachment", "p_attachments");
-  auto post_diamond_sizes_table = sqlb::ObjectIdentifier(
+      sql::ObjectIdentifier("product", "post_attachment", "p_attachments");
+  auto post_diamond_sizes_table = sql::ObjectIdentifier(
       "product", "post_diamond_size", "post_diamond_sizes");
   auto post_cs_total_table =
-      sqlb::ObjectIdentifier("product", "post_cs_total", "post_cs_total");
+      sql::ObjectIdentifier("product", "post_cs_total", "post_cs_total");
   auto post_certified_by =
-      sqlb::ObjectIdentifier("product", "post_certified_by", "p_certified_by");
+      sql::ObjectIdentifier("product", "post_certified_by", "p_certified_by");
 
   if (args[0]["id"].get<long>()) {
     std::string strSqlPost =
@@ -1567,7 +1567,7 @@ nlohmann::json Product::del(nlohmann::json event, nlohmann::json args) {
 }
 
 nlohmann::json save_category(const nlohmann::json& event, nlohmann::json args) {
-  auto product_table = sqlb::ObjectIdentifier("product", "category", "p");
+  auto product_table = sql::ObjectIdentifier("product", "category", "p");
 
   if (args[0]["id"].get<long>()) {
     std::string strSql =

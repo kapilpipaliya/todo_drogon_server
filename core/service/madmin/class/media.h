@@ -18,7 +18,7 @@ namespace madmin {
  */
 class Media {
  public:
-  Media(std::shared_ptr<MAdminContext>);
+  Media(std::shared_ptr<websocket::MAdminContext>);
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
   virtual ~Media() = default;
@@ -58,8 +58,8 @@ class Media {
                           std::string location) = 0;
 
  private:
-  std::shared_ptr<MAdminContext> context;
-  sqlb::Query query;
+  std::shared_ptr<websocket::MAdminContext> context;
+  sql::Query query;
 };
 }  // namespace madmin
 #endif  // MEDIA_H

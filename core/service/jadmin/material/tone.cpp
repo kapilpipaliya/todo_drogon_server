@@ -3,8 +3,8 @@
 #include <utility>
 
 namespace jadmin {
-Tone::Tone(std::shared_ptr<JAdminContext> context_) : context(std::move(context_)) {
-  query = sqlb::Query(sqlb::ObjectIdentifier("material", "tone", "c"));
+Tone::Tone(std::shared_ptr<websocket::JAdminContext> context_) : context(std::move(context_)) {
+  query = sql::Query(sql::ObjectIdentifier("material", "tone", "c"));
   setupTable();
 }
 
@@ -31,37 +31,37 @@ nlohmann::json Tone::handleEvent(nlohmann::json event, unsigned long next,
 void Tone::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
-      sqlb::SelectedColumn({"Id", "id", "", "c", PG_TYPES::INT8, false}),
-      //        sqlb::SelectedColumn({"Material", "material_id", "", "c",
-      //        PG_TYPES::INT8, true, 1, 2}), sqlb::SelectedColumn({"m_slug",
+      sql::SelectedColumn({"Id", "id", "", "c", PG_TYPES::INT8, false}),
+      //        sql::SelectedColumn({"Material", "material_id", "", "c",
+      //        PG_TYPES::INT8, true, 1, 2}), sql::SelectedColumn({"m_slug",
       //        "slug", "", "m", PG_TYPES::TEXT, false, 0, 0, false}),
-      //        sqlb::SelectedColumn({"m_name", "name", "", "m", PG_TYPES::TEXT,
+      //        sql::SelectedColumn({"m_name", "name", "", "m", PG_TYPES::TEXT,
       //        false, 0, 0, false}),
-      sqlb::SelectedColumn({"Rank", "rank", "", "c", PG_TYPES::INT4, false}),
-      sqlb::SelectedColumn({"Code", "slug", "", "c", PG_TYPES::TEXT, true}),
-      sqlb::SelectedColumn({"Name", "name", "", "c", PG_TYPES::TEXT, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn({"Rank", "rank", "", "c", PG_TYPES::INT4, false}),
+      sql::SelectedColumn({"Code", "slug", "", "c", PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"Name", "name", "", "c", PG_TYPES::TEXT, true}),
+      sql::SelectedColumn(
           {"Created By", "create_user_id", "", "c", PG_TYPES::INT8, true, 1}),
-      sqlb::SelectedColumn({"u1_username", "username", "", "u1", PG_TYPES::TEXT,
+      sql::SelectedColumn({"u1_username", "username", "", "u1", PG_TYPES::TEXT,
                             false, 0, 0, false}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Updated By", "update_user_id", "", "c", PG_TYPES::INT8, true, 1}),
-      sqlb::SelectedColumn({"u2_username", "username", "", "u2", PG_TYPES::TEXT,
+      sql::SelectedColumn({"u2_username", "username", "", "u2", PG_TYPES::TEXT,
                             false, 0, 0, false}),
-      sqlb::SelectedColumn({"Create Time", "inserted_at", "", "c",
+      sql::SelectedColumn({"Create Time", "inserted_at", "", "c",
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-      sqlb::SelectedColumn({"Update Time", "updated_at", "", "c",
+      sql::SelectedColumn({"Update Time", "updated_at", "", "c",
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
   });
 
-  // auto m = sqlb::ObjectIdentifier("material", "metal", "m");
-  auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
-  auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
+  // auto m = sql::ObjectIdentifier("material", "metal", "m");
+  auto u1 = sql::ObjectIdentifier("entity", "entity_user", "u1");
+  auto u2 = sql::ObjectIdentifier("entity", "entity_user", "u2");
 
   query.setJoins({
-      // sqlb::Join("left", m, "c.material_id = m.id"),
-      sqlb::Join("left", u1, "c.create_user_id = u1.id"),
-      sqlb::Join("left", u2, "c.update_user_id = u2.id"),
+      // sql::Join("left", m, "c.material_id = m.id"),
+      sql::Join("left", u1, "c.create_user_id = u1.id"),
+      sql::Join("left", u2, "c.update_user_id = u2.id"),
   });
 }
 

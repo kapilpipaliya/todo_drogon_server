@@ -1,9 +1,9 @@
 #include "ui.h"
 
 #include <utility>
-#include "../../dba.h"
+#include "../../../sql/dba.h"
 
-madmin::UI::UI(std::shared_ptr<MAdminContext> context_) : context(std::move(context_)) {
+madmin::UI::UI(std::shared_ptr<websocket::MAdminContext> context_) : context(std::move(context_)) {
   setupTable();
 }
 

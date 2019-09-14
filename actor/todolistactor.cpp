@@ -2,9 +2,9 @@
 #include "todolistactor.h"
 
 #include "todolistservices.h"
-TodoListActor::TodoListActor(caf::actor_config & cfg)
-    : caf::event_based_actor(cfg) {
-}
+namespace superactor {
+TodoListActor::TodoListActor(caf::actor_config &cfg)
+    : caf::event_based_actor(cfg) {}
 
 caf::behavior TodoListActor::make_behavior() {
   return {
@@ -20,11 +20,14 @@ caf::behavior TodoListActor::make_behavior() {
       }};
 }
 
-nlohmann::json TodoListActor::handleTextMessage(const drogon::WebSocketConnectionPtr & wsConnPtr, const nlohmann::json & in) {
+nlohmann::json TodoListActor::handleTextMessage(
+    const drogon::WebSocketConnectionPtr &wsConnPtr, const nlohmann::json &in) {
   return nlohmann::json::array();
 }
 
-nlohmann::json TodoListActor::handleBinaryMessage(const drogon::WebSocketConnectionPtr & wsConnPtr, std::string & message) {
+nlohmann::json TodoListActor::handleBinaryMessage(
+    const drogon::WebSocketConnectionPtr &wsConnPtr, std::string &message) {
   return nlohmann::json::array();
 }
 
+}  // namespace superactor

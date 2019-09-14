@@ -2,8 +2,9 @@
 #include "juseractor.h"
 
 #include "inc/juserervices.h"
-JUserActor::JUserActor(caf::actor_config & cfg) : caf::event_based_actor(cfg) {
-}
+namespace superactor {
+
+JUserActor::JUserActor(caf::actor_config &cfg) : caf::event_based_actor(cfg) {}
 
 caf::behavior JUserActor::make_behavior() {
   return {
@@ -19,7 +20,8 @@ caf::behavior JUserActor::make_behavior() {
       }};
 }
 
-nlohmann::json JUserActor::handleTextMessage(const drogon::WebSocketConnectionPtr & wsConnPtr, const nlohmann::json & in) {
+nlohmann::json JUserActor::handleTextMessage(
+    const drogon::WebSocketConnectionPtr &wsConnPtr, const nlohmann::json &in) {
   try {
     if (!in.is_array()) {
       return nlohmann::json::array();
@@ -96,10 +98,11 @@ nlohmann::json JUserActor::handleTextMessage(const drogon::WebSocketConnectionPt
   }
 }
 
-nlohmann::json JUserActor::handleBinaryMessage(const drogon::WebSocketConnectionPtr & wsConnPtr, std::string & message) {
+nlohmann::json JUserActor::handleBinaryMessage(
+    const drogon::WebSocketConnectionPtr &wsConnPtr, std::string &message) {
   nlohmann::json event;
   try {
-    long c = wsConnPtr->getContext<JUserContext>()->sessionId();
+    long c = wsConnPtr->getContext<websocket::JUserContext>()->sessionId();
     auto sqlSession =
         "SELECT event FROM user1.temp_image where session_id = $1";
     auto clientPtr = drogon::app().getDbClient("sce");
@@ -122,7 +125,7 @@ nlohmann::json JUserActor::handleBinaryMessage(const drogon::WebSocketConnection
         SPDLOG_TRACE("byte position of error:", e.byte);
         nlohmann::json j =
             std::string("cant parse json reason: ") + e.what() + event.dump();
-        WsFns::sendJson(wsConnPtr, j);
+        websocket::WsFns::sendJson(wsConnPtr, j);
       }
     }
   } catch (const std::exception &e) {
@@ -136,3 +139,4 @@ nlohmann::json JUserActor::handleBinaryMessage(const drogon::WebSocketConnection
   return ret;
 }
 
+}  // namespace superactor

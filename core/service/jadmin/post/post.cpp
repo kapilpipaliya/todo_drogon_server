@@ -1,13 +1,13 @@
 #include "post.h"
 
 #include <utility>
+#include "../../../sql/dba.h"
 #include "../../../strfns.h"
-#include "../../dba.h"
 
 namespace jadmin {
-Post1::Post1(std::shared_ptr<JAdminContext> context_)
+Post1::Post1(std::shared_ptr<websocket::JAdminContext> context_)
     : context(std::move(context_)) {
-  query = sqlb::Query(sqlb::ObjectIdentifier("post", "post", "post"));
+  query = sql::Query(sql::ObjectIdentifier("post", "post", "post"));
   setupTable();
 }
 
@@ -33,40 +33,39 @@ nlohmann::json Post1::handleEvent(nlohmann::json event, unsigned long next,
 
 void Post1::setupTable() {
   query.setSelectedColumns({
-      sqlb::SelectedColumn({"Id", "id", "", "post", PG_TYPES::INT8, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn({"Id", "id", "", "post", PG_TYPES::INT8, true}),
+      sql::SelectedColumn(
           {"Post Type", "type", "", "post", PG_TYPES::ENUM, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Visibility", "visibility", "", "post", PG_TYPES::ENUM, true}),
-      sqlb::SelectedColumn(
-          {"Title", "title", "", "post", PG_TYPES::TEXT, true}),
-      sqlb::SelectedColumn({"Slug", "name", "", "post", PG_TYPES::TEXT, true}),
-      sqlb::SelectedColumn({"Product_short_description", "excerpt", "", "post",
-                            PG_TYPES::TEXT, false}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn({"Title", "title", "", "post", PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"Slug", "name", "", "post", PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"Product_short_description", "excerpt", "", "post",
+                           PG_TYPES::TEXT, false}),
+      sql::SelectedColumn(
           {"Product_Content", "content", "", "post", PG_TYPES::TEXT, false}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Position", "menu_order", "", "post", PG_TYPES::INT8, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Date", "date", "", "post", PG_TYPES::TIMESTAMP, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Status", "status", "", "post", PG_TYPES::ENUM, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Comment", "comment_status", "", "post", PG_TYPES::BOOL, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Password", "password", "", "post", PG_TYPES::TEXT, false}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Modified", "modified", "", "post", PG_TYPES::TIMESTAMP, true}),
-      // sqlb::SelectedColumn({"Parent", "parent", "", "post", PG_TYPES::INT8,
-      // true}), sqlb::SelectedColumn({"MIME Type", "post_mime_type", "",
+      // sql::SelectedColumn({"Parent", "parent", "", "post", PG_TYPES::INT8,
+      // true}), sql::SelectedColumn({"MIME Type", "post_mime_type", "",
       // "post", PG_TYPES::ENUM, false}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Comment Count", "comment_count", "", "post", PG_TYPES::INT8, true}),
   });
 }
 
 nlohmann::json Post1::ins(nlohmann::json event, nlohmann::json args) {
-  auto post_table = sqlb::ObjectIdentifier("post", "post", "p");
+  auto post_table = sql::ObjectIdentifier("post", "post", "p");
 
   std::string strSqlPost =
       "INSERT INTO %1.%2 "
@@ -105,7 +104,7 @@ nlohmann::json Post1::ins(nlohmann::json event, nlohmann::json args) {
   }
 }
 nlohmann::json Post1::upd(nlohmann::json event, nlohmann::json args) {
-  auto post_table = sqlb::ObjectIdentifier("post", "post", "p");
+  auto post_table = sql::ObjectIdentifier("post", "post", "p");
 
   if (args[0]["id"].get<long>()) {
     std::string strSqlPost =

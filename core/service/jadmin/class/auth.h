@@ -6,7 +6,7 @@
 namespace jadmin {
 class Auth {
  public:
-  Auth(std::shared_ptr<JAdminContext>);
+  Auth(std::shared_ptr<websocket::JAdminContext>);
   void setupTable();
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
@@ -115,7 +115,7 @@ class Auth {
   nlohmann::json save_setting_attachment(const nlohmann::json& event,
                                          std::string& message);
 
-  std::shared_ptr<JAdminContext> context;
-  sqlb::Query query;
+  std::shared_ptr<websocket::JAdminContext> context;
+  sql::Query query;
 };
 }  // namespace jadmin

@@ -3,7 +3,7 @@
 
 #include <drogon/WebSocketController.h>
 #include "json.hpp"
-
+namespace superactor {
 class UserActorBase {
  public:
   UserActorBase();
@@ -20,5 +20,6 @@ class UserActorBase {
       const drogon::WebSocketConnectionPtr &wsConnPtr,
       std::string &message) = 0;
 };
+}  // namespace superactor
 
 #endif  // USERACTORBASE_H

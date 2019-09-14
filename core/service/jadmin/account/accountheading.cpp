@@ -2,10 +2,10 @@
 
 #include <utility>
 namespace jadmin {
-AccountHeading::AccountHeading(std::shared_ptr<JAdminContext> context_)
+AccountHeading::AccountHeading(std::shared_ptr<websocket::JAdminContext> context_)
     : context(std::move(context_)) {
   query =
-      sqlb::Query(sqlb::ObjectIdentifier("account", "account_heading", "a"));
+      sql::Query(sql::ObjectIdentifier("account", "account_heading", "a"));
   setupTable();
 }
 
@@ -32,20 +32,20 @@ nlohmann::json AccountHeading::handleEvent(nlohmann::json event,
 void AccountHeading::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
-      sqlb::SelectedColumn({"Id", "id", "", "a", PG_TYPES::INT8, false}),
-      sqlb::SelectedColumn({"Acc No", "accno", "", "a", PG_TYPES::TEXT, true}),
-      sqlb::SelectedColumn({"Name", "name", "", "a", PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"Id", "id", "", "a", PG_TYPES::INT8, false}),
+      sql::SelectedColumn({"Acc No", "accno", "", "a", PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"Name", "name", "", "a", PG_TYPES::TEXT, true}),
   });
 
-  // auto pg = sqlb::ObjectIdentifier("part", "part_category", "pg");
-  // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
-  // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
+  // auto pg = sql::ObjectIdentifier("part", "part_category", "pg");
+  // auto u1 = sql::ObjectIdentifier("entity", "entity_user", "u1");
+  // auto u2 = sql::ObjectIdentifier("entity", "entity_user", "u2");
 
   query.setJoins({
-      // sqlb::Join("left", c, "p.color_id = c.id"),
-      // sqlb::Join("left", pg, "p.part_group_id = pg.id"),
-      // sqlb::Join("left", u1, "gt.create_user_id = u1.id"),
-      // sqlb::Join("left", u2, "a.update_user_id = u2.id"),
+      // sql::Join("left", c, "p.color_id = c.id"),
+      // sql::Join("left", pg, "p.part_group_id = pg.id"),
+      // sql::Join("left", u1, "gt.create_user_id = u1.id"),
+      // sql::Join("left", u2, "a.update_user_id = u2.id"),
   });
 }
 nlohmann::json AccountHeading::ins(nlohmann::json event, nlohmann::json args) {

@@ -41,7 +41,7 @@ class User {
   struct Catalog {};
 
  public:
-  User(std::shared_ptr<MAdminContext>);
+  User(std::shared_ptr<websocket::MAdminContext>);
   // User(int user_id);
   void setupTable();
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
@@ -440,8 +440,8 @@ class User {
   // static void  stream_control(media_ids, User user = null);
 
  private:
-  std::shared_ptr<MAdminContext> context;
-  sqlb::Query query;
+  std::shared_ptr<websocket::MAdminContext> context;
+  sql::Query query;
 
   Info get_info();
   int id{};

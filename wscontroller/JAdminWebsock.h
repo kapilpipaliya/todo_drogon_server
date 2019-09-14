@@ -1,6 +1,7 @@
 #pragma once
 #include <drogon/WebSocketController.h>
 #include "../actor/mainactor.h"
+namespace websocket {
 class EchoWebSocket : public drogon::WebSocketController<EchoWebSocket> {
  public:
   void handleNewMessage(const drogon::WebSocketConnectionPtr &, std::string &&,
@@ -12,3 +13,4 @@ class EchoWebSocket : public drogon::WebSocketController<EchoWebSocket> {
   WS_PATH_ADD("/jadmin");
   WS_PATH_LIST_END
 };
+}  // namespace websocket

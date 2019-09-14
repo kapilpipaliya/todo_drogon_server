@@ -11,7 +11,7 @@
 namespace madmin {
 class CatalogLocal : public Catalog {
  public:
-  CatalogLocal(const std::shared_ptr<MAdminContext> &);
+  CatalogLocal(const std::shared_ptr<websocket::MAdminContext> &);
   void setupTable();
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
@@ -158,7 +158,7 @@ class CatalogLocal : public Catalog {
   std::vector<int> added_videos_to_gather;
   std::string path;
 
-  sqlb::Query query;
+  sql::Query query;
 };
 }  // namespace madmin
 #endif  // CATALOGLOCAL_H

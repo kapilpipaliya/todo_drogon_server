@@ -2,7 +2,7 @@
 
 #include <drogon/WebSocketController.h>
 #include "json.hpp"
-
+namespace websocket {
 class JAdminContext {
   struct ContextUser {
     long id{0};
@@ -28,3 +28,4 @@ class JAdminContext {
   ContextUser user;
   const drogon::WebSocketConnectionPtr &wsConnPtr;
 };
+}  // namespace websocket

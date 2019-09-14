@@ -2,7 +2,7 @@
 
 #include <utility>
 
-madmin::Bookmark::Bookmark(std::shared_ptr<MAdminContext> context_)
+madmin::Bookmark::Bookmark(std::shared_ptr<websocket::MAdminContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }

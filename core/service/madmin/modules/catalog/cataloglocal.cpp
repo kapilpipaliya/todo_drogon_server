@@ -1,49 +1,49 @@
 #include "cataloglocal.h"
 
-madmin::CatalogLocal::CatalogLocal(const std::shared_ptr<MAdminContext> &context_)
+madmin::CatalogLocal::CatalogLocal(const std::shared_ptr<websocket::MAdminContext> &context_)
     : Catalog(context_) {
-  query = sqlb::Query(sqlb::ObjectIdentifier("music", "catalog", "c"));
+  query = sql::Query(sql::ObjectIdentifier("music", "catalog", "c"));
   setupTable();
 }
 
 void madmin::CatalogLocal::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
-      sqlb::SelectedColumn({"ID No", "id", "", "c", PG_TYPES::INT8}),
-      // sqlb::SelectedColumn({"Catalog Type", "catalog_type", "", "c",
-      // PG_TYPES::ENUM}), sqlb::SelectedColumn({"no", "no", "", "c",
-      // PG_TYPES::TEXT}), sqlb::SelectedColumn({"sequence_id", "sequence_id",
+      sql::SelectedColumn({"ID No", "id", "", "c", PG_TYPES::INT8}),
+      // sql::SelectedColumn({"Catalog Type", "catalog_type", "", "c",
+      // PG_TYPES::ENUM}), sql::SelectedColumn({"no", "no", "", "c",
+      // PG_TYPES::TEXT}), sql::SelectedColumn({"sequence_id", "sequence_id",
       // "", "c", PG_TYPES::INT8, false}),
-      sqlb::SelectedColumn({"Name", "name", "", "c", PG_TYPES::TEXT, true}),
-      // sqlb::SelectedColumn({"Create Date", "last_update", "", "c",
-      // PG_TYPES::TIMESTAMP}), sqlb::SelectedColumn({"last_clean Date",
+      sql::SelectedColumn({"Name", "name", "", "c", PG_TYPES::TEXT, true}),
+      // sql::SelectedColumn({"Create Date", "last_update", "", "c",
+      // PG_TYPES::TIMESTAMP}), sql::SelectedColumn({"last_clean Date",
       // "last_clean", "", "c", PG_TYPES::TIMESTAMP}),
-      // sqlb::SelectedColumn({"last_add Date", "last_add", "", "c",
+      // sql::SelectedColumn({"last_add Date", "last_add", "", "c",
       // PG_TYPES::TIMESTAMP}),
-      sqlb::SelectedColumn({"Active", "enabled", "", "c", PG_TYPES::BOOL}),
-      // sqlb::SelectedColumn({"Rename Pattern", "rename_pattern", "", "c",
-      // PG_TYPES::TEXT, true}), sqlb::SelectedColumn({"Sort Pattern",
+      sql::SelectedColumn({"Active", "enabled", "", "c", PG_TYPES::BOOL}),
+      // sql::SelectedColumn({"Rename Pattern", "rename_pattern", "", "c",
+      // PG_TYPES::TEXT, true}), sql::SelectedColumn({"Sort Pattern",
       // "sort_pattern", "", "c", PG_TYPES::TEXT, true}),
-      // sqlb::SelectedColumn({"Gather Types", "gather_types", "", "c",
-      // PG_TYPES::TEXT, true}), sqlb::SelectedColumn({"Created By",
+      // sql::SelectedColumn({"Gather Types", "gather_types", "", "c",
+      // PG_TYPES::TEXT, true}), sql::SelectedColumn({"Created By",
       // "create_user_id", "", "c", PG_TYPES::INT8, true, 1, 0, false}),
-      // sqlb::SelectedColumn({"u1_username", "username", "", "u1",
-      // PG_TYPES::TEXT, false, 0, 0, false}), sqlb::SelectedColumn({"Updated
+      // sql::SelectedColumn({"u1_username", "username", "", "u1",
+      // PG_TYPES::TEXT, false, 0, 0, false}), sql::SelectedColumn({"Updated
       // By", "update_user_id", "", "c", PG_TYPES::INT8, true, 1, 0, false}),
-      // sqlb::SelectedColumn({"u2_username", "username", "", "u2",
-      // PG_TYPES::TEXT, false, 0, 0, false}), sqlb::SelectedColumn({"Create
+      // sql::SelectedColumn({"u2_username", "username", "", "u2",
+      // PG_TYPES::TEXT, false, 0, 0, false}), sql::SelectedColumn({"Create
       // Time", "inserted_at", "", "c", PG_TYPES::TIMESTAMP, true, 0, 0,
-      // false}), sqlb::SelectedColumn({"Update Time", "updated_at", "", "c",
+      // false}), sql::SelectedColumn({"Update Time", "updated_at", "", "c",
       // PG_TYPES::TIMESTAMP, true, 0, 0, false}),
   });
-  // auto p = sqlb::ObjectIdentifier("music", "user", "p");
-  // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
-  // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
+  // auto p = sql::ObjectIdentifier("music", "user", "p");
+  // auto u1 = sql::ObjectIdentifier("entity", "entity_user", "u1");
+  // auto u2 = sql::ObjectIdentifier("entity", "entity_user", "u2");
 
   query.setJoins({
-      // sqlb::Join("left", p, "e.parent_id = p.id")
-      // sqlb::Join("left", u1, "e.create_user_id = u1.id"),
-      // sqlb::Join("left", u2, "e.update_user_id = u2.id"),
+      // sql::Join("left", p, "e.parent_id = p.id")
+      // sql::Join("left", u1, "e.create_user_id = u1.id"),
+      // sql::Join("left", u2, "e.update_user_id = u2.id"),
   });
 }
 

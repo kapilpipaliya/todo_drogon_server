@@ -1,80 +1,80 @@
 #include "song.h"
 #include <boost/filesystem.hpp>
 #include <utility>
-#include "../../dba.h"
+#include "../../../sql/dba.h"
 
-madmin::Song::Song(std::shared_ptr<MAdminContext> context_) : context(std::move(context_)) {
-  query = sqlb::Query(sqlb::ObjectIdentifier("music", "song", "s"));
+madmin::Song::Song(std::shared_ptr<websocket::MAdminContext> context_) : context(std::move(context_)) {
+  query = sql::Query(sql::ObjectIdentifier("music", "song", "s"));
   setupTable();
 }
 
 void madmin::Song::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
-      sqlb::SelectedColumn({"ID No", "id", "", "s", PG_TYPES::INT8}),
-      sqlb::SelectedColumn({"file", "file", "", "s", PG_TYPES::TEXT, false}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn({"ID No", "id", "", "s", PG_TYPES::INT8}),
+      sql::SelectedColumn({"file", "file", "", "s", PG_TYPES::TEXT, false}),
+      sql::SelectedColumn(
           {"Catalog", "catalog_id", "", "s", PG_TYPES::INT8, true, 1, 1}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"c_name", "name", "", "c", PG_TYPES::TEXT, false, 0, 0, false}),
-      //            sqlb::SelectedColumn({"Album", "album_id", "", "s",
-      //            PG_TYPES::INT8}), sqlb::SelectedColumn({"Year", "year", "",
-      //            "s", PG_TYPES::INT4}), sqlb::SelectedColumn({"Artist",
+      //            sql::SelectedColumn({"Album", "album_id", "", "s",
+      //            PG_TYPES::INT8}), sql::SelectedColumn({"Year", "year", "",
+      //            "s", PG_TYPES::INT4}), sql::SelectedColumn({"Artist",
       //            "artist_id", "", "s", PG_TYPES::INT8}),
-      sqlb::SelectedColumn({"Title", "title", "", "s", PG_TYPES::TEXT}),
-      //            sqlb::SelectedColumn({"bitrate", "bitrate", "", "s",
-      //            PG_TYPES::INT4}), sqlb::SelectedColumn({"rate", "rate", "",
-      //            "s", PG_TYPES::INT4}), sqlb::SelectedColumn({"mode", "mode",
+      sql::SelectedColumn({"Title", "title", "", "s", PG_TYPES::TEXT}),
+      //            sql::SelectedColumn({"bitrate", "bitrate", "", "s",
+      //            PG_TYPES::INT4}), sql::SelectedColumn({"rate", "rate", "",
+      //            "s", PG_TYPES::INT4}), sql::SelectedColumn({"mode", "mode",
       //            "", "s", PG_TYPES::ENUM}),
-      sqlb::SelectedColumn({"size", "size", "", "s", PG_TYPES::INT8}),
-      //            sqlb::SelectedColumn({"time", "time", "", "s",
-      //            PG_TYPES::INT4}), sqlb::SelectedColumn({"track", "track",
-      //            "", "s", PG_TYPES::INT4}), sqlb::SelectedColumn({"mbid",
+      sql::SelectedColumn({"size", "size", "", "s", PG_TYPES::INT8}),
+      //            sql::SelectedColumn({"time", "time", "", "s",
+      //            PG_TYPES::INT4}), sql::SelectedColumn({"track", "track",
+      //            "", "s", PG_TYPES::INT4}), sql::SelectedColumn({"mbid",
       //            "mbid", "", "s", PG_TYPES::TEXT}),
-      //            sqlb::SelectedColumn({"played", "played", "", "s",
-      //            PG_TYPES::BOOL}), sqlb::SelectedColumn({"enabled",
+      //            sql::SelectedColumn({"played", "played", "", "s",
+      //            PG_TYPES::BOOL}), sql::SelectedColumn({"enabled",
       //            "enabled", "", "s", PG_TYPES::BOOL}),
-      //            sqlb::SelectedColumn({"update_time", "update_time", "", "s",
+      //            sql::SelectedColumn({"update_time", "update_time", "", "s",
       //            PG_TYPES::TIMESTAMP}),
-      //            sqlb::SelectedColumn({"addition_time", "addition_time",
+      //            sql::SelectedColumn({"addition_time", "addition_time",
       //            "", "s", PG_TYPES::TIMESTAMP}),
-      //            sqlb::SelectedColumn({"user_upload", "user_upload", "", "s",
-      //            PG_TYPES::INT8}), sqlb::SelectedColumn({"license",
+      //            sql::SelectedColumn({"user_upload", "user_upload", "", "s",
+      //            PG_TYPES::INT8}), sql::SelectedColumn({"license",
       //            "license", "", "s", PG_TYPES::INT8}),
-      //            sqlb::SelectedColumn({"composer", "composer", "", "s",
-      //            PG_TYPES::TEXT}), sqlb::SelectedColumn({"channels",
+      //            sql::SelectedColumn({"composer", "composer", "", "s",
+      //            PG_TYPES::TEXT}), sql::SelectedColumn({"channels",
       //            "channels", "", "s", PG_TYPES::INT4}),
 
-      // sqlb::SelectedColumn({"no", "no", "", "s", PG_TYPES::TEXT}),
-      // sqlb::SelectedColumn({"sequence_id", "sequence_id", "", "s",
-      // PG_TYPES::INT8, false}), sqlb::SelectedColumn({"Create Date",
+      // sql::SelectedColumn({"no", "no", "", "s", PG_TYPES::TEXT}),
+      // sql::SelectedColumn({"sequence_id", "sequence_id", "", "s",
+      // PG_TYPES::INT8, false}), sql::SelectedColumn({"Create Date",
       // "last_update", "", "s", PG_TYPES::TIMESTAMP}),
-      // sqlb::SelectedColumn({"last_clean Date", "last_clean", "", "s",
-      // PG_TYPES::TIMESTAMP}), sqlb::SelectedColumn({"last_add Date",
+      // sql::SelectedColumn({"last_clean Date", "last_clean", "", "s",
+      // PG_TYPES::TIMESTAMP}), sql::SelectedColumn({"last_add Date",
       // "last_add", "", "s", PG_TYPES::TIMESTAMP}),
-      // sqlb::SelectedColumn({"Rename Pattern", "rename_pattern", "", "s",
-      // PG_TYPES::TEXT, true}), sqlb::SelectedColumn({"Sort Pattern",
+      // sql::SelectedColumn({"Rename Pattern", "rename_pattern", "", "s",
+      // PG_TYPES::TEXT, true}), sql::SelectedColumn({"Sort Pattern",
       // "sort_pattern", "", "s", PG_TYPES::TEXT, true}),
-      // sqlb::SelectedColumn({"Gather Types", "gather_types", "", "s",
-      // PG_TYPES::TEXT, true}), sqlb::SelectedColumn({"Created By",
+      // sql::SelectedColumn({"Gather Types", "gather_types", "", "s",
+      // PG_TYPES::TEXT, true}), sql::SelectedColumn({"Created By",
       // "create_user_id", "", "s", PG_TYPES::INT8, true, 1, 0, false}),
-      // sqlb::SelectedColumn({"u1_username", "username", "", "u1",
-      // PG_TYPES::TEXT, false, 0, 0, false}), sqlb::SelectedColumn({"Updated
+      // sql::SelectedColumn({"u1_username", "username", "", "u1",
+      // PG_TYPES::TEXT, false, 0, 0, false}), sql::SelectedColumn({"Updated
       // By", "update_user_id", "", "s", PG_TYPES::INT8, true, 1, 0, false}),
-      // sqlb::SelectedColumn({"u2_username", "username", "", "u2",
-      // PG_TYPES::TEXT, false, 0, 0, false}), sqlb::SelectedColumn({"Create
+      // sql::SelectedColumn({"u2_username", "username", "", "u2",
+      // PG_TYPES::TEXT, false, 0, 0, false}), sql::SelectedColumn({"Create
       // Time", "inserted_at", "", "s", PG_TYPES::TIMESTAMP, true, 0, 0,
-      // false}), sqlb::SelectedColumn({"Update Time", "updated_at", "", "s",
+      // false}), sql::SelectedColumn({"Update Time", "updated_at", "", "s",
       // PG_TYPES::TIMESTAMP, true, 0, 0, false}),
   });
-  auto c = sqlb::ObjectIdentifier("music", "catalog", "c");
-  // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
-  // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
+  auto c = sql::ObjectIdentifier("music", "catalog", "c");
+  // auto u1 = sql::ObjectIdentifier("entity", "entity_user", "u1");
+  // auto u2 = sql::ObjectIdentifier("entity", "entity_user", "u2");
 
   query.setJoins({
-      sqlb::Join("left", c, "c.id = s.catalog_id")
-      // sqlb::Join("left", u1, "e.create_user_id = u1.id"),
-      // sqlb::Join("left", u2, "e.update_user_id = u2.id"),
+      sql::Join("left", c, "c.id = s.catalog_id")
+      // sql::Join("left", u1, "e.create_user_id = u1.id"),
+      // sql::Join("left", u2, "e.update_user_id = u2.id"),
   });
 }
 

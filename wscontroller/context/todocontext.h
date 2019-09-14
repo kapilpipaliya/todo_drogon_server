@@ -2,6 +2,7 @@
 #include <string>
 
 #include <drogon/WebSocketController.h>
+namespace websocket {
 namespace todo {
 
 struct ContextUser {
@@ -29,3 +30,4 @@ class TodoContext {
   const drogon::WebSocketConnectionPtr &wsConnPtr;
 };
 }  // namespace todo
+}  // namespace websocket

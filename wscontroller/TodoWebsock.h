@@ -1,6 +1,6 @@
 #pragma once
 #include <drogon/WebSocketController.h>
-
+namespace websocket {
 class TodoWebsock : public drogon::WebSocketController<TodoWebsock> {
  public:
   void handleNewMessage(const drogon::WebSocketConnectionPtr &, std::string &&,
@@ -12,3 +12,4 @@ class TodoWebsock : public drogon::WebSocketController<TodoWebsock> {
   WS_PATH_ADD("/todo");
   WS_PATH_LIST_END
 };
+}  // namespace websocket

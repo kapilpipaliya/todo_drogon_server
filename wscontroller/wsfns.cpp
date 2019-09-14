@@ -1,5 +1,5 @@
 #include "wsfns.h"
-
+namespace websocket {
 WsFns::WsFns() = default;
 void WsFns::sendJson(const drogon::WebSocketConnectionPtr &wsConnPtr,
                      nlohmann::json &j) {
@@ -15,3 +15,4 @@ void WsFns::sendJson(const drogon::WebSocketConnectionPtr &wsConnPtr,
     wsConnPtr->send(r.dump());
   }
 }
+}  // namespace websocket

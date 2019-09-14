@@ -12,7 +12,7 @@
 namespace todo {
 class Session {
  public:
-  Session(std::shared_ptr<todo::TodoContext>);
+  Session(std::shared_ptr<websocket::todo::TodoContext>);
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
   void setupTable();
@@ -166,7 +166,7 @@ class Session {
    */
   // static void ungimp_ie();
  private:
-  std::shared_ptr<todo::TodoContext> context;
-  sqlb::Query query;
+  std::shared_ptr<websocket::todo::TodoContext> context;
+  sql::Query query;
 };
-}
+}  // namespace todo

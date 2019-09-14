@@ -2,7 +2,7 @@
 
 #include <utility>
 
-madmin::Share::Share(std::shared_ptr<MAdminContext> context_) : context(std::move(context_)) {
+madmin::Share::Share(std::shared_ptr<websocket::MAdminContext> context_) : context(std::move(context_)) {
   setupTable();
 }
 

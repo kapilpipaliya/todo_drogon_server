@@ -51,7 +51,7 @@
 #include "core/service/madmin/modules/catalog/cataloglocal.h"
 
 template <typename T>
-nlohmann::json handleService(std::shared_ptr<MAdminContext> contx,
+nlohmann::json handleService(std::shared_ptr<websocket::MAdminContext> contx,
                              nlohmann::json in) {
   try {
     T p{contx};

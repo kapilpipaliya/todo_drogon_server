@@ -1,9 +1,9 @@
 #include "catalog.h"
 
 #include <utility>
-#include "../../dba.h"
+#include "../../../sql/dba.h"
 
-madmin::Catalog::Catalog(std::shared_ptr<MAdminContext> context_)
+madmin::Catalog::Catalog(std::shared_ptr<websocket::MAdminContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }

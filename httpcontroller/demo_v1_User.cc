@@ -3,7 +3,7 @@
 #include "json.hpp"
 #include "spdlogfix.h"
 
-using namespace demo::v1;
+using namespace http::v1;
 
 void User::download_id(
     const drogon::HttpRequestPtr &req,

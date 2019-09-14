@@ -2,6 +2,7 @@
 #include <string>
 #include <utility>
 #include "../strfns.h"
+namespace sql {
 
 CondFormat::CondFormat(const std::string& filter, const std::string& encoding)
     : m_filter(filter) {
@@ -168,3 +169,4 @@ std::string CondFormat::filterToSqlCondition(const std::string& value,
   whereClause += " " + escape;
   return whereClause;
 }
+}  // namespace sql

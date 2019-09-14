@@ -1,7 +1,7 @@
 #pragma once
 #include <drogon/HttpController.h>
 
-namespace demo::v1 {
+namespace http::v1 {
 class User : public drogon::HttpController<User> {
  public:
   METHOD_LIST_BEGIN
@@ -31,4 +31,4 @@ class User : public drogon::HttpController<User> {
                 std::function<void(const drogon::HttpResponsePtr &)> &&callback,
                 const std::string &file);
 };
-}  // namespace demo::v1
+}  // namespace http::v1

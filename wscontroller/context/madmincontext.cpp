@@ -1,7 +1,7 @@
 #include "madmincontext.h"
-#include "./core/service/dba.h"
+#include "./core/sql/dba.h"
 #include "spdlogfix.h"
-
+namespace websocket {
 MAdminContext::MAdminContext(const drogon::HttpRequestPtr &req,
                              const drogon::WebSocketConnectionPtr &wsConnPtr_)
     : wsConnPtr(wsConnPtr_) {
@@ -50,3 +50,4 @@ void MAdminContext::setUser() {
     SPDLOG_TRACE(e.what());
   }
 }
+}  // namespace websocket

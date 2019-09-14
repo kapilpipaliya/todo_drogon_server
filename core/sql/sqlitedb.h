@@ -18,7 +18,7 @@
 struct sqlite3;
 class CipherSettings;
 
-// typedef QMultiMap<std::string, sqlb::ObjectPtr> objectMap;      // Maps from
+// typedef QMultiMap<std::string, sql::ObjectPtr> objectMap;      // Maps from
 // object type (table, index, view, trigger) to a pointer to the object
 // representation typedef QMap<std::string, objectMap> schemaMap; // Maps from
 // the schema name (main, temp, attached schemas) to the object map for that
@@ -27,7 +27,7 @@ class CipherSettings;
 int collCompare(void* pArg, int sizeA, const void* sA, int sizeB,
                 const void* sB);
 
-namespace sqlb {
+namespace sql {
 QString escapeIdentifier(const QString& id);
 }
 
@@ -137,7 +137,7 @@ class DBBrowserDB : public QObject {
    * @param rowdata A list of QByteArray containing the row data.
    * @return true if statement execution was ok, else false.
    */
-  bool getRow(const sqlb::ObjectIdentifier& table, const QString& rowid,
+  bool getRow(const sql::ObjectIdentifier& table, const QString& rowid,
               std::vector<QByteArray>& rowdata);
 
   /**
@@ -152,7 +152,7 @@ class DBBrowserDB : public QObject {
    * @param field Field to get the max value
    * @return the max value of the field or 0 on error
    */
-  // QString max(const sqlb::ObjectIdentifier& tableName, const sqlb::Field&
+  // QString max(const sql::ObjectIdentifier& tableName, const sql::Field&
   // field) const;
 
   static int callbackWrapper(void* callback, int numberColumns, char** values,
@@ -171,22 +171,22 @@ class DBBrowserDB : public QObject {
    * @return An sqlite conform INSERT INTO statement with empty values.
    * (NULL,'',0)
    */
-  // QString emptyInsertStmt(const std::string& schemaName, const sqlb::Table&
+  // QString emptyInsertStmt(const std::string& schemaName, const sql::Table&
   // t, const QString& pk_value = QString()) const;
 
  public:
-  QString addRecord(const sqlb::ObjectIdentifier& tablename);
-  // bool deleteRecords(const sqlb::ObjectIdentifier& table, const QStringList&
-  // rowids, const sqlb::StringVector& pseudo_pk = {}); bool updateRecord(const
-  // sqlb::ObjectIdentifier& table, const std::string& column, const QString&
-  // rowid, const QByteArray& value, bool itsBlob, const sqlb::StringVector&
+  QString addRecord(const sql::ObjectIdentifier& tablename);
+  // bool deleteRecords(const sql::ObjectIdentifier& table, const QStringList&
+  // rowids, const sql::StringVector& pseudo_pk = {}); bool updateRecord(const
+  // sql::ObjectIdentifier& table, const std::string& column, const QString&
+  // rowid, const QByteArray& value, bool itsBlob, const sql::StringVector&
   // pseudo_pk = {});
 
-  // bool createTable(const sqlb::ObjectIdentifier& name, const
-  // sqlb::FieldVector& structure);
+  // bool createTable(const sql::ObjectIdentifier& name, const
+  // sql::FieldVector& structure);
   bool renameTable(const std::string& schema, const std::string& from_table,
                    const std::string& to_table);
-  // bool addColumn(const sqlb::ObjectIdentifier& tablename, const sqlb::Field&
+  // bool addColumn(const sql::ObjectIdentifier& tablename, const sql::Field&
   // field);
 
   /**
@@ -213,14 +213,14 @@ class DBBrowserDB : public QObject {
    * @return true if renaming was successful, false if not. In the latter case
    * also lastErrorMessage is set
    */
-  // bool alterTable(const sqlb::ObjectIdentifier& tablename, const sqlb::Table&
+  // bool alterTable(const sql::ObjectIdentifier& tablename, const sql::Table&
   // new_table, AlterTableTrackColumns track_columns, std::string newSchemaName =
   // "");
 
   // objectMap getBrowsableObjects(const std::string& schema) const;
   /*
-      template<typename T = sqlb::Object>
-      const std::shared_ptr<T> getObjectByName(const sqlb::ObjectIdentifier&
+      template<typename T = sql::Object>
+      const std::shared_ptr<T> getObjectByName(const sql::ObjectIdentifier&
      name) const
       {
           for(auto& it : schemata[name.schema()])
@@ -289,8 +289,8 @@ class DBBrowserDB : public QObject {
   bool isEncrypted;
   bool isReadOnly;
 
-  // sqlb::StringVector primaryKeyForEditing(const sqlb::ObjectIdentifier&
-  // table, const sqlb::StringVector& pseudo_pk) const;
+  // sql::StringVector primaryKeyForEditing(const sql::ObjectIdentifier&
+  // table, const sql::StringVector& pseudo_pk) const;
 
   // SQLite Callbacks
   void collationNeeded(void* pData, sqlite3* db, int eTextRep,

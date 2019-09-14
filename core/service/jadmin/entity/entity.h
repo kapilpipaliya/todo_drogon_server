@@ -6,7 +6,7 @@
 namespace jadmin {
 class Entity {
  public:
-  Entity(std::shared_ptr<JAdminContext>);
+  Entity(std::shared_ptr<websocket::JAdminContext>);
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
 
@@ -15,8 +15,8 @@ class Entity {
   nlohmann::json ins(nlohmann::json event, nlohmann::json args);
   nlohmann::json upd(nlohmann::json event, nlohmann::json args);
   nlohmann::json del(nlohmann::json event, nlohmann::json args);
-  std::shared_ptr<JAdminContext> context;
-  sqlb::Query query;
+  std::shared_ptr<websocket::JAdminContext> context;
+  sql::Query query;
 };
 }  // namespace jadmin
 #endif  // ENTITY_H

@@ -104,15 +104,15 @@ class M_DB {
   // void logSQL(std::string statement, LogMessageType msgtype);
 
   // This is possible but require Antlr to gnerate sql, so do it manually now..
-  // std::string addRecord(const sqlb::ObjectIdentifier& tablename);
-  // bool deleteRecords(const sqlb::ObjectIdentifier& table, const
-  // std::stringList& rowids, const sqlb::StringVector& pseudo_pk = {}); bool
-  // updateRecord(const sqlb::ObjectIdentifier& table, const std::string&
+  // std::string addRecord(const sql::ObjectIdentifier& tablename);
+  // bool deleteRecords(const sql::ObjectIdentifier& table, const
+  // std::stringList& rowids, const sql::StringVector& pseudo_pk = {}); bool
+  // updateRecord(const sql::ObjectIdentifier& table, const std::string&
   // column, const std::string& rowid, const QByteArray& value, bool itsBlob,
-  // const sqlb::StringVector& pseudo_pk = {}); bool renameTable(const
+  // const sql::StringVector& pseudo_pk = {}); bool renameTable(const
   // std::string& schema, const std::string& from_table, const std::string&
-  // to_table); bool addColumn(const sqlb::ObjectIdentifier& tablename, const
-  // sqlb::Field& field);
+  // to_table); bool addColumn(const sql::ObjectIdentifier& tablename, const
+  // sql::Field& field);
 
   // bool loadExtension(const std::string& filename);
   void loadExtensionsFromSettings();

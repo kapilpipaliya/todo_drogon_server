@@ -6,7 +6,7 @@
 namespace jadmin {
 class CSColor {
  public:
-  CSColor(std::shared_ptr<JAdminContext>);
+  CSColor(std::shared_ptr<websocket::JAdminContext>);
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
 
@@ -14,8 +14,8 @@ class CSColor {
   void setupTable();
   nlohmann::json ins(nlohmann::json event, nlohmann::json args);
   nlohmann::json upd(nlohmann::json event, nlohmann::json args);
-  std::shared_ptr<JAdminContext> context;
-  sqlb::Query query;
+  std::shared_ptr<websocket::JAdminContext> context;
+  sql::Query query;
 };
 }  // namespace jadmin
 #endif  // CSCOLOR_H

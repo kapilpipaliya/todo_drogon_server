@@ -2,10 +2,10 @@
 #include "jadminactor.h"
 
 #include "jadminservices.h"
-#include "jadminservices.h"
-JAdminActor::JAdminActor(caf::actor_config & cfg)
-    : caf::event_based_actor(cfg) {
-}
+namespace superactor {
+
+JAdminActor::JAdminActor(caf::actor_config &cfg)
+    : caf::event_based_actor(cfg) {}
 
 caf::behavior JAdminActor::make_behavior() {
   return {
@@ -21,7 +21,8 @@ caf::behavior JAdminActor::make_behavior() {
       }};
 }
 
-nlohmann::json JAdminActor::handleTextMessage(const drogon::WebSocketConnectionPtr & wsConnPtr, const nlohmann::json & in) {
+nlohmann::json JAdminActor::handleTextMessage(
+    const drogon::WebSocketConnectionPtr &wsConnPtr, const nlohmann::json &in) {
   try {
     if (!in.is_array()) {
       return nlohmann::json::array();
@@ -98,10 +99,11 @@ nlohmann::json JAdminActor::handleTextMessage(const drogon::WebSocketConnectionP
   }
 }
 
-nlohmann::json JAdminActor::handleBinaryMessage(const drogon::WebSocketConnectionPtr & wsConnPtr, std::string & message) {
+nlohmann::json JAdminActor::handleBinaryMessage(
+    const drogon::WebSocketConnectionPtr &wsConnPtr, std::string &message) {
   nlohmann::json event;
   try {
-    long c = wsConnPtr->getContext<JAdminContext>()->sessionId();
+    long c = wsConnPtr->getContext<websocket::JAdminContext>()->sessionId();
     auto sqlSession =
         "SELECT event FROM user1.temp_image where session_id = $1";
     auto clientPtr = drogon::app().getDbClient("sce");
@@ -111,7 +113,7 @@ nlohmann::json JAdminActor::handleBinaryMessage(const drogon::WebSocketConnectio
         event = nlohmann::json::parse(r[0]["event"].c_str());
         // p.handleBinaryEvent creates new transaction.
         if (event[0] == "image") {
-          auto contx = wsConnPtr->getContext<JAdminContext>();
+          auto contx = wsConnPtr->getContext<websocket::JAdminContext>();
           jadmin::Auth p{contx};
           auto res = p.handleBinaryEvent(event, 1, message);
           if (!res.is_null()) {
@@ -124,7 +126,7 @@ nlohmann::json JAdminActor::handleBinaryMessage(const drogon::WebSocketConnectio
         SPDLOG_TRACE("byte position of error:", e.byte);
         nlohmann::json j =
             std::string("cant parse json reason: ") + e.what() + event.dump();
-        WsFns::sendJson(wsConnPtr, j);
+        websocket::WsFns::sendJson(wsConnPtr, j);
       }
     }
   } catch (const std::exception &e) {
@@ -138,3 +140,4 @@ nlohmann::json JAdminActor::handleBinaryMessage(const drogon::WebSocketConnectio
   return ret;
 }
 
+}  // namespace superactor

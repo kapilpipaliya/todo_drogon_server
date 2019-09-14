@@ -8,14 +8,14 @@
 namespace madmin {
 class ShoutBox {
  public:
-  ShoutBox(std::shared_ptr<MAdminContext>);
+  ShoutBox(std::shared_ptr<websocket::MAdminContext>);
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
   void setupTable();
 
  private:
-  std::shared_ptr<MAdminContext> context;
-  sqlb::Query query;
+  std::shared_ptr<websocket::MAdminContext> context;
+  sql::Query query;
 };
 }  // namespace madmin
 #endif  // SHOUTBOX_H

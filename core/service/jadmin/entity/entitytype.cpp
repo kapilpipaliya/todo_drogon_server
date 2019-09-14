@@ -3,9 +3,9 @@
 #include <utility>
 
 namespace jadmin {
-EntityType::EntityType(std::shared_ptr<JAdminContext> context_)
+EntityType::EntityType(std::shared_ptr<websocket::JAdminContext> context_)
     : context(std::move(context_)) {
-  query = sqlb::Query(sqlb::ObjectIdentifier("entity", "entity_type", "a"));
+  query = sql::Query(sql::ObjectIdentifier("entity", "entity_type", "a"));
   setupTable();
 }
 
@@ -32,11 +32,11 @@ nlohmann::json EntityType::handleEvent(nlohmann::json event, unsigned long next,
 void EntityType::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
-      sqlb::SelectedColumn({"Id", "id", "", "a", PG_TYPES::INT8, true}),
-      sqlb::SelectedColumn({"Name", "name", "", "a", PG_TYPES::TEXT, true}),
-      sqlb::SelectedColumn({"Create Time", "inserted_at", "", "a",
+      sql::SelectedColumn({"Id", "id", "", "a", PG_TYPES::INT8, true}),
+      sql::SelectedColumn({"Name", "name", "", "a", PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"Create Time", "inserted_at", "", "a",
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-      sqlb::SelectedColumn({"Update Time", "updated_at", "", "a",
+      sql::SelectedColumn({"Update Time", "updated_at", "", "a",
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
   });
 }

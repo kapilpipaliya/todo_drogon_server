@@ -2,9 +2,9 @@
 #include "../../core/sql/query.h"
 #include "../../core/strfns.h"
 #include "../wsfns.h"
-#include "./core/service/dba.h"
+#include "./core/sql/dba.h"
 #include "spdlogfix.h"
-
+namespace websocket {
 JAdminContext::JAdminContext(const drogon::HttpRequestPtr &req,
                              const drogon::WebSocketConnectionPtr &wsConnPtr_)
     : wsConnPtr(wsConnPtr_) {
@@ -54,3 +54,4 @@ void JAdminContext::setUser() {
     SPDLOG_TRACE(e.what());
   }
 }
+}  // namespace websocket

@@ -6,7 +6,7 @@
 namespace jadmin {
 class Role {
  public:
-  Role(std::shared_ptr<JAdminContext>);
+  Role(std::shared_ptr<websocket::JAdminContext>);
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
 
@@ -14,8 +14,8 @@ class Role {
   void setupTable();
   nlohmann::json ins(nlohmann::json event, nlohmann::json args);
   nlohmann::json upd(nlohmann::json event, nlohmann::json args);
-  std::shared_ptr<JAdminContext> context;
-  sqlb::Query query;
+  std::shared_ptr<websocket::JAdminContext> context;
+  sql::Query query;
 };
 }  // namespace jadmin
 #endif  // ROLE_H

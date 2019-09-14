@@ -1,6 +1,6 @@
 #pragma once
 #include <drogon/WebSocketController.h>
-
+namespace websocket {
 class MusicWebsock : public drogon::WebSocketController<MusicWebsock> {
  public:
   void handleNewMessage(const drogon::WebSocketConnectionPtr &, std::string &&,
@@ -12,3 +12,4 @@ class MusicWebsock : public drogon::WebSocketController<MusicWebsock> {
   WS_PATH_ADD("/madmin");
   WS_PATH_LIST_END
 };
+}  // namespace websocket

@@ -1,12 +1,12 @@
 #include "user.h"
 #include <chrono>
 #include <utility>
-#include "../../dba.h"
+#include "../../../sql/dba.h"
 
 // using namespace std::chrono;
-madmin::User::User(std::shared_ptr<MAdminContext> context_)
+madmin::User::User(std::shared_ptr<websocket::MAdminContext> context_)
     : context(std::move(context_)) {
-  query = sqlb::Query(sqlb::ObjectIdentifier("music", "user", "e"));
+  query = sql::Query(sql::ObjectIdentifier("music", "user", "e"));
   setupTable();
 }
 // User::User(int user_id)
@@ -21,48 +21,48 @@ madmin::User::User(std::shared_ptr<MAdminContext> context_)
 void madmin::User ::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
-      sqlb::SelectedColumn({"ID No", "id", "", "e", PG_TYPES::INT8}),
-      sqlb::SelectedColumn({"Account Type", "type", "", "e", PG_TYPES::ENUM}),
-      // sqlb::SelectedColumn({"no", "no", "", "e", PG_TYPES::TEXT}),
-      // sqlb::SelectedColumn({"sequence_id", "sequence_id", "", "e",
+      sql::SelectedColumn({"ID No", "id", "", "e", PG_TYPES::INT8}),
+      sql::SelectedColumn({"Account Type", "type", "", "e", PG_TYPES::ENUM}),
+      // sql::SelectedColumn({"no", "no", "", "e", PG_TYPES::TEXT}),
+      // sql::SelectedColumn({"sequence_id", "sequence_id", "", "e",
       // PG_TYPES::INT8, false}),
-      sqlb::SelectedColumn({"User Name", "username", "", "e", PG_TYPES::TEXT}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn({"User Name", "username", "", "e", PG_TYPES::TEXT}),
+      sql::SelectedColumn(
           {"Password", "password", "", "e", PG_TYPES::TEXT, true}),
-      //      sqlb::SelectedColumn({"Full Name", "fullname", "", "e",
+      //      sql::SelectedColumn({"Full Name", "fullname", "", "e",
       //      PG_TYPES::TEXT}),
-      sqlb::SelectedColumn({"Parent User Name", "parent_id", "", "e",
+      sql::SelectedColumn({"Parent User Name", "parent_id", "", "e",
                             PG_TYPES::INT8, true, 1, 1}),
-      sqlb::SelectedColumn({"username", "username", "", "p", PG_TYPES::TEXT,
+      sql::SelectedColumn({"username", "username", "", "p", PG_TYPES::TEXT,
                             false, 0, 0, false}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Create Date", "create_date", "", "e", PG_TYPES::TIMESTAMP}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Expiry Date", "expiry", "", "e", PG_TYPES::TIMESTAMP}),
-      sqlb::SelectedColumn({"Disabled", "disabled", "", "e", PG_TYPES::BOOL}),
-      //        sqlb::SelectedColumn({"Email", "email", "", "e", PG_TYPES::TEXT,
-      //        true}), sqlb::SelectedColumn({"City", "city", "", "e",
-      //        PG_TYPES::TEXT, true}), sqlb::SelectedColumn({"State", "state",
+      sql::SelectedColumn({"Disabled", "disabled", "", "e", PG_TYPES::BOOL}),
+      //        sql::SelectedColumn({"Email", "email", "", "e", PG_TYPES::TEXT,
+      //        true}), sql::SelectedColumn({"City", "city", "", "e",
+      //        PG_TYPES::TEXT, true}), sql::SelectedColumn({"State", "state",
       //        "", "e", PG_TYPES::TEXT, true}),
-      // sqlb::SelectedColumn({"Created By", "create_user_id", "", "e",
+      // sql::SelectedColumn({"Created By", "create_user_id", "", "e",
       // PG_TYPES::INT8, true, 1, 0, false}),
-      // sqlb::SelectedColumn({"u1_username", "username", "", "u1",
-      // PG_TYPES::TEXT, false, 0, 0, false}), sqlb::SelectedColumn({"Updated
+      // sql::SelectedColumn({"u1_username", "username", "", "u1",
+      // PG_TYPES::TEXT, false, 0, 0, false}), sql::SelectedColumn({"Updated
       // By", "update_user_id", "", "e", PG_TYPES::INT8, true, 1, 0, false}),
-      // sqlb::SelectedColumn({"u2_username", "username", "", "u2",
-      // PG_TYPES::TEXT, false, 0, 0, false}), sqlb::SelectedColumn({"Create
+      // sql::SelectedColumn({"u2_username", "username", "", "u2",
+      // PG_TYPES::TEXT, false, 0, 0, false}), sql::SelectedColumn({"Create
       // Time", "inserted_at", "", "e", PG_TYPES::TIMESTAMP, true, 0, 0,
-      // false}), sqlb::SelectedColumn({"Update Time", "updated_at", "", "e",
+      // false}), sql::SelectedColumn({"Update Time", "updated_at", "", "e",
       // PG_TYPES::TIMESTAMP, true, 0, 0, false}),
   });
-  auto p = sqlb::ObjectIdentifier("music", "user", "p");
-  // auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
-  // auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
+  auto p = sql::ObjectIdentifier("music", "user", "p");
+  // auto u1 = sql::ObjectIdentifier("entity", "entity_user", "u1");
+  // auto u2 = sql::ObjectIdentifier("entity", "entity_user", "u2");
 
   query.setJoins({
-      sqlb::Join("left", p, "e.parent_id = p.id")
-      // sqlb::Join("left", u1, "e.create_user_id = u1.id"),
-      // sqlb::Join("left", u2, "e.update_user_id = u2.id"),
+      sql::Join("left", p, "e.parent_id = p.id")
+      // sql::Join("left", u1, "e.create_user_id = u1.id"),
+      // sql::Join("left", u2, "e.update_user_id = u2.id"),
   });
 }
 

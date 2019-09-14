@@ -41,7 +41,7 @@ class User {
   struct Catalog {};
 
  public:
-  User(std::shared_ptr<todo::TodoContext>);
+  User(std::shared_ptr<websocket::todo::TodoContext>);
   // User(int user_id);
   void setupTable();
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
@@ -440,12 +440,12 @@ class User {
   // static void  stream_control(media_ids, User user = null);
 
  private:
-  std::shared_ptr<todo::TodoContext> context;
-  sqlb::Query query;
+  std::shared_ptr<websocket::todo::TodoContext> context;
+  sql::Query query;
 
   Info get_info();
   int id{};
   int playlist_id{};
 };
-}  // namespace madmin
+}  // namespace todo
 #endif  // TODOUSER_H

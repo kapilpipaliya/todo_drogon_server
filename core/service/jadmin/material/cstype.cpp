@@ -3,8 +3,8 @@
 #include <utility>
 
 namespace jadmin {
-CSType::CSType(std::shared_ptr<JAdminContext> context_) : context(std::move(context_)) {
-  query = sqlb::Query(sqlb::ObjectIdentifier("material", "cs_type", "ct"));
+CSType::CSType(std::shared_ptr<websocket::JAdminContext> context_) : context(std::move(context_)) {
+  query = sql::Query(sql::ObjectIdentifier("material", "cs_type", "ct"));
   setupTable();
 }
 
@@ -31,31 +31,31 @@ nlohmann::json CSType::handleEvent(nlohmann::json event, unsigned long next,
 void CSType::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
-      sqlb::SelectedColumn({"Id", "id", "", "ct", PG_TYPES::INT8, false}),
-      //            sqlb::SelectedColumn({"Rank", "rank", "", "ct",
-      //            PG_TYPES::INT4, false}), sqlb::SelectedColumn({"Code",
+      sql::SelectedColumn({"Id", "id", "", "ct", PG_TYPES::INT8, false}),
+      //            sql::SelectedColumn({"Rank", "rank", "", "ct",
+      //            PG_TYPES::INT4, false}), sql::SelectedColumn({"Code",
       //            "slug", "", "ct", PG_TYPES::TEXT, true}),
-      sqlb::SelectedColumn({"Name", "name", "", "ct", PG_TYPES::TEXT, true}),
-      //            sqlb::SelectedColumn({"Created By", "create_user_id", "",
+      sql::SelectedColumn({"Name", "name", "", "ct", PG_TYPES::TEXT, true}),
+      //            sql::SelectedColumn({"Created By", "create_user_id", "",
       //            "ct", PG_TYPES::INT8, true, 1}),
-      //            sqlb::SelectedColumn({"u1_username", "username", "", "u1",
+      //            sql::SelectedColumn({"u1_username", "username", "", "u1",
       //            PG_TYPES::TEXT, false, 0, 0, false}),
-      //            sqlb::SelectedColumn({"Updated By", "update_user_id", "",
+      //            sql::SelectedColumn({"Updated By", "update_user_id", "",
       //            "ct", PG_TYPES::INT8, true, 1}),
-      //            sqlb::SelectedColumn({"u2_username", "username", "", "u2",
+      //            sql::SelectedColumn({"u2_username", "username", "", "u2",
       //            PG_TYPES::TEXT, false, 0, 0, false}),
-      //            sqlb::SelectedColumn({"Create Time", "inserted_at", "",
+      //            sql::SelectedColumn({"Create Time", "inserted_at", "",
       //            "ct", PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-      //            sqlb::SelectedColumn({"Update Time", "updated_at", "", "ct",
+      //            sql::SelectedColumn({"Update Time", "updated_at", "", "ct",
       //            PG_TYPES::TIMESTAMP, true, 0, 0, false}),
   });
 
-  //    auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
-  //    auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
+  //    auto u1 = sql::ObjectIdentifier("entity", "entity_user", "u1");
+  //    auto u2 = sql::ObjectIdentifier("entity", "entity_user", "u2");
 
   query.setJoins({
-      //            sqlb::Join("left", u1, "ct.create_user_id = u1.id"),
-      //            sqlb::Join("left", u2, "ct.update_user_id = u2.id"),
+      //            sql::Join("left", u1, "ct.create_user_id = u1.id"),
+      //            sql::Join("left", u2, "ct.update_user_id = u2.id"),
   });
 }
 

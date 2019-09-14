@@ -2,9 +2,9 @@
 #include "madminactor.h"
 
 #include "madminservices.h"
-MAdminActor::MAdminActor(caf::actor_config & cfg)
-    : caf::event_based_actor(cfg) {
-}
+namespace superactor {
+MAdminActor::MAdminActor(caf::actor_config &cfg)
+    : caf::event_based_actor(cfg) {}
 
 caf::behavior MAdminActor::make_behavior() {
   return {
@@ -20,11 +20,12 @@ caf::behavior MAdminActor::make_behavior() {
       }};
 }
 
-nlohmann::json MAdminActor::handleTextMessage(const drogon::WebSocketConnectionPtr & wsConnPtr, const nlohmann::json & in) {
+nlohmann::json MAdminActor::handleTextMessage(
+    const drogon::WebSocketConnectionPtr &wsConnPtr, const nlohmann::json &in) {
   if (!in.is_array() || !in[0].is_array() || !in[0][0].is_string()) {
     return nlohmann::json::array();
   }
-  auto contx = wsConnPtr->getContext<MAdminContext>();
+  auto contx = wsConnPtr->getContext<websocket::MAdminContext>();
   auto evt = in[0][0].get<std::string>();
   if (evt == "auth") {
     return handleService<madmin::Auth>(contx, in);
@@ -41,10 +42,11 @@ nlohmann::json MAdminActor::handleTextMessage(const drogon::WebSocketConnectionP
   }
 }
 
-nlohmann::json MAdminActor::handleBinaryMessage(const drogon::WebSocketConnectionPtr & wsConnPtr, std::string & message) {
+nlohmann::json MAdminActor::handleBinaryMessage(
+    const drogon::WebSocketConnectionPtr &wsConnPtr, std::string &message) {
   nlohmann::json event;
   try {
-    auto contx = wsConnPtr->getContext<MAdminContext>();
+    auto contx = wsConnPtr->getContext<websocket::MAdminContext>();
     long c = contx->sessionId();
     auto sqlSession =
         "SELECT event FROM music.temp_file_meta where session_id = $1";
@@ -66,7 +68,7 @@ nlohmann::json MAdminActor::handleBinaryMessage(const drogon::WebSocketConnectio
         SPDLOG_TRACE("byte position of error:", e.byte);
         nlohmann::json j =
             std::string("cant parse json reason: ") + e.what() + event.dump();
-        WsFns::sendJson(wsConnPtr, j);
+        websocket::WsFns::sendJson(wsConnPtr, j);
       }
     }
   } catch (const std::exception &e) {
@@ -80,3 +82,4 @@ nlohmann::json MAdminActor::handleBinaryMessage(const drogon::WebSocketConnectio
   return ret;
 }
 
+}  // namespace superactor

@@ -4,7 +4,7 @@
 #include <string>
 
 #include <drogon/WebSocketController.h>
-
+namespace websocket {
 struct ContextUser {
   long id{0};
   std::string type{""};
@@ -29,5 +29,5 @@ class MAdminContext {
   ContextUser user;
   const drogon::WebSocketConnectionPtr &wsConnPtr;
 };
-
+}  // namespace websocket
 #endif  // CONTEXT_H

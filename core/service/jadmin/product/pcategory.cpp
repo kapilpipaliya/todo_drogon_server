@@ -3,9 +3,9 @@
 #include <utility>
 namespace jadmin {
 
-PCategory::PCategory(std::shared_ptr<JAdminContext> context_)
+PCategory::PCategory(std::shared_ptr<websocket::JAdminContext> context_)
     : context(std::move(context_)) {
-  query = sqlb::Query(sqlb::ObjectIdentifier("product", "category", "c"));
+  query = sql::Query(sql::ObjectIdentifier("product", "category", "c"));
   setupTable();
 }
 
@@ -32,43 +32,43 @@ nlohmann::json PCategory::handleEvent(nlohmann::json event, unsigned long next,
 void PCategory::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
-      sqlb::SelectedColumn({"Id", "id", "", "c", PG_TYPES::INT8, false}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn({"Id", "id", "", "c", PG_TYPES::INT8, false}),
+      sql::SelectedColumn(
           {"Parent", "parent_id", "", "c", PG_TYPES::INT8, true, 2, 1}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"p_slug", "slug", "", "p", PG_TYPES::TEXT, false, 0, 0, false}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"p_name", "name", "", "p", PG_TYPES::TEXT, false, 0, 0, false}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Position", "position", "", "c", PG_TYPES::INT4, true}),
-      sqlb::SelectedColumn({"Name", "name", "", "c", PG_TYPES::TEXT, true}),
-      sqlb::SelectedColumn({"Code", "slug", "", "c", PG_TYPES::TEXT, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn({"Name", "name", "", "c", PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"Code", "slug", "", "c", PG_TYPES::TEXT, true}),
+      sql::SelectedColumn(
           {"Description", "description", "", "c", PG_TYPES::TEXT, true}),
-      sqlb::SelectedColumn(
+      sql::SelectedColumn(
           {"Display Type", "display_type", "", "c", PG_TYPES::TEXT, true}),
-      sqlb::SelectedColumn({"Created By", "create_user_id", "", "c",
+      sql::SelectedColumn({"Created By", "create_user_id", "", "c",
                             PG_TYPES::INT8, true, 1, 0, false}),
-      sqlb::SelectedColumn({"u1_username", "username", "", "u1", PG_TYPES::TEXT,
+      sql::SelectedColumn({"u1_username", "username", "", "u1", PG_TYPES::TEXT,
                             false, 0, 0, false}),
-      sqlb::SelectedColumn({"Updated By", "update_user_id", "", "c",
+      sql::SelectedColumn({"Updated By", "update_user_id", "", "c",
                             PG_TYPES::INT8, true, 1, 0, false}),
-      sqlb::SelectedColumn({"u2_username", "username", "", "u2", PG_TYPES::TEXT,
+      sql::SelectedColumn({"u2_username", "username", "", "u2", PG_TYPES::TEXT,
                             false, 0, 0, false}),
-      sqlb::SelectedColumn({"Create Time", "inserted_at", "", "c",
+      sql::SelectedColumn({"Create Time", "inserted_at", "", "c",
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
-      sqlb::SelectedColumn({"Update Time", "updated_at", "", "c",
+      sql::SelectedColumn({"Update Time", "updated_at", "", "c",
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
   });
 
-  auto p = sqlb::ObjectIdentifier("product", "category", "p");
-  auto u1 = sqlb::ObjectIdentifier("entity", "entity_user", "u1");
-  auto u2 = sqlb::ObjectIdentifier("entity", "entity_user", "u2");
+  auto p = sql::ObjectIdentifier("product", "category", "p");
+  auto u1 = sql::ObjectIdentifier("entity", "entity_user", "u1");
+  auto u2 = sql::ObjectIdentifier("entity", "entity_user", "u2");
 
   query.setJoins({
-      sqlb::Join("left", p, "c.parent_id = p.id"),
-      sqlb::Join("left", u1, "c.create_user_id = u1.id"),
-      sqlb::Join("left", u2, "c.update_user_id = u2.id"),
+      sql::Join("left", p, "c.parent_id = p.id"),
+      sql::Join("left", u1, "c.create_user_id = u1.id"),
+      sql::Join("left", u2, "c.update_user_id = u2.id"),
   });
 }
 

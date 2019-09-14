@@ -3,7 +3,7 @@
 #include <drogon/WebSocketController.h>
 #include "json.hpp"
 #include "spdlogfix.h"
-
+namespace websocket {
 class WsFns {
  public:
   WsFns();
@@ -11,5 +11,5 @@ class WsFns {
   static void sendJson(const drogon::WebSocketConnectionPtr &wsConnPtr,
                        nlohmann::json &j);
 };
-
+}  // namespace websocket
 #endif  // WSFNS_H

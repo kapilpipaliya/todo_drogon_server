@@ -3,7 +3,7 @@
 #include <utility>
 
 using check_permission = caf::atom_constant<caf::atom("permis")>;
-
+namespace actor {
 Permission::Permission(caf::actor_config &cfg, nlohmann::json in)
     : caf::event_based_actor(cfg), in(std::move(in)) {
   running_job.assign([=, this](check_permission) { blocking_run(); });
@@ -21,3 +21,4 @@ caf::behavior Permission::make_behavior() {
     become(running_job);
   });
 }
+}  // namespace actor

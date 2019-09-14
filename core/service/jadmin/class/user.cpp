@@ -1,13 +1,13 @@
 #include "user.h"
 #include <chrono>
 #include <utility>
-#include "../../dba.h"
+#include "../../../sql/dba.h"
 
 // using namespace std::chrono;
 namespace jadmin {
-User::User(std::shared_ptr<JAdminContext> context_)
+User::User(std::shared_ptr<websocket::JAdminContext> context_)
     : context(std::move(context_)) {
-  query = sqlb::Query(sqlb::ObjectIdentifier("music", "user", "e"));
+  query = sql::Query(sql::ObjectIdentifier("music", "user", "e"));
   setupTable();
 }
 // User::User(long user_id)

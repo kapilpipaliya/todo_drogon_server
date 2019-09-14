@@ -10,7 +10,7 @@ static std::string duplicate_char(std::string str, char to_replace) {
   return str;
 }
 
-namespace sqlb {
+namespace sql {
 
 static escapeQuoting customQuoting = DoubleQuotes;
 
@@ -56,4 +56,4 @@ bool ObjectIdentifier::fromSerialised(const std::string& serialised) {
   return true;
 }
 
-}  // namespace sqlb
+}  // namespace sql

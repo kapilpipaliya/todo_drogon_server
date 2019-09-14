@@ -3,14 +3,14 @@
 #include <boost/filesystem.hpp>
 #include <utility>
 #include "../../../../wscontroller/wsfns.h"
+#include "../../../sql/dba.h"
 #include "../../../sql/query.h"
 #include "../../../strfns.h"
-#include "../../dba.h"
 #include "session.h"
 #include "spdlogfix.h"
 
 namespace jadmin {
-Auth::Auth(std::shared_ptr<JAdminContext> context_)
+Auth::Auth(std::shared_ptr<websocket::JAdminContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }
@@ -220,7 +220,7 @@ nlohmann::json Auth::thumb_data( nlohmann::json event, nlohmann::json args)
     ret[1] = event;
 
     batch[0] = ret;
-    WsFns::sendJson(wsConnPtr, batch);
+    websocket::WsFns::sendJson(wsConnPtr, batch);
 
     namespace fs = boost::filesystem;
     auto home = fs::path(getenv("HOME"));
@@ -316,7 +316,7 @@ nlohmann::json Auth::save_setting_attachment(const nlohmann::json & /*event*/,
 
     // Insert Image
     auto temp_image_table =
-        sqlb::ObjectIdentifier("setting", "temp_image_id", "pa");
+        sql::ObjectIdentifier("setting", "temp_image_id", "pa");
     std::string strSql =
         "INSERT INTO %1.%2 (name, size, type) VALUES ($1, $2, $3) RETURNING "
         "id";

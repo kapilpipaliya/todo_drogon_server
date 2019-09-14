@@ -1,7 +1,7 @@
 #include "useractorbase.h"
 #include "./wscontroller/wsfns.h"
 #include "spdlogfix.h"
-
+namespace superactor {
 UserActorBase::UserActorBase() = default;
 
 UserActorBase::~UserActorBase() {}
@@ -25,30 +25,30 @@ void UserActorBase::blocking_run(
             }
           }
           if (!out.empty()) {
-            WsFns::sendJson(wsConnPtr, out);
+            websocket::WsFns::sendJson(wsConnPtr, out);
           } else {
             nlohmann::json j =
                 "Message cant served: maybe not valid events in batch: " +
                 message;
-            WsFns::sendJson(wsConnPtr, j);
+            websocket::WsFns::sendJson(wsConnPtr, j);
           }
         } else {
           nlohmann::json j = "Invalid Message only array handled: " + message;
-          WsFns::sendJson(wsConnPtr, j);
+          websocket::WsFns::sendJson(wsConnPtr, j);
         }
       } catch (nlohmann::json::parse_error &e) {
         SPDLOG_TRACE("message: {}", e.what());
         SPDLOG_TRACE("exception id: {}", e.id);
         SPDLOG_TRACE("byte position of error:", e.byte);
         nlohmann::json j = std::string("cant parse json reason: ") + e.what();
-        WsFns::sendJson(wsConnPtr, j);
+        websocket::WsFns::sendJson(wsConnPtr, j);
       }
       break;
     }
     case drogon::WebSocketMessageType::Binary: {
       auto result = handleBinaryMessage(wsConnPtr, message);
       if (!result.is_null()) {
-        WsFns::sendJson(wsConnPtr, result);
+        websocket::WsFns::sendJson(wsConnPtr, result);
       }
       break;
     }
@@ -56,3 +56,4 @@ void UserActorBase::blocking_run(
       break;
   }
 }
+}  // namespace superactor
