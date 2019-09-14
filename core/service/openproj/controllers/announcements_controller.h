@@ -5,31 +5,31 @@ class AnnouncementsController : public ApplicationController {
   // before_action :require_admin
 
    void edit() {
-    this->announcement = Announcement.only_one
+//    this->announcement = Announcement.only_one
   }
 
    void update() {
-    this->announcement = Announcement.only_one
-    this->announcement.attributes = announcement_params
+//    this->announcement = Announcement.only_one
+//    this->announcement.attributes = announcement_params
 
-    if ( this->announcement.save) {
-      flash[:notice] = t(:notice_successful_update)
-    }
+//    if ( this->announcement.save) {
+//      flash[:notice] = t(:notice_successful_update)
+//    }
 
-    redirect_to action: 'edit'
+//    redirect_to action: 'edit'
   }
 
   private:
 
    void default_breadcrumb() {
-    t(:label_announcement)
+//    t(:label_announcement)
   }
 
-   void show_local_breadcrumb() {
-    true
+   bool show_local_breadcrumb() {
+    return true;
   }
 
    void announcement_params() {
-    params.require(:announcement).permit('text', 'show_until', 'active')
+//    params.require(:announcement).permit('text', 'show_until', 'active')
   }
-}
+};

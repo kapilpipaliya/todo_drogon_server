@@ -1,5 +1,6 @@
 #include "application_controller.h"
 class MyController : public ApplicationController {
+public:
   // include Concerns::PasswordConfirmation
   // include Concerns::UserPasswordChange
   // layout 'my'
@@ -17,32 +18,32 @@ class MyController : public ApplicationController {
    void account() {}
 
    void update_account() {
-    write_settings this->user, request, permitted_params, params
+//    write_settings this->user, request, permitted_params, params
 
-    // if ( mail changed, expire all other sessions) {
-    if ( this->user.previous_changes['mail'] && ::Sessions::DropOtherSessionsService.call(this->user, session)) {
-      flash[:info] = "#{flash[:notice]} #{t(:notice_account_other_session_expired)}"
-      flash[:notice] = nil
-    }
-  }
+//    // if ( mail changed, expire all other sessions) {
+//    if ( this->user.previous_changes['mail'] && ::Sessions::DropOtherSessionsService.call(this->user, session)) {
+//      flash[:info] = "#{flash[:notice]} #{t(:notice_account_other_session_expired)}"
+//      flash[:notice] = nil
+//    }
+//  }
 
-   void settings() {}
+//   void settings() {}
 
-   void update_settings() {
-    write_settings this->user, request, permitted_params, params
+//   void update_settings() {
+//    write_settings this->user, request, permitted_params, params
   }
 
   // Manage user's password
    void password() {
-    this->username = this->user.login
-    redirect_if_password_change_not_allowed_for(this->user)
+//    this->username = this->user.login
+//    redirect_if_password_change_not_allowed_for(this->user)
   }
 
   // When making changes here, also check AccountController.change_password
    void change_password() {
-    change_password_flow(user: this->user, params: params, update_legacy: false) {
-      redirect_to action: 'password'
-    }
+//    change_password_flow(user: this->user, params: params, update_legacy: false) {
+//      redirect_to action: 'password'
+//    }
   }
 
   // Administer access tokens
@@ -52,97 +53,97 @@ class MyController : public ApplicationController {
    void mail_notifications() {}
 
    void update_mail_notifications() {
-    write_email_settings(redirect_to: :mail_notifications)
+//    write_email_settings(redirect_to: :mail_notifications)
   }
 
   // Create a new feeds key
    void generate_rss_key() {
-    if ( request.post?) {
-      token = Token::Rss.create!(user: current_user)
-      flash[:info] = [
-        t('my.access_token.notice_reset_token', type: 'RSS'),
-        "<strong>#{token.plain_value}</strong>".html_safe,
-        t('my.access_token.token_value_warning')
-      ]
-    }
-  rescue StandardError => e
-    Rails.logger.error "Failed to reset user ##{current_user.id} RSS key: #{e}"
-    flash[:error] = t('my.access_token.failed_to_reset_token', error: e.message)
-  ensure
-    redirect_to action: 'access_token'
+//    if ( request.post?) {
+//      token = Token::Rss.create!(user: current_user)
+//      flash[:info] = [
+//        t('my.access_token.notice_reset_token', type: 'RSS'),
+//        "<strong>#{token.plain_value}</strong>".html_safe,
+//        t('my.access_token.token_value_warning')
+//      ]
+//    }
+//  rescue StandardError => e
+//    Rails.logger.error "Failed to reset user ##{current_user.id} RSS key: #{e}"
+//    flash[:error] = t('my.access_token.failed_to_reset_token', error: e.message)
+//  ensure
+//    redirect_to action: 'access_token'
   }
 
   // Create a new API key
    void generate_api_key() {
-    if ( request.post?) {
-      token = Token::Api.create!(user: current_user)
-      flash[:info] = [
-        t('my.access_token.notice_reset_token', type: 'API'),
-        "<strong>#{token.plain_value}</strong>".html_safe,
-        t('my.access_token.token_value_warning')
-      ]
-    }
-  rescue StandardError => e
-    Rails.logger.error "Failed to reset user ##{current_user.id} API key: #{e}"
-    flash[:error] = t('my.access_token.failed_to_reset_token', error: e.message)
-  ensure
-    redirect_to action: 'access_token'
+//    if ( request.post?) {
+//      token = Token::Api.create!(user: current_user)
+//      flash[:info] = [
+//        t('my.access_token.notice_reset_token', type: 'API'),
+//        "<strong>#{token.plain_value}</strong>".html_safe,
+//        t('my.access_token.token_value_warning')
+//      ]
+//    }
+//  rescue StandardError => e
+//    Rails.logger.error "Failed to reset user ##{current_user.id} API key: #{e}"
+//    flash[:error] = t('my.access_token.failed_to_reset_token', error: e.message)
+//  ensure
+//    redirect_to action: 'access_token'
   }
 
    void default_breadcrumb() {
-    l(:label_my_account)
+//    l(:label_my_account)
   }
 
-   void show_local_breadcrumb() {
-    false
+   bool show_local_breadcrumb() {
+    return false;
   }
 
   private:
 
-   void redirect_if_password_change_not_allowed_for(user) {
-    unless user.change_password_allowed?
-      flash[:error] = l(:notice_can_t_change_password)
-      redirect_to action: 'account'
-      return true
-    }
-    false
-  }
+//   void redirect_if_password_change_not_allowed_for(user) {
+//    unless user.change_password_allowed?
+//      flash[:error] = l(:notice_can_t_change_password)
+//      redirect_to action: 'account'
+//      return true
+//    }
+//    false
+//  }
 
-   void write_email_settings(redirect_to:) {
-    update_service = UpdateUserEmailSettingsService.new(this->user)
-    if ( update_service.call(mail_notification: permitted_params.user[:mail_notification],) {
-                           self_notified: params[:self_notified] == '1',
-                           notified_project_ids: params[:notified_project_ids])
-      flash[:notice] = l(:notice_account_updated)
-      redirect_to(action: redirect_to)
-    }
-  }
+//   void write_email_settings(redirect_to:) {
+//    update_service = UpdateUserEmailSettingsService.new(this->user)
+//    if ( update_service.call(mail_notification: permitted_params.user[:mail_notification],) {
+//                           self_notified: params[:self_notified] == '1',
+//                           notified_project_ids: params[:notified_project_ids])
+//      flash[:notice] = l(:notice_account_updated)
+//      redirect_to(action: redirect_to)
+//    }
+//  }
 
-   void write_settings(current_user, request, permitted_params, params) {
-    result = Users::UpdateService
-             .new(current_user: current_user)
-             .call(permitted_params, params)
+//   void write_settings(current_user, request, permitted_params, params) {
+//    result = Users::UpdateService
+//             .new(current_user: current_user)
+//             .call(permitted_params, params)
 
-    if ( result&.success) {
-      flash[:notice] = t(:notice_account_updated)
-    else
-      errors = result ? result.errors.full_messages.join("\n") : ''
-      flash[:error] = [t(:notice_account_update_failed)]
-      flash[:error] << errors
-    }
+//    if ( result&.success) {
+//      flash[:notice] = t(:notice_account_updated)
+//    else
+//      errors = result ? result.errors.full_messages.join("\n") : ''
+//      flash[:error] = [t(:notice_account_update_failed)]
+//      flash[:error] << errors
+//    }
 
-    redirect_back(fallback_location: my_account_path)
-  }
+//    redirect_back(fallback_location: my_account_path)
+//  }
 
-   void has_tokens?() {
-    Setting.feeds_enabled? || Setting.rest_api_enabled?
+   bool has_tokens() {
+//    Setting.feeds_enabled? || Setting.rest_api_enabled?
   }
 
    void set_current_user() {
-    this->user = current_user
+//    this->user = current_user
   }
 
    void get_current_layout() {
-    this->user.pref[:my_page_layout] || DEFAULT_LAYOUT.dup
+//    this->user.pref[:my_page_layout] || DEFAULT_LAYOUT.dup
   }
-}
+};

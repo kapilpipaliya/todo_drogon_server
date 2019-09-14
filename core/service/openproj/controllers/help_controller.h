@@ -5,9 +5,9 @@ class HelpController : public ApplicationController {
    void keyboard_shortcuts() {}
 
    void text_formatting() {
-    default_link = OpenProject::Static::Links[:text_formatting][:href]
-    help_link = OpenProject::Configuration.force_formatting_help_link.presence || default_link
+//    default_link = OpenProject::Static::Links[:text_formatting][:href]
+//    help_link = OpenProject::Configuration.force_formatting_help_link.presence || default_link
 
-    redirect_to help_link
+//    redirect_to help_link
   }
-}
+};

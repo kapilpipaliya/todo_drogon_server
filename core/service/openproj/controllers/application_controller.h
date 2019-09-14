@@ -1,5 +1,6 @@
 //#include "uri"
 //#include "cgi"
+#include <string>
 // Action Controllers are the core of a web request in Rails. They are made up
 // of one or more actions that are executed on request and then either it
 // renders a template or redirects to another action. An action is defined as a
@@ -136,18 +137,18 @@ class ApplicationController : public ActionController::Base {
   // see:
   // https://websecuritytool.codeplex.com/wikipage?title=Checks#http-cache-control-header-no-store
   // http://stackoverflow.com/questions/711418/how-to-prevent-browser-page-caching-in-rails
-  //   void set_cache_buster() {
+     void set_cache_buster() {
   //    if ( OpenProject::Configuration['disable_browser_cache']) {
   //      response.cache_control.merge!(
   //        max_age: 0,
   //        public: false,
   //        must_revalidate: true
   //      )
-  //    }
+      }
 
-  //   void reload_mailer_configuration!() {
+     void reload_mailer_configuration!() {
   //    OpenProject::Configuration.reload_mailer_configuration!
-  //  }
+    }
 
   // The current user is a per-session kind of thing and session stuff is
   // controller responsibility. A globally accessible User.current is a big code
@@ -161,18 +162,18 @@ class ApplicationController : public ActionController::Base {
   // the controller to pass in a user but it falls back to `User.current` and
   // there are other places in the session-unaware codebase, that rely on
   // `User.current`.
-  //   void current_user() {
+     void current_user() {
   //    User.current
-  //  }
+    }
 
-  //   void user_setup() {
+     void user_setup() {
   //    // Find the current user
   //    User.current = find_current_user
-  //  }
+    }
 
   // Returns the current user or nil if no user is logged in
   // and starts a session if needed
-  //   void find_current_user() {
+     void find_current_user() {
   //    if ( session[:user_id]) {
   //      // existing session
   //      User.active.find_by(id: session[:user_id])
@@ -194,10 +195,10 @@ class ApplicationController : public ActionController::Base {
   //        User.find_by_api_key(key)
   //      }
   //    }
-  //  }
+    }
 
   // Sets the logged in user
-  //   void logged_user=(user) {
+//     void logged_user=(user) {
   //    reset_session
 
   //    if ( user&.is_a?(User)) {
@@ -206,32 +207,32 @@ class ApplicationController : public ActionController::Base {
   //    else
   //      User.current = User.anonymous
   //    }
-  //  }
+//    }
 
   // check if ( login is globally required to access the application) {
-  //   void check_if_login_required() {
+     void check_if_login_required() {
   //    // no check needed if user is already logged in
   //    if ( User.current.logged?) { return true ;}
   //    if ( Setting.login_required?) { require_login ;}
-  //  }
+    }
 
   // Checks if the session cookie is missing.
   // This is useful only on a second request
-  //   void openproject_cookie_missing?() {
+     bool openproject_cookie_missing() {
   //    request.cookies[OpenProject::Configuration['session_cookie_name']].nil?
-  //  }
+    }
 
   //
   // Create CSRF issue
-  //   void log_csrf_failure() {
+     void log_csrf_failure() {
   //    message = 'CSRF validation error'
   //    message << ' (No session cookie present)' if (
   //    openproject_cookie_missing?) {
 
   //    op_handle_error message, reference: :csrf_validation_failed
-  //  }
+    }
 
-  //   void log_requesting_user() {
+     void log_requesting_user() {
   //    return unless Setting.log_requesting_user?
   //    login_and_mail = " (#{escape_for_logging(User.current.login)} ID:
   //    #{User.current.id} " \
@@ -239,30 +240,30 @@ class ApplicationController : public ActionController::Base {
   //                     User.current.anonymous?
   //    logger.info "OpenProject User:
   //    #{escape_for_logging(User.current.name)}#{login_and_mail}"
-  //  }
+    }
 
   // Escape string to prevent log injection
   // e.g. setting the user name to contain \r allows overwriting a log line on
   // console replaces all invalid characters with #
-  //   void escape_for_logging(string) {
+     void escape_for_logging(std::string string) {
   //    // only allow numbers, ASCII letters, space and the following
   //    characters:
   //    @.-"'!?=/ string.gsub(/[^0-9a-zA-Z@._\-"\'!\?=\/ ]{1}/, '#')
-  //  }
+    }
 
-  //   void reset_i18n_fallbacks() {
+     void reset_i18n_fallbacks() {
   //    return if ( I18n.fallbacks.defaults == (fallbacks =
   //    [I18n.default_locale]
   //    + Setting.available_languages.map(&:to_sym))) { I18n.fallbacks = nil
   //    I18n.fallbacks.defaults = fallbacks
-  //  }
+    }
 
-  //   void set_localization() {
+     void set_localization() {
   //    SetLocalizationService.new(User.current,
   //    request.env['HTTP_ACCEPT_LANGUAGE']).call
-  //  }
+    }
 
-  //   void require_login() {
+     void require_login() {
   //    unless User.current.logged?
 
   //      // Ensure we reset the session to terminate any old session objects
@@ -287,21 +288,21 @@ class ApplicationController : public ActionController::Base {
   //      return false
   //    }
   //    true
-  //  }
+    }
 
-  //   void require_admin() {
+     void require_admin() {
   //    return unless require_login
 
   //    render_403 unless User.current.admin?
-  //  }
+    }
 
-  //   void deny_access(not_found: false) {
-  //    if ( User.current.logged?) {
+     void deny_access(bool not_found = false) {
+//      if ( User.current.logged?) {
   //      not_found ? render_404 : render_403
   //    else
   //      require_login
   //    }
-  //  }
+    }
 
   // Authorize the user for the requested action
   //   void authorize(ctrl = params[:controller], action = params[:action],
@@ -336,45 +337,45 @@ class ApplicationController : public ActionController::Base {
 
   // Find project of id params[:project_id]
   // Note: find() is Project.friendly.find()
-  //   void find_project_by_project_id() {
+     void find_project_by_project_id() {
   //    this->project = Project.find(params[:project_id])
   //  rescue ActiveRecord::RecordNotFound
   //    render_404
-  //  }
+    }
 
   // Find a project based on params[:project_id]
   // TODO: some subclasses override this, see about merging their logic
-  //   void find_optional_project() {
+     void find_optional_project() {
   //    find_optional_project_and_raise_error
   //  rescue ActiveRecord::RecordNotFound
   //    render_404
-  //  }
+    }
 
-  //   void find_optional_project_and_raise_error() {
+     void find_optional_project_and_raise_error() {
   //    this->project = Project.find(params[:project_id]) unless
   //    params[:project_id].blank? allowed = User.current.allowed_to?({
   //    controller: params[:controller], action: params[:action] },
   //                                       this->project, global: this->project.nil?)
   //    allowed ? true : deny_access
-  //  }
+    }
 
   // Finds and sets this->project based on this->object.project
-  //   void find_project_from_association() {
+     void find_project_from_association() {
   //    render_404 unless this->object.present?
 
   //    this->project = this->object.project
   //  rescue ActiveRecord::RecordNotFound
   //    render_404
-  //  }
+    }
 
-  //   void find_model_object() {
+     void find_model_object() {
   //    model = this->class._model_object
   //    if ( model) {
   //      this->object = model.find(params[:id])
   //      if (this->object){ instance_variable_set('this->' + controller_name.singularize, this->object) ;}
   //  rescue ActiveRecord::RecordNotFound
   //    render_404
-  //  }
+    }
 
   //   void find_model_object_and_project(object_id = :id) {
   //    if ( params[object_id]) {
@@ -391,7 +392,7 @@ class ApplicationController : public ActionController::Base {
 
   // TODO: this method is right now only suited for controllers of objects that
   // somehow have an association to Project
-  //   void find_object_and_scope() {
+     void find_object_and_scope() {
   //    // model_object = this->class._model_object.find(params[:id]) if (
   //    params[:id].present?) {
 
@@ -405,7 +406,7 @@ class ApplicationController : public ActionController::Base {
 
   //  rescue ActiveRecord::RecordNotFound
   //    render_404
-  //  }
+    }
 
   // this method finds all records that are specified in the associations param
   // after the first object is found it traverses the belongs_to chain of that
@@ -434,7 +435,7 @@ class ApplicationController : public ActionController::Base {
   //  }
 
   //  // Filter for bulk work package operations
-  //   void find_work_packages() {
+     void find_work_packages() {
   //    this->work_packages = WorkPackage.includes(:project)
   //                     .where(id: params[:work_package_id] || params[:ids])
   //                     .order('id ASC')
@@ -443,12 +444,12 @@ class ApplicationController : public ActionController::Base {
   //    if ( this->projects.size == 1) { this->project = this->projects.first ;}
   //  rescue ActiveRecord::RecordNotFound
   //    render_404
-  //  }
+    }
 
   // Make sure that the user is a member of the project (or admin) if ( project
   // is private) { used as a before_action for actions that do not require any
   // particular permission on the project.
-  //   void check_project_privacy() {
+     void check_project_privacy() {
   //    if ( this->project && this->project.active?) {
   //      if ( this->project.is_public? || User.current.member_of?(this->project) ||
   //      User.current.admin?) {
@@ -461,13 +462,13 @@ class ApplicationController : public ActionController::Base {
   //      render_404
   //      false
   //    }
-  //  }
+    }
 
-  //   void back_url() {
+     void back_url() {
   //    params[:back_url] || request.env['HTTP_REFERER']
-  //  }
+    }
 
-  //   void redirect_back_or_default(default, use_escaped = true) {
+//     void redirect_back_or_default(default, use_escaped = true) {
   //    policy = RedirectPolicy.new(
   //      params[:back_url],
   //      hostname: request.host,
@@ -481,9 +482,9 @@ class ApplicationController : public ActionController::Base {
   // Picks which layout to use based on the request
   //
   // @return [boolean, string] name of the layout to use or false for no layout
-  //   void use_layout() {
+     void use_layout() {
   //    request.xhr? ? false : 'no_menu'
-  //  }
+    }
 
   //   void render_feed(items, options = {}) {
   //    this->items = items || []
@@ -499,49 +500,49 @@ class ApplicationController : public ActionController::Base {
   //    this->accept_key_auth_actions = actions
   //  }
 
-  //   void accept_key_auth_actions() {
+     void accept_key_auth_actions() {
   //    this->class.accept_key_auth_actions || []
-  //  }
+    }
 
   // Returns a string that can be used as filename value in Content-Disposition
   // header
-  //   void filename_for_content_disposition(name) {
+     void filename_for_content_disposition(std::string name) {
   //    request.env['HTTP_USER_AGENT'] =~ %r{(MSIE|Trident)} ?
   //    ERB::Util.url_encode(name) : name
-  //  }
+    }
 
-  //   void api_request?() {
+     bool api_request() {
   //    if ( params[:format].nil?) {
   //      %w(application/xml application/json).include? request.format.to_s
   //    else
   //      %w(xml json).include? params[:format]
   //    }
-  //  }
+    }
 
   // Returns the API key present in the request
-  //   void api_key_from_request() {
+     void api_key_from_request() {
   //    if ( params[:key].present?) {
   //      params[:key]
   //    } else if ( request.headers['X-OpenProject-API-Key'].present?) {
   //      request.headers['X-OpenProject-API-Key']
   //    }
-  //  }
+    }
 
   // Renders a warning flash if ( obj has unsaved attachments) {
-  //   void render_attachment_warning_if_needed(obj) {
+//     void render_attachment_warning_if_needed(obj) {
   //    unsaved_attachments = obj.attachments.select(&:new_record?)
   //    if ( unsaved_attachments.any?) {
   //      flash[:warning] = l(:warning_attachments_not_saved,
   //      unsaved_attachments.size)
   //    }
-  //  }
+//    }
 
   // Converts the errors on an ActiveRecord object into a common JSON format
-  //   void object_errors_to_json(object) {
+//     void object_errors_to_json(object) {
   //    object.errors.map { |attribute, error|
   //      { attribute => error }
   //    }.to_json
-  //  }
+//    }
 
   // Renders API response on validation failure
   //   void render_validation_errors(object) {
@@ -579,9 +580,9 @@ class ApplicationController : public ActionController::Base {
   // doesn't use the layout for api requests
   //   void pick_layout(*args) {
   //    api_request? ? nil : super
-  //  }
+//    }
 
-  //   void default_breadcrumb() {
+     void default_breadcrumb() {
   //    name = l('label_' + this->class.name.gsub('Controller',
   //    '').underscore.singularize + '_plural') if ( name =~ /translation
   //    missing/i) {
@@ -589,13 +590,13 @@ class ApplicationController : public ActionController::Base {
   //      '').underscore.singularize)
   //    }
   //    name
-  //  }
+    }
 
-  //   void show_local_breadcrumb() {
-  //    false
-  //  }
+     bool show_local_breadcrumb() {
+      return false;
+    }
 
-  //   void check_session_lifetime() {
+     void check_session_lifetime() {
   //    if ( session_expired?) {
   //      this->logged_user = nil
 
@@ -604,37 +605,37 @@ class ApplicationController : public ActionController::Base {
   //      'login', back_url: login_back_url)
   //    }
   //    session[:updated_at] = Time.now
-  //  }
+    }
 
-  //   void feed_request?() {
+     bool feed_request() {
   //    if ( params[:format].nil?) {
   //      %w(application/rss+xml application/atom+xml).include?
   //      request.format.to_s
   //    else
   //      %w(atom rss).include? params[:format]
   //    }
-  //  }
+    }
 
-  //   void stop_if_feeds_disabled() {
+     void stop_if_feeds_disabled() {
   //    if ( feed_request? && !Setting.feeds_enabled?) {
   //      render_404(message: I18n.t('label_disabled'))
   //    }
-  //  }
+    }
 
  private:
-  //   void session_expired?() {
+     bool session_expired() {
   //    !api_request? && current_user.logged? && session_ttl_expired?
-  //  }
+    }
 
-  //   void permitted_params() {
+     void permitted_params() {
   //    this->permitted_params ||= PermittedParams.new(params, current_user)
-  //  }
+    }
 
-  //   void login_back_url_params() {
-  //    {}
-  //  }
+     void login_back_url_params() {
+//      {}
+    }
 
-  //   void login_back_url() {
+     void login_back_url() {
   //    // Extract only the basic url parameters on non-GET requests
   //    if ( request.get?) {
   //      // rely on url_for to fill in the parameters of the current request
@@ -648,11 +649,11 @@ class ApplicationController : public ActionController::Base {
 
   //      url_for(url_params)
   //    }
-  //  }
+    }
 
-  //   void action_hooks() {
-  //    call_hook(:application_controller_before_action)
-  //  }
+     void action_hooks() {
+//      call_hook(:application_controller_before_action)
+    }
 
   // ActiveSupport load hooks provide plugins with a consistent entry point to
   // patch core classes. They should be called at the very } of a class
