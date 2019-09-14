@@ -9,8 +9,6 @@
 
 #include "json.hpp"
 
-// caf::allowed_unsafe_message_type<WebSocketConnectionPtr>;
-// caf::allowed_unsafe_message_type<json>;
 CAF_ALLOW_UNSAFE_MESSAGE_TYPE(drogon::WebSocketConnectionPtr)
 CAF_ALLOW_UNSAFE_MESSAGE_TYPE(nlohmann::json)
 namespace superactor {
@@ -43,5 +41,5 @@ inline void MyCAF::initialiseMainWector() {
 }
 
 extern MyCAF globalCAF;
-}
+}  // namespace superactor
 #endif  // MyCAF_H
