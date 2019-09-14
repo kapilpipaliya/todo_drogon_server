@@ -115,17 +115,17 @@ nlohmann::json madmin::Song::handleEvent(nlohmann::json event,
         }
         nlohmann::json ret;
         ret[0] =
-            simpleJsonSaveResult(event, false, "Please Upload Music First!");
+            websocket::WsFns::successJsonObject(event, false, "Please Upload Music First!");
         return ret;
       }
-      // nlohmann::json ret; ret[0] = simpleJsonSaveResult(event, false, "Please
+      // nlohmann::json ret; ret[0] = websocket::WsFns::successJsonObject(event, false, "Please
       // Upload Music First!"); return ret;
       return query.ins(event, args);  // Make this to pass test.
 
     } catch (const std::exception &e) {
       SPDLOG_TRACE(e.what());
       nlohmann::json ret;
-      ret[0] = simpleJsonSaveResult(event, false, e.what());
+      ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
       return ret;
     }
 

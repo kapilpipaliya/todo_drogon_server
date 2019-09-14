@@ -75,7 +75,6 @@ set(JEWEL_HDR
 #    dotenvformat.h
 #    ciphersettings.h
 
-    jsonfns.h
 
     strfns.h
 )
@@ -96,7 +95,6 @@ actor/validation.cpp
 #    dotenvformat.cpp
 #    ciphersettings.cpp
 
-    jsonfns.cpp
 
     strfns.cpp
 )

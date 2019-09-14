@@ -67,12 +67,12 @@ nlohmann::json Setting::del(nlohmann::json event, nlohmann::json args) {
       throw std::runtime_error("not valid arguments");
     }
     nlohmann::json ret;
-    ret[0] = simpleJsonSaveResult(event, true, "Done");
+    ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
     return ret;
   } catch (const std::exception &e) {
     SPDLOG_TRACE(e.what());
     nlohmann::json ret;
-    ret[0] = simpleJsonSaveResult(event, false, e.what());
+    ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
     return ret;
   }
 }
@@ -95,12 +95,12 @@ nlohmann::json Setting::save(const nlohmann::json &event, nlohmann::json args) {
                         args[0]["value_text"].get<std::string>());
 
       nlohmann::json ret;
-      ret[0] = simpleJsonSaveResult(event, true, "Done");
+      ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
       return ret;
     } catch (const std::exception &e) {
       SPDLOG_TRACE(e.what());
       nlohmann::json ret;
-      ret[0] = simpleJsonSaveResult(event, false, e.what());
+      ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
       return ret;
     }
   } else {
@@ -116,12 +116,12 @@ nlohmann::json Setting::save(const nlohmann::json &event, nlohmann::json args) {
                         args[0]["setting"].dump());
 
       nlohmann::json ret;
-      ret[0] = simpleJsonSaveResult(event, true, "Done");
+      ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
       return ret;
     } catch (const std::exception &e) {
       SPDLOG_TRACE(e.what());
       nlohmann::json ret;
-      ret[0] = simpleJsonSaveResult(event, false, e.what());
+      ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
       return ret;
     }
   }

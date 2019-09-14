@@ -69,12 +69,12 @@ nlohmann::json madmin::CatalogLocal::handleEvent(nlohmann::json event,
     if (args[0].is_array()) {
       if (args[0][0].is_number()) {
         if (delet(args[0][0].get<long>(), "local")) {
-          return {simpleJsonSaveResult(event, true, "Done")};
+          return {websocket::WsFns::successJsonObject(event, true, "Done")};
         }
       }
     }
     // return del(event,args);
-    return {simpleJsonSaveResult(event, false, "UnAuthorised")};
+    return {websocket::WsFns::successJsonObject(event, false, "UnAuthorised")};
   } else if (event_cmp == "count") {
     return query.count(event, args);
   } else {

@@ -261,12 +261,12 @@ nlohmann::json Purity::ins(nlohmann::json event, nlohmann::json args) {
     save_purity_tone_(args, transPtr, purity_id);
 
     nlohmann::json ret;
-    ret[0] = simpleJsonSaveResult(event, true, "Done");
+    ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
     return ret;
   } catch (const std::exception &e) {
     SPDLOG_TRACE(e.what());
     nlohmann::json ret;
-    ret[0] = simpleJsonSaveResult(event, false, e.what());
+    ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
     return ret;
   }
 }
@@ -341,17 +341,17 @@ nlohmann::json Purity::upd(nlohmann::json event, nlohmann::json args) {
       auto pr = Dba::writeInTrans(transPtr, pr_update4, purity_id, ids);
 
       nlohmann::json ret;
-      ret[0] = simpleJsonSaveResult(event, true, "Done");
+      ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
       return ret;
     } catch (const std::exception &e) {
       SPDLOG_TRACE(e.what());
       nlohmann::json ret;
-      ret[0] = simpleJsonSaveResult(event, false, e.what());
+      ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
       return ret;
     }
   }
   nlohmann::json ret;
-  ret[0] = simpleJsonSaveResult(event, false, "Not Valid Structure");
+  ret[0] = websocket::WsFns::successJsonObject(event, false, "Not Valid Structure");
   return ret;
 }
 
@@ -379,12 +379,12 @@ nlohmann::json Purity::del(nlohmann::json event, nlohmann::json args) {
                       post_id);
 
     nlohmann::json ret;
-    ret[0] = simpleJsonSaveResult(event, true, "Done");
+    ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
     return ret;
   } catch (const std::exception &e) {
     SPDLOG_TRACE(e.what());
     nlohmann::json ret;
-    ret[0] = simpleJsonSaveResult(event, false, e.what());
+    ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
     return ret;
   }
 }

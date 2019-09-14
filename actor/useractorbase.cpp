@@ -16,7 +16,6 @@ void UserActorBase::blocking_run(
         if (valin.is_array()) {
           nlohmann::json out(nlohmann::json::array());
           for (const auto &i : valin) {
-            // printJson(valin);
             auto result = handleTextMessage(wsConnPtr, i);
             for (auto &i : result) {
               if (!i.is_null()) {

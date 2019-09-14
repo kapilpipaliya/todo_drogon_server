@@ -2,8 +2,8 @@
 
 #include <chrono>
 
-#include "core/jsonfns.h"
 #include "json.hpp"
+#include "wscontroller/wsfns.h"
 
 #include "spdlogfix.h"
 

@@ -31,13 +31,13 @@ nlohmann::json User::handleEvent(nlohmann::json event, unsigned long next,
   }
   if (event_cmp == "update_password") {
     if (!args.is_array())
-      return {simpleJsonSaveResult(event, false, "Not Valid Args")};
+      return {websocket::WsFns::successJsonObject(event, false, "Not Valid Args")};
     if (get_password() == args[0]["old_password"].get<std::string>()) {
       if (update_password(args[0]["new_password"].get<std::string>())) {
-        return {simpleJsonSaveResult(event, true, "Done")};
+        return {websocket::WsFns::successJsonObject(event, true, "Done")};
       }
     }
-    return {simpleJsonSaveResult(event, false, "UnAuthorised")};
+    return {websocket::WsFns::successJsonObject(event, false, "UnAuthorised")};
   }
   if (event_cmp == "user_types_form_data") {
     return {{event, getUserTypeFormData()}};
@@ -267,12 +267,12 @@ nlohmann::json User::userRegister(const nlohmann::json& event,
         transPtr, strSqlUser, entity_id, args["email"].get<std::string>(),
         args["pass"].get<std::string>(), args["pass"].get<std::string>());
 
-    // simpleJsonSaveResult(event, true, "Done");
+    // websocket::WsFns::successJsonObject(event, true, "Done");
     return userLogin(event, args);
   } catch (const std::exception& e) {
     SPDLOG_TRACE(e.what());
     nlohmann::json ret;
-    ret[0] = simpleJsonSaveResult(event, false, e.what());
+    ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
     return ret;
   }
 }
@@ -297,7 +297,7 @@ nlohmann::json User::userLogin(const nlohmann::json& event,
       // Json writer, or json::dump().
       LOG_INFO << j.dump();
       auto rs = Dba::writeInTrans(transPtr, sqlSession, "user", j.dump());
-      nlohmann::json login_result = simpleJsonSaveResult(event, true, "Done");
+      nlohmann::json login_result = websocket::WsFns::successJsonObject(event, true, "Done");
 
       // ask to save cookie
       nlohmann::json cookie_result;
@@ -318,13 +318,13 @@ nlohmann::json User::userLogin(const nlohmann::json& event,
       return final;
     }
     nlohmann::json ret;
-    ret[0] = simpleJsonSaveResult(event, false, "Error");
+    ret[0] = websocket::WsFns::successJsonObject(event, false, "Error");
     return ret;
 
   } catch (const std::exception& e) {
     SPDLOG_TRACE(e.what());
     nlohmann::json ret;
-    ret[0] = simpleJsonSaveResult(event, false, e.what());
+    ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
     return ret;
   }
 }
@@ -339,7 +339,7 @@ nlohmann::json User::userId(const nlohmann::json& event,
       auto transPtr = clientPtr->newTransaction();
       auto r = Dba::writeInTrans(transPtr, sqlSession, c);
       // send id
-      // simpleJsonSaveResult(event, true, r[0][1].c_str());
+      // websocket::WsFns::successJsonObject(event, true, r[0][1].c_str());
       nlohmann::json jresult;
       jresult[0] = event;
 

@@ -95,12 +95,12 @@ nlohmann::json Metal::ins(nlohmann::json event, nlohmann::json args) {
                       args[0]["melting_point_in_c"].get<float>());
 
     nlohmann::json ret;
-    ret[0] = simpleJsonSaveResult(event, true, "Done");
+    ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
     return ret;
   } catch (const std::exception &e) {
     SPDLOG_TRACE(e.what());
     nlohmann::json ret;
-    ret[0] = simpleJsonSaveResult(event, false, e.what());
+    ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
     return ret;
   }
 }
@@ -214,17 +214,17 @@ nlohmann::json Metal::upd(nlohmann::json event, nlohmann::json args) {
       auto pr4 = Dba::writeInTrans(transPtr, pr_update4, id1, id2, id3);
 
       nlohmann::json ret;
-      ret[0] = simpleJsonSaveResult(event, true, "Done");
+      ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
       return ret;
     } catch (const std::exception &e) {
       SPDLOG_TRACE(e.what());
       nlohmann::json ret;
-      ret[0] = simpleJsonSaveResult(event, false, e.what());
+      ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
       return ret;
     }
   }
   nlohmann::json ret;
-  ret[0] = simpleJsonSaveResult(event, false, "Not Valid Structure");
+  ret[0] = websocket::WsFns::successJsonObject(event, false, "Not Valid Structure");
   return ret;
 }
 }  // namespace jadmin

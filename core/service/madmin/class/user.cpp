@@ -90,13 +90,13 @@ nlohmann::json madmin::User::handleEvent(nlohmann::json event,
     }
   } else if (event_cmp == "update_password") {
     if (!args.is_array() || !args[0].is_object())
-      return {simpleJsonSaveResult(event, false, "Not Valid Args")};
+      return {websocket::WsFns::successJsonObject(event, false, "Not Valid Args")};
     if (get_password() == args[0]["old_password"].get<std::string>()) {
       if (update_password(args[0]["new_password"].get<std::string>())) {
-        return {simpleJsonSaveResult(event, true, "Done")};
+        return {websocket::WsFns::successJsonObject(event, true, "Done")};
       }
     }
-    return {simpleJsonSaveResult(event, false, "UnAuthorised")};
+    return {websocket::WsFns::successJsonObject(event, false, "UnAuthorised")};
   } else if (event_cmp == "user_types_form_data") {
     return {{event, getUserTypeFormData()}};
   } else if (event_cmp == "ins") {
@@ -108,12 +108,12 @@ nlohmann::json madmin::User::handleEvent(nlohmann::json event,
     if (args[0].is_array()) {
       if (args[0][0].is_number()) {
         if (delNew(args[0][0].get<long>())) {
-          return {simpleJsonSaveResult(event, true, "Done")};
+          return {websocket::WsFns::successJsonObject(event, true, "Done")};
         }
       }
     }
     // return del(event,args);
-    return {simpleJsonSaveResult(event, false, "UnAuthorised")};
+    return {websocket::WsFns::successJsonObject(event, false, "UnAuthorised")};
   } else if (event_cmp == "count") {
     return query.count(event, args);
   } else {

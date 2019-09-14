@@ -31,19 +31,19 @@ nlohmann::json Auth::handleEvent(nlohmann::json event, unsigned long next,
         context->setSessionId(session_id);
         context->setUserId(user_id);
         context->setUser();
-        res[0] = simpleJsonSaveResult(event, true, "Done");
+        res[0] = websocket::WsFns::successJsonObject(event, true, "Done");
         res[1] = {{"auth", "set_cookie", 0}, session_id};
         return res;
       }
     }
-    return {simpleJsonSaveResult(event, false, "Error")};
+    return {websocket::WsFns::successJsonObject(event, false, "Error")};
   }
   if (event_cmp == "logout") {
     auto r = logout();
     if (r) {
-      return {simpleJsonSaveResult(event, true, "Done")};
+      return {websocket::WsFns::successJsonObject(event, true, "Done")};
     }
-    return {simpleJsonSaveResult(event, false, "UnAuthorised")};
+    return {websocket::WsFns::successJsonObject(event, false, "UnAuthorised")};
   }
   if (event_cmp == "image_meta_data") {
     return saveImageMeta(event, args);
@@ -164,12 +164,12 @@ nlohmann::json Auth::saveFileMeta(const nlohmann::json &event,
     // args[1].get<std::string>(), args[2].get<long>(),
     // args[3].get<std::string>());
     nlohmann::json ret;
-    ret[0] = simpleJsonSaveResult(event, true, "Done");
+    ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
     return ret;
   } catch (const std::exception &e) {
     SPDLOG_TRACE(e.what());
     nlohmann::json ret;
-    ret[0] = simpleJsonSaveResult(event, false, "Error");
+    ret[0] = websocket::WsFns::successJsonObject(event, false, "Error");
     return ret;
   }
 }
@@ -195,12 +195,12 @@ nlohmann::json Auth::saveImageMeta(const nlohmann::json &event,
     // args[3].get<std::string>());
     auto r = Dba::writeInTrans(transPtr, strSql_);
     nlohmann::json ret;
-    ret[0] = simpleJsonSaveResult(event, true, "Done");
+    ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
     return ret;
   } catch (const std::exception &e) {
     SPDLOG_TRACE(e.what());
     nlohmann::json ret;
-    ret[0] = simpleJsonSaveResult(event, false, "Error");
+    ret[0] = websocket::WsFns::successJsonObject(event, false, "Error");
     return ret;
   }
 }
@@ -249,13 +249,13 @@ drogon::WebSocketMessageType::Binary);
                 //delete[] memblock;
             }
         } else {
-            // Fix simpleJsonSaveResult(event, true, "Done");
+            // Fix websocket::WsFns::successJsonObject(event, true, "Done");
         }
         return json(nlohmann::json::nullValue);
     } catch (const std::exception &e) {
 
         SPDLOG_TRACE(e.what());
-        //simpleJsonSaveResult(event, false, e.what());
+        //websocket::WsFns::successJsonObject(event, false, e.what());
         return json(nlohmann::json::nullValue);
     }
     //get binary data and send.

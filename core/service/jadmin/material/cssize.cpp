@@ -182,12 +182,12 @@ nlohmann::json CSSize::ins(nlohmann::json event, nlohmann::json args) {
     }
 
     nlohmann::json ret;
-    ret[0] = simpleJsonSaveResult(event, true, "Done");
+    ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
     return ret;
   } catch (const std::exception &e) {
     SPDLOG_TRACE(e.what());
     nlohmann::json ret;
-    ret[0] = simpleJsonSaveResult(event, false, e.what());
+    ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
     return ret;
   }
 }
@@ -300,17 +300,17 @@ nlohmann::json CSSize::upd(nlohmann::json event, nlohmann::json args) {
       }
 
       nlohmann::json ret;
-      ret[0] = simpleJsonSaveResult(event, true, "Done");
+      ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
       return ret;
     } catch (const std::exception &e) {
       SPDLOG_TRACE(e.what());
       nlohmann::json ret;
-      ret[0] = simpleJsonSaveResult(event, false, e.what());
+      ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
       return ret;
     }
   }
   nlohmann::json ret;
-  ret[0] = simpleJsonSaveResult(event, false, "Not Valid Structure");
+  ret[0] = websocket::WsFns::successJsonObject(event, false, "Not Valid Structure");
   return ret;
 }
 
@@ -349,12 +349,12 @@ nlohmann::json CSSize::del(nlohmann::json event, nlohmann::json args) {
     }
 
     nlohmann::json ret;
-    ret[0] = simpleJsonSaveResult(event, true, "Done");
+    ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
     return ret;
   } catch (const std::exception &e) {
     SPDLOG_TRACE(e.what());
     nlohmann::json ret;
-    ret[0] = simpleJsonSaveResult(event, false, e.what());
+    ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
     return ret;
   }
 }

@@ -3,6 +3,7 @@
 #include <utility>
 
 #include "../../../sql/dba.h"
+#include "wscontroller/wsfns.h"
 namespace jadmin {
 Txn::Txn(std::shared_ptr<websocket::JAdminContext> context_)
     : context(std::move(context_)) {
@@ -150,12 +151,12 @@ nlohmann::json Txn::del(const nlohmann::json event, const nlohmann::json args) {
     Dba::writeInTrans(transPtr, txn_del, txn_id);
 
     nlohmann::json ret;
-    ret[0] = simpleJsonSaveResult(event, true, "Done");
+    ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
     return ret;
   } catch (const std::exception &e) {
     SPDLOG_TRACE(e.what());
     nlohmann::json ret;
-    ret[0] = simpleJsonSaveResult(event, false, e.what());
+    ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
     return ret;
   }
 }
@@ -249,12 +250,12 @@ nlohmann::json Txn::ins(nlohmann::json event, nlohmann::json args) {
     save_txn_order_item(args, transPtr, txn_id);
 
     nlohmann::json ret;
-    ret[0] = simpleJsonSaveResult(event, true, "Done");
+    ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
     return ret;
   } catch (const std::exception &e) {
     SPDLOG_TRACE(e.what());
     nlohmann::json ret;
-    ret[0] = simpleJsonSaveResult(event, false, e.what());
+    ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
     return ret;
   }
 }
@@ -276,17 +277,18 @@ nlohmann::json Txn::upd(nlohmann::json event, nlohmann::json args) {
       save_txn_order_item(args, transPtr, txn_id);
 
       nlohmann::json ret;
-      ret[0] = simpleJsonSaveResult(event, true, "Done");
+      ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
       return ret;
     } catch (const std::exception &e) {
       SPDLOG_TRACE(e.what());
       nlohmann::json ret;
-      ret[0] = simpleJsonSaveResult(event, false, e.what());
+      ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
       return ret;
     }
   }
   nlohmann::json ret;
-  ret[0] = simpleJsonSaveResult(event, false, "Not Valid Structure");
+  ret[0] =
+      websocket::WsFns::successJsonObject(event, false, "Not Valid Structure");
   return ret;
 }
 }  // namespace jadmin

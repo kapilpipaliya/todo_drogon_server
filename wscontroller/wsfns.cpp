@@ -15,4 +15,18 @@ void WsFns::sendJson(const drogon::WebSocketConnectionPtr &wsConnPtr,
     wsConnPtr->send(r.dump());
   }
 }
+
+nlohmann::json WsFns::successJsonObject(nlohmann::json event, bool ok,
+                                        const std::string &error) {
+  nlohmann::json out;
+  out[0] = std::move(event);
+
+  nlohmann::json ret;
+  ret["ok"] = ok;
+  if (!ok) {
+    ret["error"] = error;
+  }
+  out[1] = ret;
+  return out;
+}
 }  // namespace websocket

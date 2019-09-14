@@ -24,11 +24,11 @@ nlohmann::json todo::Auth::handleEvent(nlohmann::json event, unsigned long next,
           "username = $1";
       auto r = Dba::read(isauthorised, args["user"].get<std::string>());
       if (r.empty()) {
-        return {simpleJsonSaveResult(event, false, "Error")};
+        return {websocket::WsFns::successJsonObject(event, false, "Error")};
       } else if (!r[0]["isexpired"].isNull() && r[0]["isexpired"].as<bool>()) {
-        return {simpleJsonSaveResult(event, false, "Expired")};
+        return {websocket::WsFns::successJsonObject(event, false, "Expired")};
       } else if (r[0]["disabled"].as<bool>()) {
-        return {simpleJsonSaveResult(event, false, "Locked")};
+        return {websocket::WsFns::successJsonObject(event, false, "Locked")};
       }
 
       auto [session_id, user_id] = login(args["user"].get<std::string>(),
@@ -38,19 +38,19 @@ nlohmann::json todo::Auth::handleEvent(nlohmann::json event, unsigned long next,
         context->setSessionId(session_id);
         context->setUserId(user_id);
         context->setUser();
-        res[0] = simpleJsonSaveResult(event, true, "Done");
+        res[0] = websocket::WsFns::successJsonObject(event, true, "Done");
         res[1] = {{"auth", "set_cookie", 0}, session_id};
         return res;
       }
     }
-    return {simpleJsonSaveResult(event, false, "Error")};
+    return {websocket::WsFns::successJsonObject(event, false, "Error")};
   }
   if (event_cmp == "logout") {
     auto r = logout();
     if (r) {
-      return {simpleJsonSaveResult(event, true, "Done")};
+      return {websocket::WsFns::successJsonObject(event, true, "Done")};
     }
-    return {simpleJsonSaveResult(event, false, "UnAuthorised")};
+    return {websocket::WsFns::successJsonObject(event, false, "UnAuthorised")};
   } else if (event_cmp == "file_meta_data") {
     return saveFileMeta(event, args);
   } else if (event_cmp == "ins") {
@@ -68,7 +68,7 @@ nlohmann::json todo::Auth::saveFileMeta(const nlohmann::json& event,
                                         nlohmann::json args) {
   if (!args.is_array() || args.size() <= 3) {
     nlohmann::json ret;
-    ret[0] = simpleJsonSaveResult(event, false, "No Valid arguments");
+    ret[0] = websocket::WsFns::successJsonObject(event, false, "No Valid arguments");
     return ret;
   }
   long c = context->sessionId();
@@ -88,12 +88,12 @@ nlohmann::json todo::Auth::saveFileMeta(const nlohmann::json& event,
     // args[1].get<std::string>(), args[2].get<long>(),
     // args[3].get<std::string>());
     nlohmann::json ret;
-    ret[0] = simpleJsonSaveResult(event, true, "Done");
+    ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
     return ret;
   } catch (const std::exception& e) {
     SPDLOG_TRACE(e.what());
     nlohmann::json ret;
-    ret[0] = simpleJsonSaveResult(event, false, "Error");
+    ret[0] = websocket::WsFns::successJsonObject(event, false, "Error");
     return ret;
   }
 }

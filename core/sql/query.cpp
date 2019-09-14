@@ -602,7 +602,7 @@ nlohmann::json Query::ins(nlohmann::json event, nlohmann::json args) {
     strSql = buildInsQuery(std::move(args));
     if (strSql.empty()) {
       nlohmann::json ret;
-      ret[0] = simpleJsonSaveResult(event, false, "UnValid Arguments");
+      ret[0] = websocket::WsFns::successJsonObject(event, false, "UnValid Arguments");
       return ret;
     }
   } catch (const std::exception& e) {
@@ -613,12 +613,12 @@ nlohmann::json Query::ins(nlohmann::json event, nlohmann::json args) {
     auto clientPtr = drogon::app().getDbClient("sce");
     clientPtr->execSqlSync(strSql);
     nlohmann::json ret;
-    ret[0] = simpleJsonSaveResult(event, true, "Done");
+    ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
     return ret;
   } catch (const std::exception& e) {
     SPDLOG_TRACE("error: {0}, sql: {1}", e.what(), strSql);
     nlohmann::json ret;
-    ret[0] = simpleJsonSaveResult(event, false, e.what());
+    ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
     return ret;
   }
 }
@@ -628,7 +628,7 @@ nlohmann::json Query::upd(nlohmann::json event, nlohmann::json args) {
   std::string strSql = buildUpdateQuery(args);
   if (strSql.empty()) {
     nlohmann::json ret;
-    ret[0] = simpleJsonSaveResult(event, false, "UnValid Arguments");
+    ret[0] = websocket::WsFns::successJsonObject(event, false, "UnValid Arguments");
     return ret;
   }
   try {
@@ -639,12 +639,12 @@ nlohmann::json Query::upd(nlohmann::json event, nlohmann::json args) {
       throw std::runtime_error("not valid arguments");
     }
     nlohmann::json ret;
-    ret[0] = simpleJsonSaveResult(event, true, "Done");
+    ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
     return ret;
   } catch (const std::exception& e) {
     SPDLOG_TRACE("error: {0}, sql: {1}", e.what(), strSql);
     nlohmann::json ret;
-    ret[0] = simpleJsonSaveResult(event, false, e.what());
+    ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
     return ret;
   }
 }
@@ -653,7 +653,7 @@ nlohmann::json Query::del(nlohmann::json event, nlohmann::json args) {
   if (!args.is_array()) {
     nlohmann::json ret;
     ret[0] =
-        simpleJsonSaveResult(event, false, "The argument must be an array");
+        websocket::WsFns::successJsonObject(event, false, "The argument must be an array");
     return ret;
   }
   try {
@@ -670,16 +670,16 @@ nlohmann::json Query::del(nlohmann::json event, nlohmann::json args) {
       // m_table.toDisplayString()
       // + " WHERE id = $1", args[0]);
       nlohmann::json ret;
-      ret[0] = simpleJsonSaveResult(event, true, "Done");
+      ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
       return ret;
     }
     nlohmann::json ret;
-    ret[0] = simpleJsonSaveResult(event, false, "Invalid condition to delete");
+    ret[0] = websocket::WsFns::successJsonObject(event, false, "Invalid condition to delete");
     return ret;
   } catch (const std::exception& e) {
     SPDLOG_TRACE(e.what());
     nlohmann::json ret;
-    ret[0] = simpleJsonSaveResult(event, false, e.what());
+    ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
     return ret;
   }
 }
@@ -703,7 +703,7 @@ nlohmann::json Query::count(nlohmann::json event, nlohmann::json args) {
   } catch (const std::exception& e) {
     SPDLOG_TRACE(e.what());
     nlohmann::json ret;
-    ret[0] = simpleJsonSaveResult(event, false, e.what());
+    ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
     return ret;
   }
 }

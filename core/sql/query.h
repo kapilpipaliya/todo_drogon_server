@@ -11,7 +11,7 @@
 #include "spdlogfix.h"
 
 #include <drogon/drogon.h>
-#include "../jsonfns.h"
+#include "wscontroller/wsfns.h"
 
 #include "json.hpp"
 
@@ -210,12 +210,12 @@ class Query {
       auto clientPtr = drogon::app().getDbClient("sce");
       clientPtr->execSqlSync(strSql, args_bind...);
       nlohmann::json ret;
-      ret[0] = simpleJsonSaveResult(event, true, "Done");
+      ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
       return ret;
     } catch (const std::exception& e) {
       SPDLOG_TRACE(e.what());
       nlohmann::json ret;
-      ret[0] = simpleJsonSaveResult(event, false, e.what());
+      ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
       return ret;
     }
   }
@@ -230,12 +230,12 @@ class Query {
       auto clientPtr = drogon::app().getDbClient("sce");
       clientPtr->execSqlSync(strSql, args_bind...);
       nlohmann::json ret;
-      ret[0] = simpleJsonSaveResult(event, true, "Done");
+      ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
       return ret;
     } catch (const std::exception& e) {
       SPDLOG_TRACE(e.what());
       nlohmann::json ret;
-      ret[0] = simpleJsonSaveResult(event, false, e.what());
+      ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
       return ret;
     }
   }
