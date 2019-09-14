@@ -6,7 +6,7 @@ namespace CustomActions::ValuesToInteger {
   private:
 
    void to_integer_or_nil(value) {
-    return nil if ( value.nil?) {
+    if ( value.nil?) { return nil ;}
 
     Integer(value)
   rescue TypeError, ArgumentError

@@ -8,7 +8,7 @@ namespace FileUploader {
   // or nil otherwise.
    void external_url() {
     url = URI.parse download_url
-    url if ( url.host) {
+    if ( url.host) { url ;}
   rescue URI::InvalidURIError
     nil
   }

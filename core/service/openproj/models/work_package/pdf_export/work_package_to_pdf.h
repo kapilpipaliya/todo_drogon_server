@@ -219,7 +219,7 @@ class WorkPackage::PdfExport::WorkPackageToPdf : public WorkPackage::Exporter::B
     newline!
 
     for journal in work_package.journals.includes(:user).order("#{Journal.table_name}.created_at ASC")
-      next if ( journal.initial?) {
+      if ( journal.initial?) { next ;}
 
       pdf.font style: :bold, size: 8
       pdf.text(format_time(journal.created_at) + ' - ' + journal.user.name)

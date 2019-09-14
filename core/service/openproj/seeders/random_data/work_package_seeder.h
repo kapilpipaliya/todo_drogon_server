@@ -81,9 +81,9 @@ namespace RandomData {
           print '.'
           changeset.reload
 
-          changeset.committer = Faker::Name.name if ( rand(99).even?) {
-          changeset.committed_on = Date.today + rand(999) if ( rand(99).even?) {
-          changeset.comments = Faker::Lorem.words(8).join(' ') if ( rand(99).even?) {
+          if ( rand(99).even?) { changeset.committer = Faker::Name.name ;}
+          if ( rand(99).even?) { changeset.committed_on = Date.today + rand(999) ;}
+          if ( rand(99).even?) { changeset.comments = Faker::Lorem.words(8).join(' ') ;}
 
           changeset.save!
         }
@@ -120,7 +120,7 @@ namespace RandomData {
 
      void add_custom_values(work_package) {
       project.work_package_custom_fields.each { |custom_field|
-        work_package.type.custom_fields << custom_field if ( !work_package.type.custom_fields.include?(custom_field)) {
+        if ( !work_package.type.custom_fields.include?(custom_field)) { work_package.type.custom_fields << custom_field ;}
         work_package.custom_values << CustomValue.new(custom_field: custom_field,
                                                value: Faker::Lorem.words(8).join(' '))
       }
@@ -134,15 +134,15 @@ namespace RandomData {
         print '.'
         work_package.reload
 
-        work_package.status = statuses.sample if ( rand(99).even?) {
-        work_package.subject = Faker::Lorem.words(8).join(' ') if ( rand(99).even?) {
-        work_package.description = Faker::Lorem.paragraph(5, true, 3) if ( rand(99).even?) {
-        work_package.type = types.sample if ( rand(99).even?) {
+        if ( rand(99).even?) { work_package.status = statuses.sample ;}
+        if ( rand(99).even?) { work_package.subject = Faker::Lorem.words(8).join(' ') ;}
+        if ( rand(99).even?) { work_package.description = Faker::Lorem.paragraph(5, true, 3) ;}
+        if ( rand(99).even?) { work_package.type = types.sample ;}
 
         work_package.time_entries.each { |t|
-          t.spent_on = Date.today + rand(100) if ( rand(99).even?) {
-          t.activity = time_entry_activities.sample if ( rand(99).even?) {
-          t.hours = rand(10) if ( rand(99).even?) {
+          if ( rand(99).even?) { t.spent_on = Date.today + rand(100) ;}
+          if ( rand(99).even?) { t.activity = time_entry_activities.sample ;}
+          if ( rand(99).even?) { t.hours = rand(10) ;}
         }
 
         work_package.reload
@@ -153,7 +153,7 @@ namespace RandomData {
         work_package.reload
 
         work_package.custom_values.each { |cv|
-          cv.value = Faker::Code.isbn if ( rand(99).even?) {
+          if ( rand(99).even?) { cv.value = Faker::Code.isbn ;}
         }
 
         work_package.save!

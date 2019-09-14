@@ -11,7 +11,7 @@ class MailHandler : public ActionMailer::Base {
   // Code copied from base class and extended with optional options parameter
   // as well as force_encoding support.
    void receive(raw_mail, options = {}) {
-    raw_mail.force_encoding('ASCII-8BIT') if ( raw_mail.respond_to?(:force_encoding)) {
+    if ( raw_mail.respond_to?(:force_encoding)) { raw_mail.force_encoding('ASCII-8BIT') ;}
 
     ActiveSupport::Notifications.instrument("receive.action_mailer") { |payload|
       mail = Mail.new(raw_mail)
@@ -55,7 +55,7 @@ class MailHandler : public ActionMailer::Base {
         }
       }
     }
-    this->user = User.find_by_mail(sender_email) if ( sender_email.present?) {
+    if ( sender_email.present?) { this->user = User.find_by_mail(sender_email) ;}
     if ( this->user && !this->user.active?) {
       log "ignoring email from non-active user [#{this->user.login}]"
       return false
@@ -277,8 +277,8 @@ class MailHandler : public ActionMailer::Base {
   // Returns nil if ( no matching keyword found) {
    void extract_keyword!(text, attr, format = nil) {
     keys = [attr.to_s.humanize]
-    keys << all_attribute_translations(user.language)[attr] if ( user && user.language.present?) {
-    keys << all_attribute_translations(Setting.default_language)[attr] if ( Setting.default_language.present?) {
+    if ( user && user.language.present?) { keys << all_attribute_translations(user.language)[attr] ;}
+    if ( Setting.default_language.present?) { keys << all_attribute_translations(Setting.default_language)[attr] ;}
 
     keys.reject!(&:blank?)
     keys.map! { |k|
@@ -294,7 +294,7 @@ class MailHandler : public ActionMailer::Base {
     // * parse the email To field
     // * specific project (eg. Setting.mail_handler_target_project)
     target = Project.find_by(identifier: get_keyword(:project))
-    raise MissingInformation.new('Unable to determine target project') if ( target.nil?) {
+    if ( target.nil?) { raise MissingInformation.new('Unable to determine target project') ;}
     target
   }
 
@@ -369,7 +369,7 @@ class MailHandler : public ActionMailer::Base {
     names = fullname.blank? ? email_address.gsub(/this->.*\z/, '').split('.') : fullname.split
     user.firstname = names.shift
     user.lastname = names.join(' ')
-    user.lastname = '-' if ( user.lastname.blank?) {
+    if ( user.lastname.blank?) { user.lastname = '-' ;}
 
     unless user.valid?
       user.login = "user#{SecureRandom.hex(6)}" unless user.errors[:login].blank?
@@ -519,7 +519,7 @@ class MailHandler : public ActionMailer::Base {
    void log(message, level = :info) {
     message = "MailHandler: #{message}"
 
-    logger.send(level, message) if ( logger&.send(level)) {
+    if ( logger&.send(level)) { logger.send(level, message) ;}
   }
 
    void work_package_create_contract_class() {

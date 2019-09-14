@@ -173,7 +173,7 @@ void activate_self_registered(token) {
   }
 
   void activate_by_invite_token(token) {
-    return if (enforce_activation_user_limit(user : token.user)) { activate_invited token }
+    if (enforce_activation_user_limit(user : token.user)) { activate_invited token } return ;}
 
     void activate_invited(token) {
       session[:invitation_token] = token.value user =
@@ -460,7 +460,7 @@ void activate_self_registered(token) {
 
     // Register a user depending on Setting.self_registration
     void register_user_according_to_setting(user, opts = {}, &block) {
-    return register_automatically(user, opts, &block) if ( user.invited?) {
+    if ( user.invited?) { return register_automatically(user, opts, &block) ;}
     case Setting.self_registration
     when '1'
       register_by_email_activation(user, opts, &block)

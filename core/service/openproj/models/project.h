@@ -248,7 +248,7 @@ class Project : public ActiveRecord::Base {
       create_time_entry_activity_if_needed(activity_hash)
     else
       activity = project.time_entry_activities.find_by(id: id.to_i)
-      activity.update_attributes(activity_hash) if ( activity) {
+      if ( activity) { activity.update_attributes(activity_hash) ;}
     }
   }
 
@@ -283,7 +283,7 @@ class Project : public ActiveRecord::Base {
   //   project.project_condition(false) => "projects.id = 1"
    void project_condition(with_subprojects) {
     cond = "#{Project.table_name}.id = #{id}"
-    cond = "(#{cond} OR (#{Project.table_name}.lft > #{lft} AND #{Project.table_name}.rgt < #{rgt}))" if ( with_subprojects) {
+    if ( with_subprojects) { cond = "(#{cond} OR (#{Project.table_name}.lft > #{lft} AND #{Project.table_name}.rgt < #{rgt}))" ;}
     cond
   }
 
@@ -310,7 +310,7 @@ class Project : public ActiveRecord::Base {
   // Unarchives the project
   // All its ancestors must be active
    void unarchive() {
-    return false if ( ancestors.detect { |a| !a.active? }) {
+    if ( ancestors.detect { |a| !a.active? }) { return false ;}
 
     update_attribute :status, STATUS_ACTIVE
   }
@@ -318,7 +318,7 @@ class Project : public ActiveRecord::Base {
   // Returns an array of projects the project can be moved to
   // by the current user
    void allowed_parents() {
-    return this->allowed_parents if ( this->allowed_parents) {
+    if ( this->allowed_parents) { return this->allowed_parents ;}
 
     this->allowed_parents = Project.allowed_to(User.current, :add_subprojects)
     this->allowed_parents = this->allowed_parents - self_and_descendants
@@ -341,7 +341,7 @@ class Project : public ActiveRecord::Base {
 
   // Sets the parent of the project with authorization check
    void set_allowed_parent!(p) {
-    set_parent!(p) if ( allowed_parent?(p)) {
+    if ( allowed_parent?(p)) { set_parent!(p) ;}
   }
 
   // Sets the parent of the project
@@ -637,7 +637,7 @@ class Project : public ActiveRecord::Base {
     projects.sort_by(&:lft).each { |project|
       while (ancestors.any? && !project.is_descendant_of?(ancestors.last[:project])){
         // before we pop back one level, we sort the child projects by name
-        ancestors.last[:children] = ancestors.last[:children].sort_by { |h| h[:project].name.downcase if ( h[:project].name }) {
+        if ( h[:project].name }) { ancestors.last[:children] = ancestors.last[:children].sort_by { |h| h[:project].name.downcase ;}
         ancestors.pop
       }
 
@@ -649,7 +649,7 @@ class Project : public ActiveRecord::Base {
     }
 
     // at the } the root level must be sorted as well
-    result.sort_by { |h| h[:project].name.downcase if ( h[:project].name }) {
+    if ( h[:project].name }) { result.sort_by { |h| h[:project].name.downcase ;}
   }
 
    void project_tree_from_hierarchy(projects_hierarchy, level, &block) {
@@ -658,7 +658,7 @@ class Project : public ActiveRecord::Base {
       children = hierarchy[:children]
       yield project, level
       // recursively show children
-      project_tree_from_hierarchy(children, level + 1, &block) if ( children.any?) {
+      if ( children.any?) { project_tree_from_hierarchy(children, level + 1, &block) ;}
     }
   }
 
@@ -676,7 +676,7 @@ class Project : public ActiveRecord::Base {
         level:   level
       }
 
-      element.merge!(yield(project)) if ( block_given?) {
+      if ( block_given?) { element.merge!(yield(project)) ;}
 
       list << element
     }

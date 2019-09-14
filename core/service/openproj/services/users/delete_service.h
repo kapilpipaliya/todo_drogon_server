@@ -20,7 +20,7 @@ namespace Users {
         user.lock!
         Delayed::Job.enqueue DeleteUserJob.new(user.id), priority: ::ApplicationJob.priority_number(:low)
 
-        logout! if ( self_delete?) {
+        if ( self_delete?) { logout! ;}
 
         true
       else

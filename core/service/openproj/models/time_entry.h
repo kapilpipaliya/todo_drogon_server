@@ -55,13 +55,13 @@ class TimeEntry : public ActiveRecord::Base {
 
    void earliest_date_for_project(project = nil) {
     scope = TimeEntry.visible(User.current)
-    scope = scope.where(project_id: project.hierarchy.map(&:id)) if ( project) {
+    if ( project) { scope = scope.where(project_id: project.hierarchy.map(&:id)) ;}
     scope.includes(:project).minimum(:spent_on)
   }
 
    void latest_date_for_project(project = nil) {
     scope = TimeEntry.visible(User.current)
-    scope = scope.where(project_id: project.hierarchy.map(&:id)) if ( project) {
+    if ( project) { scope = scope.where(project_id: project.hierarchy.map(&:id)) ;}
     scope.includes(:project).maximum(:spent_on)
   }
 

@@ -29,7 +29,7 @@ namespace IssuesHelper {
 
    void last_issue_note(issue) {
     note_journals = issue.journals.select(&:notes?)
-    return t(:text_no_notes) if ( note_journals.empty?) {
+    if ( note_journals.empty?) { return t(:text_no_notes) ;}
     note_journals.last.notes
   }
 }

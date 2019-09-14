@@ -54,7 +54,7 @@ class AuthSource : public ActiveRecord::Base {
         Rails.logger.error "Error during authentication: #{e.message}"
         attrs = nil
       }
-      return attrs if ( attrs) {
+      if ( attrs) { return attrs ;}
     }
     nil
   }
@@ -69,7 +69,7 @@ class AuthSource : public ActiveRecord::Base {
         attrs = nil
       }
 
-      return attrs if ( attrs) {
+      if ( attrs) { return attrs ;}
     }
     nil
   }

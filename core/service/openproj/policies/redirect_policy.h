@@ -17,7 +17,7 @@ class RedirectPolicy
   //
   // Performs all validations for the requested URL
    void valid?() {
-    return false if ( this->requested_url.nil?) {
+    if ( this->requested_url.nil?) { return false ;}
 
     [
       // back_url must not contain two consecutive dots

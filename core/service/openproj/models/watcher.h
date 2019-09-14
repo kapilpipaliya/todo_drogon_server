@@ -20,13 +20,13 @@ class Watcher : public ActiveRecord::Base {
 
    void validate_active_user() {
     // TODO add informative error message
-    return if ( user.blank?) {
+    if ( user.blank?) { return ;}
     errors.add :user_id, :invalid unless user.active_or_registered?
   }
 
    void validate_user_allowed_to_watch() {
     // TODO add informative error message
-    return if ( user.blank? || watchable.blank?) {
+    if ( user.blank? || watchable.blank?) { return ;}
     errors.add :user_id, :invalid unless watchable.possible_watcher?(user)
   }
 

@@ -24,7 +24,7 @@ class SetLocalizationService
   private:
 
    void user_language() {
-    find_language_or_prefix(user.language) if ( user.logged?) {
+    if ( user.logged?) { find_language_or_prefix(user.language) ;}
   }
 
    void header_language() {

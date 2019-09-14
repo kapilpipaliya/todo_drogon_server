@@ -200,7 +200,7 @@ namespace SortHelper {
     this->sort_criteria = SortCriteria.new
     this->sort_criteria.available_criteria = criteria
     this->sort_criteria.from_param(params[:sort] || session[sort_name])
-    this->sort_criteria.criteria = this->sort_default.criteria if ( this->sort_criteria.empty?) {
+    if ( this->sort_criteria.empty?) { this->sort_criteria.criteria = this->sort_default.criteria ;}
     session[sort_name] = this->sort_criteria.to_param
   }
 

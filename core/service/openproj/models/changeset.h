@@ -95,7 +95,7 @@ class Changeset : public ActiveRecord::Base {
     /x
 
    void scan_comment_for_work_package_ids() {
-    return if ( comments.blank?) {
+    if ( comments.blank?) { return ;}
     // keywords used to reference work packages
     ref_keywords = Setting.commit_ref_keywords.downcase.split(',').map(&:strip)
     ref_keywords_any = ref_keywords.delete('*')
@@ -116,8 +116,8 @@ class Changeset : public ActiveRecord::Base {
         hours = m[2]
         if ( work_package) {
           referenced_work_packages << work_package
-          fix_work_package(work_package) if ( fix_keywords.include?(action.to_s.downcase)) {
-          log_time(work_package, hours) if ( hours && Setting.commit_logtime_enabled?) {
+          if ( fix_keywords.include?(action.to_s.downcase)) { fix_work_package(work_package) ;}
+          if ( hours && Setting.commit_logtime_enabled?) { log_time(work_package, hours) ;}
         }
       }
     }
@@ -166,7 +166,7 @@ class Changeset : public ActiveRecord::Base {
   // Finds a work_package that can be referenced by the commit message
   // i.e. a work_package that belong to the repository project, a subproject or a parent project
    void find_referenced_work_package_by_id(id) {
-    return nil if ( id.blank?) {
+    if ( id.blank?) { return nil ;}
 
     work_package = WorkPackage.includes(:project).find_by(id: id.to_i)
 
@@ -187,14 +187,14 @@ class Changeset : public ActiveRecord::Base {
    void fix_work_package(work_package) {
     status = Status.find_by(id: Setting.commit_fix_status_id.to_i)
     if ( status.nil?) {
-      logger.warn("No status matches commit_fix_status_id setting (#{Setting.commit_fix_status_id})") if ( logger) {
+      if ( logger) { logger.warn("No status matches commit_fix_status_id setting (#{Setting.commit_fix_status_id})") ;}
       return work_package
     }
 
     // the work_package may have been updated by the closure of another one (eg. duplicate)
     work_package.reload
     // don't change the status if ( the work package is closed) {
-    return if ( work_package.status && work_package.status.is_closed?) {
+    if ( work_package.status && work_package.status.is_closed?) { return ;}
 
     work_package.add_journal(user || User.anonymous, ll(Setting.default_language, :text_status_changed_by_changeset, text_tag))
     work_package.status = status
@@ -204,7 +204,7 @@ class Changeset : public ActiveRecord::Base {
     Redmine::Hook.call_hook(:model_changeset_scan_commit_for_issue_ids_pre_issue_update,
                             changeset: self, issue: work_package)
     unless work_package.save(validate: false)
-      logger.warn("Work package ##{work_package.id} could not be saved by changeset #{id}: #{work_package.errors.full_messages}") if ( logger) {
+      if ( logger) { logger.warn("Work package ##{work_package.id} could not be saved by changeset #{id}: #{work_package.errors.full_messages}") ;}
     }
 
     work_package
@@ -245,10 +245,10 @@ class Changeset : public ActiveRecord::Base {
 
   // TODO: refactor to a standard helper method
    void to_utf8(str, encoding) {
-    return str if ( str.nil?) {
-    str.force_encoding('ASCII-8BIT') if ( str.respond_to?(:force_encoding)) {
+    if ( str.nil?) { return str ;}
+    if ( str.respond_to?(:force_encoding)) { str.force_encoding('ASCII-8BIT') ;}
     if ( str.empty?) {
-      str.force_encoding('UTF-8') if ( str.respond_to?(:force_encoding)) {
+      if ( str.respond_to?(:force_encoding)) { str.force_encoding('UTF-8') ;}
       return str
     }
     normalized_encoding = encoding.blank? ? 'UTF-8' : encoding

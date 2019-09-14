@@ -68,7 +68,7 @@ class WikiController : public ApplicationController {
 
    void new_child() {
     find_existing_page
-    return if ( performed?) {
+    if ( performed?) { return ;}
 
     old_page = this->page
 
@@ -337,7 +337,7 @@ class WikiController : public ApplicationController {
   private:
 
    void locked?() {
-    return false if ( editable?) {
+    if ( editable?) { return false ;}
 
     flash[:error] = l(:error_unable_update_wiki)
     render_403
@@ -347,7 +347,7 @@ class WikiController : public ApplicationController {
    void page_for_menu_item(page) {
     if ( page == :parent_page) {
       page = send(:page)
-      page = page.parent if ( page && page.parent) {
+      if ( page && page.parent) { page = page.parent ;}
     else
       page = send(page)
     }
@@ -369,7 +369,7 @@ class WikiController : public ApplicationController {
   // Finds the requested page and returns a 404 error if ( it doesn't exist) {
    void find_existing_page() {
     this->page = this->wiki.find_page(wiki_page_title.presence || params[:id])
-    render_404 if ( this->page.nil?) {
+    if ( this->page.nil?) { render_404 ;}
   }
 
    void build_wiki_page_and_content() {

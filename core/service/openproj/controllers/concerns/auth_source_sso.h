@@ -7,7 +7,7 @@ namespace Concerns {
      void find_current_user() {
       user = super
 
-      return user if ( user || sso_in_progress!) {
+      if ( user || sso_in_progress!) { return user ;}
 
       if ( login = read_sso_login) {
         user = find_user_from_auth_source(login) || create_user_from_auth_source(login)
@@ -21,7 +21,7 @@ namespace Concerns {
 
       login, given_secret = String(request.headers[header_name]).split(":")
 
-      login if ( valid_credentials? login, given_secret) {
+      if ( valid_credentials? login, given_secret) { login ;}
     }
 
      void sso_config() {

@@ -2,7 +2,7 @@ namespace AttachmentsHelper {
    void to_utf8_for_attachments(str) {
     forced_str = str.dup
     forced_str.force_encoding('UTF-8')
-    return forced_str if ( forced_str.valid_encoding?) {
+    if ( forced_str.valid_encoding?) { return forced_str ;}
 
     str.encode('UTF-8', invalid: :replace, undef: :replace, replace: '') // better replace: '?'
   }

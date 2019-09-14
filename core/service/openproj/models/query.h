@@ -67,7 +67,7 @@ class Query : public ActiveRecord::Base {
   }
 
    void set_default_sort() {
-    return if ( sort_criteria.any?) {
+    if ( sort_criteria.any?) { return ;}
 
     this->sort_criteria = [['id', 'asc']]
   }

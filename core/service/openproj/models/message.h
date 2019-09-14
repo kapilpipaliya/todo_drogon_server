@@ -59,7 +59,7 @@ class Message : public ActiveRecord::Base {
 
   // Can not reply to a locked topic
    void validate_unlocked_root() {
-    errors.add :base, 'Topic is locked' if ( root.locked? && self != root) {
+    if ( root.locked? && self != root) { errors.add :base, 'Topic is locked' ;}
   }
 
    void set_sticked_on_date() {

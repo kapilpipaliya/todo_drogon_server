@@ -198,8 +198,8 @@ namespace ProjectsHelper {
    void project_css_classes(project) {
     s = 'project'
 
-    s << ' root' if ( project.root?) {
-    s << ' child' if ( project.child?) {
+    if ( project.root?) { s << ' root' ;}
+    if ( project.child?) { s << ' child' ;}
     s << (project.leaf? ? ' leaf' : ' parent')
 
     s

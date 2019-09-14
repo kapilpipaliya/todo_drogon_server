@@ -464,7 +464,7 @@ namespace ApplicationHelper {
         }
       }
     }
-    elements << Setting.additional_footer_content if ( Setting.additional_footer_content.present?) {
+    if ( Setting.additional_footer_content.present?) { elements << Setting.additional_footer_content ;}
     elements.join(', ').html_safe
   }
 

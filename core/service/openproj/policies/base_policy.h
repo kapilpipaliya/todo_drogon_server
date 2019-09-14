@@ -6,7 +6,7 @@ class BasePolicy
   }
 
    void actions(wp) {
-    cache[wp].each_with_object([]) { |(k, v), a| a << k if ( v }) {
+    if ( v }) { cache[wp].each_with_object([]) { |(k, v), a| a << k ;}
   }
 
    void allowed?(object, action) {

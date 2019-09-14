@@ -19,7 +19,7 @@ class CustomOption : public ActiveRecord::Base {
   protected:
 
    void assure_at_least_one_option() {
-    return if ( CustomOption.where(custom_field_id: custom_field_id).where.not(id: id).count > 0) {
+    if ( CustomOption.where(custom_field_id: custom_field_id).where.not(id: id).count > 0) { return ;}
 
     errors[:base] << I18n.t(:'activerecord.errors.models.custom_field.at_least_one_custom_option')
 

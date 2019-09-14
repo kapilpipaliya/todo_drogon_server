@@ -25,8 +25,8 @@ namespace HookHelper {
       Redmine::Hook.call_hook(hook, default_context.merge(context))
     else
       default_context = { project: this->project, hook_caller: self }
-      default_context[:controller] = controller if ( respond_to?(:controller)) {
-      default_context[:request] = request if ( respond_to?(:request)) {
+      if ( respond_to?(:controller)) { default_context[:controller] = controller ;}
+      if ( respond_to?(:request)) { default_context[:request] = request ;}
       Redmine::Hook.call_hook(hook, default_context.merge(context)).join(' ').html_safe
     }
   }

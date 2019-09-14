@@ -36,7 +36,7 @@ class RepositoriesController : public ApplicationController {
     if ( service.build_and_save) {
       this->repository = service.repository
       flash[:notice] = l('repositories.create_successful')
-      flash[:notice] << (' ' + l('repositories.create_managed_delay')) if ( this->repository.managed?) {
+      if ( this->repository.managed?) { flash[:notice] << (' ' + l('repositories.create_managed_delay')) ;}
     else
       flash[:error] = service.build_error
     }
@@ -130,7 +130,7 @@ class RepositoriesController : public ApplicationController {
 
     respond_to { |format|
       format.html {
-        render layout: false if ( request.xhr?) {
+        if ( request.xhr?) { render layout: false ;}
       }
       format.atom {
         render_feed(this->changesets, title: "#{this->project.name}: #{l(:label_revision_plural)}")
@@ -199,7 +199,7 @@ class RepositoriesController : public ApplicationController {
   }
 
    void revision() {
-    raise ChangesetNotFound if ( this->rev.blank?) {
+    if ( this->rev.blank?) { raise ChangesetNotFound ;}
     this->changeset = this->repository.find_changeset_by_name(this->rev)
     raise ChangesetNotFound unless this->changeset
 
@@ -408,9 +408,9 @@ class RepositoriesController : public ApplicationController {
     commits_data = commits_by_author.map(&:last)
     changes_data = commits_by_author.map { |r| h[r.first] || 0 }
 
-    fields = fields + [''] * (10 - fields.length) if ( fields.length < 10) {
-    commits_data = commits_data + [0] * (10 - commits_data.length) if ( commits_data.length < 10) {
-    changes_data = changes_data + [0] * (10 - changes_data.length) if ( changes_data.length < 10) {
+    if ( fields.length < 10) { fields = fields + [''] * (10 - fields.length) ;}
+    if ( commits_data.length < 10) { commits_data = commits_data + [0] * (10 - commits_data.length) ;}
+    if ( changes_data.length < 10) { changes_data = changes_data + [0] * (10 - changes_data.length) ;}
 
     // Remove email adress in usernames
     fields = fields.map { |c| c.gsub(%r{<.+this->.+>}, '') }
@@ -451,7 +451,7 @@ class RepositoriesController : public ApplicationController {
     // Force the download
     send_opt = { filename: filename_for_content_disposition(path.split('/').last) }
     send_type = Redmine::MimeType.of(path)
-    send_opt[:type] = send_type.to_s if ( send_type) {
+    if ( send_type) { send_opt[:type] = send_type.to_s ;}
     send_data content, send_opt
   }
 

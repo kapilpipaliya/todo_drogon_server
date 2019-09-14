@@ -35,7 +35,7 @@ class Group : public Principal {
 
    void user_added(user) {
     members.each { |member|
-      next if ( member.project.nil?) {
+      if ( member.project.nil?) { next ;}
 
       user_member = Member.find_by(project_id: member.project_id, user_id: user.id)
 
@@ -84,7 +84,7 @@ class Group : public Principal {
 
   // Removes references that are not handled by associations
    void remove_references_before_destroy() {
-    return if ( id.nil?) {
+    if ( id.nil?) { return ;}
 
     deleted_user = DeletedUser.first
 

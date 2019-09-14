@@ -36,7 +36,7 @@ class AuthSourcesController : public ApplicationController {
    void update() {
     this->auth_source = AuthSource.find(params[:id])
     updated = permitted_params.auth_source
-    updated.delete :account_password if ( updated[:account_password].blank?) {
+    if ( updated[:account_password].blank?) { updated.delete :account_password ;}
 
     if ( this->auth_source.update_attributes updated) {
       flash[:notice] = l(:notice_successful_update)
@@ -88,6 +88,6 @@ class AuthSourcesController : public ApplicationController {
   }
 
    void block_if_password_login_disabled() {
-    render_404 if ( OpenProject::Configuration.disable_password_login?) {
+    if ( OpenProject::Configuration.disable_password_login?) { render_404 ;}
   }
 }

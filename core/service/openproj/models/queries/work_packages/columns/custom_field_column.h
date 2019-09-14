@@ -19,7 +19,7 @@ class Queries::WorkPackages::Columns::CustomFieldColumn : public Queries::WorkPa
   }
 
    void set_groupable!(custom_field) {
-    this->groupable = custom_field.group_by_statements if ( groupable_custom_field?(custom_field)) {
+    if ( groupable_custom_field?(custom_field)) { this->groupable = custom_field.group_by_statements ;}
     this->groupable ||= false
   }
 

@@ -6,15 +6,15 @@ namespace BrowserHelper {
   // Uses the +browser+ gem.
    void unsupported_browser?() {
     // Any version of IE
-    return true if ( browser.ie?) {
+    if ( browser.ie?) { return true ;}
 
     version = browser.version.to_i
 
     // Older versions behind last ESR FF
-    return true if ( browser.firefox? && version < 60) {
+    if ( browser.firefox? && version < 60) { return true ;}
 
     // Older version of safari
-    return true if ( browser.safari? && version < 12) {
+    if ( browser.safari? && version < 12) { return true ;}
 
     false
   }
@@ -24,13 +24,13 @@ namespace BrowserHelper {
   // or mobile detection
    void browser_specific_classes() {
     [].tap { |classes|
-      classes << '-browser-chrome' if ( browser.chrome?) {
-      classes << '-browser-firefox' if ( browser.firefox?) {
-      classes << '-browser-safari' if ( browser.safari?) {
-      classes << '-browser-edge' if ( browser.edge?) {
+      if ( browser.chrome?) { classes << '-browser-chrome' ;}
+      if ( browser.firefox?) { classes << '-browser-firefox' ;}
+      if ( browser.safari?) { classes << '-browser-safari' ;}
+      if ( browser.edge?) { classes << '-browser-edge' ;}
 
-      classes << '-browser-mobile' if ( browser.device.mobile?) {
-      classes << '-browser-windows' if ( browser.platform.windows?) {
+      if ( browser.device.mobile?) { classes << '-browser-mobile' ;}
+      if ( browser.platform.windows?) { classes << '-browser-windows' ;}
     }
   }
 }

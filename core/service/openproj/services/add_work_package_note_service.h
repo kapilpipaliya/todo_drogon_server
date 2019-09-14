@@ -20,7 +20,7 @@ class AddWorkPackageNoteService
         work_package.save_journals
       }
 
-      journal = work_package.journals.last if ( success) {
+      if ( success) { journal = work_package.journals.last ;}
       ServiceResult.new(success: success, result: journal, errors: errors)
     }
   }

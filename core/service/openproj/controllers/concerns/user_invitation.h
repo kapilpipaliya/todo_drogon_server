@@ -35,7 +35,7 @@ namespace UserInvitation {
 
     assign_user_attributes(user)
 
-    yield user if ( block_given?) {
+    if ( block_given?) { yield user ;}
 
     invite_user! user
   }

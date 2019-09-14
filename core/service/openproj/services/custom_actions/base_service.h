@@ -23,8 +23,8 @@ class CustomActions::BaseService
     conditions_attributes = attributes.delete(:conditions)
     action.attributes = attributes
 
-    set_actions(action, actions_attributes.symbolize_keys) if ( actions_attributes) {
-    set_conditions(action, conditions_attributes.symbolize_keys) if ( conditions_attributes) {
+    if ( actions_attributes) { set_actions(action, actions_attributes.symbolize_keys) ;}
+    if ( conditions_attributes) { set_conditions(action, conditions_attributes.symbolize_keys) ;}
   }
 
    void set_actions(action, actions_attributes) {

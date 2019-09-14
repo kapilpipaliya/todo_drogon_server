@@ -27,7 +27,7 @@ class Repository::Git : public Repository {
 
    void supported_types() {
     types = [:local]
-    types << managed_type if ( manageable?) {
+    if ( manageable?) { types << managed_type ;}
 
     types
   }
@@ -86,9 +86,9 @@ class Repository::Git : public Repository {
   }
 
    void find_changeset_by_name(name) {
-    return nil if ( name.nil? || name.empty?) {
+    if ( name.nil? || name.empty?) { return nil ;}
     e = changesets.where(['revision = ?', name.to_s]).first
-    return e if ( e) {
+    if ( e) { return e ;}
     changesets.where(['scmid LIKE ?', "#{name}%"]).first
   }
 
@@ -105,7 +105,7 @@ class Repository::Git : public Repository {
     since = (c ? c.committed_on - 7.days : nil)
 
     revisions = scm.revisions('', nil, nil, all: true, since: since, reverse: true)
-    return if ( revisions.nil? || revisions.empty?) {
+    if ( revisions.nil? || revisions.empty?) { return ;}
 
     recent_changesets = changesets.where(['committed_on >= ?', since])
 
@@ -143,7 +143,7 @@ class Repository::Git : public Repository {
 
    void latest_changesets(path, rev, limit = 10) {
     revisions = scm.revisions(path, nil, rev, limit: limit, all: false)
-    return [] if ( revisions.nil? || revisions.empty?) {
+    if ( revisions.nil? || revisions.empty?) { return [] ;}
 
     changesets.where(['scmid IN (?)', revisions.map!(&:scmid)])
       .order(Arel.sql('committed_on DESC'))

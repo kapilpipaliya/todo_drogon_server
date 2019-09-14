@@ -44,7 +44,7 @@ namespace Queries::Filters::Shared::CustomFieldFilter {
     // Create a filter instance for the given custom field accessor
      void create!(name:, **options) {
       custom_field = find_by_accessor(name)
-      raise ::Queries::Filters::InvalidError if ( custom_field.nil?) {
+      if ( custom_field.nil?) { raise ::Queries::Filters::InvalidError ;}
 
       from_custom_field!(custom_field: custom_field, **options)
     }

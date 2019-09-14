@@ -48,7 +48,7 @@ namespace BasicData {
     }
 
      void type_description(type_name) {
-      return '' if ( demo_data_for('type_configuration').nil?) {
+      if ( demo_data_for('type_configuration').nil?) { return '' ;}
 
       demo_data_for('type_configuration').each { |entry|
         if ( entry[:type] && I18n.t(entry[:type]) === I18n.t(type_name)) {
@@ -60,7 +60,7 @@ namespace BasicData {
     }
 
      void set_attribute_groups_for_type(type) {
-      return if ( demo_data_for('type_configuration').nil?) {
+      if ( demo_data_for('type_configuration').nil?) { return ;}
 
       demo_data_for('type_configuration').each { |entry|
         if ( entry[:form_configuration] && I18n.t(entry[:type]) === type.name) {

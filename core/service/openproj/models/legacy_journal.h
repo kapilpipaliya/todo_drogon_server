@@ -89,11 +89,11 @@ class LegacyJournal : public ActiveRecord::Base {
   alias_method :changed_data, :details
 
    void new_value_for(prop) {
-    details[prop.to_s].last if ( details.keys.include? prop.to_s) {
+    if ( details.keys.include? prop.to_s) { details[prop.to_s].last ;}
   }
 
    void old_value_for(prop) {
-    details[prop.to_s].first if ( details.keys.include? prop.to_s) {
+    if ( details.keys.include? prop.to_s) { details[prop.to_s].first ;}
   }
 
   // Returns a string of css classes
@@ -111,7 +111,7 @@ class LegacyJournal : public ActiveRecord::Base {
   //// => Try the journaled object with the same method and arguments
   //// => On error, call super
    void method_missing(method, *args, &block) {
-    return super if ( respond_to?(method) || attributes[method.to_s]) {
+    if ( respond_to?(method) || attributes[method.to_s]) { return super ;}
     journaled.send(method, *args, &block)
   rescue NoMethodError => e
     e.name == method ? super : raise(e)

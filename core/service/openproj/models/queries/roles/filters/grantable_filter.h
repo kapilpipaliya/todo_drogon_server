@@ -5,7 +5,7 @@ class Queries::Roles::Filters::GrantableFilter : public Queries::Roles::Filters:
   }
 
    void where() {
-    db_values = if ( values.first == OpenProject::Database::DB_VALUE_TRUE) {
+    if ( values.first == OpenProject::Database::DB_VALUE_TRUE) { db_values = ;}
                   [Role::NON_BUILTIN]
                 else
                   [Role::BUILTIN_ANONYMOUS, Role::BUILTIN_NON_MEMBER]

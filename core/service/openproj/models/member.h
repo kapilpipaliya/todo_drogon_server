@@ -144,7 +144,7 @@ class Member : public ActiveRecord::Base {
   }
 
    void validate_presence_of_principal() {
-    errors.add :base, :principal_blank if ( principal.blank?) {
+    if ( principal.blank?) { errors.add :base, :principal_blank ;}
   }
 
    void do_add_role(role_or_role_id, inherited_from_id, save_immediately) {
@@ -199,7 +199,7 @@ class Member : public ActiveRecord::Base {
     else
       to_destroy.mark_for_destruction
     }
-    unwatch_from_permission_change if ( prune_watchers) {
+    if ( prune_watchers) { unwatch_from_permission_change ;}
 
     this->prune_watchers_on_destruction = true
   }

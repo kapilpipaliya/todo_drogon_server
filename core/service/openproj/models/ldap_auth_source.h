@@ -14,7 +14,7 @@ class LdapAuthSource : public AuthSource {
   after_initialize :set_default_port
 
    void authenticate(login, password) {
-    return nil if ( login.blank? || password.blank?) {
+    if ( login.blank? || password.blank?) { return nil ;}
     attrs = get_user_dn(login)
 
     if ( attrs && attrs[:dn] && authenticate_dn(attrs[:dn], password)) {
@@ -26,7 +26,7 @@ class LdapAuthSource : public AuthSource {
   }
 
    void find_user(login) {
-    return nil if ( login.blank?) {
+    if ( login.blank?) { return nil ;}
     attrs = get_user_dn(login)
 
     if ( attrs && attrs[:dn]) {
@@ -136,6 +136,6 @@ class LdapAuthSource : public AuthSource {
   }
 
    void set_default_port() {
-    this->port = 389 if ( port.to_i == 0) {
+    if ( port.to_i == 0) { this->port = 389 ;}
   }
 }

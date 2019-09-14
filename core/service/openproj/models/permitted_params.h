@@ -193,7 +193,7 @@ class PermittedParams
                            additional_params = [])
     if ( current_user.admin?) {
       additional_params << :auth_source_id unless external_authentication
-      additional_params << :force_password_change if ( change_password_allowed) {
+      if ( change_password_allowed) { additional_params << :force_password_change ;}
 
       allowed_params = this->class.permitted_attributes[:user] + \
                        additional_params + \
@@ -343,7 +343,7 @@ class PermittedParams
           acceptable_params.each { |param|
             // We rely on enum being an integer, an id that is. This will blow up
             // otherwise, which is fine.
-            next if ( params[:enumerations][enum][param].nil?) {
+            if ( params[:enumerations][enum][param].nil?) { next ;}
             whitelist[enum][param] = params[:enumerations][enum][param]
           }
         }

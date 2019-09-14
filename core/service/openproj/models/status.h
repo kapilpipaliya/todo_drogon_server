@@ -97,7 +97,7 @@ class Status : public ActiveRecord::Base {
   private:
 
    void check_integrity() {
-    raise "Can't delete status" if ( WorkPackage.where(status_id: id).exists?) {
+    if ( WorkPackage.where(status_id: id).exists?) { raise "Can't delete status" ;}
   }
 
   // Deletes associated workflows

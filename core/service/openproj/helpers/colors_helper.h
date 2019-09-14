@@ -2,7 +2,7 @@ namespace ColorsHelper {
    void options_for_colors(colored_thing, allow_bright_colors) {
     colors = []
     Color.find_each { |c|
-      next if ( !allow_bright_colors && c.super_bright?) {
+      if ( !allow_bright_colors && c.super_bright?) { next ;}
 
       options = {}
       options[:name] = c.name
@@ -44,9 +44,9 @@ namespace ColorsHelper {
    void color_css() {
     Color.find_each { |color|
       concat ".__hl_inline_color_#{color.id}_dot::before { background-color: #{color.hexcode} !important;}"
-      concat ".__hl_inline_color_#{color.id}_dot::before { border: 1px solid #555555 !important;}" if ( color.bright?) {
+      if ( color.bright?) { concat ".__hl_inline_color_#{color.id}_dot::before { border: 1px solid #555555 !important;}" ;}
       concat ".__hl_inline_color_#{color.id}_text { color: #{color.hexcode} !important;}"
-      concat ".__hl_inline_color_#{color.id}_text { -webkit-text-stroke: 0.5px grey; text-stroke: 0.5px grey;}" if ( color.super_bright?) {
+      if ( color.super_bright?) { concat ".__hl_inline_color_#{color.id}_text { -webkit-text-stroke: 0.5px grey; text-stroke: 0.5px grey;}" ;}
     }
   }
 

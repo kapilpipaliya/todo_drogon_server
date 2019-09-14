@@ -31,7 +31,7 @@ class CustomValue : public ActiveRecord::Base {
   protected:
 
    void validate_presence_of_required_value() {
-    errors.add(:value, :blank) if ( custom_field.required? && !strategy.value_present?) {
+    if ( custom_field.required? && !strategy.value_present?) { errors.add(:value, :blank) ;}
   }
 
    void validate_format_of_value() {
@@ -62,11 +62,11 @@ class CustomValue : public ActiveRecord::Base {
   private:
 
    void validate_min_length_of_value() {
-    errors.add(:value, :too_short, count: min_length) if ( min_length > 0 && value.length < min_length) {
+    if ( min_length > 0 && value.length < min_length) { errors.add(:value, :too_short, count: min_length) ;}
   }
 
    void validate_max_length_of_value() {
-    errors.add(:value, :too_long, count: max_length) if ( max_length > 0 && value.length > max_length) {
+    if ( max_length > 0 && value.length > max_length) { errors.add(:value, :too_long, count: max_length) ;}
   }
 
    void strategy() {

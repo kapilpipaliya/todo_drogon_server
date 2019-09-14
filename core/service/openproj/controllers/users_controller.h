@@ -217,7 +217,7 @@ class UsersController : public ApplicationController {
 
    void resend_invitation() {
     status = Principal::STATUSES[:invited]
-    this->user.update status: status if ( this->user.status != status) {
+    if ( this->user.status != status) { this->user.update status: status ;}
 
     token = UserInvitation.reinvite_user this->user.id
 

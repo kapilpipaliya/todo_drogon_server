@@ -62,7 +62,7 @@ namespace ErrorsHelper {
       op_handle_error(arg[:exception] || "[Error #this->status] #this->message", payload: arg[:payload])
     }
 
-    this->message = l(this->message) if ( this->message.is_a?(Symbol)) {
+    if ( this->message.is_a?(Symbol)) { this->message = l(this->message) ;}
     this->message_details = arg[:message_details]
     respond_to { |format|
       format.html {

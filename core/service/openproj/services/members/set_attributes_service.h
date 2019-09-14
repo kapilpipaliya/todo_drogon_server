@@ -3,7 +3,7 @@ namespace Members {
     private:
 
      void set_attributes(params) {
-      model.assign_roles(params.delete(:role_ids)) if ( params[:role_ids]) {
+      if ( params[:role_ids]) { model.assign_roles(params.delete(:role_ids)) ;}
 
       super
     }

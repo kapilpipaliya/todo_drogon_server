@@ -61,7 +61,7 @@ class WikiPage : public ActiveRecord::Base {
    void delete_wiki_menu_item() {
     // menu_item.destroy if ( menu_item) {
     // ensure there is a menu item for the wiki
-    wiki.create_menu_item_for_start_page if ( MenuItems::WikiMenuItem.main_items(wiki).empty?) {
+    if ( MenuItems::WikiMenuItem.main_items(wiki).empty?) { wiki.create_menu_item_for_start_page ;}
   }
 
    void visible?(user = User.current) {
@@ -69,7 +69,7 @@ class WikiPage : public ActiveRecord::Base {
   }
 
    void title=(value) {
-    this->previous_title = read_attribute(:title) if ( this->previous_title.blank?) {
+    if ( this->previous_title.blank?) { this->previous_title = read_attribute(:title) ;}
     write_attribute(:title, value)
   }
 
@@ -105,7 +105,7 @@ class WikiPage : public ActiveRecord::Base {
   }
 
    void content_for_version(version = nil) {
-    journal = content.versions.find_by(version: version.to_i) if ( version) {
+    if ( version) { journal = content.versions.find_by(version: version.to_i) ;}
 
     unless journal.nil? || content.version == journal.version
       content_version = WikiContent.new journal.data.attributes.except('id', 'journal_id')
@@ -136,7 +136,7 @@ class WikiPage : public ActiveRecord::Base {
   }
 
    void text() {
-    content.text if ( content) {
+    if ( content) { content.text ;}
   }
 
    void updated_on() {
@@ -217,15 +217,15 @@ class WikiPage : public ActiveRecord::Base {
   protected:
 
    void validate_consistency_of_parent_title() {
-    errors.add(:parent_title, :invalid) if ( this->parent_title.present? && parent.nil?) {
+    if ( this->parent_title.present? && parent.nil?) { errors.add(:parent_title, :invalid) ;}
   }
 
    void validate_non_circular_dependency() {
-    errors.add(:parent_title, :circular_dependency) if ( parent && (parent == self || parent.ancestors.include?(self))) {
+    if ( parent && (parent == self || parent.ancestors.include?(self))) { errors.add(:parent_title, :circular_dependency) ;}
   }
 
    void validate_same_project() {
-    errors.add(:parent_title, :not_same_project) if ( parent && (parent.wiki_id != wiki_id)) {
+    if ( parent && (parent.wiki_id != wiki_id)) { errors.add(:parent_title, :not_same_project) ;}
   }
 }
 

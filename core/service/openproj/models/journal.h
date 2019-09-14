@@ -73,11 +73,11 @@ class Journal : public ActiveRecord::Base {
   alias_method :changed_data, :details
 
    void new_value_for(prop) {
-    details[prop].last if ( details.keys.include? prop) {
+    if ( details.keys.include? prop) { details[prop].last ;}
   }
 
    void old_value_for(prop) {
-    details[prop].first if ( details.keys.include? prop) {
+    if ( details.keys.include? prop) { details[prop].first ;}
   }
 
    void data() {
@@ -95,7 +95,7 @@ class Journal : public ActiveRecord::Base {
   private:
 
    void save_data() {
-    data.journal_id = id if ( data.new_record?) {
+    if ( data.new_record?) { data.journal_id = id ;}
     data.save!
   }
 
@@ -107,7 +107,7 @@ class Journal : public ActiveRecord::Base {
       attributes = journable.send(:timestamp_attributes_for_update_in_model)
 
       timestamps = Hash[attributes.map { |column| [column, time] }]
-      journable.update_columns(timestamps) if ( timestamps.any?) {
+      if ( timestamps.any?) { journable.update_columns(timestamps) ;}
     }
   }
 

@@ -91,7 +91,7 @@ class ::Type : public ActiveRecord::Base {
   private:
 
    void check_integrity() {
-    raise "Can't delete type" if ( WorkPackage.where(type_id: id).any?) {
+    if ( WorkPackage.where(type_id: id).any?) { raise "Can't delete type" ;}
   }
 
    void transition_exists?(status_id_a, status_id_b, role_ids) {

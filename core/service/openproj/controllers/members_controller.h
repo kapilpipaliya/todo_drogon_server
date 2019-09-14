@@ -194,7 +194,7 @@ class MembersController : public ApplicationController {
 
    void new_member(user_id) {
     Member.new(permitted_params.member).tap { |member|
-      member.user_id = user_id if ( user_id) {
+      if ( user_id) { member.user_id = user_id ;}
     }
   }
 
@@ -208,7 +208,7 @@ class MembersController : public ApplicationController {
           user = UserInvitation.invite_new_user(email: id) ||
             User.find_by_mail(id)
 
-          user.id if ( user) {
+          if ( user) { user.id ;}
         }
       else
         id
@@ -250,7 +250,7 @@ class MembersController : public ApplicationController {
    void update_member_from_params() {
     // this way, mass assignment is considered and all updates happen in one transaction (autosave)
     attrs = permitted_params.member.dup
-    attrs.merge! permitted_params.membership.dup if ( params[:membership].present?) {
+    if ( params[:membership].present?) { attrs.merge! permitted_params.membership.dup ;}
 
     if ( attrs.include? :role_ids) {
       role_ids = attrs.delete(:role_ids).map(&:to_i).select { |i| i > 0 }

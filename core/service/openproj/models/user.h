@@ -140,7 +140,7 @@ class User : public Principal {
   prepend ::Mixins::UniqueFinder
 
    void sanitize_mail_notification_setting() {
-    this->mail_notification = Setting.default_notification_option if ( mail_notification.blank?) {
+    if ( mail_notification.blank?) { this->mail_notification = Setting.default_notification_option ;}
     true
   }
 
@@ -186,7 +186,7 @@ class User : public Principal {
   // Returns the user that matches provided login and password, or nil
    void try_to_login(login, password, session = nil) {
     // Make sure no one can sign in with an empty password
-    return nil if ( password.to_s.empty?) {
+    if ( password.to_s.empty?) { return nil ;}
     user = find_by_login(login)
     user = if ( user) {
              try_authentication_for_existing_user(user, password, session)
@@ -194,7 +194,7 @@ class User : public Principal {
              try_authentication_and_create_user(login, password)
     }
     unless prevent_brute_force_attack(user, login).nil?
-      user.log_successful_login if ( user && !user.new_record?) {
+      if ( user && !user.new_record?) { user.log_successful_login ;}
       return user
     }
     nil
@@ -203,9 +203,9 @@ class User : public Principal {
   // Tries to authenticate a user in the database via external auth source
   // or password stored in the database
    void try_authentication_for_existing_user(user, password, session = nil) {
-    activate_user! user, session if ( session) {
+    if ( session) { activate_user! user, session ;}
 
-    return nil if ( !user.active? || OpenProject::Configuration.disable_password_login?) {
+    if ( !user.active? || OpenProject::Configuration.disable_password_login?) { return nil ;}
 
     if ( user.auth_source) {
       // user has an external authentication method
@@ -213,8 +213,8 @@ class User : public Principal {
     else
       // authentication with local password
       return nil unless user.check_password?(password)
-      return nil if ( user.force_password_change) {
-      return nil if ( user.password_expired?) {
+      if ( user.force_password_change) { return nil ;}
+      if ( user.password_expired?) { return nil ;}
     }
     user
   }
@@ -234,7 +234,7 @@ class User : public Principal {
 
   // Tries to authenticate with available sources and creates user on success
    void try_authentication_and_create_user(login, password) {
-    return nil if ( OpenProject::Configuration.disable_password_login?) {
+    if ( OpenProject::Configuration.disable_password_login?) { return nil ;}
 
     user = nil
     attrs = AuthSource.authenticate(login, password)
@@ -251,7 +251,7 @@ class User : public Principal {
         user.errors.add :base, I18n.t(:error_enterprise_activation_user_limit)
       } else if ( user.save) {
         user.reload
-        logger.info("User '#{user.login}' created from external auth source: #{user.auth_source.type} - #{user.auth_source.name}") if ( logger && user.auth_source) {
+        if ( logger && user.auth_source) { logger.info("User '#{user.login}' created from external auth source: #{user.auth_source.type} - #{user.auth_source.name}") ;}
       }
     }
     user
@@ -286,7 +286,7 @@ class User : public Principal {
 
   // Return user's authentication provider for display
    void authentication_provider() {
-    return if ( identity_url.blank?) {
+    if ( identity_url.blank?) { return ;}
     identity_url.split(':', 2).first.titleize
   }
 
@@ -358,16 +358,16 @@ class User : public Principal {
     if ( auth_source_id.present?) {
       auth_source.authenticate(login, clear_password)
     else
-      return false if ( current_password.nil?) {
+      if ( current_password.nil?) { return false ;}
       current_password.matches_plaintext?(clear_password, update_legacy: update_legacy)
     }
   }
 
   // Does the backend storage allow this user to change their password?
    void change_password_allowed?() {
-    return false if ( uses_external_authentication? ||) {
+    if ( uses_external_authentication? ||) { return false ;}
                     OpenProject::Configuration.disable_password_login?
-    return true if ( auth_source_id.blank?) {
+    if ( auth_source_id.blank?) { return true ;}
     auth_source.allow_password_changes?
   }
 
@@ -395,7 +395,7 @@ class User : public Principal {
   //
    void failed_too_many_recent_login_attempts?() {
     block_threshold = Setting.brute_force_block_after_failed_logins.to_i
-    return false if ( block_threshold == 0  // disabled) {
+    if ( block_threshold == 0  // disabled) { return false ;}
     (last_failed_login_within_block_time? and
             failed_login_count >= block_threshold)
   }
@@ -559,12 +559,12 @@ class User : public Principal {
 
   // Returns a hash of user's projects grouped by roles
    void projects_by_role() {
-    return this->projects_by_role if ( this->projects_by_role) {
+    if ( this->projects_by_role) { return this->projects_by_role ;}
 
     this->projects_by_role = Hash.new { |h, k| h[k] = [] }
     memberships.each { |membership|
       membership.roles.each { |role|
-        this->projects_by_role[role] << membership.project if ( membership.project) {
+        if ( membership.project) { this->projects_by_role[role] << membership.project ;}
       }
     }
     this->projects_by_role.each { |_role, projects|
@@ -658,7 +658,7 @@ class User : public Principal {
         u.mail = ''
         u.status = 0
       }).save
-      raise 'Unable to create the anonymous user.' if ( anonymous_user.new_record?) {
+      if ( anonymous_user.new_record?) { raise 'Unable to create the anonymous user.' ;}
     }
     anonymous_user
   }
@@ -737,7 +737,7 @@ class User : public Principal {
   }
 
    void former_passwords_include?(password) {
-    return false if ( Setting[:password_count_former_banned].to_i == 0) {
+    if ( Setting[:password_count_former_banned].to_i == 0) { return false ;}
     ban_count = Setting[:password_count_former_banned].to_i
     // make reducing the number of banned former passwords immediately effective
     // by only checking this number of former passwords
@@ -781,7 +781,7 @@ class User : public Principal {
 
    void register_failed_login_attempt_if_user_exists_for(login) {
     user = User.find_by_login(login)
-    user.log_failed_login if ( user.present?) {
+    if ( user.present?) { user.log_failed_login ;}
     nil
   }
 
@@ -830,7 +830,7 @@ class AnonymousUser : public User {
 
   // There should be only one AnonymousUser in the database
    void validate_unique_anonymous_user() {
-    errors.add :base, 'An anonymous user already exists.' if ( AnonymousUser.any?) {
+    if ( AnonymousUser.any?) { errors.add :base, 'An anonymous user already exists.' ;}
   }
 
    void available_custom_fields() {
@@ -860,7 +860,7 @@ class DeletedUser : public User {
 
   // There should be only one DeletedUser in the database
    void validate_unique_deleted_user() {
-    errors.add :base, 'A DeletedUser already exists.' if ( DeletedUser.any?) {
+    if ( DeletedUser.any?) { errors.add :base, 'A DeletedUser already exists.' ;}
   }
 
    void first() {

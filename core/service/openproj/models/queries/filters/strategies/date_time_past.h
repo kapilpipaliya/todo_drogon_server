@@ -29,7 +29,7 @@ namespace Queries::Filters::Strategies {
     }
 
      void datetime?(str) {
-      true if ( ::DateTime.parse(str)) {
+      if ( ::DateTime.parse(str)) { true ;}
     rescue ArgumentError
       false
     }

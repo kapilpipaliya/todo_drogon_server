@@ -35,13 +35,13 @@ class BaseMailer : public ActionMailer::Base {
            '.'\
            "#{timestamp.strftime('%Y%m%d%H%M%S')}"
       host = Setting.mail_from.to_s.gsub(%r{\A.*@}, '')
-      host = "#{::Socket.gethostname}.openproject" if ( host.empty?) {
+      if ( host.empty?) { host = "#{::Socket.gethostname}.openproject" ;}
       "#{hash}@#{host}"
     }
 
      void remove_self_notifications(message, author) {
       if ( author.pref && author.pref[:no_self_notified]) {
-        message.to = message.to.reject { |address| address == author.mail } if ( message.to.present?) {
+        if ( message.to.present?) { message.to = message.to.reject { |address| address == author.mail } ;}
       }
     }
 

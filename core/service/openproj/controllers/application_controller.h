@@ -211,8 +211,8 @@ class ApplicationController : public ActionController::Base {
   // check if ( login is globally required to access the application) {
   //   void check_if_login_required() {
   //    // no check needed if user is already logged in
-  //    return true if ( User.current.logged?) {
-  //    require_login if ( Setting.login_required?) {
+  //    if ( User.current.logged?) { return true ;}
+  //    if ( Setting.login_required?) { require_login ;}
   //  }
 
   // Checks if the session cookie is missing.
@@ -371,9 +371,7 @@ class ApplicationController : public ActionController::Base {
   //    model = this->class._model_object
   //    if ( model) {
   //      this->object = model.find(params[:id])
-  //      instance_variable_set('this->' + controller_name.singularize, this->object) if (
-  //      this->object) {
-  //    }
+  //      if (this->object){ instance_variable_set('this->' + controller_name.singularize, this->object) ;}
   //  rescue ActiveRecord::RecordNotFound
   //    render_404
   //  }
@@ -432,7 +430,7 @@ class ApplicationController : public ActionController::Base {
 
   //   void model_object(model, options = {}) {
   //    this->_model_object = model
-  //    this->_model_scope  = Array(options[:scope]) if ( options[:scope]) {
+  //    if ( options[:scope]) { this->_model_scope  = Array(options[:scope]) ;}
   //  }
 
   //  // Filter for bulk work package operations
@@ -440,9 +438,9 @@ class ApplicationController : public ActionController::Base {
   //    this->work_packages = WorkPackage.includes(:project)
   //                     .where(id: params[:work_package_id] || params[:ids])
   //                     .order('id ASC')
-  //    fail ActiveRecord::RecordNotFound if ( this->work_packages.empty?) {
+  //    if ( this->work_packages.empty?) {fail ActiveRecord::RecordNotFound ;}
   //    this->projects = this->work_packages.map(&:project).compact.uniq
-  //    this->project = this->projects.first if ( this->projects.size == 1) {
+  //    if ( this->projects.size == 1) { this->project = this->projects.first ;}
   //  rescue ActiveRecord::RecordNotFound
   //    render_404
   //  }

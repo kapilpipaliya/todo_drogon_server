@@ -91,7 +91,7 @@ namespace Type::AttributeGroups {
 
     groups = default_groups.keys.each_with_object([]) { |groupkey, array|
       members = values[groupkey]
-      array << [groupkey, members] if ( members.present?) {
+      if ( members.present?) { array << [groupkey, members] ;}
     }
 
     groups
@@ -110,7 +110,7 @@ namespace Type::AttributeGroups {
   private:
 
    void write_attribute_groups_objects() {
-    return if ( attribute_groups_objects.nil?) {
+    if ( attribute_groups_objects.nil?) { return ;}
 
     groups = if ( attribute_groups_objects == to_attribute_group_class(default_attribute_groups)) {
                nil

@@ -10,7 +10,7 @@ class Announcement : public ActiveRecord::Base {
 
    void only_one() {
     a = first
-    a = create_default_announcement if ( a.nil?) {
+    if ( a.nil?) { a = create_default_announcement ;}
     a
   }
 

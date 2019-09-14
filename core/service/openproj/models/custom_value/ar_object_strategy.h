@@ -1,6 +1,6 @@
 class CustomValue::ARObjectStrategy : public CustomValue::FormatStrategy {
    void typed_value() {
-    return memoized_typed_value if ( memoized_typed_value) {
+    if ( memoized_typed_value) { return memoized_typed_value ;}
 
     unless value.blank?
       RequestStore.fetch(:"#{ar_class.name.underscore}_custom_value_#{value}") {

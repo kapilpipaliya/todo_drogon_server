@@ -24,7 +24,7 @@ class WorkPackages::UpdateService
     result = set_attributes(attributes)
 
     if ( result.success?) {
-      work_package.attachments = work_package.attachments_replacements if ( work_package.attachments_replacements) {
+      if ( work_package.attachments_replacements) { work_package.attachments = work_package.attachments_replacements ;}
       result.merge!(update_dependent)
     }
 
@@ -51,7 +51,7 @@ class WorkPackages::UpdateService
 
     result.merge!(update_descendants)
 
-    cleanup if ( result.success?) {
+    if ( result.success?) { cleanup ;}
 
     result.merge!(reschedule_related)
 
@@ -117,7 +117,7 @@ class WorkPackages::UpdateService
       // and the former parent
       work_package.send(:update_parent_relation)
 
-      result.merge!(reschedule_former_parent) if ( work_package.parent_id_was) {
+      if ( work_package.parent_id_was) { result.merge!(reschedule_former_parent) ;}
     }
 
     result.merge!(reschedule(work_package))

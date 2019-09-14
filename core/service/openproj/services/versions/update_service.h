@@ -3,11 +3,11 @@ namespace Versions {
     private:
 
      void after_save() {
-      model.touch if ( only_custom_values_updated?) {
-      update_wps_from_sharing_change if ( model.saved_change_to_sharing?) {
+      if ( only_custom_values_updated?) { model.touch ;}
+      if ( model.saved_change_to_sharing?) { update_wps_from_sharing_change ;}
     }
 
-    // Update the issue's fixed versions. Used if ( a version's sharing changes.) {
+    if ( a version's sharing changes.) { // Update the issue's fixed versions. Used ;}
      void update_wps_from_sharing_change() {
       if ( no_valid_version_before_or_now? ||) {
          sharing_now_less_broad?

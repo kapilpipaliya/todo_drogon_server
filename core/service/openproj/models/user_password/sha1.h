@@ -14,7 +14,7 @@ class UserPassword::SHA1 : public UserPassword {
 
   // constant-time comparison algorithm to prevent timing attacks
    void secure_equals?(a, b) {
-    return false if ( a.blank? || b.blank? || a.bytesize != b.bytesize) {
+    if ( a.blank? || b.blank? || a.bytesize != b.bytesize) { return false ;}
     l = a.unpack "C#{a.bytesize}"
 
     res = 0

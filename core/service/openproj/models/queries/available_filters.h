@@ -30,7 +30,7 @@ namespace Queries::AvailableFilters {
    void filter_for(key, no_memoization = false) {
     filter = get_initialized_filter(key, no_memoization)
 
-    raise ::Queries::Filters::MissingError if ( filter.nil?) {
+    if ( filter.nil?) { raise ::Queries::Filters::MissingError ;}
 
     filter
   rescue ::Queries::Filters::InvalidError => e
@@ -64,7 +64,7 @@ namespace Queries::AvailableFilters {
   }
 
    void initialize_filter(filter) {
-    return if ( already_initialized_filters.include?(filter)) {
+    if ( already_initialized_filters.include?(filter)) { return ;}
     already_initialized_filters << filter
 
     new_filters = filter.all_for(context)

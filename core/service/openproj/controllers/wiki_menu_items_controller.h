@@ -5,7 +5,7 @@ class WikiMenuItemsController : public ApplicationController {
   // include Redmine::MenuManager::WikiMenuHelper
 
   current_menu_item :edit { |controller|
-    next controller.wiki_menu_item.menu_identifier if ( controller.wiki_menu_item.persisted?) {
+    if ( controller.wiki_menu_item.persisted?) { next controller.wiki_menu_item.menu_identifier ;}
 
     project = controller.instance_variable_get(:this->project)
     if ( (page = WikiPage.find_by(wiki_id: project.wiki.id, slug: controller.params[:id]))) {
@@ -14,7 +14,7 @@ class WikiMenuItemsController : public ApplicationController {
   }
 
   current_menu_item :select_main_menu_item { |controller|
-    next controller.wiki_menu_item.menu_identifier if ( controller.wiki_menu_item.try(:persisted?)) {
+    if ( controller.wiki_menu_item.try(:persisted?)) { next controller.wiki_menu_item.menu_identifier ;}
 
     if ( (page = WikiPage.find_by(id: controller.params[:id]))) {
       default_menu_item(controller, page)

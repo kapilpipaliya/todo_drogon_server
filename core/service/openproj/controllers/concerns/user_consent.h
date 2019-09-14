@@ -47,10 +47,10 @@ namespace Concerns::UserConsent {
     consented_at = consenting_user.try(:consented_at)
 
     // Always if ( the user has not consented) {
-    return true if ( consented_at.blank?) {
+    if ( consented_at.blank?) { return true ;}
 
     // Did not expire if ( no consent_time set, but user has consented at some point) {
-    return false if ( Setting.consent_time.blank?) {
+    if ( Setting.consent_time.blank?) { return false ;}
 
     // Otherwise, expires when consent_time is newer than last consented_at
     consented_at < Setting.consent_time

@@ -16,7 +16,7 @@ class CustomActions::Actions::CustomField : public CustomActions::Actions::Base 
   }
 
    void apply(work_package) {
-    work_package.send(:"#{custom_field.accessor_name}=", values) if ( work_package.respond_to?(:"#{custom_field.accessor_name}=")) {
+    if ( work_package.respond_to?(:"#{custom_field.accessor_name}=")) { work_package.send(:"#{custom_field.accessor_name}=", values) ;}
   }
 
    void all() {

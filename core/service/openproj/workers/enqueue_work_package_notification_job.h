@@ -66,7 +66,7 @@ class EnqueueWorkPackageNotificationJob : public ApplicationJob {
 
    void text_for_mentions() {
     potential_text = ""
-    potential_text << this->journal.notes if ( this->journal.try(:notes)) {
+    if ( this->journal.try(:notes)) { potential_text << this->journal.notes ;}
 
     %i[description subject].each { |field|
       if ( this->journal.details[field].try(:any?)) {

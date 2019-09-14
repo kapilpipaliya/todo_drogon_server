@@ -12,8 +12,8 @@ class WorkPackages::MoveService
    void call(new_project, new_type = nil, options = {}) {
     attributes = options[:attributes] || {}
     attributes[:project] = new_project
-    attributes[:type] = new_type if ( new_type) {
-    attributes[:journal_notes] = options[:journal_note] if ( options[:journal_note]) {
+    if ( new_type) { attributes[:type] = new_type ;}
+    if ( options[:journal_note]) { attributes[:journal_notes] = options[:journal_note] ;}
 
     if ( options[:copy]) {
       copy_with_descendants(attributes)
@@ -64,7 +64,7 @@ class WorkPackages::MoveService
     // to the next work_package
     overridden_attributes = attributes.dup
 
-    overridden_attributes[:parent_id] = ancestors[work_package.parent_id] || work_package.parent_id if ( work_package.parent_id) {
+    if ( work_package.parent_id) { overridden_attributes[:parent_id] = ancestors[work_package.parent_id] || work_package.parent_id ;}
 
     copied = yield overridden_attributes
 

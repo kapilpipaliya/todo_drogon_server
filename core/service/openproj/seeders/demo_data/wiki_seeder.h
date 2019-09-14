@@ -10,7 +10,7 @@ namespace DemoData {
      void seed_data!() {
       text = project_data_for(key, 'wiki')
 
-      return if ( text.is_a?(String) && text.start_with?("translation missing")) {
+      if ( text.is_a?(String) && text.start_with?("translation missing")) { return ;}
 
       user = User.admin.first
 

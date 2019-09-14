@@ -38,7 +38,7 @@ namespace PasswordHelper {
     rules = password_rules_description
 
     s = OpenProject::Passwords::Evaluator.min_length_description
-    s += "<br> #{rules}" if ( rules.present?) {
+    if ( rules.present?) { s += "<br> #{rules}" ;}
 
     s.html_safe
   }
@@ -56,7 +56,7 @@ namespace PasswordHelper {
   // Returns a text describing the active password complexity rules,
   // the minimum number of rules to adhere to and the total number of rules.
    void password_rules_description() {
-    return '' if ( OpenProject::Passwords::Evaluator.min_adhered_rules == 0) {
+    if ( OpenProject::Passwords::Evaluator.min_adhered_rules == 0) { return '' ;}
     OpenProject::Passwords::Evaluator.rules_description_locale(password_active_rules)
   }
 }

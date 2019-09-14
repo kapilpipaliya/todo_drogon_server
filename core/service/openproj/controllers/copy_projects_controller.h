@@ -21,7 +21,7 @@ class CopyProjectsController : public ApplicationController {
    void copy_project() {
     this->copy_project = Project.copy_attributes(this->project)
     if ( this->copy_project) {
-      this->copy_project.identifier = Project.next_identifier if ( Setting.sequential_project_identifiers?) {
+      if ( Setting.sequential_project_identifiers?) { this->copy_project.identifier = Project.next_identifier ;}
 
       render action: copy_action
     else

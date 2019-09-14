@@ -26,7 +26,7 @@ namespace Queries::Filters::Strategies {
     }
 
      void numeric?(str) {
-      true if ( Object.send(numeric_class.to_s, str)) {
+      if ( Object.send(numeric_class.to_s, str)) { true ;}
     rescue ArgumentError
       false
     }

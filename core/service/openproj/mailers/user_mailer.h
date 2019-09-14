@@ -116,13 +116,13 @@ class UserMailer : public BaseMailer {
     this->news = news
 
     open_project_headers 'Type'    => 'News'
-    open_project_headers 'Project' => this->news.project.identifier if ( this->news.project) {
+    if ( this->news.project) { open_project_headers 'Project' => this->news.project.identifier ;}
 
     message_id this->news, user
 
     with_locale_for(user) {
       subject = "#{News.model_name.human}: #{this->news.title}"
-      subject = "[#{this->news.project.name}] #{subject}" if ( this->news.project) {
+      if ( this->news.project) { subject = "[#{this->news.project.name}] #{subject}" ;}
       mail_for_author author, to: user.mail, subject: subject
     }
   }
@@ -148,14 +148,14 @@ class UserMailer : public BaseMailer {
     this->comment = comment
     this->news    = this->comment.commented
 
-    open_project_headers 'Project' => this->news.project.identifier if ( this->news.project) {
+    if ( this->news.project) { open_project_headers 'Project' => this->news.project.identifier ;}
 
     message_id this->comment, user
     references this->news, user
 
     with_locale_for(user) {
       subject = "#{News.model_name.human}: #{this->news.title}"
-      subject = "Re: [#{this->news.project.name}] #{subject}" if ( this->news.project) {
+      if ( this->news.project) { subject = "Re: [#{this->news.project.name}] #{subject}" ;}
       mail_for_author author, to: user.mail, subject: subject
     }
   }
@@ -205,7 +205,7 @@ class UserMailer : public BaseMailer {
                          'Type'         => 'Forum'
 
     message_id this->message, user
-    references this->message.parent, user if ( this->message.parent) {
+    if ( this->message.parent) { references this->message.parent, user ;}
 
     with_locale_for(user) {
       subject = "[#{this->message.forum.project.name} - #{this->message.forum.name} - msg#{this->message.root.id}] #{this->message.subject}"
@@ -345,6 +345,6 @@ class DoNotSendMailsWithoutReceiverInterceptor
     receivers = [mail.to, mail.cc, mail.bcc]
     // the above fields might be empty arrays (if ( entries have been removed) {
     // by another interceptor) or nil, therefore checking for blank?
-    mail.perform_deliveries = false if ( receivers.all?(&:blank?)) {
+    if ( receivers.all?(&:blank?)) { mail.perform_deliveries = false ;}
   }
 }

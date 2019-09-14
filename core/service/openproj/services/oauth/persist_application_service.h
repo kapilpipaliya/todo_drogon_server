@@ -23,7 +23,7 @@ namespace OAuth {
     }
 
      void set_defaults() {
-      return if ( application.owner_id) {
+      if ( application.owner_id) { return ;}
 
       application.owner = current_user
       application.owner_type = 'User'

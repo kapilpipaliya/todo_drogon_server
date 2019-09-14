@@ -59,7 +59,7 @@ class ActivitiesController : public ApplicationController {
   }
 
    void verify_activities_module_activated() {
-    render_403 if ( this->project && !this->project.module_enabled?('activity')) {
+    if ( this->project && !this->project.module_enabled?('activity')) { render_403 ;}
   }
 
   // Do not show events, which are associated with projects where activities are disabled.

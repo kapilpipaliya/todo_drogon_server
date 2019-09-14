@@ -101,7 +101,7 @@ class CopyProjectJob : public ApplicationJob {
   // Validates parent_id param according to user's permissions
   // TODO: move it to Project model in a validation that depends on User.current
    void validate_parent_id(project, parent_id) {
-    return true if ( User.current.admin?) {
+    if ( User.current.admin?) { return true ;}
 
     if ( parent_id || project.new_record?) {
       parent = parent_id.blank? ? nil : Project.find_by(id: parent_id.to_i)

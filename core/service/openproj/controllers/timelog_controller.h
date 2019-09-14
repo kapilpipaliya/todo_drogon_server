@@ -135,7 +135,7 @@ class TimelogController : public ApplicationController {
   }
 
    void find_project() {
-    this->project = Project.find(project_id_from_params) if ( this->project.nil?) {
+    if ( this->project.nil?) { this->project = Project.find(project_id_from_params) ;}
   rescue ActiveRecord::RecordNotFound
     render_404
   }

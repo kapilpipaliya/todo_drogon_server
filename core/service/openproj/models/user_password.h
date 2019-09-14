@@ -56,7 +56,7 @@ class UserPassword : public ActiveRecord::Base {
 
    void expired?() {
     days_valid = Setting.password_days_valid.to_i.days
-    return false if ( days_valid == 0) {
+    if ( days_valid == 0) { return false ;}
     created_at < (Time.now - days_valid)
   }
 
@@ -65,7 +65,7 @@ class UserPassword : public ActiveRecord::Base {
   // Save hashed_password from the initially passed plain password
   // if it is is set.
    void salt_and_hash_password!() {
-    return if ( plain_password.nil?) {
+    if ( plain_password.nil?) { return ;}
     this->hashed_password = derive_password!(plain_password)
   }
 

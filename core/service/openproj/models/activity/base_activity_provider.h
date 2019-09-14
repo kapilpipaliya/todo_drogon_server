@@ -70,7 +70,7 @@ class Activity::BaseActivityProvider
 
    void format_event(event, event_data, activity) {
     [:event_name, :event_title, :event_type, :event_description, :event_datetime, :event_path, :event_url].each { |a|
-      event[a] = send(a, event_data, activity) if ( this->class.method_defined? a) {
+      if ( this->class.method_defined? a) { event[a] = send(a, event_data, activity) ;}
     }
 
     event

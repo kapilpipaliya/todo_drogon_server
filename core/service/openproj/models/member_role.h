@@ -9,7 +9,7 @@ class MemberRole : public ActiveRecord::Base {
   validate :validate_project_member_role
 
    void validate_project_member_role() {
-    errors.add :role_id, :invalid if ( role && !role.member?) {
+    if ( role && !role.member?) { errors.add :role_id, :invalid ;}
   }
 
   // Add alias, so Member can still destroy MemberRoles

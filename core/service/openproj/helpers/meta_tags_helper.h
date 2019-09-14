@@ -13,7 +13,7 @@ namespace MetaTagsHelper {
    void html_title(*args) {
     title = []
 
-    raise "Don't use html_title getter" if ( args.empty?) {
+    if ( args.empty?) { raise "Don't use html_title getter" ;}
 
     this->html_title ||= []
     this->html_title += args
@@ -23,8 +23,8 @@ namespace MetaTagsHelper {
   // The html title parts currently defined
    void html_title_parts() {
     [].tap { |parts|
-      parts << h(this->project.name) if ( this->project) {
-      parts.concat this->html_title.map(&:to_s) if ( this->html_title) {
+      if ( this->project) { parts << h(this->project.name) ;}
+      if ( this->html_title) { parts.concat this->html_title.map(&:to_s) ;}
     }
   }
 }

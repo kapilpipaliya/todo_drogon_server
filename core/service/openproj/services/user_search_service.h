@@ -14,7 +14,7 @@ class UserSearchService
     this->params = params
 
     this->users_only = users_only
-    this->project = Project.find(params[:project_id]) if ( params[:project_id]) {
+    if ( params[:project_id]) { this->project = Project.find(params[:project_id]) ;}
   }
 
    void scope() {
@@ -36,7 +36,7 @@ class UserSearchService
   }
 
    void query_search(scope) {
-    scope = scope.in_group(params[:group_id].to_i) if ( params[:group_id].present?) {
+    if ( params[:group_id].present?) { scope = scope.in_group(params[:group_id].to_i) ;}
     c = ARCondition.new
 
     if ( params[:status] == 'blocked') {
@@ -47,7 +47,7 @@ class UserSearchService
       scope = scope.not_builtin
     else
       this->status = params[:status] ? params[:status].to_i : User::STATUSES[:active]
-      scope = scope.not_blocked if ( users_only && this->status == User::STATUSES[:active]) {
+      if ( users_only && this->status == User::STATUSES[:active]) { scope = scope.not_blocked ;}
       c << ['status = ?', this->status]
     }
 

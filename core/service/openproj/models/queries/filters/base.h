@@ -78,7 +78,7 @@ class Queries::Filters::Base
 
    void scope() {
     scope = model.where(where)
-    scope = scope.joins(joins) if ( joins) {
+    if ( joins) { scope = scope.joins(joins) ;}
     scope
   }
 

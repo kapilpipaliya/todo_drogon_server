@@ -26,7 +26,7 @@ namespace WorkPackage::AskBeforeDestruction {
       associated = []
 
       registered_associated_to_ask_before_destruction.each { |registration|
-        associated << registration.klass if ( registration.check.call(work_packages)) {
+        if ( registration.check.call(work_packages)) { associated << registration.klass ;}
       }
 
       associated
@@ -38,7 +38,7 @@ namespace WorkPackage::AskBeforeDestruction {
       associated = {}
 
       registered_associated_to_ask_before_destruction.each { |registration|
-        associated[registration.klass] = registration.action if ( registration.check.call(work_packages)) {
+        if ( registration.check.call(work_packages)) { associated[registration.klass] = registration.action ;}
       }
 
       associated

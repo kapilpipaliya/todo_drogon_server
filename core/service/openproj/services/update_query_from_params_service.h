@@ -40,11 +40,11 @@ class UpdateQueryFromParamsService
   private:
 
    void apply_group_by(params) {
-    query.group_by = params[:group_by] if ( params.key?(:group_by)) {
+    if ( params.key?(:group_by)) { query.group_by = params[:group_by] ;}
   }
 
    void apply_sort_by(params) {
-    query.sort_criteria = params[:sort_by] if ( params[:sort_by]) {
+    if ( params[:sort_by]) { query.sort_criteria = params[:sort_by] ;}
   }
 
    void apply_filters(params) {
@@ -58,30 +58,30 @@ class UpdateQueryFromParamsService
   }
 
    void apply_columns(params) {
-    query.column_names = params[:columns] if ( params[:columns]) {
+    if ( params[:columns]) { query.column_names = params[:columns] ;}
   }
 
    void apply_sums(params) {
-    query.display_sums = params[:display_sums] if ( params.key?(:display_sums)) {
+    if ( params.key?(:display_sums)) { query.display_sums = params[:display_sums] ;}
   }
 
    void apply_timeline(params) {
-    query.timeline_visible = params[:timeline_visible] if ( params.key?(:timeline_visible)) {
-    query.timeline_zoom_level = params[:timeline_zoom_level] if ( params.key?(:timeline_zoom_level)) {
-    query.timeline_labels = params[:timeline_labels] if ( params.key?(:timeline_labels)) {
+    if ( params.key?(:timeline_visible)) { query.timeline_visible = params[:timeline_visible] ;}
+    if ( params.key?(:timeline_zoom_level)) { query.timeline_zoom_level = params[:timeline_zoom_level] ;}
+    if ( params.key?(:timeline_labels)) { query.timeline_labels = params[:timeline_labels] ;}
   }
 
    void apply_hierarchy(params) {
-    query.show_hierarchies = params[:show_hierarchies] if ( params.key?(:show_hierarchies)) {
+    if ( params.key?(:show_hierarchies)) { query.show_hierarchies = params[:show_hierarchies] ;}
   }
 
    void apply_highlighting(params) {
-    query.highlighting_mode = params[:highlighting_mode] if ( params.key?(:highlighting_mode)) {
-    query.highlighted_attributes = params[:highlighted_attributes] if ( params.key?(:highlighted_attributes)) {
+    if ( params.key?(:highlighting_mode)) { query.highlighting_mode = params[:highlighting_mode] ;}
+    if ( params.key?(:highlighted_attributes)) { query.highlighted_attributes = params[:highlighted_attributes] ;}
   }
 
    void apply_display_representation(params) {
-    query.display_representation = params[:display_representation] if ( params.key?(:display_representation)) {
+    if ( params.key?(:display_representation)) { query.display_representation = params[:display_representation] ;}
   }
 
    void disable_hierarchy_when_only_grouped_by(params) {

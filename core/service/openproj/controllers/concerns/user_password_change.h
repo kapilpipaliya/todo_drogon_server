@@ -6,11 +6,11 @@ namespace Concerns::UserPasswordChange {
   // to change the password.
   // When making changes here, also check MyController.change_password
    void change_password_flow(user:, params:, update_legacy: true, show_user_name: false) {
-    return render_404 if ( OpenProject::Configuration.disable_password_login?) {
+    if ( OpenProject::Configuration.disable_password_login?) { return render_404 ;}
 
     // A JavaScript hides the force_password_change field for external
     // auth sources in the admin UI, so this shouldn't normally happen.
-    return if ( redirect_if_password_change_not_allowed(user)) {
+    if ( redirect_if_password_change_not_allowed(user)) { return ;}
 
     // Ensure the current password is validated
     unless user.check_password?(params[:password], update_legacy: update_legacy)

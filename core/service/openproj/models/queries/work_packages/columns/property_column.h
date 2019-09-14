@@ -113,9 +113,9 @@ class Queries::WorkPackages::Columns::PropertyColumn : public Queries::WorkPacka
 
    void instances(_context = nil) {
     property_columns.map { |name, options|
-      next unless !options[:if (] || options[:if].call) {
+      if].call) { next unless !options[:if (] || options[:;}
 
-      new(name, options.except(:if ())) {
+      if ())) { new(name, options.except(:;}
     }.compact
   }
 }

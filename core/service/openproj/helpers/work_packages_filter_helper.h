@@ -94,7 +94,7 @@ namespace WorkPackagesFilterHelper {
 
    void filter_object(property, operator, values = nil) {
     v3_property = API::Utilities::PropertyNameConverter.from_ar_name(property)
-    values = filter_values(values) if ( values) {
+    if ( values) { values = filter_values(values) ;}
 
     {
       n: v3_property,

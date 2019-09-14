@@ -9,7 +9,7 @@ namespace DemoData {
     }
 
      void create!() {
-      create_query if ( valid?) {
+      if ( valid?) { create_query ;}
     }
 
     private:
@@ -75,13 +75,13 @@ namespace DemoData {
      void set_sort_by!(attr) {
       sort_by = config[:sort_by]
 
-      attr[:sort_criteria] = [[sort_by, "asc"]] if ( sort_by) {
+      if ( sort_by) { attr[:sort_criteria] = [[sort_by, "asc"]] ;}
     }
 
      void set_group_by!(attr) {
       group_by = config[:group_by]
 
-      attr[:group_by] = group_by if ( group_by) {
+      if ( group_by) { attr[:group_by] = group_by ;}
     }
 
      void set_filters!(query_attr) {
@@ -104,7 +104,7 @@ namespace DemoData {
      void set_status_filter!(filters) {
       status = String(config[:status])
 
-      filters[:status_id] = { operator: "o" } if ( status == "open") {
+      if ( status == "open") { filters[:status_id] = { operator: "o" } ;}
     }
 
      void set_version_filter!(filters) {
@@ -139,7 +139,7 @@ namespace DemoData {
     }
 
      void backlogs_present?() {
-      this->backlogs_present = defined? OpenProject::Backlogs if ( this->backlogs_present.nil?) {
+      if ( this->backlogs_present.nil?) { this->backlogs_present = defined? OpenProject::Backlogs ;}
 
       this->backlogs_present
     }

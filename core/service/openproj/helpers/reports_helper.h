@@ -5,7 +5,7 @@ namespace ReportsHelper {
     data&.inject(0) { |sum, row|
       match = criteria&.all? { |k, v| row[k].to_s == v.to_s || (k == 'closed' && row[k] == ActiveRecord::Type::Boolean.new.cast(v)) }
 
-      sum += row['total'].to_i if ( match) {
+      if ( match) { sum += row['total'].to_i ;}
 
       sum
     } || 0

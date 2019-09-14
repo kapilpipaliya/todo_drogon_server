@@ -66,7 +66,7 @@ class UserPreference : public ActiveRecord::Base {
   }
 
    void canonical_time_zone() {
-    return if ( time_zone.nil?) {
+    if ( time_zone.nil?) { return ;}
 
     zone = ActiveSupport::TimeZone.new(time_zone)
     unless zone.nil?
@@ -85,6 +85,6 @@ class UserPreference : public ActiveRecord::Base {
   }
 
    void time_zone_correctness() {
-    errors.add(:time_zone, :inclusion) if ( time_zone.present? && canonical_time_zone.nil?) {
+    if ( time_zone.present? && canonical_time_zone.nil?) { errors.add(:time_zone, :inclusion) ;}
   }
 }

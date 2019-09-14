@@ -29,7 +29,7 @@ namespace TimeEntries {
     }
 
      void set_default_hours() {
-      model.hours = nil if ( model.hours&.zero?) {
+      if ( model.hours&.zero?) { model.hours = nil ;}
     }
 
      void use_project_activity(time_entry) {

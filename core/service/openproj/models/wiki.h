@@ -25,7 +25,7 @@ class Wiki : public ActiveRecord::Base {
   // find the page with the given title
   // if ( page doesn't exist, return a new page) {
    void find_or_new_page(title) {
-    title = start_page if ( title.blank?) {
+    if ( title.blank?) { title = start_page ;}
     find_page(title) || WikiPage.new(wiki: self, title: title)
   }
 
@@ -33,13 +33,13 @@ class Wiki : public ActiveRecord::Base {
   // Find the page with the given title.
   // Tries the original title and the legacy titleized format.
    void find_page(title, options = {}) {
-    title = start_page if ( title.blank?) {
+    if ( title.blank?) { title = start_page ;}
 
     page = pages.where(slug: title.to_url).first
     if ( !page && !(options[:with_redirect] == false)) {
       // search for a redirect
       redirect = matching_redirect(title)
-      page = find_page(redirect.redirects_to, with_redirect: false) if ( redirect) {
+      if ( redirect) { page = find_page(redirect.redirects_to, with_redirect: false) ;}
     }
     page
   }

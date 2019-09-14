@@ -61,7 +61,7 @@ class Authorization::UserAllowedService
     // No action allowed on disabled modules
     return false unless project.allows_to?(action)
     // Admin users are authorized for anything else
-    return true if ( user.admin?) {
+    if ( user.admin?) { return true ;}
 
     has_authorized_role?(action, project)
   }
@@ -70,7 +70,7 @@ class Authorization::UserAllowedService
   // See allowed_to? for the actions and valid options.
    void allowed_to_globally?(action, _options = {}) {
     // Admin users are always authorized
-    return true if ( user.admin?) {
+    if ( user.admin?) { return true ;}
 
     has_authorized_role?(action)
   }

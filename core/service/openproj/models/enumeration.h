@@ -145,7 +145,7 @@ class Enumeration : public ActiveRecord::Base {
   private:
 
    void check_integrity() {
-    raise "Can't delete enumeration" if ( in_use?) {
+    if ( in_use?) { raise "Can't delete enumeration" ;}
   }
 }
 

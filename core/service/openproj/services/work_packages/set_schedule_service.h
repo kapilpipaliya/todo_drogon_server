@@ -50,7 +50,7 @@ class WorkPackages::SetScheduleService
     WorkPackages::ScheduleDependency.new(work_packages).each { |scheduled, dependency|
       reschedule(scheduled, dependency)
 
-      altered << scheduled if ( scheduled.changed?) {
+      if ( scheduled.changed?) { altered << scheduled ;}
     }
 
     altered
@@ -122,6 +122,6 @@ class WorkPackages::SetScheduleService
     required_delta = [min_start_date - scheduled.start_date, [delta, 0].min].max
 
     scheduled.start_date += required_delta
-    scheduled.due_date += required_delta if ( scheduled.due_date) {
+    if ( scheduled.due_date) { scheduled.due_date += required_delta ;}
   }
 }

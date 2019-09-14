@@ -101,7 +101,7 @@ class WorkPackages::MovesController : public ApplicationController {
     this->work_packages = this->work_packages.includes(:ancestors)
     this->copy = params.has_key? :copy
     this->allowed_projects = WorkPackage.allowed_target_projects_on_move(current_user)
-    this->target_project = this->allowed_projects.detect { |p| p.id.to_s == params[:new_project_id].to_s } if ( params[:new_project_id]) {
+    if ( params[:new_project_id]) { this->target_project = this->allowed_projects.detect { |p| p.id.to_s == params[:new_project_id].to_s } ;}
     this->target_project ||= this->project
     this->types = this->target_project.types
     this->available_statuses = Workflow.available_statuses(this->project)

@@ -106,7 +106,7 @@ class CustomFieldsController : public ApplicationController {
     cf = begin
       if ( type.to_s =~ /.+CustomField\z/) {
         klass = type.to_s.constantize
-        klass.new(params) if ( klass.ancestors.include? CustomField) {
+        if ( klass.ancestors.include? CustomField) { klass.new(params) ;}
       }
     rescue NameError => e
       Rails.logger.error "#{e.message}:\n#{e.backtrace.join("\n")}"

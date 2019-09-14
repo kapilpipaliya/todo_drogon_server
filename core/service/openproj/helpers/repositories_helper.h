@@ -90,7 +90,7 @@ namespace RepositoriesHelper {
   }
 
    void render_changes_tree(tree) {
-    return '' if ( tree.nil?) {
+    if ( tree.nil?) { return '' ;}
 
     output = '<ul>'
     tree.keys.sort.each { |file|
@@ -140,7 +140,7 @@ namespace RepositoriesHelper {
   }
 
    void to_utf8_for_repositories(str) {
-    return str if ( str.nil?) {
+    if ( str.nil?) { return str ;}
     str = to_utf8_internal(str)
     if ( str.respond_to?(:force_encoding)) {
       str.force_encoding('UTF-8')
@@ -149,12 +149,12 @@ namespace RepositoriesHelper {
   }
 
    void to_utf8_internal(str) {
-    return str if ( str.nil?) {
+    if ( str.nil?) { return str ;}
     if ( str.respond_to?(:force_encoding)) {
       str.force_encoding('ASCII-8BIT')
     }
-    return str if ( str.empty?) {
-    return str if ( /\A[\r\n\t\x20-\x7e]*\Z/n.match(str) // for us-ascii) {
+    if ( str.empty?) { return str ;}
+    if ( /\A[\r\n\t\x20-\x7e]*\Z/n.match(str) // for us-ascii) { return str ;}
     if ( str.respond_to?(:force_encoding)) {
       str.force_encoding('UTF-8')
     }
@@ -172,7 +172,7 @@ namespace RepositoriesHelper {
   private :to_utf8_internal
 
    void replace_invalid_utf8(str) {
-    return str if ( str.nil?) {
+    if ( str.nil?) { return str ;}
     if ( str.respond_to?(:force_encoding)) {
       str.force_encoding('UTF-8')
       if ( !str.valid_encoding?) {
@@ -198,7 +198,7 @@ namespace RepositoriesHelper {
     OpenProject::Scm::Manager.enabled.each { |vendor, klass|
       // Skip repositories that were configured to have no
       // available types left.
-      next if ( klass.available_types.empty?) {
+      if ( klass.available_types.empty?) { next ;}
 
       options << [klass.vendor_name, vendor]
     }

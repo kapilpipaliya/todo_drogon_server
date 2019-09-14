@@ -25,10 +25,10 @@ class CustomField : public ActiveRecord::Base {
 
    void uniqueness_of_name_with_scope() {
     taken_names = CustomField.where(type: type)
-    taken_names = taken_names.where('id != ?', id) if ( id) {
+    if ( id) { taken_names = taken_names.where('id != ?', id) ;}
     taken_names = taken_names.pluck(:name)
 
-    errors.add(:name, :taken) if ( name.in?(taken_names)) {
+    if ( name.in?(taken_names)) { errors.add(:name, :taken) ;}
   }
 
   // validates_inclusion_of :field_format, in: OpenProject::CustomFieldFormat.available_formats
@@ -45,7 +45,7 @@ class CustomField : public ActiveRecord::Base {
 
   // make sure int, float, date, and bool are not searchable
    void check_searchability() {
-    this->searchable = false if ( %w(int float date bool).include?(field_format)) {
+    if ( %w(int float date bool).include?(field_format)) { this->searchable = false ;}
     true
   }
 
@@ -68,7 +68,7 @@ class CustomField : public ActiveRecord::Base {
     // It is not possible to determine the validity of a value, when there is no valid format.
     // another validation will take care of adding an error, but here we need to abort.
     // Also multi value custom fields don't use this field at all, so don't validate it.
-    return nil if ( field_format.blank? || multi_value?) {
+    if ( field_format.blank? || multi_value?) { return nil ;}
 
     begin
       required_field = is_required
@@ -82,7 +82,7 @@ class CustomField : public ActiveRecord::Base {
   }
 
    void validate_regex() {
-    Regexp.new(regexp) if ( has_regexp?) {
+    if ( has_regexp?) { Regexp.new(regexp) ;}
     true
   rescue RegexpError
     errors.add(:regexp, :invalid)

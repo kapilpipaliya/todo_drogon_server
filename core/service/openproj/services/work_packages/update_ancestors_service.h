@@ -65,8 +65,8 @@ class WorkPackages::UpdateAncestorsService
   }
 
    void inherit_from_leaves(ancestor:, leaves:, attributes:) {
-    inherit_done_ratio ancestor, leaves if ( inherit? attributes, :done_ratio) {
-    derive_estimated_hours ancestor, leaves if ( inherit? attributes, :estimated_hours) {
+    if ( inherit? attributes, :done_ratio) { inherit_done_ratio ancestor, leaves ;}
+    if ( inherit? attributes, :estimated_hours) { derive_estimated_hours ancestor, leaves ;}
   }
 
    void inherit?(attributes, attribute) {
@@ -80,9 +80,9 @@ class WorkPackages::UpdateAncestorsService
   }
 
    void inherit_done_ratio(ancestor, leaves) {
-    return if ( WorkPackage.done_ratio_disabled?) {
+    if ( WorkPackage.done_ratio_disabled?) { return ;}
 
-    return if ( WorkPackage.use_status_for_done_ratio? && ancestor.status && ancestor.status.default_done_ratio) {
+    if ( WorkPackage.use_status_for_done_ratio? && ancestor.status && ancestor.status.default_done_ratio) { return ;}
 
     // done ratio = weighted average ratio of leaves
     ratio = aggregate_done_ratio(leaves)
@@ -110,7 +110,7 @@ class WorkPackages::UpdateAncestorsService
     sum = all_estimated_hours(leaves).sum.to_f
     count = all_estimated_hours(leaves).count
 
-    count = 1 if ( count.zero?) {
+    if ( count.zero?) { count = 1 ;}
 
     average = sum / count
 

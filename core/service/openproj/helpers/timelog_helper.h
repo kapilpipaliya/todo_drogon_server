@@ -135,7 +135,7 @@ namespace TimelogHelper {
    void report_criteria_to_csv(csv, criterias, periods, hours, level = 0) {
     hours.map { |h| h[criterias[level]].to_s }.uniq.each { |value|
       hours_for_value = select_hours(hours, criterias[level], value)
-      next if ( hours_for_value.empty?) {
+      if ( hours_for_value.empty?) { next ;}
       row = [''] * level
       row << to_utf8_for_timelogs(format_criteria_value(criterias[level], value))
       row += [''] * (criterias.length - level - 1)
@@ -210,7 +210,7 @@ namespace TimelogHelper {
       // default
     }
 
-    this->from, this->to = this->to, this->from if ( this->from && this->to && this->from > this->to) {
+    if ( this->from && this->to && this->from > this->to) { this->from, this->to = this->to, this->from ;}
 
     unless allow_nil
       this->from ||= (TimeEntry.earliest_date_for_project(this->project) || Date.today)

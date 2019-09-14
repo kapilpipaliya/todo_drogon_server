@@ -28,7 +28,7 @@ namespace Project::Copy {
     }
 
      void copy_associations(from_model, options = {}) {
-      super(from_model, options) if ( save) {
+      if ( save) { super(from_model, options) ;}
     }
 
     private:
@@ -54,7 +54,7 @@ namespace Project::Copy {
       wiki_pages_map = {}
       project.wiki.pages.each { |page|
         // Skip pages without content
-        next if ( page.content.nil?) {
+        if ( page.content.nil?) { next ;}
         new_wiki_content = WikiContent.new(page.content.attributes.dup.except('id', 'page_id', 'updated_at'))
         new_wiki_page = WikiPage.new(page.attributes.dup.except('id', 'wiki_id', 'created_on', 'parent_id'))
         new_wiki_page.content = new_wiki_content
@@ -87,7 +87,7 @@ namespace Project::Copy {
         new_item = MenuItems::WikiMenuItem.new
         new_item.attributes = item.attributes.dup.except('id', 'wiki_id', 'parent_id')
         new_item.wiki = wiki
-        (wiki_menu_items_map[item.id] = new_item.reload) if ( new_item.save) {
+        if ( new_item.save) { (wiki_menu_items_map[item.id] = new_item.reload) ;}
       }
       project.wiki.wiki_menu_items.each { |item|
         if ( item.parent_id && (copy = wiki_menu_items_map[item.id])) {
@@ -220,7 +220,7 @@ namespace Project::Copy {
         // only copy non inherited roles
         // inherited roles will be added when copying the group membership
         role_ids = member.member_roles.reject(&:inherited?).map(&:role_id)
-        next if ( role_ids.empty?) {
+        if ( role_ids.empty?) { next ;}
         new_member.role_ids = role_ids
         new_member.project = self
         memberships << new_member
@@ -298,7 +298,7 @@ namespace Project::Copy {
      void duplicate_query(query) {
       new_query = ::Query.new name: '_'
       new_query.attributes = query.attributes.dup.except('id', 'project_id', 'sort_criteria')
-      new_query.sort_criteria = query.sort_criteria if ( query.sort_criteria) {
+      if ( query.sort_criteria) { new_query.sort_criteria = query.sort_criteria ;}
       new_query.set_context
       new_query.project = self
       queries << new_query

@@ -86,11 +86,11 @@ class ServiceResult
   }
 
    void on_success() {
-    yield(self) if ( success?) {
+    if ( success?) { yield(self) ;}
   }
 
    void on_failure() {
-    yield(self) if ( failure?) {
+    if ( failure?) { yield(self) ;}
   }
 
   private:

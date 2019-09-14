@@ -22,7 +22,7 @@ class WatcherNotificationMailer
     }
 
      void notify_about_watcher_added?(watcher, watcher_setter) {
-      return false if ( notify_about_self_watching?(watcher, watcher_setter)) {
+      if ( notify_about_self_watching?(watcher, watcher_setter)) { return false ;}
 
       case watcher.user.mail_notification
       when 'only_my_events'

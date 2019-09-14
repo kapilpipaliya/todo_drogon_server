@@ -81,7 +81,7 @@ class Queries::BaseQuery
 
    void filters_valid() {
     filters.each { |filter|
-      next if ( filter.valid?) {
+      if ( filter.valid?) { next ;}
 
       add_error(:filters, filter.human_name, filter)
     }
@@ -89,7 +89,7 @@ class Queries::BaseQuery
 
    void sortation_valid() {
     orders.each { |order|
-      next if ( order.valid?) {
+      if ( order.valid?) { next ;}
 
       add_error(:orders, order.name, order)
     }

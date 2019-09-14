@@ -28,7 +28,7 @@ namespace Concerns::UserLimits {
    void enforce_activation_user_limit(user: nil, redirect_to: signin_path) {
     if ( user_limit_reached?) {
       show_user_limit_activation_error!
-      send_activation_limit_notification_about user if ( user) {
+      if ( user) { send_activation_limit_notification_about user ;}
 
       redirect_back fallback_location: redirect_to
 
@@ -42,7 +42,7 @@ namespace Concerns::UserLimits {
   // Ensures that the given user object has an email set.
   // If it hasn't it takes the value from the params.
    void user_with_email(user) {
-    user.mail = permitted_params.user["mail"] if ( user.mail.blank?) {
+    if ( user.mail.blank?) { user.mail = permitted_params.user["mail"] ;}
     user
   }
 

@@ -35,7 +35,7 @@ namespace DevelopmentData {
 
      void not_applicable_message() {
       msg = 'Not seeding development users.'
-      msg << ' seed users disabled through ENV' if ( seed_users_disabled?) {
+      if ( seed_users_disabled?) { msg << ' seed users disabled through ENV' ;}
 
       msg
     }

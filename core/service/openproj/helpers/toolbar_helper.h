@@ -7,10 +7,10 @@ namespace ToolbarHelper {
     content_tag :div, class: classes {
       toolbar = content_tag :div, class: 'toolbar' {
         dom_title(title, link_to, title_class: title_class, title_extra: title_extra) + dom_toolbar {
-          yield if ( block_given?) {
+          if ( block_given?) { yield ;}
         }
       }
-      next toolbar if ( subtitle.blank?) {
+      if ( subtitle.blank?) { next toolbar ;}
       toolbar + content_tag(:p, subtitle, class: 'subtitle')
     }
   }
@@ -20,7 +20,7 @@ namespace ToolbarHelper {
     content_tag :div, class: container_classes {
       content_tag :div, class: 'toolbar' {
         concat(editable_toolbar_title(form, field_name))
-        concat(dom_toolbar { yield if ( block_given? })) {
+        if ( block_given? })) { concat(dom_toolbar { yield ;}
       }
     }
   }
@@ -58,7 +58,7 @@ namespace ToolbarHelper {
     content_tag :div, class: 'title-container' {
       opts = {}
 
-      opts[:class] = title_class if ( title_class.present?) {
+      if ( title_class.present?) { opts[:class] = title_class ;}
 
       content_tag(:h2, title, opts) + (
         title_extra.present? ? title_extra : ''

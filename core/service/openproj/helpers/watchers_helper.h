@@ -4,7 +4,7 @@ namespace WatchersHelper {
   // * :replace - a string or array of strings with css selectors that will be updated, whenever the watcher status is changed
    void watcher_link(object, user, options = { replace: '.watcher_link', class: 'watcher_link' }) {
     options = options.with_indifferent_access
-    raise ArgumentError, 'Missing :replace option in options hash' if ( options['replace'].blank?) {
+    if ( options['replace'].blank?) { raise ArgumentError, 'Missing :replace option in options hash' ;}
 
     return '' unless user && user.logged? && object.respond_to?('watched_by?')
 

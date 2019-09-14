@@ -11,7 +11,7 @@ class StatusesController : public ApplicationController {
     this->statuses = Status.page(page_param)
                 .per_page(per_page_param)
 
-    render action: 'index', layout: false if ( request.xhr?) {
+    if ( request.xhr?) { render action: 'index', layout: false ;}
   }
 
   verify method: :get, only: :new, render: { nothing: true, status: :method_not_allowed }

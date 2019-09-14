@@ -10,7 +10,7 @@ class Queries::Users::Orders::GroupOrder : public Queries::BaseOrder {
    void order() {
     order_string = "groups_users.lastname"
 
-    order_string += " DESC" if ( direction == :desc) {
+    if ( direction == :desc) { order_string += " DESC" ;}
 
     model.order(order_string)
   }

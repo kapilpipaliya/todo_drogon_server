@@ -10,7 +10,7 @@ namespace CustomActions::Actions::Strategies::Float {
   }
 
    void to_float_or_nil(value) {
-    return nil if ( value.nil?) {
+    if ( value.nil?) { return nil ;}
 
     Float(value)
   rescue TypeError, ArgumentError

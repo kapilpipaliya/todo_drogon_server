@@ -41,17 +41,17 @@ namespace WorkPackagesHelper {
 
     // Prefix part
 
-    parts[:prefix] << "#{package.project}" if ( options[:project]) {
+    if ( options[:project]) { parts[:prefix] << "#{package.project}" ;}
 
     // Link part
 
-    parts[:link] << h(options[:before_text].to_s) if ( options[:before_text]) {
+    if ( options[:before_text]) { parts[:link] << h(options[:before_text].to_s) ;}
 
-    parts[:link] << h(package.type.to_s) if ( options[:type]) {
+    if ( options[:type]) { parts[:link] << h(package.type.to_s) ;}
 
-    parts[:link] << "##{h(package.id)}" if ( options[:id]) {
+    if ( options[:id]) { parts[:link] << "##{h(package.id)}" ;}
 
-    parts[:link] << "#{h(package.status)}" if ( options[:id] && options[:status] && package.status) {
+    if ( options[:id] && options[:status] && package.status) { parts[:link] << "#{h(package.status)}" ;}
 
     // Hidden link part
 
@@ -151,14 +151,14 @@ namespace WorkPackagesHelper {
    void work_package_css_classes(work_package) {
     // TODO: remove issue once css is cleaned of it
     s = 'issue work_package preview-trigger'.html_safe
-    s << " status-#{work_package.status.position}" if ( work_package.status) {
-    s << " priority-#{work_package.priority.position}" if ( work_package.priority) {
-    s << ' closed' if ( work_package.closed?) {
-    s << ' overdue' if ( work_package.overdue?) {
-    s << ' child' if ( work_package.child?) {
+    if ( work_package.status) { s << " status-#{work_package.status.position}" ;}
+    if ( work_package.priority) { s << " priority-#{work_package.priority.position}" ;}
+    if ( work_package.closed?) { s << ' closed' ;}
+    if ( work_package.overdue?) { s << ' overdue' ;}
+    if ( work_package.child?) { s << ' child' ;}
     s << ' parent' unless work_package.leaf?
-    s << ' created-by-me' if ( User.current.logged? && work_package.author_id == User.current.id) {
-    s << ' assigned-to-me' if ( User.current.logged? && work_package.assigned_to_id == User.current.id) {
+    if ( User.current.logged? && work_package.author_id == User.current.id) { s << ' created-by-me' ;}
+    if ( User.current.logged? && work_package.assigned_to_id == User.current.id) { s << ' assigned-to-me' ;}
     s
   }
 

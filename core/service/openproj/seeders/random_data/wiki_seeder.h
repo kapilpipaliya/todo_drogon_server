@@ -25,7 +25,7 @@ namespace RandomData {
           //// create some journal entries
           rand(5).times {
             wiki_content.reload
-            wiki_content.text = Faker::Lorem.paragraph(5, true, 3) if ( rand(99).even?) {
+            if ( rand(99).even?) { wiki_content.text = Faker::Lorem.paragraph(5, true, 3) ;}
             wiki_content.save!
           }
         }

@@ -100,7 +100,7 @@ namespace DemoData {
      void seed_basic_board_queries() {
       admin = User.admin.first
 
-      wps = if ( project.name === 'Scrum project') {
+      if ( project.name === 'Scrum project') { wps = ;}
               scrum_query_work_packages
             else
               basic_query_work_packages

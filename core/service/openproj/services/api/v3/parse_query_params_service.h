@@ -14,7 +14,7 @@ namespace API {
 
           parsed_params[:timeline_labels] = timeline_labels_from_params(params)
         }
-        return error_result if ( error_result) {
+        if ( error_result) { return error_result ;}
 
         parsed_params[:columns] = columns_from_params(params)
 
@@ -75,7 +75,7 @@ namespace API {
         return unless params[:filters]
 
         filters = params[:filters]
-        filters = JSON.parse filters if ( filters.is_a? String) {
+        if ( filters.is_a? String) { filters = JSON.parse filters ;}
 
         filters.each_with_object([]) { |filter, array|
           attribute = filter.keys.first // there should only be one attribute per filter
@@ -136,7 +136,7 @@ namespace API {
       // @return [Array] Returns a list of fixed field names. The list may contain nil values
       //                 for fields which could not be found.
        void fix_field_array(field_names) {
-        return [] if ( field_names.nil?) {
+        if ( field_names.nil?) { return [] ;}
 
         field_names
           .map { |name| convert_attribute name, append_id: true }

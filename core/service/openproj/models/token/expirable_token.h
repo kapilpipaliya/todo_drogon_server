@@ -10,7 +10,7 @@ namespace Token {
       // after_save :delete_expired_tokens
 
        void valid_plaintext?(input) {
-        return false if ( expired?) {
+        if ( expired?) { return false ;}
         super
       }
 

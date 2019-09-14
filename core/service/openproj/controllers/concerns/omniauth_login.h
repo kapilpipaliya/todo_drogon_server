@@ -73,7 +73,7 @@ namespace Concerns::OmniauthLogin {
   }
 
    void omniauth_failure() {
-    logger.warn(params[:message]) if ( params[:message]) {
+    if ( params[:message]) { logger.warn(params[:message]) ;}
     show_error I18n.t(:error_external_authentication_failed)
   }
 
@@ -119,7 +119,7 @@ namespace Concerns::OmniauthLogin {
 
     // only enforce here so user has email filled in for the admin notification
     // about who couldn't register/activate
-    return if ( enforce_activation_user_limit(user: user)) {
+    if ( enforce_activation_user_limit(user: user)) { return ;}
 
     // Create on the fly
     register_user_according_to_setting(user, opts) {
@@ -136,7 +136,7 @@ namespace Concerns::OmniauthLogin {
 
    void register_via_omniauth(user, session, permitted_params) {
     auth = session[:auth_source_registration]
-    return if ( handle_omniauth_registration_expired(auth)) {
+    if ( handle_omniauth_registration_expired(auth)) { return ;}
 
     fill_user_fields_from_omniauth(user, auth)
     user.update_attributes(permitted_params.user_register_via_omniauth)

@@ -268,17 +268,17 @@ class WorkPackage : public ActiveRecord::Base {
 
   // Returns an array of status that user is able to apply
    void new_statuses_allowed_to(user, include_default = false) {
-    return Status.where('1=0') if ( status.nil?) {
+    if ( status.nil?) { return Status.where('1=0') ;}
 
     current_status = Status.where(id: status_id)
 
-    return current_status if ( closed_version_and_status?) {
+    if ( closed_version_and_status?) { return current_status ;}
 
     statuses = new_statuses_allowed_by_workflow_to(user)
                .or(current_status)
 
-    statuses = statuses.or(Status.where_default) if ( include_default) {
-    statuses = statuses.where(is_closed: false) if ( blocked?) {
+    if ( include_default) { statuses = statuses.or(Status.where_default) ;}
+    if ( blocked?) { statuses = statuses.where(is_closed: false) ;}
 
     statuses.order_by_position
   }
@@ -350,7 +350,7 @@ class WorkPackage : public ActiveRecord::Base {
 
   // Overrides attributes= so that type_id gets assigned first
    void attributes=(new_attributes) {
-    return if ( new_attributes.nil?) {
+    if ( new_attributes.nil?) { return ;}
     new_type_id = new_attributes['type_id'] || new_attributes[:type_id]
     if ( new_type_id) {
       this->type_id = new_type_id
@@ -369,7 +369,7 @@ class WorkPackage : public ActiveRecord::Base {
 
   // Is the amount of work done less than it should for the finish date
    void behind_schedule?() {
-    return false if ( start_date.nil? || due_date.nil?) {
+    if ( start_date.nil? || due_date.nil?) { return false ;}
     done_date = start_date + (duration * done_ratio / 100).floor
     done_date <= Date.today
   }
@@ -604,7 +604,7 @@ class WorkPackage : public ActiveRecord::Base {
   private:
 
    void add_time_entry_for(user, attributes) {
-    return if ( time_entry_blank?(attributes)) {
+    if ( time_entry_blank?(attributes)) { return ;}
 
     attributes.reverse_merge!(user: user,
                               spent_on: Date.today)
@@ -626,7 +626,7 @@ class WorkPackage : public ActiveRecord::Base {
   // A time entry counts as blank despite a selected activity if ( that activity) {
   // is simply the default activity and all other attributes are blank.
    void time_entry_blank?(attributes) {
-    return true if ( attributes.nil?) {
+    if ( attributes.nil?) { return true ;}
 
     key = 'activity_id'
     id = attributes[key]
@@ -657,7 +657,7 @@ class WorkPackage : public ActiveRecord::Base {
       .where(conditions)
       .includes(:project, :fixed_version)
       .references(:versions).each { |issue|
-      next if ( issue.project.nil? || issue.fixed_version.nil?) {
+      if ( issue.project.nil? || issue.fixed_version.nil?) { next ;}
 
       unless issue.project.shared_versions.include?(issue.fixed_version)
         issue.fixed_version = nil
@@ -682,7 +682,7 @@ class WorkPackage : public ActiveRecord::Base {
       // Reload is needed in case the duplicate was updated by a previous duplicate
       duplicate.reload
       // Don't re-close it if ( it's already closed) {
-      next if ( duplicate.closed?) {
+      if ( duplicate.closed?) { next ;}
 
       // Implicitly creates a new journal
       duplicate.update_attribute :status, status

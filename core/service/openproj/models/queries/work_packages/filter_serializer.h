@@ -3,7 +3,7 @@ namespace Queries::WorkPackages::FilterSerializer {
   // extend Queries::AvailableFilters::ClassMethods
 
    void load(serialized_filter_hash) {
-    return [] if ( serialized_filter_hash.nil?) {
+    if ( serialized_filter_hash.nil?) { return [] ;}
 
     // yeah, dunno, but apparently '=' may have been serialized as a Syck::DefaultKey instance...
     yaml = serialized_filter_hash

@@ -55,7 +55,7 @@ class CategoriesController : public ApplicationController {
       redirect_to controller: '/project_settings', action: 'show', id: this->project, tab: 'categories'
       return
     } else if ( params[:todo]) {
-      reassign_to = this->project.categories.find_by(id: params[:reassign_to_id]) if ( params[:todo] == 'reassign') {
+      if ( params[:todo] == 'reassign') { reassign_to = this->project.categories.find_by(id: params[:reassign_to_id]) ;}
       this->category.destroy(reassign_to)
       redirect_to controller: '/project_settings', action: 'show', id: this->project, tab: 'categories'
       return

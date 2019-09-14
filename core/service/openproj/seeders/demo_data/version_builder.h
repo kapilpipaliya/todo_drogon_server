@@ -11,7 +11,7 @@ namespace DemoData {
     }
 
      void create!() {
-      create_version if ( valid?) {
+      if ( valid?) { create_version ;}
     }
 
     private:
@@ -34,7 +34,7 @@ namespace DemoData {
         project: project
       )
 
-      set_wiki! version, config[:wiki] if ( config[:wiki]) {
+      if ( config[:wiki]) { set_wiki! version, config[:wiki] ;}
 
       version
     }

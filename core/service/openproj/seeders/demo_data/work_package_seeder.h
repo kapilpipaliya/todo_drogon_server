@@ -126,15 +126,15 @@ namespace DemoData {
       start_date = attributes[:start] && calculate_start_date(attributes[:start])
 
       wp_attr[:start_date] = start_date
-      wp_attr[:due_date] = calculate_due_date(start_date, attributes[:duration]) if ( start_date && attributes[:duration]) {
-      wp_attr[:done_ratio] = attributes[:done_ratio].to_i if ( attributes[:done_ratio]) {
-      wp_attr[:estimated_hours] = attributes[:estimated_hours].to_i if ( attributes[:estimated_hours]) {
+      if ( start_date && attributes[:duration]) { wp_attr[:due_date] = calculate_due_date(start_date, attributes[:duration]) ;}
+      if ( attributes[:done_ratio]) { wp_attr[:done_ratio] = attributes[:done_ratio].to_i ;}
+      if ( attributes[:estimated_hours]) { wp_attr[:estimated_hours] = attributes[:estimated_hours].to_i ;}
     }
 
      void set_backlogs_attributes!(wp_attr, attributes) {
       if ( defined? OpenProject::Backlogs) {
-        wp_attr[:position] = attributes[:position].to_i if ( attributes[:position].present?) {
-        wp_attr[:story_points] = attributes[:story_points].to_i if ( attributes[:story_points].present?) {
+        if ( attributes[:position].present?) { wp_attr[:position] = attributes[:position].to_i ;}
+        if ( attributes[:story_points].present?) { wp_attr[:story_points] = attributes[:story_points].to_i ;}
       }
     }
 

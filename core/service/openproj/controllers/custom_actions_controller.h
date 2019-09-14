@@ -56,7 +56,7 @@ class CustomActionsController : public ApplicationController {
   }
 
    void require_enterprise_token() {
-    return if ( EnterpriseToken.allows_to?(:custom_actions)) {
+    if ( EnterpriseToken.allows_to?(:custom_actions)) { return ;}
 
     if ( request.get?) {
       render template: 'common/upsale',
@@ -75,7 +75,7 @@ class CustomActionsController : public ApplicationController {
   // But because it is not feasible to have an empty and hidden hash object in a form
   // we have to pad the params here.
    void pad_params() {
-    return if ( !params[:custom_action] || params[:custom_action][:move_to]) {
+    if ( !params[:custom_action] || params[:custom_action][:move_to]) { return ;}
 
     params[:custom_action][:conditions] ||= {}
     params[:custom_action][:actions] ||= {}

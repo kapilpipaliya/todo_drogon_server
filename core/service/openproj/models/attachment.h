@@ -30,9 +30,9 @@ class Attachment : public ActiveRecord::Base {
   // Returns an URL if ( the attachment is stored in an external (fog) attachment storage) {
   // or nil otherwise.
    void external_url() {
-    url = URI.parse file.download_url(content_disposition: content_disposition) // returns a path if ( local) {
+    if ( local) { url = URI.parse file.download_url(content_disposition: content_disposition) // returns a path ;}
 
-    url if ( url.host) {
+    if ( url.host) { url ;}
   rescue URI::InvalidURIError
     nil
   }
@@ -140,7 +140,7 @@ class Attachment : public ActiveRecord::Base {
   }
 
    void set_content_type(file) {
-    this->content_type = this->class.content_type_for(file.path) if ( content_type.blank?) {
+    if ( content_type.blank?) { this->content_type = this->class.content_type_for(file.path) ;}
   }
 
    void set_digest(file) {
@@ -156,7 +156,7 @@ class Attachment : public ActiveRecord::Base {
     attachment = dup
     attachment.file = diskfile
 
-    yield attachment if ( block_given?) {
+    if ( block_given?) { yield attachment ;}
 
     attachment
   }

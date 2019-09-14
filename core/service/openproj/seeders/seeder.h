@@ -31,7 +31,7 @@ class Seeder
    void edition_data_for(key) {
     data = translate_with_base_url("seeders.#{OpenProject::Configuration['edition']}.#{key}")
 
-    return nil if ( data.is_a?(String) && data.start_with?("translation missing")) {
+    if ( data.is_a?(String) && data.start_with?("translation missing")) { return nil ;}
 
     data
   }

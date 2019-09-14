@@ -14,7 +14,7 @@ class CustomValue::DateStrategy : public CustomValue::FormatStrategy {
   }
 
    void validate_type_of_value() {
-    return nil if ( value.is_a? Date) {
+    if ( value.is_a? Date) { return nil ;}
 
     begin
       Date.iso8601(value)

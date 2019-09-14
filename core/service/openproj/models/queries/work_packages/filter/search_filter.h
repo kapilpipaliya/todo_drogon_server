@@ -82,7 +82,7 @@ class Queries::WorkPackages::Filter::SearchFilter <
     list = CE_FILTERS
 
     list += custom_field_configurations
-    list += EE_TSV_FILTERS if ( attachment_filters_allowed?) {
+    if ( attachment_filters_allowed?) { list += EE_TSV_FILTERS ;}
     list
   }
 

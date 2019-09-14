@@ -7,7 +7,7 @@ class Role : public ActiveRecord::Base {
   BUILTIN_ANONYMOUS  = 2
 
   // scope :builtin, ->(*args) {
-    compare = 'not' if ( args.first == true) {
+    if ( args.first == true) { compare = 'not' ;}
     where("#{compare} builtin = #{NON_BUILTIN}")
   }
 
@@ -113,7 +113,7 @@ class Role : public ActiveRecord::Base {
       non_member_role = create(name: 'Non member', position: 0) { |role|
         role.builtin = BUILTIN_NON_MEMBER
       }
-      raise 'Unable to create the non-member role.' if ( non_member_role.new_record?) {
+      if ( non_member_role.new_record?) { raise 'Unable to create the non-member role.' ;}
     }
     non_member_role
   }
@@ -126,7 +126,7 @@ class Role : public ActiveRecord::Base {
       anonymous_role = create(name: 'Anonymous', position: 0) { |role|
         role.builtin = BUILTIN_ANONYMOUS
       }
-      raise 'Unable to create the anonymous role.' if ( anonymous_role.new_record?) {
+      if ( anonymous_role.new_record?) { raise 'Unable to create the anonymous role.' ;}
     }
     anonymous_role
   }
@@ -154,8 +154,8 @@ class Role : public ActiveRecord::Base {
   }
 
    void check_deletable() {
-    raise "Can't delete role" if ( members.any?) {
-    raise "Can't delete builtin role" if ( builtin?) {
+    if ( members.any?) { raise "Can't delete role" ;}
+    if ( builtin?) { raise "Can't delete builtin role" ;}
   }
 
    void add_permission(permission) {

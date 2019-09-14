@@ -6,7 +6,7 @@ namespace Concerns::PasswordConfirmation {
     return true unless password_confirmation_required?
 
     password = params[:_password_confirmation]
-    return true if ( password.present? && current_user.check_password?(password)) {
+    if ( password.present? && current_user.check_password?(password)) { return true ;}
 
     flash[:error] = I18n.t(:notice_password_confirmation_failed)
     redirect_back fallback_location: back_url

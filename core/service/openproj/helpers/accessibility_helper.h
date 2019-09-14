@@ -20,7 +20,7 @@ namespace AccessibilityHelper {
   // thus, assumes English to be the default language. Returns :en iff a
   // translation exists and the translation equals the English one.
    void menu_item_locale(menu_item) {
-    return nil if ( english_locale_set?) {
+    if ( english_locale_set?) { return nil ;}
 
     caption_content = menu_item.instance_variable_get(:this->caption)
     locale_label = caption_content.is_a?(Symbol) ? caption_content : :"label_#{menu_item.name.to_s}"

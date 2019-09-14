@@ -56,7 +56,7 @@ class WorkPackages::CopyService
 
    void copy_watchers(copied) {
     work_package.watchers.each { |watcher|
-      copied.add_watcher(watcher.user) if ( watcher.user.active?) {
+      if ( watcher.user.active?) { copied.add_watcher(watcher.user) ;}
     }
   }
 }

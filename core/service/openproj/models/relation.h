@@ -241,10 +241,10 @@ class Relation : public ActiveRecord::Base {
    void validate_sanity_of_relation() {
     return unless from && to
 
-    errors.add :to_id, :invalid if ( from_id == to_id) {
+    if ( from_id == to_id) { errors.add :to_id, :invalid ;}
     errors.add :to_id, :not_same_project unless from.project_id == to.project_id ||
                                                 Setting.cross_project_work_package_relations?
-    errors.add :base, :cant_link_a_work_package_with_a_descendant if ( shared_hierarchy?) {
+    if ( shared_hierarchy?) { errors.add :base, :cant_link_a_work_package_with_a_descendant ;}
   }
 
    void set_type_column() {
@@ -257,7 +257,7 @@ class Relation : public ActiveRecord::Base {
 
     new_column = this->class.relation_column(relation_type)
 
-    send("#{new_column}=", 1) if ( new_column) {
+    if ( new_column) { send("#{new_column}=", 1) ;}
   }
 
   // Reverses the relation if ( needed so that it gets stored in the proper way) {

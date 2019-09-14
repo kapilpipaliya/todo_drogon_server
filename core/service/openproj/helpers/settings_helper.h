@@ -93,7 +93,7 @@ namespace SettingsHelper {
 
    void setting_label(setting, options = {}) {
     label = options[:label]
-    return ''.html_safe if ( label == false) {
+    if ( label == false) { return ''.html_safe ;}
 
     styled_label_tag(
       "settings_#{setting}", I18n.t(label || "setting_#{setting}"),

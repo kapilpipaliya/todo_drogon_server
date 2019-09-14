@@ -27,7 +27,7 @@ class AddAttachmentService
     ActiveRecord::Base.transaction {
       attachment.save!
 
-      add_journal if ( container.respond_to? :add_journal) {
+      if ( container.respond_to? :add_journal) { add_journal ;}
     }
   }
 

@@ -14,7 +14,7 @@ class VersionsController : public ApplicationController {
     project_ids = this->with_subprojects ? this->project.self_and_descendants.map(&:id) : [this->project.id]
 
     this->versions = this->project.shared_versions || []
-    this->versions += this->project.rolled_up_versions.visible if ( this->with_subprojects) {
+    if ( this->with_subprojects) { this->versions += this->project.rolled_up_versions.visible ;}
     this->versions = this->versions.uniq.sort
     this->versions.reject! { |version| version.closed? || version.completed? } unless params[:completed]
 

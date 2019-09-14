@@ -36,7 +36,7 @@ class WorkPackages::SetAttributesService : public ::BaseServices::SetAttributes 
     work_package.author ||= user
     work_package.status ||= Status.default
 
-    work_package.start_date ||= Date.today if ( Setting.work_package_startdate_is_adddate?) {
+    if ( Setting.work_package_startdate_is_adddate?) { work_package.start_date ||= Date.today ;}
   }
 
    void non_or_default_description?() {
@@ -139,7 +139,7 @@ class WorkPackages::SetAttributesService : public ::BaseServices::SetAttributes 
    void reassign_type() {
     available_types = work_package.project.types.order(:position)
 
-    return if ( available_types.include?(work_package.type) && work_package.type) {
+    if ( available_types.include?(work_package.type) && work_package.type) { return ;}
 
     work_package.type = available_types.detect(&:is_default) || available_types.first
 
@@ -147,10 +147,10 @@ class WorkPackages::SetAttributesService : public ::BaseServices::SetAttributes 
   }
 
    void reassign_status(available_statuses) {
-    return if ( available_statuses.include? work_package.status) {
+    if ( available_statuses.include? work_package.status) { return ;}
 
     new_status = available_statuses.detect(&:is_default) || available_statuses.first
-    work_package.status = new_status if ( new_status.present?) {
+    if ( new_status.present?) { work_package.status = new_status ;}
   }
 
    void reassign_invalid_status_if_type_changed() {
@@ -164,7 +164,7 @@ class WorkPackages::SetAttributesService : public ::BaseServices::SetAttributes 
   // Take over any default custom values
   // for new custom fields
    void initialize_unset_custom_values() {
-    work_package.set_default_values! if ( custom_field_context_changed?) {
+    if ( custom_field_context_changed?) { work_package.set_default_values! ;}
   }
 
    void new_start_date() {

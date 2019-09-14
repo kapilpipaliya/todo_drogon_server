@@ -74,8 +74,8 @@ class JournalManager
     }
 
      void create_association_data(journable, journal) {
-      create_attachment_data journable, journal if ( journable.respond_to? :attachments) {
-      create_custom_field_data journable, journal if ( journable.respond_to? :custom_values) {
+      if ( journable.respond_to? :attachments) { create_attachment_data journable, journal ;}
+      if ( journable.respond_to? :custom_values) { create_custom_field_data journable, journal ;}
     }
 
      void create_attachment_data(journable, journal) {

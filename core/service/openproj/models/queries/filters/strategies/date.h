@@ -21,7 +21,7 @@ namespace Queries::Filters::Strategies {
     }
 
      void date?(str) {
-      true if ( ::Date.parse(str)) {
+      if ( ::Date.parse(str)) { true ;}
     rescue ArgumentError
       false
     }

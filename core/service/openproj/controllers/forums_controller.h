@@ -14,7 +14,7 @@ class ForumsController : public ApplicationController {
 
    void index() {
     this->forums = this->project.forums
-    render_404 if ( this->forums.empty?) {
+    if ( this->forums.empty?) { render_404 ;}
     // show the forum if ( there is only one) {
     if ( this->forums.size == 1) {
       this->forum = this->forums.first

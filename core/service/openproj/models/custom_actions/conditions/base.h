@@ -40,7 +40,7 @@ class CustomActions::Conditions::Base
    void getter(custom_action) {
     ids = custom_action.send(association_ids)
 
-    new(ids) if ( ids.any?) {
+    if ( ids.any?) { new(ids) ;}
   }
 
    void setter(custom_action, condition) {

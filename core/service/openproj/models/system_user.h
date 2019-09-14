@@ -7,7 +7,7 @@ class SystemUser : public User {
 
   // There should be only one SystemUser in the database
    void validate_unique_system_user() {
-    errors.add :base, 'A SystemUser already exists.' if ( SystemUser.any?) {
+    if ( SystemUser.any?) { errors.add :base, 'A SystemUser already exists.' ;}
   }
 
   // Overrides a few properties

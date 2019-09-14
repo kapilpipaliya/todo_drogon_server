@@ -6,7 +6,7 @@ class CompositeSeeder : public Seeder {
         seeder.seed!
       }
 
-      return if ( discovered_seeders.empty?) {
+      if ( discovered_seeders.empty?) { return ;}
 
       puts "   Loading discovered seeders: "
       discovered_seeders.each { |seeder|

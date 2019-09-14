@@ -38,7 +38,7 @@ class SearchController : public ApplicationController {
 
    void quick_wp_id_redirect() {
     scan_work_package_reference this->question { |id|
-      redirect_to work_package_path(id: id) if ( WorkPackage.visible.find_by(id: id)) {
+      if ( WorkPackage.visible.find_by(id: id)) { redirect_to work_package_path(id: id) ;}
     }
   }
 
@@ -61,7 +61,7 @@ class SearchController : public ApplicationController {
   }
 
    void limit_results_subsequent_page() {
-    this->pagination_next_date = this->results[-1].event_datetime if ( offset && this->results[-1]) {
+    if ( offset && this->results[-1]) { this->pagination_next_date = this->results[-1].event_datetime ;}
 
     if ( this->results.size > LIMIT) {
       this->pagination_previous_date = this->results[-(LIMIT)].event_datetime
@@ -75,7 +75,7 @@ class SearchController : public ApplicationController {
     tokens = query.scan(%r{((\s|^)"[\s\w]+"(\s|$)|\S+)}).map { |m| m.first.gsub(%r{(^\s*"\s*|\s*"\s*$)}, '') }
 
     // no more than 5 tokens to search for
-    tokens.slice! 5..-1 if ( tokens.size > 5) {
+    if ( tokens.size > 5) { tokens.slice! 5..-1 ;}
 
     tokens
   }
@@ -89,7 +89,7 @@ class SearchController : public ApplicationController {
   }
 
    void offset() {
-    Time.at(Rational(search_params[:offset])) if ( search_params[:offset]) {
+    if ( search_params[:offset]) { Time.at(Rational(search_params[:offset])) ;}
   rescue TypeError
     nil
   }

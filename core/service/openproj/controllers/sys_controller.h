@@ -95,7 +95,7 @@ class SysController : public ActionController::Base {
     if ( this->repository.nil?) {
       render plain: "Project ##{this->project.id} does not have a repository.", status: 404
     else
-      return true if ( this->repository.scm.storage_available?) {
+      if ( this->repository.scm.storage_available?) { return true ;}
       render plain: 'repositories.storage.not_available', status: 400
     }
 
@@ -105,7 +105,7 @@ class SysController : public ActionController::Base {
    void require_basic_auth() {
     authenticate_with_http_basic { |username, password|
       this->authenticated_user = cached_user_login(username, password)
-      return true if ( this->authenticated_user) {
+      if ( this->authenticated_user) { return true ;}
     }
 
     response.headers['WWW-Authenticate'] = 'Basic realm="Repository Authentication"'
@@ -128,7 +128,7 @@ class SysController : public ActionController::Base {
       user ? user.id.to_s : '-1'
     }
 
-    return nil if ( user_id.blank? or user_id == '-1') {
+    if ( user_id.blank? or user_id == '-1') { return nil ;}
 
     user || User.find_by(id: user_id.to_i)
   }

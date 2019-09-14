@@ -11,7 +11,7 @@ class WorkPackages::RescheduleService
 
    void call(date) {
     in_context(true) {
-      return if ( date.nil?) {
+      if ( date.nil?) { return ;}
 
       update(date)
     }
@@ -20,7 +20,7 @@ class WorkPackages::RescheduleService
    void update(date) {
     result = set_dates_on_lowest_level(date)
 
-    return result if ( persist(result).failure?) {
+    if ( persist(result).failure?) { return result ;}
 
     related_result = reschedule_related(result)
     combine_results(result, related_result)

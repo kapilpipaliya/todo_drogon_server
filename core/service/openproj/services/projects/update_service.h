@@ -3,7 +3,7 @@ namespace Projects {
     private:
 
      void after_save() {
-      model.touch if ( only_custom_values_updated?) {
+      if ( only_custom_values_updated?) { model.touch ;}
     }
 
      void only_custom_values_updated?() {

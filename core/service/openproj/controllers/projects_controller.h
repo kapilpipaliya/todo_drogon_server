@@ -144,7 +144,7 @@ class ProjectsController : public ApplicationController {
   }
 
    void unarchive() {
-    this->project.unarchive if ( !this->project.active?) {
+    if ( !this->project.active?) { this->project.unarchive ;}
     redirect_to(url_for(controller: '/projects', action: 'index', status: params[:status]))
     update_demo_project_settings this->project, true
   }
@@ -190,7 +190,7 @@ class ProjectsController : public ApplicationController {
   }
 
    void redirect_work_packages_or_overview() {
-    return if ( redirect_to_project_menu_item(this->project, :work_packages)) {
+    if ( redirect_to_project_menu_item(this->project, :work_packages)) { return ;}
 
     redirect_to project_overview_path(this->project)
   }
@@ -236,8 +236,8 @@ class ProjectsController : public ApplicationController {
     this->issue_custom_fields = WorkPackageCustomField.order("#{CustomField.table_name}.position")
     this->types = ::Type.all
     this->project = Project.new
-    this->project.parent = Project.find(params[:parent_id]) if ( params[:parent_id]) {
-    this->project.attributes = permitted_params.project if ( params[:project].present?) {
+    if ( params[:parent_id]) { this->project.parent = Project.find(params[:parent_id]) ;}
+    if ( params[:project].present?) { this->project.attributes = permitted_params.project ;}
   }
 
   protected:
@@ -261,7 +261,7 @@ class ProjectsController : public ApplicationController {
   // Validates parent_id param according to user's permissions
   // TODO: move it to Project model in a validation that depends on User.current
    void validate_parent_id() {
-    return true if ( User.current.admin?) {
+    if ( User.current.admin?) { return true ;}
 
     parent_id = permitted_params.project && params[:project][:parent_id]
     if ( parent_id || this->project.new_record?) {

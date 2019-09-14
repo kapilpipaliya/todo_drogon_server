@@ -65,10 +65,10 @@ class WorkPackage::PdfExport::View
    void font(name: nil, style: nil, size: nil) {
     name ||= document.font.basename.split('-').first // e.g. NotoSans-Bold => NotoSans
     font_opts = {}
-    font_opts[:style] = style if ( style) {
+    if ( style) { font_opts[:style] = style ;}
 
     document.font name, font_opts
-    document.font_size size if ( size) {
+    if ( size) { document.font_size size ;}
 
     document.font
   }

@@ -70,7 +70,7 @@ namespace ::Query::Sums {
   }
 
    void crunch(num) {
-    return num if ( num.nil? or num.integer?) {
+    if ( num.nil? or num.integer?) { return num ;}
     Float(format '%.2f', num.to_f)
   }
 

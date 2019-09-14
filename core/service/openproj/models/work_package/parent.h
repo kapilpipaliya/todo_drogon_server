@@ -1,6 +1,6 @@
 namespace WorkPackage::Parent {
    void prepended(base) {
-    base.after_save :update_parent_relation, if (: :saved_change_to_parent_id?) {
+    if (: :saved_change_to_parent_id?) { base.after_save :update_parent_relation, ;}
     base.include Concerns::VirtualAttribute
 
     base.virtual_attribute 'parent_id', cast_type: :integer
@@ -91,13 +91,13 @@ namespace WorkPackage::Parent {
     id = id.to_i > 0 ? id.to_i : nil
 
     super(id)
-    this->parent_object = nil if ( this->parent_object && this->parent_object.id != id) {
+    if ( this->parent_object && this->parent_object.id != id) { this->parent_object = nil ;}
 
     this->parent_id
   }
 
    void parent_id() {
-    return this->parent_id if ( this->parent_id_set) {
+    if ( this->parent_id_set) { return this->parent_id ;}
 
     this->parent_id || parent && parent.id
   }

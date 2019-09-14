@@ -67,10 +67,10 @@ class Workflow : public ActiveRecord::Base {
     }
 
     target_types = Array(target_types)
-    target_types = ::Type.all if ( target_types.empty?) {
+    if ( target_types.empty?) { target_types = ::Type.all ;}
 
     target_roles = Array(target_roles)
-    target_roles = Role.all if ( target_roles.empty?) {
+    if ( target_roles.empty?) { target_roles = Role.all ;}
 
     target_types.each { |target_type|
       target_roles.each { |target_role|

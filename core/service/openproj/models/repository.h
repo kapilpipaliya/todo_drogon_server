@@ -157,8 +157,8 @@ class Repository : public ActiveRecord::Base {
 
    void diff_format_revisions(cs, cs_to, sep = ':') {
     text = ''
-    text << cs_to.format_identifier + sep if ( cs_to) {
-    text << cs.format_identifier if ( cs) {
+    if ( cs_to) { text << cs_to.format_identifier + sep ;}
+    if ( cs) { text << cs.format_identifier ;}
     text
   }
 
@@ -171,7 +171,7 @@ class Repository : public ActiveRecord::Base {
   // Update the required storage information, when necessary.
   // Returns whether an asynchronous count refresh has been requested.
    void update_required_storage() {
-    if ( scm.storage_available?) {
+   if ( scm.storage_available?) {  ;}
       oldest_cachable_time = Setting.repository_storage_cache_minutes.to_i.minutes.ago
       if ( storage_updated_at.nil? ||) {
          storage_updated_at < oldest_cachable_time
@@ -187,7 +187,7 @@ class Repository : public ActiveRecord::Base {
   // Finds and returns a revision with a number or the beginning of a hash
    void find_changeset_by_name(name) {
     name = name.to_s
-    return nil if ( name.blank?) {
+    if ( name.blank?) { return nil ;}
     changesets.where((name.match(/\A\d*\z/) ? ['revision = ?', name] : ['revision LIKE ?', name + '%'])).first
   }
 
@@ -245,7 +245,7 @@ class Repository : public ActiveRecord::Base {
    void find_committer_user(committer) {
     unless committer.blank?
       this->found_committer_users ||= {}
-      return this->found_committer_users[committer] if ( this->found_committer_users.has_key?(committer)) {
+      if ( this->found_committer_users.has_key?(committer)) { return this->found_committer_users[committer] ;}
 
       user = nil
       c = changesets.includes(:user).references(:users).find_by(committer: committer)
@@ -381,8 +381,8 @@ class Repository : public ActiveRecord::Base {
 
   // Strips url and root_url
    void sanitize_urls() {
-    url.strip! if ( url.present?) {
-    root_url.strip! if ( root_url.present?) {
+    if ( url.present?) { url.strip! ;}
+    if ( root_url.present?) { root_url.strip! ;}
     true
   }
 

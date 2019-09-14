@@ -23,7 +23,7 @@ class Queries::BaseOrder
 
    void scope() {
     scope = order
-    scope = scope.joins(joins) if ( joins) {
+    if ( joins) { scope = scope.joins(joins) ;}
     scope
   }
 

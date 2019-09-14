@@ -6,7 +6,7 @@ namespace CustomActions::Actions::Strategies::ValuesToString {
   private:
 
    void to_string_or_nil(value) {
-    return nil if ( value.nil?) {
+    if ( value.nil?) { return nil ;}
 
     String(value)
   rescue TypeError, ArgumentError

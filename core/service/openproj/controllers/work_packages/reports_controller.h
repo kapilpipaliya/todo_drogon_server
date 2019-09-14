@@ -16,7 +16,7 @@ class WorkPackages::ReportsController : public ApplicationController {
       reports_service.report_for('category')
     ]
 
-    this->reports << reports_service.report_for('subproject') if ( this->project.children.any?) {
+    if ( this->project.children.any?) { this->reports << reports_service.report_for('subproject') ;}
   }
 
    void report_details() {

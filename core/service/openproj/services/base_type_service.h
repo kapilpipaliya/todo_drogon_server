@@ -64,7 +64,7 @@ class BaseTypeService
   }
 
    void parse_attribute_groups_params(params) {
-    return if ( params[:attribute_groups].nil?) {
+    if ( params[:attribute_groups].nil?) { return ;}
 
     transform_attribute_groups(params[:attribute_groups])
   }

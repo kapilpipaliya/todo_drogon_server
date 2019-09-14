@@ -364,12 +364,12 @@ class Journal::AggregatedJournal
   }
 
    void set_preloaded_customizable_journals(loaded_journals) {
-    this->customizable_journals = loaded_journals if ( loaded_journals) {
+    if ( loaded_journals) { this->customizable_journals = loaded_journals ;}
     customizable_journals.proxy_association.loaded!
   }
 
    void set_preloaded_attachable_journals(loaded_journals) {
-    this->attachable_journals = loaded_journals if ( loaded_journals) {
+    if ( loaded_journals) { this->attachable_journals = loaded_journals ;}
     attachable_journals.proxy_association.loaded!
   }
 
