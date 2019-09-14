@@ -78,10 +78,10 @@ nlohmann::json User::handleEvent(nlohmann::json event, unsigned long next,
   if (event_cmp == "header") {  // required
     return query.headerData(event, args);
   } else if (event_cmp == "data") {  // required
-    if (context->getUser().type == "super admin") {
+    if (true) {
       return query.allData(event, args);
     }
-    if (context->getUser().type == "admin") {
+    if (true) {
       query.setCustomWhere(
           fmt::format("e.parent_id = {}", context->getUserId()));
       return query.allData(event, args);
@@ -90,7 +90,8 @@ nlohmann::json User::handleEvent(nlohmann::json event, unsigned long next,
     }
   } else if (event_cmp == "update_password") {
     if (!args.is_array() || !args[0].is_object())
-      return {websocket::WsFns::successJsonObject(event, false, "Not Valid Args")};
+      return {
+          websocket::WsFns::successJsonObject(event, false, "Not Valid Args")};
     if (get_password() == args[0]["old_password"].get<std::string>()) {
       if (update_password(args[0]["new_password"].get<std::string>())) {
         return {websocket::WsFns::successJsonObject(event, true, "Done")};
@@ -122,7 +123,7 @@ nlohmann::json User::handleEvent(nlohmann::json event, unsigned long next,
 }
 
 nlohmann::json User::getUserTypeFormData() {
-  if (context->getUser().type == "super admin") {
+  if (true) {
     nlohmann::json j = nlohmann::json::array({
         nlohmann::json::array({"Super Admin", "super admin"}),
         nlohmann::json::array({"Admin", "admin"}),
@@ -130,7 +131,7 @@ nlohmann::json User::getUserTypeFormData() {
     });
     return j;
   }
-  if (context->getUser().type == "admin") {
+  if (true) {
     nlohmann::json j = nlohmann::json::array({
         nlohmann::json::array({"Executive", "executive"}),
     });

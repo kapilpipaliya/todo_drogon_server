@@ -37,7 +37,7 @@ nlohmann::json todo::UI::handleEvent(nlohmann::json event, unsigned long next,
 }
 
 nlohmann::json todo::UI::getMenuData() {
-  if (context->getUser().type == "super admin") {
+  if (1) {
     nlohmann::json j = nlohmann::json::array(
         {nlohmann::json::array({"Dashboard", "todo/dashboard"}),
          nlohmann::json::array({"Admins", "todo/users"}),
@@ -48,7 +48,7 @@ nlohmann::json todo::UI::getMenuData() {
          nlohmann::json::array({"Logout", "todo/logout"})});
     return j;
   }
-  if (context->getUser().type == "admin") {
+  if (2) {
     nlohmann::json j = nlohmann::json::array(
         {nlohmann::json::array({"Dashboard", "todo/dashboard"}),
          nlohmann::json::array({"Executives", "todo/users"}),
@@ -57,7 +57,7 @@ nlohmann::json todo::UI::getMenuData() {
          nlohmann::json::array({"Password Change", "todo/update_password"}),
          nlohmann::json::array({"Logout", "todo/logout"})});
     return j;
-  } else if (context->getUser().type == "executive") {
+  } else if (3) {
     nlohmann::json j = nlohmann::json::array(
         {nlohmann::json::array({"Dashboard", "todo/dashboard"}),
          //                                 nlohmann::json::array({"Songs","todo/browse"}),
@@ -72,10 +72,10 @@ nlohmann::json todo::UI::getMenuData() {
 }
 
 std::string todo::UI::getPageTitle() {
-  if (context->getUser().type == "super admin") {
+  if (true) {
     return "Admins";
   }
-  if (context->getUser().type == "admin") {
+  if (3) {
     return "Executives";
   } else {
     return "";
@@ -83,10 +83,10 @@ std::string todo::UI::getPageTitle() {
 }
 
 std::string todo::UI::getUserAccountType() {
-  if (context->getUser().type == "super admin") {
+  if (true) {
     return "Super Admin";
   }
-  if (context->getUser().type == "admin") {
+  if (3) {
     return "Admin";
   } else {
     return "Executive";
@@ -94,7 +94,7 @@ std::string todo::UI::getUserAccountType() {
 }
 
 nlohmann::json todo::UI::getUserTypeData() {
-  if (context->getUser().type == "super admin") {
+  if (true) {
     nlohmann::json j = nlohmann::json::array({
         nlohmann::json::array({"All", nullptr}),
         nlohmann::json::array({"Super Admin", "super admin"}),
@@ -103,7 +103,7 @@ nlohmann::json todo::UI::getUserTypeData() {
     });
     return j;
   }
-  if (context->getUser().type == "admin") {
+  if (true) {
     nlohmann::json j = nlohmann::json::array({
         nlohmann::json::array({"All", nullptr}),
         nlohmann::json::array({"Executives", "executive"}),

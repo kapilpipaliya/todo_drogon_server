@@ -31,7 +31,8 @@ nlohmann::json User::handleEvent(nlohmann::json event, unsigned long next,
   }
   if (event_cmp == "update_password") {
     if (!args.is_array())
-      return {websocket::WsFns::successJsonObject(event, false, "Not Valid Args")};
+      return {
+          websocket::WsFns::successJsonObject(event, false, "Not Valid Args")};
     if (get_password() == args[0]["old_password"].get<std::string>()) {
       if (update_password(args[0]["new_password"].get<std::string>())) {
         return {websocket::WsFns::successJsonObject(event, true, "Done")};
@@ -52,23 +53,7 @@ nlohmann::json User::handleEvent(nlohmann::json event, unsigned long next,
   }
 }
 
-nlohmann::json User::getUserTypeFormData() {
-  if (context->getUser().type == "super admin") {
-    nlohmann::json j = nlohmann::json::array({
-        nlohmann::json::array({"Super Admin", "super admin"}),
-        nlohmann::json::array({"Admin", "admin"}),
-        nlohmann::json::array({"Executive", "executive"}),
-    });
-    return j;
-  }
-  if (context->getUser().type == "admin") {
-    nlohmann::json j = nlohmann::json::array({
-        nlohmann::json::array({"Executive", "executive"}),
-    });
-    return j;
-  }
-  return nlohmann::json::array();
-}
+nlohmann::json User::getUserTypeFormData() { return nlohmann::json::array(); }
 
 User::Info User::get_info() {
   // If user is in cache return from it.
@@ -297,7 +282,8 @@ nlohmann::json User::userLogin(const nlohmann::json& event,
       // Json writer, or json::dump().
       LOG_INFO << j.dump();
       auto rs = Dba::writeInTrans(transPtr, sqlSession, "user", j.dump());
-      nlohmann::json login_result = websocket::WsFns::successJsonObject(event, true, "Done");
+      nlohmann::json login_result =
+          websocket::WsFns::successJsonObject(event, true, "Done");
 
       // ask to save cookie
       nlohmann::json cookie_result;

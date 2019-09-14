@@ -47,7 +47,7 @@ void JAdminContext::setUser() {
     auto transPtr = clientPtr->newTransaction();
     auto r = Dba::writeInTrans(transPtr, sqlSession, user_id);
     if (!r.empty()) {
-      user.id = r[0]["id"].as<long>();
+      //      user.id = r[0]["id"].as<long>();
       // user.type = r[0]["type"].as<std::string>();
     }
   } catch (const std::exception &e) {
