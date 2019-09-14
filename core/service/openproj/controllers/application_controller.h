@@ -1,3 +1,5 @@
+#ifndef _APPLICATION_CONTROLLER_H
+#define _APPLICATION_CONTROLLER_H
 //#include "uri"
 //#include "cgi"
 #include <string>
@@ -15,6 +17,7 @@ namespace ActionController {
 class Base {};
 }  // namespace ActionController
 class ApplicationController : public ActionController::Base {
+public:
   // class_attribute :_model_object
   // class_attribute :_model_scope
   // class_attribute :accept_key_auth_actions
@@ -665,3 +668,4 @@ class ApplicationController : public ActionController::Base {
 
   //  prepend Concerns::AuthSourceSSO
 };
+#endif

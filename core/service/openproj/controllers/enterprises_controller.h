@@ -1,5 +1,6 @@
 #include "application_controller.h"
 class EnterprisesController : public ApplicationController {
+public:
   // layout 'admin'
   // menu_item :enterprise
 
@@ -53,4 +54,4 @@ class EnterprisesController : public ApplicationController {
 //      )
 //    }
   }
-}
+};

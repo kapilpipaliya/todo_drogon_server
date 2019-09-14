@@ -1,9 +1,9 @@
 #include "application_controller.h"
 class WatchersController : public ApplicationController {
+public:
   // before_action :find_watched_by_object
   // before_action :find_project
   // before_action :require_login, :check_project_privacy, only: %i[watch unwatch]
-public:
    void watch() {
 //    if ( this->watched.respond_to?(:visible?) && !this->watched.visible?(User.current)) {
 //      render_403

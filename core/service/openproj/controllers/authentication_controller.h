@@ -1,5 +1,6 @@
 #include "application_controller.h"
 class AuthenticationController : public ApplicationController {
+public:
   // before_action :require_login
   // layout 'admin'
   // menu_item :authentication_settings

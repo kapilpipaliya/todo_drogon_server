@@ -1,5 +1,6 @@
 #include "application_controller.h"
 class ActivitiesController : public ApplicationController {
+public:
   // menu_item :activity
   // before_action :find_optional_project, :verify_activities_module_activated
   // accept_key_auth :index

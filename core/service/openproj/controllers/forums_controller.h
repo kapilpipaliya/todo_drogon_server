@@ -1,5 +1,6 @@
 #include "application_controller.h"
 class ForumsController : public ApplicationController {
+public:
 //  default_search_scope :messages
   // before_action :find_project_by_project_id,
 //                :authorize

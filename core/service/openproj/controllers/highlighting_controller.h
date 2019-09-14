@@ -1,5 +1,6 @@
 #include "application_controller.h"
 class HighlightingController : public ApplicationController {
+public:
   // before_action :determine_freshness
   // skip_before_action :check_if_login_required, only: [:styles]
 

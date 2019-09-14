@@ -1,5 +1,6 @@
 #include "application_controller.h"
 class CategoriesController : public ApplicationController {
+public:
   // menu_item :settings
   // model_object Category
   // before_action :find_model_object, except: [:new, :create]
@@ -76,5 +77,5 @@ class CategoriesController : public ApplicationController {
 //    this->project = Project.find(params[:project_id])
 //  rescue ActiveRecord::RecordNotFound
 //    render_404
-//  }
+  }
 };

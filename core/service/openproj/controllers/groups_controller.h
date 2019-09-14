@@ -1,5 +1,6 @@
 #include "application_controller.h"
 class GroupsController : public ApplicationController {
+public:
   // include GroupsHelper
   // layout 'admin'
 

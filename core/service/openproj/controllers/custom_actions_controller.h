@@ -1,5 +1,6 @@
 #include "application_controller.h"
 class CustomActionsController : public ApplicationController {
+public:
   // before_action :require_admin
   // before_action :require_enterprise_token
 

@@ -1,5 +1,6 @@
 #include "application_controller.h"
 class AuthSourcesController : public ApplicationController {
+public:
   // include PaginationHelper
   // layout 'admin'
 

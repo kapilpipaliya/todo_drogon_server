@@ -1,5 +1,6 @@
 #include "application_controller.h"
 class AttributeHelpTextsController : public ApplicationController {
+public:
   // layout 'admin'
   // menu_item :attribute_help_texts
 

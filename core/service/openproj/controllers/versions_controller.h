@@ -1,12 +1,12 @@
 #include "application_controller.h"
 class VersionsController : public ApplicationController {
+public:
   // menu_item :roadmap
   // model_object Version
   // before_action :find_model_object, except: %i[index new create close_completed]
   // before_action :find_project_from_association, except: %i[index new create close_completed]
   // before_action :find_project, only: %i[index new create close_completed]
   // before_action :authorize
-public:
    void index() {
 //    this->types = this->project.types.order(Arel.sql('position'))
 //    retrieve_selected_type_ids(this->types, this->types.select(&:is_in_roadmap?))

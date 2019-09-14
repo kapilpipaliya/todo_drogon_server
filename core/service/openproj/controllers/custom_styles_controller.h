@@ -1,5 +1,6 @@
 #include "application_controller.h"
 class CustomStylesController : public ApplicationController {
+public:
   // layout 'admin'
   // menu_item :custom_style
 

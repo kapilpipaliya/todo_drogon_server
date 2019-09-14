@@ -1,5 +1,6 @@
 #include "application_controller.h"
 class AccountController : public ApplicationController {
+public:
   // include CustomFieldsHelper
   // include OmniauthHelper
   // include Concerns::OmniauthLogin

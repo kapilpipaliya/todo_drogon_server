@@ -1,5 +1,6 @@
 #include "application_controller.h"
 class EnumerationsController : public ApplicationController {
+public:
   // layout 'admin'
 
   // before_action :require_admin

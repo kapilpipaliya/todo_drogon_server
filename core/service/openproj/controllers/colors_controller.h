@@ -1,5 +1,6 @@
 #include "application_controller.h"
 class ColorsController : public ApplicationController {
+public:
   // before_action :require_admin_unless_readonly_api_request
 
   // layout 'admin'
