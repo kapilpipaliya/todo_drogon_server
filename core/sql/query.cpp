@@ -310,7 +310,7 @@ std::string Query::buildUpdateQuery(const std::string& column,
   } else {
     where = buildWherePart();
   }
-  // if(where.empty()){ throw("can't update all rows.."); }
+  // if(where.empty()){ throw std::runtime_error("can't update all rows.."); }
   std::string group_by = buildGroupByPart();
   // return "UPDATE " + m_table.toString() + " " + m_table.as() + " SET (" +
   // column +  ") = ROW(" + values + ") " +  join + where + " " + group_by;
@@ -636,7 +636,7 @@ nlohmann::json Query::upd(nlohmann::json event, nlohmann::json args) {
     auto res = clientPtr->execSqlSync(strSql);
     if (res.size() > 1) {
       SPDLOG_TRACE("error: Argus Must update one row");
-      throw("not valid arguments");
+      throw std::runtime_error("not valid arguments");
     }
     nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, true, "Done");
@@ -663,7 +663,7 @@ nlohmann::json Query::del(nlohmann::json event, nlohmann::json args) {
     if (m_where.size() > 0 && !m_custm_where.empty()) {
       auto res = Dba::writeInTrans(transPtr, buildDeleteQuery());
       if (res.size() > 1) {
-        throw("not valid arguments");
+        throw std::runtime_error("not valid arguments");
       }
       // affected rows should be returned too.
       // Dba::writeInTrans(transPtr, "DELETE FROM " +

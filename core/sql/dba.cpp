@@ -9,7 +9,7 @@ drogon::orm::Result Dba::read(const std::string& sql) {
     return res;
   } catch (const std::exception& e) {
     SPDLOG_TRACE(e.what());
-    throw("Invalid Sql At Dba");
+    throw std::runtime_error("Invalid Sql At Dba");
   }
 }
 

@@ -77,7 +77,7 @@ nlohmann::json SslEchoClient::jsonparse(std::string msg) {
     // SPDLOG_TRACE("message: {}", e.what());
     // SPDLOG_TRACE("exception id: {}", e.id);
     // SPDLOG_TRACE("byte position of error:", e.byte);
-    throw("Json can not be parsed");
+    throw std::runtime_error("Json can not be parsed");
   }
 }
 bool SslEchoClient::bind(const nlohmann::json &event,

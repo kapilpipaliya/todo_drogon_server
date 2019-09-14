@@ -64,7 +64,7 @@ nlohmann::json Setting::del(nlohmann::json event, nlohmann::json args) {
                                  "DELETE FROM setting.setting WHERE key = $1",
                                  args[0][0].get<std::string>());
     if (res.size() > 1) {
-      throw("not valid arguments");
+      throw std::runtime_error("not valid arguments");
     }
     nlohmann::json ret;
     ret[0] = simpleJsonSaveResult(event, true, "Done");

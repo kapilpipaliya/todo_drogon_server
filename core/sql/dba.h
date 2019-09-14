@@ -47,7 +47,7 @@ class Dba {
       return r;
     } catch (const std::exception &e) {
       SPDLOG_TRACE(e.what());
-      throw("Invalid Sql At Dba write");
+      throw std::runtime_error("Invalid Sql At Dba write");
     }
   }
 
@@ -64,7 +64,7 @@ class Dba {
       return r;
     } catch (const std::exception &e) {
       SPDLOG_TRACE(e.what());
-      throw("Invalid Sql At Dba write");
+      throw std::runtime_error("Invalid Sql At Dba write");
     }
   }
   template <class... Args>
@@ -76,7 +76,7 @@ class Dba {
       return r;
     } catch (const std::exception &e) {
       SPDLOG_TRACE(e.what());
-      throw("Invalid Sql At Dba write");
+      throw std::runtime_error("Invalid Sql At Dba write");
     }
   }
   /**
