@@ -1,3 +1,4 @@
+namespace openproject {
 class WorkPackage::PdfExport::View
 
   // include Prawn::View

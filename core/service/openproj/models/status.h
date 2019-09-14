@@ -1,3 +1,4 @@
+namespace openproject {
 class Status : public ActiveRecord::Base {
   // extend Pagination::Model
 

@@ -1,3 +1,4 @@
+namespace openproject {
 class Queries::Principals::Filters::PrincipalFilter : public Queries::Filters::Base {
   this->model = Principal
 

@@ -1,3 +1,4 @@
+namespace openproject {
 class Relations::BaseService
   // include Concerns::Contracted
   // include Shared::ServiceContext

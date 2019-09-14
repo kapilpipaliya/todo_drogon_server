@@ -1,6 +1,7 @@
 #pragma once
 #include "application_controller.h"
-class UsersSettingsController : public ::ApplicationController {
+namespace openproject {
+class UsersSettingsController : public ApplicationController {
   // layout 'admin'
   // menu_item :user_settings
 public:
@@ -27,3 +28,4 @@ public:
     return true;
   }
 };
+}

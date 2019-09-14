@@ -1,4 +1,5 @@
 // This does filter for whether a role can be assigned to a member.
+namespace openproject {
 class Queries::Roles::Filters::GrantableFilter : public Queries::Roles::Filters::RoleFilter {
    void type() {
     :list

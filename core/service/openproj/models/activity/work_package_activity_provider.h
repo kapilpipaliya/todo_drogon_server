@@ -1,3 +1,4 @@
+namespace openproject {
 class Activity::WorkPackageActivityProvider : public Activity::BaseActivityProvider {
   acts_as_activity_provider type: 'work_packages',
                             permission: :view_work_packages

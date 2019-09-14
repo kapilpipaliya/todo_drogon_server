@@ -1,5 +1,6 @@
 #pragma once
 #include "application_controller.h"
+namespace openproject {
 class StatusesController : public ApplicationController {
 public:
   // include PaginationHelper
@@ -88,3 +89,4 @@ public:
     return true;
   }
 };
+}

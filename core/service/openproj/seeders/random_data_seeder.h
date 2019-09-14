@@ -1,3 +1,4 @@
+namespace openproject {
 class RandomDataSeeder
    void seed!() {
     puts ' ########################################################'

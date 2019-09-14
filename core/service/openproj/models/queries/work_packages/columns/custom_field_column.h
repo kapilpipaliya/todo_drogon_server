@@ -1,3 +1,4 @@
+namespace openproject {
 class Queries::WorkPackages::Columns::CustomFieldColumn : public Queries::WorkPackages::Columns::WorkPackageColumn {
    CustomFieldColumn(custom_field) {
     super

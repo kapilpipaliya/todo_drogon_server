@@ -1,3 +1,4 @@
+namespace openproject {
 class Queries::BaseOrder
   // include ActiveModel::Validations
 

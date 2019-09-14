@@ -1,3 +1,4 @@
+namespace openproject {
 class Relations::UpdateService : public Relations::BaseService {
   // attr_accessor :relation
 

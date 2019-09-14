@@ -1,5 +1,6 @@
 #pragma once
 #include "application_controller.h"
+namespace openproject {
 class ColorsController : public ApplicationController {
 public:
   // before_action :require_admin_unless_readonly_api_request
@@ -93,3 +94,4 @@ public:
 //                         api_request?
   }
 };
+}

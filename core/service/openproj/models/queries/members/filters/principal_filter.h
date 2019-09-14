@@ -1,3 +1,4 @@
+namespace openproject {
 class Queries::Members::Filters::PrincipalFilter : public Queries::Members::Filters::MemberFilter {
   // include Queries::Filters::Shared::MeValueFilter
 

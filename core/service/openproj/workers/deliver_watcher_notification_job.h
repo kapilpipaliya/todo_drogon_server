@@ -1,3 +1,4 @@
+namespace openproject {
 class DeliverWatcherNotificationJob : public DeliverNotificationJob {
 
    DeliverWatcherNotificationJob(watcher_id, recipient_id, watcher_setter_id) {

@@ -1,3 +1,4 @@
+namespace openproject {
 class Queries::WorkPackages::Filter::IdFilter <
   Queries::WorkPackages::Filter::WorkPackageFilter
 

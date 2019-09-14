@@ -1,3 +1,4 @@
+namespace openproject {
 class CustomValue::ListStrategy : public CustomValue::ARObjectStrategy {
    void validate_type_of_value() {
     unless custom_field.custom_options.pluck(:id).include?(value.to_i)

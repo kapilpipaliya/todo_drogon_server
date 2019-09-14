@@ -1,3 +1,4 @@
+namespace openproject {
 class CustomActions::Actions::CustomField : public CustomActions::Actions::Base {
    void key() {
     :"custom_field_#{custom_field.id}"

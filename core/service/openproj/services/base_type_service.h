@@ -1,3 +1,4 @@
+namespace openproject {
 class BaseTypeService
   // include Shared::BlockService
   // include Concerns::Contracted

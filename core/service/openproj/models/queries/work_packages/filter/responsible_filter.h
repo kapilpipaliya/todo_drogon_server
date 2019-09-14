@@ -1,3 +1,4 @@
+namespace openproject {
 class Queries::WorkPackages::Filter::ResponsibleFilter <
   Queries::WorkPackages::Filter::PrincipalBaseFilter
 

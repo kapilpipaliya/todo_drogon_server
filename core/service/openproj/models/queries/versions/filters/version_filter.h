@@ -1,3 +1,4 @@
+namespace openproject {
 class Queries::Versions::Filters::VersionFilter : public Queries::Filters::Base {
   this->model = Version
 

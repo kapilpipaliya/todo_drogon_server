@@ -1,3 +1,4 @@
+namespace openproject {
 class CustomValue::BoolStrategy : public CustomValue::FormatStrategy {
    void value_present?() {
     present?(value)

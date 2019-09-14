@@ -1,3 +1,4 @@
+namespace openproject {
 class CustomActions::Conditions::Status : public CustomActions::Conditions::Base {
    void key() {
     :status

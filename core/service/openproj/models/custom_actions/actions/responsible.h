@@ -1,3 +1,4 @@
+namespace openproject {
 class CustomActions::Actions::Responsible : public CustomActions::Actions::Base {
   // include CustomActions::Actions::Strategies::Associated
 

@@ -1,3 +1,4 @@
+namespace openproject {
 class Type::QueryGroup : public Type::FormGroup {
   MEMBER_PREFIX = 'query_'.freeze
 

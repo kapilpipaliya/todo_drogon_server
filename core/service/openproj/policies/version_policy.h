@@ -1,3 +1,4 @@
+namespace openproject {
 class VersionPolicy : public BasePolicy {
   private:
 

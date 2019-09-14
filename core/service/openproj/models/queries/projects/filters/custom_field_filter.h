@@ -1,3 +1,4 @@
+namespace openproject {
 class Queries::Projects::Filters::CustomFieldFilter <
   Queries::Projects::Filters::ProjectFilter
 

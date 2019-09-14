@@ -1,3 +1,4 @@
+namespace openproject {
 class Queries::Members::Filters::RoleFilter : public Queries::Members::Filters::MemberFilter {
    void allowed_values() {
     this->allowed_values ||= begin

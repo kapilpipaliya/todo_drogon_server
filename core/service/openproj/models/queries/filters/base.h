@@ -1,5 +1,6 @@
 #include "queries/operators"
 
+namespace openproject {
 class Queries::Filters::Base
   // include ActiveModel::Validations
 

@@ -1,3 +1,4 @@
+namespace openproject {
 class Relation : public ActiveRecord::Base {
   // include Concerns::VirtualAttribute
 

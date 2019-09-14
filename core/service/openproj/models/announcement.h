@@ -1,3 +1,4 @@
+namespace openproject {
 class Announcement : public ActiveRecord::Base {
   // scope :active,  -> { where(active: true) }
   // scope :current, -> { where('show_until >= ?', Date.today) }

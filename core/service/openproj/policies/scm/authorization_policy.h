@@ -1,3 +1,4 @@
+namespace openproject {
 class Scm::AuthoriziationPolicy
   attr_reader :project, :user
 

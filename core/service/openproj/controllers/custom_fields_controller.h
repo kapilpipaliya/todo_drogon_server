@@ -1,5 +1,6 @@
 #pragma once
 #include "application_controller.h"
+namespace openproject {
 class CustomFieldsController : public ApplicationController {
 public:
   // layout 'admin'
@@ -138,3 +139,4 @@ public:
     return true;
   }
 };
+}

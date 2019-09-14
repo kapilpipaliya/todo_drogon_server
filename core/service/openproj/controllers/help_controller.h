@@ -1,5 +1,6 @@
 #pragma once
 #include "application_controller.h"
+namespace openproject {
 class HelpController : public ApplicationController {
 public:
   // layout 'help'
@@ -13,3 +14,4 @@ public:
 //    redirect_to help_link
   }
 };
+}

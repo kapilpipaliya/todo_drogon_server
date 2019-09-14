@@ -1,3 +1,4 @@
+namespace openproject {
 class Queries::WorkPackages::Filter::ProjectFilter : public Queries::WorkPackages::Filter::WorkPackageFilter {
    void allowed_values() {
     this->allowed_values ||= begin

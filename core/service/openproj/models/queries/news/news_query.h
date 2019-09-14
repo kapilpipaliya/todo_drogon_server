@@ -1,3 +1,4 @@
+namespace openproject {
 class Queries::News::NewsQuery : public Queries::BaseQuery {
    void model() {
     News

@@ -1,5 +1,6 @@
 #pragma once
 #include "application_controller.h"
+namespace openproject {
 class ProjectsController : public ApplicationController {
 public:
   // menu_item :overview
@@ -283,3 +284,4 @@ public:
 //    }
 //  }
 };
+}

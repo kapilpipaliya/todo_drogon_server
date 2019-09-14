@@ -1,3 +1,4 @@
+namespace openproject {
 class CustomActions::Actions::Notify : public CustomActions::Actions::Base {
   // include CustomActions::Actions::Strategies::Associated
 

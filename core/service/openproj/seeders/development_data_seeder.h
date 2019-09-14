@@ -1,3 +1,4 @@
+namespace openproject {
 class DevelopmentDataSeeder : public CompositeSeeder {
    void data_seeder_classes() {
     [

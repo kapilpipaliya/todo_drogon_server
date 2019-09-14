@@ -1,3 +1,4 @@
+namespace openproject {
 class Queries::Users::Filters::UserFilter : public Queries::Filters::Base {
   this->model = User
 

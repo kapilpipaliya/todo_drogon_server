@@ -1,3 +1,4 @@
+namespace openproject {
 class CustomValue::VersionStrategy : public CustomValue::ARObjectStrategy {
   private:
 

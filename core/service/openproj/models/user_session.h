@@ -1,5 +1,6 @@
 require "active_support/core_ext/module/attribute_accessors"
 
+namespace openproject {
 class UserSession : public ActiveRecord::SessionStore::Session {
   // belongs_to :user
 

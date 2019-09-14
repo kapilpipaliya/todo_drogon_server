@@ -1,3 +1,4 @@
+namespace openproject {
 class BasePolicy
   // attr_accessor :user
 

@@ -1,3 +1,4 @@
+namespace openproject {
 class User::ProjectAuthorizationCache
   // attr_accessor :user
 

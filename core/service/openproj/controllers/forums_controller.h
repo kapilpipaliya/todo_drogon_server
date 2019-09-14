@@ -1,5 +1,6 @@
 #pragma once
 #include "application_controller.h"
+namespace openproject {
 class ForumsController : public ApplicationController {
 public:
 //  default_search_scope :messages
@@ -121,3 +122,4 @@ public:
 //    this->forum.project = this->project
   }
 };
+}

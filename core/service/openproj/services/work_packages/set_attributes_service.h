@@ -1,3 +1,4 @@
+namespace openproject {
 class WorkPackages::SetAttributesService : public ::BaseServices::SetAttributes {
   // include Attachments::SetReplacements
 

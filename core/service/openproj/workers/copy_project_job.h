@@ -1,3 +1,4 @@
+namespace openproject {
 class CopyProjectJob : public ApplicationJob {
   // include OpenProject::LocaleHelper
 

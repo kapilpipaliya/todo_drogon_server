@@ -1,3 +1,4 @@
+namespace openproject {
 class CustomValue::ARObjectStrategy : public CustomValue::FormatStrategy {
    void typed_value() {
     if ( memoized_typed_value) { return memoized_typed_value ;}

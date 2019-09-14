@@ -1,3 +1,4 @@
+namespace openproject {
 class MailHandler : public ActionMailer::Base {
   // include ActionView::Helpers::SanitizeHelper
   // include Redmine::I18n

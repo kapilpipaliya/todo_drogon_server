@@ -1,3 +1,4 @@
+namespace openproject {
 class Queries::Queries::Filters::ProjectIdentifierFilter : public Queries::Queries::Filters::QueryFilter {
    void type() {
     :list

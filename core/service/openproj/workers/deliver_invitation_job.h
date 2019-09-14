@@ -1,3 +1,4 @@
+namespace openproject {
 class DeliverInvitationJob : public ApplicationJob {
   attr_reader :token_id
 

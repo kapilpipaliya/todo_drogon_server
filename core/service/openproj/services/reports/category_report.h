@@ -1,3 +1,4 @@
+namespace openproject {
 class Reports::CategoryReport : public Reports::Report {
    void report_type() {
     'category'

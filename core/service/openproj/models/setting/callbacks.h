@@ -1,3 +1,4 @@
+namespace openproject {
 class Setting
   namespace Callbacks {
     // register a callback for a setting named #name

@@ -1,3 +1,4 @@
+namespace openproject {
 class CompositeSeeder : public Seeder {
    void seed_data!() {
     ActiveRecord::Base.transaction {

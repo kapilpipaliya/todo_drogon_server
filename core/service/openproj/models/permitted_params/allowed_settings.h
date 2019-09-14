@@ -1,3 +1,4 @@
+namespace openproject {
 class PermittedParams
   namespace AllowedSettings {
     class Restriction

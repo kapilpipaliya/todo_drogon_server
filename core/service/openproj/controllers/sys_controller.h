@@ -2,6 +2,7 @@
 //#include "open_project/repository_authentication"
 #include "application_controller.h"
 
+namespace openproject {
 class SysController : public ActionController::Base {
 public:
   // before_action :check_enabled
@@ -136,3 +137,4 @@ public:
 //    user || User.find_by(id: user_id.to_i)
   }
 };
+}

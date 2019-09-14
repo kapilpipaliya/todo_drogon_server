@@ -1,3 +1,4 @@
+namespace openproject {
 class ProjectMailer : public BaseMailer {
 
    void delete_project_completed(project, user:) {

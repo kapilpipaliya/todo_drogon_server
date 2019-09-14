@@ -3,6 +3,7 @@
 
 // This capsulates the validation of a requested redirect URL.
 //
+namespace openproject {
 class RedirectPolicy
   attr_reader :validated_redirect_url, :request
 

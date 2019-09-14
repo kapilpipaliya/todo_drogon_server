@@ -1,3 +1,4 @@
+namespace openproject {
 class UpdateTypeService : public BaseTypeService {
    void call(params) {
     // forbid renaming if ( it is a standard type) {

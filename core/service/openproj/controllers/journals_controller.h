@@ -2,6 +2,7 @@
 //#include "diff"
 
 #include "application_controller.h"
+namespace openproject {
 class JournalsController : public ApplicationController {
 public:
   // before_action :find_journal, except: [:index]
@@ -81,3 +82,4 @@ public:
 //    this->journal.journable.class == WorkPackage
   }
 };
+}

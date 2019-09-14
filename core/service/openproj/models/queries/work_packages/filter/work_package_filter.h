@@ -1,3 +1,4 @@
+namespace openproject {
 class Queries::WorkPackages::Filter::WorkPackageFilter : public ::Queries::Filters::Base {
   // include ::Queries::Filters::Serializable
 

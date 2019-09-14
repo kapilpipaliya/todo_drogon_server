@@ -2,6 +2,7 @@
 // Create journal for the given user and note.
 // Does not change the work package itself.
 
+namespace openproject {
 class AddWorkPackageNoteService
   // include Concerns::Contracted
   // attr_accessor :user, :work_package

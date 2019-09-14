@@ -1,3 +1,4 @@
+namespace openproject {
 class Queries::Queries::QueryQuery : public Queries::BaseQuery {
    void model() {
     Query

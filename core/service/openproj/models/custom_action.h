@@ -1,3 +1,4 @@
+namespace openproject {
 class CustomAction : public ActiveRecord::Base {
   // validates :name, length: { maximum: 255, minimum: 1 }
   serialize :actions, CustomActions::Actions::Serializer

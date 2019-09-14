@@ -1,3 +1,4 @@
+namespace openproject {
 class UpdateQueryFromParamsService
    UpdateQueryFromParamsService(query, user) {
     this->query = query

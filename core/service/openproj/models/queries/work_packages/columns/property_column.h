@@ -1,3 +1,4 @@
+namespace openproject {
 class Queries::WorkPackages::Columns::PropertyColumn : public Queries::WorkPackages::Columns::WorkPackageColumn {
    void caption() {
     WorkPackage.human_attribute_name(name)

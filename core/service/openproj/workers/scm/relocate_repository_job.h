@@ -1,5 +1,6 @@
 //
 // Provides an asynchronous job to relocate a managed repository on the local or remote system
+namespace openproject {
 class Scm::RelocateRepositoryJob : public Scm::RemoteRepositoryJob {
    void perform() {
     if ( repository.class.manages_remote?) {

@@ -1,3 +1,4 @@
+namespace openproject {
 class Queries::Projects::Orders::CustomFieldOrder : public Queries::BaseOrder {
   this->model = Project.all
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "application_controller.h"
+namespace openproject {
 class MembersController : public ApplicationController {
 public:
   // model_object Member
@@ -270,3 +271,4 @@ public:
 //    }
 //  }
 };
+}

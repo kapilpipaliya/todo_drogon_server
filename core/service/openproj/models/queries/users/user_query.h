@@ -1,3 +1,4 @@
+namespace openproject {
 class Queries::Users::UserQuery : public Queries::BaseQuery {
    void model() {
     User

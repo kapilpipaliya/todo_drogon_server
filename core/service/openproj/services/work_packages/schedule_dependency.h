@@ -1,3 +1,4 @@
+namespace openproject {
 class WorkPackages::ScheduleDependency
    ScheduleDependency(work_packages) {
     this->work_packages = Array(work_packages)

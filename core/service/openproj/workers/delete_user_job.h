@@ -1,3 +1,4 @@
+namespace openproject {
 class DeleteUserJob : public ApplicationJob {
    DeleteUserJob(user_id) {
     this->user_id = user_id

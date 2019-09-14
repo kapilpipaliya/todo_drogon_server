@@ -1,3 +1,4 @@
+namespace openproject {
 class CustomValue::DateStrategy : public CustomValue::FormatStrategy {
   // include Redmine::I18n
 

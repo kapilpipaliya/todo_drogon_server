@@ -1,5 +1,6 @@
 #pragma once
 #include "application_controller.h"
+namespace openproject {
 class CustomStylesController : public ApplicationController {
 public:
   // layout 'admin'
@@ -117,3 +118,4 @@ public:
 //    redirect_to custom_style_path
 //  }
 };
+}

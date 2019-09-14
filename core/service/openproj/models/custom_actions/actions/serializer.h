@@ -1,3 +1,4 @@
+namespace openproject {
 class CustomActions::Actions::Serializer
    void load(value) {
     return [] unless value

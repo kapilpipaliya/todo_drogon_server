@@ -1,3 +1,4 @@
+namespace openproject {
 class CustomActions::Actions::Date : public CustomActions::Actions::Base {
   // include CustomActions::Actions::Strategies::Date
 

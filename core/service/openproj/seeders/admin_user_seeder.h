@@ -1,3 +1,4 @@
+namespace openproject {
 class AdminUserSeeder : public Seeder {
    void seed_data!() {
     user = new_admin

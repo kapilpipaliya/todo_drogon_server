@@ -1,3 +1,4 @@
+namespace openproject {
 class JournalManager
   class << self
     // attr_accessor :send_notification

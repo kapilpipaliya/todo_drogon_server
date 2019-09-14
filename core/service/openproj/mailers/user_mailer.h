@@ -1,3 +1,4 @@
+namespace openproject {
 class UserMailer : public BaseMailer {
 
    void test_mail(user) {
@@ -324,6 +325,7 @@ class UserMailer : public BaseMailer {
 // Unfortunately, this results in changes on the interceptor classes during development mode
 // not being reflected until a server restart.
 
+namespace openproject {
 class DefaultHeadersInterceptor
    void delivering_email(mail) {
     mail.headers(default_headers)
@@ -340,6 +342,7 @@ class DefaultHeadersInterceptor
   }
 }
 
+namespace openproject {
 class DoNotSendMailsWithoutReceiverInterceptor
    void delivering_email(mail) {
     receivers = [mail.to, mail.cc, mail.bcc]

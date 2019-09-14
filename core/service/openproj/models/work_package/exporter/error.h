@@ -1,3 +1,4 @@
+namespace openproject {
 class WorkPackage::Exporter::Error : public WorkPackage::Exporter::Result {
   // attr_accessor :message
 

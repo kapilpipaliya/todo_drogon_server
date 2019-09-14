@@ -1,3 +1,4 @@
+namespace openproject {
 class Queries::WorkPackages::Filter::RelatableFilter : public Queries::WorkPackages::Filter::WorkPackageFilter {
   // include Queries::WorkPackages::Filter::FilterForWpMixin
 

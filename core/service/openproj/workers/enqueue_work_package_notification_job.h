@@ -1,4 +1,5 @@
 // Enqueues
+namespace openproject {
 class EnqueueWorkPackageNotificationJob : public ApplicationJob {
    EnqueueWorkPackageNotificationJob(journal_id, author_id) {
     this->journal_id = journal_id

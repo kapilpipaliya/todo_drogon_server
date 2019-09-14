@@ -1,3 +1,4 @@
+namespace openproject {
 class Journal::BaseJournal : public ActiveRecord::Base {
   this->abstract_class = true
 

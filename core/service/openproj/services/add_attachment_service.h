@@ -1,3 +1,4 @@
+namespace openproject {
 class AddAttachmentService
   attr_reader :container, :author
 

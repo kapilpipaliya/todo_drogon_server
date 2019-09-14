@@ -1,3 +1,4 @@
+namespace openproject {
 class EnterpriseToken : public ActiveRecord::Base {
   class << self
      void current() {

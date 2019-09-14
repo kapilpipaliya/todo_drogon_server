@@ -1,3 +1,4 @@
+namespace openproject {
 class CustomActions::CreateService : public CustomActions::BaseService {
    CreateService(user:) {
     this->user = user

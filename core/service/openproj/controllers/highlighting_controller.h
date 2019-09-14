@@ -1,5 +1,6 @@
 #pragma once
 #include "application_controller.h"
+namespace openproject {
 class HighlightingController : public ApplicationController {
 public:
   // before_action :determine_freshness
@@ -24,3 +25,4 @@ public:
 //    this->highlight_version_tag = helpers.highlight_css_version_tag(this->max_updated_at)
   }
 };
+}

@@ -1,5 +1,6 @@
 #pragma once
 #include "../application_controller.h"
+namespace openproject {
 namespace WorkPackages {
 
 class ReportsController : public ApplicationController {
@@ -42,4 +43,5 @@ class ReportsController : public ApplicationController {
 //    l(:label_summary)
   }
 };
+}
 }

@@ -1,3 +1,4 @@
+namespace openproject {
 class CustomActions::UpdateWorkPackageService
   // include Shared::BlockService
   // include Concerns::Contracted

@@ -1,3 +1,4 @@
+namespace openproject {
 class AttributeHelpText : public ActiveRecord::Base {
    void available_types() {
     subclasses.map { |child| child.name.demodulize }

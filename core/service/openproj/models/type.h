@@ -1,3 +1,4 @@
+namespace openproject {
 class ::Type : public ActiveRecord::Base {
   // extend Pagination::Model
 

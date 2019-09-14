@@ -17,6 +17,7 @@
 // // or like this:
 // MailUserJob.some_mail "some_param"
 // ```
+namespace openproject {
 class MailUserJob : public ApplicationJob {
   attr_reader :mail
 

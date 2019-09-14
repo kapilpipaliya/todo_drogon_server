@@ -1,3 +1,4 @@
+namespace openproject {
 class ParseSchemaFilterParamsService
   // extend ActiveModel::Naming
   // extend ActiveModel::Translation

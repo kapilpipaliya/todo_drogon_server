@@ -1,3 +1,4 @@
+namespace openproject {
 class WorkPackages::RescheduleService
   // include ::Shared::ServiceContext
 

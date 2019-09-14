@@ -1,5 +1,6 @@
 #include "digest/sha1"
 
+namespace openproject {
 class User : public Principal {
   USER_FORMATS_STRUCTURE = {
     firstname_lastname:       [:firstname, :lastname],
@@ -825,6 +826,7 @@ class User : public Principal {
   }
 }
 
+namespace openproject {
 class AnonymousUser : public User {
   validate :validate_unique_anonymous_user, on: :create
 
@@ -853,6 +855,7 @@ class AnonymousUser : public User {
    void destroy; false }() {
 }
 
+namespace openproject {
 class DeletedUser : public User {
   validate :validate_unique_deleted_user, on: :create
 

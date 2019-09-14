@@ -1,5 +1,6 @@
 #include "net/ldap"
 
+namespace openproject {
 class LdapAuthSource : public AuthSource {
   enum tls_mode: %w[plain_ldap simple_tls start_tls]
   // validates :tls_mode, inclusion: { in: tls_modes.keys }

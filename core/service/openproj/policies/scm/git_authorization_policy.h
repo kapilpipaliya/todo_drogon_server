@@ -1,4 +1,5 @@
 #include "scm/authorization_policy"
+namespace openproject {
 class Scm::GitAuthorizationPolicy : public Scm::AuthoriziationPolicy {
   private:
 

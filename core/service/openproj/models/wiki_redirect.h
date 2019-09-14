@@ -1,3 +1,4 @@
+namespace openproject {
 class WikiRedirect : public ActiveRecord::Base {
   // belongs_to :wiki
 

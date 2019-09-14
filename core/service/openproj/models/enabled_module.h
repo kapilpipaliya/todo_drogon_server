@@ -1,3 +1,4 @@
+namespace openproject {
 class EnabledModule : public ActiveRecord::Base {
   // belongs_to :project
 

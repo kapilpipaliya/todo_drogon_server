@@ -8,6 +8,7 @@
 
 #include "net/http"
 
+namespace openproject {
 class Scm::RemoteRepositoryJob : public ApplicationJob {
   attr_reader :repository
 

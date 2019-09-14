@@ -1,3 +1,4 @@
+namespace openproject {
 class Queries::Versions::Orders::NameOrder : public Queries::BaseOrder {
   this->model = Version
 

@@ -15,6 +15,7 @@
 //
 // Other member and collection methods are also used
 #include "application_controller.h"
+namespace openproject {
 class WikiController : public ApplicationController {
 public:
 //  default_search_scope :wiki_pages
@@ -410,3 +411,4 @@ public:
 //    redirect_to action: :show, project_id: this->project, id: this->page
   }
 };
+}

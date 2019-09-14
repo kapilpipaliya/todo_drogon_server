@@ -1,3 +1,4 @@
+namespace openproject {
 class Queries::WorkPackages::Columns::RelationColumn : public Queries::WorkPackages::Columns::WorkPackageColumn {
   // attr_accessor :type
 

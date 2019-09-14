@@ -1,5 +1,7 @@
 #pragma once
 #include "../application_controller.h"
+namespace openproject {
+
 namespace OAuth {
   class GrantsController : public ApplicationController {
     // before_action :require_login
@@ -36,4 +38,5 @@ namespace OAuth {
 //        .take
     }
   };
+}
 }

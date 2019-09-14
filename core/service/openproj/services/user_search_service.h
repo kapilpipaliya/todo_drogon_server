@@ -1,3 +1,4 @@
+namespace openproject {
 class UserSearchService
   // attr_accessor :params
   attr_reader :users_only, :project

@@ -1,3 +1,4 @@
+namespace openproject {
 class Queries::Projects::Filters::ActiveOrArchivedFilter : public Queries::Projects::Filters::ProjectFilter {
    void type() {
     :list_all

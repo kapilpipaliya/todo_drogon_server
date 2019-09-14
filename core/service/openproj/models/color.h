@@ -1,3 +1,4 @@
+namespace openproject {
 class Color : public ActiveRecord::Base {
   this->table_name = 'colors'
 

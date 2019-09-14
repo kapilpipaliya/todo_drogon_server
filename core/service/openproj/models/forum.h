@@ -1,3 +1,4 @@
+namespace openproject {
 class Forum : public ActiveRecord::Base {
   // belongs_to :project
   // has_many :topics, -> {

@@ -1,3 +1,4 @@
+namespace openproject {
 class ExtractFulltextJob : public ApplicationJob {
    ExtractFulltextJob(attachment_id) {
     this->attachment_id = attachment_id

@@ -1,3 +1,4 @@
+namespace openproject {
 class Authorization::UserAllowedQuery : public Authorization::AbstractUserQuery {
   this->model = User
 

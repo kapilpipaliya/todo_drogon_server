@@ -1,3 +1,4 @@
+namespace openproject {
 class SetLocalizationService
   attr_reader :user, :http_accept_header
   // include Redmine::I18n

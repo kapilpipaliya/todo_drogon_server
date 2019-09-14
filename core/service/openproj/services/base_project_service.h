@@ -1,3 +1,4 @@
+namespace openproject {
 class BaseProjectService
    BaseProjectService(project) {
     this->project = project

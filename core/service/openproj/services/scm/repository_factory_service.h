@@ -1,5 +1,6 @@
 //
 // Implements a repository factory for building temporary and permanent repositories.
+namespace openproject {
 class Scm::RepositoryFactoryService
   attr_reader :project, :params, :repository
 

@@ -1,3 +1,4 @@
+namespace openproject {
 class CustomActions::Actions::DoneRatio : public CustomActions::Actions::Base {
   // include CustomActions::Actions::Strategies::Integer
 

@@ -1,3 +1,4 @@
+namespace openproject {
 class Watcher : public ActiveRecord::Base {
   // belongs_to :watchable, polymorphic: true
   // belongs_to :user

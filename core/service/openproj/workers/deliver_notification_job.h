@@ -1,3 +1,4 @@
+namespace openproject {
 class DeliverNotificationJob : public ApplicationJob {
    DeliverNotificationJob(recipient_id, sender_id) {
     this->recipient_id = recipient_id

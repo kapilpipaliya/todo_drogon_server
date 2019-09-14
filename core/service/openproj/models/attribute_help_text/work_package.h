@@ -1,3 +1,4 @@
+namespace openproject {
 class AttributeHelpText::WorkPackage : public AttributeHelpText {
    void available_attributes() {
     attributes = ::Type.translated_work_package_form_attributes

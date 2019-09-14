@@ -1,3 +1,4 @@
+namespace openproject {
 class WorkPackagePolicy : public BasePolicy {
   private:
 

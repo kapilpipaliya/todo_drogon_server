@@ -1,5 +1,6 @@
 // Filter for all work packages that are (or are not) followers of the provided values
 
+namespace openproject {
 class Queries::WorkPackages::Filter::FollowsFilter <
   Queries::WorkPackages::Filter::WorkPackageFilter
 

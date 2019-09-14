@@ -1,3 +1,4 @@
+namespace openproject {
 class Activity::NewsActivityProvider : public Activity::BaseActivityProvider {
   acts_as_activity_provider type: 'news',
                             permission: :view_news

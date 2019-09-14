@@ -1,5 +1,6 @@
 #pragma once
 #include "application_controller.h"
+namespace openproject {
 class MyController : public ApplicationController {
 public:
   // include Concerns::PasswordConfirmation
@@ -148,3 +149,4 @@ public:
 //    this->user.pref[:my_page_layout] || DEFAULT_LAYOUT.dup
   }
 };
+}

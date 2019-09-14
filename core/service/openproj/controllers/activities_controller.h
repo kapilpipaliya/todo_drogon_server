@@ -1,5 +1,6 @@
 #pragma once
 #include "application_controller.h"
+namespace openproject {
 class ActivitiesController : public ApplicationController {
 public:
   // menu_item :activity
@@ -86,3 +87,4 @@ public:
 //    session[:activity] = this->activity.scope
   }
 };
+}

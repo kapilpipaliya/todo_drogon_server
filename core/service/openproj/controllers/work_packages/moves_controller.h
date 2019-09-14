@@ -1,5 +1,6 @@
 #pragma once
 #include "../application_controller.h"
+namespace openproject {
 namespace WorkPackages {
 
 class MovesController : public ApplicationController {
@@ -140,4 +141,5 @@ class MovesController : public ApplicationController {
 //      .reject { |_, v| v.blank? }
   }
 };
+}
 }

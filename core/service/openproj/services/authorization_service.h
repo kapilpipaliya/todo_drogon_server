@@ -1,5 +1,6 @@
 // project, projects, global, user = nil
 
+namespace openproject {
 class AuthorizationService
   // @params
   //   ctrl - controller

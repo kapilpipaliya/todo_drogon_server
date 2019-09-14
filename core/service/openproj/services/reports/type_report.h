@@ -1,3 +1,4 @@
+namespace openproject {
 class Reports::TypeReport : public Reports::Report {
    void report_type() {
     'type'

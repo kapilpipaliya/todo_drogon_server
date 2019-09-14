@@ -1,5 +1,6 @@
 //
 // Implements a repository service for building checkout instructions if supported
+namespace openproject {
 class Scm::CheckoutInstructionsService
   attr_reader :repository, :user, :path
 

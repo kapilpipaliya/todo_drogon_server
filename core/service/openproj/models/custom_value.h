@@ -1,3 +1,4 @@
+namespace openproject {
 class CustomValue : public ActiveRecord::Base {
   // belongs_to :custom_field
   // belongs_to :customized, polymorphic: true

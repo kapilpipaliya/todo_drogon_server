@@ -1,5 +1,6 @@
 #include "digest/md5"
 
+namespace openproject {
 class Attachment : public ActiveRecord::Base {
   ALLOWED_TEXT_TYPES = %w[text/plain].freeze
   ALLOWED_IMAGE_TYPES = %w[image/gif ( image/jpeg image/png image/tiff image/bmp].freeze) {

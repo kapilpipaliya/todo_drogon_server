@@ -1,3 +1,4 @@
+namespace openproject {
 class Scm::StorageUpdaterJob : public ApplicationJob {
    StorageUpdaterJob(repository) {
     this->id = repository.id

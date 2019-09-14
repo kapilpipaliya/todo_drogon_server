@@ -1,4 +1,5 @@
 #include "scm/authorization_policy"
+namespace openproject {
 class Scm::SubversionAuthorizationPolicy : public Scm::AuthoriziationPolicy {
   private:
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "application_controller.h"
+namespace openproject {
 class EnterprisesController : public ApplicationController {
 public:
   // layout 'admin'
@@ -56,3 +57,4 @@ public:
 //    }
   }
 };
+}

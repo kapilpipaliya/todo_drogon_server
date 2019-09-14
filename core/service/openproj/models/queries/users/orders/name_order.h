@@ -1,3 +1,4 @@
+namespace openproject {
 class Queries::Users::Orders::NameOrder : public Queries::BaseOrder {
   this->model = User
 

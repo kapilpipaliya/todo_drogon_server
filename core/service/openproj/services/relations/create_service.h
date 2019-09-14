@@ -1,3 +1,4 @@
+namespace openproject {
 class Relations::CreateService : public Relations::BaseService {
    CreateService(user:) {
     this->user = user

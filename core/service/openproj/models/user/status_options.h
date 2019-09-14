@@ -1,3 +1,4 @@
+namespace openproject {
 class User
   namespace StatusOptions {
     module_function

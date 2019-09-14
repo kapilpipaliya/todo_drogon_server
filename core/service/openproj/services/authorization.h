@@ -1,3 +1,4 @@
+namespace openproject {
 class Authorization
    void users(action, project) {
     Authorization::UserAllowedQuery.query(action, project)

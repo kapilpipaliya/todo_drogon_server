@@ -1,5 +1,6 @@
 #pragma once
 #include "application_controller.h"
+namespace openproject {
 class CategoriesController : public ApplicationController {
 public:
   // menu_item :settings
@@ -80,3 +81,4 @@ public:
 //    render_404
   }
 };
+}

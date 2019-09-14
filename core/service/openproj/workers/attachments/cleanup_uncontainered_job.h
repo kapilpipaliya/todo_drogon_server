@@ -1,3 +1,4 @@
+namespace openproject {
 class Attachments::CleanupUncontaineredJob : public ApplicationJob {
    void perform() {
     Attachment

@@ -1,3 +1,4 @@
+namespace openproject {
 class CustomValue::StringStrategy : public CustomValue::FormatStrategy {
    void typed_value() {
     value

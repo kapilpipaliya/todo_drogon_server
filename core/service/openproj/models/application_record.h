@@ -1,3 +1,4 @@
+namespace openproject {
 class ApplicationRecord : public ActiveRecord::Base {
   this->abstract_class = true
 

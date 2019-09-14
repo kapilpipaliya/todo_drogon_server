@@ -1,5 +1,6 @@
 #include "./query_service.h"
 
+namespace openproject {
 class CreateQueryService : public QueryService {
 
    CreateQueryService(**args) {

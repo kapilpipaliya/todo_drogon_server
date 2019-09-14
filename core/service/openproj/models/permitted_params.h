@@ -1,5 +1,6 @@
 #include "permitted_params/allowed_settings"
 
+namespace openproject {
 class PermittedParams
   // This class intends to provide a method for all params hashes coming from the
   // client and that are used for mass assignment.

@@ -1,3 +1,4 @@
+namespace openproject {
 class ParamsToQueryService
   // attr_accessor :user,
                 :query_class

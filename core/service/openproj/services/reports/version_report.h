@@ -1,3 +1,4 @@
+namespace openproject {
 class Reports::VersionReport : public Reports::Report {
    void report_type() {
     'version'

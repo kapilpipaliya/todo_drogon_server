@@ -1,3 +1,4 @@
+namespace openproject {
 class Queries::Principals::Filters::MemberFilter : public Queries::Principals::Filters::PrincipalFilter {
    void allowed_values() {
     Project.active.all.map { |project|

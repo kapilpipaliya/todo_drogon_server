@@ -1,3 +1,4 @@
+namespace openproject {
 class Queries::NotExistingOrder : public Queries::BaseOrder {
   validate :always_false
 

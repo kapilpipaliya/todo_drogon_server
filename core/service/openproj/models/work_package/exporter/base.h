@@ -1,3 +1,4 @@
+namespace openproject {
 class WorkPackage::Exporter::Base
   // attr_accessor :object,
                 :options

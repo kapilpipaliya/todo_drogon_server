@@ -1,5 +1,6 @@
 #pragma once
 #include "../application_controller.h"
+namespace openproject {
 namespace WorkPackages {
 
 class BulkController : public ApplicationController {
@@ -91,4 +92,5 @@ class BulkController : public ApplicationController {
 //    l(:label_work_package_plural)
   }
 };
+}
 }

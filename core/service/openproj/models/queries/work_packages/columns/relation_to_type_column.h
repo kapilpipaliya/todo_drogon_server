@@ -1,3 +1,4 @@
+namespace openproject {
 class Queries::WorkPackages::Columns::RelationToTypeColumn : public Queries::WorkPackages::Columns::RelationColumn {
    RelationToTypeColumn(type) {
     super

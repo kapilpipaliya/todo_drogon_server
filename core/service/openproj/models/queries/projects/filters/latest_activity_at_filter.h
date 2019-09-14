@@ -1,3 +1,4 @@
+namespace openproject {
 class Queries::Projects::Filters::LatestActivityAtFilter : public Queries::Projects::Filters::ProjectFilter {
   this->model = Project.with_latest_activity
 

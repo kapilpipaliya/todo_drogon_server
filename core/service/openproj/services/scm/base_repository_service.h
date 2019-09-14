@@ -1,3 +1,4 @@
+namespace openproject {
 class Scm::BaseRepositoryService
    BaseRepositoryService(repository) {
     this->repository = repository

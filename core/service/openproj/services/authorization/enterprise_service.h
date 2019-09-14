@@ -1,3 +1,4 @@
+namespace openproject {
 class Authorization::EnterpriseService
   // attr_accessor :token
 

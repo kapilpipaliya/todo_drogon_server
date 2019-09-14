@@ -1,3 +1,4 @@
+namespace openproject {
 class Queries::Principals::Filters::IdFilter : public Queries::Principals::Filters::PrincipalFilter {
    void allowed_values() {
     [["me", "me"]] // Not the whole truth but performes better than checking all IDs

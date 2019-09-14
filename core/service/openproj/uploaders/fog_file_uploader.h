@@ -1,5 +1,6 @@
 #include "carrierwave/storage/fog"
 
+namespace openproject {
 class FogFileUploader : public CarrierWave::Uploader::Base {
   // include FileUploader
   storage :fog

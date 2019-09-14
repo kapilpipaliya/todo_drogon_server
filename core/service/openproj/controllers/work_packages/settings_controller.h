@@ -1,5 +1,6 @@
 #pragma once
 #include "../application_controller.h"
+namespace openproject {
 namespace WorkPackages {
 
 class SettingsController : public ApplicationController {
@@ -31,4 +32,5 @@ class SettingsController : public ApplicationController {
     return true;
   }
 };
+}
 }

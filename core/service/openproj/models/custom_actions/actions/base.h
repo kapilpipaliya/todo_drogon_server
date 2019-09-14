@@ -1,3 +1,4 @@
+namespace openproject {
 class CustomActions::Actions::Base
   attr_reader :values
 

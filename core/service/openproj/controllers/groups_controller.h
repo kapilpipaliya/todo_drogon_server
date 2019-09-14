@@ -1,5 +1,6 @@
 #pragma once
 #include "application_controller.h"
+namespace openproject {
 class GroupsController : public ApplicationController {
 public:
   // include GroupsHelper
@@ -162,3 +163,4 @@ public:
         return true;
     }
 };
+}

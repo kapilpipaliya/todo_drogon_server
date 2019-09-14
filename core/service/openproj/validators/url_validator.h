@@ -1,6 +1,7 @@
 // Borrows from http://gist.github.com/bf4/5320847
 // without addressable requirement
 // Accepts options[:allowed_protocols]
+namespace openproject {
 class UrlValidator : public ActiveModel::EachValidator {
    void validate_each(record, attribute, value) {
     url = parse(value)

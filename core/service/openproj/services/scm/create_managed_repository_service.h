@@ -1,5 +1,6 @@
 //
 // Implements the creation of a local repository.
+namespace openproject {
 class Scm::CreateManagedRepositoryService : public Scm::BaseRepositoryService {
   //
   // Checks if a given repository may be created and managed locally.

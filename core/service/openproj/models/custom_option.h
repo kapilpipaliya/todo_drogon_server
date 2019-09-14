@@ -1,6 +1,7 @@
 //
 // A custom option is a possible value for a given custom field
 // which is restricted to a set of specific values.
+namespace openproject {
 class CustomOption : public ActiveRecord::Base {
   acts_as_list
 

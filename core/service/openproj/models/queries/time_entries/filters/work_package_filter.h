@@ -1,3 +1,4 @@
+namespace openproject {
 class Queries::TimeEntries::Filters::WorkPackageFilter : public Queries::TimeEntries::Filters::TimeEntryFilter {
    void allowed_values() {
     this->allowed_values ||= begin

@@ -1,5 +1,6 @@
 #pragma once
 #include "application_controller.h"
+namespace openproject {
 class ProjectEnumerationsController : public ApplicationController {
   // before_action :find_project_by_project_id
   // before_action :authorize
@@ -25,3 +26,4 @@ public:
 //    redirect_to settings_project_path(id: this->project, tab: 'activities')
   }
 };
+}

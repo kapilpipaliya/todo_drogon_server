@@ -6,6 +6,7 @@
 // We envision a repository management wrapper that covers transactional
 // creation and deletion of repositories BOTH on the database and filesystem.
 // Until then, a synchronous process is more failsafe.
+namespace openproject {
 class Scm::CreateRemoteRepositoryJob : public Scm::RemoteRepositoryJob {
    void perform() {
     response = send_request(repository_request.merge(action: :create))

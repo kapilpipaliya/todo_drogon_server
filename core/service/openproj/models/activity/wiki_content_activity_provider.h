@@ -1,3 +1,4 @@
+namespace openproject {
 class Activity::WikiContentActivityProvider : public Activity::BaseActivityProvider {
   acts_as_activity_provider type: 'wiki_edits',
                             permission: :view_wiki_edits

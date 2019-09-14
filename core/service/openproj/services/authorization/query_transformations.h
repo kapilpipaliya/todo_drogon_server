@@ -1,3 +1,4 @@
+namespace openproject {
 class Authorization::QueryTransformations
    void for?(on) {
     !!transformations[transformation_key(on)]

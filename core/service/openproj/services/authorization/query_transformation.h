@@ -1,3 +1,4 @@
+namespace openproject {
 class Authorization::QueryTransformation
   // attr_accessor :on, :name, :after, :before, :block
 

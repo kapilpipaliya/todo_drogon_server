@@ -1,3 +1,4 @@
+namespace openproject {
 class Queries::WorkPackages::Columns::ManualSortingColumn : public Queries::WorkPackages::Columns::WorkPackageColumn {
   // include ::Queries::WorkPackages::Common::ManualSorting
 

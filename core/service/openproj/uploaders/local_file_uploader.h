@@ -1,5 +1,6 @@
 #include "fileutils"
 
+namespace openproject {
 class LocalFileUploader : public CarrierWave::Uploader::Base {
   // include FileUploader
   storage :file

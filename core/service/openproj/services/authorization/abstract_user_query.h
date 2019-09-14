@@ -1,3 +1,4 @@
+namespace openproject {
 class Authorization::AbstractUserQuery : public Authorization::AbstractQuery {
   transformations.register :all,
                            :users_members_join { |statement|

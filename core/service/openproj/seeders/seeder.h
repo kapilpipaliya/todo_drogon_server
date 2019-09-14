@@ -1,3 +1,4 @@
+namespace openproject {
 class Seeder
    void seed!() {
     if ( applicable?) {

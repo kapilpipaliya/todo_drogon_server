@@ -1,3 +1,4 @@
+namespace openproject {
 class WorkPackages::CreateService
   // include ::WorkPackages::Shared::UpdateAncestors
   // include ::Shared::ServiceContext

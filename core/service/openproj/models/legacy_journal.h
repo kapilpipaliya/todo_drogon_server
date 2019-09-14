@@ -6,6 +6,7 @@
 #include "journal_deprecated"
 
 // The ActiveRecord model representing journals.
+namespace openproject {
 class LegacyJournal : public ActiveRecord::Base {
   // include Comparable
   // include ::JournalFormatter

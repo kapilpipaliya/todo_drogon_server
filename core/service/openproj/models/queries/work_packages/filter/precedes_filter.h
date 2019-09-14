@@ -1,5 +1,6 @@
 // Filter for all work packages that are (or are not) predecessor of the provided values
 
+namespace openproject {
 class Queries::WorkPackages::Filter::PrecedesFilter <
   Queries::WorkPackages::Filter::WorkPackageFilter
 

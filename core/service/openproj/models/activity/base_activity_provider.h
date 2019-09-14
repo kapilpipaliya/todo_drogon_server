@@ -12,6 +12,7 @@
 //                                                                             #
 // See the comments on the methods to get additional information.              #
 //#############################################################################
+namespace openproject {
 class Activity::BaseActivityProvider
   // include Redmine::Acts::ActivityProvider
   // include I18n

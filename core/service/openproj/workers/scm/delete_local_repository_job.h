@@ -5,6 +5,7 @@
 // We envision a repository management wrapper that covers transactional
 // creation and deletion of repositories BOTH on the database and filesystem.
 // Until then, a synchronous process is more failsafe.
+namespace openproject {
 class Scm::DeleteLocalRepositoryJob : public ApplicationJob {
    DeleteLocalRepositoryJob(managed_path) {
     this->managed_path = managed_path

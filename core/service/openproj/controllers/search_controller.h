@@ -1,5 +1,6 @@
 #pragma once
 #include "application_controller.h"
+namespace openproject {
 class SearchController : public ApplicationController {
 public:
   // include Concerns::Layout
@@ -178,3 +179,4 @@ public:
 //    }
   }
 };
+}

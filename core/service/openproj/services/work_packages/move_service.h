@@ -1,5 +1,6 @@
 // Moves/copies an work_package to a new project and type
 
+namespace openproject {
 class WorkPackages::MoveService
   // attr_accessor :work_package,
                 :user

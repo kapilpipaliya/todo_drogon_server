@@ -1,3 +1,4 @@
+namespace openproject {
 class RolePermission : public ActiveRecord::Base {
   // belongs_to :role
 

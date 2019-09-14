@@ -1,3 +1,4 @@
+namespace openproject {
 class Queries::NotExistingFilter : public Queries::Filters::Base {
    void available?() {
     false

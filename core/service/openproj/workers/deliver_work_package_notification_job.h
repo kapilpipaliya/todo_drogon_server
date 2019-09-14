@@ -1,3 +1,4 @@
+namespace openproject {
 class DeliverWorkPackageNotificationJob : public DeliverNotificationJob {
    DeliverWorkPackageNotificationJob(journal_id, recipient_id, author_id) {
     this->journal_id = journal_id

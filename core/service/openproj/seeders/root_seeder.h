@@ -1,6 +1,7 @@
 // Seeds the minimum data required to run OpenProject (BasicDataSeeder, AdminUserSeeder)
 // as well as optional demo data (DemoDataSeeder) to give a user some orientation.
 
+namespace openproject {
 class RootSeeder : public Seeder {
   // include Redmine::I18n
 

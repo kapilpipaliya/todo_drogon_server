@@ -1,3 +1,4 @@
+namespace openproject {
 class Reports::AssigneeReport : public Reports::Report {
    void report_type() {
     'assigned_to'

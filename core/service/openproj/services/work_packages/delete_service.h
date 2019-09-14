@@ -1,3 +1,4 @@
+namespace openproject {
 class WorkPackages::DeleteService : public ::BaseServices::Delete {
   // include ::WorkPackages::Shared::UpdateAncestors
 

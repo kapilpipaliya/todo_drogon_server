@@ -1,3 +1,4 @@
+namespace openproject {
 class Enumeration : public ActiveRecord::Base {
   default_scope { order("#{Enumeration.table_name}.position ASC") }
 

@@ -1,3 +1,4 @@
+namespace openproject {
 class Workflows::BulkUpdateService : public ::BaseServices::Update {
    BulkUpdateService(role:, type:) {
     this->role = role

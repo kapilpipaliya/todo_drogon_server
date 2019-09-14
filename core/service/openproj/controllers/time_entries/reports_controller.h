@@ -1,5 +1,6 @@
 #pragma once
 #include "../application_controller.h"
+namespace openproject {
 namespace TimeEntries {
 class ReportsController : public ApplicationController {
   // menu_item :issues
@@ -174,4 +175,5 @@ class ReportsController : public ApplicationController {
 //    time_entry_table[:project_id].in(allowed_project_ids).to_sql
   }
 };
+}
 }

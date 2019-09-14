@@ -1,3 +1,4 @@
+namespace openproject {
 class Setting : public ActiveRecord::Base {
   DATE_FORMATS = [
     '%Y-%m-%d',

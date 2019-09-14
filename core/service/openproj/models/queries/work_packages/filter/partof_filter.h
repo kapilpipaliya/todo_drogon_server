@@ -1,5 +1,6 @@
 // Filter for all work packages that are (or are not) blocking work packages with the provided values.
 
+namespace openproject {
 class Queries::WorkPackages::Filter::PartofFilter <
   Queries::WorkPackages::Filter::WorkPackageFilter
 

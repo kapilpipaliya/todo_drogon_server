@@ -1,3 +1,4 @@
+namespace openproject {
 class Queries::WorkPackages::Filter::StatusFilter : public Queries::WorkPackages::Filter::WorkPackageFilter {
    void allowed_values() {
     all_statuses.map { |s| [s.name, s.id.to_s] }

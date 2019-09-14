@@ -1,3 +1,4 @@
+namespace openproject {
 class MemberRole : public ActiveRecord::Base {
   // belongs_to :member
   // belongs_to :role

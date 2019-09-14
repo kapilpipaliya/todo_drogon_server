@@ -1,3 +1,4 @@
+namespace openproject {
 class Reports::PriorityReport : public Reports::Report {
    void report_type() {
     'priority'

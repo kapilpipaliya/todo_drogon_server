@@ -1,5 +1,6 @@
 #pragma once
 #include "../application_controller.h"
+namespace openproject {
 namespace WorkPackages {
 
 class CalendarsController : public ApplicationController {
@@ -10,4 +11,5 @@ class CalendarsController : public ApplicationController {
 //    render layout: 'angular'
   }
 };
+}
 }

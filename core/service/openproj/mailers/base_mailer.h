@@ -1,3 +1,4 @@
+namespace openproject {
 class BaseMailer : public ActionMailer::Base {
   helper :application, // for format_text
          :work_packages, // for css classes

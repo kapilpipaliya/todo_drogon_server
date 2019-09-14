@@ -1,3 +1,4 @@
+namespace openproject {
 class Queries::WorkPackages::Filter::ManualSortFilter <
   Queries::WorkPackages::Filter::WorkPackageFilter
 

@@ -1,4 +1,5 @@
 //
+namespace openproject {
 class OrderedWorkPackage : public ApplicationRecord {
   // belongs_to :query
   // belongs_to :work_package
