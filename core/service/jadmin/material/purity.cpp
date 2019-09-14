@@ -1,8 +1,8 @@
 #include "purity.h"
 
 #include <utility>
-#include "../../../strfns.h"
 #include "../../../sql/dba.h"
+#include "../../../strfns.h"
 
 #include "../../../sql/dba.h"
 
@@ -14,7 +14,8 @@
   if ((s).size() > 0) array.pop_back();                \
   array += "}";
 namespace jadmin {
-Purity::Purity(std::shared_ptr<websocket::JAdminContext> context_) : context(std::move(context_)) {
+Purity::Purity(std::shared_ptr<websocket::JAdminContext> context_)
+    : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("material", "purity", "p"));
   setupTable();
 }
@@ -56,13 +57,13 @@ void Purity::setupTable() {
       sql::SelectedColumn(
           {"Purity", "purity", "", "p", PG_TYPES::DOUBLE, true}),
       sql::SelectedColumn({"Specific Density", "specific_density", "", "m",
-                            PG_TYPES::DOUBLE, true}),
+                           PG_TYPES::DOUBLE, true}),
       sql::SelectedColumn({"purity_tone", "purity_tone",
-                            "json_agg(distinct jsonb_build_array(pt.tone_id, "
-                            "pu_metal.pt2, pt.price))",
-                            //"json_agg(distinct jsonb_build_array(mp.metal_id,
-                            // mp.purity, mp.price, m.specific_density))",
-                            "pt", PG_TYPES::PSJSON, false}),
+                           "json_agg(distinct jsonb_build_array(pt.tone_id, "
+                           "pu_metal.pt2, pt.price))",
+                           //"json_agg(distinct jsonb_build_array(mp.metal_id,
+                           // mp.purity, mp.price, m.specific_density))",
+                           "pt", PG_TYPES::PSJSON, false}),
       sql::SelectedColumn(
           {"Price", "price", "p.price", "p", PG_TYPES::DOUBLE, true}),
 
@@ -71,15 +72,15 @@ void Purity::setupTable() {
       sql::SelectedColumn(
           {"Created By", "create_user_id", "", "p", PG_TYPES::INT8, true, 1}),
       sql::SelectedColumn({"u1_username", "username", "", "u1", PG_TYPES::TEXT,
-                            false, 0, 0, false}),
+                           false, 0, 0, false}),
       sql::SelectedColumn(
           {"Updated By", "update_user_id", "", "p", PG_TYPES::INT8, true, 1}),
       sql::SelectedColumn({"u2_username", "username", "", "u2", PG_TYPES::TEXT,
-                            false, 0, 0, false}),
+                           false, 0, 0, false}),
       sql::SelectedColumn({"Create Time", "inserted_at", "", "p",
-                            PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+                           PG_TYPES::TIMESTAMP, true, 0, 0, false}),
       sql::SelectedColumn({"Update Time", "updated_at", "", "p",
-                            PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+                           PG_TYPES::TIMESTAMP, true, 0, 0, false}),
   });
 
   auto pt = sql::ObjectIdentifier("material", "purity_tone", "pt");
@@ -91,13 +92,13 @@ void Purity::setupTable() {
   query.setJoins({
       sql::Join("left", pt, "pt.purity_id = p.id"),
       sql::Join("left",
-                 "( select pm.purity_id, pm.tone_id, jsonb_agg(distinct "
-                 "jsonb_build_array(pm.metal_id, pm.purity, pm.price, "
-                 "m1.specific_density)) as pt2 from material.purity_metal pm "
-                 "left join material.metal m1 on m1.id = pm.metal_id group by "
-                 "pm.purity_id, pm.tone_id) as pu_metal",
-                 "(pu_metal.purity_id = pt.purity_id and pu_metal.tone_id = "
-                 "pt.tone_id)"),
+                "( select pm.purity_id, pm.tone_id, jsonb_agg(distinct "
+                "jsonb_build_array(pm.metal_id, pm.purity, pm.price, "
+                "m1.specific_density)) as pt2 from material.purity_metal pm "
+                "left join material.metal m1 on m1.id = pm.metal_id group by "
+                "pm.purity_id, pm.tone_id) as pu_metal",
+                "(pu_metal.purity_id = pt.purity_id and pu_metal.tone_id = "
+                "pt.tone_id)"),
       sql::Join("left", metal_purity, "mp.purity_id = p.id"),
       sql::Join("left", m, "p.metal_id = m.id"),
       sql::Join("left", u1, "p.create_user_id = u1.id"),
@@ -210,10 +211,11 @@ void save_purity_tone_(
                            });
     if (it == inVector.end()) {  // Element not Found
       // because when tone_id change it actually inserting new entries..
-      Dba::writeInTrans(transPtr,
-                        dele_("material.purity_metal",
-                              "where purity_id = $1 and tone_id = $2"),
-                        purity_id, r["tone_id"].as<long>());
+      Dba::writeInTrans(
+          transPtr,
+          sql::CRUDHelper::dele_("material.purity_metal",
+                                 "where purity_id = $1 and tone_id = $2"),
+          purity_id, r["tone_id"].as<long>());
       Dba::writeInTrans(transPtr, strSqlPostCategoryDel, purity_id,
                         r["tone_id"].as<long>());
     }
@@ -351,7 +353,8 @@ nlohmann::json Purity::upd(nlohmann::json event, nlohmann::json args) {
     }
   }
   nlohmann::json ret;
-  ret[0] = websocket::WsFns::successJsonObject(event, false, "Not Valid Structure");
+  ret[0] =
+      websocket::WsFns::successJsonObject(event, false, "Not Valid Structure");
   return ret;
 }
 

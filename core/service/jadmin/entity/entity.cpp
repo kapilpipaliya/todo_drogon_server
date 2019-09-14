@@ -363,7 +363,8 @@ nlohmann::json Entity::upd(nlohmann::json event, nlohmann::json args) {
     }
   }
   nlohmann::json ret;
-  ret[0] = websocket::WsFns::successJsonObject(event, false, "Not Valid Structure");
+  ret[0] =
+      websocket::WsFns::successJsonObject(event, false, "Not Valid Structure");
   return ret;
 }
 nlohmann::json Entity::del(nlohmann::json event, nlohmann::json args) {
@@ -373,41 +374,51 @@ nlohmann::json Entity::del(nlohmann::json event, nlohmann::json args) {
   auto transPtr = clientPtr->newTransaction();
   try {
     auto entity_id = args[0][0].get<long>();
-    Dba::writeInTrans(
-        transPtr, dele_("setting.notification", "where from_entity_id = $1"),
-        entity_id);
     Dba::writeInTrans(transPtr,
-                      dele_("setting.notification", "where to_entity_id = $1"),
+                      sql::CRUDHelper::dele_("setting.notification",
+                                             "where from_entity_id = $1"),
+                      entity_id);
+    Dba::writeInTrans(transPtr,
+                      sql::CRUDHelper::dele_("setting.notification",
+                                             "where to_entity_id = $1"),
                       entity_id);
 
+    Dba::writeInTrans(transPtr,
+                      sql::CRUDHelper::dele_("entity.entity_bank_account",
+                                             "where entity_id = $1"),
+                      entity_id);
     Dba::writeInTrans(
-        transPtr, dele_("entity.entity_bank_account", "where entity_id = $1"),
+        transPtr,
+        sql::CRUDHelper::dele_("entity.entity_contact", "where entity_id = $1"),
         entity_id);
-    Dba::writeInTrans(transPtr,
-                      dele_("entity.entity_contact", "where entity_id = $1"),
-                      entity_id);
-    Dba::writeInTrans(transPtr,
-                      dele_("entity.entity_file", "where entity_id = $1"),
-                      entity_id);
-    Dba::writeInTrans(transPtr,
-                      dele_("entity.entity_image", "where entity_id = $1"),
-                      entity_id);
-    Dba::writeInTrans(transPtr,
-                      dele_("entity.entity_note", "where entity_id = $1"),
-                      entity_id);
-    Dba::writeInTrans(transPtr,
-                      dele_("entity.entity_address", "where entity_id = $1"),
-                      entity_id);
+    Dba::writeInTrans(
+        transPtr,
+        sql::CRUDHelper::dele_("entity.entity_file", "where entity_id = $1"),
+        entity_id);
+    Dba::writeInTrans(
+        transPtr,
+        sql::CRUDHelper::dele_("entity.entity_image", "where entity_id = $1"),
+        entity_id);
+    Dba::writeInTrans(
+        transPtr,
+        sql::CRUDHelper::dele_("entity.entity_note", "where entity_id = $1"),
+        entity_id);
+    Dba::writeInTrans(
+        transPtr,
+        sql::CRUDHelper::dele_("entity.entity_address", "where entity_id = $1"),
+        entity_id);
     // Dba::writeInTrans(transPtr, "delete from user1.session where
     // value->>'value' = $1;", entity_id);
     Dba::writeInTrans(
         transPtr, "delete from user1.session where entity_id = $1;", entity_id);
     Dba::writeInTrans(
-        transPtr, dele_("entity.entity_user", "where entity_id = $1"),
+        transPtr,
+        sql::CRUDHelper::dele_("entity.entity_user", "where entity_id = $1"),
         entity_id);  // This cant be deleted easily, set the table where it used
                      // null values or deleted user... 2. Also it is used in
                      // same entity table too.!
-    Dba::writeInTrans(transPtr, dele_("entity.entity", "where id = $1"),
+    Dba::writeInTrans(transPtr,
+                      sql::CRUDHelper::dele_("entity.entity", "where id = $1"),
                       entity_id);
 
     nlohmann::json ret;

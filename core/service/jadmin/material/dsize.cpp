@@ -132,8 +132,9 @@ nlohmann::json DSize::ins(nlohmann::json event, nlohmann::json args) {
       "SELECT  sum(dp.total_weight) as sum_weight, sum(dp.price) as sum_price "
       "from product.post_diamond_size ds LEFT JOIN product.diamond_price dp ON "
       "(dp.diamond_id = ds.id) where ds.post_id = $1 and dp.clarity_id = $2";
-  auto pc = upd_("product.post_clarity", "weight, price", "$3, $4",
-                 "where post_id = $1 and clarity_id = $2");
+  auto pc =
+      sql::CRUDHelper::upd_("product.post_clarity", "weight, price", "$3, $4",
+                            "where post_id = $1 and clarity_id = $2");
 
   std::string strSql =
       "INSERT INTO %1.%2 (clarity_id, shape_id, color_id, size_id, weight, "
@@ -238,8 +239,9 @@ nlohmann::json DSize::upd(nlohmann::json event, nlohmann::json args) {
       "SELECT  sum(dp.total_weight) as sum_weight, sum(dp.price) as sum_price "
       "from product.post_diamond_size ds LEFT JOIN product.diamond_price dp ON "
       "(dp.diamond_id = ds.id) where ds.post_id = $1 and dp.clarity_id = $2";
-  auto pc = upd_("product.post_clarity", "weight, price", "$3, $4",
-                 "where post_id = $1 and clarity_id = $2");
+  auto pc =
+      sql::CRUDHelper::upd_("product.post_clarity", "weight, price", "$3, $4",
+                            "where post_id = $1 and clarity_id = $2");
 
   if (args[0]["id"].get<long>()) {
     std::string strSql =
@@ -342,7 +344,8 @@ nlohmann::json DSize::upd(nlohmann::json event, nlohmann::json args) {
     }
   }
   nlohmann::json ret;
-  ret[0] = websocket::WsFns::successJsonObject(event, false, "Not Valid Structure");
+  ret[0] =
+      websocket::WsFns::successJsonObject(event, false, "Not Valid Structure");
   return ret;
 }
 

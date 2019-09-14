@@ -32,26 +32,28 @@ enum PG_TYPES {
   PSJSON = 9999
 };
 
-inline std::string ins_(const std::string& t, const std::string& c,
-                        const std::string& v) {
-  return "INSERT INTO " + t + " (" + c + ") VALUES (" + v + ")";
-}
-inline std::string upd_(const std::string& t, const std::string& c,
-                        const std::string& v, const std::string& w) {
-  return "UPDATE " + t + " SET (" + c + ") = ROW (" + v + ")" + w;
-}
-inline std::string sel_(const std::string& t, const std::string& c,
-                        const std::string& w) {
-  return "SELECT " + c + " FROM " + t + " " + w;
-}
-inline std::string dele_(const std::string& t, const std::string& w) {
-  return "DELETE FROM " + t + " " + w;
-}
-
 /*
  * This file's classes should not talk to database directly
  * */
 namespace sql {
+class CRUDHelper {
+ public:
+  static std::string ins_(const std::string& t, const std::string& c,
+                          const std::string& v) {
+    return "INSERT INTO " + t + " (" + c + ") VALUES (" + v + ")";
+  }
+  static std::string upd_(const std::string& t, const std::string& c,
+                          const std::string& v, const std::string& w) {
+    return "UPDATE " + t + " SET (" + c + ") = ROW (" + v + ")" + w;
+  }
+  static std::string sel_(const std::string& t, const std::string& c,
+                          const std::string& w) {
+    return "SELECT " + c + " FROM " + t + " " + w;
+  }
+  static std::string dele_(const std::string& t, const std::string& w) {
+    return "DELETE FROM " + t + " " + w;
+  }
+};
 
 enum SortDirection { Ascending, Descending };
 
@@ -200,9 +202,8 @@ class Query {
 
   template <class... Args>
   nlohmann::json insBase(const nlohmann::json& event,
-                         const nlohmann::json& /*args*/,
-                         const std::string& column, const std::string& values,
-                         Args... args_bind) {
+                         const nlohmann::json& args, const std::string& column,
+                         const std::string& values, Args... args_bind) {
     std::string strSql = "INSERT INTO " + table().toString() + " (" + column +
                          ") values(" + values + ")";
 

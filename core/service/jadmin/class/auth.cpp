@@ -266,15 +266,16 @@ drogon::WebSocketMessageType::Binary);
 nlohmann::json Auth::save_setting_attachment(const nlohmann::json & /*event*/,
                                              std::string &message) {
   auto session_id = context->sessionId();
-  auto strSql = sel_("user1.temp_image", "event,  name, size, type",
-                     "where session_id = $1");
+  auto strSql = sql::CRUDHelper::sel_(
+      "user1.temp_image", "event,  name, size, type", "where session_id = $1");
   auto clientPtr = drogon::app().getDbClient("sce");
   auto transPtr = clientPtr->newTransaction();
   try {
     auto r = Dba::writeInTrans(transPtr, strSql, session_id);
     Dba::writeInTrans(
         transPtr,
-        dele_("user1.temp_image", "where session_id = $1 and event = $2"),
+        sql::CRUDHelper::dele_("user1.temp_image",
+                               "where session_id = $1 and event = $2"),
         session_id, r[0]["event"].as<std::string>());
 
     // check if file exist else rename a file

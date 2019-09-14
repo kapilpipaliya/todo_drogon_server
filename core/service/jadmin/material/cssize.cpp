@@ -122,8 +122,8 @@ nlohmann::json CSSize::ins(nlohmann::json event, nlohmann::json args) {
       "SELECT  sum(cp.total_weight) as sum_weight, sum(cp.price) as sum_price "
       "from product.post_color_stone_size ds LEFT JOIN product.cs_price cp ON "
       "(cp.cs_id = ds.id) where ds.post_id = $1";
-  auto pc = upd_("product.post_cs_total", "weight, price", "$2, $3",
-                 "where post_id = $1");
+  auto pc = sql::CRUDHelper::upd_("product.post_cs_total", "weight, price",
+                                  "$2, $3", "where post_id = $1");
 
   std::string strSql =
       "INSERT INTO %1.%2 (cs_type_id, shape_id, size_id, weight, currency_id, "
@@ -216,8 +216,8 @@ nlohmann::json CSSize::upd(nlohmann::json event, nlohmann::json args) {
       "SELECT  sum(cp.total_weight) as sum_weight, sum(cp.price) as sum_price "
       "from product.post_color_stone_size ds LEFT JOIN product.cs_price cp ON "
       "(cp.cs_id = ds.id) where ds.post_id = $1";
-  auto pc = upd_("product.post_cs_total", "weight, price", "$2, $3",
-                 "where post_id = $1");
+  auto pc = sql::CRUDHelper::upd_("product.post_cs_total", "weight, price",
+                                  "$2, $3", "where post_id = $1");
 
   if (args[0]["id"].get<long>()) {
     std::string strSql =
@@ -310,7 +310,8 @@ nlohmann::json CSSize::upd(nlohmann::json event, nlohmann::json args) {
     }
   }
   nlohmann::json ret;
-  ret[0] = websocket::WsFns::successJsonObject(event, false, "Not Valid Structure");
+  ret[0] =
+      websocket::WsFns::successJsonObject(event, false, "Not Valid Structure");
   return ret;
 }
 

@@ -1,8 +1,8 @@
 #include "product.h"
 #include <boost/filesystem.hpp>
 #include <utility>
-#include "../../../strfns.h"
 #include "../../../sql/dba.h"
+#include "../../../strfns.h"
 
 namespace jadmin {
 Product::Product(std::shared_ptr<websocket::JAdminContext> context_)
@@ -32,15 +32,14 @@ void Product::setupTable() {
       sql::SelectedColumn(
           {"Product Id", "id", "p.id", "p", PG_TYPES::INT8, false}),
       sql::SelectedColumn({"Product_short_description", "excerpt", "", "post",
-                            PG_TYPES::TEXT, false}),
+                           PG_TYPES::TEXT, false}),
       sql::SelectedColumn(
           {"Product_Content", "content", "", "post", PG_TYPES::TEXT, false}),
       sql::SelectedColumn(
           {"Menu_Order", "menu_order", "", "post", PG_TYPES::INT8, false}),
       sql::SelectedColumn(
           {"Date", "date", "", "post", PG_TYPES::TIMESTAMP, true}),
-      sql::SelectedColumn(
-          {"Title", "title", "", "post", PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"Title", "title", "", "post", PG_TYPES::TEXT, true}),
       sql::SelectedColumn({"Slug", "name", "", "post", PG_TYPES::TEXT, true}),
       sql::SelectedColumn(
           {"Status", "status", "", "post", PG_TYPES::ENUM, true}),
@@ -77,28 +76,27 @@ void Product::setupTable() {
       sql::SelectedColumn({"Width", "width", "", "p", PG_TYPES::DOUBLE, true}),
       sql::SelectedColumn(
           {"Height", "height", "", "p", PG_TYPES::DOUBLE, true}),
-      sql::SelectedColumn(
-          {"On sale", "onsale", "", "p", PG_TYPES::BOOL, true}),
+      sql::SelectedColumn({"On sale", "onsale", "", "p", PG_TYPES::BOOL, true}),
       sql::SelectedColumn({"Stock Quantity", "stock_quantity", "", "p",
-                            PG_TYPES::DOUBLE, true}),
+                           PG_TYPES::DOUBLE, true}),
       sql::SelectedColumn(
           {"Stock Status", "stock_status", "", "p", PG_TYPES::ENUM, true}),
       sql::SelectedColumn(
           {"Rating Count", "rating_count", "", "p", PG_TYPES::INT4, true}),
       sql::SelectedColumn({"Average Rating", "average_rating", "", "p",
-                            PG_TYPES::DOUBLE, true}),
+                           PG_TYPES::DOUBLE, true}),
       sql::SelectedColumn(
           {"Total Sales", "total_sales", "", "p", PG_TYPES::INT8, true}),
       sql::SelectedColumn(
           {"Featured", "featured", "", "p", PG_TYPES::BOOL, true}),
       sql::SelectedColumn({"Shipping Class", "shipping_class_id", "", "p",
-                            PG_TYPES::INT8, true}),
+                           PG_TYPES::INT8, true}),
       sql::SelectedColumn(
           {"Manage Stock", "manage_stock", "", "p", PG_TYPES::BOOL, false}),
       sql::SelectedColumn(
           {"Visibility", "visibility", "", "post", PG_TYPES::ENUM, true}),
       sql::SelectedColumn({"Catalog Visibility", "catalog_visibility", "", "p",
-                            PG_TYPES::ENUM, true}),
+                           PG_TYPES::ENUM, true}),
       sql::SelectedColumn(
           {"Backorders", "backorders", "", "p", PG_TYPES::ENUM, true}),
       sql::SelectedColumn(
@@ -108,17 +106,17 @@ void Product::setupTable() {
            "json_agg(distinct tags.name ORDER BY tags.name ASC)", "tags",
            PG_TYPES::PSJSON, true}),
       sql::SelectedColumn({"category_id", "category_id",
-                            "json_agg(distinct pc.category_id)", "pc",
-                            PG_TYPES::PSJSON, false}),
+                           "json_agg(distinct pc.category_id)", "pc",
+                           PG_TYPES::PSJSON, false}),
       sql::SelectedColumn({"Categories", "category_id_name",
-                            "json_agg(distinct c.name)", "pc", PG_TYPES::PSJSON,
-                            true}),  // This is to Display on Main Table only.
+                           "json_agg(distinct c.name)", "pc", PG_TYPES::PSJSON,
+                           true}),  // This is to Display on Main Table only.
       sql::SelectedColumn({"tone_id", "tone_id",
-                            "json_agg(distinct p_tones.tone_id)", "p_tones",
-                            PG_TYPES::PSJSON, false}),
+                           "json_agg(distinct p_tones.tone_id)", "p_tones",
+                           PG_TYPES::PSJSON, false}),
       sql::SelectedColumn({"Tones", "tone_id_name",
-                            "json_agg(distinct tones.name)", "tones",
-                            PG_TYPES::PSJSON, true}),
+                           "json_agg(distinct tones.name)", "tones",
+                           PG_TYPES::PSJSON, true}),
       sql::SelectedColumn(
           {"clarity_id", "clarity_id",
            "json_agg(distinct jsonb_build_array(p_clarity.clarity_id, "
@@ -131,9 +129,9 @@ void Product::setupTable() {
            "COALESCE(pu_tone.pt2, jsonb_build_array()), p_purities.ismain))",
            "p_purities", PG_TYPES::PSJSON, false}),
       sql::SelectedColumn({"Purities", "purity_id_name",
-                            "json_agg(distinct purities.name)", "purities",
-                            PG_TYPES::PSJSON,
-                            true}),  // This is to Display on Main Table only.
+                           "json_agg(distinct purities.name)", "purities",
+                           PG_TYPES::PSJSON,
+                           true}),  // This is to Display on Main Table only.
       sql::SelectedColumn(
           {"attachement_id", "attachement_id",
            "json_agg( distinct jsonb_build_array(p_attachments.id, "
@@ -158,22 +156,22 @@ void Product::setupTable() {
            "p_cs_total.weight, p_cs_total.price))",
            "p_cs_total", PG_TYPES::PSJSON, false}),
       sql::SelectedColumn({"Low Stock Amount", "low_stock_amount", "", "p",
-                            PG_TYPES::INT4, true}),
+                           PG_TYPES::INT4, true}),
       sql::SelectedColumn({"Sold Individually", "sold_individually", "", "p",
-                            PG_TYPES::BOOL, false}),
+                           PG_TYPES::BOOL, false}),
       sql::SelectedColumn({"Making Charges", "making_charges", "", "p",
-                            PG_TYPES::DOUBLE, false}),
+                           PG_TYPES::DOUBLE, false}),
       sql::SelectedColumn(
           {"Discount Per", "discount_per", "", "p", PG_TYPES::DOUBLE, false}),
       sql::SelectedColumn(
           {"Volume", "volume", "", "p", PG_TYPES::DOUBLE, false}),
       sql::SelectedColumn({"Tone", "tone_id", "", "p", PG_TYPES::INT8, false}),
       sql::SelectedColumn({"Certified By", "certified_by",
-                            "json_agg(distinct p_certified_by.certified_by_id)",
-                            "p_certified_by", PG_TYPES::PSJSON, false}),
+                           "json_agg(distinct p_certified_by.certified_by_id)",
+                           "p_certified_by", PG_TYPES::PSJSON, false}),
       sql::SelectedColumn({"Policy", "post_policy",
-                            "json_agg(distinct p_policy.policy_id)", "p_policy",
-                            PG_TYPES::PSJSON, false}),
+                           "json_agg(distinct p_policy.policy_id)", "p_policy",
+                           PG_TYPES::PSJSON, false}),
 
       // sql::SelectedColumn({"Create Time", "inserted_at", "", "p",
       // PG_TYPES::TIMESTAMP, true, 0, 0, false}), sql::SelectedColumn({"Update
@@ -207,8 +205,7 @@ void Product::setupTable() {
   auto tags = sql::ObjectIdentifier("post", "tag", "tags");
   auto ptones = sql::ObjectIdentifier("product", "post_tone", "p_tones");
   auto tones = sql::ObjectIdentifier("material", "tone", "tones");
-  auto pclarity =
-      sql::ObjectIdentifier("product", "post_clarity", "p_clarity");
+  auto pclarity = sql::ObjectIdentifier("product", "post_clarity", "p_clarity");
   auto ppurities =
       sql::ObjectIdentifier("product", "post_purity", "p_purities");
   auto purities = sql::ObjectIdentifier("material", "purity", "purities");
@@ -240,12 +237,12 @@ void Product::setupTable() {
       sql::Join("left", pclarity, "p_clarity.post_id = post.id"),
       sql::Join("left", ppurities, "p_purities.post_id = post.id"),
       sql::Join("left",
-                 "( select pt.post_id, pt.purity_id, jsonb_agg(distinct "
-                 "jsonb_build_array(pt.tone_id, pt.weight, pt.price, "
-                 "pt.ismain)) as pt2 from product.purity_tone pt group by "
-                 "pt.post_id, pt.purity_id) as pu_tone",
-                 "(pu_tone.post_id = p_purities.post_id and pu_tone.purity_id "
-                 "= p_purities.purity_id)"),
+                "( select pt.post_id, pt.purity_id, jsonb_agg(distinct "
+                "jsonb_build_array(pt.tone_id, pt.weight, pt.price, "
+                "pt.ismain)) as pt2 from product.purity_tone pt group by "
+                "pt.post_id, pt.purity_id) as pu_tone",
+                "(pu_tone.post_id = p_purities.post_id and pu_tone.purity_id "
+                "= p_purities.purity_id)"),
       sql::Join("left", purities, "purities.id = p_purities.purity_id"),
       sql::Join("left", post_attachment, "p_attachments.post_id = post.id"),
       sql::Join("left", p_d_size, "p_d_size.post_id = post.id"),
@@ -263,10 +260,10 @@ void Product::setupTable() {
           "dp.clarity_id group by dp.diamond_id) as diamond_price",
           "diamond_price.diamond_id = p_d_size.id"),
       sql::Join("left",
-                 "(SELECT dp.cs_id, jsonb_agg( distinct jsonb_build_array(0, "
-                 "'', dp.weight, dp.total_weight, dp.rate, dp.price)) AS pa "
-                 "FROM product.cs_price dp group by dp.cs_id) as cs_price",
-                 "cs_price.cs_id = p_cs_size.id"),
+                "(SELECT dp.cs_id, jsonb_agg( distinct jsonb_build_array(0, "
+                "'', dp.weight, dp.total_weight, dp.rate, dp.price)) AS pa "
+                "FROM product.cs_price dp group by dp.cs_id) as cs_price",
+                "cs_price.cs_id = p_cs_size.id"),
 
       // sql::Join("left", u1, "gt.create_user_id = u1.id"),
       // sql::Join("left", u2, "a.update_user_id = u2.id"),
@@ -591,23 +588,23 @@ void save_purity_tone_(
     nlohmann::json& args,
     const std::shared_ptr<drogon::orm::Transaction>& transPtr, long post_id,
     long purity_id) {
-  std::string strSqlPostCategories =
-      sel_("product.purity_tone", "post_id, purity_id, tone_id",
-           "where post_id = $1 and purity_id = $2");
-  std::string strSqlPostCategorySimpleFind =
-      sel_("product.purity_tone",
-           "post_id, purity_id, tone_id, weight, price, ismain",
-           "where post_id = $1 and purity_id = $2 and tone_id = $3");
-  std::string strSqlPostCategoryDel =
-      dele_("product.purity_tone",
-            "where post_id = $1 and purity_id = $2 and tone_id = $3");
-  std::string strSqlPostCategoryInsert =
-      ins_("product.purity_tone",
-           "post_id, purity_id, tone_id, weight, price, ismain",
-           "$1, $2, $3, $4, $5, $6");
-  std::string strSqlPostCategoryUpdateAtt =
-      upd_("product.purity_tone", "weight, price, ismain", "$4, $5, $6",
-           "where  post_id = $1 and purity_id = $2 and tone_id = $3");
+  std::string strSqlPostCategories = sql::CRUDHelper::sel_(
+      "product.purity_tone", "post_id, purity_id, tone_id",
+      "where post_id = $1 and purity_id = $2");
+  std::string strSqlPostCategorySimpleFind = sql::CRUDHelper::sel_(
+      "product.purity_tone",
+      "post_id, purity_id, tone_id, weight, price, ismain",
+      "where post_id = $1 and purity_id = $2 and tone_id = $3");
+  std::string strSqlPostCategoryDel = sql::CRUDHelper::dele_(
+      "product.purity_tone",
+      "where post_id = $1 and purity_id = $2 and tone_id = $3");
+  std::string strSqlPostCategoryInsert = sql::CRUDHelper::ins_(
+      "product.purity_tone",
+      "post_id, purity_id, tone_id, weight, price, ismain",
+      "$1, $2, $3, $4, $5, $6");
+  std::string strSqlPostCategoryUpdateAtt = sql::CRUDHelper::upd_(
+      "product.purity_tone", "weight, price, ismain", "$4, $5, $6",
+      "where  post_id = $1 and purity_id = $2 and tone_id = $3");
 
   struct PurityTone {
     long post_id;
@@ -684,8 +681,8 @@ void save_product_purities(
   ReplaceAll2(strSqlPostCategoryInsert, "%2", post_purity_table.name());
 
   auto strSqlPostCategoryUpdateAtt =
-      upd_("product.post_purity", "ismain", "$3",
-           "where post_id = $1 and purity_id = $2");
+      sql::CRUDHelper::upd_("product.post_purity", "ismain", "$3",
+                            "where post_id = $1 and purity_id = $2");
 
   struct PostPurity {
     long purity_id;
@@ -1493,7 +1490,8 @@ nlohmann::json Product::upd(nlohmann::json event, nlohmann::json args) {
     }
   }
   nlohmann::json ret;
-  ret[0] = websocket::WsFns::successJsonObject(event, false, "Not Valid Structure");
+  ret[0] =
+      websocket::WsFns::successJsonObject(event, false, "Not Valid Structure");
   return ret;
 }
 

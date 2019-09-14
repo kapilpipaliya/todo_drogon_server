@@ -161,7 +161,7 @@ std::string Query::buildSelectorPart(
   return selector;
 }
 
-std::string Query::buildQuery(bool /*withRowid*/) const {
+std::string Query::buildQuery(bool withRowid) const {
   // Selector and display formats
   std::string selector = buildSelectorPart(
       const_cast<std::vector<SelectedColumn>&>(m_selected_columns));
@@ -602,7 +602,8 @@ nlohmann::json Query::ins(nlohmann::json event, nlohmann::json args) {
     strSql = buildInsQuery(std::move(args));
     if (strSql.empty()) {
       nlohmann::json ret;
-      ret[0] = websocket::WsFns::successJsonObject(event, false, "UnValid Arguments");
+      ret[0] = websocket::WsFns::successJsonObject(event, false,
+                                                   "UnValid Arguments");
       return ret;
     }
   } catch (const std::exception& e) {
@@ -628,7 +629,8 @@ nlohmann::json Query::upd(nlohmann::json event, nlohmann::json args) {
   std::string strSql = buildUpdateQuery(args);
   if (strSql.empty()) {
     nlohmann::json ret;
-    ret[0] = websocket::WsFns::successJsonObject(event, false, "UnValid Arguments");
+    ret[0] =
+        websocket::WsFns::successJsonObject(event, false, "UnValid Arguments");
     return ret;
   }
   try {
@@ -652,8 +654,8 @@ nlohmann::json Query::upd(nlohmann::json event, nlohmann::json args) {
 nlohmann::json Query::del(nlohmann::json event, nlohmann::json args) {
   if (!args.is_array()) {
     nlohmann::json ret;
-    ret[0] =
-        websocket::WsFns::successJsonObject(event, false, "The argument must be an array");
+    ret[0] = websocket::WsFns::successJsonObject(
+        event, false, "The argument must be an array");
     return ret;
   }
   try {
@@ -674,7 +676,8 @@ nlohmann::json Query::del(nlohmann::json event, nlohmann::json args) {
       return ret;
     }
     nlohmann::json ret;
-    ret[0] = websocket::WsFns::successJsonObject(event, false, "Invalid condition to delete");
+    ret[0] = websocket::WsFns::successJsonObject(event, false,
+                                                 "Invalid condition to delete");
     return ret;
   } catch (const std::exception& e) {
     SPDLOG_TRACE(e.what());

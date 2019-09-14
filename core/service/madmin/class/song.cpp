@@ -3,7 +3,8 @@
 #include <utility>
 #include "../../../sql/dba.h"
 
-madmin::Song::Song(std::shared_ptr<websocket::MAdminContext> context_) : context(std::move(context_)) {
+madmin::Song::Song(std::shared_ptr<websocket::MAdminContext> context_)
+    : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("music", "song", "s"));
   setupTable();
 }
@@ -114,12 +115,12 @@ nlohmann::json madmin::Song::handleEvent(nlohmann::json event,
           }
         }
         nlohmann::json ret;
-        ret[0] =
-            websocket::WsFns::successJsonObject(event, false, "Please Upload Music First!");
+        ret[0] = websocket::WsFns::successJsonObject(
+            event, false, "Please Upload Music First!");
         return ret;
       }
-      // nlohmann::json ret; ret[0] = websocket::WsFns::successJsonObject(event, false, "Please
-      // Upload Music First!"); return ret;
+      // nlohmann::json ret; ret[0] = websocket::WsFns::successJsonObject(event,
+      // false, "Please Upload Music First!"); return ret;
       return query.ins(event, args);  // Make this to pass test.
 
     } catch (const std::exception &e) {
@@ -153,15 +154,17 @@ nlohmann::json madmin::Song::handleBinaryEvent(nlohmann::json event,
 nlohmann::json madmin::Song::save_song_binary(
     [[maybe_unused]] const nlohmann::json &event, std::string &message) {
   auto session_id = context->sessionId();
-  auto strSql = sel_("music.temp_file_meta", "event,  name, size, type",
-                     "where session_id = $1");
+  auto strSql =
+      sql::CRUDHelper::sel_("music.temp_file_meta", "event,  name, size, type",
+                            "where session_id = $1");
   auto clientPtr = drogon::app().getDbClient("sce");
   auto transPtr = clientPtr->newTransaction();
   try {
     auto r = Dba::writeInTrans(transPtr, strSql, session_id);
     Dba::writeInTrans(
         transPtr,
-        dele_("music.temp_file_meta", "where session_id = $1 and event = $2"),
+        sql::CRUDHelper::dele_("music.temp_file_meta",
+                               "where session_id = $1 and event = $2"),
         session_id, r[0]["event"].as<std::string>());
 
     // check if file exist else rename a file

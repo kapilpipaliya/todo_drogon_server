@@ -13,7 +13,7 @@ drogon::orm::Result Dba::read(const std::string& sql) {
   }
 }
 
-nlohmann::json Dba::readJson(const std::string& /*sql*/) {
+nlohmann::json Dba::readJson(const std::string& sql) {
   // Fix this. dont know how to do it?
   nlohmann::json j;
   return j;
