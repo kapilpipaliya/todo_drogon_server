@@ -4,9 +4,9 @@
 class CustomOption : public ActiveRecord::Base {
   acts_as_list
 
-  belongs_to :custom_field, touch: true
+  // belongs_to :custom_field, touch: true
 
-  validates :value, presence: true, length: { maximum: 255 }
+  // validates :value, presence: true, length: { maximum: 255 }
 
   before_destroy :assure_at_least_one_option
 
@@ -16,7 +16,7 @@ class CustomOption : public ActiveRecord::Base {
 
   alias :name :to_s
 
-  protected
+  protected:
 
    void assure_at_least_one_option() {
     return if ( CustomOption.where(custom_field_id: custom_field_id).where.not(id: id).count > 0) {

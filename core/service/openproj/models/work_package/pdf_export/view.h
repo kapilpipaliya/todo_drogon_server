@@ -1,7 +1,7 @@
 class WorkPackage::PdfExport::View
 
-  include Prawn::View
-  include Redmine::I18n
+  // include Prawn::View
+  // include Redmine::I18n
 
    View(lang) {
     set_language_if_valid lang

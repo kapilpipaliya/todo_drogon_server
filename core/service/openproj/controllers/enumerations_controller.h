@@ -1,16 +1,17 @@
+#include "application_controller.h"
 class EnumerationsController : public ApplicationController {
-  layout 'admin'
+  // layout 'admin'
 
-  before_action :require_admin
-  before_action :find_enumeration, only: [:edit, :update, :destroy]
+  // before_action :require_admin
+  // before_action :find_enumeration, only: [:edit, :update, :destroy]
 
-  include CustomFieldsHelper
+  // include CustomFieldsHelper
 
-   void index; }() {
+   void index() {}
 
-   void edit; }() {
+   void edit() {}
 
-   void new() {
+   void new_() {
     enum_class = enumeration_class(permitted_params.enumeration_type)
     if ( enum_class) {
       @enumeration = enum_class.new
@@ -62,7 +63,7 @@ class EnumerationsController : public ApplicationController {
     @enumerations = @enumeration.class.all - [@enumeration]
   }
 
-  protected
+  protected:
 
    void default_breadcrumb() {
     if ( action_name == 'index') {

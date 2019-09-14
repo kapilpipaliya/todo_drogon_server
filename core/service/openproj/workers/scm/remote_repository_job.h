@@ -24,7 +24,7 @@ class Scm::RemoteRepositoryJob : public ApplicationJob {
     }
   }
 
-  protected
+  protected:
 
   //
   // Submits the request to the configured managed remote as JSON.

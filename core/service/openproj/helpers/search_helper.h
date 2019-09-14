@@ -90,7 +90,7 @@ namespace SearchHelper {
                            class: 'navigate-right')
   }
 
-  private
+  private:
 
    void attachment_strings_for(attribute_name, event) {
     if ( EnterpriseToken.allows_to?(:attachment_filters) && OpenProject::Database.allows_tsv? && event.respond_to?(:attachments)) {

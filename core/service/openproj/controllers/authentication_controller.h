@@ -1,7 +1,8 @@
+#include "application_controller.h"
 class AuthenticationController : public ApplicationController {
-  before_action :require_login
-  layout 'admin'
-  menu_item :authentication_settings
+  // before_action :require_login
+  // layout 'admin'
+  // menu_item :authentication_settings
 
    void index() {
     respond_to { |format|

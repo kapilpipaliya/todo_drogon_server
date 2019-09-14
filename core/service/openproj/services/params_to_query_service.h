@@ -1,5 +1,5 @@
 class ParamsToQueryService
-  attr_accessor :user,
+  // attr_accessor :user,
                 :query_class
 
    ParamsToQueryService(model, user, query_class: nil) {
@@ -16,7 +16,7 @@ class ParamsToQueryService
     query
   }
 
-  private
+  private:
 
    void new_query() {
     query_class.new(user: user)

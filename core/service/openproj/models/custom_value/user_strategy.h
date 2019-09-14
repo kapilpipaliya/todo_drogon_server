@@ -1,5 +1,5 @@
 class CustomValue::UserStrategy : public CustomValue::ARObjectStrategy {
-  private
+  private:
 
    void ar_class() {
     User

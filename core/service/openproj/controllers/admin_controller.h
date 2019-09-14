@@ -1,11 +1,12 @@
+#include "application_controller.h"
 class AdminController : public ApplicationController {
-  layout 'admin'
+  // layout 'admin'
 
-  before_action :require_admin
+  // before_action :require_admin
 
-  menu_item :plugins, only: [:plugins]
-  menu_item :info, only: [:info]
-  menu_item :admin_overview, only: [:index]
+  // menu_item :plugins, only: [:plugins]
+  // menu_item :info, only: [:info]
+  // menu_item :admin_overview, only: [:index]
 
    void index() {
     @menu_nodes = Redmine::MenuManager.items(:admin_menu).children
@@ -78,7 +79,7 @@ class AdminController : public ApplicationController {
     true
   }
 
-  private
+  private:
 
    void plaintext_extraction_checks() {
     [

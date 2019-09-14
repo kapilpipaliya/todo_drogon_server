@@ -1,14 +1,14 @@
 class Relations::BaseService
-  include Concerns::Contracted
-  include Shared::ServiceContext
+  // include Concerns::Contracted
+  // include Shared::ServiceContext
 
-  attr_accessor :user
+  // attr_accessor :user
 
    BaseService(user:) {
     this->user = user
   }
 
-  private
+  private:
 
    void update_relation(relation, attributes) {
     relation.attributes = relation.attributes.merge attributes

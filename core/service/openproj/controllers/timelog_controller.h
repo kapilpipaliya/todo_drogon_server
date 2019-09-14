@@ -1,18 +1,19 @@
+#include "application_controller.h"
 class TimelogController : public ApplicationController {
-  before_action :find_work_package, only: %i[new create]
-  before_action :find_project, only: %i[new create]
-  before_action :find_time_entry, only: %i[show edit update destroy]
-  before_action :authorize, except: [:index]
-  before_action :find_optional_project, only: [:index]
+  // before_action :find_work_package, only: %i[new create]
+  // before_action :find_project, only: %i[new create]
+  // before_action :find_time_entry, only: %i[show edit update destroy]
+  // before_action :authorize, except: [:index]
+  // before_action :find_optional_project, only: [:index]
 
-  include SortHelper
-  include TimelogHelper
-  include CustomFieldsHelper
-  include PaginationHelper
-  include Concerns::Layout
-  include OpenProject::ClientPreferenceExtractor
+  // include SortHelper
+  // include TimelogHelper
+  // include CustomFieldsHelper
+  // include PaginationHelper
+  // include Concerns::Layout
+  // include OpenProject::ClientPreferenceExtractor
 
-  menu_item :time_entries
+  // menu_item :time_entries
 
    void index() {
     sort_init 'spent_on', 'desc'
@@ -58,7 +59,7 @@ class TimelogController : public ApplicationController {
     }
   }
 
-   void new() {
+   void new_() {
     @time_entry = new_time_entry(@project, @issue, permitted_params.time_entry.to_h)
 
     call_hook(:controller_timelog_edit_before_save, params: params, time_entry: @time_entry)
@@ -120,7 +121,7 @@ class TimelogController : public ApplicationController {
     }
   }
 
-  private
+  private:
 
    void find_time_entry() {
     @time_entry = TimeEntry.find(params[:id])

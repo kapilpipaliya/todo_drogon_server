@@ -1,3 +1,3 @@
 class Queries::TimeEntries::Filters::ProjectFilter : public Queries::TimeEntries::Filters::TimeEntryFilter {
-  include Queries::Filters::Shared::ProjectFilter
+  // include Queries::Filters::Shared::ProjectFilter
 }

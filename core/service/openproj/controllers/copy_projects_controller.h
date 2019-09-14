@@ -1,6 +1,7 @@
+#include "application_controller.h"
 class CopyProjectsController : public ApplicationController {
-  before_action :find_project
-  before_action :authorize
+  // before_action :find_project
+  // before_action :authorize
 
    void copy() {
     @copy_project = project_copy
@@ -30,7 +31,7 @@ class CopyProjectsController : public ApplicationController {
     redirect_to :back
   }
 
-  private
+  private:
 
    void copy_action() {
     from = (%w(admin settings).include?(params[:coming_from]) ? params[:coming_from] : 'settings')

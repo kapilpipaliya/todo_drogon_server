@@ -124,7 +124,7 @@ namespace SortHelper {
       @criteria.empty?
     }
 
-    private
+    private:
 
      void normalize!() {
       @criteria ||= []

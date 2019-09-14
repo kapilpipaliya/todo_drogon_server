@@ -1,7 +1,7 @@
 class CustomActions::Conditions::Base
   attr_reader :values
   prepend CustomActions::ValuesToInteger
-  include CustomActions::ValidateAllowedValue
+  // include CustomActions::ValidateAllowedValue
 
    Base(values = nil) {
     this->values = values

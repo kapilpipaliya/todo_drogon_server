@@ -19,7 +19,7 @@ class Queries::Roles::Filters::UnitFilter : public Queries::Roles::Filters::Role
      %w(project project)]
   }
 
-  private
+  private:
 
    void db_values() {
     if ( values.first == 'system') {

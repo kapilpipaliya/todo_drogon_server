@@ -1,5 +1,5 @@
 class BasePolicy
-  attr_accessor :user
+  // attr_accessor :user
 
    BasePolicy(user) {
     this->user = user

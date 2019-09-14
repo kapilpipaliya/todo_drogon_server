@@ -22,7 +22,7 @@ class Queries::NotExistingFilter : public Queries::Filters::Base {
   }
 
   // deactivating superclass validation
-   void validate_inclusion_of_operator; }() {
+   void validate_inclusion_of_operator() {}
 
    void to_hash() {
     {

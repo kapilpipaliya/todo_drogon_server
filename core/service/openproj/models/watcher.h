@@ -1,9 +1,9 @@
 class Watcher : public ActiveRecord::Base {
-  belongs_to :watchable, polymorphic: true
-  belongs_to :user
+  // belongs_to :watchable, polymorphic: true
+  // belongs_to :user
 
-  validates_presence_of :watchable, :user
-  validates_uniqueness_of :user_id, scope: [:watchable_type, :watchable_id]
+  // validates_presence_of :watchable, :user
+  // validates_uniqueness_of :user_id, scope: [:watchable_type, :watchable_id]
 
   validate :validate_active_user
   validate :validate_user_allowed_to_watch
@@ -16,7 +16,7 @@ class Watcher : public ActiveRecord::Base {
     prune_project_related(user_ids, projects)
   }
 
-  protected
+  protected:
 
    void validate_active_user() {
     // TODO add informative error message

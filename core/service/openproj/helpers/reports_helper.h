@@ -1,5 +1,5 @@
 namespace ReportsHelper {
-  include WorkPackagesFilterHelper
+  // include WorkPackagesFilterHelper
 
    void aggregate(data, criteria) {
     data&.inject(0) { |sum, row|

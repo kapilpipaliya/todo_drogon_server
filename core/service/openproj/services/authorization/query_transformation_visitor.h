@@ -1,7 +1,7 @@
 // rubocop:disable MethodName
 
 class Authorization::QueryTransformationVisitor : public Arel::Visitors::Visitor {
-  attr_accessor :transformations,
+  // attr_accessor :transformations,
                 :args
 
    QueryTransformationVisitor(transformations:,
@@ -18,7 +18,7 @@ class Authorization::QueryTransformationVisitor : public Arel::Visitors::Visitor
     super
   }
 
-  private
+  private:
 
    void visit_Arel_SelectManager(ast) {
     ast = replace_if_equals(ast, :all)

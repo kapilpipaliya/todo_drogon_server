@@ -1,6 +1,6 @@
 namespace TimeEntries {
   class SetAttributesService : public ::BaseServices::SetAttributes {
-    private
+    private:
 
      void set_attributes(attributes) {
       super

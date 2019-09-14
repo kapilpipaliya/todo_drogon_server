@@ -29,7 +29,7 @@ class Queries::WorkPackages::Filter::VersionFilter <
     versions.select { |v| value_ints.include?(v.id) }
   }
 
-  private
+  private:
 
    void versions() {
     if ( project) {

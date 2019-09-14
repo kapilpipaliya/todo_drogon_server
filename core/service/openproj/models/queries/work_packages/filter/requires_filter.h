@@ -3,13 +3,13 @@
 class Queries::WorkPackages::Filter::RequiresFilter <
   Queries::WorkPackages::Filter::WorkPackageFilter
 
-  include ::Queries::WorkPackages::Filter::FilterOnDirectedRelationsMixin
+  // include ::Queries::WorkPackages::Filter::FilterOnDirectedRelationsMixin
 
    void relation_type() {
     ::Relation::TYPE_REQUIRES
   }
 
-  private
+  private:
 
    void relation_filter() {
     { from_id: values }

@@ -6,7 +6,7 @@ namespace Queries::Filters::Shared {
       //
       // User CFs may reference the 'me' value, so use the values helpers
       // from the Me mixin, which will override the ListOptional value_objects definition.
-      include ::Queries::WorkPackages::Filter::MeValueFilterMixin
+      // include ::Queries::WorkPackages::Filter::MeValueFilterMixin
 
        void allowed_values() {
         @allowed_values ||= begin

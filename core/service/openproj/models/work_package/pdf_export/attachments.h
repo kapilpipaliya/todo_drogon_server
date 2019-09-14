@@ -13,7 +13,7 @@ namespace WorkPackage::PdfExport::Attachments {
       .compact
   }
 
-  private
+  private:
 
    void make_attachment_cell(attachment, available_width) {
     // We can only include JPG and PNGs, maybe we want to add a text box for other attachments here

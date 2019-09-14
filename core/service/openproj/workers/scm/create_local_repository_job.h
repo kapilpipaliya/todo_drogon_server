@@ -43,7 +43,7 @@ class Scm::CreateLocalRepositoryJob : public ApplicationJob {
     true
   }
 
-  private
+  private:
 
   //
   // Creates the repository at the +root_url+.

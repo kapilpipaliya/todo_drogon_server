@@ -58,7 +58,7 @@ namespace WorkPackage::Parent {
     }
   }
 
-  attr_accessor :parent_object,
+  // attr_accessor :parent_object,
                 :do_halt
 
    void parent=(work_package) {
@@ -114,7 +114,7 @@ namespace WorkPackage::Parent {
     }
   }
 
-  private
+  private:
 
    void parent_from_relation() {
     if ( parent_relation && ((@parent_id && parent_relation.from.id == @parent_id) || !@parent_id)) {

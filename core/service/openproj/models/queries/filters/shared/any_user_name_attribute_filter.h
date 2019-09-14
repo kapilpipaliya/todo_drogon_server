@@ -9,7 +9,7 @@ namespace Queries::Filters::Shared::AnyUserNameAttributeFilter {
       :any_name_attribute
     }
 
-    private
+    private:
 
      void sql_concat_name() {
         <<-SQL

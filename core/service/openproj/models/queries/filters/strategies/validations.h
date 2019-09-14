@@ -1,6 +1,6 @@
 namespace Queries::Filters::Strategies {
   namespace Validations {
-    private
+    private:
 
      void date?(str) {
       true if ( Date.parse(str)) {

@@ -1,15 +1,16 @@
+#include "application_controller.h"
 class MembersController : public ApplicationController {
-  model_object Member
-  before_action :find_model_object_and_project, except: [:autocomplete_for_member, :paginate_users]
-  before_action :find_project_by_project_id, only: [:autocomplete_for_member, :paginate_users]
-  before_action :authorize
+  // model_object Member
+  // before_action :find_model_object_and_project, except: [:autocomplete_for_member, :paginate_users]
+  // before_action :find_project_by_project_id, only: [:autocomplete_for_member, :paginate_users]
+  // before_action :authorize
 
-  include Pagination::Controller
+  // include Pagination::Controller
   paginate_model User
   search_for User, :search_in_project
   search_options_for User, lambda { |*| { project: @project } }
 
-  include CellsHelper
+  // include CellsHelper
 
    void index() {
     set_index_data!
@@ -101,7 +102,7 @@ class MembersController : public ApplicationController {
     }
   }
 
-  private
+  private:
 
    void authorize_for(controller, action) {
     current_user.allowed_to?({ controller: controller, action: action }, @project)

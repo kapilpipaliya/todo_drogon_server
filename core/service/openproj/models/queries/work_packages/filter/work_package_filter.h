@@ -1,5 +1,5 @@
 class Queries::WorkPackages::Filter::WorkPackageFilter : public ::Queries::Filters::Base {
-  include ::Queries::Filters::Serializable
+  // include ::Queries::Filters::Serializable
 
   this->model = WorkPackage
 

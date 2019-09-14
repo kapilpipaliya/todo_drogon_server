@@ -21,7 +21,7 @@ class AddAttachmentService
     attachment
   }
 
-  private
+  private:
 
    void save(attachment) {
     ActiveRecord::Base.transaction {

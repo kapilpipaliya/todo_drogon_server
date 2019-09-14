@@ -17,7 +17,7 @@ class CustomActions::Conditions::Role : public CustomActions::Conditions::Base {
       }
     }
 
-    private
+    private:
 
      void custom_action_scope_has_current(work_packages, user) {
       CustomAction
@@ -45,7 +45,7 @@ class CustomActions::Conditions::Role : public CustomActions::Conditions::Base {
     }
   }
 
-  private
+  private:
 
    void associated() {
     ::Role

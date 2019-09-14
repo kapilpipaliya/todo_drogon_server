@@ -1,5 +1,5 @@
 class Queries::TimeEntries::Filters::UserFilter : public Queries::TimeEntries::Filters::TimeEntryFilter {
-  include Queries::Filters::Shared::MeValueFilter
+  // include Queries::Filters::Shared::MeValueFilter
 
    void allowed_values() {
     @allowed_values ||= begin

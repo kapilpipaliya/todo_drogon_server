@@ -28,7 +28,7 @@ class Queries::WorkPackages::Filter::TypeFilter <
     types.select { |t| value_ints.include?(t.id) }
   }
 
-  private
+  private:
 
    void types() {
     project.nil? ? ::Type.order(Arel.sql('position')) : project.rolled_up_types

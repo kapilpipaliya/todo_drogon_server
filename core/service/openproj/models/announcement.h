@@ -1,8 +1,8 @@
 class Announcement : public ActiveRecord::Base {
-  scope :active,  -> { where(active: true) }
-  scope :current, -> { where('show_until >= ?', Date.today) }
+  // scope :active,  -> { where(active: true) }
+  // scope :current, -> { where('show_until >= ?', Date.today) }
 
-  validates :show_until, presence: true
+  // validates :show_until, presence: true
 
    void active_and_current() {
     active.current.first

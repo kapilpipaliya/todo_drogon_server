@@ -1,5 +1,5 @@
 class CustomActions::Actions::Notify : public CustomActions::Actions::Base {
-  include CustomActions::Actions::Strategies::Associated
+  // include CustomActions::Actions::Strategies::Associated
 
    void apply(work_package) {
     comment = principals.where(id: values).map { |p|
@@ -28,7 +28,7 @@ class CustomActions::Actions::Notify : public CustomActions::Actions::Base {
     true
   }
 
-  private
+  private:
 
    void principals() {
     Principal

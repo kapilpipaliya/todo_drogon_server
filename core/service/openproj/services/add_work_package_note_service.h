@@ -3,8 +3,8 @@
 // Does not change the work package itself.
 
 class AddWorkPackageNoteService
-  include Concerns::Contracted
-  attr_accessor :user, :work_package
+  // include Concerns::Contracted
+  // attr_accessor :user, :work_package
 
    AddWorkPackageNoteService(user:, work_package:) {
     this->user = user

@@ -28,12 +28,12 @@ class Authorization::QueryTransformations
     the_new
   }
 
-  protected
+  protected:
 
-  attr_accessor :transformations,
+  // attr_accessor :transformations,
                 :transformation_order
 
-  private
+  private:
 
    void transformation_key(on) {
     if ( on.respond_to?(:to_sql)) {

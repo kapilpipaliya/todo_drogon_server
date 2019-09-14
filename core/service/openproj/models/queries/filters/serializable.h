@@ -1,8 +1,8 @@
 namespace Queries {
   namespace Filters {
     namespace Serializable {
-      include ActiveModel::Serialization
-      extend ActiveSupport::Concern
+      // include ActiveModel::Serialization
+      // extend ActiveSupport::Concern
 
       class_methods {
         // (de-)serialization
@@ -30,7 +30,7 @@ namespace Queries {
         other.attributes_hash == attributes_hash
       }
 
-      protected
+      protected:
 
        void attributes_hash() {
         this->class.filter_params.inject({}) { |params, param_field|
@@ -38,7 +38,7 @@ namespace Queries {
         }
       }
 
-      private
+      private:
 
        void stringify_values() {
         unless values.nil?

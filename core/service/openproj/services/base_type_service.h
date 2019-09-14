@@ -1,9 +1,9 @@
 class BaseTypeService
-  include Shared::BlockService
-  include Concerns::Contracted
+  // include Shared::BlockService
+  // include Concerns::Contracted
 
-  attr_accessor :contract_class
-  attr_accessor :type, :user
+  // attr_accessor :contract_class
+  // attr_accessor :type, :user
 
    BaseTypeService(type, user) {
     this->type = type
@@ -17,7 +17,7 @@ class BaseTypeService
     block_with_result(result, &block)
   }
 
-  private
+  private:
 
    void update(params, options) {
     success = false

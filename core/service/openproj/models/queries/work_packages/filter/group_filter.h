@@ -35,7 +35,7 @@ class Queries::WorkPackages::Filter::GroupFilter : public Queries::WorkPackages:
                                          'assigned_to_id')
   }
 
-  private
+  private:
 
    void operator_for_filtering() {
     case operator

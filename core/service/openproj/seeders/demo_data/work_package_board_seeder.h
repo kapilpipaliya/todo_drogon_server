@@ -1,8 +1,8 @@
 namespace DemoData {
   class WorkPackageBoardSeeder : public Seeder {
-    attr_accessor :project, :key
+    // attr_accessor :project, :key
 
-    include ::DemoData::References
+    // include ::DemoData::References
 
      WorkPackageBoardSeeder(project, key) {
       this->project = project
@@ -24,7 +24,7 @@ namespace DemoData {
       }
     }
 
-    private
+    private:
 
      void seed_kanban_board() {
       board = ::Boards::Grid.new project: project

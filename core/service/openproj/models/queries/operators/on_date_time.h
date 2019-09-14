@@ -3,7 +3,7 @@ namespace Queries::Operators {
     label 'on'
     set_symbol '=d'
 
-    extend DatetimeRangeClauses
+    // extend DatetimeRangeClauses
 
      void sql_for_field(values, db_table, db_field) {
       datetime = DateTime.parse(values.first)

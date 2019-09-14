@@ -1,10 +1,10 @@
 #include "open_project/repository_authentication"
 
 class SysController : public ActionController::Base {
-  before_action :check_enabled
-  before_action :require_basic_auth, only: [:repo_auth]
-  before_action :find_project, only: [:update_required_storage]
-  before_action :find_repository_with_storage, only: [:update_required_storage]
+  // before_action :check_enabled
+  // before_action :require_basic_auth, only: [:repo_auth]
+  // before_action :find_project, only: [:update_required_storage]
+  // before_action :find_repository_with_storage, only: [:update_required_storage]
 
    void projects() {
     p = Project.active.has_module(:repository)
@@ -53,7 +53,7 @@ class SysController : public ActionController::Base {
     }
   }
 
-  private
+  private:
 
    void authorized?(project, user) {
     repository = project.repository

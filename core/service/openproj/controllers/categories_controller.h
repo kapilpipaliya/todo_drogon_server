@@ -1,12 +1,13 @@
+#include "application_controller.h"
 class CategoriesController : public ApplicationController {
-  menu_item :settings
-  model_object Category
-  before_action :find_model_object, except: [:new, :create]
-  before_action :find_project_from_association, except: [:new, :create]
-  before_action :find_project, only: [:new, :create]
-  before_action :authorize
+  // menu_item :settings
+  // model_object Category
+  // before_action :find_model_object, except: [:new, :create]
+  // before_action :find_project_from_association, except: [:new, :create]
+  // before_action :find_project, only: [:new, :create]
+  // before_action :authorize
 
-   void new() {
+   void new_() {
     @category = @project.categories.build
   }
 
@@ -62,7 +63,7 @@ class CategoriesController : public ApplicationController {
     @categories = @project.categories - [@category]
   }
 
-  private
+  private:
 
   // Wrap ApplicationController's find_model_object method to set
   // @category instead of just @category

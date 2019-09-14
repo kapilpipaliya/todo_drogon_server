@@ -1,10 +1,10 @@
 class UserPassword : public ActiveRecord::Base {
-  belongs_to :user, inverse_of: :passwords
+  // belongs_to :user, inverse_of: :passwords
 
   // passwords must never be modified, so doing this on create should be enough
   before_create :salt_and_hash_password!
 
-  attr_accessor :plain_password
+  // attr_accessor :plain_password
 
   //
   // Fixes the active UserPassword Type to use.
@@ -60,7 +60,7 @@ class UserPassword : public ActiveRecord::Base {
     created_at < (Time.now - days_valid)
   }
 
-  protected
+  protected:
 
   // Save hashed_password from the initially passed plain password
   // if it is is set.

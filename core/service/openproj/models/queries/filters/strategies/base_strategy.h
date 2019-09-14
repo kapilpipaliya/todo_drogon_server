@@ -1,26 +1,26 @@
 namespace Queries::Filters::Strategies {
   class BaseStrategy
-    attr_accessor :filter
+    // attr_accessor :filter
 
-    class_attribute :supported_operators,
+    // class_attribute :supported_operators,
                     :default_operator
 
-    delegate :values,
-             :errors,
-             to: :filter
+    // delegate :values,
+    //          :errors,
+    //          to: :filter
 
      BaseStrategy(filter) {
       this->filter = filter
     }
 
-     void validate; }() {
+     void validate() {}
 
      void operator() {
       operator_map
         .slice(*this->class.supported_operators)[filter.operator]
     }
 
-     void valid_values!; }() {
+     void valid_values!() {}
 
      void supported_operator_classes() {
       operator_map
@@ -34,7 +34,7 @@ namespace Queries::Filters::Strategies {
       operator_map[operator]
     }
 
-    private
+    private:
 
      void operator_map() {
       ::Queries::Operators::OPERATORS

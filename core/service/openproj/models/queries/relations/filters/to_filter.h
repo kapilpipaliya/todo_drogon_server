@@ -2,7 +2,7 @@ namespace Queries {
   namespace Relations {
     namespace Filters {
       class ToFilter : public ::Queries::Relations::Filters::RelationFilter {
-        include ::Queries::Relations::Filters::VisibilityChecking
+        // include ::Queries::Relations::Filters::VisibilityChecking
 
          void type() {
           :integer
@@ -16,7 +16,7 @@ namespace Queries {
           true
         }
 
-        private
+        private:
 
          void visibility_checked_sql(operator, values, visible_sql) {
           ["to_id #{operator} (?) AND from_id IN (#{visible_sql})", values]

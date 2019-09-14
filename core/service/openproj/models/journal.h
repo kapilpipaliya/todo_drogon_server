@@ -1,29 +1,29 @@
 class Journal : public ActiveRecord::Base {
   this->table_name = 'journals'
 
-  include ::JournalChanges
-  include ::JournalFormatter
-  include ::Redmine::Acts::Journalized::FormatHooks
+  // include ::JournalChanges
+  // include ::JournalFormatter
+  // include ::Redmine::Acts::Journalized::FormatHooks
 
-  register_journal_formatter :diff, OpenProject::JournalFormatter::Diff
-  register_journal_formatter :attachment, OpenProject::JournalFormatter::Attachment
-  register_journal_formatter :custom_field, OpenProject::JournalFormatter::CustomField
+  // register_journal_formatter :diff, OpenProject::JournalFormatter::Diff
+  // register_journal_formatter :attachment, OpenProject::JournalFormatter::Attachment
+  // register_journal_formatter :custom_field, OpenProject::JournalFormatter::CustomField
 
   // Make sure each journaled model instance only has unique version ids
-  validates_uniqueness_of :version, scope: [:journable_id, :journable_type]
+  // validates_uniqueness_of :version, scope: [:journable_id, :journable_type]
 
-  belongs_to :user
-  belongs_to :journable, polymorphic: true
+  // belongs_to :user
+  // belongs_to :journable, polymorphic: true
 
-  has_many :attachable_journals, class_name: 'Journal::AttachableJournal', dependent: :destroy
-  has_many :customizable_journals, class_name: 'Journal::CustomizableJournal', dependent: :destroy
+  // has_many :attachable_journals, class_name: 'Journal::AttachableJournal', dependent: :destroy
+  // has_many :customizable_journals, class_name: 'Journal::CustomizableJournal', dependent: :destroy
 
-  after_create :save_data, if (: :data) {
-  after_save :save_data, :touch_journable
+  // after_create :save_data, if (: :data) {
+  // after_save :save_data, :touch_journable
 
   // Scopes to all journals excluding the initial journal - useful for change
   // logs like the history on issue#show
-  scope :changing, -> { where(['version > 1']) }
+  // scope :changing, -> { where(['version > 1']) }
 
    void changed_data=(changed_attributes) {
     attributes = changed_attributes
@@ -92,7 +92,7 @@ class Journal : public ActiveRecord::Base {
     predecessor
   }
 
-  private
+  private:
 
    void save_data() {
     data.journal_id = id if ( data.new_record?) {

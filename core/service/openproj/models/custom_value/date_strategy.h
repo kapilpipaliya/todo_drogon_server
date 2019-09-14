@@ -1,5 +1,5 @@
 class CustomValue::DateStrategy : public CustomValue::FormatStrategy {
-  include Redmine::I18n
+  // include Redmine::I18n
 
    void typed_value() {
     unless value.blank?

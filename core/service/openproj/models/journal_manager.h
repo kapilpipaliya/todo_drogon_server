@@ -1,6 +1,6 @@
 class JournalManager
   class << self
-    attr_accessor :send_notification
+    // attr_accessor :send_notification
 
      void changes_on_association(current, predecessor, association, key, value) {
       merged_journals = merge_reference_journals_by_id(current, predecessor, key.to_s, value.to_s)
@@ -16,7 +16,7 @@ class JournalManager
       @send_notification = true
     }
 
-    private
+    private:
 
      void merge_reference_journals_by_id(new_journals, old_journals, id_key, value) {
       all_associated_journal_ids = new_journals.map { |j| j[id_key] } | old_journals.map { |j| j[id_key] }
@@ -244,14 +244,14 @@ class JournalManager
 
    void create_journal(journable, journal_attributes, user = User.current, notes = '') {
     type = base_class(journable.class)
-    extended_journal_attributes = journal_attributes
+    // extended_journal_attributes = journal_attributes
       .merge(journable_type: type.to_s)
       .merge(notes: notes)
       .except(:details)
       .except(:id)
 
     unless extended_journal_attributes.has_key? :user_id
-      extended_journal_attributes[:user_id] = user.id
+      // extended_journal_attributes[:user_id] = user.id
     }
 
     journal_attributes[:details] = normalize_newlines(journal_attributes[:details])

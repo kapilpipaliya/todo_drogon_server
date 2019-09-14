@@ -1,7 +1,7 @@
 //
 // Mixin to a filter or strategy
 namespace Queries::WorkPackages::Filter::MeValueFilterMixin {
-  include Queries::Filters::Shared::MeValueFilter
+  // include Queries::Filters::Shared::MeValueFilter
   //
   // Return whether the current values object has a me value
    void has_me_value?() {
@@ -18,7 +18,7 @@ namespace Queries::WorkPackages::Filter::MeValueFilterMixin {
     principals
   }
 
-  protected
+  protected:
 
    void no_me_values() {
     sanitized_values = values.reject { |v| v == me_value_key }

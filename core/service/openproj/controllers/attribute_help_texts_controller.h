@@ -1,17 +1,18 @@
+#include "application_controller.h"
 class AttributeHelpTextsController : public ApplicationController {
-  layout 'admin'
-  menu_item :attribute_help_texts
+  // layout 'admin'
+  // menu_item :attribute_help_texts
 
-  before_action :require_admin
-  before_action :find_entry, only: %i(edit update destroy)
-  before_action :find_type_scope
-  before_action :require_enterprise_token_grant
+  // before_action :require_admin
+  // before_action :find_entry, only: %i(edit update destroy)
+  // before_action :find_type_scope
+  // before_action :require_enterprise_token_grant
 
-   void new() {
+   void new_() {
     @attribute_help_text = AttributeHelpText.new type: @attribute_scope
   }
 
-   void edit; }() {
+   void edit() {}
 
    void update() {
     @attribute_help_text.attributes = permitted_params.attribute_help_text
@@ -49,7 +50,7 @@ class AttributeHelpTextsController : public ApplicationController {
     @texts_by_type = AttributeHelpText.all_by_scope
   }
 
-  protected
+  protected:
 
    void default_breadcrumb() {
     if ( action_name == 'index') {
@@ -63,7 +64,7 @@ class AttributeHelpTextsController : public ApplicationController {
     true
   }
 
-  private
+  private:
 
    void find_entry() {
     @attribute_help_text = AttributeHelpText.find(params[:id])

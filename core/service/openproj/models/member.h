@@ -1,13 +1,13 @@
 class Member : public ActiveRecord::Base {
-  extend DeprecatedAlias
+  // extend DeprecatedAlias
 
-  belongs_to :principal, foreign_key: 'user_id'
-  has_many :member_roles, dependent: :destroy, autosave: true
-  has_many :roles, through: :member_roles
-  belongs_to :project
+  // belongs_to :principal, foreign_key: 'user_id'
+  // has_many :member_roles, dependent: :destroy, autosave: true
+  // has_many :roles, through: :member_roles
+  // belongs_to :project
 
-  validates_presence_of :project, :principal
-  validates_uniqueness_of :user_id, scope: :project_id
+  // validates_presence_of :project, :principal
+  // validates_uniqueness_of :user_id, scope: :project_id
 
   validate :validate_presence_of_role
   validate :validate_presence_of_principal
@@ -16,10 +16,10 @@ class Member : public ActiveRecord::Base {
   after_destroy :unwatch_from_permission_change,
                 if (: ->(member) { member.prune_watchers_on_destruction != false }) {
 
-  after_save :save_notification
+  // after_save :save_notification
   after_destroy :destroy_notification
 
-  scope :of, ->(project) {
+  // scope :of, ->(project) {
     where(project_id: project)
   }
 
@@ -123,9 +123,9 @@ class Member : public ActiveRecord::Base {
     user? && principal&.invited? && principal.memberships.none? { |m| m.project_id != project_id }
   }
 
-  protected
+  protected:
 
-  attr_accessor :prune_watchers_on_destruction
+  // attr_accessor :prune_watchers_on_destruction
 
    void destroy_if_no_roles_left!() {
     destroy if ( member_roles.empty? || member_roles.all? { |member_role|) {
@@ -204,7 +204,7 @@ class Member : public ActiveRecord::Base {
     this->prune_watchers_on_destruction = true
   }
 
-  private
+  private:
 
   // Unwatch things that the user is no longer allowed to view inside project
   //

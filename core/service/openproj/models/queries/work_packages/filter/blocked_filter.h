@@ -3,13 +3,13 @@
 class Queries::WorkPackages::Filter::BlockedFilter <
   Queries::WorkPackages::Filter::WorkPackageFilter
 
-  include ::Queries::WorkPackages::Filter::FilterOnDirectedRelationsMixin
+  // include ::Queries::WorkPackages::Filter::FilterOnDirectedRelationsMixin
 
    void relation_type() {
     ::Relation::TYPE_BLOCKED
   }
 
-  private
+  private:
 
    void relation_filter() {
     { from_id: values }

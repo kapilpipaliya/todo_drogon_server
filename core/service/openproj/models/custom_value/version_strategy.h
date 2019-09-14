@@ -1,5 +1,5 @@
 class CustomValue::VersionStrategy : public CustomValue::ARObjectStrategy {
-  private
+  private:
 
    void ar_class() {
     Version

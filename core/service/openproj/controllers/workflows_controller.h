@@ -1,16 +1,17 @@
+#include "application_controller.h"
 class WorkflowsController : public ApplicationController {
-  layout 'admin'
+  // layout 'admin'
 
-  before_action :require_admin
+  // before_action :require_admin
 
-  before_action :find_roles, except: :update
-  before_action :find_types, except: :update
+  // before_action :find_roles, except: :update
+  // before_action :find_types, except: :update
 
-  before_action :find_role, only: :update
-  before_action :find_type, only: :update
+  // before_action :find_role, only: :update
+  // before_action :find_type, only: :update
 
-  before_action :find_optional_role, only: :edit
-  before_action :find_optional_type, only: :edit
+  // before_action :find_optional_role, only: :edit
+  // before_action :find_optional_type, only: :edit
 
    void show() {
     @workflow_counts = Workflow.count_by_type_and_role
@@ -77,7 +78,7 @@ class WorkflowsController : public ApplicationController {
     true
   }
 
-  private
+  private:
 
    void statuses_for_form() {
     @statuses = if ( @type && @used_statuses_only && @type.statuses.any?) {

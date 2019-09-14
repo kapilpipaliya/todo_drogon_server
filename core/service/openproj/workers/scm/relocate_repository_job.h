@@ -9,7 +9,7 @@ class Scm::RelocateRepositoryJob : public Scm::RemoteRepositoryJob {
     }
   }
 
-  private
+  private:
 
   //
   // POST to the remote managed repository a request to relocate the repository

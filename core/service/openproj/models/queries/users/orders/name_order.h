@@ -5,7 +5,7 @@ class Queries::Users::Orders::NameOrder : public Queries::BaseOrder {
     :name
   }
 
-  private
+  private:
 
    void order() {
     ordered = User.order_by_name

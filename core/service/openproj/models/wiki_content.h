@@ -1,14 +1,14 @@
 #include "zlib"
 
 class WikiContent : public ActiveRecord::Base {
-  belongs_to :page, class_name: 'WikiPage', foreign_key: 'page_id'
-  belongs_to :author, class_name: 'User', foreign_key: 'author_id'
-  validates_length_of :comments, maximum: 255, allow_nil: true
+  // belongs_to :page, class_name: 'WikiPage', foreign_key: 'page_id'
+  // belongs_to :author, class_name: 'User', foreign_key: 'author_id'
+  // validates_length_of :comments, maximum: 255, allow_nil: true
 
-  attr_accessor :comments
+  // attr_accessor :comments
 
   before_save :comments_to_journal_notes
-  after_create :send_content_added_mail
+  // after_create :send_content_added_mail
   after_update :send_content_updated_mail, if (: :saved_change_to_text?) {
 
   acts_as_journalized
@@ -53,7 +53,7 @@ class WikiContent : public ActiveRecord::Base {
     last_journal.nil? ? 0 : last_journal.version
   }
 
-  private
+  private:
 
    void comments_to_journal_notes() {
     add_journal author, comments

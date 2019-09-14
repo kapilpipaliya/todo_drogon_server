@@ -3,7 +3,7 @@ class Authorization::QueryTransformationsOrder
     this->array = []
   }
 
-  delegate :<<, :map, to: :array
+  // delegate :<<, :map, to: :array
 
    void full_order() {
     partial_orders = transformation_partial_orders
@@ -11,9 +11,9 @@ class Authorization::QueryTransformationsOrder
     merge_transformation_partial_orders(partial_orders)
   }
 
-  private
+  private:
 
-  attr_accessor :array
+  // attr_accessor :array
 
    void transformation_partial_orders() {
     map { |transformation|

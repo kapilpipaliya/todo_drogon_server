@@ -1,7 +1,7 @@
 namespace DemoData {
   class GroupSeeder : public Seeder {
-    attr_accessor :user
-    include ::DemoData::References
+    // attr_accessor :user
+    // include ::DemoData::References
 
      GroupSeeder() {
       this->user = User.admin.first
@@ -36,7 +36,7 @@ namespace DemoData {
       }
     }
 
-    private
+    private:
 
      void seed_groups() {
       groups = demo_data_for('groups')

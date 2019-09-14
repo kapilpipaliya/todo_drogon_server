@@ -1,6 +1,7 @@
+#include "application_controller.h"
 class HighlightingController : public ApplicationController {
-  before_action :determine_freshness
-  skip_before_action :check_if_login_required, only: [:styles]
+  // before_action :determine_freshness
+  // skip_before_action :check_if_login_required, only: [:styles]
 
    void styles() {
     response.content_type = Mime[:css]
@@ -14,7 +15,7 @@ class HighlightingController : public ApplicationController {
     }
   }
 
-  private
+  private:
 
    void determine_freshness() {
     @max_updated_at = helpers.highlight_css_updated_at.to_s || Time.now.iso8601

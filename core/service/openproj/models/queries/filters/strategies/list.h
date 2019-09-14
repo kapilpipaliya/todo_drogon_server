@@ -1,7 +1,7 @@
 namespace Queries::Filters::Strategies {
   class List : public BaseStrategy {
-    delegate :allowed_values,
-             to: :filter
+    // delegate :allowed_values,
+    //          to: :filter
 
     this->supported_operators = ['=', '!']
     this->default_operator = '='

@@ -1,5 +1,5 @@
 namespace Type::Attributes {
-  extend ActiveSupport::Concern
+  // extend ActiveSupport::Concern
 
   included {
     // Allow plugins to define constraints
@@ -57,7 +57,7 @@ namespace Type::Attributes {
       }
     }
 
-    private
+    private:
 
      void calculate_all_work_package_form_attributes(merge_date) {
       attributes = calculate_default_work_package_form_attributes

@@ -1,6 +1,6 @@
 class Authorization::AbstractQuery
-  class_attribute :model
-  class_attribute :base_table
+  // class_attribute :model
+  // class_attribute :base_table
 
    void query(*args) {
     arel = transformed_query(*args)
@@ -21,7 +21,7 @@ class Authorization::AbstractQuery
     run_transformations(*args)
   }
 
-  class_attribute :transformations
+  // class_attribute :transformations
 
   this->transformations = ::Authorization::QueryTransformations.new
 

@@ -1,10 +1,10 @@
 namespace WorkPackages {
   namespace Bulk {
     class UpdateService
-      include ::Shared::ServiceContext
-      include ::HookHelper
+      // include ::Shared::ServiceContext
+      // include ::HookHelper
 
-      attr_accessor :user, :work_packages, :permitted_params
+      // attr_accessor :user, :work_packages, :permitted_params
 
        UpdateService(user:, work_packages:) {
         this->user = user
@@ -18,7 +18,7 @@ namespace WorkPackages {
         }
       }
 
-      private
+      private:
 
        void bulk_update(params) {
         saved = []

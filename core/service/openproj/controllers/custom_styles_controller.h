@@ -1,16 +1,17 @@
+#include "application_controller.h"
 class CustomStylesController : public ApplicationController {
-  layout 'admin'
-  menu_item :custom_style
+  // layout 'admin'
+  // menu_item :custom_style
 
-  before_action :require_admin, except: [:logo_download, :favicon_download, :touch_icon_download]
-  before_action :require_ee_token, except: [:upsale, :logo_download, :favicon_download, :touch_icon_download]
-  skip_before_action :check_if_login_required, only: [:logo_download, :favicon_download, :touch_icon_download]
+  // before_action :require_admin, except: [:logo_download, :favicon_download, :touch_icon_download]
+  // before_action :require_ee_token, except: [:upsale, :logo_download, :favicon_download, :touch_icon_download]
+  // skip_before_action :check_if_login_required, only: [:logo_download, :favicon_download, :touch_icon_download]
 
    void show() {
     @custom_style = CustomStyle.current || CustomStyle.new
   }
 
-   void upsale; }() {
+   void upsale() {}
 
    void create() {
     @custom_style = CustomStyle.create(custom_style_params)
@@ -81,7 +82,7 @@ class CustomStylesController : public ApplicationController {
     true
   }
 
-  private
+  private:
 
    void require_ee_token() {
     unless EnterpriseToken.allows_to?(:define_custom_style)

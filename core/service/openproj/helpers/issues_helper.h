@@ -1,5 +1,5 @@
 namespace IssuesHelper {
-  include ApplicationHelper
+  // include ApplicationHelper
 
   // Renders a HTML/CSS tooltip
   //

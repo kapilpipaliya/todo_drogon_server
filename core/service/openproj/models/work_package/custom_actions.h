@@ -1,5 +1,5 @@
 namespace WorkPackage::CustomActions {
-  extend ActiveSupport::Concern
+  // extend ActiveSupport::Concern
 
   included {
      void custom_actions(user) {

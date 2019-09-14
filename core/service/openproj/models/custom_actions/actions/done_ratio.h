@@ -1,5 +1,5 @@
 class CustomActions::Actions::DoneRatio : public CustomActions::Actions::Base {
-  include CustomActions::Actions::Strategies::Integer
+  // include CustomActions::Actions::Strategies::Integer
 
    void key() {
     :done_ratio

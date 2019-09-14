@@ -1,7 +1,7 @@
 class WorkPackages::RescheduleService
-  include ::Shared::ServiceContext
+  // include ::Shared::ServiceContext
 
-  attr_accessor :user,
+  // attr_accessor :user,
                 :work_package
 
    RescheduleService(user:, work_package:) {

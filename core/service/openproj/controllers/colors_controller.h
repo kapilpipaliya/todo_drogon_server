@@ -1,9 +1,10 @@
+#include "application_controller.h"
 class ColorsController : public ApplicationController {
-  before_action :require_admin_unless_readonly_api_request
+  // before_action :require_admin_unless_readonly_api_request
 
-  layout 'admin'
+  // layout 'admin'
 
-  menu_item :colors
+  // menu_item :colors
 
    void index() {
     @colors = Color.all
@@ -18,7 +19,7 @@ class ColorsController : public ApplicationController {
     }
   }
 
-   void new() {
+   void new_() {
     @color = Color.new
     respond_to { |format|
       format.html
@@ -71,7 +72,7 @@ class ColorsController : public ApplicationController {
     redirect_to colors_path
   }
 
-  protected
+  protected:
 
    void default_breadcrumb() {
     if ( action_name == 'index') {

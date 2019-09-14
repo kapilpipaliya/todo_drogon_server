@@ -3,7 +3,7 @@ namespace Queries::AvailableOrders {
     (find_registered_order(key) || Queries::NotExistingOrder).new(key)
   }
 
-  private
+  private:
 
    void find_registered_order(key) {
     orders_register.detect { |s|

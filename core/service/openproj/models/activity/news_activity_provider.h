@@ -12,7 +12,7 @@ class Activity::NewsActivityProvider : public Activity::BaseActivityProvider {
     ]
   }
 
-  protected
+  protected:
 
    void event_title(event, _activity) {
     event['title']
@@ -30,7 +30,7 @@ class Activity::NewsActivityProvider : public Activity::BaseActivityProvider {
     url_helpers.news_url(url_helper_parameter(event))
   }
 
-  private
+  private:
 
    void url_helper_parameter(event) {
     event['journable_id']

@@ -1,8 +1,8 @@
 class WorkPackage::PdfExport::WorkPackageToPdf : public WorkPackage::Exporter::Base {
-  include WorkPackage::PdfExport::Common
-  include WorkPackage::PdfExport::Attachments
+  // include WorkPackage::PdfExport::Common
+  // include WorkPackage::PdfExport::Attachments
 
-  attr_accessor :pdf
+  // attr_accessor :pdf
 
    WorkPackageToPdf(work_package) {
     super

@@ -1,5 +1,5 @@
 namespace CustomActions::Actions::Strategies::Boolean {
-  include CustomActions::ValidateAllowedValue
+  // include CustomActions::ValidateAllowedValue
 
    void allowed_values() {
     [

@@ -1,6 +1,6 @@
 namespace Queries::WorkPackages::FilterSerializer {
-  extend Queries::AvailableFilters
-  extend Queries::AvailableFilters::ClassMethods
+  // extend Queries::AvailableFilters
+  // extend Queries::AvailableFilters::ClassMethods
 
    void load(serialized_filter_hash) {
     return [] if ( serialized_filter_hash.nil?) {

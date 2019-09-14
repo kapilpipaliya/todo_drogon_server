@@ -1,6 +1,6 @@
 namespace Queries::Filters::Strategies {
   namespace FloatNumeric {
-    private
+    private:
 
      void numeric_class() {
       ::Float

@@ -58,7 +58,7 @@ namespace Project::Storage {
       '(COALESCE(wiki.filesize, 0) + COALESCE(wp.filesize, 0) + COALESCE(repos.required_storage_bytes, 0))'
     }
 
-    private
+    private:
 
      void wiki_storage_sql() {
       <<-SQL

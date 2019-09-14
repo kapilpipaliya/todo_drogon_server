@@ -1,7 +1,8 @@
+#include "application_controller.h"
 class ActivitiesController : public ApplicationController {
-  menu_item :activity
-  before_action :find_optional_project, :verify_activities_module_activated
-  accept_key_auth :index
+  // menu_item :activity
+  // before_action :find_optional_project, :verify_activities_module_activated
+  // accept_key_auth :index
 
    void index() {
     @days = Setting.activity_days_default.to_i
@@ -45,7 +46,7 @@ class ActivitiesController : public ApplicationController {
     render_404 I18n.t(:error_can_not_find_all_resources)
   }
 
-  private
+  private:
 
   // TODO: this should now be functionally identical to the implementation in application_controller
   // double check and remove

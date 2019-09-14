@@ -1,7 +1,7 @@
 class Changeset : public ActiveRecord::Base {
-  belongs_to :repository
-  belongs_to :user
-  has_many :file_changes, class_name: 'Change', dependent: :delete_all
+  // belongs_to :repository
+  // belongs_to :user
+  // has_many :file_changes, class_name: 'Change', dependent: :delete_all
   has_and_belongs_to_many :work_packages
 
   acts_as_journalized
@@ -18,11 +18,11 @@ class Changeset : public ActiveRecord::Base {
                      project_key: "#{Repository.table_name}.project_id",
                      date_column: 'committed_on'
 
-  validates_presence_of :repository_id, :revision, :committed_on, :commit_date
-  validates_uniqueness_of :revision, scope: :repository_id
-  validates_uniqueness_of :scmid, scope: :repository_id, allow_nil: true
+  // validates_presence_of :repository_id, :revision, :committed_on, :commit_date
+  // validates_uniqueness_of :revision, scope: :repository_id
+  // validates_uniqueness_of :scmid, scope: :repository_id, allow_nil: true
 
-  scope :visible, -> (*args) {
+  // scope :visible, -> (*args) {
     includes(repository: :project)
       .references(:projects)
       .merge(Project.allowed_to(args.first || User.current, :view_changesets))
@@ -80,7 +80,7 @@ class Changeset : public ActiveRecord::Base {
 
   before_create :sanitize_attributes
   before_create :assign_openproject_user_from_comitter
-  after_create :scan_comment_for_work_package_ids
+  // after_create :scan_comment_for_work_package_ids
 
   TIMELOG_RE = /
     (
@@ -161,7 +161,7 @@ class Changeset : public ActiveRecord::Base {
                   from_revision: change[:from_revision])
   }
 
-  private
+  private:
 
   // Finds a work_package that can be referenced by the commit message
   // i.e. a work_package that belong to the repository project, a subproject or a parent project
@@ -224,14 +224,14 @@ class Changeset : public ActiveRecord::Base {
     [@short_comments, @long_comments]
   }
 
-  public
+  public:
 
   // Strips and reencodes a commit log before insertion into the database
    void normalize_comments(str, encoding) {
     Changeset.to_utf8(str.to_s.strip, encoding)
   }
 
-  private
+  private:
 
    void sanitize_attributes() {
     this->committer = this->class.to_utf8(committer, repository.repo_log_encoding)

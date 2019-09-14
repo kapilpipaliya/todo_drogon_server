@@ -11,7 +11,7 @@ namespace RolesHelper {
     group_permissions_by_module(setable_permissions(role))
   }
 
-  private
+  private:
 
    void group_permissions_by_module(perms) {
     perms_by_module = perms.group_by { |p| p.project_module.to_s }

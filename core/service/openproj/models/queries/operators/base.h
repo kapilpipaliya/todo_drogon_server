@@ -1,6 +1,6 @@
 namespace Queries::Operators {
   class Base
-    class_attribute :label_key,
+    // class_attribute :label_key,
                     :symbol,
                     :value_required
 

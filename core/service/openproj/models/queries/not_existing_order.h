@@ -5,7 +5,7 @@ class Queries::NotExistingOrder : public Queries::BaseOrder {
     :inexistent
   }
 
-  private
+  private:
 
    void always_false() {
     errors.add :base, I18n.t(:'activerecord.errors.messages.does_not_exist')

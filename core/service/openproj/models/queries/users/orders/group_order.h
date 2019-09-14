@@ -5,7 +5,7 @@ class Queries::Users::Orders::GroupOrder : public Queries::BaseOrder {
     :group
   }
 
-  private
+  private:
 
    void order() {
     order_string = "groups_users.lastname"

@@ -21,7 +21,7 @@ class Activity::MessageActivityProvider : public Activity::BaseActivityProvider 
     forums_table
   }
 
-  protected
+  protected:
 
    void event_title(event, _activity) {
     "#{event['forum_name']}: #{event['message_subject']}"
@@ -43,7 +43,7 @@ class Activity::MessageActivityProvider : public Activity::BaseActivityProvider 
     url_helpers.topic_url(*url_helper_parameter(event))
   }
 
-  private
+  private:
 
    void forums_table() {
     @forums_table ||= Forum.arel_table

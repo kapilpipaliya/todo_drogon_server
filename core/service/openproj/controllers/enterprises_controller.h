@@ -1,9 +1,10 @@
+#include "application_controller.h"
 class EnterprisesController : public ApplicationController {
-  layout 'admin'
-  menu_item :enterprise
+  // layout 'admin'
+  // menu_item :enterprise
 
-  before_action :require_admin
-  before_action :check_user_limit, only: [:show]
+  // before_action :require_admin
+  // before_action :check_user_limit, only: [:show]
 
    void show() {
     @current_token = EnterpriseToken.current
@@ -33,7 +34,7 @@ class EnterprisesController : public ApplicationController {
     }
   }
 
-  private
+  private:
 
    void default_breadcrumb() {
     t(:label_enterprise)

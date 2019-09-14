@@ -1,8 +1,8 @@
 class WorkPackages::CreateService
-  include ::WorkPackages::Shared::UpdateAncestors
-  include ::Shared::ServiceContext
+  // include ::WorkPackages::Shared::UpdateAncestors
+  // include ::Shared::ServiceContext
 
-  attr_accessor :user,
+  // attr_accessor :user,
                 :contract_class
 
    CreateService(user:, contract_class: WorkPackages::CreateContract) {
@@ -18,7 +18,7 @@ class WorkPackages::CreateService
     }
   }
 
-  protected
+  protected:
 
    void create(attributes, work_package) {
     result = set_attributes(attributes, work_package)

@@ -1,9 +1,9 @@
 namespace DemoData {
   class WorkPackageSeeder : public Seeder {
-    attr_accessor :project, :user, :statuses, :repository,
+    // attr_accessor :project, :user, :statuses, :repository,
                   :time_entry_activities, :types, :key
 
-    include ::DemoData::References
+    // include ::DemoData::References
 
      WorkPackageSeeder(project, key) {
       this->project = project
@@ -24,7 +24,7 @@ namespace DemoData {
       puts
     }
 
-    private
+    private:
 
      void seed_demo_work_packages() {
       work_packages_data = project_data_for(key, 'work_packages')

@@ -1,8 +1,8 @@
 class WorkPackages::UpdateService
-  include ::WorkPackages::Shared::UpdateAncestors
-  include ::Shared::ServiceContext
+  // include ::WorkPackages::Shared::UpdateAncestors
+  // include ::Shared::ServiceContext
 
-  attr_accessor :user,
+  // attr_accessor :user,
                 :model,
                 :contract_class
 
@@ -18,7 +18,7 @@ class WorkPackages::UpdateService
     }
   }
 
-  private
+  private:
 
    void update(attributes) {
     result = set_attributes(attributes)

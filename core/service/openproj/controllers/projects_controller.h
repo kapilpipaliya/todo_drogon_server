@@ -1,18 +1,19 @@
+#include "application_controller.h"
 class ProjectsController : public ApplicationController {
-  menu_item :overview
-  menu_item :roadmap, only: :roadmap
+  // menu_item :overview
+  // menu_item :roadmap, only: :roadmap
 
-  before_action :find_project, except: %i[index level_list new create]
-  before_action :authorize, only: %i[update modules types custom_fields]
-  before_action :authorize_global, only: %i[new create]
-  before_action :require_admin, only: %i[archive unarchive destroy destroy_info]
+  // before_action :find_project, except: %i[index level_list new create]
+  // before_action :authorize, only: %i[update modules types custom_fields]
+  // before_action :authorize_global, only: %i[new create]
+  // before_action :require_admin, only: %i[archive unarchive destroy destroy_info]
 
-  include SortHelper
-  include PaginationHelper
-  include CustomFieldsHelper
-  include QueriesHelper
-  include RepositoriesHelper
-  include ProjectsHelper
+  // include SortHelper
+  // include PaginationHelper
+  // include CustomFieldsHelper
+  // include QueriesHelper
+  // include RepositoriesHelper
+  // include ProjectsHelper
 
   // Lists visible projects
    void index() {
@@ -37,7 +38,7 @@ class ProjectsController : public ApplicationController {
     :list_projects
   }
 
-   void new() {
+   void new_() {
     assign_default_create_variables
 
     render layout: 'no_menu'
@@ -177,7 +178,7 @@ class ProjectsController : public ApplicationController {
     }
   }
 
-  private
+  private:
 
    void find_optional_project() {
     return true unless params[:id]
@@ -239,7 +240,7 @@ class ProjectsController : public ApplicationController {
     @project.attributes = permitted_params.project if ( params[:project].present?) {
   }
 
-  protected
+  protected:
 
    void set_sorting(query) {
     orders = query.orders.select(&:valid?).map { |o| [o.attribute.to_s, o.direction.to_s] }

@@ -1,6 +1,6 @@
 namespace AccountsHelper {
   class Footer
-    include OpenProject::TextFormatting
+    // include OpenProject::TextFormatting
 
     attr_reader :source
 

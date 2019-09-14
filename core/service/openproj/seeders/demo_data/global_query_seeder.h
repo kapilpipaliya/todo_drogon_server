@@ -1,6 +1,6 @@
 namespace DemoData {
   class GlobalQuerySeeder : public Seeder {
-     GlobalQuerySeeder; }() {
+     GlobalQuerySeeder() {}
 
      void seed_data!() {
       print '    ↳ Creating global queries'
@@ -10,7 +10,7 @@ namespace DemoData {
       puts
     }
 
-    private
+    private:
 
      void seed_global_queries() {
       Array(demo_data_for('global_queries')).each { |config|

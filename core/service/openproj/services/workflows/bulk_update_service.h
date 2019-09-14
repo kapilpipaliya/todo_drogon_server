@@ -21,9 +21,9 @@ class Workflows::BulkUpdateService : public ::BaseServices::Update {
     ServiceResult.new success: valid, errors: role.errors
   }
 
-  private
+  private:
 
-  attr_accessor :role, :type
+  // attr_accessor :role, :type
 
    void build_workflows(status_transitions) {
     new_workflows = []

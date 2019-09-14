@@ -9,7 +9,7 @@ class WorkPackages::AutoCompletesController : public ::ApplicationController {
     }
   }
 
-  private
+  private:
 
    void work_package_with_id() {
     query_term = params[:q].to_s

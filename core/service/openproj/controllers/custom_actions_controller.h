@@ -1,20 +1,19 @@
+#include "application_controller.h"
 class CustomActionsController : public ApplicationController {
-  before_action :require_admin
-  before_action :require_enterprise_token
+  // before_action :require_admin
+  // before_action :require_enterprise_token
 
   this->_model_object = CustomAction
-  before_action :find_model_object, only: %i(edit update destroy)
-  before_action :pad_params, only: %i(create update)
+  // before_action :find_model_object, only: %i(edit update destroy)
+  // before_action :pad_params, only: %i(create update)
 
-  layout 'admin'
-
-  helper_method :gon
+  // layout 'admin'
 
    void index() {
     @custom_actions = CustomAction.order_by_position
   }
 
-   void new() {
+   void new_() {
     @custom_action = CustomAction.new
   }
 
@@ -25,7 +24,7 @@ class CustomActionsController : public ApplicationController {
             &index_or_render(:new))
   }
 
-   void edit; }() {
+   void edit() {}
 
    void update() {
     CustomActions::UpdateService
@@ -40,7 +39,7 @@ class CustomActionsController : public ApplicationController {
     redirect_to custom_actions_path
   }
 
-  private
+  private:
 
    void index_or_render(render_action) {
     ->(call) {

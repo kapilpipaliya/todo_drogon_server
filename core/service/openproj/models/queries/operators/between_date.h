@@ -3,7 +3,7 @@ namespace Queries::Operators {
     label 'between'
     set_symbol '<>d'
 
-    extend DateRangeClauses
+    // extend DateRangeClauses
 
      void sql_for_field(values, db_table, db_field) {
       lower_boundary, upper_boundary = values.map { |v| v.blank? ? nil : Date.parse(v) }

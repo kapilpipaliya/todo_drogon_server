@@ -1,7 +1,7 @@
 class Roles::CreateService : public ::BaseServices::Create {
-  include Roles::NotifyMixin
+  // include Roles::NotifyMixin
 
-  private
+  private:
 
    void create(params) {
     copy_workflow_id = params.delete(:copy_workflow_from)

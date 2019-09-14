@@ -1,7 +1,7 @@
 //
 // Password hashing method using bcrypt
 class UserPassword::Bcrypt : public UserPassword {
-  protected
+  protected:
 
   //
   // Determines whether the hashed value of +plain+ matches the stored password hash.

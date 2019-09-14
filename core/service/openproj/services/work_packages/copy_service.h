@@ -1,8 +1,8 @@
 class WorkPackages::CopyService
-  include ::Shared::ServiceContext
-  include ::Concerns::Contracted
+  // include ::Shared::ServiceContext
+  // include ::Concerns::Contracted
 
-  attr_accessor :user,
+  // attr_accessor :user,
                 :work_package,
                 :contract_class
 
@@ -18,7 +18,7 @@ class WorkPackages::CopyService
     }
   }
 
-  protected
+  protected:
 
    void copy(attribute_override, send_notifications) {
     attributes = copied_attributes(work_package, attribute_override)

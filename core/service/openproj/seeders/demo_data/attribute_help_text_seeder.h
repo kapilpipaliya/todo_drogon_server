@@ -10,7 +10,7 @@ namespace DemoData {
       puts
     }
 
-    private
+    private:
 
      void seed_attribute_help_texts() {
       help_texts = demo_data_for('attribute_help_texts')

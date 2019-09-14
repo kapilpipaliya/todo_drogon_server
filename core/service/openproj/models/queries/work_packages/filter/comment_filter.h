@@ -1,5 +1,5 @@
 class Queries::WorkPackages::Filter::CommentFilter : public Queries::WorkPackages::Filter::WorkPackageFilter {
-  include Queries::WorkPackages::Filter::TextFilterOnJoinMixin
+  // include Queries::WorkPackages::Filter::TextFilterOnJoinMixin
 
    void type() {
     :text
@@ -13,7 +13,7 @@ class Queries::WorkPackages::Filter::CommentFilter : public Queries::WorkPackage
     SQL
   }
 
-  private
+  private:
 
    void join_table() {
     Journal.table_name

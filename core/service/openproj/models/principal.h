@@ -11,12 +11,12 @@ class Principal : public ActiveRecord::Base {
 
   this->table_name = "#{table_name_prefix}users#{table_name_suffix}"
 
-  has_one :preference,
+  // has_one :preference,
           dependent: :destroy,
           class_name: 'UserPreference',
           foreign_key: 'user_id'
-  has_many :members, foreign_key: 'user_id', dependent: :destroy
-  has_many :memberships, -> {
+  // has_many :members, foreign_key: 'user_id', dependent: :destroy
+  // has_many :memberships, -> {
     includes(:project, :roles)
       .where(projects: { status: Project::STATUS_ACTIVE })
       .order(Arel.sql('projects.name ASC'))
@@ -24,31 +24,31 @@ class Principal : public ActiveRecord::Base {
   },
            class_name: 'Member',
            foreign_key: 'user_id'
-  has_many :projects, through: :memberships
-  has_many :categories, foreign_key: 'assigned_to_id', dependent: :nullify
+  // has_many :projects, through: :memberships
+  // has_many :categories, foreign_key: 'assigned_to_id', dependent: :nullify
 
-  scope :active, -> { where(status: STATUSES[:active]) }
+  // scope :active, -> { where(status: STATUSES[:active]) }
 
-  scope :active_or_registered, -> {
+  // scope :active_or_registered, -> {
     where(status: [STATUSES[:active], STATUSES[:registered], STATUSES[:invited]])
   }
 
-  scope :active_or_registered_like, ->(query) { active_or_registered.like(query) }
+  // scope :active_or_registered_like, ->(query) { active_or_registered.like(query) }
 
-  scope :in_project, ->(project) {
+  // scope :in_project, ->(project) {
     where(id: Member.of(project).select(:user_id))
   }
 
-  scope :not_in_project, ->(project) {
+  // scope :not_in_project, ->(project) {
     where.not(id: Member.of(project).select(:user_id))
   }
 
   // Active non-anonymous principals scope
-  scope :not_builtin, -> {
+  // scope :not_builtin, -> {
     where("#{Principal.table_name}.status <> #{STATUSES[:builtin]}")
   }
 
-  scope :like, ->(q) {
+  // scope :like, ->(q) {
     firstnamelastname = "((firstname || ' ') || lastname)"
     lastnamefirstname = "((lastname || ' ') || firstname)"
 
@@ -132,7 +132,7 @@ class Principal : public ActiveRecord::Base {
     }
   }
 
-  protected
+  protected:
 
   // Make sure we don't try to insert NULL values (see #4632)
    void set_default_empty_values() {
@@ -143,5 +143,5 @@ class Principal : public ActiveRecord::Base {
     true
   }
 
-  extend Pagination::Model
+  // extend Pagination::Model
 }

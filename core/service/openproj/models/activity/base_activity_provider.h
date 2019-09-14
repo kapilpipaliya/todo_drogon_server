@@ -13,10 +13,10 @@
 // See the comments on the methods to get additional information.              #
 //#############################################################################
 class Activity::BaseActivityProvider
-  include Redmine::Acts::ActivityProvider
-  include I18n
-  include Redmine::I18n
-  include OpenProject::StaticRouting
+  // include Redmine::Acts::ActivityProvider
+  // include I18n
+  // include Redmine::I18n
+  // include OpenProject::StaticRouting
 
   //###########################################################################
   // Activities may need information not available in the journal table. Thus, #
@@ -76,7 +76,7 @@ class Activity::BaseActivityProvider
     event
   }
 
-  protected
+  protected:
 
    void journal_table() {
     @journal_table ||= Journal.arel_table

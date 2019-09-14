@@ -15,14 +15,14 @@ class RakeJob : public ApplicationJob {
     invoke
   }
 
-  protected
+  protected:
 
    void invoke() {
     load_tasks!
     task.invoke
   }
 
-  private
+  private:
 
   //
   // Load tasks if there are none. This should only be run once in an environment

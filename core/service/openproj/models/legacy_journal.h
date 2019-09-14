@@ -7,31 +7,31 @@
 
 // The ActiveRecord model representing journals.
 class LegacyJournal : public ActiveRecord::Base {
-  include Comparable
-  include ::JournalFormatter
-  include ::JournalDeprecated
-  include ::Redmine::Acts::Journalized::FormatHooks
+  // include Comparable
+  // include ::JournalFormatter
+  // include ::JournalDeprecated
+  // include ::Redmine::Acts::Journalized::FormatHooks
 
   // Make sure each journaled model instance only has unique version ids
-  validates_uniqueness_of :version, scope: [:journaled_id, :type]
+  // validates_uniqueness_of :version, scope: [:journaled_id, :type]
 
   // Define a default class_name to prevent `uninitialized constant Journal::Journaled`
   // subclasses will be given an actual class name when they are created by aaj
   //
   //  e.g. IssueJournal will get class_name: 'Issue'
-  belongs_to :journaled, class_name: 'Journal'
-  belongs_to :user
+  // belongs_to :journaled, class_name: 'Journal'
+  // belongs_to :user
 
-  register_journal_formatter :diff, OpenProject::JournalFormatter::Diff
-  register_journal_formatter :attachment, OpenProject::JournalFormatter::Attachment
-  register_journal_formatter :custom_field, OpenProject::JournalFormatter::CustomField
+  // register_journal_formatter :diff, OpenProject::JournalFormatter::Diff
+  // register_journal_formatter :attachment, OpenProject::JournalFormatter::Attachment
+  // register_journal_formatter :custom_field, OpenProject::JournalFormatter::CustomField
 
   // "touch" the journaled object on creation
-  after_create :touch_journaled_after_creation
+  // after_create :touch_journaled_after_creation
 
   // Scopes to all journals excluding the initial journal - useful for change
   // logs like the history on issue#show
-  scope :changing, -> {
+  // scope :changing, -> {
     where(['version > 1'])
   }
 

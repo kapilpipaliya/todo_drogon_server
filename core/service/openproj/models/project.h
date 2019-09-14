@@ -1,10 +1,10 @@
 class Project : public ActiveRecord::Base {
-  extend Pagination::Model
-  extend FriendlyId
+  // extend Pagination::Model
+  // extend FriendlyId
 
-  include Project::Copy
-  include Project::Storage
-  include Project::Activity
+  // include Project::Copy
+  // include Project::Storage
+  // include Project::Activity
 
   // Project statuses
   STATUS_ACTIVE     = 1
@@ -19,8 +19,8 @@ class Project : public ActiveRecord::Base {
   RESERVED_IDENTIFIERS = %w(new).freeze
 
   // Specific overridden Activities
-  has_many :time_entry_activities
-  has_many :members, -> {
+  // has_many :time_entry_activities
+  // has_many :members, -> {
     includes(:principal, :roles)
       .where(
         "#{Principal.table_name}.type='User' AND (
@@ -31,13 +31,13 @@ class Project : public ActiveRecord::Base {
       .references(:principal, :roles)
   }
 
-  has_many :possible_assignee_members, -> {
+  // has_many :possible_assignee_members, -> {
     includes(:principal, :roles)
       .where(Project.possible_principles_condition)
       .references(:principals, :roles)
   }, class_name: 'Member'
   // Read only
-  has_many :possible_assignees,
+  // has_many :possible_assignees,
            ->(object) {
              // Have to reference members and roles again although
              // possible_assignee_members does already specify it to be able to use the
@@ -52,13 +52,13 @@ class Project : public ActiveRecord::Base {
            },
            through: :possible_assignee_members,
            source: :principal
-  has_many :possible_responsible_members, -> {
+  // has_many :possible_responsible_members, -> {
     includes(:principal, :roles)
       .where(Project.possible_principles_condition)
       .references(:principals, :roles)
   }, class_name: 'Member'
   // Read only
-  has_many :possible_responsibles,
+  // has_many :possible_responsibles,
            ->(object) {
              // Have to reference members and roles again although
              // possible_responsible_members does already specify it to be able to use
@@ -73,8 +73,8 @@ class Project : public ActiveRecord::Base {
            },
            through: :possible_responsible_members,
            source: :principal
-  has_many :memberships, class_name: 'Member'
-  has_many :member_principals,
+  // has_many :memberships, class_name: 'Member'
+  // has_many :member_principals,
            -> {
              includes(:principal)
                .references(:principals)
@@ -85,29 +85,29 @@ class Project : public ActiveRecord::Base {
                "#{Principal.table_name}.status=#{Principal::STATUSES[:invited]}))")
            },
            class_name: 'Member'
-  has_many :users, through: :members, source: :principal
-  has_many :principals, through: :member_principals, source: :principal
+  // has_many :users, through: :members, source: :principal
+  // has_many :principals, through: :member_principals, source: :principal
 
-  has_many :enabled_modules, dependent: :delete_all
+  // has_many :enabled_modules, dependent: :delete_all
   has_and_belongs_to_many :types, -> {
     order("#{::Type.table_name}.position")
   }
-  has_many :work_packages, -> {
+  // has_many :work_packages, -> {
     order("#{WorkPackage.table_name}.created_at DESC")
       .includes(:status, :type)
   }
-  has_many :work_package_changes, through: :work_packages, source: :journals
-  has_many :versions, -> {
+  // has_many :work_package_changes, through: :work_packages, source: :journals
+  // has_many :versions, -> {
     order("#{Version.table_name}.effective_date DESC, #{Version.table_name}.name DESC")
   }, dependent: :destroy
-  has_many :time_entries, dependent: :delete_all
-  has_many :queries, dependent: :delete_all
-  has_many :news, -> { includes(:author) }, dependent: :destroy
-  has_many :categories, -> { order("#{Category.table_name}.name") }, dependent: :delete_all
-  has_many :forums, -> { order('position ASC') }, dependent: :destroy
-  has_one :repository, dependent: :destroy
-  has_many :changesets, through: :repository
-  has_one :wiki, dependent: :destroy
+  // has_many :time_entries, dependent: :delete_all
+  // has_many :queries, dependent: :delete_all
+  // has_many :news, -> { includes(:author) }, dependent: :destroy
+  // has_many :categories, -> { order("#{Category.table_name}.name") }, dependent: :delete_all
+  // has_many :forums, -> { order('position ASC') }, dependent: :destroy
+  // has_one :repository, dependent: :destroy
+  // has_many :changesets, through: :repository
+  // has_one :wiki, dependent: :destroy
   // Custom field for the project's work_packages
   has_and_belongs_to_many :work_package_custom_fields, -> {
     order("#{CustomField.table_name}.position")
@@ -124,22 +124,22 @@ class Project : public ActiveRecord::Base {
                 author: nil,
                 datetime: :created_on
 
-  validates :name,
+  // validates :name,
             presence: true,
             length: { maximum: 255 }
   // TODO: we temporarily disable this validation because it leads to failed tests
   // it implicitly assumes a db:seed-created standard type to be present and currently
   // neither development nor deployment setups are prepared for this
   // validates_presence_of :types
-  validates :identifier,
+  // validates :identifier,
             presence: true,
             uniqueness: { case_sensitive: true },
             length: { maximum: IDENTIFIER_MAX_LENGTH },
             exclusion: RESERVED_IDENTIFIERS
 
-  validates_associated :repository, :wiki
+  // validates_associated :repository, :wiki
   // starts with lower-case letter, a-z, 0-9, dashes and underscores afterwards
-  validates :identifier,
+  // validates :identifier,
             format: { with: /\A[a-z][a-z0-9\-_]*\z/ },
             if (: ->(p) { p.identifier_changed? }) {
   // reserved words
@@ -149,12 +149,12 @@ class Project : public ActiveRecord::Base {
   before_destroy :delete_all_members
   before_destroy :destroy_all_work_packages
 
-  scope :has_module, ->(mod) {
+  // scope :has_module, ->(mod) {
     where(["#{Project.table_name}.id IN (SELECT em.project_id FROM #{EnabledModule.table_name} em WHERE em.name=?)", mod.to_s])
   }
-  scope :public_projects, -> { where(is_public: true) }
-  scope :visible, ->(user = User.current) { merge(Project.visible_by(user)) }
-  scope :newest, -> { order(created_on: :desc) }
+  // scope :public_projects, -> { where(is_public: true) }
+  // scope :visible, ->(user = User.current) { merge(Project.visible_by(user)) }
+  // scope :newest, -> { order(created_on: :desc) }
 
    void visible?(user = User.current) {
     active? and (is_public? or user.admin? or user.member_of?(self))
@@ -759,7 +759,7 @@ class Project : public ActiveRecord::Base {
     sanitize_sql_array condition
   }
 
-  protected
+  protected:
 
    void guarantee_project_or_nil_or_false(p) {
     if ( p.is_a?(Project)) {

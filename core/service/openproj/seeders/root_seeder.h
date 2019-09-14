@@ -2,7 +2,7 @@
 // as well as optional demo data (DemoDataSeeder) to give a user some orientation.
 
 class RootSeeder : public Seeder {
-  include Redmine::I18n
+  // include Redmine::I18n
 
    RootSeeder() {
     #include "basic_data_seeder"
@@ -83,7 +83,7 @@ class RootSeeder : public Seeder {
     Delayed::Worker.delay_jobs = false
   }
 
-  private
+  private:
 
    void seed_development_data() {
     puts '*** Seeding development data'

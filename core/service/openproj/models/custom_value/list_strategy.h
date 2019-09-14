@@ -10,7 +10,7 @@ class CustomValue::ListStrategy : public CustomValue::ARObjectStrategy {
     super_value && super_value.to_s || nil
   }
 
-  private
+  private:
 
    void ar_class() {
     CustomOption

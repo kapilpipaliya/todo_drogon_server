@@ -1,10 +1,11 @@
+#include "application_controller.h"
 class CustomFieldsController : public ApplicationController {
-  layout 'admin'
+  // layout 'admin'
 
-  before_action :require_admin
-  before_action :find_custom_field, only: %i(edit update destroy move delete_option)
-  before_action :prepare_custom_option_position, only: %i(update create)
-  before_action :find_custom_option, only: :delete_option
+  // before_action :require_admin
+  // before_action :find_custom_field, only: %i(edit update destroy move delete_option)
+  // before_action :prepare_custom_option_position, only: %i(update create)
+  // before_action :find_custom_option, only: :delete_option
 
    void index() {
     // loading wp cfs exclicity to allow for eager loading
@@ -14,7 +15,7 @@ class CustomFieldsController : public ApplicationController {
     @tab = params[:tab] || 'WorkPackageCustomField'
   }
 
-   void new() {
+   void new_() {
     @custom_field = careful_new_custom_field permitted_params.custom_field_type
   }
 
@@ -30,7 +31,7 @@ class CustomFieldsController : public ApplicationController {
     }
   }
 
-   void edit; }() {
+   void edit() {}
 
    void update() {
     @custom_field.attributes = get_custom_field_params
@@ -67,7 +68,7 @@ class CustomFieldsController : public ApplicationController {
     redirect_to edit_custom_field_path(id: @custom_field.id)
   }
 
-  private
+  private:
 
    void get_custom_field_params() {
     custom_field_params = permitted_params.custom_field
@@ -121,7 +122,7 @@ class CustomFieldsController : public ApplicationController {
     render_404
   }
 
-  protected
+  protected:
 
    void default_breadcrumb() {
     if ( action_name == 'index') {

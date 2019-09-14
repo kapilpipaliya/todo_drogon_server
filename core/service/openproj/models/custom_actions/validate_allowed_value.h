@@ -1,5 +1,5 @@
 namespace CustomActions::ValidateAllowedValue {
-  private
+  private:
 
    void validate_allowed_value(errors, attribute) {
     return unless values.any?

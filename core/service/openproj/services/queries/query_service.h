@@ -1,5 +1,5 @@
 class QueryService
-  include Concerns::Contracted
+  // include Concerns::Contracted
 
   attr_reader :user
 
@@ -13,7 +13,7 @@ class QueryService
     service_result result, errors, query
   }
 
-  private
+  private:
 
    void service_result(result, errors, query) {
     ServiceResult.new success: result, errors: errors, result: query

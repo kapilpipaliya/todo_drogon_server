@@ -1,10 +1,11 @@
+#include "application_controller.h"
 class VersionsController : public ApplicationController {
-  menu_item :roadmap
-  model_object Version
-  before_action :find_model_object, except: %i[index new create close_completed]
-  before_action :find_project_from_association, except: %i[index new create close_completed]
-  before_action :find_project, only: %i[index new create close_completed]
-  before_action :authorize
+  // menu_item :roadmap
+  // model_object Version
+  // before_action :find_model_object, except: %i[index new create close_completed]
+  // before_action :find_project_from_association, except: %i[index new create close_completed]
+  // before_action :find_project, only: %i[index new create close_completed]
+  // before_action :authorize
 
    void index() {
     @types = @project.types.order(Arel.sql('position'))
@@ -40,7 +41,7 @@ class VersionsController : public ApplicationController {
               .order("#{::Type.table_name}.position, #{WorkPackage.table_name}.id")
   }
 
-   void new() {
+   void new_() {
     @version = @project.versions.build
   }
 
@@ -63,7 +64,7 @@ class VersionsController : public ApplicationController {
     }
   }
 
-   void edit; }() {
+   void edit() {}
 
    void update() {
     attributes = permitted_params
@@ -102,7 +103,7 @@ class VersionsController : public ApplicationController {
     redirect_to settings_project_path(tab: 'versions', id: @project)
   }
 
-  private
+  private:
 
    void redirect_back_or_version_settings() {
     redirect_back_or_default(settings_project_path(tab: 'versions', id: @project))

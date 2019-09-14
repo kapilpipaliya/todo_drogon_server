@@ -1,5 +1,5 @@
 class WorkPackage::Exporter::Base
-  attr_accessor :object,
+  // attr_accessor :object,
                 :options
 
    Base(object, options = {}) {
@@ -16,7 +16,7 @@ class WorkPackage::Exporter::Base
   }
 
   // Provide means to clean up after the export
-   void cleanup; }() {
+   void cleanup() {}
 
    void page() {
     options[:page] || 1

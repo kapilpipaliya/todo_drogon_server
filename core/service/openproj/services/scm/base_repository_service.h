@@ -3,7 +3,7 @@ class Scm::BaseRepositoryService
     this->repository = repository
   }
 
-  private
+  private:
 
-  attr_accessor :repository
+  // attr_accessor :repository
 }

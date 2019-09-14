@@ -1,12 +1,12 @@
 class Wiki : public ActiveRecord::Base {
-  belongs_to :project
-  has_many :pages, -> {
+  // belongs_to :project
+  // has_many :pages, -> {
     order('title')
   }, class_name: 'WikiPage', dependent: :destroy
-  has_many :wiki_menu_items, -> {
+  // has_many :wiki_menu_items, -> {
     order('name')
   }, class_name: 'MenuItems::WikiMenuItem', dependent: :delete_all, foreign_key: 'navigatable_id'
-  has_many :redirects, class_name: 'WikiRedirect', dependent: :delete_all
+  // has_many :redirects, class_name: 'WikiRedirect', dependent: :delete_all
 
   acts_as_watchable permission: :view_wiki_pages
 
@@ -14,9 +14,9 @@ class Wiki : public ActiveRecord::Base {
                                 allow_destroy: true,
                                 reject_if (: proc { |attr| attr['name'].blank? && attr['title'].blank? }) {
 
-  validates_presence_of :start_page
+  // validates_presence_of :start_page
 
-  after_create :create_menu_item_for_start_page
+  // after_create :create_menu_item_for_start_page
 
    void visible?(user = User.current) {
     !user.nil? && user.allowed_to?(:view_wiki_pages, project)
@@ -74,7 +74,7 @@ class Wiki : public ActiveRecord::Base {
     wiki_menu_item.save!
   }
 
-  private
+  private:
 
   //
   // Locate the redirect from an existing page.

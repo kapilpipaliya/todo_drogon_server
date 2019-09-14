@@ -1,5 +1,5 @@
 class User::ProjectAuthorizationCache
-  attr_accessor :user
+  // attr_accessor :user
 
    ProjectAuthorizationCache(user) {
     this->user = user
@@ -27,7 +27,7 @@ class User::ProjectAuthorizationCache
     projects_by_actions[normalized_permission_name(action)].include? project.id
   }
 
-  private
+  private:
 
    void normalized_permission_name(action) {
     OpenProject::AccessControl.permission(action)

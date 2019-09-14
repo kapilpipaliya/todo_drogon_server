@@ -82,7 +82,7 @@ namespace WorkPackagesFilterHelper {
     project_work_packages_with_query_path(version.project, query, options)
   }
 
-  private
+  private:
 
    void default_sort() {
     'updated_at:desc'

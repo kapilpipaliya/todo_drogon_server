@@ -1,6 +1,7 @@
+#include "application_controller.h"
 class ProjectEnumerationsController : public ApplicationController {
-  before_action :find_project_by_project_id
-  before_action :authorize
+  // before_action :find_project_by_project_id
+  // before_action :authorize
 
    void update() {
     if ( permitted_params.enumerations.present?) {

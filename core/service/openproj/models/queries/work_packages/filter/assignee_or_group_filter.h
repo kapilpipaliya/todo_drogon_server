@@ -32,7 +32,7 @@ class Queries::WorkPackages::Filter::AssigneeOrGroupFilter <
     )
   }
 
-  private
+  private:
 
    void values_replaced() {
     vals = super

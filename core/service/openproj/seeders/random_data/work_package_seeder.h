@@ -1,6 +1,6 @@
 namespace RandomData {
   class WorkPackageSeeder
-    attr_accessor :project, :user, :statuses, :repository, :time_entry_activities, :types
+    // attr_accessor :project, :user, :statuses, :repository, :time_entry_activities, :types
 
      WorkPackageSeeder(project) {
       this->project = project
@@ -18,7 +18,7 @@ namespace RandomData {
       seed_random_work_packages
     }
 
-    private
+    private:
 
      void seed_random_work_packages() {
       rand(50).times {

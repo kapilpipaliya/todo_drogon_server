@@ -1,5 +1,5 @@
 namespace UsersHelper {
-  include OpenProject::FormTagHelper
+  // include OpenProject::FormTagHelper
 
   //
   // @param selected The option to be marked as selected.

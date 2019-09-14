@@ -1,12 +1,13 @@
+#include "application_controller.h"
 class WorkPackages::BulkController : public ApplicationController {
-  before_action :find_work_packages
-  before_action :authorize
+  // before_action :find_work_packages
+  // before_action :authorize
 
-  include ProjectsHelper
-  include CustomFieldsHelper
-  include RelationsHelper
-  include QueriesHelper
-  include IssuesHelper
+  // include ProjectsHelper
+  // include CustomFieldsHelper
+  // include RelationsHelper
+  // include QueriesHelper
+  // include IssuesHelper
 
    void edit() {
     setup_edit
@@ -55,7 +56,7 @@ class WorkPackages::BulkController : public ApplicationController {
     }
   }
 
-  private
+  private:
 
    void setup_edit() {
     @available_statuses = @projects.map { |p| Workflow.available_statuses(p) }.inject { |memo, w| memo & w }

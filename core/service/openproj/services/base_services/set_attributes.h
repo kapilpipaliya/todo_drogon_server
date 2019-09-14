@@ -1,6 +1,6 @@
 namespace BaseServices {
   class SetAttributes
-    include Concerns::Contracted
+    // include Concerns::Contracted
 
      SetAttributes(user:, model:, contract_class:) {
       this->user = user
@@ -21,9 +21,9 @@ namespace BaseServices {
       validate_and_result
     }
 
-    private
+    private:
 
-    attr_accessor :user,
+    // attr_accessor :user,
                   :model,
                   :contract_class
 

@@ -1,5 +1,5 @@
 class CustomActions::Actions::Type : public CustomActions::Actions::Base {
-  include CustomActions::Actions::Strategies::Associated
+  // include CustomActions::Actions::Strategies::Associated
 
   PRIORITY = 20
 
@@ -15,7 +15,7 @@ class CustomActions::Actions::Type : public CustomActions::Actions::Base {
     PRIORITY
   }
 
-  private
+  private:
 
    void associated() {
     ::Type

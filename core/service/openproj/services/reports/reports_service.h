@@ -1,5 +1,5 @@
 class Reports::ReportsService
-  class_attribute :report_types
+  // class_attribute :report_types
 
    void add_report(report) {
     this->report_types ||= {}

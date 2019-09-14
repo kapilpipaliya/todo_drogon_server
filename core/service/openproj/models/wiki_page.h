@@ -1,9 +1,9 @@
 #include "diff"
 
 class WikiPage : public ActiveRecord::Base {
-  belongs_to :wiki, touch: true
-  has_one :project, through: :wiki
-  has_one :content, class_name: 'WikiContent', foreign_key: 'page_id', dependent: :destroy
+  // belongs_to :wiki, touch: true
+  // has_one :project, through: :wiki
+  // has_one :content, class_name: 'WikiContent', foreign_key: 'page_id', dependent: :destroy
   acts_as_attachable delete_permission: :delete_wiki_pages_attachments
   acts_as_tree dependent: :nullify, order: 'title'
 
@@ -24,10 +24,10 @@ class WikiPage : public ActiveRecord::Base {
                      references: [:wikis, :wiki_contents],
                      project_key: "#{Wiki.table_name}.project_id"
 
-  attr_accessor :redirect_existing_links
+  // attr_accessor :redirect_existing_links
 
-  validates_presence_of :title
-  validates_associated :content
+  // validates_presence_of :title
+  // validates_associated :content
 
   validate :validate_consistency_of_parent_title
   validate :validate_non_circular_dependency
@@ -37,16 +37,16 @@ class WikiPage : public ActiveRecord::Base {
   before_destroy :remove_redirects
 
   // eager load information about last updates, without loading text
-  scope :with_updated_on, -> {
+  // scope :with_updated_on, -> {
     select("#{WikiPage.table_name}.*, #{WikiContent.table_name}.updated_on")
       .joins("LEFT JOIN #{WikiContent.table_name} ON #{WikiContent.table_name}.page_id = #{WikiPage.table_name}.id")
   }
 
-  scope :main_pages, ->(wiki_id) {
+  // scope :main_pages, ->(wiki_id) {
     where(wiki_id: wiki_id, parent_id: nil)
   }
 
-  scope :visible, ->(user = User.current) {
+  // scope :visible, ->(user = User.current) {
     includes(:project)
       .references(:project)
       .merge(Project.allowed_to(user, :view_wiki_pages))
@@ -59,7 +59,7 @@ class WikiPage : public ActiveRecord::Base {
   }
 
    void delete_wiki_menu_item() {
-    menu_item.destroy if ( menu_item) {
+    // menu_item.destroy if ( menu_item) {
     // ensure there is a menu item for the wiki
     wiki.create_menu_item_for_start_page if ( MenuItems::WikiMenuItem.main_items(wiki).empty?) {
   }
@@ -214,7 +214,7 @@ class WikiPage : public ActiveRecord::Base {
     wiki.pages == [self]
   }
 
-  protected
+  protected:
 
    void validate_consistency_of_parent_title() {
     errors.add(:parent_title, :invalid) if ( @parent_title.present? && parent.nil?) {

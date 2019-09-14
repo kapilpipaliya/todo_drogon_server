@@ -1,15 +1,15 @@
 class Message : public ActiveRecord::Base {
-  include OpenProject::Journal::AttachmentHelper
+  // include OpenProject::Journal::AttachmentHelper
 
-  belongs_to :forum
-  has_one :project, through: :forum
-  belongs_to :author, class_name: 'User', foreign_key: 'author_id'
+  // belongs_to :forum
+  // has_one :project, through: :forum
+  // belongs_to :author, class_name: 'User', foreign_key: 'author_id'
   acts_as_tree counter_cache: :replies_count, order: "#{Message.table_name}.created_on ASC"
   acts_as_attachable after_add: :attachments_changed,
                      after_remove: :attachments_changed,
                      add_on_new_permission: :add_messages,
                      add_on_persisted_permission: :edit_messages
-  belongs_to :last_reply, class_name: 'Message', foreign_key: 'last_reply_id'
+  // belongs_to :last_reply, class_name: 'Message', foreign_key: 'last_reply_id'
 
   acts_as_journalized
 
@@ -34,16 +34,16 @@ class Message : public ActiveRecord::Base {
 
   acts_as_watchable
 
-  validates_presence_of :forum, :subject, :content
-  validates_length_of :subject, maximum: 255
+  // validates_presence_of :forum, :subject, :content
+  // validates_length_of :subject, maximum: 255
 
-  after_create :add_author_as_watcher,
+  // after_create :add_author_as_watcher,
                :update_last_reply_in_parent,
                :send_message_posted_mail
   after_update :update_ancestors, if (: :saved_change_to_forum_id?) {
   after_destroy :reset_counters
 
-  scope :visible, ->(*args) {
+  // scope :visible, ->(*args) {
     includes(forum: :project)
       .references(:projects)
       .merge(Project.allowed_to(args.first || User.current, :view_messages))
@@ -95,7 +95,7 @@ class Message : public ActiveRecord::Base {
     usr && usr.logged? && (usr.allowed_to?(:delete_messages, project) || (author == usr && usr.allowed_to?(:delete_own_messages, project)))
   }
 
-  private
+  private:
 
    void update_ancestors() {
     with_id = Message.where(id: root.id)

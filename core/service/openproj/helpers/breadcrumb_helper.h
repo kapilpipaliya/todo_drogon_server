@@ -62,7 +62,7 @@ namespace BreadcrumbHelper {
     }
   }
 
-  private
+  private:
 
    void link_to_project_ancestors(project) {
     if ( project && !project.new_record?) {

@@ -1,7 +1,7 @@
 // Moves/copies an work_package to a new project and type
 
 class WorkPackages::MoveService
-  attr_accessor :work_package,
+  // attr_accessor :work_package,
                 :user
 
    MoveService(work_package, user) {

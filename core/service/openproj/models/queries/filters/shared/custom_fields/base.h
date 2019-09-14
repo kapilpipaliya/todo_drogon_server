@@ -1,7 +1,7 @@
 namespace Queries::Filters::Shared {
   namespace CustomFields {
     class Base : public Queries::Filters::Base {
-      include Queries::Filters::Serializable
+      // include Queries::Filters::Serializable
 
       attr_reader :custom_field
       attr_reader :custom_field_context
@@ -89,7 +89,7 @@ namespace Queries::Filters::Shared {
         human_name + I18n.t(default: ' %<message>s', message: messages)
       }
 
-      protected
+      protected:
 
        void type_strategy_class() {
         strategies[type] || strategies[:inexistent]

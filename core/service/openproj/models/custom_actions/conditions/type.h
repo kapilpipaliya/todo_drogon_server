@@ -3,7 +3,7 @@ class CustomActions::Conditions::Type : public CustomActions::Conditions::Base {
     :type
   }
 
-  private
+  private:
 
    void associated() {
     ::Type

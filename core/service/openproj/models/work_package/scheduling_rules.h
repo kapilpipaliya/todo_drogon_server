@@ -1,5 +1,5 @@
 namespace WorkPackage::SchedulingRules {
-  extend ActiveSupport::Concern
+  // extend ActiveSupport::Concern
 
    void reschedule_after(date) {
     WorkPackages::RescheduleService
@@ -56,7 +56,7 @@ namespace WorkPackage::SchedulingRules {
     }
   }
 
-  private
+  private:
 
    void ancestors_follows_relations() {
     Relation.where(from_id: this->ancestors_relations.select(:from_id)).follows

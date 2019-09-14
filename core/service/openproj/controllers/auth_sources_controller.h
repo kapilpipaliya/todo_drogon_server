@@ -1,9 +1,10 @@
+#include "application_controller.h"
 class AuthSourcesController : public ApplicationController {
-  include PaginationHelper
-  layout 'admin'
+  // include PaginationHelper
+  // layout 'admin'
 
-  before_action :require_admin
-  before_action :block_if_password_login_disabled
+  // before_action :require_admin
+  // before_action :block_if_password_login_disabled
 
    void index() {
     @auth_sources = AuthSource.page(page_param)
@@ -12,7 +13,7 @@ class AuthSourcesController : public ApplicationController {
     render 'auth_sources/index'
   }
 
-   void new() {
+   void new_() {
     @auth_source = auth_source_class.new
     render 'auth_sources/new'
   }
@@ -68,7 +69,7 @@ class AuthSourcesController : public ApplicationController {
     redirect_to action: 'index'
   }
 
-  protected
+  protected:
 
    void auth_source_class() {
     AuthSource

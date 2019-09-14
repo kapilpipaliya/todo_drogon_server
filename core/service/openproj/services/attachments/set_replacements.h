@@ -1,9 +1,9 @@
 namespace Attachments {
   namespace SetReplacements {
-    extend ActiveSupport::Concern
+    // extend ActiveSupport::Concern
 
     included {
-      private
+      private:
 
        void set_attributes(attributes) {
         set_attachments_attributes(attributes)

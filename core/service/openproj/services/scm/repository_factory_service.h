@@ -41,7 +41,7 @@ class Scm::RepositoryFactoryService
     I18n.t('repositories.errors.build_failed', reason: @build_failed_msg)
   }
 
-  private
+  private:
 
   //
   // Helper to actually build the repository and return it.

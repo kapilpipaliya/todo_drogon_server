@@ -1,13 +1,14 @@
+#include "application_controller.h"
 class TimeEntries::ReportsController : public ApplicationController {
-  menu_item :issues
-  before_action :find_optional_project
-  before_action :load_available_criterias
+  // menu_item :issues
+  // before_action :find_optional_project
+  // before_action :load_available_criterias
 
-  include SortHelper
-  include TimelogHelper
-  include CustomFieldsHelper
+  // include SortHelper
+  // include TimelogHelper
+  // include CustomFieldsHelper
 
-  menu_item :time_entries
+  // menu_item :time_entries
 
    void show() {
     @criterias = params[:criterias] || []
@@ -78,7 +79,7 @@ class TimeEntries::ReportsController : public ApplicationController {
     }
   }
 
-  private
+  private:
 
    void load_available_criterias() {
     @available_criterias = { 'project' => { sql: "#{TimeEntry.table_name}.project_id",

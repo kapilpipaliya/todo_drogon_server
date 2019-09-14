@@ -3,7 +3,7 @@ class Queries::WorkPackages::Columns::PropertyColumn : public Queries::WorkPacka
     WorkPackage.human_attribute_name(name)
   }
 
-  class_attribute :property_columns
+  // class_attribute :property_columns
 
   this->property_columns = {
     id: {

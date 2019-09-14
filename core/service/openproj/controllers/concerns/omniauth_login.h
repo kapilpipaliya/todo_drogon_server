@@ -3,7 +3,7 @@
 //
 // Intended to be used by the AccountController to handle omniauth logins
 namespace Concerns::OmniauthLogin {
-  extend ActiveSupport::Concern
+  // extend ActiveSupport::Concern
 
   included {
     // disable CSRF protection since that should be covered by the omniauth strategy
@@ -13,7 +13,7 @@ namespace Concerns::OmniauthLogin {
       :verify_authenticity_token, :user_setup,
       :check_if_login_required, :check_session_lifetime
     ]
-      .each { |key| skip_before_action key, only: [:omniauth_login] }
+      .each { |key| // skip_before_action key, only: [:omniauth_login] }
 
     helper :omniauth
   }
@@ -81,7 +81,7 @@ namespace Concerns::OmniauthLogin {
     omniauth_start_url(direct_login_provider, params)
   }
 
-  private
+  private:
 
    void authorization_successful(user, auth_hash) {
     if ( user.new_record? || user.invited?) {

@@ -14,7 +14,7 @@ class DeliverNotificationJob : public ApplicationJob {
     }
   }
 
-  private
+  private:
 
   // To be implemented by subclasses.
   // Actual recipient and sender User objects are passed (always non-nil).

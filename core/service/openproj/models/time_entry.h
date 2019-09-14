@@ -1,10 +1,10 @@
 class TimeEntry : public ActiveRecord::Base {
   // could have used polymorphic association
   // project association here allows easy loading of time entries at project level with one database trip
-  belongs_to :project
-  belongs_to :work_package
-  belongs_to :user
-  belongs_to :activity, class_name: 'TimeEntryActivity', foreign_key: 'activity_id'
+  // belongs_to :project
+  // belongs_to :work_package
+  // belongs_to :user
+  // belongs_to :activity, class_name: 'TimeEntryActivity', foreign_key: 'activity_id'
 
   acts_as_customizable
 
@@ -16,11 +16,11 @@ class TimeEntry : public ActiveRecord::Base {
                 author: :user,
                 description: :comments
 
-  validates_presence_of :user_id, :activity_id, :project_id, :hours, :spent_on
-  validates_numericality_of :hours, allow_nil: true, message: :invalid
-  validates_length_of :comments, maximum: 255, allow_nil: true
+  // validates_presence_of :user_id, :activity_id, :project_id, :hours, :spent_on
+  // validates_numericality_of :hours, allow_nil: true, message: :invalid
+  // validates_length_of :comments, maximum: 255, allow_nil: true
 
-  scope :on_work_packages, ->(work_packages) { where(work_package_id: work_packages) }
+  // scope :on_work_packages, ->(work_packages) { where(work_package_id: work_packages) }
 
    void visible(*args) {
     // TODO: check whether the visibility should also be influenced by the work

@@ -1,5 +1,5 @@
 class Settings::UpdateService : public ::BaseServices::Update {
-  attr_accessor :user
+  // attr_accessor :user
 
    UpdateService(user) {
     this->user = user

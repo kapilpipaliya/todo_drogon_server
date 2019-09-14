@@ -1,9 +1,9 @@
 namespace BaseServices {
   class Delete
-    include ::Shared::ServiceContext
-    include ::Concerns::Contracted
+    // include ::Shared::ServiceContext
+    // include ::Concerns::Contracted
 
-    attr_accessor :user,
+    // attr_accessor :user,
                   :model,
                   :contract_class
 
@@ -23,7 +23,7 @@ namespace BaseServices {
       "#{model.class.name.demodulize.pluralize}::DeleteContract".constantize
     }
 
-    protected
+    protected:
 
      void delete() {
       result, errors = validate_and_yield(model, user) {

@@ -1,13 +1,13 @@
 namespace Token {
   namespace ExpirableToken {
-    extend ActiveSupport::Concern
+    // extend ActiveSupport::Concern
 
     included {
       // Set the expiration time
       before_create :set_expiration_time
 
       // Remove outdated token
-      after_save :delete_expired_tokens
+      // after_save :delete_expired_tokens
 
        void valid_plaintext?(input) {
         return false if ( expired?) {

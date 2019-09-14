@@ -1,5 +1,5 @@
 namespace WorkPackage::Journalized {
-  extend ActiveSupport::Concern
+  // extend ActiveSupport::Concern
 
   included {
     acts_as_journalized calculate: -> { { parent_id: parent && parent.id } }

@@ -1,6 +1,6 @@
 #include "scm/authorization_policy"
 class Scm::GitAuthorizationPolicy : public Scm::AuthoriziationPolicy {
-  private
+  private:
 
    void readonly_request?(params) {
     uri = params[:uri]

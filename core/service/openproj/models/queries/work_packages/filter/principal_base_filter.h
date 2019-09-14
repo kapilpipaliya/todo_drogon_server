@@ -1,6 +1,6 @@
 class Queries::WorkPackages::Filter::PrincipalBaseFilter <
   Queries::WorkPackages::Filter::WorkPackageFilter
-  include MeValueFilterMixin
+  // include MeValueFilterMixin
 
    void allowed_values() {
     @allowed_values ||= begin
@@ -30,7 +30,7 @@ class Queries::WorkPackages::Filter::PrincipalBaseFilter <
     operator_strategy.sql_for_field(values_replaced, this->class.model.table_name, this->class.key)
   }
 
-  private
+  private:
 
    void principal_loader() {
     @principal_loader ||= ::Queries::WorkPackages::Filter::PrincipalLoader.new(project)

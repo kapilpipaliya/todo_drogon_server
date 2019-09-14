@@ -1,5 +1,5 @@
 class Queries::BaseOrder
-  include ActiveModel::Validations
+  // include ActiveModel::Validations
 
   VALID_DIRECTIONS = %i(asc desc).freeze
 
@@ -7,11 +7,11 @@ class Queries::BaseOrder
     :activerecord
   }
 
-  validates :direction, inclusion: { in: VALID_DIRECTIONS }
+  // validates :direction, inclusion: { in: VALID_DIRECTIONS }
 
-  class_attribute :model
-  attr_accessor :direction,
-                :attribute
+  // class_attribute :model
+  // attr_accessor :direction,
+                // :attribute
 
    BaseOrder(attribute) {
     this->attribute = attribute
@@ -31,7 +31,7 @@ class Queries::BaseOrder
     attribute
   }
 
-  private
+  private:
 
    void order() {
     model.order(name => direction)

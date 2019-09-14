@@ -8,18 +8,19 @@ class ChangesetNotFound : public StandardError {
 class InvalidRevisionParam : public StandardError {
 }
 
+#include "application_controller.h"
 class RepositoriesController : public ApplicationController {
-  include PaginationHelper
-  include RepositoriesHelper
+  // include PaginationHelper
+  // include RepositoriesHelper
 
-  menu_item :repository
-  menu_item :settings, only: [:edit, :destroy_info]
+  // menu_item :repository
+  // menu_item :settings, only: [:edit, :destroy_info]
   default_search_scope :changesets
 
-  before_action :find_project_by_project_id
-  before_action :authorize
-  before_action :find_repository, except: [:edit, :update, :create, :destroy, :destroy_info]
-  accept_key_auth :revisions
+  // before_action :find_project_by_project_id
+  // before_action :authorize
+  // before_action :find_repository, except: [:edit, :update, :create, :destroy, :destroy_info]
+  // accept_key_auth :revisions
 
   rescue_from OpenProject::Scm::Exceptions::ScmError, with: :show_error_command_failed
 
@@ -279,7 +280,7 @@ class RepositoriesController : public ApplicationController {
     }
   }
 
-  private
+  private:
 
   REV_PARAM_RE = %r{\A[a-f0-9]*\Z}i
 

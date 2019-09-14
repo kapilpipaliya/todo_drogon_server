@@ -26,7 +26,7 @@ class Queries::WorkPackages::Filter::PriorityFilter <
     priorities.select { |p| value_ints.include? p.id }
   }
 
-  private
+  private:
 
    void priorities() {
     @priorities ||= IssuePriority.active

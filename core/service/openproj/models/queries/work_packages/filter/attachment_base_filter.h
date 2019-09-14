@@ -1,6 +1,6 @@
 class Queries::WorkPackages::Filter::AttachmentBaseFilter : public Queries::WorkPackages::Filter::WorkPackageFilter {
-  include Queries::WorkPackages::Filter::FilterOnTsvMixin
-  include Queries::WorkPackages::Filter::TextFilterOnJoinMixin
+  // include Queries::WorkPackages::Filter::FilterOnTsvMixin
+  // include Queries::WorkPackages::Filter::TextFilterOnJoinMixin
 
   attr_reader :join_table_suffix
 
@@ -24,7 +24,7 @@ class Queries::WorkPackages::Filter::AttachmentBaseFilter : public Queries::Work
     Queries::Operators::All.sql_for_field(values, join_table_alias, 'id')
   }
 
-  protected
+  protected:
 
    void join_table_alias() {
     "#{this->class.key}_#{join_table}_#{join_table_suffix}"

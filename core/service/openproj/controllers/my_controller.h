@@ -1,21 +1,20 @@
+#include "application_controller.h"
 class MyController : public ApplicationController {
-  include Concerns::PasswordConfirmation
-  include Concerns::UserPasswordChange
-  layout 'my'
+  // include Concerns::PasswordConfirmation
+  // include Concerns::UserPasswordChange
+  // layout 'my'
 
-  helper_method :gon
+  // before_action :require_login
+  // before_action :set_current_user
+  // before_action :check_password_confirmation, only: %i[update_account]
 
-  before_action :require_login
-  before_action :set_current_user
-  before_action :check_password_confirmation, only: %i[update_account]
+  // menu_item :account,             only: [:account]
+  // menu_item :settings,            only: [:settings]
+  // menu_item :password,            only: [:password]
+  // menu_item :access_token,        only: [:access_token]
+  // menu_item :mail_notifications,  only: [:mail_notifications]
 
-  menu_item :account,             only: [:account]
-  menu_item :settings,            only: [:settings]
-  menu_item :password,            only: [:password]
-  menu_item :access_token,        only: [:access_token]
-  menu_item :mail_notifications,  only: [:mail_notifications]
-
-   void account; }() {
+   void account() {}
 
    void update_account() {
     write_settings @user, request, permitted_params, params
@@ -27,7 +26,7 @@ class MyController : public ApplicationController {
     }
   }
 
-   void settings; }() {
+   void settings() {}
 
    void update_settings() {
     write_settings @user, request, permitted_params, params
@@ -47,10 +46,10 @@ class MyController : public ApplicationController {
   }
 
   // Administer access tokens
-   void access_token; }() {
+   void access_token() {}
 
   // Configure user's mail notifications
-   void mail_notifications; }() {
+   void mail_notifications() {}
 
    void update_mail_notifications() {
     write_email_settings(redirect_to: :mail_notifications)
@@ -98,7 +97,7 @@ class MyController : public ApplicationController {
     false
   }
 
-  private
+  private:
 
    void redirect_if_password_change_not_allowed_for(user) {
     unless user.change_password_allowed?
@@ -134,8 +133,6 @@ class MyController : public ApplicationController {
 
     redirect_back(fallback_location: my_account_path)
   }
-
-  helper_method :has_tokens?
 
    void has_tokens?() {
     Setting.feeds_enabled? || Setting.rest_api_enabled?

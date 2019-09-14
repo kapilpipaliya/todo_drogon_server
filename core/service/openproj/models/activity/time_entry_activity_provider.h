@@ -22,7 +22,7 @@ class Activity::TimeEntryActivityProvider : public Activity::BaseActivityProvide
     ]
   }
 
-  protected
+  protected:
 
    void event_title(event, _activity) {
     time_entry_object_name = event['work_package_id'].blank? ? event['project_name'] : work_package_title(event)

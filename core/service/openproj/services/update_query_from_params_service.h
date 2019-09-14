@@ -37,7 +37,7 @@ class UpdateQueryFromParamsService
     }
   }
 
-  private
+  private:
 
    void apply_group_by(params) {
     query.group_by = params[:group_by] if ( params.key?(:group_by)) {
@@ -90,7 +90,7 @@ class UpdateQueryFromParamsService
     }
   }
 
-  attr_accessor :query,
+  // attr_accessor :query,
                 :current_user,
                 :params
 }

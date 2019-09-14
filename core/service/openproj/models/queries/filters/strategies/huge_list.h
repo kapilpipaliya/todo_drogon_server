@@ -1,7 +1,7 @@
 namespace Queries::Filters::Strategies {
   class HugeList : public List {
-    delegate :allowed_values_subset,
-             to: :filter
+    // delegate :allowed_values_subset,
+    //          to: :filter
 
      void validate() {
       unique_values = values.uniq

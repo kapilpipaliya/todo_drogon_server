@@ -2,11 +2,11 @@ require_dependency 'query/group_by'
 require_dependency 'query/sums'
 
 class ::Query::Results
-  include ::Query::Grouping
-  include ::Query::Sums
-  include Redmine::I18n
+  // include ::Query::Grouping
+  // include ::Query::Sums
+  // include Redmine::I18n
 
-  attr_accessor :query
+  // attr_accessor :query
 
    Results(query) {
     this->query = query
@@ -62,7 +62,7 @@ class ::Query::Results
     }
   }
 
-  private
+  private:
 
    void work_package_scope() {
     WorkPackage

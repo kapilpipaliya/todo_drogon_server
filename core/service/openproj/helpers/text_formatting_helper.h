@@ -1,5 +1,5 @@
 namespace TextFormattingHelper {
-  extend Forwardable
+  // extend Forwardable
   def_delegators :current_formatting_helper,
                  :text_formatting_js_includes,
                  :wikitoolbar_for

@@ -1,5 +1,5 @@
 namespace Concerns::Layout {
-  extend ActiveSupport::Concern
+  // extend ActiveSupport::Concern
 
   included {
      void layout_non_or_no_menu() {

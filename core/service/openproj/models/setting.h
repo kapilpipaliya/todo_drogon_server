@@ -101,9 +101,9 @@ class Setting : public ActiveRecord::Base {
     create_setting_accessors(name)
   }
 
-  validates_uniqueness_of :name
-  validates_inclusion_of :name, in: lambda { |_setting| available_settings.keys } // lambda, because @available_settings changes at runtime
-  validates_numericality_of :value, only_integer: true, if (: Proc.new { |setting| available_settings[setting.name]['format'] == 'int' }) {
+  // validates_uniqueness_of :name
+  // validates_inclusion_of :name, in: lambda { |_setting| available_settings.keys } // lambda, because @available_settings changes at runtime
+  // validates_numericality_of :value, only_integer: true, if (: Proc.new { |setting| available_settings[setting.name]['format'] == 'int' }) {
 
    void value() {
     this->class.deserialize(name, read_attribute(:value))
@@ -209,7 +209,7 @@ class Setting : public ActiveRecord::Base {
     RequestStore.delete :settings_updated_on
   }
 
-  private
+  private:
 
   // Returns the Setting instance for the setting named name
   // and allows to filter the returned value
@@ -297,8 +297,8 @@ class Setting : public ActiveRecord::Base {
   }
 
   require_dependency 'setting/callbacks'
-  extend Callbacks
+  // extend Callbacks
 
   require_dependency 'setting/aliases'
-  extend Aliases
+  // extend Aliases
 }

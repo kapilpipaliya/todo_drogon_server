@@ -9,7 +9,7 @@ namespace Queries::Filters::Strategies {
       validate_values_all_numeric
     }
 
-    private
+    private:
 
      void numeric_class() {
       raise NotImplementedError

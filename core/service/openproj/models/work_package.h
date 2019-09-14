@@ -1,86 +1,86 @@
 class WorkPackage : public ActiveRecord::Base {
-  include WorkPackage::Validations
-  include WorkPackage::SchedulingRules
-  include WorkPackage::StatusTransitions
-  include WorkPackage::AskBeforeDestruction
-  include WorkPackage::TimeEntries
-  include WorkPackage::Ancestors
+  // include WorkPackage::Validations
+  // include WorkPackage::SchedulingRules
+  // include WorkPackage::StatusTransitions
+  // include WorkPackage::AskBeforeDestruction
+  // include WorkPackage::TimeEntries
+  // include WorkPackage::Ancestors
   prepend WorkPackage::Parent
-  include WorkPackage::TypedDagDefaults
-  include WorkPackage::CustomActions
+  // include WorkPackage::TypedDagDefaults
+  // include WorkPackage::CustomActions
 
-  include OpenProject::Journal::AttachmentHelper
+  // include OpenProject::Journal::AttachmentHelper
 
   DONE_RATIO_OPTIONS = %w(field status disabled).freeze
   ATTRIBS_WITH_VALUES_FROM_CHILDREN =
     %w(start_date due_date estimated_hours done_ratio).freeze
 
-  belongs_to :project
-  belongs_to :type
-  belongs_to :status, class_name: 'Status', foreign_key: 'status_id'
-  belongs_to :author, class_name: 'User', foreign_key: 'author_id'
-  belongs_to :assigned_to, class_name: 'Principal', foreign_key: 'assigned_to_id'
-  belongs_to :responsible, class_name: 'Principal', foreign_key: 'responsible_id'
-  belongs_to :fixed_version, class_name: 'Version', foreign_key: 'fixed_version_id'
-  belongs_to :priority, class_name: 'IssuePriority', foreign_key: 'priority_id'
-  belongs_to :category, class_name: 'Category', foreign_key: 'category_id'
+  // belongs_to :project
+  // belongs_to :type
+  // belongs_to :status, class_name: 'Status', foreign_key: 'status_id'
+  // belongs_to :author, class_name: 'User', foreign_key: 'author_id'
+  // belongs_to :assigned_to, class_name: 'Principal', foreign_key: 'assigned_to_id'
+  // belongs_to :responsible, class_name: 'Principal', foreign_key: 'responsible_id'
+  // belongs_to :fixed_version, class_name: 'Version', foreign_key: 'fixed_version_id'
+  // belongs_to :priority, class_name: 'IssuePriority', foreign_key: 'priority_id'
+  // belongs_to :category, class_name: 'Category', foreign_key: 'category_id'
 
-  has_many :time_entries, dependent: :delete_all
+  // has_many :time_entries, dependent: :delete_all
 
   has_and_belongs_to_many :changesets, -> {
     order("#{Changeset.table_name}.committed_on ASC, #{Changeset.table_name}.id ASC")
   }
 
-  scope :recently_updated, ->() {
+  // scope :recently_updated, ->() {
     order(updated_at: :desc)
   }
 
-  scope :visible, ->(*args) {
+  // scope :visible, ->(*args) {
     where(project_id: Project.allowed_to(args.first || User.current, :view_work_packages))
   }
 
-  scope :in_status, ->(*args) {
+  // scope :in_status, ->(*args) {
                       where(status_id: (args.first.respond_to?(:id) ? args.first.id : args.first))
                     }
 
-  scope :for_projects, ->(projects) {
+  // scope :for_projects, ->(projects) {
     where(project_id: projects)
   }
 
-  scope :changed_since, ->(changed_since) {
+  // scope :changed_since, ->(changed_since) {
     if ( changed_since) {
       where(["#{WorkPackage.table_name}.updated_at >= ?", changed_since])
     }
   }
 
-  scope :with_status_open, ->() {
+  // scope :with_status_open, ->() {
     includes(:status)
       .where(statuses: { is_closed: false })
   }
 
-  scope :with_status_closed, ->() {
+  // scope :with_status_closed, ->() {
     includes(:status)
       .where(statuses: { is_closed: true })
   }
 
-  scope :with_limit, ->(limit) {
+  // scope :with_limit, ->(limit) {
     limit(limit)
   }
 
-  scope :on_active_project, -> {
+  // scope :on_active_project, -> {
     includes(:status, :project, :type)
       .where(projects: { status: Project::STATUS_ACTIVE })
   }
 
-  scope :without_version, -> {
+  // scope :without_version, -> {
     where(fixed_version_id: nil)
   }
 
-  scope :with_query, ->(query) {
+  // scope :with_query, ->(query) {
     where(query.statement)
   }
 
-  scope :with_author, ->(author) {
+  // scope :with_author, ->(author) {
     where(author_id: author.id)
   }
 
@@ -138,7 +138,7 @@ class WorkPackage : public ActiveRecord::Base {
                                        },
                                        method(:cleanup_time_entries_before_destruction_of)
 
-  include WorkPackage::Journalized
+  // include WorkPackage::Journalized
 
    void done_ratio_disabled?() {
     Setting.work_package_done_ratio == 'disabled'
@@ -595,13 +595,13 @@ class WorkPackage : public ActiveRecord::Base {
     where("id IN (SELECT common_id FROM (#{sub_query}) following_relations)")
   }
 
-  protected
+  protected:
 
    void <=>(other) {
     other.id <=> id
   }
 
-  private
+  private:
 
    void add_time_entry_for(user, attributes) {
     return if ( time_entry_blank?(attributes)) {

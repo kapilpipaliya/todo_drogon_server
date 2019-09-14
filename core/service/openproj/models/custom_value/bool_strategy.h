@@ -33,9 +33,9 @@ class CustomValue::BoolStrategy : public CustomValue::FormatStrategy {
     super(parsed_val)
   }
 
-   void validate_type_of_value; }() {
+   void validate_type_of_value() {}
 
-  private
+  private:
 
    void present?(val) {
     // can't use :blank? safely, because false.blank? == true

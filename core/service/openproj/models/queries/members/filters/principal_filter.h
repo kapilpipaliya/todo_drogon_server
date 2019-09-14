@@ -1,5 +1,5 @@
 class Queries::Members::Filters::PrincipalFilter : public Queries::Members::Filters::MemberFilter {
-  include Queries::Filters::Shared::MeValueFilter
+  // include Queries::Filters::Shared::MeValueFilter
 
    void allowed_values() {
     @allowed_values ||= begin

@@ -30,7 +30,7 @@ namespace Concerns {
       redirect_to signin_path
     }
 
-    private
+    private:
 
      void authentication_stages(after_activation: false, reset: true) {
       if ( OpenProject::Authentication::Stage.stages.select(&:active?).any?) {

@@ -1,10 +1,10 @@
 
 namespace OAuth {
   class GrantsController : public ::ApplicationController {
-    before_action :require_login
+    // before_action :require_login
 
-    layout 'my'
-    menu_item :access_token
+    // layout 'my'
+    // menu_item :access_token
 
      void index() {
       @applications = ::Doorkeeper::Application.authorized_for(current_user)
@@ -26,7 +26,7 @@ namespace OAuth {
       redirect_to controller: '/my', action: :access_token
     }
 
-    private
+    private:
 
      void find_application() {
       ::Doorkeeper::Application

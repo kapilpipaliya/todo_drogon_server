@@ -1,5 +1,5 @@
 class CustomValue::FloatStrategy : public CustomValue::FormatStrategy {
-  include ActionView::Helpers::NumberHelper
+  // include ActionView::Helpers::NumberHelper
 
    void typed_value() {
     unless value.blank?

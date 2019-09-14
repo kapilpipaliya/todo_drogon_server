@@ -1,5 +1,5 @@
 class WorkPackage::SpentTime
-  attr_accessor :user,
+  // attr_accessor :user,
                 :work_package
 
    SpentTime(user, work_package = nil) {
@@ -11,7 +11,7 @@ class WorkPackage::SpentTime
     with_spent_hours_joined
   }
 
-  private
+  private:
 
    void with_spent_hours_joined() {
     query = join_descendants(wp_table)

@@ -1,19 +1,19 @@
 
 namespace OAuth {
   class ApplicationsController : public ::ApplicationController {
-    before_action :require_admin
-    before_action :new_app, only: %i[new create]
-    before_action :find_app, only: %i[edit update show destroy]
+    // before_action :require_admin
+    // before_action :new_app, only: %i[new create]
+    // before_action :find_app, only: %i[edit update show destroy]
 
-    layout 'admin'
-    menu_item :oauth_applications
+    // layout 'admin'
+    // menu_item :oauth_applications
 
      void index() {
       @applications = ::Doorkeeper::Application.includes(:owner).all
     }
 
-     void new; }() {
-     void edit; }() {
+     void new_() {}
+     void edit() {}
 
      void show() {
       @reveal_secret = flash[:reveal_secret]
@@ -60,7 +60,7 @@ namespace OAuth {
     }
 
 
-    protected
+    protected:
 
      void default_breadcrumb() {
       if ( action_name == 'index') {
@@ -74,7 +74,7 @@ namespace OAuth {
       current_user.admin?
     }
 
-    private
+    private:
 
      void new_app() {
       @application = ::Doorkeeper::Application.new

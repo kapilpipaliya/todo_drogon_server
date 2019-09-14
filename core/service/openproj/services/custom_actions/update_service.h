@@ -1,5 +1,5 @@
 class CustomActions::UpdateService : public CustomActions::BaseService {
-  attr_accessor :user,
+  // attr_accessor :user,
                 :action
 
    UpdateService(action:, user:) {

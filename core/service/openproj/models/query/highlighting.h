@@ -1,6 +1,6 @@
 //
 namespace Query::Highlighting {
-  extend ActiveSupport::Concern
+  // extend ActiveSupport::Concern
 
   namespace PrependValidHighlightingSubset {
      void valid_subset!() {
@@ -16,7 +16,7 @@ namespace Query::Highlighting {
 
     serialize :highlighted_attributes, Array
 
-    validates_inclusion_of :highlighting_mode,
+    // validates_inclusion_of :highlighting_mode,
                            in: QUERY_HIGHLIGHTING_MODES,
                            allow_nil: true,
                            allow_blank: true
@@ -78,7 +78,7 @@ namespace Query::Highlighting {
       }
     }
 
-    private
+    private:
 
      void valid_highlighting_subset() {
       available_names = available_highlighting_columns.map(&:name)

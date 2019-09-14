@@ -1,6 +1,6 @@
 namespace Projects {
   class DeleteProjectJob : public ApplicationJob {
-    include OpenProject::LocaleHelper
+    // include OpenProject::LocaleHelper
 
     attr_reader :user_id,
                 :project_id
@@ -22,7 +22,7 @@ namespace Projects {
                    "'#{project_id}' : #{e.message} #{e.backtrace.join("\n")}")
     }
 
-    private
+    private:
 
      void user() {
       @user ||= User.find user_id

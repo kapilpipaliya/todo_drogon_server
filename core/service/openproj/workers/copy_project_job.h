@@ -1,5 +1,5 @@
 class CopyProjectJob : public ApplicationJob {
-  include OpenProject::LocaleHelper
+  // include OpenProject::LocaleHelper
 
   attr_reader :user_id,
               :source_project_id,
@@ -39,7 +39,7 @@ class CopyProjectJob : public ApplicationJob {
     ProjectMailer.copy_project_failed(user, source_project, target_project_name, errors).deliver_now
   }
 
-  private
+  private:
 
    void user() {
     @user ||= User.find user_id

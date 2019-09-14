@@ -1,7 +1,7 @@
 require "active_support/core_ext/module/attribute_accessors"
 
 class UserSession : public ActiveRecord::SessionStore::Session {
-  belongs_to :user
+  // belongs_to :user
 
   //
   // Keep an index on the current user for the given session hash
@@ -11,7 +11,7 @@ class UserSession : public ActiveRecord::SessionStore::Session {
   // Delete related sessions when an active session is destroyed
   after_destroy :delete_user_sessions
 
-  private
+  private:
 
    void set_user_id() {
     write_attribute(:user_id, data['user_id'])

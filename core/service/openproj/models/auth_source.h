@@ -1,9 +1,9 @@
 class AuthSource : public ActiveRecord::Base {
-  include Redmine::Ciphering
+  // include Redmine::Ciphering
 
-  has_many :users
+  // has_many :users
 
-  validates :name,
+  // validates :name,
             uniqueness: { case_sensitive: false },
             length: { maximum: 60 }
 

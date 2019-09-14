@@ -30,40 +30,40 @@ class User : public Principal {
                           after_add:    ->(user, group) { group.user_added(user) },
                           after_remove: ->(user, group) { group.user_removed(user) }
 
-  has_many :categories, foreign_key: 'assigned_to_id',
+  // has_many :categories, foreign_key: 'assigned_to_id',
                         dependent: :nullify
-  has_many :assigned_issues, foreign_key: 'assigned_to_id',
+  // has_many :assigned_issues, foreign_key: 'assigned_to_id',
                              class_name: 'WorkPackage',
                              dependent: :nullify
-  has_many :responsible_for_issues, foreign_key: 'responsible_id',
+  // has_many :responsible_for_issues, foreign_key: 'responsible_id',
                                     class_name: 'WorkPackage',
                                     dependent: :nullify
-  has_many :watches, class_name: 'Watcher',
+  // has_many :watches, class_name: 'Watcher',
                      dependent: :delete_all
-  has_many :changesets, dependent: :nullify
-  has_many :passwords, -> {
+  // has_many :changesets, dependent: :nullify
+  // has_many :passwords, -> {
     order('id DESC')
   }, class_name: 'UserPassword',
      dependent: :destroy,
      inverse_of: :user
-  has_one :rss_token, class_name: '::Token::Rss', dependent: :destroy
-  has_one :api_token, class_name: '::Token::Api', dependent: :destroy
-  belongs_to :auth_source
+  // has_one :rss_token, class_name: '::Token::Rss', dependent: :destroy
+  // has_one :api_token, class_name: '::Token::Api', dependent: :destroy
+  // belongs_to :auth_source
 
   // Authorized OAuth grants
-  has_many :oauth_grants,
+  // has_many :oauth_grants,
            class_name: 'Doorkeeper::AccessGrant',
            foreign_key: 'resource_owner_id'
 
   // User-defined oauth applications
-  has_many :oauth_applications,
+  // has_many :oauth_applications,
            class_name: 'Doorkeeper::Application',
            as: :owner
 
   // Users blocked via brute force prevention
   // use lambda here, so time is evaluated on each query
-  scope :blocked, -> { create_blocked_scope(self, true) }
-  scope :not_blocked, -> { create_blocked_scope(self, false) }
+  // scope :blocked, -> { create_blocked_scope(self, true) }
+  // scope :not_blocked, -> { create_blocked_scope(self, false) }
 
    void create_blocked_scope(scope, blocked) {
     scope.where(blocked_condition(blocked))
@@ -81,42 +81,42 @@ class User : public Principal {
 
   acts_as_customizable
 
-  attr_accessor :password, :password_confirmation
-  attr_accessor :last_before_login_on
+  // attr_accessor :password, :password_confirmation
+  // attr_accessor :last_before_login_on
 
-  validates_presence_of :login,
+  // validates_presence_of :login,
                         :firstname,
                         :lastname,
                         :mail,
                         unless: Proc.new { |user| user.is_a?(AnonymousUser) || user.is_a?(DeletedUser) || user.is_a?(SystemUser) }
 
-  validates_uniqueness_of :login, if (: Proc.new { |user| !user.login.blank? }, case_sensitive: false) {
-  validates_uniqueness_of :mail, allow_blank: true, case_sensitive: false
+  // validates_uniqueness_of :login, if (: Proc.new { |user| !user.login.blank? }, case_sensitive: false) {
+  // validates_uniqueness_of :mail, allow_blank: true, case_sensitive: false
   // Login must contain letters, numbers, underscores only
-  validates_format_of :login, with: /\A[a-z0-9_\-@\.+ ]*\z/i
-  validates_length_of :login, maximum: 256
-  validates_length_of :firstname, :lastname, maximum: 30
-  validates_format_of :mail, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, allow_blank: true
-  validates_length_of :mail, maximum: 60, allow_nil: true
-  validates_confirmation_of :password, allow_nil: true
-  validates_inclusion_of :mail_notification, in: MAIL_NOTIFICATION_OPTIONS.map(&:first), allow_blank: true
+  // validates_format_of :login, with: /\A[a-z0-9_\-@\.+ ]*\z/i
+  // validates_length_of :login, maximum: 256
+  // validates_length_of :firstname, :lastname, maximum: 30
+  // validates_format_of :mail, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, allow_blank: true
+  // validates_length_of :mail, maximum: 60, allow_nil: true
+  // validates_confirmation_of :password, allow_nil: true
+  // validates_inclusion_of :mail_notification, in: MAIL_NOTIFICATION_OPTIONS.map(&:first), allow_blank: true
 
   validate :login_is_not_special_value
   validate :password_meets_requirements
 
-  after_save :update_password
+  // after_save :update_password
 
   before_create :sanitize_mail_notification_setting
   before_destroy :delete_associated_private_queries
   before_destroy :reassign_associated
 
-  scope :in_group, ->(group) {
+  // scope :in_group, ->(group) {
     within_group(group)
   }
-  scope :not_in_group, ->(group) {
+  // scope :not_in_group, ->(group) {
     within_group(group, false)
   }
-  scope :within_group, ->(group, positive = true) {
+  // scope :within_group, ->(group, positive = true) {
     group_id = group.is_a?(Group) ? [group.id] : Array(group).map(&:to_i)
 
     sql_condition = group_id.any? ? 'WHERE gu.group_id IN (?)' : ''
@@ -130,9 +130,9 @@ class User : public Principal {
     where(sql_query)
   }
 
-  scope :admin, -> { where(admin: true) }
+  // scope :admin, -> { where(admin: true) }
 
-  scope :newest, -> do not_builtin.order(created_on: :desc) }
+  // scope :newest, -> do not_builtin.order(created_on: :desc) }
 
    void unique_attribute() {
     :login
@@ -685,7 +685,7 @@ class User : public Principal {
     system_user
   }
 
-  protected
+  protected:
 
   // Login must not be special value 'me'
    void login_is_not_special_value() {
@@ -717,7 +717,7 @@ class User : public Principal {
     }
   }
 
-  private
+  private:
 
    void mail_regexp(mail) {
     separators = Regexp.escape(Setting.mail_suffix_separators)

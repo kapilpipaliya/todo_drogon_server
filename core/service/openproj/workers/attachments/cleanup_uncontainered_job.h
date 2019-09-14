@@ -6,7 +6,7 @@ class Attachments::CleanupUncontaineredJob : public ApplicationJob {
       .destroy_all
   }
 
-  private
+  private:
 
    void too_old() {
     attachment_table = Attachment.arel_table

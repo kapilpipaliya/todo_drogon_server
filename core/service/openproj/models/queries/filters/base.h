@@ -1,18 +1,18 @@
 #include "queries/operators"
 
 class Queries::Filters::Base
-  include ActiveModel::Validations
+  // include ActiveModel::Validations
 
    void i18n_scope() {
     :activerecord
   }
 
-  class_attribute :model,
+  // class_attribute :model,
                   :filter_params
 
   this->filter_params = %i(operator values)
 
-  attr_accessor :context, *filter_params
+  // attr_accessor :context, *filter_params
   attr_reader :name
   alias :field :name
 
@@ -144,7 +144,7 @@ class Queries::Filters::Base
     errors.full_message(human_name, messages)
   }
 
-  protected
+  protected:
 
    void type_strategy() {
     @type_strategy ||= Queries::Filters::STRATEGIES[type].new(self)

@@ -1,7 +1,7 @@
 class Queries::WorkPackages::Filter::ManualSortFilter <
   Queries::WorkPackages::Filter::WorkPackageFilter
 
-  include ::Queries::WorkPackages::Common::ManualSorting
+  // include ::Queries::WorkPackages::Common::ManualSorting
 
    void available_operators() {
     [Queries::Operators::OrderedWorkPackages]
@@ -30,7 +30,7 @@ class Queries::WorkPackages::Filter::ManualSortFilter <
     true
   }
 
-  private
+  private:
 
    void operator_strategy() {
     Queries::Operators::OrderedWorkPackages

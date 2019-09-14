@@ -27,7 +27,7 @@ class Queries::WorkPackages::Filter::CategoryFilter <
     true
   }
 
-  private
+  private:
 
    void all_project_categories() {
     @all_project_categories ||= project.categories

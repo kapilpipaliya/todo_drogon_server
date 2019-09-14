@@ -1,7 +1,8 @@
+#include "application_controller.h"
 class HelpController : public ApplicationController {
-  layout 'help'
+  // layout 'help'
 
-   void keyboard_shortcuts; }() {
+   void keyboard_shortcuts() {}
 
    void text_formatting() {
     default_link = OpenProject::Static::Links[:text_formatting][:href]

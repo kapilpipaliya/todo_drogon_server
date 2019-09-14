@@ -14,7 +14,7 @@ class UpdateProjectsTypesService : public BaseProjectService {
     }
   }
 
-  protected
+  protected:
 
    void standard_types() {
     type = ::Type.standard_type

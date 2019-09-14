@@ -1,18 +1,18 @@
 class MenuItem : public ActiveRecord::Base {
-  belongs_to :parent, class_name: 'MenuItem'
-  has_many :children, -> {
+  // belongs_to :parent, class_name: 'MenuItem'
+  // has_many :children, -> {
     order('id ASC')
   }, class_name: 'MenuItem', dependent: :destroy, foreign_key: :parent_id
 
   serialize :options, Hash
 
-  validates :title,
-            presence: true,
-            uniqueness: { scope: %i[navigatable_id type], case_sensitive: true }
+  // validates :title,
+            // presence: true,
+            // uniqueness: { scope: %i[navigatable_id type], case_sensitive: true }
 
-  validates :name,
-            presence: true,
-            uniqueness: { scope: %i[navigatable_id parent_id], case_sensitive: true }
+  // validates :name,
+            // presence: true,
+            // uniqueness: { scope: %i[navigatable_id parent_id], case_sensitive: true }
 
    void setting() {
     if ( new_record?) {

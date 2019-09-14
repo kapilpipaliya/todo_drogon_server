@@ -54,7 +54,7 @@ class Queries::WorkPackages::Filter::SubprojectFilter <
     "#{Project.table_name}.id IN (%s)" % ids.join(',')
   }
 
-  private
+  private:
 
    void visible_subproject_array() {
     visible_subprojects.pluck(:id, :name)

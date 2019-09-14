@@ -22,7 +22,7 @@ namespace Queries::Filters::Shared {
         :list_optional
       }
 
-      protected
+      protected:
 
        void type_strategy_class() {
         ::Queries::Filters::Strategies::CfListOptional

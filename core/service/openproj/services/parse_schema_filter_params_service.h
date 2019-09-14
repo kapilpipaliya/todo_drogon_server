@@ -1,8 +1,8 @@
 class ParseSchemaFilterParamsService
-  extend ActiveModel::Naming
-  extend ActiveModel::Translation
+  // extend ActiveModel::Naming
+  // extend ActiveModel::Translation
 
-  attr_accessor :user
+  // attr_accessor :user
 
    void i18n_scope() {
     :activerecord
@@ -24,7 +24,7 @@ class ParseSchemaFilterParamsService
     }
   }
 
-  private
+  private:
 
    void check_error_in_filter(filter) {
     if ( !filter.first['id']) {

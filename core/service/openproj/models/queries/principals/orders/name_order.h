@@ -5,7 +5,7 @@ class Queries::Principals::Orders::NameOrder : public Queries::BaseOrder {
     :name
   }
 
-  private
+  private:
 
    void order() {
     ordered = this->model.order_by_name

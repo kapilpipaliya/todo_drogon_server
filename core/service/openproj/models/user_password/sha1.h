@@ -3,7 +3,7 @@
 // This is only included for testing hashed passwords and will raise when trying
 // to save new passwords with that strategy.
 class UserPassword::SHA1 : public UserPassword {
-  protected
+  protected:
 
   //
   // Determines whether the hashed value of +plain+ matches the stored password hash.

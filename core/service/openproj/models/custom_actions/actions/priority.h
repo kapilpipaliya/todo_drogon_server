@@ -1,5 +1,5 @@
 class CustomActions::Actions::Priority : public CustomActions::Actions::Base {
-  include CustomActions::Actions::Strategies::Associated
+  // include CustomActions::Actions::Strategies::Associated
 
    void associated() {
     IssuePriority

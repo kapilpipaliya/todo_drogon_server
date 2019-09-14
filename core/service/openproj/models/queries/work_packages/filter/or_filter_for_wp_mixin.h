@@ -1,5 +1,5 @@
 namespace Queries::WorkPackages::Filter::OrFilterForWpMixin {
-  extend ActiveSupport::Concern
+  // extend ActiveSupport::Concern
 
   included {
     validate :minimum_one_filter_valid

@@ -1,7 +1,8 @@
+#include "application_controller.h"
 class SettingsController : public ApplicationController {
-  layout 'admin'
+  // layout 'admin'
 
-  before_action :require_admin
+  // before_action :require_admin
 
   current_menu_item [:index, :edit] {
     :settings

@@ -3,7 +3,7 @@ class CustomActions::Conditions::Status : public CustomActions::Conditions::Base
     :status
   }
 
-  private
+  private:
 
    void associated() {
     ::Status

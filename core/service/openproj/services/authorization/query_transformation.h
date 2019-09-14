@@ -1,5 +1,5 @@
 class Authorization::QueryTransformation
-  attr_accessor :on, :name, :after, :before, :block
+  // attr_accessor :on, :name, :after, :before, :block
 
    QueryTransformation(on,
                  name,

@@ -1,6 +1,6 @@
 namespace Queries::Filters::Strategies {
   namespace IntegerNumeric {
-    private
+    private:
 
      void numeric_class() {
       ::Integer

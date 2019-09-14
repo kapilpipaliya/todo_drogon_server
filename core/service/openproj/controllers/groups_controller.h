@@ -1,9 +1,10 @@
+#include "application_controller.h"
 class GroupsController : public ApplicationController {
-  include GroupsHelper
-  layout 'admin'
+  // include GroupsHelper
+  // layout 'admin'
 
-  before_action :require_admin
-  before_action :find_group, only: [:destroy,
+  // before_action :require_admin
+  // before_action :find_group, only: [:destroy,
                                     :show, :create_memberships, :destroy_membership,
                                     :edit_membership]
 
@@ -29,7 +30,7 @@ class GroupsController : public ApplicationController {
 
   // GET /groups/new
   // GET /groups/new.xml
-   void new() {
+   void new_() {
     @group = Group.new
 
     respond_to { |format|
@@ -141,7 +142,7 @@ class GroupsController : public ApplicationController {
     redirect_to controller: '/groups', action: 'edit', id: @group, tab: 'memberships'
   }
 
-  protected
+  protected:
 
    void find_group() {
     @group = Group.find(params[:id])

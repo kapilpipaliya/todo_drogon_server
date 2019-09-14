@@ -37,7 +37,7 @@ class Queries::WorkPackages::Filter::StatusFilter : public Queries::WorkPackages
     true
   }
 
-  private
+  private:
 
    void all_statuses() {
     @all_statuses ||= Status.all

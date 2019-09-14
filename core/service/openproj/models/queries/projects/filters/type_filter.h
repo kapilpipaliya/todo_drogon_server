@@ -22,7 +22,7 @@ namespace Queries {
           :type_id
         }
 
-        private
+        private:
 
          void type_strategy() {
           // Instead of getting the IDs of all the projects a user is allowed

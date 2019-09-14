@@ -1,7 +1,7 @@
 class Enumeration : public ActiveRecord::Base {
   default_scope { order("#{Enumeration.table_name}.position ASC") }
 
-  belongs_to :project
+  // belongs_to :project
 
   acts_as_list scope: 'type = \'#{type}\''
   acts_as_customizable
@@ -9,12 +9,12 @@ class Enumeration : public ActiveRecord::Base {
 
   before_destroy :check_integrity
 
-  validates_presence_of :name
-  validates_uniqueness_of :name, scope: %i(type project_id)
-  validates_length_of :name, maximum: 30
+  // validates_presence_of :name
+  // validates_uniqueness_of :name, scope: %i(type project_id)
+  // validates_length_of :name, maximum: 30
 
-  scope :shared, -> { where(project_id: nil) }
-  scope :active, -> { where(active: true) }
+  // scope :shared, -> { where(project_id: nil) }
+  // scope :active, -> { where(active: true) }
 
   before_save :unmark_old_default_value, if (: :became_default_value?) {
 
@@ -142,7 +142,7 @@ class Enumeration : public ActiveRecord::Base {
     }.map(&:first)
   }
 
-  private
+  private:
 
    void check_integrity() {
     raise "Can't delete enumeration" if ( in_use?) {

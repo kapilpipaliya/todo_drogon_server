@@ -1,8 +1,8 @@
 class WorkPackage::Exporter::CSV : public WorkPackage::Exporter::Base {
-  include Redmine::I18n
-  include CustomFieldsHelper
-  include ActionView::Helpers::TextHelper
-  include ActionView::Helpers::NumberHelper
+  // include Redmine::I18n
+  // include CustomFieldsHelper
+  // include ActionView::Helpers::TextHelper
+  // include ActionView::Helpers::NumberHelper
 
    void list() {
     serialized = CSV.generate(col_sep: l(:general_csv_separator)) { |csv|
@@ -24,7 +24,7 @@ class WorkPackage::Exporter::CSV : public WorkPackage::Exporter::Base {
     }
   }
 
-  private
+  private:
 
    void success(serialized) {
     WorkPackage::Exporter::Success

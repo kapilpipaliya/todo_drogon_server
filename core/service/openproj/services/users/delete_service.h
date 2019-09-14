@@ -41,7 +41,7 @@ namespace Users {
       }
     }
 
-    private
+    private:
 
      void deletion_allowed?() {
       this->class.deletion_allowed? user, actor

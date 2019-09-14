@@ -1,7 +1,7 @@
 namespace Queries::Filters::Strategies {
   class Relation : public BaseStrategy {
-    delegate :allowed_values_subset,
-             to: :filter
+    // delegate :allowed_values_subset,
+    //          to: :filter
 
     this->supported_operators = ::Relation::TYPES.keys + %w(parent children)
     this->default_operator = ::Relation::TYPE_RELATES
@@ -22,7 +22,7 @@ namespace Queries::Filters::Strategies {
       filter.values &= allowed_values.map(&:last).map(&:to_s)
     }
 
-    private
+    private:
 
      void too_many_values() {
       values.reject(&:blank?).length > 1

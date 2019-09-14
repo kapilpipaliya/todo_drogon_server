@@ -1,7 +1,7 @@
 #include "carrierwave/storage/fog"
 
 class FogFileUploader : public CarrierWave::Uploader::Base {
-  include FileUploader
+  // include FileUploader
   storage :fog
 
   // Delete cache and old rack file after store

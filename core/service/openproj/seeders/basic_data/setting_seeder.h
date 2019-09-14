@@ -40,7 +40,7 @@ namespace BasicData {
       }
     }
 
-    private
+    private:
 
      void update_unless_present(settings, key) {
       if ( !settings_in_db.include?(key)) {

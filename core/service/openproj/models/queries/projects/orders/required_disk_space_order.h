@@ -5,7 +5,7 @@ class Queries::Projects::Orders::RequiredDiskSpaceOrder : public Queries::BaseOr
     :required_disk_space
   }
 
-  private
+  private:
 
    void order() {
     with_raise_on_invalid {

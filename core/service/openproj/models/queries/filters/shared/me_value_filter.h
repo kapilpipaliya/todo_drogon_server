@@ -16,7 +16,7 @@ namespace Queries::Filters::Shared::MeValueFilter {
     vals
   }
 
-  protected
+  protected:
 
   //
   // Returns the me value if ( the user is logged) {

@@ -1,5 +1,5 @@
 class Type::FormGroup
-  attr_accessor :key,
+  // attr_accessor :key,
                 :attributes,
                 :type
 

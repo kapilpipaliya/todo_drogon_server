@@ -1,7 +1,7 @@
 #include "securerandom"
 
 namespace SettingsHelper {
-  include OpenProject::FormTagHelper
+  // include OpenProject::FormTagHelper
 
    void administration_settings_tabs() {
     [
@@ -116,7 +116,7 @@ namespace SettingsHelper {
     }
   }
 
-  private
+  private:
 
    void wrap_field_outer(options, &block) {
     if ( options[:label] != false) {

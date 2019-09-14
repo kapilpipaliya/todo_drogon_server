@@ -3,13 +3,13 @@
 class Queries::WorkPackages::Filter::DuplicatesFilter <
   Queries::WorkPackages::Filter::WorkPackageFilter
 
-  include ::Queries::WorkPackages::Filter::FilterOnDirectedRelationsMixin
+  // include ::Queries::WorkPackages::Filter::FilterOnDirectedRelationsMixin
 
    void relation_type() {
     ::Relation::TYPE_DUPLICATES
   }
 
-  private
+  private:
 
    void relation_filter() {
     { to_id: values }

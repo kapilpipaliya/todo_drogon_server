@@ -19,7 +19,7 @@ class Seeder
     "Skipping #{this->class.name}"
   }
 
-  protected
+  protected:
 
   //
   // Translate the given string with the fixed interpolation for base_url

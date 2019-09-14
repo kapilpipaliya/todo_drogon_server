@@ -78,7 +78,7 @@ namespace BasicData {
       }
     }
 
-    private
+    private:
 
      void find_query_by_name(name) {
       Query.find_by(name: name).id

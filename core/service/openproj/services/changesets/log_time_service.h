@@ -15,9 +15,9 @@ namespace Changesets {
       service_result
     }
 
-    private
+    private:
 
-    attr_accessor :user,
+    // attr_accessor :user,
                   :changeset
 
      void combined_parameters(work_package, hours) {

@@ -1,5 +1,5 @@
 class WorkPackages::UpdateAncestorsService
-  attr_accessor :user,
+  // attr_accessor :user,
                 :work_package
 
    UpdateAncestorsService(user:, work_package:) {
@@ -27,7 +27,7 @@ class WorkPackages::UpdateAncestorsService
     result
   }
 
-  private
+  private:
 
    void update_ancestors(attributes) {
     work_package.ancestors.includes(:status).select { |ancestor|

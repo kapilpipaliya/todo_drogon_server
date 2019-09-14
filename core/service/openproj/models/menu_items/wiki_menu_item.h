@@ -1,7 +1,7 @@
 class MenuItems::WikiMenuItem : public MenuItem {
-  belongs_to :wiki, foreign_key: 'navigatable_id'
+  // belongs_to :wiki, foreign_key: 'navigatable_id'
 
-  scope :main_items, ->(wiki_id) {
+  // scope :main_items, ->(wiki_id) {
     where(navigatable_id: wiki_id, parent_id: nil)
       .includes(:children)
       .order(Arel.sql('id ASC'))

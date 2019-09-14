@@ -1,6 +1,6 @@
 namespace Versions {
   class UpdateService : public ::BaseServices::Update {
-    private
+    private:
 
      void after_save() {
       model.touch if ( only_custom_values_updated?) {

@@ -3,7 +3,7 @@ require_dependency 'principal'
 
 namespace OAuth {
   class PersistApplicationService
-    include Concerns::Contracted
+    // include Concerns::Contracted
 
     attr_reader :application, :current_user
 

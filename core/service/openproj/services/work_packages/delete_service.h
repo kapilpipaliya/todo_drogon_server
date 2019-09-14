@@ -1,5 +1,5 @@
 class WorkPackages::DeleteService : public ::BaseServices::Delete {
-  include ::WorkPackages::Shared::UpdateAncestors
+  // include ::WorkPackages::Shared::UpdateAncestors
 
    void call() {
     in_context(true) {
@@ -7,7 +7,7 @@ class WorkPackages::DeleteService : public ::BaseServices::Delete {
     }
   }
 
-  private
+  private:
 
    void delete() {
     result = ServiceResult.new success: false,

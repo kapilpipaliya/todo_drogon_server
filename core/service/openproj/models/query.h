@@ -1,20 +1,20 @@
 class Query : public ActiveRecord::Base {
-  include Timelines
-  include Highlighting
-  include ManualSorting
-  include Queries::AvailableFilters
+  // include Timelines
+  // include Highlighting
+  // include ManualSorting
+  // include Queries::AvailableFilters
 
-  belongs_to :project
-  belongs_to :user
-  has_one :query_menu_item, -> { order('name') },
+  // belongs_to :project
+  // belongs_to :user
+  // has_one :query_menu_item, -> { order('name') },
           class_name: 'MenuItems::QueryMenuItem',
           dependent: :delete, foreign_key: 'navigatable_id'
   serialize :filters, Queries::WorkPackages::FilterSerializer
   serialize :column_names, Array
   serialize :sort_criteria, Array
 
-  validates :name, presence: true
-  validates_length_of :name, maximum: 255
+  // validates :name, presence: true
+  // validates_length_of :name, maximum: 255
 
   validate :validate_work_package_filters
   validate :validate_columns
@@ -384,7 +384,7 @@ class Query : public ActiveRecord::Base {
     subproject_filter
   }
 
-  private
+  private:
 
    void for_all?() {
     @for_all ||= project.nil?

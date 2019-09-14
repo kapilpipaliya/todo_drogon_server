@@ -14,7 +14,7 @@ namespace CustomActions::Actions::Strategies::Date {
     }
   }
 
-  private
+  private:
 
    void date_to_apply() {
     if ( values.first == '%CURRENT_DATE%') {

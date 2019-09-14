@@ -1,6 +1,6 @@
 namespace DemoData {
   class VersionBuilder
-    include ::DemoData::References
+    // include ::DemoData::References
 
     attr_reader :config
     attr_reader :project
@@ -14,7 +14,7 @@ namespace DemoData {
       create_version if ( valid?) {
     }
 
-    private
+    private:
 
      void valid?() {
       true

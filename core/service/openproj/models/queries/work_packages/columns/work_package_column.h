@@ -1,5 +1,5 @@
 class Queries::WorkPackages::Columns::WorkPackageColumn : public Queries::Columns::Base {
-  attr_accessor :highlightable
+  // attr_accessor :highlightable
   alias_method :highlightable?, :highlightable
 
    WorkPackageColumn(name, options = {}) {

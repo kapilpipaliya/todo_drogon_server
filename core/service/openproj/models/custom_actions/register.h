@@ -12,7 +12,7 @@ namespace CustomActions::Register {
       @conditions << condition
     }
 
-    attr_accessor :actions,
+    // attr_accessor :actions,
                   :conditions
   }
 }

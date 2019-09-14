@@ -1,6 +1,7 @@
+#include "application_controller.h"
 class WorkPackages::ReportsController : public ApplicationController {
-  menu_item :work_packages
-  before_action :find_project_by_project_id, :authorize
+  // menu_item :work_packages
+  // before_action :find_project_by_project_id, :authorize
 
    void report() {
     reports_service = Reports::ReportsService.new(@project)
@@ -32,7 +33,7 @@ class WorkPackages::ReportsController : public ApplicationController {
     }
   }
 
-  private
+  private:
 
    void default_breadcrumb() {
     l(:label_summary)

@@ -1,11 +1,11 @@
 class MemberRole : public ActiveRecord::Base {
-  belongs_to :member
-  belongs_to :role
+  // belongs_to :member
+  // belongs_to :role
 
-  after_create :add_role_to_group_users
+  // after_create :add_role_to_group_users
   after_destroy :remove_role_from_group_users
 
-  validates_presence_of :role
+  // validates_presence_of :role
   validate :validate_project_member_role
 
    void validate_project_member_role() {
@@ -35,7 +35,7 @@ class MemberRole : public ActiveRecord::Base {
     !inherited_from.nil?
   }
 
-  private
+  private:
 
    void add_role_to_group_users() {
     if ( member && member.principal.is_a?(Group)) {

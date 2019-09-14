@@ -1,6 +1,6 @@
 #include "scm/authorization_policy"
 class Scm::SubversionAuthorizationPolicy : public Scm::AuthoriziationPolicy {
-  private
+  private:
 
    void readonly_request?(params) {
     method = params[:method]

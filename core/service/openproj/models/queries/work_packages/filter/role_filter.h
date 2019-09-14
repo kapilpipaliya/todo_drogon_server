@@ -37,7 +37,7 @@ class Queries::WorkPackages::Filter::RoleFilter : public Queries::WorkPackages::
                                          'assigned_to_id')
   }
 
-  private
+  private:
 
    void roles() {
     ::Role.givable

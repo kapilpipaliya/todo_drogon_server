@@ -1,5 +1,5 @@
 class Queries::WorkPackages::Columns::ManualSortingColumn : public Queries::WorkPackages::Columns::WorkPackageColumn {
-  include ::Queries::WorkPackages::Common::ManualSorting
+  // include ::Queries::WorkPackages::Common::ManualSorting
 
    ManualSortingColumn() {
     super :manual_sorting,

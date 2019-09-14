@@ -33,7 +33,7 @@ class Queries::WorkPackages::Filter::WatcherFilter <
     }
   }
 
-  private
+  private:
 
    void where_any_watcher() {
     db_table = Watcher.table_name

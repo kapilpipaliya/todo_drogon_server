@@ -1,8 +1,8 @@
 class CustomActions::UpdateWorkPackageService
-  include Shared::BlockService
-  include Concerns::Contracted
+  // include Shared::BlockService
+  // include Concerns::Contracted
 
-  attr_accessor :user,
+  // attr_accessor :user,
                 :action
 
    UpdateWorkPackageService(action:, user:) {
@@ -22,7 +22,7 @@ class CustomActions::UpdateWorkPackageService
     block_with_result(result, &block)
   }
 
-  private
+  private:
 
    void apply_actions(work_package, actions) {
     changes_before = work_package.changes.dup

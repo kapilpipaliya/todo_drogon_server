@@ -1,8 +1,8 @@
 #include "open_project/scm/adapters/subversion"
 
 class Repository::Subversion : public Repository {
-  validates_presence_of :url
-  validates_format_of :url, with: /\A(http|https|svn(\+[^\s:\/\\]+)?|file):\/\/.+\z/i
+  // validates_presence_of :url
+  // validates_format_of :url, with: /\A(http|https|svn(\+[^\s:\/\\]+)?|file):\/\/.+\z/i
 
    void scm_adapter_class() {
     OpenProject::Scm::Adapters::Subversion
@@ -100,7 +100,7 @@ class Repository::Subversion : public Repository {
     Rails.logger.error("Failed to fetch changesets from repository: #{e.message}")
   }
 
-  private
+  private:
 
   // Returns the relative url of the repository
   // Eg: root_url = file:///var/svn/foo

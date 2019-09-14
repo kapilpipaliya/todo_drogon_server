@@ -1,14 +1,15 @@
 #include "diff"
 
+#include "application_controller.h"
 class JournalsController : public ApplicationController {
-  before_action :find_journal, except: [:index]
-  before_action :find_optional_project, only: [:index]
-  before_action :authorize, only: [:diff]
-  accept_key_auth :index
-  menu_item :issues
+  // before_action :find_journal, except: [:index]
+  // before_action :find_optional_project, only: [:index]
+  // before_action :authorize, only: [:diff]
+  // accept_key_auth :index
+  // menu_item :issues
 
-  include QueriesHelper
-  include SortHelper
+  // include QueriesHelper
+  // include SortHelper
 
    void index() {
     retrieve_query
@@ -59,7 +60,7 @@ class JournalsController : public ApplicationController {
     }
   }
 
-  private
+  private:
 
    void find_journal() {
     @journal = Journal.find(params[:id])

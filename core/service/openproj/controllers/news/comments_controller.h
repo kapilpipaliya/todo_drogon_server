@@ -1,8 +1,9 @@
+#include "application_controller.h"
 class News::CommentsController : public ApplicationController {
   default_search_scope :news
-  model_object Comment, scope: [News => :commented]
-  before_action :find_object_and_scope
-  before_action :authorize
+  // model_object Comment, scope: [News => :commented]
+  // before_action :find_object_and_scope
+  // before_action :authorize
 
    void create() {
     @comment = Comment.new(permitted_params.comment)

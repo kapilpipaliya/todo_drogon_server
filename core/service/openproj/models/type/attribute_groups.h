@@ -1,13 +1,13 @@
 namespace Type::AttributeGroups {
-  extend ActiveSupport::Concern
+  // extend ActiveSupport::Concern
 
   included {
     before_save :write_attribute_groups_objects
-    after_save :unset_attribute_groups_objects
+    // after_save :unset_attribute_groups_objects
     after_destroy :remove_attribute_groups_queries
 
     serialize :attribute_groups, Array
-    attr_accessor :attribute_groups_objects
+    // attr_accessor :attribute_groups_objects
 
     // Mapping from AR attribute name to a default group
     // May be extended by plugins
@@ -107,7 +107,7 @@ namespace Type::AttributeGroups {
   }
 
 
-  private
+  private:
 
    void write_attribute_groups_objects() {
     return if ( attribute_groups_objects.nil?) {

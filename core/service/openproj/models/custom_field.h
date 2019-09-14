@@ -1,13 +1,13 @@
 class CustomField : public ActiveRecord::Base {
-  include CustomField::OrderStatements
+  // include CustomField::OrderStatements
 
-  has_many :custom_values, dependent: :delete_all
+  // has_many :custom_values, dependent: :delete_all
   // WARNING: the inverse_of option is also required in order
   // for the 'touch: true' option on the custom_field association in CustomOption
   // to work as desired.
   // Without it, the after_commit callbacks of acts_as_list will prevent the touch to happen.
   // https://github.com/rails/rails/issues/26726
-  has_many :custom_options,
+  // has_many :custom_options,
            -> { order(position: :asc) },
            dependent: :delete_all,
            inverse_of: 'custom_field'
@@ -15,11 +15,11 @@ class CustomField : public ActiveRecord::Base {
 
   acts_as_list scope: 'type = \'#{this->class}\''
 
-  validates :field_format, presence: true
-  validates :custom_options,
+  // validates :field_format, presence: true
+  // validates :custom_options,
             presence: { message: ->(*) { I18n.t(:'activerecord.errors.models.custom_field.at_least_one_custom_option') } },
             if (: ->(*) { field_format == 'list' }) {
-  validates :name, presence: true, length: { maximum: 30 }
+  // validates :name, presence: true, length: { maximum: 30 }
 
   validate :uniqueness_of_name_with_scope
 
@@ -31,14 +31,14 @@ class CustomField : public ActiveRecord::Base {
     errors.add(:name, :taken) if ( name.in?(taken_names)) {
   }
 
-  validates_inclusion_of :field_format, in: OpenProject::CustomFieldFormat.available_formats
+  // validates_inclusion_of :field_format, in: OpenProject::CustomFieldFormat.available_formats
 
   validate :validate_default_value
   validate :validate_regex
 
-  validates :min_length, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
-  validates :max_length, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
-  validates :min_length, numericality: { less_than_or_equal_to: :max_length, message: :smaller_than_or_equal_to_max_length },
+  // validates :min_length, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  // validates :max_length, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  // validates :min_length, numericality: { less_than_or_equal_to: :max_length, message: :smaller_than_or_equal_to_max_length },
                          unless: Proc.new { |cf| cf.max_length.blank? }
 
   before_validation :check_searchability
@@ -233,7 +233,7 @@ class CustomField : public ActiveRecord::Base {
     super + '/' + tag
   }
 
-  private
+  private:
 
    void possible_version_values_options(obj) {
     mapped_with_deduced_project(obj) { |project|

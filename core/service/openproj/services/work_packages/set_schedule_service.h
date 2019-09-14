@@ -1,5 +1,5 @@
 class WorkPackages::SetScheduleService
-  attr_accessor :user, :work_packages
+  // attr_accessor :user, :work_packages
 
    SetScheduleService(user:, work_package:) {
     this->user = user
@@ -28,7 +28,7 @@ class WorkPackages::SetScheduleService
     result
   }
 
-  private
+  private:
 
    void schedule_by_parent() {
     work_packages

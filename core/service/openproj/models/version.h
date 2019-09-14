@@ -1,32 +1,32 @@
 class Version : public ActiveRecord::Base {
-  include Version::ProjectSharing
+  // include Version::ProjectSharing
 
-  belongs_to :project
-  has_many :fixed_issues, class_name: 'WorkPackage', foreign_key: 'fixed_version_id', dependent: :nullify
-  has_many :work_packages, foreign_key: :fixed_version_id
+  // belongs_to :project
+  // has_many :fixed_issues, class_name: 'WorkPackage', foreign_key: 'fixed_version_id', dependent: :nullify
+  // has_many :work_packages, foreign_key: :fixed_version_id
   acts_as_customizable
 
   VERSION_STATUSES = %w(open locked closed).freeze
   VERSION_SHARINGS = %w(none descendants hierarchy tree system).freeze
 
-  validates :name,
+  // validates :name,
             presence: true,
             uniqueness: { scope: [:project_id], case_sensitive: true }
 
-  validates_format_of :effective_date, with: /\A\d{4}-\d{2}-\d{2}\z/, message: :not_a_date, allow_nil: true
-  validates_format_of :start_date, with: /\A\d{4}-\d{2}-\d{2}\z/, message: :not_a_date, allow_nil: true
-  validates_inclusion_of :status, in: VERSION_STATUSES
-  validates_inclusion_of :sharing, in: VERSION_SHARINGS
+  // validates_format_of :effective_date, with: /\A\d{4}-\d{2}-\d{2}\z/, message: :not_a_date, allow_nil: true
+  // validates_format_of :start_date, with: /\A\d{4}-\d{2}-\d{2}\z/, message: :not_a_date, allow_nil: true
+  // validates_inclusion_of :status, in: VERSION_STATUSES
+  // validates_inclusion_of :sharing, in: VERSION_SHARINGS
   validate :validate_start_date_before_effective_date
 
-  scope :visible, ->(*args) {
+  // scope :visible, ->(*args) {
     joins(:project)
       .merge(Project.allowed_to(args.first || User.current, :view_work_packages))
   }
 
-  scope :systemwide, -> { where(sharing: 'system') }
+  // scope :systemwide, -> { where(sharing: 'system') }
 
-  scope :order_by_name, -> { order(Arel.sql("LOWER(#{Version.table_name}.name)")) }
+  // scope :order_by_name, -> { order(Arel.sql("LOWER(#{Version.table_name}.name)")) }
 
    void with_status_open() {
     where(status: 'open')
@@ -163,7 +163,7 @@ class Version : public ActiveRecord::Base {
     to_s_with_project.downcase <=> other.to_s_with_project.downcase
   }
 
-  private
+  private:
 
    void validate_start_date_before_effective_date() {
     if ( effective_date && start_date && effective_date < start_date) {

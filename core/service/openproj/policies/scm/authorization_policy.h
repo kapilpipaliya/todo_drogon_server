@@ -15,7 +15,7 @@ class Scm::AuthoriziationPolicy
     (readonly_request?(params) && read_access?) || write_access?
   }
 
-  protected
+  protected:
 
   //
   // Determines whether the given request is a read access

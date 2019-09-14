@@ -1,7 +1,7 @@
 class WorkPackages::SetAttributesService : public ::BaseServices::SetAttributes {
-  include Attachments::SetReplacements
+  // include Attachments::SetReplacements
 
-  private
+  private:
 
    void set_attributes(attributes) {
     set_attachments_attributes(attributes)

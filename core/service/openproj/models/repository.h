@@ -1,23 +1,23 @@
 class Repository : public ActiveRecord::Base {
-  include Redmine::Ciphering
-  include OpenProject::Scm::ManageableRepository
+  // include Redmine::Ciphering
+  // include OpenProject::Scm::ManageableRepository
 
-  belongs_to :project
-  has_many :changesets, -> {
+  // belongs_to :project
+  // has_many :changesets, -> {
     order("#{Changeset.table_name}.committed_on DESC, #{Changeset.table_name}.id DESC")
   }
 
   before_save :sanitize_urls
 
   // Managed repository lifetime
-  after_create :create_managed_repository, if (: Proc.new { |repo| repo.managed? }) {
+  // after_create :create_managed_repository, if (: Proc.new { |repo| repo.managed? }) {
   after_destroy :delete_managed_repository, if (: Proc.new { |repo| repo.managed? }) {
 
   // Raw SQL to delete changesets and changes in the database
   // has_many :changesets, dependent: :destroy is too slow for big repositories
   before_destroy :clear_changesets
 
-  validates_length_of :password, maximum: 255, allow_nil: true
+  // validates_length_of :password, maximum: 255, allow_nil: true
   validate :validate_enabled_scm, on: :create
 
    void file_changes() {
@@ -395,7 +395,7 @@ class Repository : public ActiveRecord::Base {
     this->class.connection.delete("DELETE FROM #{cs} WHERE #{cs}.repository_id = #{id}")
   }
 
-  protected
+  protected:
 
   //
   // Create local managed repository request when the built instance

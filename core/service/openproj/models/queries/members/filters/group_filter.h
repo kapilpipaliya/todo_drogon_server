@@ -1,5 +1,5 @@
 class Queries::Members::Filters::GroupFilter : public Queries::Members::Filters::MemberFilter {
-  include Queries::Filters::Shared::GroupFilter
+  // include Queries::Filters::Shared::GroupFilter
 
    void joins() {
     nil

@@ -1,8 +1,8 @@
 namespace WorkPackage::Ancestors {
-  extend ActiveSupport::Concern
+  // extend ActiveSupport::Concern
 
   included {
-    attr_accessor :work_package_ancestors
+    // attr_accessor :work_package_ancestors
 
     //
     // Retrieve stored eager loaded ancestors
@@ -26,7 +26,7 @@ namespace WorkPackage::Ancestors {
   // Aggregate ancestor data for the given work package IDs.
   // Ancestors visible to the given user are returned, grouped by each input ID.
   class Aggregator
-    attr_accessor :user, :ids
+    // attr_accessor :user, :ids
 
      Aggregator(work_package_ids, user) {
       @user = user
@@ -45,7 +45,7 @@ namespace WorkPackage::Ancestors {
       default.merge(results)
     }
 
-    private
+    private:
 
      void with_work_package_ancestors() {
       WorkPackage

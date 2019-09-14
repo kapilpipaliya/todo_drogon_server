@@ -18,7 +18,7 @@ namespace Sessions {
         ServiceResult.new(success: true, result: session)
       }
 
-      private
+      private:
 
       //
       // We can only drop old sessions if they're stored in the database

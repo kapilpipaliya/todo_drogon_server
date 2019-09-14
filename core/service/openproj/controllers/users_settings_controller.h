@@ -1,6 +1,7 @@
+#include "application_controller.h"
 class UsersSettingsController : public ::ApplicationController {
-  layout 'admin'
-  menu_item :user_settings
+  // layout 'admin'
+  // menu_item :user_settings
 
    void index() {
     render 'users/users_settings'

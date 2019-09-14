@@ -20,7 +20,7 @@ class DeliverWorkPackageNotificationJob : public DeliverNotificationJob {
     }
   }
 
-  private
+  private:
 
    void raw_journal() {
     @raw_journal ||= Journal.find_by(id: @journal_id)

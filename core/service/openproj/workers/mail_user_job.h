@@ -48,7 +48,7 @@ class MailUserJob : public ApplicationJob {
                          priority: ::ApplicationJob.priority_number(:notification)
   }
 
-  private
+  private:
 
    void serialize_param(param) {
     if ( param.is_a? ActiveRecord::Base) {

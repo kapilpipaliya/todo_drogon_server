@@ -33,7 +33,7 @@ class Queries::WorkPackages::Filter::ProjectFilter : public Queries::WorkPackage
     visible_projects.select { |p| value_ints.include?(p.id) }
   }
 
-  private
+  private:
 
    void visible_projects() {
     @visible_projects ||= Project.visible

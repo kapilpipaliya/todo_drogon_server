@@ -2,7 +2,7 @@ namespace Queries::Filters::Shared::CustomFieldFilter {
    void included(base) {
     base.extend(ClassMethods)
     base.class_eval {
-      class_attribute :custom_field_context
+      // class_attribute :custom_field_context
     }
   }
 

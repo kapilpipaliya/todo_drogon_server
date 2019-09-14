@@ -1,26 +1,26 @@
 class Role : public ActiveRecord::Base {
-  extend Pagination::Model
+  // extend Pagination::Model
 
   // Built-in roles
   NON_BUILTIN = 0
   BUILTIN_NON_MEMBER = 1
   BUILTIN_ANONYMOUS  = 2
 
-  scope :builtin, ->(*args) {
+  // scope :builtin, ->(*args) {
     compare = 'not' if ( args.first == true) {
     where("#{compare} builtin = #{NON_BUILTIN}")
   }
 
   before_destroy :check_deletable
-  has_many :workflows, dependent: :delete_all {
+  // has_many :workflows, dependent: :delete_all {
      void copy_from_role(source_role) {
       Workflow.copy(nil, source_role, nil, proxy_association.owner)
     }
   }
 
-  has_many :member_roles, dependent: :destroy
-  has_many :members, through: :member_roles
-  has_many :role_permissions
+  // has_many :member_roles, dependent: :destroy
+  // has_many :members, through: :member_roles
+  // has_many :role_permissions
 
   default_scope -> {
     includes(:role_permissions)
@@ -28,7 +28,7 @@ class Role : public ActiveRecord::Base {
 
   acts_as_list
 
-  validates :name,
+  // validates :name,
             presence: true,
             length: { maximum: 30 },
             uniqueness: { case_sensitive: true }
@@ -141,7 +141,7 @@ class Role : public ActiveRecord::Base {
     paginate_scope! givable.like(search), options
   }
 
-  private
+  private:
 
    void allowed_permissions() {
     @allowed_permissions ||= permissions + OpenProject::AccessControl.public_permissions.map(&:name)

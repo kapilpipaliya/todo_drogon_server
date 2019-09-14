@@ -1,9 +1,10 @@
+#include "application_controller.h"
 class WorkPackages::MovesController : public ApplicationController {
   default_search_scope :work_packages
-  before_action :find_work_packages, :check_project_uniqueness
-  before_action :authorize
+  // before_action :find_work_packages, :check_project_uniqueness
+  // before_action :authorize
 
-   void new() {
+   void new_() {
     prepare_for_work_package_move
   }
 
@@ -85,7 +86,7 @@ class WorkPackages::MovesController : public ApplicationController {
     l(:label_move_work_package)
   }
 
-  private
+  private:
 
   // Check if ( project is unique before bulk operations) {
    void check_project_uniqueness() {

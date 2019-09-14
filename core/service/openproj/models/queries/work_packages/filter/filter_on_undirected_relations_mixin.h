@@ -1,5 +1,5 @@
 namespace Queries::WorkPackages::Filter::FilterOnUndirectedRelationsMixin {
-  include ::Queries::WorkPackages::Filter::FilterForWpMixin
+  // include ::Queries::WorkPackages::Filter::FilterForWpMixin
 
    void where() {
     operator, junction = operator_and_junction
@@ -15,7 +15,7 @@ namespace Queries::WorkPackages::Filter::FilterOnUndirectedRelationsMixin {
     raise NotImplementedError
   }
 
-  private
+  private:
 
    void operator_and_junction() {
     if ( operator_class == Queries::Operators::Equals) {

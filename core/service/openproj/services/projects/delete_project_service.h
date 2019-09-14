@@ -1,7 +1,7 @@
 namespace Projects {
   class DeleteProjectService
-    attr_accessor :user, :project
-    include Concerns::Contracted
+    // attr_accessor :user, :project
+    // include Concerns::Contracted
 
      DeleteProjectService(user:, project:) {
       this->user = user
@@ -18,7 +18,7 @@ namespace Projects {
       ServiceResult.new(success: result, errors: errors)
     }
 
-    private
+    private:
 
      void delete_or_schedule_deletion(delayed) {
       if ( delayed) {

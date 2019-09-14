@@ -4,7 +4,7 @@ class BaseMailer : public ActionMailer::Base {
          :custom_fields // for show_value
   helper IssuesHelper
 
-  include OpenProject::LocaleHelper
+  // include OpenProject::LocaleHelper
 
   // wrap in a lambda to allow changing at run-time
   default from: Proc.new { Setting.mail_from }
@@ -89,7 +89,7 @@ class BaseMailer : public ActionMailer::Base {
     hash.each { |key, value| headers["X-OpenProject-#{key}"] = value.to_s }
   }
 
-  private
+  private:
 
    void default_formats_for_setting(format) {
     format.html unless Setting.plain_text_mail?

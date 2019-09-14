@@ -1,6 +1,6 @@
 namespace CustomActions::Actions::Strategies::Associated {
-  include CustomActions::ValidateAllowedValue
-  include CustomActions::ValuesToInteger
+  // include CustomActions::ValidateAllowedValue
+  // include CustomActions::ValuesToInteger
 
    void allowed_values() {
     @allowed_values ||= begin

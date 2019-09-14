@@ -12,7 +12,7 @@ namespace CustomActions::Actions::Strategies::ValidateInRange {
     validate_in_interval(errors)
   }
 
-  private
+  private:
 
    void validate_in_interval(errors) {
     return unless values.compact.length == 1

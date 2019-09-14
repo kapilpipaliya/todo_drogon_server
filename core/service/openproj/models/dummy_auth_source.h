@@ -15,7 +15,7 @@ class DummyAuthSource : public AuthSource {
     'LDAP'
   }
 
-  private
+  private:
 
    void find_registered_user(login) {
     registered_login?(login) &&

@@ -1,7 +1,8 @@
+#include "application_controller.h"
 class SearchController : public ApplicationController {
-  include Concerns::Layout
+  // include Concerns::Layout
 
-  before_action :find_optional_project,
+  // before_action :find_optional_project,
                 :prepare_tokens,
                 :quick_wp_id_redirect
 
@@ -23,7 +24,7 @@ class SearchController : public ApplicationController {
     render layout: layout_non_or_no_menu
   }
 
-  private
+  private:
 
    void prepare_tokens() {
     @question = search_params[:q] || ''

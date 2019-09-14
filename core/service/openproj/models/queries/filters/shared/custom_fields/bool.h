@@ -14,7 +14,7 @@ namespace Queries::Filters::Shared {
         :list
       }
 
-      protected
+      protected:
 
        void type_strategy_class() {
         ::Queries::Filters::Strategies::BooleanList

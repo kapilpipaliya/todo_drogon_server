@@ -3,7 +3,7 @@ class CreateTypeService : public BaseTypeService {
     super Type.new, user
   }
 
-  private
+  private:
 
    void after_type_save(_params, options) {
     // workflow copy

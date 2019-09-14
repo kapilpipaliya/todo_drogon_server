@@ -36,7 +36,7 @@ namespace Queries::Filters::Shared::GroupFilter {
       }
     }
 
-    private
+    private:
 
      void group_subselect() {
       User.in_group(values).select(:id).to_sql

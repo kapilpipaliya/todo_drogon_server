@@ -12,7 +12,7 @@ class DeliverWatcherNotificationJob : public DeliverNotificationJob {
     UserMailer.work_package_watcher_added(watcher.watchable, recipient, sender)
   }
 
-  private
+  private:
 
    void watcher() {
     @watcher ||= Watcher.find_by(id: @watcher_id)

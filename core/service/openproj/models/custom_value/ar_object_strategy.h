@@ -31,7 +31,7 @@ class CustomValue::ARObjectStrategy : public CustomValue::FormatStrategy {
     }
   }
 
-  private
+  private:
 
    void ar_class() {
     raise NotImplementedError

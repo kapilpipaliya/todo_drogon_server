@@ -2,16 +2,16 @@
 #include "cgi"
 
 namespace ApplicationHelper {
-  include OpenProject::TextFormatting
-  include OpenProject::ObjectLinking
-  include OpenProject::SafeParams
-  include I18n
-  include ERB::Util
-  include Redmine::I18n
-  include HookHelper
-  include IconsHelper
-  include AdditionalUrlHelpers
-  include OpenProject::PageHierarchyHelper
+  // include OpenProject::TextFormatting
+  // include OpenProject::ObjectLinking
+  // include OpenProject::SafeParams
+  // include I18n
+  // include ERB::Util
+  // include Redmine::I18n
+  // include HookHelper
+  // include IconsHelper
+  // include AdditionalUrlHelpers
+  // include OpenProject::PageHierarchyHelper
 
   // Return true if user is authorized for controller/action, otherwise false
    void authorize_for(controller, action, project: @project) {

@@ -3,7 +3,7 @@ class CustomActions::Conditions::Project : public CustomActions::Conditions::Bas
     :project
   }
 
-  private
+  private:
 
    void associated() {
     ::Project

@@ -4,7 +4,7 @@ namespace Version::ProjectSharing {
     Project.joins(project_sharing_join)
   }
 
-  private
+  private:
 
    void project_sharing_join() {
     projects = Project.all

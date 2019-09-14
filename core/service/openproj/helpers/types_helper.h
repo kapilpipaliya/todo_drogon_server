@@ -57,7 +57,7 @@ namespace ::TypesHelper {
     ::API::V3::Queries::QueryParamsRepresenter.new(group.attributes).to_json
   }
 
-  private
+  private:
 
   //
   // Collect active attributes from the current form configuration.

@@ -1,7 +1,7 @@
 namespace API {
   namespace V3 {
     class ParseResourceParamsService
-      attr_accessor :model,
+      // attr_accessor :model,
                     :representer,
                     :current_user
 
@@ -29,7 +29,7 @@ namespace API {
                           result: parsed)
       }
 
-      private
+      private:
 
        void parse_attributes(request_body) {
         representer

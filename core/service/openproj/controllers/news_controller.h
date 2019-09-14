@@ -1,15 +1,16 @@
+#include "application_controller.h"
 class NewsController : public ApplicationController {
-  include PaginationHelper
-  include Concerns::Layout
+  // include PaginationHelper
+  // include Concerns::Layout
 
   default_search_scope :news
 
-  before_action :find_news_object, except: %i[new create index]
-  before_action :find_project_from_association, except: %i[new create index]
-  before_action :find_project, only: %i[new create]
-  before_action :authorize, except: [:index]
-  before_action :find_optional_project, only: [:index]
-  accept_key_auth :index
+  // before_action :find_news_object, except: %i[new create index]
+  // before_action :find_project_from_association, except: %i[new create index]
+  // before_action :find_project, only: %i[new create]
+  // before_action :authorize, except: [:index]
+  // before_action :find_optional_project, only: [:index]
+  // accept_key_auth :index
 
    void index() {
     scope = @project ? @project.news : News.all
@@ -38,7 +39,7 @@ class NewsController : public ApplicationController {
     @comments.reverse_order if ( User.current.wants_comments_in_reverse_order?) {
   }
 
-   void new() {
+   void new_() {
     @news = News.new(project: @project, author: User.current)
   }
 
@@ -53,7 +54,7 @@ class NewsController : public ApplicationController {
     }
   }
 
-   void edit; }() {
+   void edit() {}
 
    void update() {
     @news.attributes = permitted_params.news
@@ -71,7 +72,7 @@ class NewsController : public ApplicationController {
     redirect_to action: 'index', project_id: @project
   }
 
-  private
+  private:
 
    void find_news_object() {
     @news = @object = News.find(params[:id].to_i)

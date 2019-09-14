@@ -1,5 +1,5 @@
 namespace ProjectsHelper {
-  include WorkPackagesFilterHelper
+  // include WorkPackagesFilterHelper
 
    void link_to_version(version, html_options = {}, options = {}) {
     return '' unless version && version.is_a?(Version)

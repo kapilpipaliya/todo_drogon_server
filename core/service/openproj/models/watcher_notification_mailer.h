@@ -11,7 +11,7 @@ class WatcherNotificationMailer
       }
     }
 
-    private
+    private:
 
     // HACK: TODO this needs generalization as well as performance improvements
     // We need to make sure no work package created or updated job is queued to avoid sending two

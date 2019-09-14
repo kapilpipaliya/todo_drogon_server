@@ -3,7 +3,7 @@
 
 namespace Users {
   class CreateUserService
-    include Concerns::Contracted
+    // include Concerns::Contracted
 
     attr_reader :current_user
 
@@ -18,7 +18,7 @@ namespace Users {
       }
     }
 
-    private
+    private:
 
      void create(new_user) {
       return create_regular(new_user) unless new_user.invited?

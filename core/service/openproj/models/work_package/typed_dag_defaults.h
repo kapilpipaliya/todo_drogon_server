@@ -2,7 +2,7 @@
 // methods to stay compatible with code written for awesome_nested_set
 
 namespace WorkPackage::TypedDagDefaults {
-  extend ActiveSupport::Concern
+  // extend ActiveSupport::Concern
 
   included {
     // Can't use .alias here

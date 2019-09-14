@@ -1,6 +1,6 @@
 class CustomValue::FormatStrategy
   attr_reader :custom_value
-  delegate :custom_field, :value, to: :custom_value
+  // delegate :custom_field, :value, to: :custom_value
 
    FormatStrategy(custom_value) {
     @custom_value = custom_value
@@ -37,7 +37,7 @@ class CustomValue::FormatStrategy
     raise 'SubclassResponsibility'
   }
 
-  private
+  private:
 
-  attr_accessor :memoized_typed_value
+  // attr_accessor :memoized_typed_value
 }

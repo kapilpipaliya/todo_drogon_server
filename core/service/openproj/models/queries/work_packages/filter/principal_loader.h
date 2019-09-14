@@ -1,5 +1,5 @@
 class Queries::WorkPackages::Filter::PrincipalLoader
-  attr_accessor :project
+  // attr_accessor :project
 
    PrincipalLoader(project) {
     this->project = project
@@ -30,7 +30,7 @@ class Queries::WorkPackages::Filter::PrincipalLoader
     }
   }
 
-  private
+  private:
 
    void principals_by_class() {
     @principals_by_class ||= principal_values.group_by(&:class)

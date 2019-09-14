@@ -13,9 +13,9 @@ namespace API {
           .call(params)
       }
 
-      private
+      private:
 
-      attr_accessor :current_user
+      // attr_accessor :current_user
     }
   }
 }

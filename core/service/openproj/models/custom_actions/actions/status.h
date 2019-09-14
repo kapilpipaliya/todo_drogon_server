@@ -1,5 +1,5 @@
 class CustomActions::Actions::Status : public CustomActions::Actions::Base {
-  include CustomActions::Actions::Strategies::Associated
+  // include CustomActions::Actions::Strategies::Associated
 
    void key() {
     :status
@@ -9,7 +9,7 @@ class CustomActions::Actions::Status : public CustomActions::Actions::Base {
     true
   }
 
-  private
+  private:
 
    void associated() {
     Status

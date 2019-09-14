@@ -9,11 +9,11 @@ class Queries::BaseQuery
     }
   }
 
-  attr_accessor :filters, :orders
+  // attr_accessor :filters, :orders
 
-  include Queries::AvailableFilters
-  include Queries::AvailableOrders
-  include ActiveModel::Validations
+  // include Queries::AvailableFilters
+  // include Queries::AvailableOrders
+  // include ActiveModel::Validations
 
   validate :filters_valid,
            :sortation_valid
@@ -75,9 +75,9 @@ class Queries::BaseQuery
     available_filters.detect { |f| f.name == name }
   }
 
-  protected
+  protected:
 
-  attr_accessor :user
+  // attr_accessor :user
 
    void filters_valid() {
     filters.each { |filter|

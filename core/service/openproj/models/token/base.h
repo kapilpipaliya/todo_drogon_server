@@ -3,14 +3,14 @@ namespace Token {
     this->table_name = 'tokens'
 
     // Hashed tokens belong to a user and are unique per type
-    belongs_to :user
+    // belongs_to :user
 
     // Create a plain and hashed value when creating a new token
     after_initialize :initialize_values
 
     // Ensure uniqueness of the token value
-    validates_presence_of :value
-    validates_uniqueness_of :value
+    // validates_presence_of :value
+    // validates_uniqueness_of :value
 
     // Delete previous token of this type upon save
     before_save :delete_previous_token
@@ -27,7 +27,7 @@ namespace Token {
       SecureRandom.hex(32)
     }
 
-    protected
+    protected:
 
     //
     // Allows only a single value of the token?

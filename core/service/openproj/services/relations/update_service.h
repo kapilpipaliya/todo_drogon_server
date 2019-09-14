@@ -1,5 +1,5 @@
 class Relations::UpdateService : public Relations::BaseService {
-  attr_accessor :relation
+  // attr_accessor :relation
 
    UpdateService(user:, relation:) {
     super(user: user)

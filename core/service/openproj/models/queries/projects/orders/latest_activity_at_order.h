@@ -5,7 +5,7 @@ class Queries::Projects::Orders::LatestActivityAtOrder : public Queries::BaseOrd
     :latest_activity_at
   }
 
-  private
+  private:
 
    void order() {
     with_raise_on_invalid {

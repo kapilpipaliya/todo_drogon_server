@@ -1,5 +1,5 @@
 class WorkPackages::SettingsController : public ::ApplicationController {
-  layout 'admin'
+  // layout 'admin'
   current_menu_item :index {
     :work_packages_setting
   }

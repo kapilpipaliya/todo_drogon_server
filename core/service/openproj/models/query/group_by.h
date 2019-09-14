@@ -16,7 +16,7 @@ namespace ::Query::Grouping {
     work_package_count_by_group[group]
   }
 
-  private
+  private:
 
    void group_counts_by_group() {
     work_packages_with_includes_for_count

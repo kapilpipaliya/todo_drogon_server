@@ -5,10 +5,10 @@ class WorkPackageCustomField : public CustomField {
   has_and_belongs_to_many :types,
                           join_table: "#{table_name_prefix}custom_fields_types#{table_name_suffix}",
                           foreign_key: 'custom_field_id'
-  has_many :work_packages,
+  // has_many :work_packages,
            through: :work_package_custom_values
 
-  scope :visible_by_user, ->(user) {
+  // scope :visible_by_user, ->(user) {
     if ( user.allowed_to_globally?(:edit_projects)) {
       all
     else

@@ -133,7 +133,7 @@ namespace PaginationHelper {
       }.html_safe
     }
 
-    protected
+    protected:
 
      void page_number(page) {
       if ( page == current_page) {
@@ -166,7 +166,7 @@ namespace PaginationHelper {
     }
   }
 
-  private
+  private:
 
    void default_options() {
     {

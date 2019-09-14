@@ -1,5 +1,5 @@
 class CustomActions::Actions::AssignedTo : public CustomActions::Actions::Base {
-  include CustomActions::Actions::Strategies::Associated
+  // include CustomActions::Actions::Strategies::Associated
 
    void key() {
     :assigned_to
@@ -56,7 +56,7 @@ class CustomActions::Actions::AssignedTo : public CustomActions::Actions::Base {
     validate_me_value(errors)
   }
 
-  private
+  private:
 
    void validate_me_value(errors) {
     if ( has_me_value? && !User.current.logged?) {

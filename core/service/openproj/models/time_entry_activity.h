@@ -1,5 +1,5 @@
 class TimeEntryActivity : public Enumeration {
-  has_many :time_entries, foreign_key: 'activity_id'
+  // has_many :time_entries, foreign_key: 'activity_id'
 
   OptionName = :enumeration_activities
 

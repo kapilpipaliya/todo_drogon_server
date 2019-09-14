@@ -1,10 +1,10 @@
 class Change : public ActiveRecord::Base {
-  belongs_to :changeset
+  // belongs_to :changeset
 
-  validates_presence_of :changeset_id, :action, :path
+  // validates_presence_of :changeset_id, :action, :path
   before_save :init_path
 
-  delegate :repository_encoding, to: :changeset, allow_nil: true, prefix: true
+  // delegate :repository_encoding, to: :changeset, allow_nil: true, prefix: true
 
    void relative_path() {
     changeset.repository.relative_path(path)

@@ -1,5 +1,5 @@
 namespace PasswordHelper {
-  include Concerns::PasswordConfirmation
+  // include Concerns::PasswordConfirmation
 
   //
   // Decorate the form_for helper with the request-for-confirmation directive
@@ -43,7 +43,7 @@ namespace PasswordHelper {
     s.html_safe
   }
 
-  private
+  private:
 
   // Return a HTML list with active password complexity rules
    void password_active_rules() {

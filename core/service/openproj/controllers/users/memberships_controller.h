@@ -1,8 +1,9 @@
+#include "application_controller.h"
 class Users::MembershipsController : public ApplicationController {
-  layout 'admin'
+  // layout 'admin'
 
-  before_action :require_admin
-  before_action :find_user
+  // before_action :require_admin
+  // before_action :find_user
 
    void update() {
     update_or_create(request.patch?, :notice_successful_update)
@@ -23,7 +24,7 @@ class Users::MembershipsController : public ApplicationController {
     redirect_to controller: '/users', action: 'edit', id: @user, tab: 'memberships'
   }
 
-  private
+  private:
 
    void update_or_create(save_record, message) {
     @membership = params[:id].present? ? Member.find(params[:id]) : Member.new(principal: @user)

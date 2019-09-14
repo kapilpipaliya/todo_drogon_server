@@ -1,7 +1,7 @@
 namespace BaseServices {
   class Update
-    include Concerns::Contracted
-    include Shared::ServiceContext
+    // include Concerns::Contracted
+    // include Shared::ServiceContext
 
     attr_reader :user,
                 :model
@@ -18,7 +18,7 @@ namespace BaseServices {
       }
     }
 
-    private
+    private:
 
      void update(params) {
       attributes_call = set_attributes(params)
@@ -29,7 +29,7 @@ namespace BaseServices {
         attributes_call.errors = attributes_call.result.errors
         attributes_call.success = false
       else
-        after_save
+        // after_save
       }
 
       attributes_call

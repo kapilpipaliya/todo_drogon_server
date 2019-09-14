@@ -3,7 +3,7 @@ namespace CustomActions::Actions::Strategies::ValuesToString {
     super(Array(values).map { |v| to_string_or_nil(v) }.uniq)
   }
 
-  private
+  private:
 
    void to_string_or_nil(value) {
     return nil if ( value.nil?) {

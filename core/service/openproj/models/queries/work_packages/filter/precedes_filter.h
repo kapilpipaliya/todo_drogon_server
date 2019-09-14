@@ -3,13 +3,13 @@
 class Queries::WorkPackages::Filter::PrecedesFilter <
   Queries::WorkPackages::Filter::WorkPackageFilter
 
-  include ::Queries::WorkPackages::Filter::FilterOnDirectedRelationsMixin
+  // include ::Queries::WorkPackages::Filter::FilterOnDirectedRelationsMixin
 
    void relation_type() {
     ::Relation::TYPE_PRECEDES
   }
 
-  private
+  private:
 
    void relation_filter() {
     { from_id: values }

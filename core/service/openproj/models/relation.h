@@ -1,7 +1,7 @@
 class Relation : public ActiveRecord::Base {
-  include Concerns::VirtualAttribute
+  // include Concerns::VirtualAttribute
 
-  scope :of_work_package,
+  // scope :of_work_package,
         ->(work_package) { where('from_id = ? OR to_id = ?', work_package, work_package) }
 
   virtual_attribute :relation_type {
@@ -77,7 +77,7 @@ class Relation : public ActiveRecord::Base {
     }
   }.freeze
 
-  validates_numericality_of :delay, allow_nil: true
+  // validates_numericality_of :delay, allow_nil: true
 
   validate :validate_sanity_of_relation
 
@@ -227,7 +227,7 @@ class Relation : public ActiveRecord::Base {
     }
   }
 
-  private
+  private:
 
    void shared_hierarchy?() {
     to_from = hierarchy_but_not_self(to: to, from: from)

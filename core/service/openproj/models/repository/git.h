@@ -1,7 +1,7 @@
 #include "open_project/scm/adapters/git"
 
 class Repository::Git : public Repository {
-  validates_presence_of :url
+  // validates_presence_of :url
   validate :validity_of_local_url
 
    void scm_adapter_class() {
@@ -149,7 +149,7 @@ class Repository::Git : public Repository {
       .order(Arel.sql('committed_on DESC'))
   }
 
-  private
+  private:
 
    void validity_of_local_url() {
     parsed = URI.parse root_url.presence || url

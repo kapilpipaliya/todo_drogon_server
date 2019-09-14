@@ -1,5 +1,5 @@
 namespace CustomActions::Actions::Strategies::String {
-  include CustomActions::Actions::Strategies::ValuesToString
+  // include CustomActions::Actions::Strategies::ValuesToString
 
    void type() {
     :string_property

@@ -46,7 +46,7 @@ namespace CustomField::OrderStatements {
     }
   }
 
-  private
+  private:
 
    void coalesce_select_custom_value_as_string() {
     // COALESCE is here to make sure that blank and NULL values are sorted equally

@@ -1,13 +1,13 @@
 namespace Concerns {
   namespace VirtualAttribute {
-    extend ActiveSupport::Concern
+    // extend ActiveSupport::Concern
 
     class_methods {
        void virtual_attribute(attribute, cast_type: :string, &block) {
         attribute attribute, cast_type
         define_attribute_method attribute
 
-        include InstanceMethods
+        // include InstanceMethods
 
         _define_virtual_attribute_setter(attribute)
         _define_virtual_attribute_getter(attribute, &block)
@@ -15,7 +15,7 @@ namespace Concerns {
         _define_virtual_attributes_hook(attribute)
       }
 
-      private
+      private:
 
        void _define_virtual_attributes_hook(attribute) {
         define_method :attributes { |*args|

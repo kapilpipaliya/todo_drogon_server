@@ -1,7 +1,7 @@
 class CustomActions::BaseService
-  include Shared::BlockService
+  // include Shared::BlockService
 
-  attr_accessor :user
+  // attr_accessor :user
 
    void call(attributes:,
            action:,
@@ -16,7 +16,7 @@ class CustomActions::BaseService
     block_with_result(result, &block)
   }
 
-  private
+  private:
 
    void set_attributes(action, attributes) {
     actions_attributes = attributes.delete(:actions)

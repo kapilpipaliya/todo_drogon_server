@@ -118,7 +118,7 @@ class Scm::CheckoutInstructionsService
     permission == :readwrite
   }
 
-  private
+  private:
 
    void checkout_settings() {
     @settings ||= begin

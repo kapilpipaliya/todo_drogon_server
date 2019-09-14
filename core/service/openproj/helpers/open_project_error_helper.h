@@ -22,7 +22,7 @@ namespace OpenProjectErrorHelper {
     ::OpenProject.logger.debug message_or_exception, context.merge(op_logging_context)
   }
 
-  private
+  private:
 
    void op_logging_context() {
     {

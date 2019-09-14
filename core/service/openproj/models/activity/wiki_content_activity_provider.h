@@ -18,7 +18,7 @@ class Activity::WikiContentActivityProvider : public Activity::BaseActivityProvi
     wikis_table
   }
 
-  protected
+  protected:
 
    void event_title(event, _activity) {
     "#{l(:label_wiki_edit)}: #{event['wiki_title']} (##{event['version']})"
@@ -36,7 +36,7 @@ class Activity::WikiContentActivityProvider : public Activity::BaseActivityProvi
     url_helpers.project_wiki_url(*url_helper_parameter(event))
   }
 
-  private
+  private:
 
    void wiki_pages_table() {
     @wiki_pages_table ||= WikiPage.arel_table

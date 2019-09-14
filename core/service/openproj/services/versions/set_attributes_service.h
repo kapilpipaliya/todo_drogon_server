@@ -1,6 +1,6 @@
 namespace Versions {
   class SetAttributesService : public ::BaseServices::SetAttributes {
-    private
+    private:
 
      void set_default_attributes() {
       return unless model.new_record?

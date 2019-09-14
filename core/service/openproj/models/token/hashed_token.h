@@ -32,9 +32,9 @@ namespace Token {
       // so we need to determine the hash without knowing the associated user (and thus its salt) first.
       Digest::SHA256.hexdigest(input + Rails.application.secrets.fetch(:secret_key_base))
     }
-    delegate :hash_function, to: :class
+    // delegate :hash_function, to: :class
 
-    private
+    private:
 
      void initialize_values() {
       if ( new_record? && !value.present?) {

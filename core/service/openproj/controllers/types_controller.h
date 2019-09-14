@@ -1,9 +1,10 @@
+#include "application_controller.h"
 class TypesController : public ApplicationController {
-  include PaginationHelper
+  // include PaginationHelper
 
-  layout 'admin'
+  // layout 'admin'
 
-  before_action :require_admin
+  // before_action :require_admin
 
    void index() {
     @types = ::Type.page(page_param).per_page(per_page_param)
@@ -13,7 +14,7 @@ class TypesController : public ApplicationController {
     @type
   }
 
-   void new() {
+   void new_() {
     @type = Type.new(params[:type])
     load_projects_and_types
   }
@@ -98,7 +99,7 @@ class TypesController : public ApplicationController {
     redirect_to action: 'index'
   }
 
-  protected
+  protected:
 
    void permitted_type_params() {
     // having to call #to_unsafe_h as a query hash the attribute_groups

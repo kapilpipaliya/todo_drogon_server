@@ -1,5 +1,5 @@
 class CustomActions::Actions::Date : public CustomActions::Actions::Base {
-  include CustomActions::Actions::Strategies::Date
+  // include CustomActions::Actions::Strategies::Date
 
    void key() {
     :date

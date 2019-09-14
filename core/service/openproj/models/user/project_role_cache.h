@@ -1,5 +1,5 @@
 class User::ProjectRoleCache
-  attr_accessor :user
+  // attr_accessor :user
 
    ProjectRoleCache(user) {
     this->user = user
@@ -9,7 +9,7 @@ class User::ProjectRoleCache
     cache[project] ||= roles(project)
   }
 
-  private
+  private:
 
    void roles(project) {
     // No role on archived projects

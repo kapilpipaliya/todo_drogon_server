@@ -1,8 +1,8 @@
 namespace Users {
   class UpdateService
-    include ::HookHelper
+    // include ::HookHelper
 
-    attr_accessor :current_user
+    // attr_accessor :current_user
 
      UpdateService(current_user:) {
       @current_user = current_user
@@ -14,7 +14,7 @@ namespace Users {
       }
     }
 
-    private
+    private:
 
      void set_attributes(permitted_params, params) {
       current_user.attributes = permitted_params.user

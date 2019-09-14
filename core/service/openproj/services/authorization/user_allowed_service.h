@@ -1,5 +1,5 @@
 class Authorization::UserAllowedService
-  attr_accessor :user
+  // attr_accessor :user
 
    UserAllowedService(user, role_cache: User::ProjectRoleCache.new(user)) {
     this->user = user
@@ -29,9 +29,9 @@ class Authorization::UserAllowedService
     project_authorization_cache.cache(action)
   }
 
-  private
+  private:
 
-  attr_accessor :project_role_cache
+  // attr_accessor :project_role_cache
 
    void allowed_to?(action, context, options = {}) {
     action = normalize_action(action)

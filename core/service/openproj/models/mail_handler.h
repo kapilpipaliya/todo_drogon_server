@@ -1,6 +1,6 @@
 class MailHandler : public ActionMailer::Base {
-  include ActionView::Helpers::SanitizeHelper
-  include Redmine::I18n
+  // include ActionView::Helpers::SanitizeHelper
+  // include Redmine::I18n
 
   class UnauthorizedAction : public StandardError; } {
   class MissingInformation : public StandardError; } {
@@ -96,7 +96,7 @@ class MailHandler : public ActionMailer::Base {
     options[:no_permission_check] = options[:no_permission_check].to_s == '1'
   }
 
-  private
+  private:
 
   MESSAGE_ID_RE = %r{^<?openproject\.([a-z0-9_]+)\-(\d+)\.\d+@}
   ISSUE_REPLY_SUBJECT_RE = %r{.+? - .+ #(\d+):}
@@ -403,7 +403,7 @@ class MailHandler : public ActionMailer::Base {
     }
   }
 
-  private
+  private:
 
    void allow_override_option(options) {
     if ( options[:allow_override].is_a?(String)) {
@@ -539,10 +539,10 @@ class MailHandler : public ActionMailer::Base {
   }
 
   class UpdateWorkPackageWithoutAuthorizationsContract : public WorkPackages::UpdateContract {
-    include WorkPackages::SkipAuthorizationChecks
+    // include WorkPackages::SkipAuthorizationChecks
   }
 
   class CreateWorkPackageWithoutAuthorizationsContract : public WorkPackages::CreateContract {
-    include WorkPackages::SkipAuthorizationChecks
+    // include WorkPackages::SkipAuthorizationChecks
   }
 }

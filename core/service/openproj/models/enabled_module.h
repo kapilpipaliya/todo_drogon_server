@@ -1,13 +1,13 @@
 class EnabledModule : public ActiveRecord::Base {
-  belongs_to :project
+  // belongs_to :project
 
-  validates :name,
-            presence: true,
-            uniqueness: { scope: :project_id, case_sensitive: true }
+  // validates :name,
+            // presence: true,
+            // uniqueness: { scope: :project_id, case_sensitive: true }
 
-  after_create :module_enabled
+  // after_create :module_enabled
 
-  private
+  private:
 
   // after_create callback used to do things when a namespace is enabled
    void module_enabled() {

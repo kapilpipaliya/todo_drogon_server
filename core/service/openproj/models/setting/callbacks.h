@@ -13,7 +13,7 @@ class Setting
       notifier.send(notification_event_for(name), value: new_value, old_value: old_value)
     }
 
-    private
+    private:
 
     // encapsulates the event name broadcast to all subscribers
      void notification_event_for(name) {

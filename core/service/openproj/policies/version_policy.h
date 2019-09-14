@@ -1,5 +1,5 @@
 class VersionPolicy : public BasePolicy {
-  private
+  private:
 
    void cache(version) {
     @cache ||= Hash.new { |hash, cached_version|

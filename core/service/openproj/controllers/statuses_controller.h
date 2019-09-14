@@ -1,9 +1,10 @@
+#include "application_controller.h"
 class StatusesController : public ApplicationController {
-  include PaginationHelper
+  // include PaginationHelper
 
-  layout 'admin'
+  // layout 'admin'
 
-  before_action :require_admin
+  // before_action :require_admin
 
   verify method: :get, only: :index, render: { nothing: true, status: :method_not_allowed }
    void index() {
@@ -14,7 +15,7 @@ class StatusesController : public ApplicationController {
   }
 
   verify method: :get, only: :new, render: { nothing: true, status: :method_not_allowed }
-   void new() {
+   void new_() {
     @status = Status.new
   }
 
@@ -71,7 +72,7 @@ class StatusesController : public ApplicationController {
     redirect_to action: 'index'
   }
 
-  protected
+  protected:
 
    void default_breadcrumb() {
     if ( action_name == 'index') {

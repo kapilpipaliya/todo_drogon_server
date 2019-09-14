@@ -1,7 +1,7 @@
 namespace Users {
   class ChangePasswordService
-    attr_accessor :current_user
-    attr_accessor :session
+    // attr_accessor :current_user
+    // attr_accessor :session
 
      ChangePasswordService(current_user:, session:) {
       @current_user = current_user
@@ -29,7 +29,7 @@ namespace Users {
       }
     }
 
-    private
+    private:
 
      void invalidate_session_result() {
       update_message = I18n.t(:notice_account_password_updated)

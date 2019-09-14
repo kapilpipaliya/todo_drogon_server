@@ -3,7 +3,7 @@ namespace CustomActions::ValuesToInteger {
     super(Array(values).map { |v| to_integer_or_nil(v) }.uniq)
   }
 
-  private
+  private:
 
    void to_integer_or_nil(value) {
     return nil if ( value.nil?) {

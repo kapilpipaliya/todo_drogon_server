@@ -1,7 +1,8 @@
+#include "application_controller.h"
 class WatchersController : public ApplicationController {
-  before_action :find_watched_by_object
-  before_action :find_project
-  before_action :require_login, :check_project_privacy, only: %i[watch unwatch]
+  // before_action :find_watched_by_object
+  // before_action :find_project
+  // before_action :require_login, :check_project_privacy, only: %i[watch unwatch]
 
    void watch() {
     if ( @watched.respond_to?(:visible?) && !@watched.visible?(User.current)) {
@@ -15,7 +16,7 @@ class WatchersController : public ApplicationController {
     set_watcher(User.current, false)
   }
 
-  private
+  private:
 
    void find_watched_by_object() {
     klass = params[:object_type].singularize.camelcase.constantize

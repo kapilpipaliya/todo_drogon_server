@@ -35,7 +35,7 @@ class Activity::ChangesetActivityProvider : public Activity::BaseActivityProvide
     query
   }
 
-  protected
+  protected:
 
    void event_type(_event, _activity) {
     'changeset'
@@ -67,7 +67,7 @@ class Activity::ChangesetActivityProvider : public Activity::BaseActivityProvide
     url_helpers.revisions_project_repository_url(url_helper_parameter(event))
   }
 
-  private
+  private:
 
    void repositories_table() {
     @repositories_table ||= Repository.arel_table

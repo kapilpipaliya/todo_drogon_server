@@ -26,7 +26,7 @@ namespace Queries::Filters::Shared::UserNameFilter {
       }
     }
 
-    private
+    private:
 
      void sql_value() {
       case operator

@@ -31,7 +31,7 @@ namespace Project::Copy {
       super(from_model, options) if ( save) {
     }
 
-    private
+    private:
 
     // Copies custom values from +project+
      void copy_custom_values(project, selected_copies = []) {

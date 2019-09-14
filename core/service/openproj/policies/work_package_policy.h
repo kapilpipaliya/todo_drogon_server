@@ -1,5 +1,5 @@
 class WorkPackagePolicy : public BasePolicy {
-  private
+  private:
 
    void cache(work_package) {
     @cache ||= Hash.new { |wp_hash, wp|

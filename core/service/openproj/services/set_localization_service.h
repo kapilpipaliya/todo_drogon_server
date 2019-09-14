@@ -1,6 +1,6 @@
 class SetLocalizationService
   attr_reader :user, :http_accept_header
-  include Redmine::I18n
+  // include Redmine::I18n
 
    SetLocalizationService(user, http_accept_header = nil) {
     @user = user
@@ -21,7 +21,7 @@ class SetLocalizationService
     set_language_if_valid(lang)
   }
 
-  private
+  private:
 
    void user_language() {
     find_language_or_prefix(user.language) if ( user.logged?) {

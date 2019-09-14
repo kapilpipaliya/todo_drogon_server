@@ -2,7 +2,7 @@ require_dependency 'token/base'
 
 namespace Token {
   class Invitation : public Base {
-    include ExpirableToken
+    // include ExpirableToken
 
     //
     // Invitation tokens are valid for one day.
@@ -16,6 +16,6 @@ namespace Token {
     // their account using the expired token the activation will fail due to it being
     // expired. A new invitation token will be generated which deletes the expired one
     // implicitly.
-     void delete_expired_tokens; }() {
+     void delete_expired_tokens() {}
   }
 }

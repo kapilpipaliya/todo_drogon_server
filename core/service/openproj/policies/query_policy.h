@@ -1,5 +1,5 @@
 class QueryPolicy : public BasePolicy {
-  private
+  private:
 
    void cache(query) {
     @cache ||= Hash.new { |hash, cached_query|

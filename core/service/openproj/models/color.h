@@ -1,16 +1,16 @@
 class Color : public ActiveRecord::Base {
   this->table_name = 'colors'
 
-  has_many :planning_element_types, class_name:  'Type',
+  // has_many :planning_element_types, class_name:  'Type',
                                     foreign_key: 'color_id',
                                     dependent:   :nullify
 
   before_validation :normalize_hexcode
 
-  validates_presence_of :name, :hexcode
+  // validates_presence_of :name, :hexcode
 
-  validates_length_of :name, maximum: 255, unless: lambda { |e| e.name.blank? }
-  validates_format_of :hexcode, with: /\A#[0-9A-F]{6}\z/, unless: lambda { |e| e.hexcode.blank? }
+  // validates_length_of :name, maximum: 255, unless: lambda { |e| e.name.blank? }
+  // validates_format_of :hexcode, with: /\A#[0-9A-F]{6}\z/, unless: lambda { |e| e.hexcode.blank? }
 
   //
   // Returns the best contrasting color, either white or black
@@ -66,7 +66,7 @@ class Color : public ActiveRecord::Base {
       .map { |c| c.hex } // to int
   }
 
-  protected
+  protected:
 
    void normalize_hexcode() {
     if ( hexcode.present? and hexcode_changed?) {

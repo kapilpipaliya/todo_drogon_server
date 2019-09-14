@@ -1,5 +1,5 @@
 class RolePermission : public ActiveRecord::Base {
-  belongs_to :role
+  // belongs_to :role
 
-  validates_presence_of :permission
+  // validates_presence_of :permission
 }

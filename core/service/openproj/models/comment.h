@@ -1,10 +1,10 @@
 class Comment : public ActiveRecord::Base {
-  belongs_to :commented, polymorphic: true, counter_cache: true
-  belongs_to :author, class_name: 'User', foreign_key: 'author_id'
+  // belongs_to :commented, polymorphic: true, counter_cache: true
+  // belongs_to :author, class_name: 'User', foreign_key: 'author_id'
 
-  validates :commented, :author, :comments, presence: true
+  // validates :commented, :author, :comments, presence: true
 
-  after_create :send_news_comment_added_mail
+  // after_create :send_news_comment_added_mail
 
    void text() {
     comments
@@ -14,7 +14,7 @@ class Comment : public ActiveRecord::Base {
     save!
   }
 
-  private
+  private:
 
    void send_news_comment_added_mail() {
     return unless Setting.notified_events.include?('news_comment_added')

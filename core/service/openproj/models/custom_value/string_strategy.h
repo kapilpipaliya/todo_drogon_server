@@ -3,5 +3,5 @@ class CustomValue::StringStrategy : public CustomValue::FormatStrategy {
     value
   }
 
-   void validate_type_of_value; }() {
+   void validate_type_of_value() {}
 }

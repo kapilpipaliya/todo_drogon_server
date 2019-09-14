@@ -12,7 +12,7 @@ namespace Queries::Filters::Strategies {
       filter.values &= allowed_values.map(&:last).map(&:to_s)
     }
 
-    private
+    private:
 
      void operator_map() {
       super_value = super.dup

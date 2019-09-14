@@ -30,7 +30,7 @@ namespace FrontendAssetHelper {
     }
   }
 
-  private
+  private:
 
    void angular_cli_asset(path) {
     URI.join(FrontendAssetHelper.cli_proxy, "assets/frontend/#{path}")

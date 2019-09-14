@@ -17,7 +17,7 @@ namespace Queries::WorkPackages::Filter::TextFilterOnJoinMixin {
     SQL
   }
 
-  private
+  private:
 
    void join_table() {
     raise NotImplementedError

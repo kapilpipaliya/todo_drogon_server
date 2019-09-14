@@ -1,7 +1,8 @@
+#include "application_controller.h"
 class AnnouncementsController : public ApplicationController {
-  layout 'admin'
+  // layout 'admin'
 
-  before_action :require_admin
+  // before_action :require_admin
 
    void edit() {
     @announcement = Announcement.only_one
@@ -18,7 +19,7 @@ class AnnouncementsController : public ApplicationController {
     redirect_to action: 'edit'
   }
 
-  private
+  private:
 
    void default_breadcrumb() {
     t(:label_announcement)

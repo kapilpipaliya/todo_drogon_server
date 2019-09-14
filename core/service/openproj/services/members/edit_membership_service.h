@@ -30,7 +30,7 @@ namespace Members {
       }
     }
 
-    private
+    private:
 
      void make_result(success:) {
       ServiceResult.new(success: success, errors: member.errors, result: member)

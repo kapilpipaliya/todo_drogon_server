@@ -9,5 +9,5 @@ class
     value.to_s
   }
 
-   void validate_type_of_value; }() {
+   void validate_type_of_value() {}
 }

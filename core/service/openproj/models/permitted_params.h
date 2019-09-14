@@ -377,7 +377,7 @@ class PermittedParams
     params.require(:membership).permit(*this->class.permitted_attributes[:membership])
   }
 
-  protected
+  protected:
 
    void custom_field_values(key, required: true) {
     // a hash of arbitrary values is not supported by strong params

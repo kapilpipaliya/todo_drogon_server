@@ -1,5 +1,5 @@
 namespace TimelogHelper {
-  include ApplicationHelper
+  // include ApplicationHelper
 
   // Returns a collection of activities for a select field.  time_entry
   // is optional and will be used to check if the selected TimeEntryActivity

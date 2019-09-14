@@ -282,7 +282,7 @@ class UserMailer : public BaseMailer {
     }
   }
 
-  private
+  private:
 
    void subject_for_work_package(wp) {
     "#{wp.project.name} - #{wp.status.name} #{wp.type.name} ##{wp.id}: #{wp.subject}"

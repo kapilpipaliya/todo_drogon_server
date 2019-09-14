@@ -27,21 +27,21 @@ class EnterpriseToken : public ActiveRecord::Base {
     }
   }
 
-  validates_presence_of :encoded_token
+  // validates_presence_of :encoded_token
   validate :valid_token_object
 
   before_save :unset_current_token
   before_destroy :unset_current_token
 
-  delegate :will_expire?,
-           :expired?,
-           :subscriber,
-           :mail,
-           :issued_at,
-           :starts_at,
-           :expires_at,
-           :restrictions,
-           to: :token_object
+  // delegate :will_expire?,
+  //          :expired?,
+  //          :subscriber,
+  //          :mail,
+  //          :issued_at,
+  //          :starts_at,
+  //          :expires_at,
+  //          :restrictions,
+  //          to: :token_object
 
    void token_object() {
     load_token! unless defined?(@token_object)
@@ -57,7 +57,7 @@ class EnterpriseToken : public ActiveRecord::Base {
     RequestStore.delete :current_ee_token
   }
 
-  private
+  private:
 
    void load_token!() {
     @token_object = OpenProject::Token.import(encoded_token)

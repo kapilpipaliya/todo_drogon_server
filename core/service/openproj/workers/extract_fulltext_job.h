@@ -18,7 +18,7 @@ class ExtractFulltextJob : public ApplicationJob {
     FileUtils.rm @file.path if ( delete_file?) {
   }
 
-  private
+  private:
 
    void init() {
     begin

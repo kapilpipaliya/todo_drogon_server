@@ -1,6 +1,6 @@
 namespace Queries::Filters::Strategies {
   namespace CfNumeric {
-    private
+    private:
 
      void operator_map() {
       super_value = super.dup

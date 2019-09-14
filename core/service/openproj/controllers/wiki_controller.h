@@ -13,10 +13,11 @@
 // * destroy - normal
 //
 // Other member and collection methods are also used
+#include "application_controller.h"
 class WikiController : public ApplicationController {
   default_search_scope :wiki_pages
-  before_action :find_wiki, :authorize
-  before_action :find_existing_page, only: %i[edit_parent_page
+  // before_action :find_wiki, :authorize
+  // before_action :find_existing_page, only: %i[edit_parent_page
                                               update_parent_page
                                               rename
                                               protect
@@ -24,15 +25,15 @@ class WikiController : public ApplicationController {
                                               diff
                                               annotate
                                               destroy]
-  before_action :build_wiki_page_and_content, only: %i[new create]
+  // before_action :build_wiki_page_and_content, only: %i[new create]
 
   verify method: :post, only: [:protect], redirect_to: { action: :show }
   verify method: :get,  only: %i[new new_child], render: { nothing: true, status: :method_not_allowed }
   verify method: :post, only: :create, render: { nothing: true, status: :method_not_allowed }
 
-  include AttachmentsHelper
-  include PaginationHelper
-  include Redmine::MenuManager::WikiMenuHelper
+  // include AttachmentsHelper
+  // include PaginationHelper
+  // include Redmine::MenuManager::WikiMenuHelper
 
   attr_reader :page, :related_page
 
@@ -63,7 +64,7 @@ class WikiController : public ApplicationController {
     @pages_by_date = @pages.group_by { |p| p.updated_on.to_date }
   }
 
-   void new; }() {
+   void new() {}
 
    void new_child() {
     find_existing_page
@@ -323,17 +324,17 @@ class WikiController : public ApplicationController {
    void current_menu_item_sym(page) {
     page = page_for_menu_item(page)
 
-    menu_item = page.try(:menu_item)
+    // menu_item = page.try(:menu_item)
 
     if ( menu_item.present?) {
-      menu_item.menu_identifier
+      // menu_item.menu_identifier
     } else if ( page.present?) {
-      menu_item = default_menu_item(page)
+      // menu_item = default_menu_item(page)
       "no-menu-item-#{menu_item.menu_identifier}".to_sym
     }
   }
 
-  private
+  private:
 
    void locked?() {
     return false if ( editable?) {

@@ -44,7 +44,7 @@ class RedirectPolicy
     }
   }
 
-  private
+  private:
 
   //
   // Preprocesses the requested redirect URL.

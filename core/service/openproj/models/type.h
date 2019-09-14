@@ -1,15 +1,15 @@
 class ::Type : public ActiveRecord::Base {
-  extend Pagination::Model
+  // extend Pagination::Model
 
   // Work Package attributes for this type
   // and constraints to specifc attributes (by plugins).
-  include ::Type::Attributes
-  include ::Type::AttributeGroups
+  // include ::Type::Attributes
+  // include ::Type::AttributeGroups
 
   before_destroy :check_integrity
 
-  has_many :work_packages
-  has_many :workflows, dependent: :delete_all {
+  // has_many :work_packages
+  // has_many :workflows, dependent: :delete_all {
      void copy_from_type(source_type) {
       Workflow.copy(source_type, nil, proxy_association.owner, nil)
     }
@@ -22,22 +22,22 @@ class ::Type : public ActiveRecord::Base {
                           join_table: "#{table_name_prefix}custom_fields_types#{table_name_suffix}",
                           association_foreign_key: 'custom_field_id'
 
-  belongs_to :color,
+  // belongs_to :color,
              class_name:  'Color',
              foreign_key: 'color_id'
 
   acts_as_list
 
-  validates :name,
+  // validates :name,
             presence: true,
             uniqueness: { case_sensitive: true },
             length: { maximum: 255 }
 
-  validates_inclusion_of :is_default, :is_milestone, in: [true, false]
+  // validates_inclusion_of :is_default, :is_milestone, in: [true, false]
 
   default_scope { order('position ASC') }
 
-  scope :without_standard, -> {
+  // scope :without_standard, -> {
     where(is_standard: false)
       .order(:position)
   }
@@ -88,7 +88,7 @@ class ::Type : public ActiveRecord::Base {
     transition_exists?(status_id_a, status_id_b, roles.map(&:id))
   }
 
-  private
+  private:
 
    void check_integrity() {
     raise "Can't delete type" if ( WorkPackage.where(type_id: id).any?) {

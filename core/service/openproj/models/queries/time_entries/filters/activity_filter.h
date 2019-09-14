@@ -29,7 +29,7 @@ class Queries::TimeEntries::Filters::ActivityFilter : public Queries::TimeEntrie
     operator_strategy.sql_for_field(db_values, this->class.model.table_name, this->class.key)
   }
 
-  private
+  private:
 
    void child_values() {
     TimeEntryActivity

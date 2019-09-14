@@ -1,7 +1,7 @@
 class Queries::WorkPackages::Filter::SearchFilter <
   Queries::WorkPackages::Filter::WorkPackageFilter
-  include Queries::WorkPackages::Filter::OrFilterForWpMixin
-  include Queries::WorkPackages::Filter::FilterOnTsvMixin
+  // include Queries::WorkPackages::Filter::OrFilterForWpMixin
+  // include Queries::WorkPackages::Filter::FilterOnTsvMixin
 
   CONTAINS_OPERATOR = '~'.freeze
 
@@ -86,7 +86,7 @@ class Queries::WorkPackages::Filter::SearchFilter <
     list
   }
 
-  private
+  private:
 
    void attachment_filters_allowed?() {
     EnterpriseToken.allows_to?(:attachment_filters) && OpenProject::Database.allows_tsv?

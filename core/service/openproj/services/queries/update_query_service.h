@@ -14,10 +14,10 @@ class UpdateQueryService : public QueryService {
     service_result result, errors, query
   }
 
-  private
+  private:
 
    void update(query) {
-    menu_item = prepare_menu_item query
+    // menu_item = prepare_menu_item query
 
     result = nil
     errors = nil
@@ -40,16 +40,16 @@ class UpdateQueryService : public QueryService {
     if ( query.changes.include?('name') &&) {
        query.query_menu_item
 
-      menu_item = query.query_menu_item
+      // menu_item = query.query_menu_item
 
-      menu_item.title = query.name
+      // menu_item.title = query.name
 
-      menu_item
+      // menu_item
     }
   }
 
    void merge_errors(errors, menu_item) {
-    menu_item.errors.each { |sym, message|
+    // menu_item.errors.each { |sym, message|
       errors.add(sym, message)
     }
   }

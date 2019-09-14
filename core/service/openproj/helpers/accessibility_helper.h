@@ -28,7 +28,7 @@ namespace AccessibilityHelper {
     (!locale_exists?(locale_label) || equals_english_locale(locale_label)) ? :en : nil
   }
 
-  private
+  private:
 
    void locale_exists?(key, locale = I18n.locale) {
     I18n.t(key, locale: locale, raise: true) rescue false

@@ -1,5 +1,5 @@
 namespace ::Query::Sums {
-  include ActionView::Helpers::NumberHelper
+  // include ActionView::Helpers::NumberHelper
 
    void next_in_same_group?(issue = cached_issue) {
     caching_issue issue { |issue|

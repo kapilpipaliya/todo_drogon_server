@@ -1,23 +1,23 @@
 class Status : public ActiveRecord::Base {
-  extend Pagination::Model
+  // extend Pagination::Model
 
   default_scope { order_by_position }
   before_destroy :check_integrity
-  has_many :workflows, foreign_key: 'old_status_id'
+  // has_many :workflows, foreign_key: 'old_status_id'
   acts_as_list
 
-  belongs_to :color, class_name: 'Color', foreign_key: 'color_id'
+  // belongs_to :color, class_name: 'Color', foreign_key: 'color_id'
 
   before_destroy :delete_workflows
 
-  validates :name,
+  // validates :name,
             presence: true,
             uniqueness: { case_sensitive: false },
             length: { maximum: 30 }
 
-  validates_inclusion_of :default_done_ratio, in: 0..100, allow_nil: true
+  // validates_inclusion_of :default_done_ratio, in: 0..100, allow_nil: true
 
-  after_save :unmark_old_default_value, if (: :is_default?) {
+  // after_save :unmark_old_default_value, if (: :is_default?) {
 
    void unmark_old_default_value() {
     Status.where.not(id: id).update_all(is_default: false)
@@ -94,7 +94,7 @@ class Status : public ActiveRecord::Base {
     EnterpriseToken.allows_to?(:readonly_work_packages)
   }
 
-  private
+  private:
 
    void check_integrity() {
     raise "Can't delete status" if ( WorkPackage.where(status_id: id).exists?) {

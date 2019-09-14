@@ -26,7 +26,7 @@ class EnqueueWorkPackageNotificationJob : public ApplicationJob {
     }
   }
 
-  private
+  private:
 
    void find_aggregated_journal() {
     wp_journals = Journal::AggregatedJournal.aggregated_journals(journable: work_package)

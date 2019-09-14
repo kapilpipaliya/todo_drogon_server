@@ -1,9 +1,9 @@
 namespace WorkPackage::PdfExport::Common {
-  include Redmine::I18n
-  include ActionView::Helpers::TextHelper
-  include ActionView::Helpers::NumberHelper
-  include CustomFieldsHelper
-  include WorkPackage::PdfExport::ToPdfHelper
+  // include Redmine::I18n
+  // include ActionView::Helpers::TextHelper
+  // include ActionView::Helpers::NumberHelper
+  // include CustomFieldsHelper
+  // include WorkPackage::PdfExport::ToPdfHelper
 
    void field_value(work_package, attribute) {
     value = work_package.send(attribute)

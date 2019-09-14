@@ -1,5 +1,5 @@
 namespace Queries::WorkPackages::Filter::FilterOnDirectedRelationsMixin {
-  include ::Queries::WorkPackages::Filter::FilterForWpMixin
+  // include ::Queries::WorkPackages::Filter::FilterForWpMixin
 
    void where() {
     // The order in which we call the methods on `Relation` matters, as
@@ -28,7 +28,7 @@ namespace Queries::WorkPackages::Filter::FilterOnDirectedRelationsMixin {
     ::Relation.canonical_type relation_type
   }
 
-  private
+  private:
 
    void relation_filter() {
     raise NotImplementedError

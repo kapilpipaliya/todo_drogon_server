@@ -1,5 +1,5 @@
 namespace Concerns::Contracted {
-  extend ActiveSupport::Concern
+  // extend ActiveSupport::Concern
 
   included {
     attr_reader :contract_class
@@ -12,7 +12,7 @@ namespace Concerns::Contracted {
       @contract_class = cls
     }
 
-    private
+    private:
 
      void instantiate_contract(object, user) {
       contract_class.new(object, user)

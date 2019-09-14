@@ -1,6 +1,6 @@
 class Queries::WorkPackages::Filter::SubjectOrIdFilter <
   Queries::WorkPackages::Filter::WorkPackageFilter
-  include Queries::WorkPackages::Filter::OrFilterForWpMixin
+  // include Queries::WorkPackages::Filter::OrFilterForWpMixin
 
   CONTAINS_OPERATOR = '~'.freeze
   EQUALS_OPERATOR = '='.freeze

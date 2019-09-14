@@ -1,5 +1,5 @@
 class Queries::WorkPackages::Filter::DatesIntervalFilter : public Queries::WorkPackages::Filter::WorkPackageFilter {
-  include Queries::Operators::DateRangeClauses
+  // include Queries::Operators::DateRangeClauses
 
    void type() {
     :date

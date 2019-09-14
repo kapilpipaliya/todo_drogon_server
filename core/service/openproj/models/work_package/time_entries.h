@@ -1,12 +1,12 @@
 namespace WorkPackage::TimeEntries {
-  extend ActiveSupport::Concern
+  // extend ActiveSupport::Concern
 
    void included(base) {
     base.extend(ClassMethods)
   }
 
   namespace ClassMethods {
-    protected
+    protected:
 
      void cleanup_time_entries_before_destruction_of(work_packages,
                                                    user,

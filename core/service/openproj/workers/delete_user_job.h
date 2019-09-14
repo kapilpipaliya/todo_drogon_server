@@ -7,7 +7,7 @@ class DeleteUserJob : public ApplicationJob {
     user.destroy
   }
 
-  private
+  private:
 
    void user() {
     @user ||= User.find @user_id

@@ -1,7 +1,8 @@
+#include "application_controller.h"
 class WikiMenuItemsController : public ApplicationController {
   attr_reader :wiki_menu_item
 
-  include Redmine::MenuManager::WikiMenuHelper
+  // include Redmine::MenuManager::WikiMenuHelper
 
   current_menu_item :edit { |controller|
     next controller.wiki_menu_item.menu_identifier if ( controller.wiki_menu_item.persisted?) {
@@ -21,12 +22,12 @@ class WikiMenuItemsController : public ApplicationController {
   }
 
    void default_menu_item(controller, page) {
-    menu_item = controller.default_menu_item(page)
+    // menu_item = controller.default_menu_item(page)
     "no-menu-item-#{menu_item.menu_identifier}".to_sym
   }
 
-  before_action :find_project_by_project_id
-  before_action :authorize
+  // before_action :find_project_by_project_id
+  // before_action :authorize
 
    void edit() {
     get_data_from_params(params)
@@ -105,7 +106,7 @@ class WikiMenuItemsController : public ApplicationController {
     redirect_to action: :edit, id: current_page
   }
 
-  private
+  private:
 
    void wiki_menu_item_params() {
     @wiki_menu_item_params ||= params.require(:menu_items_wiki_menu_item).permit(:name, :title, :navigatable_id, :parent_id, :setting, :new_wiki_page, :index_page)
@@ -133,28 +134,28 @@ class WikiMenuItemsController : public ApplicationController {
 
    void assign_wiki_menu_item_params(menu_item) {
     if ( wiki_menu_item_params[:new_wiki_page] == '1') {
-      menu_item.new_wiki_page = true
+      // menu_item.new_wiki_page = true
     } else if ( wiki_menu_item_params[:new_wiki_page] == '0') {
-      menu_item.new_wiki_page = false
+      // menu_item.new_wiki_page = false
     }
 
     if ( wiki_menu_item_params[:index_page] == '1') {
-      menu_item.index_page = true
+      // menu_item.index_page = true
     } else if ( wiki_menu_item_params[:index_page] == '0') {
-      menu_item.index_page = false
+      // menu_item.index_page = false
     }
   }
 
    void create_main_menu_item_for_wiki_page(page, options = {}) {
     wiki = page.wiki
 
-    menu_item = if ( item = page.menu_item) {
+    // menu_item = if ( item = page.menu_item) {
                   item.tap { |item| item.parent_id = nil }
                 else
                   wiki.wiki_menu_items.build(name: page.slug, title: page.title)
     }
 
-    menu_item.options = options
-    menu_item.save
+    // menu_item.options = options
+    // menu_item.save
   }
 }

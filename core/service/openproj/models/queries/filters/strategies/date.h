@@ -12,7 +12,7 @@ namespace Queries::Filters::Strategies {
       }
     }
 
-    private
+    private:
 
      void validate_values_all_date() {
       unless values.all? { |value| value.blank? || date?(value) }

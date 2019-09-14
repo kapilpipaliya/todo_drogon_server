@@ -3,10 +3,10 @@ class Queries::Columns::Base
               :sortable,
               :association
 
-  attr_accessor :name,
-                :sortable_join,
-                :summable,
-                :default_order
+  // attr_accessor :name,
+                // :sortable_join,
+                // :summable,
+                // :default_order
 
   alias_method :summable?, :summable
 
@@ -61,7 +61,7 @@ class Queries::Columns::Base
     new
   }
 
-  protected
+  protected:
 
    void name_or_value_or_false(value) {
     // This is different from specifying value = nil in the signature

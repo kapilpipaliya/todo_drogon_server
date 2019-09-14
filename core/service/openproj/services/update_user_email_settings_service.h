@@ -17,7 +17,7 @@ UpdateUserEmailSettingsService = Struct.new(:user) {
     ret_value
   }
 
-  private
+  private:
 
    void set_mail_notification(mail_notification) {
     user.mail_notification = mail_notification unless mail_notification.nil?

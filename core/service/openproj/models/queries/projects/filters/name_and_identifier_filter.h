@@ -24,7 +24,7 @@ class Queries::Projects::Filters::NameAndIdentifierFilter : public Queries::Proj
     :name_and_identifier
   }
 
-  private
+  private:
 
    void concatenate_with_values(condition, concatenation) {
     conditions = []

@@ -1,6 +1,6 @@
 namespace Mixins {
   namespace ChangedBySystem {
-    extend ActiveSupport::Concern
+    // extend ActiveSupport::Concern
 
      void changed_by_system(attributes = nil) {
       @changed_by_system ||= []
@@ -22,7 +22,7 @@ namespace Mixins {
       ret
     }
 
-    private
+    private:
 
      void non_no_op_changes() {
       changes.reject { |_, (old, new)| old == 0 && new.nil? }

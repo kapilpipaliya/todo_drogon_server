@@ -1,8 +1,8 @@
 namespace API {
   namespace V3 {
     class WorkPackageCollectionFromQueryService
-      include Utilities::PathHelper
-      include ::API::Utilities::PageSizeHelper
+      // include Utilities::PathHelper
+      // include ::API::Utilities::PageSizeHelper
 
        WorkPackageCollectionFromQueryService(query, user) {
         this->query = query
@@ -23,7 +23,7 @@ namespace API {
         }
       }
 
-      private
+      private:
 
        void results_to_representer(params) {
         collection_representer(query.results.sorted_work_packages,
@@ -33,7 +33,7 @@ namespace API {
                                sums: generate_total_sums)
       }
 
-      attr_accessor :query,
+      // attr_accessor :query,
                     :current_user
 
        void representer() {

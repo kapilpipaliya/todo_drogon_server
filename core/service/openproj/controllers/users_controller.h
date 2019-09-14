@@ -1,10 +1,9 @@
+#include "application_controller.h"
 class UsersController : public ApplicationController {
-  layout 'admin'
+  // layout 'admin'
 
-  helper_method :gon
-
-  before_action :require_admin, except: [:show, :deletion_info, :destroy]
-  before_action :find_user, only: [:show,
+  // before_action :require_admin, except: [:show, :deletion_info, :destroy]
+  // before_action :find_user, only: [:show,
                                    :edit,
                                    :update,
                                    :change_status_info,
@@ -13,22 +12,22 @@ class UsersController : public ApplicationController {
                                    :deletion_info,
                                    :resend_invitation]
   // should also contain destroy but post data can not be redirected
-  before_action :require_login, only: [:deletion_info]
-  before_action :authorize_for_user, only: [:destroy]
-  before_action :check_if_deletion_allowed, only: [:deletion_info,
+  // before_action :require_login, only: [:deletion_info]
+  // before_action :authorize_for_user, only: [:destroy]
+  // before_action :check_if_deletion_allowed, only: [:deletion_info,
                                                    :destroy]
 
   // Password confirmation helpers and actions
-  include Concerns::PasswordConfirmation
-  before_action :check_password_confirmation, only: [:destroy]
+  // include Concerns::PasswordConfirmation
+  // before_action :check_password_confirmation, only: [:destroy]
 
-  include Concerns::UserLimits
-  before_action :enforce_user_limit, only: [:create]
-  before_action -> { enforce_user_limit flash_now: true }, only: [:new]
+  // include Concerns::UserLimits
+  // before_action :enforce_user_limit, only: [:create]
+  // before_action -> { enforce_user_limit flash_now: true }, only: [:new]
 
-  include SortHelper
-  include CustomFieldsHelper
-  include PaginationHelper
+  // include SortHelper
+  // include CustomFieldsHelper
+  // include PaginationHelper
 
    void index() {
     @groups = Group.all.sort
@@ -64,7 +63,7 @@ class UsersController : public ApplicationController {
     }
   }
 
-   void new() {
+   void new_() {
     @user = User.new(language: Setting.default_language,
                      mail_notification: Setting.default_notification_option)
     @auth_sources = AuthSource.all
@@ -251,7 +250,7 @@ class UsersController : public ApplicationController {
     render action: 'deletion_info', layout: my_or_admin_layout
   }
 
-  private
+  private:
 
    void find_user() {
     if ( params[:id] == 'current' || params['id'].nil?) {
@@ -298,7 +297,7 @@ class UsersController : public ApplicationController {
     params[:user][:password].present? && !OpenProject::Configuration.disable_password_choice?
   }
 
-  protected
+  protected:
 
    void default_breadcrumb() {
     if ( action_name == 'index') {

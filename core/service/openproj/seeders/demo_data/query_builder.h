@@ -12,7 +12,7 @@ namespace DemoData {
       create_query if ( valid?) {
     }
 
-    private
+    private:
 
     //
     // Don't seed queries specific to the backlogs plugin.

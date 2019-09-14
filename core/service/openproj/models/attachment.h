@@ -4,11 +4,11 @@ class Attachment : public ActiveRecord::Base {
   ALLOWED_TEXT_TYPES = %w[text/plain].freeze
   ALLOWED_IMAGE_TYPES = %w[image/gif ( image/jpeg image/png image/tiff image/bmp].freeze) {
 
-  belongs_to :container, polymorphic: true
-  belongs_to :author, class_name: 'User', foreign_key: 'author_id'
+  // belongs_to :container, polymorphic: true
+  // belongs_to :author, class_name: 'User', foreign_key: 'author_id'
 
-  validates_presence_of :author, :content_type, :filesize
-  validates_length_of :description, maximum: 255
+  // validates_presence_of :author, :content_type, :filesize
+  // validates_length_of :description, maximum: 255
 
   validate :filesize_below_allowed_maximum,
            :container_changed_more_than_once
@@ -23,7 +23,7 @@ class Attachment : public ActiveRecord::Base {
 
   after_commit :extract_fulltext, on: :create
 
-  after_create :schedule_cleanup_uncontainered_job,
+  // after_create :schedule_cleanup_uncontainered_job,
                unless: :containered?
 
   //
@@ -202,7 +202,7 @@ class Attachment : public ActiveRecord::Base {
     }
   }
 
-  private
+  private:
 
    void schedule_cleanup_uncontainered_job() {
     Delayed::Job.enqueue Attachments::CleanupUncontaineredJob.new,

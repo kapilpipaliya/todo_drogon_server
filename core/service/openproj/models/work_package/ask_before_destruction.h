@@ -1,5 +1,5 @@
 namespace WorkPackage::AskBeforeDestruction {
-  extend ActiveSupport::Concern
+  // extend ActiveSupport::Concern
 
   DestructionRegistration = Struct.new(:klass, :check, :action)
 
@@ -32,7 +32,7 @@ namespace WorkPackage::AskBeforeDestruction {
       associated
     }
 
-    private
+    private:
 
      void associated_to_ask_before_destruction_of(work_packages) {
       associated = {}

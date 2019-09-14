@@ -1,5 +1,5 @@
 class CustomActions::Actions::EstimatedHours : public CustomActions::Actions::Base {
-  include CustomActions::Actions::Strategies::Float
+  // include CustomActions::Actions::Strategies::Float
 
    void key() {
     :estimated_hours

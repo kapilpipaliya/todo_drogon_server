@@ -1,6 +1,6 @@
 namespace WorkPackagesHelper {
-  include AccessibilityHelper
-  extend DeprecatedAlias
+  // include AccessibilityHelper
+  // extend DeprecatedAlias
 
   // Displays a link to +work_package+ with its subject.
   // Examples:
@@ -178,7 +178,7 @@ namespace WorkPackagesHelper {
     ret
   }
 
-  private
+  private:
 
    void truncated_work_package_description(work_package, lines = 3) {
     description_lines = work_package.description.to_s.lines.to_a[0, lines]

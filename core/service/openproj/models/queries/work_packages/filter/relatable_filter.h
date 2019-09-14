@@ -1,5 +1,5 @@
 class Queries::WorkPackages::Filter::RelatableFilter : public Queries::WorkPackages::Filter::WorkPackageFilter {
-  include Queries::WorkPackages::Filter::FilterForWpMixin
+  // include Queries::WorkPackages::Filter::FilterForWpMixin
 
    void available?() {
     User.current.allowed_to?(:manage_work_package_relations, nil, global: true)
@@ -28,7 +28,7 @@ class Queries::WorkPackages::Filter::RelatableFilter : public Queries::WorkPacka
     }
   }
 
-  private
+  private:
 
    void relateable_from_or_to() {
     relateable_to.or(relateable_from)

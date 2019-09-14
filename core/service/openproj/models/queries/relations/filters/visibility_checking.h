@@ -21,7 +21,7 @@ namespace Queries {
           visibility_checked_sql(operator_string, values, visible_sql)
         }
 
-        private
+        private:
 
          void visibility_checked_sql(_operator, _values, _visible_sql) {
           raise NotImplementedError

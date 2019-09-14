@@ -1,14 +1,15 @@
+#include "application_controller.h"
 class ProjectSettingsController : public ApplicationController {
-  menu_item :settings
+  // menu_item :settings
 
-  before_action :find_project
-  before_action :authorize
-  before_action :check_valid_tab
-  before_action :get_tab_settings
+  // before_action :find_project
+  // before_action :authorize
+  // before_action :check_valid_tab
+  // before_action :get_tab_settings
 
-   void show; }() {
+   void show() {)
 
-  private
+  private:
 
    void settings_info() {
     @altered_project = @project

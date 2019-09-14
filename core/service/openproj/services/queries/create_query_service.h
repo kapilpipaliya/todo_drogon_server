@@ -7,7 +7,7 @@ class CreateQueryService : public QueryService {
     this->contract_class = Queries::CreateContract
   }
 
-  private
+  private:
 
    void service_result(result, errors, query) {
     query.update user: user

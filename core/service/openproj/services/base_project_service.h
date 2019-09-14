@@ -3,7 +3,7 @@ class BaseProjectService
     this->project = project
   }
 
-  private
+  private:
 
-  attr_accessor :project
+  // attr_accessor :project
 }

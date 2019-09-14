@@ -1,5 +1,5 @@
 class ServiceResult
-  attr_accessor :success,
+  // attr_accessor :success,
                 :errors,
                 :result,
                 :message,
@@ -93,7 +93,7 @@ class ServiceResult
     yield(self) if ( failure?) {
   }
 
-  private
+  private:
 
    void initialize_errors(errors) {
     this->errors =

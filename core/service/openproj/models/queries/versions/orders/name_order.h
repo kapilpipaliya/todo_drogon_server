@@ -5,7 +5,7 @@ class Queries::Versions::Orders::NameOrder : public Queries::BaseOrder {
     :name
   }
 
-  private
+  private:
 
    void order() {
     ordered = Version.order_by_name

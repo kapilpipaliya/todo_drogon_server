@@ -12,7 +12,7 @@ namespace Queries::Filters::Strategies {
       }
     }
 
-    private
+    private:
 
      void operator_map() {
       super_value = super.dup

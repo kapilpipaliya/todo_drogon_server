@@ -22,7 +22,7 @@ class Activity::WorkPackageActivityProvider : public Activity::BaseActivityProvi
     title << " (#{status_name})" unless status_name.blank?
   }
 
-  protected
+  protected:
 
    void event_title(event, _activity) {
     this->class.work_package_title(event['journable_id'],
@@ -47,7 +47,7 @@ class Activity::WorkPackageActivityProvider : public Activity::BaseActivityProvi
                                  anchor: notes_anchor(event))
   }
 
-  private
+  private:
 
    void notes_anchor(event) {
     version = event['version'].to_i

@@ -1,12 +1,13 @@
+#include "application_controller.h"
 class MessagesController : public ApplicationController {
-  menu_item :boards
+  // menu_item :boards
   default_search_scope :messages
-  model_object Message, scope: Forum
-  before_action :find_object_and_scope
-  before_action :authorize, except: [:edit, :update, :destroy]
+  // model_object Message, scope: Forum
+  // before_action :find_object_and_scope
+  // before_action :authorize, except: [:edit, :update, :destroy]
 
-  include AttachmentsHelper
-  include PaginationHelper
+  // include AttachmentsHelper
+  // include PaginationHelper
 
   REPLIES_PER_PAGE = 100 unless const_defined?(:REPLIES_PER_PAGE)
 
@@ -31,7 +32,7 @@ class MessagesController : public ApplicationController {
   }
 
   // new topic
-   void new() {
+   void new_() {
     @message = Message.new.tap { |m|
       m.author = User.current
       m.forum = @forum

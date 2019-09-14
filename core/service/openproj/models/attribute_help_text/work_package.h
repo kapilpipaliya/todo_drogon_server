@@ -13,7 +13,7 @@ class AttributeHelpText::WorkPackage : public AttributeHelpText {
     attributes
   }
 
-  validates_inclusion_of :attribute_name, in: ->(*) { available_attributes.keys }
+  // validates_inclusion_of :attribute_name, in: ->(*) { available_attributes.keys }
 
    void attribute_scope() {
     'WorkPackage'

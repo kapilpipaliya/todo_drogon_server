@@ -1,10 +1,11 @@
+#include "application_controller.h"
 class RolesController : public ApplicationController {
-  include PaginationHelper
-  include Roles::NotifyMixin
+  // include PaginationHelper
+  // include Roles::NotifyMixin
 
-  layout 'admin'
+  // layout 'admin'
 
-  before_action :require_admin, except: [:autocomplete_for_role]
+  // before_action :require_admin, except: [:autocomplete_for_role]
 
    void index() {
     @roles = roles_scope
@@ -14,7 +15,7 @@ class RolesController : public ApplicationController {
     render action: 'index', layout: false if ( request.xhr?) {
   }
 
-   void new() {
+   void new_() {
     @role = Role.new(permitted_params.role? || { permissions: Role.non_member.permissions })
 
     @roles = roles_scope
@@ -96,7 +97,7 @@ class RolesController : public ApplicationController {
     }
   }
 
-  private
+  private:
 
    void set_role_attributes(role, create_or_update) {
     contract = "Roles::#{create_or_update.camelize}Contract".constantize

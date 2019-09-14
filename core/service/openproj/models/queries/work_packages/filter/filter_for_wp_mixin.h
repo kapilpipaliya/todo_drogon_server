@@ -39,7 +39,7 @@ namespace Queries::WorkPackages::Filter::FilterForWpMixin {
     }
   }
 
-  private
+  private:
 
    void visible_scope() {
     if ( context.project) {

@@ -1,6 +1,6 @@
 namespace Queries::Filters::Strategies {
   class CfListOptional : public ListOptional {
-    private
+    private:
 
      void operator_map() {
       super_value = super.dup

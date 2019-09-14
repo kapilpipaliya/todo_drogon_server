@@ -43,7 +43,7 @@ namespace Queries::AvailableFilters {
     non_existing_filter(key)
   }
 
-  private
+  private:
 
    void non_existing_filter(key) {
     Queries::NotExistingFilter.create!(name: key)

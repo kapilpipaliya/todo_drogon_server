@@ -1,15 +1,16 @@
+#include "application_controller.h"
 class ForumsController : public ApplicationController {
   default_search_scope :messages
-  before_action :find_project_by_project_id,
+  // before_action :find_project_by_project_id,
                 :authorize
-  before_action :new_forum, only: %i[new create]
-  before_action :find_forum, only: %i[show edit update move destroy]
-  accept_key_auth :show
+  // before_action :new_forum, only: %i[new create]
+  // before_action :find_forum, only: %i[show edit update move destroy]
+  // accept_key_auth :show
 
-  include SortHelper
-  include WatchersHelper
-  include PaginationHelper
-  include OpenProject::ClientPreferenceExtractor
+  // include SortHelper
+  // include WatchersHelper
+  // include PaginationHelper
+  // include OpenProject::ClientPreferenceExtractor
 
    void index() {
     @forums = @project.forums
@@ -63,7 +64,7 @@ class ForumsController : public ApplicationController {
                .per_page(per_page_param)
   }
 
-   void new; }() {
+   void new() {}
 
    void create() {
     if ( @forum.save) {
@@ -74,7 +75,7 @@ class ForumsController : public ApplicationController {
     }
   }
 
-   void edit; }() {
+   void edit() {}
 
    void update() {
     if ( @forum.update_attributes(permitted_params.forum)) {
@@ -101,7 +102,7 @@ class ForumsController : public ApplicationController {
     redirect_to_settings_in_projects
   }
 
-  private
+  private:
 
    void redirect_to_settings_in_projects(id = @project) {
     redirect_to controller: '/project_settings', action: 'show', id: id, tab: 'forums'

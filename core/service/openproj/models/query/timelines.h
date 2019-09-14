@@ -1,10 +1,10 @@
 //
 namespace Query::Timelines {
-  extend ActiveSupport::Concern
+  // extend ActiveSupport::Concern
 
   included {
     enum timeline_zoom_level: %i(days weeks months quarters years auto)
-    validates :timeline_zoom_level, inclusion: { in: timeline_zoom_levels.keys }
+    // validates :timeline_zoom_level, inclusion: { in: timeline_zoom_levels.keys }
 
     serialize :timeline_labels, Hash
     validate :valid_timeline_labels

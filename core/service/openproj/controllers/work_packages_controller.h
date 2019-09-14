@@ -1,19 +1,20 @@
+#include "application_controller.h"
 class WorkPackagesController : public ApplicationController {
-  include QueriesHelper
-  include PaginationHelper
-  include OpenProject::ClientPreferenceExtractor
-  include Concerns::Layout
+  // include QueriesHelper
+  // include PaginationHelper
+  // include OpenProject::ClientPreferenceExtractor
+  // include Concerns::Layout
 
-  accept_key_auth :index, :show
+  // accept_key_auth :index, :show
 
-  before_action :authorize_on_work_package, only: :show
-  before_action :find_optional_project,
+  // before_action :authorize_on_work_package, only: :show
+  // before_action :find_optional_project,
                 :protect_from_unauthorized_export, only: :index
 
-  before_action :load_and_validate_query, only: :index, unless: ->() { request.format.html? }
-  before_action :load_work_packages, only: :index, if: ->() { request.format.atom? }
+  // before_action :load_and_validate_query, only: :index, unless: ->() { request.format.html? }
+  // before_action :load_work_packages, only: :index, if: ->() { request.format.atom? }
 
-  before_action :set_gon_settings
+  // before_action :set_gon_settings
 
    void show() {
     respond_to { |format|
@@ -39,7 +40,7 @@ class WorkPackagesController : public ApplicationController {
     respond_to { |format|
       format.html {
         render :index, locals: { query: @query, project: @project, menu_name: project_or_wp_query_menu },
-                       layout: 'angular'
+                       // layout: 'angular'
       }
 
       format.any(*WorkPackage::Exporter.list_formats) {
@@ -52,7 +53,7 @@ class WorkPackagesController : public ApplicationController {
     }
   }
 
-  protected
+  protected:
 
    void set_gon_settings() {
     gon.settings = client_preferences
@@ -75,7 +76,7 @@ class WorkPackagesController : public ApplicationController {
 
    void atom_journals() {
     render template: 'journals/index',
-           layout: false,
+           // layout: false,
            content_type: 'application/atom+xml',
            locals: { title: "#{Setting.app_title} - #{work_package}",
                      journals: journals }
@@ -86,7 +87,7 @@ class WorkPackagesController : public ApplicationController {
                 title: "#{@project || Setting.app_title}: #{l(:label_work_package_plural)}")
   }
 
-  private
+  private:
 
    void render_export_response(export, fallback_path:) {
     if ( export.error?) {

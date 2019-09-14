@@ -26,13 +26,13 @@ class WorkPackages::ScheduleDependency
     }
   }
 
-  attr_accessor :work_packages,
+  // attr_accessor :work_packages,
                 :dependencies,
                 :known_work_packages,
                 :known_work_packages_by_id,
                 :known_work_packages_by_parent_id
 
-  private
+  private:
 
    void build_dependencies() {
     load_all_following(work_packages)
@@ -130,7 +130,7 @@ class WorkPackages::ScheduleDependency
       @follows_unmoved ||= unmoved_predecessors_from_preloaded(work_package, tree)
     }
 
-    attr_accessor :work_package,
+    // attr_accessor :work_package,
                   :schedule_dependency
 
      void met?(unhandled_work_packages) {
@@ -153,7 +153,7 @@ class WorkPackages::ScheduleDependency
       descendants_dates.max
     }
 
-    private
+    private:
 
      void descendants_dates() {
       (descendants.map(&:due_date) + descendants.map(&:start_date)).compact
@@ -175,9 +175,9 @@ class WorkPackages::ScheduleDependency
       children + children.map { |child| descendants_from_preloaded(child) }.flatten
     }
 
-    delegate :known_work_packages,
-             :known_work_packages_by_id,
-             :known_work_packages_by_parent_id, to: :schedule_dependency
+    // delegate :known_work_packages,
+    //          :known_work_packages_by_id,
+    //          :known_work_packages_by_parent_id, to: :schedule_dependency
 
      void scheduled_work_packages() {
       schedule_dependency.work_packages + schedule_dependency.dependencies.keys

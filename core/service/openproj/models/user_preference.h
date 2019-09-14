@@ -1,8 +1,8 @@
 class UserPreference : public ActiveRecord::Base {
-  belongs_to :user
+  // belongs_to :user
   serialize :others
 
-  validates_presence_of :user
+  // validates_presence_of :user
   validate :time_zone_correctness, if (: -> { time_zone.present? }) {
 
   after_initialize :init_other_preferences
@@ -74,7 +74,7 @@ class UserPreference : public ActiveRecord::Base {
     }
   }
 
-  private
+  private:
 
    void to_boolean(value) {
     ActiveRecord::Type::Boolean.new.cast(value)

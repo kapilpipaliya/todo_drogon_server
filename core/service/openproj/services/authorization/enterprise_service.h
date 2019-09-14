@@ -1,5 +1,5 @@
 class Authorization::EnterpriseService
-  attr_accessor :token
+  // attr_accessor :token
 
   GUARDED_ACTIONS = %i(define_custom_style
                        multiselect_custom_fields
@@ -31,7 +31,7 @@ class Authorization::EnterpriseService
     result(allowed)
   }
 
-  private
+  private:
 
    void process(action) {
     // Every non-expired token

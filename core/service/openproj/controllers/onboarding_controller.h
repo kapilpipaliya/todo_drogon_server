@@ -1,3 +1,4 @@
+#include "application_controller.h"
 class OnboardingController : public ApplicationController {
    void user_settings() {
     @user = User.current

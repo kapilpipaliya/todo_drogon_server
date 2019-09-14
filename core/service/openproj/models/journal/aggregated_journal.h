@@ -126,7 +126,7 @@ class Journal::AggregatedJournal
       "COALESCE(addition.version, #{table_name}.version)"
     }
 
-    private
+    private:
 
     // Provides a full SQL statement that returns journals that are aggregated on a basic level:
     //  * a row is dropped as soon as its successor is eligible to be merged with it
@@ -278,40 +278,40 @@ class Journal::AggregatedJournal
     }
   }
 
-  include JournalChanges
-  include JournalFormatter
-  include Redmine::Acts::Journalized::FormatHooks
+  // include JournalChanges
+  // include JournalFormatter
+  // include Redmine::Acts::Journalized::FormatHooks
 
-  register_journal_formatter :diff, OpenProject::JournalFormatter::Diff
-  register_journal_formatter :attachment, OpenProject::JournalFormatter::Attachment
-  register_journal_formatter :custom_field, OpenProject::JournalFormatter::CustomField
+  // register_journal_formatter :diff, OpenProject::JournalFormatter::Diff
+  // register_journal_formatter :attachment, OpenProject::JournalFormatter::Attachment
+  // register_journal_formatter :custom_field, OpenProject::JournalFormatter::CustomField
 
   alias_method :details, :get_changes
 
-  delegate :journable_type,
-           :journable_id,
-           :journable,
-           :journable=,
-           :user_id,
-           :user,
-           :notes,
-           :notes?,
-           :activity_type,
-           :created_at,
-           :id,
-           :version,
-           :attributes,
-           :attachable_journals,
-           :attachable_journals=,
-           :customizable_journals,
-           :customizable_journals=,
-           :editable_by?,
-           :notes_id,
-           :notes_version,
-           :project,
-           :data,
-           :data=,
-           to: :journal
+  // delegate :journable_type,
+  //          :journable_id,
+  //          :journable,
+  //          :journable=,
+  //          :user_id,
+  //          :user,
+  //          :notes,
+  //          :notes?,
+  //          :activity_type,
+  //          :created_at,
+  //          :id,
+  //          :version,
+  //          :attributes,
+  //          :attachable_journals,
+  //          :attachable_journals=,
+  //          :customizable_journals,
+  //          :customizable_journals=,
+  //          :editable_by?,
+  //          :notes_id,
+  //          :notes_version,
+  //          :project,
+  //          :data,
+  //          :data=,
+  //          to: :journal
 
   // Initializes a new AggregatedJournal. Allows to explicitly set a predecessor, if it is already
   // known. Providing a predecessor is only to improve efficiency, it is not required.
@@ -386,7 +386,7 @@ class Journal::AggregatedJournal
     predecessor.nil?
   }
 
-  private
+  private:
 
   attr_reader :journal
 }

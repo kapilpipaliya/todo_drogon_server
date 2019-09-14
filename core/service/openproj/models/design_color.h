@@ -13,9 +13,9 @@ class DesignColor : public ActiveRecord::Base {
 
   before_validation :normalize_hexcode
 
-  validates_uniqueness_of :variable
-  validates_presence_of :hexcode, :variable
-  validates_format_of :hexcode, with: /\A#[0-9A-F]{6}\z/, unless: lambda { |e| e.hexcode.blank? }
+  // validates_uniqueness_of :variable
+  // validates_presence_of :hexcode, :variable
+  // validates_format_of :hexcode, with: /\A#[0-9A-F]{6}\z/, unless: lambda { |e| e.hexcode.blank? }
 
   class << self
      void defaults() {
@@ -44,7 +44,7 @@ class DesignColor : public ActiveRecord::Base {
     hexcode.presence || this->class.defaults[variable]
   }
 
-  protected
+  protected:
 
   // This could be DRY! This method is taken from model Color.
    void normalize_hexcode() {

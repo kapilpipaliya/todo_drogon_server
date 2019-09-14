@@ -1,6 +1,6 @@
 namespace ToolbarHelper {
-  include ERB::Util
-  include ActionView::Helpers::OutputSafetyHelper
+  // include ERB::Util
+  // include ActionView::Helpers::OutputSafetyHelper
 
    void toolbar(title:, title_extra: nil, title_class: nil, subtitle: '', link_to: nil, html: {}) {
     classes = ['toolbar-container', html[:class]].compact.join(' ')
@@ -29,7 +29,7 @@ namespace ToolbarHelper {
     toolbar(title: safe_join(elements, ' &raquo '.html_safe), subtitle: subtitle, html: html, &block)
   }
 
-  protected
+  protected:
 
    void editable_toolbar_title(form, field_name) {
     new_element = form.object.new_record?

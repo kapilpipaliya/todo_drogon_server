@@ -1,7 +1,7 @@
 #include "fileutils"
 
 class LocalFileUploader : public CarrierWave::Uploader::Base {
-  include FileUploader
+  // include FileUploader
   storage :file
 
   // Delete cache and old rack file after store

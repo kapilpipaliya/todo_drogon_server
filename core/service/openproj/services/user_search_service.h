@@ -1,5 +1,5 @@
 class UserSearchService
-  attr_accessor :params
+  // attr_accessor :params
   attr_reader :users_only, :project
 
   SEARCH_SCOPES = [

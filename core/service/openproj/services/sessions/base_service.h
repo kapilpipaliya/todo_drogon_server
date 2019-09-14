@@ -2,7 +2,7 @@ namespace Sessions {
   class BaseService
     class << self
 
-      protected
+      protected:
 
       //
       // Can we work on SQL sessions?

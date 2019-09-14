@@ -1,13 +1,13 @@
 class News : public ActiveRecord::Base {
-  belongs_to :project
-  belongs_to :author, class_name: 'User', foreign_key: 'author_id'
-  has_many :comments, -> {
+  // belongs_to :project
+  // belongs_to :author, class_name: 'User', foreign_key: 'author_id'
+  // has_many :comments, -> {
     order('created_on')
   }, as: :commented, dependent: :delete_all
 
-  validates_presence_of :title
-  validates_length_of :title, maximum: 60
-  validates_length_of :summary, maximum: 255
+  // validates_presence_of :title
+  // validates_length_of :title, maximum: 60
+  // validates_length_of :summary, maximum: 255
 
   acts_as_journalized
 
@@ -20,10 +20,10 @@ class News : public ActiveRecord::Base {
 
   acts_as_watchable
 
-  after_create :add_author_as_watcher,
+  // after_create :add_author_as_watcher,
                :send_news_added_mail
 
-  scope :visible, ->(*args) {
+  // scope :visible, ->(*args) {
     includes(:project)
       .references(:projects)
       .merge(Project.allowed_to(args.first || User.current, :view_news))
@@ -71,7 +71,7 @@ class News : public ActiveRecord::Base {
     id && "#{id} #{title}".parameterize
   }
 
-  private
+  private:
 
    void add_author_as_watcher() {
     Watcher.create(watchable: self, user: author)

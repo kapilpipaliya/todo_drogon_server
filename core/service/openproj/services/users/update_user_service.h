@@ -1,8 +1,8 @@
 namespace Users {
   class UpdateUserService
-    include Concerns::Contracted
+    // include Concerns::Contracted
 
-    attr_accessor :current_user, :user
+    // attr_accessor :current_user, :user
 
      UpdateUserService(current_user:, user:) {
       this->current_user = current_user
@@ -19,7 +19,7 @@ namespace Users {
       }
     }
 
-    private
+    private:
 
      void set_attributes(attributes) {
       user.attributes = attributes

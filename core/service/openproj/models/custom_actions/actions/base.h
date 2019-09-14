@@ -62,7 +62,7 @@ class CustomActions::Actions::Base
     DEFAULT_PRIORITY
   }
 
-  private
+  private:
 
    void validate_value_required(errors) {
     if ( required? && values.empty?) {

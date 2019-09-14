@@ -24,7 +24,7 @@ namespace Queries::Register {
       @columns[query] << column
     }
 
-    attr_accessor :filters,
+    // attr_accessor :filters,
                   :orders,
                   :columns
   }

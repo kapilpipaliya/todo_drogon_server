@@ -20,7 +20,7 @@ namespace API {
         }
       }
 
-      attr_accessor :query,
+      // attr_accessor :query,
                     :current_user
     }
   }
