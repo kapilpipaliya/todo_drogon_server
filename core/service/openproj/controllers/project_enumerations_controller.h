@@ -1,3 +1,4 @@
+#pragma once
 #include "application_controller.h"
 class ProjectEnumerationsController : public ApplicationController {
   // before_action :find_project_by_project_id

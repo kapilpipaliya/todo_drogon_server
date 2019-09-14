@@ -1,4 +1,8 @@
-class WorkPackages::SettingsController : public ::ApplicationController {
+#pragma once
+#include "../application_controller.h"
+namespace WorkPackages {
+
+class SettingsController : public ApplicationController {
   // layout 'admin'
 //  current_menu_item :index {
 //    :work_packages_setting
@@ -27,3 +31,4 @@ class WorkPackages::SettingsController : public ::ApplicationController {
     return true;
   }
 };
+}

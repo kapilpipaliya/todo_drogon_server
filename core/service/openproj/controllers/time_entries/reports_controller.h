@@ -1,4 +1,5 @@
-#include "application_controller.h"
+#pragma once
+#include "../application_controller.h"
 namespace TimeEntries {
 class ReportsController : public ApplicationController {
   // menu_item :issues

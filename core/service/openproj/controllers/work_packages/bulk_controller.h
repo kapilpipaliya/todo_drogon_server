@@ -1,5 +1,8 @@
-#include "application_controller.h"
-class WorkPackages::BulkController : public ApplicationController {
+#pragma once
+#include "../application_controller.h"
+namespace WorkPackages {
+
+class BulkController : public ApplicationController {
   // before_action :find_work_packages
   // before_action :authorize
 
@@ -66,7 +69,7 @@ class WorkPackages::BulkController : public ApplicationController {
 //    this->types = this->projects.map(&:types).inject { |memo, t| memo & t }
   }
 
-   void destroy_work_packages(work_packages) {
+//   void destroy_work_packages(work_packages) {
 //    work_packages.each { |work_package|
 //      begin
 //        WorkPackages::DeleteService
@@ -78,7 +81,7 @@ class WorkPackages::BulkController : public ApplicationController {
 //        // nothing to {, work package was already deleted (eg. by a parent)
 //      }
 //    }
-  }
+//  }
 
    void user() {
 //    current_user
@@ -87,4 +90,5 @@ class WorkPackages::BulkController : public ApplicationController {
    void default_breadcrumb() {
 //    l(:label_work_package_plural)
   }
+};
 }

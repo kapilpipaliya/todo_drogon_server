@@ -1,3 +1,4 @@
+#pragma once
 #include "auth_sources_controller.h"
 class LdapAuthSourcesController : public AuthSourcesController {
 public:

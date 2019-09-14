@@ -1,4 +1,5 @@
-#include "application_controller.h"
+#pragma once
+#include "../application_controller.h"
 namespace OAuth {
   //
   // Base controller for doorkeeper to skip the login check

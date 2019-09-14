@@ -1,3 +1,4 @@
+#pragma once
 //#include "diff"
 
 #include "application_controller.h"

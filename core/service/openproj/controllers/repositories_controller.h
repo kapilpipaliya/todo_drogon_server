@@ -1,3 +1,4 @@
+#pragma once
 //#include "SVG/Graph/Bar"
 //#include "SVG/Graph/BarHorizontal"
 //#include "digest/sha1"
@@ -467,7 +468,7 @@ private :
   }
 };
 
-class Date{
+//class Date{
 //   void months_ago(date = Date.today) {
 //    (date.year - year) * 12 + (date.month - month)
 //  }
@@ -475,10 +476,10 @@ class Date{
 //   void weeks_ago(date = Date.today) {
 //    (date.year - year) * 52 + (date.cweek - cweek)
 //  }
-};
+//};
 
-class String{
+//class String{
 //   void with_leading_slash() {
 //    starts_with?('/') ? self : "/#{self}"
 //  }
-};
+//};

@@ -1,6 +1,9 @@
+#pragma once
 //#include "rack/utils"
+#include "../application_controller.h"
+namespace WorkPackages {
 
-class WorkPackages::AutoCompletesController : public ::ApplicationController {
+class AutoCompletesController : public ApplicationController {
    void index() {
 //    this->work_packages = work_package_with_id | work_packages_by_subject_or_id
 
@@ -32,16 +35,16 @@ class WorkPackages::AutoCompletesController : public ::ApplicationController {
 //      .includes(:type)
   }
 
-   void wp_hashes_with_string(work_packages) {
+//   void wp_hashes_with_string(work_packages) {
 //    work_packages.map { |work_package|
 //      wp_hash = Hash.new
 //      work_package.attributes.each { |key, value| wp_hash[key] = Rack::Utils.escape_html(value) }
 //      wp_hash['to_s'] = Rack::Utils.escape_html(work_package.to_s)
 //      wp_hash
 //    }
-  }
+//  }
 
-   void subject_or_id_query(query_term) {
+//   void subject_or_id_query(query_term) {
 //    if ( query_term =~ /\A\d+\z/) {
 //      ["#{WorkPackage.table_name}.subject LIKE :q OR
 //       CAST(#{WorkPackage.table_name}.id AS CHAR(13)) LIKE :q",
@@ -50,7 +53,7 @@ class WorkPackages::AutoCompletesController : public ::ApplicationController {
 //      ["LOWER(#{WorkPackage.table_name}.subject) LIKE :q",
 //       { q: "%#{query_term.downcase}%" }]
 //    }
-  }
+//  }
 
    void work_package_scope() {
 //    scope = WorkPackage.all
@@ -69,3 +72,4 @@ class WorkPackages::AutoCompletesController : public ::ApplicationController {
 //    scope
   }
 };
+}

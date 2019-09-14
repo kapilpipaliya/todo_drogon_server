@@ -1,3 +1,4 @@
+#pragma once
 //
 // Acts as a filter for actions that require password confirmation to have
 // passed before it may be accessed.

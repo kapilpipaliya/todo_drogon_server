@@ -1,3 +1,4 @@
+#pragma once
 namespace Concerns {
   namespace AuthenticationStages {
      void stage_success() {

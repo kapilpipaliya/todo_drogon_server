@@ -1,3 +1,4 @@
+#pragma once
 //
 // Intended to be used by the UsersController to enforce the user limit.
 namespace Concerns::UserLimits {

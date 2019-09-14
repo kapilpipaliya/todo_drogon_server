@@ -1,3 +1,4 @@
+#pragma once
 //
 // Intended to be used by the AccountController to implement the user consent
 // check.

@@ -1,3 +1,4 @@
+#pragma once
 #include "application_controller.h"
 class SettingsController : public ApplicationController {
 public:

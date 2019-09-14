@@ -1,6 +1,9 @@
-#include "application_controller.h"
-class WorkPackages::MovesController : public ApplicationController {
-  default_search_scope :work_packages
+#pragma once
+#include "../application_controller.h"
+namespace WorkPackages {
+
+class MovesController : public ApplicationController {
+//  default_search_scope :work_packages
   // before_action :find_work_packages, :check_project_uniqueness
   // before_action :authorize
 
@@ -55,7 +58,7 @@ class WorkPackages::MovesController : public ApplicationController {
 //    }
   }
 
-   void set_flash_from_bulk_work_package_save(work_packages, unsaved_work_package_ids) {
+//   void set_flash_from_bulk_work_package_save(work_packages, unsaved_work_package_ids) {
 //    if ( unsaved_work_package_ids.empty? and not work_packages.empty?) {
 //      flash[:notice] = this->copy ? l(:notice_successful_create) : l(:notice_successful_update)
 //    else
@@ -64,11 +67,11 @@ class WorkPackages::MovesController : public ApplicationController {
 //                        total: work_packages.size,
 //                        ids: '#' + unsaved_work_package_ids.join(', #'))
 //    }
-  }
+//  }
 
   //
   // When copying, add work package ids that are failing
-   void dependent_error_ids(parent_id, service_call) {
+//   void dependent_error_ids(parent_id, service_call) {
 //    ids = service_call
 //      .results_with_errors(include_self: false)
 //      .map { |result| result.context[:copied_from]&.id }
@@ -80,7 +83,7 @@ class WorkPackages::MovesController : public ApplicationController {
 //    else
 //      [parent_id]
 //    }
-  }
+//  }
 
    void default_breadcrumb() {
 //    l(:label_move_work_package)
@@ -135,5 +138,6 @@ class WorkPackages::MovesController : public ApplicationController {
 //              :priority_id)
 //      .to_h
 //      .reject { |_, v| v.blank? }
-//  }
+  }
+};
 }

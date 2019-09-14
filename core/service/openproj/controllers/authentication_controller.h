@@ -1,3 +1,4 @@
+#pragma once
 #include "application_controller.h"
 class AuthenticationController : public ApplicationController {
 public:
@@ -33,4 +34,4 @@ public:
    bool show_local_breadcrumb() {
     return true;
   }
-}
+};

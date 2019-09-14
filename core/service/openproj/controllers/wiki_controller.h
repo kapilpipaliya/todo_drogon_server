@@ -1,3 +1,4 @@
+#pragma once
 //#include "diff"
 //#include "htmldiff"
 
@@ -203,11 +204,11 @@ public:
 //    }
   }
 
-   void conflicting_menu_item(title) {
+//   void conflicting_menu_item(title) {
 //    page.menu_item &&
 //      page.menu_item.parent_id.nil? &&
 //      project_menu_items.find { |item| item.name.to_s == title.to_url }
-  }
+//  }
 
    void project_menu_items() {
 //    Redmine::MenuManager.items("project_menu").children + wiki_root_menu_items

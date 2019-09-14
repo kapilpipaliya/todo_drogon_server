@@ -1,6 +1,8 @@
-#include "application_controller.h"
+#pragma once
+#include "../application_controller.h"
 namespace OAuth {
   class ApplicationsController : public ApplicationController {
+  public:
     // before_action :require_admin
     // before_action :new_app, only: %i[new create]
     // before_action :find_app, only: %i[edit update show destroy]

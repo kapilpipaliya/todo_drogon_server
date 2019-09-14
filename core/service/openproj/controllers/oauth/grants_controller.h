@@ -1,4 +1,5 @@
-#include "application_controller.h"
+#pragma once
+#include "../application_controller.h"
 namespace OAuth {
   class GrantsController : public ApplicationController {
     // before_action :require_login

@@ -149,7 +149,7 @@ public:
   //      )
       }
 
-     void reload_mailer_configuration!() {
+     void reload_mailer_configuration() {
   //    OpenProject::Configuration.reload_mailer_configuration!
     }
 

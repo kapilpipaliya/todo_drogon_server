@@ -1,3 +1,4 @@
+#pragma once
 #include "application_controller.h"
 class AttributeHelpTextsController : public ApplicationController {
 public:

@@ -1,3 +1,4 @@
+#pragma once
 #include <string>
 //
 // Intended to be used by the MyController and AccountController for password change flows

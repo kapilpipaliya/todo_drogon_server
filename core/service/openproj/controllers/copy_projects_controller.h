@@ -1,3 +1,4 @@
+#pragma once
 #include "application_controller.h"
 class CopyProjectsController : public ApplicationController {
   // before_action :find_project

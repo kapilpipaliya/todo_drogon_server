@@ -1,5 +1,8 @@
-#include "application_controller.h"
-class WorkPackages::ReportsController : public ApplicationController {
+#pragma once
+#include "../application_controller.h"
+namespace WorkPackages {
+
+class ReportsController : public ApplicationController {
   // menu_item :work_packages
   // before_action :find_project_by_project_id, :authorize
 
@@ -38,4 +41,5 @@ class WorkPackages::ReportsController : public ApplicationController {
    void default_breadcrumb() {
 //    l(:label_summary)
   }
+};
 }

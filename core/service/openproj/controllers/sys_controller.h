@@ -1,3 +1,4 @@
+#pragma once
 //#include "open_project/repository_authentication"
 #include "application_controller.h"
 

@@ -1,3 +1,4 @@
+#pragma once
 //
 // Intended to be used by the AccountController to decide where to
 // send the user when they logged in.

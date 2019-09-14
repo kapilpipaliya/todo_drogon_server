@@ -1,5 +1,8 @@
-#include "application_controller.h"
-class Users::MembershipsController : public ApplicationController {
+#pragma once
+#include "../application_controller.h"
+namespace Users {
+
+class MembershipsController : public ApplicationController {
   // layout 'admin'
 
   // before_action :require_admin
@@ -44,4 +47,5 @@ class Users::MembershipsController : public ApplicationController {
 //  rescue ActiveRecord::RecordNotFound
 //    render_404
   }
+};
 }

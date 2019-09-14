@@ -1,3 +1,4 @@
+#pragma once
 #include <string>
 namespace UserInvitation {
 //  namespace Events {
