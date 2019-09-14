@@ -1,8 +1,0 @@
-format 221
-
-classinstance 128030 class_ref 128158 // TaskModify
- name ""  xyz 84 102 2000
-classinstance 128158 class_ref 134686 // Project
- name ""  xyz 212 106 2000
-no_msg
-end
