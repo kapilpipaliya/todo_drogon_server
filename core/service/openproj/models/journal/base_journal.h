@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Journal::BaseJournal : public ActiveRecord::Base {
   this->abstract_class = true
 

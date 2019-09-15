@@ -1,6 +1,6 @@
 #pragma once
 #include "application_controller.h"
-namespace openproject {
+namespace openproj {
 class HomescreenController : public ApplicationController {
 public:
   // skip_before_action :check_if_login_required, only: [:robots]

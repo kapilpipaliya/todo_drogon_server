@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Queries::WorkPackages::Filter::SearchFilter <
   Queries::WorkPackages::Filter::WorkPackageFilter
   // include Queries::WorkPackages::Filter::OrFilterForWpMixin

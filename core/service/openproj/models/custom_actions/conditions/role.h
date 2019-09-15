@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class CustomActions::Conditions::Role : public CustomActions::Conditions::Base {
    void fulfilled_by?(work_package, user) {
     values.empty? ||

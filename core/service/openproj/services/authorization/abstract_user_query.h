@@ -1,5 +1,5 @@
 #pragma once
-namespace openproject {
+namespace openproj {
 class Authorization::AbstractUserQuery : public Authorization::AbstractQuery {
   transformations.register :all,
                            :users_members_join { |statement|

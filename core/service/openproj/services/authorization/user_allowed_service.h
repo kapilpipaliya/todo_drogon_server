@@ -1,5 +1,5 @@
 #pragma once
-namespace openproject {
+namespace openproj {
 class Authorization::UserAllowedService
   // attr_accessor :user
 

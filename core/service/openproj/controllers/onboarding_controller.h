@@ -1,6 +1,6 @@
 #pragma once
 #include "application_controller.h"
-namespace openproject {
+namespace openproj {
 class OnboardingController : public ApplicationController {
 public:
    void user_settings() {

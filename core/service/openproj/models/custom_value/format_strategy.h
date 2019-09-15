@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class CustomValue::FormatStrategy
   attr_reader :custom_value
   // delegate :custom_field, :value, to: :custom_value

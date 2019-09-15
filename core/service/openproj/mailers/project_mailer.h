@@ -1,6 +1,6 @@
 #pragma once
 #include "base_mailer.h"
-namespace openproject {
+namespace openproj {
 class ProjectMailer : public BaseMailer {
 
 //   void delete_project_completed(project, user:) {

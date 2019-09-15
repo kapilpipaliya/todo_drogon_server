@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Queries::WorkPackages::Columns::WorkPackageColumn : public Queries::Columns::Base {
   // attr_accessor :highlightable
   alias_method :highlightable?, :highlightable

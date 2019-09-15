@@ -1,7 +1,7 @@
 #pragma once
 //
 // Implements a repository service for building checkout instructions if supported
-namespace openproject {
+namespace openproj {
 class Scm::CheckoutInstructionsService
   attr_reader :repository, :user, :path
 

@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class MenuItems::WikiMenuItem : public MenuItem {
   // belongs_to :wiki, foreign_key: 'navigatable_id'
 

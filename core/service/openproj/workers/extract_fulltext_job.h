@@ -1,6 +1,6 @@
 #pragma once
 #include "application_job.h"
-namespace openproject {
+namespace openproj {
 class ExtractFulltextJob : public ApplicationJob {
 public:
 //   ExtractFulltextJob(attachment_id) {

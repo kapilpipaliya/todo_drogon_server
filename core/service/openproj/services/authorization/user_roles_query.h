@@ -1,5 +1,5 @@
 #pragma once
-namespace openproject {
+namespace openproj {
 class Authorization::UserRolesQuery : public Authorization::AbstractUserQuery {
   this->model = Role
   this->base_table = users_table

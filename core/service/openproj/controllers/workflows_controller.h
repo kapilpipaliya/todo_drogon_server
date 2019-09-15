@@ -1,6 +1,6 @@
 #pragma once
 #include "application_controller.h"
-namespace openproject {
+namespace openproj {
 class WorkflowsController : public ApplicationController {
 public :
   // layout 'admin'

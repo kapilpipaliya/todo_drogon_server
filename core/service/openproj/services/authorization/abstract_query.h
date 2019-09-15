@@ -1,5 +1,5 @@
 #pragma once
-namespace openproject {
+namespace openproj {
 class Authorization::AbstractQuery
   // class_attribute :model
   // class_attribute :base_table

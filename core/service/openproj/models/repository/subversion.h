@@ -1,6 +1,6 @@
 #include "open_project/scm/adapters/subversion"
 
-namespace openproject {
+namespace openproj {
 class Repository::Subversion : public Repository {
   // validates_presence_of :url
   // validates_format_of :url, with: /\A(http|https|svn(\+[^\s:\/\\]+)?|file):\/\/.+\z/i

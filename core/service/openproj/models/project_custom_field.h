@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class ProjectCustomField : public CustomField {
    void type_name() {
     :label_project_plural

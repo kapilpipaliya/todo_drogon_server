@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Queries::TimeEntries::Filters::TimeEntryFilter : public Queries::Filters::Base {
   this->model = TimeEntry
 

@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Repository : public ActiveRecord::Base {
   // include Redmine::Ciphering
   // include OpenProject::Scm::ManageableRepository

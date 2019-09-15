@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Queries::WorkPackages::Filter::ParentFilter <
   Queries::WorkPackages::Filter::WorkPackageFilter
 

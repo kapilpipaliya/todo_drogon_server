@@ -1,6 +1,6 @@
 #pragma once
 #include "application_controller.h"
-namespace openproject {
+namespace openproj {
 class TimelogController : public ApplicationController {
 public:
   // before_action :find_work_package, only: %i[new create]

@@ -1,5 +1,5 @@
 #pragma once
-namespace openproject {
+namespace openproj {
 class ParseSchemaFilterParamsService
   // extend ActiveModel::Naming
   // extend ActiveModel::Translation

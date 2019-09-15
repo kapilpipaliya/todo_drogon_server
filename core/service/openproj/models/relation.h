@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Relation : public ActiveRecord::Base {
   // include Concerns::VirtualAttribute
 

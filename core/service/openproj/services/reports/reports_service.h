@@ -1,5 +1,5 @@
 #pragma once
-namespace openproject {
+namespace openproj {
 class Reports::ReportsService
   // class_attribute :report_types
 

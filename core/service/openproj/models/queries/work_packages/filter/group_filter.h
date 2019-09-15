@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Queries::WorkPackages::Filter::GroupFilter : public Queries::WorkPackages::Filter::WorkPackageFilter {
    void allowed_values() {
     all_groups.map { |g| [g.name, g.id.to_s] }

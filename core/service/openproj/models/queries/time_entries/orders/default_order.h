@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Queries::TimeEntries::Orders::DefaultOrder : public Queries::BaseOrder {
   this->model = TimeEntry
 

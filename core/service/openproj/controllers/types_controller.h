@@ -1,6 +1,6 @@
 #pragma once
 #include "application_controller.h"
-namespace openproject {
+namespace openproj {
 class TypesController : public ApplicationController {
 public:
   // include PaginationHelper

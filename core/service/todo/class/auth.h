@@ -3,14 +3,8 @@
 
 #include "core/sql/query.h"
 
-
-
-
-
-
-
-
 namespace todo {
+namespace service {
 class Auth {
  public:
   Auth(std::shared_ptr<websocket::todo::TodoContext>);
@@ -117,4 +111,5 @@ class Auth {
   std::shared_ptr<websocket::todo::TodoContext> context;
   sql::Query query;
 };
+}  // namespace service
 }  // namespace todo

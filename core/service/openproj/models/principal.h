@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Principal : public ActiveRecord::Base {
   // Account statuses
   // Code accessing the keys assumes they are ordered, which they are since Ruby 1.9

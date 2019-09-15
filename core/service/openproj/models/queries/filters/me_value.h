@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Queries::Filters::MeValue
   KEY = 'me'.freeze
 

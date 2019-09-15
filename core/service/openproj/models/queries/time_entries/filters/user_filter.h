@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Queries::TimeEntries::Filters::UserFilter : public Queries::TimeEntries::Filters::TimeEntryFilter {
   // include Queries::Filters::Shared::MeValueFilter
 

@@ -1,6 +1,6 @@
 #pragma once
 #include "../application_job.h"
-namespace openproject {
+namespace openproj {
 namespace Projects {
   class DeleteProjectJob : public ApplicationJob {
   public:

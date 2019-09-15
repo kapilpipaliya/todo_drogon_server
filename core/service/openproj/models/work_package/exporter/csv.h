@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class WorkPackage::Exporter::CSV : public WorkPackage::Exporter::Base {
   // include Redmine::I18n
   // include CustomFieldsHelper

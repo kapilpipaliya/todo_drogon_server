@@ -1,6 +1,6 @@
 #pragma once
 #include "application_controller.h"
-namespace openproject {
+namespace openproj {
 class UsersSettingsController : public ApplicationController {
   // layout 'admin'
   // menu_item :user_settings

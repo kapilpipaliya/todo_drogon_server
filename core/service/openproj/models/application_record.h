@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class ApplicationRecord : public ActiveRecord::Base {
   this->abstract_class = true
 

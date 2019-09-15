@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Queries::Projects::Orders::LatestActivityAtOrder : public Queries::BaseOrder {
   this->model = Project
 

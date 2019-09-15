@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Category : public ActiveRecord::Base {
   // belongs_to :project
   // belongs_to :assigned_to, class_name: 'Principal', foreign_key: 'assigned_to_id'

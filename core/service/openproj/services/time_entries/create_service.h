@@ -1,4 +1,4 @@
 #pragma once
 #pragma once
-namespace openproject {
+namespace openproj {
 class TimeEntries::CreateService : public ::BaseServices::Create; } {

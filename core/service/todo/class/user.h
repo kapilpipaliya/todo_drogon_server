@@ -20,6 +20,7 @@
 #include "core/sql/query.h"
 
 namespace todo {
+namespace service {
 /**
  * User Class
  *
@@ -447,5 +448,6 @@ class User {
   int id{};
   int playlist_id{};
 };
+}  // namespace service
 }  // namespace todo
 #endif  // TODOUSER_H

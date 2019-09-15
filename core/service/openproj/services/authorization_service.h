@@ -1,7 +1,7 @@
 #pragma once
 // project, projects, global, user = nil
 
-namespace openproject {
+namespace openproj {
 class AuthorizationService{
   // @params
   //   ctrl - controller

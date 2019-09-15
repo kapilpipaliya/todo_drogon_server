@@ -1,6 +1,6 @@
 #pragma once
 namespace openproj {
-namespace openproject {
+namespace openproj {
 class WorkPackages::RescheduleService
   // include ::Shared::ServiceContext
 

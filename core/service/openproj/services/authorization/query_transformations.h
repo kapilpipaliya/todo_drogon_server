@@ -1,5 +1,5 @@
 #pragma once
-namespace openproject {
+namespace openproj {
 class Authorization::QueryTransformations
    void for?(on) {
     !!transformations[transformation_key(on)]

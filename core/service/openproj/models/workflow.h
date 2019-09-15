@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Workflow : public ActiveRecord::Base {
   // belongs_to :role
   // belongs_to :old_status, class_name: 'Status', foreign_key: 'old_status_id'

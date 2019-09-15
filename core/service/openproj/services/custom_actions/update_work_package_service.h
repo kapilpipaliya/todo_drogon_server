@@ -1,5 +1,5 @@
 #pragma once
-namespace openproject {
+namespace openproj {
 class CustomActions::UpdateWorkPackageService
   // include Shared::BlockService
   // include Concerns::Contracted

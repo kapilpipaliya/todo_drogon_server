@@ -3,7 +3,7 @@
 // Create journal for the given user and note.
 // Does not change the work package itself.
 
-namespace openproject {
+namespace openproj {
 class AddWorkPackageNoteService{
 public:
   // include Concerns::Contracted

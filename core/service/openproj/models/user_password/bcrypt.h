@@ -1,6 +1,6 @@
 //
 // Password hashing method using bcrypt
-namespace openproject {
+namespace openproj {
 class UserPassword::Bcrypt : public UserPassword {
   protected:
 

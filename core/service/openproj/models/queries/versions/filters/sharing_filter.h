@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Queries::Versions::Filters::SharingFilter : public Queries::Versions::Filters::VersionFilter {
    void allowed_values() {
     Version::VERSION_SHARINGS.map { |name|

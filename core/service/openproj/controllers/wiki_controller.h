@@ -15,7 +15,7 @@
 //
 // Other member and collection methods are also used
 #include "application_controller.h"
-namespace openproject {
+namespace openproj {
 class WikiController : public ApplicationController {
 public:
 //  default_search_scope :wiki_pages

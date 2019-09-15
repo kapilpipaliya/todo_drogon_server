@@ -2,7 +2,7 @@
 //#include "diff"
 
 #include "application_controller.h"
-namespace openproject {
+namespace openproj {
 class JournalsController : public ApplicationController {
 public:
   // before_action :find_journal, except: [:index]

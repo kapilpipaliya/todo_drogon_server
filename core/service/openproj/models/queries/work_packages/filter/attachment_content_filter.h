@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Queries::WorkPackages::Filter::AttachmentContentFilter : public Queries::WorkPackages::Filter::AttachmentBaseFilter {
    void key() {
     :attachment_content

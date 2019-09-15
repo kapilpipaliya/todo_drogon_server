@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Queries::Members::Filters::MemberFilter : public Queries::Filters::Base {
   this->model = Member
 

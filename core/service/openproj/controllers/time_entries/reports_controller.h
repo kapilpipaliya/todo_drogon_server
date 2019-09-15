@@ -1,6 +1,6 @@
 #pragma once
 #include "../application_controller.h"
-namespace openproject {
+namespace openproj {
 namespace TimeEntries {
 class ReportsController : public ApplicationController {
   // menu_item :issues

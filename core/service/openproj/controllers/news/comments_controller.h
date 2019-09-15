@@ -1,6 +1,6 @@
 #pragma once
 #include "../application_controller.h"
-namespace openproject {
+namespace openproj {
 namespace News {
 
 class CommentsController : public ApplicationController {

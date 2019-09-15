@@ -10,7 +10,7 @@
 //    object, dropping intermediate rows will just increase the diff of the following journal)
 //  * in case an older row had notes, take the notes from the older row, since they shall not
 //    be dropped
-namespace openproject {
+namespace openproj {
 class Journal::AggregatedJournal
   class << self
     // Returns the aggregated journal that contains the specified (vanilla/pure) journal.

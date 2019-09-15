@@ -1,5 +1,5 @@
 #pragma once
-namespace openproject {
+namespace openproj {
 class WorkPackages::CreateService
   // include ::WorkPackages::Shared::UpdateAncestors
   // include ::Shared::ServiceContext

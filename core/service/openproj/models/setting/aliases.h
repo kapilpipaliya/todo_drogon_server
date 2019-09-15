@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Setting
 
   //

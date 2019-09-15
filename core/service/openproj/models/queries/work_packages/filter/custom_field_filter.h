@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Queries::WorkPackages::Filter::CustomFieldFilter <
   Queries::WorkPackages::Filter::WorkPackageFilter
 

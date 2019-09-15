@@ -2,15 +2,15 @@
 
 #include "../../../sql/dba.h"
 #include "./session.h"
-
-todo::Session::Session(std::shared_ptr<websocket::todo::TodoContext> context_)
+namespace todo {
+namespace service {
+Session::Session(std::shared_ptr<websocket::todo::TodoContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }
 
-nlohmann::json todo::Session::handleEvent(nlohmann::json event,
-                                          unsigned long next,
-                                          nlohmann::json args) {
+nlohmann::json Session::handleEvent(nlohmann::json event, unsigned long next,
+                                    nlohmann::json args) {
   auto event_cmp = event[next].get<std::string>();
   if (event_cmp == "data") {
     return query.allData(event, args);
@@ -29,9 +29,9 @@ nlohmann::json todo::Session::handleEvent(nlohmann::json event,
   }
 }
 
-void todo::Session::setupTable() {}
+void Session::setupTable() {}
 
-bool todo::Session::destroy(long key) {
+bool Session::destroy(long key) {
   if (!key) {  // !key.empty()
     return false;
   }
@@ -55,3 +55,5 @@ bool todo::Session::destroy(long key) {
 
   // return true;
 }
+}  // namespace service
+}  // namespace todo

@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class UserPreference : public ActiveRecord::Base {
   // belongs_to :user
   serialize :others

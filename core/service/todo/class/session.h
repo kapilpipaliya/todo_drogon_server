@@ -10,6 +10,7 @@
  *
  */
 namespace todo {
+namespace service {
 class Session {
  public:
   Session(std::shared_ptr<websocket::todo::TodoContext>);
@@ -169,4 +170,5 @@ class Session {
   std::shared_ptr<websocket::todo::TodoContext> context;
   sql::Query query;
 };
+}  // namespace service
 }  // namespace todo

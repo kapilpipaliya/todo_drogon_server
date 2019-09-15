@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Journal::CustomizableJournal : public Journal::BaseJournal {
   this->table_name = 'customizable_journals'
 

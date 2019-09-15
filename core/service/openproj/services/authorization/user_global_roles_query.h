@@ -1,5 +1,5 @@
 #pragma once
-namespace openproject {
+namespace openproj {
 class Authorization::UserGlobalRolesQuery : public Authorization::UserRolesQuery {
   transformations.register roles_member_roles_join,
                            :builtin_role { |statement, user|

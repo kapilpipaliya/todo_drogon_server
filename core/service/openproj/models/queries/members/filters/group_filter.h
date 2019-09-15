@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Queries::Members::Filters::GroupFilter : public Queries::Members::Filters::MemberFilter {
   // include Queries::Filters::Shared::GroupFilter
 

@@ -1,6 +1,6 @@
 #pragma once
 #include "application_controller.h"
-namespace openproject {
+namespace openproj {
 class WikiMenuItemsController : public ApplicationController {
 public:
 //  attr_reader :wiki_menu_item

@@ -1,3 +1,3 @@
 #pragma once
-namespace openproject {
+namespace openproj {
 class TimeEntries::UpdateService : public ::BaseServices::Update; } {

@@ -1,6 +1,6 @@
 #pragma once
 #include "application_controller.h"
-namespace openproject {
+namespace openproj {
 class HighlightingController : public ApplicationController {
 public:
   // before_action :determine_freshness

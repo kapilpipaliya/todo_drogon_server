@@ -1,6 +1,6 @@
 // Filter for all work packages that are (or are not) duplicated by work packages with the provided values.
 
-namespace openproject {
+namespace openproj {
 class Queries::WorkPackages::Filter::DuplicatedFilter <
   Queries::WorkPackages::Filter::WorkPackageFilter
 

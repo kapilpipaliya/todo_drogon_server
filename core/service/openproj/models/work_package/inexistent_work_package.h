@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class WorkPackage::InexistentWorkPackage : public WorkPackage {
   _validators.clear
 

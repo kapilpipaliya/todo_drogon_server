@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Queries::Principals::PrincipalQuery : public Queries::BaseQuery {
    void model() {
     Principal

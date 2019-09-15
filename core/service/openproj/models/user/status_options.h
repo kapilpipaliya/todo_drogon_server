@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class User
   namespace StatusOptions {
     module_function

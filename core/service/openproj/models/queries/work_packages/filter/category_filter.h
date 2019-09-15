@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Queries::WorkPackages::Filter::CategoryFilter <
   Queries::WorkPackages::Filter::WorkPackageFilter
    void allowed_values() {

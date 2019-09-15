@@ -2,7 +2,7 @@
 //#include "open_project/repository_authentication"
 #include "application_controller.h"
 
-namespace openproject {
+namespace openproj {
 class SysController : public ActionController::Base {
 public:
   // before_action :check_enabled

@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Activity::ChangesetActivityProvider : public Activity::BaseActivityProvider {
   acts_as_activity_provider type: 'changesets',
                             permission: :view_changesets

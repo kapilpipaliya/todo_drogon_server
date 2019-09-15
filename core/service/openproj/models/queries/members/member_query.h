@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Queries::Members::MemberQuery : public Queries::BaseQuery {
    void model() {
     Member

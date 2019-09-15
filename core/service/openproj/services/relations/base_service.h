@@ -1,5 +1,5 @@
 #pragma once
-namespace openproject {
+namespace openproj {
 class Relations::BaseService
   // include Concerns::Contracted
   // include Shared::ServiceContext

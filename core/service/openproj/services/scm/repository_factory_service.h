@@ -1,7 +1,7 @@
 #pragma once
 //
 // Implements a repository factory for building temporary and permanent repositories.
-namespace openproject {
+namespace openproj {
 class Scm::RepositoryFactoryService
   attr_reader :project, :params, :repository
 

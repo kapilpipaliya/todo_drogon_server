@@ -1,5 +1,5 @@
 #pragma once
-namespace openproject {
+namespace openproj {
 class CustomActions::BaseService
   // include Shared::BlockService
 

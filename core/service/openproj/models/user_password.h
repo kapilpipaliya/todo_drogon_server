@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class UserPassword : public ActiveRecord::Base {
   // belongs_to :user, inverse_of: :passwords
 

@@ -1,5 +1,5 @@
 #pragma once
-namespace openproject {
+namespace openproj {
 class CustomActions::UpdateService : public CustomActions::BaseService {
   // attr_accessor :user,
                 :action

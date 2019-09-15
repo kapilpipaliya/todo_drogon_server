@@ -1,5 +1,5 @@
 #pragma once
-namespace openproject {
+namespace openproj {
 class Settings::UpdateService : public ::BaseServices::Update {
   // attr_accessor :user
 

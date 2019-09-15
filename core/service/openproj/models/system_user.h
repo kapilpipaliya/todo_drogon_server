@@ -2,7 +2,7 @@
 // User for tasks like migrations
 //
 
-namespace openproject {
+namespace openproj {
 class SystemUser : public User {
   validate :validate_unique_system_user, on: :create
 

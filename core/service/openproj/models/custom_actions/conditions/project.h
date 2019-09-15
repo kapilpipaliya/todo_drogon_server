@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class CustomActions::Conditions::Project : public CustomActions::Conditions::Base {
    void key() {
     :project

@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Seeder
    void seed!() {
     if ( applicable?) {

@@ -10,7 +10,7 @@
 //}
 
 #include "application_controller.h"
-namespace openproject {
+namespace openproj {
 class RepositoriesController : public ApplicationController {
 public:
   // include PaginationHelper

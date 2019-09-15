@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class CustomValue::FloatStrategy : public CustomValue::FormatStrategy {
   // include ActionView::Helpers::NumberHelper
 

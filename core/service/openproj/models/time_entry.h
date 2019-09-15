@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class TimeEntry : public ActiveRecord::Base {
   // could have used polymorphic association
   // project association here allows easy loading of time entries at project level with one database trip

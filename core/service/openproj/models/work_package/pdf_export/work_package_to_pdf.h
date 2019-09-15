@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class WorkPackage::PdfExport::WorkPackageToPdf : public WorkPackage::Exporter::Base {
   // include WorkPackage::PdfExport::Common
   // include WorkPackage::PdfExport::Attachments

@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class CustomValue::IntStrategy : public CustomValue::FormatStrategy {
    void typed_value() {
     unless value.blank?

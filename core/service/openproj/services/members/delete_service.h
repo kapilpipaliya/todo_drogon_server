@@ -1,3 +1,3 @@
 #pragma once
-namespace openproject {
+namespace openproj {
 class Members::DeleteService : public ::BaseServices::Delete; } {

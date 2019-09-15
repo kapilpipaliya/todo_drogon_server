@@ -1,5 +1,5 @@
 #pragma once
-namespace openproject {
+namespace openproj {
 class UpdateQueryFromParamsService
    UpdateQueryFromParamsService(query, user) {
     this->query = query

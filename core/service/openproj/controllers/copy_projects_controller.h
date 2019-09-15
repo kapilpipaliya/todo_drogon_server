@@ -1,6 +1,6 @@
 #pragma once
 #include "application_controller.h"
-namespace openproject {
+namespace openproj {
 class CopyProjectsController : public ApplicationController {
   // before_action :find_project
   // before_action :authorize

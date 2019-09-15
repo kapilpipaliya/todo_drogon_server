@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Type::AttributeGroup : public Type::FormGroup {
    void members() {
     // The attributes might not be present anymore, for instance when you remove

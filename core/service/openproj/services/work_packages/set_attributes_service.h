@@ -1,5 +1,5 @@
 #pragma once
-namespace openproject {
+namespace openproj {
 class WorkPackages::SetAttributesService : public ::BaseServices::SetAttributes {
   // include Attachments::SetReplacements
 

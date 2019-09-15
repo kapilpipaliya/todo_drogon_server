@@ -1,6 +1,6 @@
 #pragma once
 #include "auth_sources_controller.h"
-namespace openproject {
+namespace openproj {
 class LdapAuthSourcesController : public AuthSourcesController {
 public:
   // menu_item :ldap_authentication

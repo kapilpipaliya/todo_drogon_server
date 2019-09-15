@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Queries::WorkPackages::Filter::DescriptionFilter : public Queries::WorkPackages::Filter::WorkPackageFilter {
    void type() {
     :text

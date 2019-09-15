@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Queries::Projects::Filters::NameAndIdentifierFilter : public Queries::Projects::Filters::ProjectFilter {
    void type() {
     :string

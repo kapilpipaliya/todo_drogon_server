@@ -1,5 +1,5 @@
 #pragma once
-namespace openproject {
+namespace openproj {
 namespace Scm {
 
 class AuthoriziationPolicy{

@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class MailHandler : public ActionMailer::Base {
   // include ActionView::Helpers::SanitizeHelper
   // include Redmine::I18n
@@ -149,7 +149,7 @@ class MailHandler : public ActionMailer::Base {
       log "work_package ##{result.id} created by #{user}"
       result
     else
-      log "work_package could not be created by #{user} due to ##{result.full_messages}", :error
+      log "work_package could not be created by #{user} due to ##{result.full_messages}", :error
       false
     }
   }

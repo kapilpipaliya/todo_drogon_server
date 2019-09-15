@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Activity::MessageActivityProvider : public Activity::BaseActivityProvider {
   acts_as_activity_provider type: 'messages',
                             permission: :view_messages

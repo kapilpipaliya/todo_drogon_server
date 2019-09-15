@@ -1,5 +1,5 @@
 #pragma once
-namespace openproject {
+namespace openproj {
 class Reports::Report
    Report(project) {
     this->project = project

@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class CustomField : public ActiveRecord::Base {
   // include CustomField::OrderStatements
 

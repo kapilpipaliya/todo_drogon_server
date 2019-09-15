@@ -1,5 +1,5 @@
 #pragma oncea
-namespace openproject {
+namespace openproj {
 class BaseProjectService {
 public:
 //   BaseProjectService(project) {

@@ -1,6 +1,6 @@
 #include "open_project/scm/adapters/git"
 
-namespace openproject {
+namespace openproj {
 class Repository::Git : public Repository {
   // validates_presence_of :url
   validate :validity_of_local_url

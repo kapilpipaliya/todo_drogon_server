@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class DesignColor : public ActiveRecord::Base {
   after_commit -> {
     // CustomStyle.current.updated_at determins the cache key for inline_css

@@ -1,5 +1,5 @@
 #pragma once
-namespace openproject {
+namespace openproj {
 class SetLocalizationService{
 public:
 //  attr_reader :user, :http_accept_header

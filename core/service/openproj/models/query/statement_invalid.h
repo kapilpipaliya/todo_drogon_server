@@ -1,3 +1,3 @@
-namespace openproject {
+namespace openproj {
 class ::Query::StatementInvalid : public ActiveRecord::StatementInvalid {
 }

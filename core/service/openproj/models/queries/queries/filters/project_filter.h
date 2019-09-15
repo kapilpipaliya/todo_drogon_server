@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Queries::Queries::Filters::ProjectFilter : public Queries::Queries::Filters::QueryFilter {
   // include Queries::Filters::Shared::ProjectFilter
 }

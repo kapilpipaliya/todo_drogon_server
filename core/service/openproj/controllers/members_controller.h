@@ -1,6 +1,6 @@
 #pragma once
 #include "application_controller.h"
-namespace openproject {
+namespace openproj {
 class MembersController : public ApplicationController {
 public:
   // model_object Member

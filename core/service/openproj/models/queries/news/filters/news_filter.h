@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Queries::News::Filters::NewsFilter : public Queries::Filters::Base {
   this->model = News
 

@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Queries::WorkPackages::Filter::AttachmentBaseFilter : public Queries::WorkPackages::Filter::WorkPackageFilter {
   // include Queries::WorkPackages::Filter::FilterOnTsvMixin
   // include Queries::WorkPackages::Filter::TextFilterOnJoinMixin

@@ -1,6 +1,6 @@
 #pragma once
 #include "application_controller.h"
-namespace openproject {
+namespace openproj {
 class ForumsController : public ApplicationController {
 public:
 //  default_search_scope :messages

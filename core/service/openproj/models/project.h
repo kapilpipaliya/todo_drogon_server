@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Project : public ActiveRecord::Base {
   // extend Pagination::Model
   // extend FriendlyId

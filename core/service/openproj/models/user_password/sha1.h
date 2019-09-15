@@ -2,7 +2,7 @@
 // LEGACY password hashing method using salted SHA-1
 // This is only included for testing hashed passwords and will raise when trying
 // to save new passwords with that strategy.
-namespace openproject {
+namespace openproj {
 class UserPassword::SHA1 : public UserPassword {
   protected:
 

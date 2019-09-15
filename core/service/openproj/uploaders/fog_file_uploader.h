@@ -1,7 +1,7 @@
 #pragma once
 //#include "carrierwave/storage/fog"
 
-namespace openproject {
+namespace openproj {
 class FogFileUploader {//: public CarrierWave::Uploader::Base {
   // include FileUploader
 //  storage :fog

@@ -28,11 +28,11 @@ nlohmann::json TodoActor::handleTextMessage(
   auto contx = wsConnPtr->getContext<websocket::todo::TodoContext>();
   auto evt = in[0][0].get<std::string>();
   if (evt == "auth") {
-    return handleService<todo::Auth>(contx, in);
+    return handleService<todo::service::Auth>(contx, in);
   } else if (evt == "user" || evt == "users") {
-    return handleService<todo::User>(contx, in);
+    return handleService<todo::service::User>(contx, in);
   } else if (evt == "ui") {
-    return handleService<todo::UI>(contx, in);
+    return handleService<todo::service::UI>(contx, in);
   } else {
     return nlohmann::json::array();
   }

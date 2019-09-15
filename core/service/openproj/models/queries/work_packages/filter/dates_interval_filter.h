@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Queries::WorkPackages::Filter::DatesIntervalFilter : public Queries::WorkPackages::Filter::WorkPackageFilter {
   // include Queries::Operators::DateRangeClauses
 

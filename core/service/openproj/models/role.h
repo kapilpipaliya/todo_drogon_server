@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Role : public ActiveRecord::Base {
   // extend Pagination::Model
 

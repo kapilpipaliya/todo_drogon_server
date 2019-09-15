@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Queries::Filters::TemplatedValue
   KEY = '{id}'.freeze
   DEPRECATED_KEY = 'templated'.freeze

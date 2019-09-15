@@ -3,6 +3,7 @@
 #include <utility>
 #include "../../../sql/dba.h"
 namespace todo {
+namespace service {
 
 // using namespace std::chrono;
 User::User(std::shared_ptr<websocket::todo::TodoContext> context_)
@@ -415,4 +416,5 @@ bool User::delNew(long user_id) {
 
   return true;
 }
+}  // namespace service
 }  // namespace todo

@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class CustomActions::Actions::Inexistent : public CustomActions::Actions::Base {
    void key() {
     :inexistent

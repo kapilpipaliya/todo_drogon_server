@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class WorkPackage : public ActiveRecord::Base {
   // include WorkPackage::Validations
   // include WorkPackage::SchedulingRules

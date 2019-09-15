@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Queries::Columns::Base
   attr_reader :groupable,
               :sortable,

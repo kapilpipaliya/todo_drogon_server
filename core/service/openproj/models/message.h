@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Message : public ActiveRecord::Base {
   // include OpenProject::Journal::AttachmentHelper
 

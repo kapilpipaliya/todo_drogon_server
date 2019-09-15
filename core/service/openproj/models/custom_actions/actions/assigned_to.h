@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class CustomActions::Actions::AssignedTo : public CustomActions::Actions::Base {
   // include CustomActions::Actions::Strategies::Associated
 

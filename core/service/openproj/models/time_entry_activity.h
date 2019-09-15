@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class TimeEntryActivity : public Enumeration {
   // has_many :time_entries, foreign_key: 'activity_id'
 

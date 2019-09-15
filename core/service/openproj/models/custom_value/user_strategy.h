@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class CustomValue::UserStrategy : public CustomValue::ARObjectStrategy {
   private:
 

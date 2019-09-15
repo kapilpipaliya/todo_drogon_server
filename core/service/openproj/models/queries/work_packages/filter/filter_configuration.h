@@ -1,5 +1,5 @@
 
-namespace openproject {
+namespace openproj {
 class Queries::WorkPackages::Filter::FilterConfiguration
   // attr_accessor(:filter_class, :filter_name, :operator)
 

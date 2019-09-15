@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Activity::TimeEntryActivityProvider : public Activity::BaseActivityProvider {
   acts_as_activity_provider type: 'time_entries',
                             permission: :view_time_entries

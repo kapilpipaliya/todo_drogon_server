@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Queries::Queries::Filters::HiddenFilter : public Queries::Queries::Filters::QueryFilter {
    void key() {
     :hidden

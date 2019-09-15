@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Queries::BaseQuery
   class << self
      void model() {

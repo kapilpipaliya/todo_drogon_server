@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Queries::Queries::Filters::QueryFilter : public Queries::Filters::Base {
   this->model = Query
 

@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Journal::ChangesetJournal : public Journal::BaseJournal {
   this->table_name = 'changeset_journals'
 }

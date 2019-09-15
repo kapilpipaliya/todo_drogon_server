@@ -1,6 +1,6 @@
 #pragma once
 #include "application_controller.h"
-namespace openproject {
+namespace openproj {
 class MyController : public ApplicationController {
 public:
   // include Concerns::PasswordConfirmation

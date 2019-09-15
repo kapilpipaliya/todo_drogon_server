@@ -1,5 +1,5 @@
 #pragma once
-namespace openproject {
+namespace openproj {
 class ServiceResult
   // attr_accessor :success,
                 :errors,

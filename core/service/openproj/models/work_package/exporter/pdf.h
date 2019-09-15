@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class WorkPackage::Exporter::PDF : public WorkPackage::Exporter::Base {
   // Returns a PDF string of a list of work_packages
    void list() {

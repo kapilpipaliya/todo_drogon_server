@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Queries::WorkPackages::Filter::AssigneeOrGroupFilter <
   Queries::WorkPackages::Filter::PrincipalBaseFilter
    void allowed_values() {

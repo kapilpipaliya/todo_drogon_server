@@ -1,6 +1,6 @@
 #include "diff"
 
-namespace openproject {
+namespace openproj {
 class WikiPage : public ActiveRecord::Base {
   // belongs_to :wiki, touch: true
   // has_one :project, through: :wiki
@@ -230,7 +230,7 @@ class WikiPage : public ActiveRecord::Base {
   }
 }
 
-namespace openproject {
+namespace openproj {
 class WikiDiff : public Redmine::Helpers::Diff {
   attr_reader :content_to, :content_from
 
@@ -241,7 +241,7 @@ class WikiDiff : public Redmine::Helpers::Diff {
   }
 }
 
-namespace openproject {
+namespace openproj {
 class WikiAnnotate
   attr_reader :lines, :content
 

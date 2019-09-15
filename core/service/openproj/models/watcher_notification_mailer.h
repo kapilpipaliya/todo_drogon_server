@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class WatcherNotificationMailer
   class << self
      void handle_watcher(watcher, watcher_setter) {

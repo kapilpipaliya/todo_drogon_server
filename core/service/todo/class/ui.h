@@ -8,6 +8,7 @@
 
 // A collection of methods related to the user interface
 namespace todo {
+namespace service {
 class UI {
  public:
   UI(std::shared_ptr<websocket::todo::TodoContext>);
@@ -135,4 +136,6 @@ class UI {
   std::shared_ptr<websocket::todo::TodoContext> context;
   sql::Query query;
 };
+
+}  // namespace service
 }  // namespace todo

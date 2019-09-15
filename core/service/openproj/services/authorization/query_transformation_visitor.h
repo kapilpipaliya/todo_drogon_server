@@ -1,7 +1,7 @@
 #pragma once
 // rubocop:disable MethodName
 
-namespace openproject {
+namespace openproj {
 class Authorization::QueryTransformationVisitor : public Arel::Visitors::Visitor {
   // attr_accessor :transformations,
                 :args

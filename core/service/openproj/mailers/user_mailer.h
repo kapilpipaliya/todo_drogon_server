@@ -1,6 +1,6 @@
 #pragma once
 #include "base_mailer.h"
-namespace openproject {
+namespace openproj {
 class UserMailer : public BaseMailer {
 public:
 //   void test_mail(user) {

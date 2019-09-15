@@ -1,7 +1,7 @@
 #pragma once
 //
 // Implements the asynchronous deletion of a local repository.
-namespace openproject {
+namespace openproj {
 class Scm::DeleteManagedRepositoryService : public Scm::BaseRepositoryService {
   //
   // Checks if a given repository may be deleted

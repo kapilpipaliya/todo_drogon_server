@@ -2,16 +2,17 @@
 
 #include <utility>
 #include "../../../sql/dba.h"
-
-todo::UI::UI(std::shared_ptr<websocket::todo::TodoContext> context_)
+namespace todo {
+namespace service {
+UI::UI(std::shared_ptr<websocket::todo::TodoContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }
 
-void todo::UI ::setupTable() {}
+void UI ::setupTable() {}
 
-nlohmann::json todo::UI::handleEvent(nlohmann::json event, unsigned long next,
-                                     nlohmann::json args) {
+nlohmann::json UI::handleEvent(nlohmann::json event, unsigned long next,
+                               nlohmann::json args) {
   auto event_cmp = event[next].get<std::string>();
   if (event_cmp == "menu_data") {
     return {{event, getMenuData()}};
@@ -36,7 +37,7 @@ nlohmann::json todo::UI::handleEvent(nlohmann::json event, unsigned long next,
   }
 }
 
-nlohmann::json todo::UI::getMenuData() {
+nlohmann::json UI::getMenuData() {
   if (1) {
     nlohmann::json j = nlohmann::json::array(
         {nlohmann::json::array({"Dashboard", "todo/dashboard"}),
@@ -71,7 +72,7 @@ nlohmann::json todo::UI::getMenuData() {
   }
 }
 
-std::string todo::UI::getPageTitle() {
+std::string UI::getPageTitle() {
   if (true) {
     return "Admins";
   }
@@ -82,7 +83,7 @@ std::string todo::UI::getPageTitle() {
   }
 }
 
-std::string todo::UI::getUserAccountType() {
+std::string UI::getUserAccountType() {
   if (true) {
     return "Super Admin";
   }
@@ -93,7 +94,7 @@ std::string todo::UI::getUserAccountType() {
   }
 }
 
-nlohmann::json todo::UI::getUserTypeData() {
+nlohmann::json UI::getUserTypeData() {
   if (true) {
     nlohmann::json j = nlohmann::json::array({
         nlohmann::json::array({"All", nullptr}),
@@ -114,7 +115,7 @@ nlohmann::json todo::UI::getUserTypeData() {
   }
 }
 
-nlohmann::json todo::UI::getCatalogFilterData() {
+nlohmann::json UI::getCatalogFilterData() {
   std::string sql = "select id, name from music.catalog order by id";
   auto r = sql::Dba::read(sql);
   nlohmann::json out =
@@ -127,3 +128,5 @@ nlohmann::json todo::UI::getCatalogFilterData() {
 
   return out;
 }
+}  // namespace service
+}  // namespace todo

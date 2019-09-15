@@ -1,5 +1,5 @@
 #pragma once
-namespace openproject {
+namespace openproj {
 class WorkPackages::DeleteService : public ::BaseServices::Delete {
   // include ::WorkPackages::Shared::UpdateAncestors
 

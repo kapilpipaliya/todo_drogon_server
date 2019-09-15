@@ -1,6 +1,6 @@
 #pragma once
 #include "application_controller.h"
-namespace openproject {
+namespace openproj {
 class AuthenticationController : public ApplicationController {
 public:
   // before_action :require_login

@@ -1,7 +1,7 @@
 #pragma once
 //#include "rack/utils"
 #include "../application_controller.h"
-namespace openproject {
+namespace openproj {
 namespace WorkPackages {
 
 class AutoCompletesController : public ApplicationController {

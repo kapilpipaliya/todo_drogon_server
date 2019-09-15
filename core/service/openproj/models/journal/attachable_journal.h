@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Journal::AttachableJournal : public Journal::BaseJournal {
   this->table_name = 'attachable_journals'
 

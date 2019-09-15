@@ -1,7 +1,7 @@
 #pragma once
 #include "./query_service.h"
 
-namespace openproject {
+namespace openproj {
 class CreateQueryService : public QueryService {
 
    CreateQueryService(**args) {

@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Journal::WikiContentJournal : public Journal::BaseJournal {
   this->table_name = 'wiki_content_journals'
 }

@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class DummyAuthSource : public AuthSource {
    void test_connection() {
     // the dummy connection is always available

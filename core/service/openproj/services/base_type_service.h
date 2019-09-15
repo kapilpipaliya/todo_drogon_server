@@ -1,5 +1,5 @@
 #pragma once
-namespace openproject {
+namespace openproj {
 class BaseTypeService
   // include Shared::BlockService
   // include Concerns::Contracted

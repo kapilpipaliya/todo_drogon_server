@@ -1,6 +1,6 @@
 #pragma once
 #include "application_controller.h"
-namespace openproject {
+namespace openproj {
 class MessagesController : public ApplicationController {
 public:
   // menu_item :boards

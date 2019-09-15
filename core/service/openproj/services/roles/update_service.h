@@ -1,5 +1,5 @@
 #pragma once
-namespace openproject {
+namespace openproj {
 class Roles::UpdateService : public ::BaseServices::Update {
   // include Roles::NotifyMixin
 

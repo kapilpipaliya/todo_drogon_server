@@ -5,7 +5,7 @@
 //
 // Invoke a rake task while safely loading the tasks only once
 // to ensure they are neither loaded nor executed twice.
-namespace openproject {
+namespace openproj {
 class RakeJob : public ApplicationJob {
 public:
 

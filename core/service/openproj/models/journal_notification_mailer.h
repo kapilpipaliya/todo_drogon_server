@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class JournalNotificationMailer
   class << self
      void distinguish_journals(journal, send_notification) {

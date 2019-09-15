@@ -1,6 +1,6 @@
 #pragma once
 #include "base_type_service.h"
-namespace openproject {
+namespace openproj {
 class UpdateProjectsTypesService : public BaseProjectService {
 public:
 //   void call(type_ids) {

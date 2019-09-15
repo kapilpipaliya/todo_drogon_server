@@ -1,6 +1,6 @@
 #pragma once
 #include "deliver_notification_job.h"
-namespace openproject {
+namespace openproj {
 class DeliverWorkPackageNotificationJob : public DeliverNotificationJob {
 public:
 

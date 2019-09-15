@@ -1,5 +1,5 @@
 #pragma once
-namespace openproject {
+namespace openproj {
 class WorkPackages::SetScheduleService
   // attr_accessor :user, :work_packages
 

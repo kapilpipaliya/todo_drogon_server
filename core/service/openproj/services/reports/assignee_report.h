@@ -1,6 +1,6 @@
 #pragma once
 namespace openproj {
-namespace openproject {
+namespace openproj {
 class Reports::AssigneeReport : public Reports::Report {
    void report_type() {
     'assigned_to'

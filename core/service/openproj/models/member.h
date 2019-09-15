@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Member : public ActiveRecord::Base {
   // extend DeprecatedAlias
 

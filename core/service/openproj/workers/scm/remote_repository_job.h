@@ -9,7 +9,7 @@
 // Until then, a synchronous process is more failsafe.
 
 //#include "net/http"
-namespace openproject {
+namespace openproj {
 namespace Scm {
 class RemoteRepositoryJob : public ApplicationJob {
 public:

@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Change : public ActiveRecord::Base {
   // belongs_to :changeset
 

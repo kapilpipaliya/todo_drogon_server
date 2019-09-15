@@ -1,5 +1,5 @@
 #pragma once
-namespace openproject {
+namespace openproj {
 class CustomActions::CreateService : public CustomActions::BaseService {
    CreateService(user:) {
     this->user = user

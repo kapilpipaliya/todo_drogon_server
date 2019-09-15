@@ -1,5 +1,5 @@
 #pragma once
-namespace openproject {
+namespace openproj {
 class Relations::CreateService : public Relations::BaseService {
    CreateService(user:) {
     this->user = user

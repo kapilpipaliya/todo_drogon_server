@@ -1,6 +1,6 @@
 #pragma once
 #include "authorization_policy.h"
-namespace openproject {
+namespace openproj {
 namespace Scm {
 
 class GitAuthorizationPolicy : public Scm::AuthoriziationPolicy {

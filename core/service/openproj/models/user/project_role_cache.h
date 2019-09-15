@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class User::ProjectRoleCache
   // attr_accessor :user
 

@@ -1,6 +1,6 @@
 #pragma once
 #include "application_controller.h"
-namespace openproject {
+namespace openproj {
 class WatchersController : public ApplicationController {
 public:
   // before_action :find_watched_by_object

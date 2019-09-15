@@ -1,5 +1,5 @@
 #pragma once
-namespace openproject {
+namespace openproj {
 class ParamsToQueryService
   // attr_accessor :user,
                 :query_class

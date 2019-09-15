@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Type::FormGroup
   // attr_accessor :key,
                 :attributes,

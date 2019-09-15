@@ -1,7 +1,7 @@
 #pragma once
 #include "application_job.h"
 // Enqueues
-namespace openproject {
+namespace openproj {
 class EnqueueWorkPackageNotificationJob : public ApplicationJob {
 public:
 //   EnqueueWorkPackageNotificationJob(journal_id, author_id) {

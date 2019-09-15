@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class RandomDataSeeder
    void seed!() {
     puts ' ########################################################'

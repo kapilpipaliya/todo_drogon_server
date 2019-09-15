@@ -198,16 +198,17 @@
 #include "core/service/openproj/workers/scm/relocate_repository_job.h"
 #include "core/service/openproj/workers/scm/remote_repository_job.h"
 #include "core/service/openproj/workers/scm/storage_updater_job.h"
-
-todo::Auth::Auth(std::shared_ptr<websocket::todo::TodoContext> context_)
+namespace todo {
+namespace service {
+Auth::Auth(std::shared_ptr<websocket::todo::TodoContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }
 
-void todo::Auth::setupTable() {}
+void Auth::setupTable() {}
 
-nlohmann::json todo::Auth::handleEvent(nlohmann::json event, unsigned long next,
-                                       nlohmann::json args) {
+nlohmann::json Auth::handleEvent(nlohmann::json event, unsigned long next,
+                                 nlohmann::json args) {
   auto event_cmp = event[next].get<std::string>();
   if (event_cmp == "login") {
     nlohmann::json res = {{}, {}};
@@ -259,8 +260,8 @@ nlohmann::json todo::Auth::handleEvent(nlohmann::json event, unsigned long next,
   }
 }
 // Save Image meta on server temporary
-nlohmann::json todo::Auth::saveFileMeta(const nlohmann::json& event,
-                                        nlohmann::json args) {
+nlohmann::json Auth::saveFileMeta(const nlohmann::json& event,
+                                  nlohmann::json args) {
   if (!args.is_array() || args.size() <= 3) {
     nlohmann::json ret;
     ret[0] =
@@ -294,7 +295,7 @@ nlohmann::json todo::Auth::saveFileMeta(const nlohmann::json& event,
   }
 }
 
-bool todo::Auth::logout(long key, [[maybe_unused]] bool relogin) {
+bool Auth::logout(long key, [[maybe_unused]] bool relogin) {
   // If no key is passed try to find the session id
   key = key ? key : context->sessionId();
 
@@ -328,9 +329,9 @@ bool todo::Auth::logout(long key, [[maybe_unused]] bool relogin) {
   //}
 }
 
-std::tuple<long, long> todo::Auth::login(const std::string& username,
-                                         const std::string& password,
-                                         [[maybe_unused]] bool allow_ui) {
+std::tuple<long, long> Auth::login(const std::string& username,
+                                   const std::string& password,
+                                   [[maybe_unused]] bool allow_ui) {
   long session_id = 0;
   long user_id = 0;
   if (!password.empty() && !username.empty()) {
@@ -356,3 +357,5 @@ std::tuple<long, long> todo::Auth::login(const std::string& username,
   }
   return {session_id, user_id};
 }
+}  // namespace service
+}  // namespace todo

@@ -1,6 +1,6 @@
 #pragma once
 #include "application_controller.h"
-namespace openproject {
+namespace openproj {
 class ProjectsController : public ApplicationController {
 public:
   // menu_item :overview

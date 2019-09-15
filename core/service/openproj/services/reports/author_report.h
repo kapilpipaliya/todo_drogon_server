@@ -1,5 +1,5 @@
 #pragma once
-namespace openproject {
+namespace openproj {
 class Reports::AuthorReport : public Reports::Report {
    void report_type() {
     'author'

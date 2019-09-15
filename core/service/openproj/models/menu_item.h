@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class MenuItem : public ActiveRecord::Base {
   // belongs_to :parent, class_name: 'MenuItem'
   // has_many :children, -> {

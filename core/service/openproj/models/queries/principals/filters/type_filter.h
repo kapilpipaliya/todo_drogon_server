@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Queries::Principals::Filters::TypeFilter : public Queries::Principals::Filters::PrincipalFilter {
    void allowed_values() {
     [[Group.to_s, Group.to_s],

@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Queries::Projects::Filters::ParentFilter : public Queries::Projects::Filters::ProjectFilter {
    void type() {
     :list_optional

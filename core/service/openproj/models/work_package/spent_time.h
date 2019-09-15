@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class WorkPackage::SpentTime
   // attr_accessor :user,
                 :work_package

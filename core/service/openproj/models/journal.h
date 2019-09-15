@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Journal : public ActiveRecord::Base {
   this->table_name = 'journals'
 

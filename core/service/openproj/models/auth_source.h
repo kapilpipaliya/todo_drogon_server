@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class AuthSource : public ActiveRecord::Base {
   // include Redmine::Ciphering
 

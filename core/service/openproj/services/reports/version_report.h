@@ -1,5 +1,5 @@
 #pragma once
-namespace openproject {
+namespace openproj {
 class Reports::VersionReport : public Reports::Report {
    void report_type() {
     'version'

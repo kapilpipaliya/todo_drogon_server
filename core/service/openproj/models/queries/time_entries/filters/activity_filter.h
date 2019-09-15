@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Queries::TimeEntries::Filters::ActivityFilter : public Queries::TimeEntries::Filters::TimeEntryFilter {
    void allowed_values() {
     this->allowed_values ||= begin

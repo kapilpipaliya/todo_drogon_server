@@ -1,6 +1,6 @@
 #pragma once
 #include "application_job.h"
-namespace openproject {
+namespace openproj {
 class DeliverInvitationJob : public ApplicationJob {
 //  attr_reader :token_id
 

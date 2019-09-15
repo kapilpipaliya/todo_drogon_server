@@ -1,5 +1,5 @@
 // This filters for the type of role (project or global)
-namespace openproject {
+namespace openproj {
 class Queries::Roles::Filters::UnitFilter : public Queries::Roles::Filters::RoleFilter {
    void type() {
     :list

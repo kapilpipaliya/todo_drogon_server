@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Queries::Roles::Filters::RoleFilter : public Queries::Filters::Base {
   this->model = Role
 

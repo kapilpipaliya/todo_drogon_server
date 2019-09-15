@@ -1,6 +1,6 @@
 #pragma once
 #include "base_policy.h"
-namespace openproject {
+namespace openproj {
 class QueryPolicy : public BasePolicy {
   private:
 

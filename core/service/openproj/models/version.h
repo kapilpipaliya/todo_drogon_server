@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Version : public ActiveRecord::Base {
   // include Version::ProjectSharing
 

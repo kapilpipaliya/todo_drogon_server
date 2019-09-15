@@ -1,2 +1,2 @@
-namespace openproject {
+namespace openproj {
 class Queries::Roles::RoleQuery : public Queries::BaseQuery; } {

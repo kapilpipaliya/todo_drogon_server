@@ -2,7 +2,7 @@
 #include "remote_repository_job.h"
 //
 // Provides an asynchronous job to relocate a managed repository on the local or remote system
-namespace openproject {
+namespace openproj {
 namespace Scm {
 
 class RelocateRepositoryJob : public Scm::RemoteRepositoryJob {

@@ -1,7 +1,7 @@
 require_dependency 'query/group_by'
 require_dependency 'query/sums'
 
-namespace openproject {
+namespace openproj {
 class ::Query::Results
   // include ::Query::Grouping
   // include ::Query::Sums

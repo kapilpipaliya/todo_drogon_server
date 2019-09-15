@@ -1,4 +1,4 @@
-namespace openproject {
+namespace openproj {
 class Query : public ActiveRecord::Base {
   // include Timelines
   // include Highlighting

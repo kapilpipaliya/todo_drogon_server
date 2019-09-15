@@ -1,5 +1,5 @@
 #pragma once
-namespace openproject {
+namespace openproj {
 class UserSearchService{
 public:
   // attr_accessor :params

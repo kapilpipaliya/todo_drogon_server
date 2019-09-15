@@ -1,5 +1,5 @@
 #pragma once
-namespace openproject {
+namespace openproj {
 class BasePolicy{
 public:
   // attr_accessor :user
