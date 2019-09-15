@@ -3,8 +3,8 @@ class MailHandler : public ActionMailer::Base {
   // include ActionView::Helpers::SanitizeHelper
   // include Redmine::I18n
 
-  class UnauthorizedAction : public StandardError; } {
-  class MissingInformation : public StandardError; } {
+  class UnauthorizedAction : public StandardError{};
+  class MissingInformation : public StandardError{};
 
   attr_reader :email, :user, :options
 

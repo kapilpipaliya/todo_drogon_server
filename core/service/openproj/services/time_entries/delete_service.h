@@ -1,3 +1,7 @@
 #pragma once
+#include "../../services/base_services/delete.h"
 namespace openproj {
-class TimeEntries::DeleteService : public ::BaseServices::Delete; } {
+namespace TimeEntries{
+class DeleteService : public BaseServices::Delete_{};
+}
+}

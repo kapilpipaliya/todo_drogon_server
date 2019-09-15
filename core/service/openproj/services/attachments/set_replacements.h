@@ -1,25 +1,26 @@
 #pragma once
-nnamespace openproj {
-amespace Attachments {
+namespace openproj {
+namespace Attachments {
   namespace SetReplacements {
     // extend ActiveSupport::Concern
 
-    included {
-      private:
+//    included {
+//      private:
 
-       void set_attributes(attributes) {
-        set_attachments_attributes(attributes)
+//       void set_attributes(attributes) {
+//        set_attachments_attributes(attributes)
 
-        super
-      }
+//        super
+//      }
 
-       void set_attachments_attributes(attributes) {
-        attachment_ids = attributes.delete(:attachment_ids)
+//       void set_attachments_attributes(attributes) {
+//        attachment_ids = attributes.delete(:attachment_ids)
 
-        return unless attachment_ids
+//        return unless attachment_ids
 
-        work_package.attachments_replacements = Attachment.where(id: attachment_ids)
-      }
-    }
+//        work_package.attachments_replacements = Attachment.where(id: attachment_ids)
+//      }
+//    }
   }
+}
 }

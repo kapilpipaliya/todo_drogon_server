@@ -1,23 +1,27 @@
 #pragma once
+#include "../../services/reports/report.h"
 namespace openproj {
-class Reports::TypeReport : public Reports::Report {
+namespace Reports {
+class TypeReport : public Reports::Report {
    void report_type() {
-    'type'
+//    'type'
   }
 
    void field() {
-    this->field || 'type_id'
+//    this->field || 'type_id'
   }
 
    void rows() {
-    this->rows ||= this->project.types
+//    this->rows ||= this->project.types
   }
 
    void data() {
-    this->data ||= WorkPackage.by_type(this->project)
+//    this->data ||= WorkPackage.by_type(this->project)
   }
 
    void title() {
-    this->title = WorkPackage.human_attribute_name(:type)
+//    this->title = WorkPackage.human_attribute_name(:type)
   }
+};
+}
 }

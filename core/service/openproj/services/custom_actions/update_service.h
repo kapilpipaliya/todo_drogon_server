@@ -1,15 +1,19 @@
 #pragma once
+#include "base_service.h"
 namespace openproj {
-class CustomActions::UpdateService : public CustomActions::BaseService {
+namespace CustomActions {
+class UpdateService : public BaseService {
   // attr_accessor :user,
-                :action
+//                :action
 
-   UpdateService(action:, user:) {
-    this->action = action
-    this->user = user
-  }
+//   UpdateService(action:, user:) {
+//    this->action = action
+//    this->user = user
+//  }
 
-   void call(attributes:, &block) {
-    super(attributes: attributes, action: action, &block)
-  }
+//   void call(attributes:, &block) {
+//    super(attributes: attributes, action: action, &block)
+//  }
+};
+}
 }

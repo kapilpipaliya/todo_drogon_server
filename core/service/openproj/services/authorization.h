@@ -1,7 +1,7 @@
 #pragma once
 namespace openproj {
-class Authorization{
-public:
+//class Authorization{
+//public:
 //   void users(action, project) {
 //    Authorization::UserAllowedQuery.query(action, project)
 //  }
@@ -17,5 +17,5 @@ public:
 //      Authorization::UserGlobalRolesQuery.query(user)
 //    }
 //  }
-};
+//};
 }

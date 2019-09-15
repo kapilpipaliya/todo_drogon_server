@@ -1,5 +1,5 @@
 #pragma once
-#include "base_type_service.h"
+#include "base_project_service.h"
 namespace openproj {
 class UpdateProjectsTypesService : public BaseProjectService {
 public:

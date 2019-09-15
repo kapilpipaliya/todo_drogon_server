@@ -1,2 +1,2 @@
 namespace openproj {
-class Queries::Roles::RoleQuery : public Queries::BaseQuery; } {
+class Queries::Roles::RoleQuery : public Queries::BaseQuery{};

@@ -1,13 +1,17 @@
 #pragma once
+#include "base_service.h"
 namespace openproj {
-class CustomActions::CreateService : public CustomActions::BaseService {
-   CreateService(user:) {
-    this->user = user
-  }
+namespace CustomActions {
+class CreateService : public BaseService {
+//   CreateService(user:) {
+//    this->user = user
+//  }
 
-   void call(attributes:,
-           action: CustomAction.new,
-           &block)
-    super
-  }
+//   void call(attributes:,
+//           action: CustomAction.new,
+//           &block)
+//    super
+//  }
+};
+}
 }

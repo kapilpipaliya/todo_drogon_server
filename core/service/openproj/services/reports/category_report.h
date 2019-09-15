@@ -1,23 +1,27 @@
 #pragma once
+#include "report.h"
 namespace openproj {
-class Reports::CategoryReport : public Reports::Report {
+namespace Reports {
+class CategoryReport : public Report {
    void report_type() {
-    'category'
+//    'category'
   }
 
    void field() {
-    'category_id'
+//    'category_id'
   }
 
    void rows() {
-    this->rows ||= this->project.categories
+//    this->rows ||= this->project.categories
   }
 
    void data() {
-    this->data ||= WorkPackage.by_category(this->project)
+//    this->data ||= WorkPackage.by_category(this->project)
   }
 
    void title() {
-    this->title ||= WorkPackage.human_attribute_name(:category)
+//    this->title ||= WorkPackage.human_attribute_name(:category)
   }
+};
+}
 }

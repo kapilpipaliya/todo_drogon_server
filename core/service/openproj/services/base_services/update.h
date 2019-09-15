@@ -1,68 +1,69 @@
 #pragma once
 namespace openproj {
 namespace BaseServices {
-  class Update
+  class Update {
     // include Concerns::Contracted
     // include Shared::ServiceContext
 
-    attr_reader :user,
-                :model
+//    attr_reader :user,
+//                :model
 
-     Update(user:, model:, contract_class: nil) {
-      this->user = user
-      this->model = model
-      this->contract_class = contract_class || default_contract_class
-    }
+//     Update(user:, model:, contract_class: nil) {
+//      this->user = user
+//      this->model = model
+//      this->contract_class = contract_class || default_contract_class
+//    }
 
-     void call(params) {
-      in_context(false) {
-        update(params)
-      }
-    }
+//     void call(params) {
+//      in_context(false) {
+//        update(params)
+//      }
+//    }
 
     private:
 
-     void update(params) {
-      attributes_call = set_attributes(params)
+//     void update(params) {
+//      attributes_call = set_attributes(params)
 
-      if ( attributes_call.failure?) {
-        // nothing to {
-      } else if ( !attributes_call.result.save) {
-        attributes_call.errors = attributes_call.result.errors
-        attributes_call.success = false
-      else
-        // after_save
-      }
+//      if ( attributes_call.failure?) {
+//        // nothing to {
+//      } else if ( !attributes_call.result.save) {
+//        attributes_call.errors = attributes_call.result.errors
+//        attributes_call.success = false
+//      else
+//        // after_save
+//      }
 
-      attributes_call
-    }
+//      attributes_call
+//    }
 
-     void set_attributes(params) {
-      attributes_service_class
-        .new(user: user,
-             model: model,
-             contract_class: contract_class)
-        .call(params)
-    }
+//     void set_attributes(params) {
+//      attributes_service_class
+//        .new(user: user,
+//             model: model,
+//             contract_class: contract_class)
+//        .call(params)
+//    }
 
-     void after_save() {
-      // nothing for now
-    }
+//     void after_save() {
+//      // nothing for now
+//    }
 
-     void default_contract_class() {
-      "#{namespace}::UpdateContract".constantize
-    }
+//     void default_contract_class() {
+//      "#{namespace}::UpdateContract".constantize
+//    }
 
-     void attributes_service_class() {
-      "#{namespace}::SetAttributesService".constantize
-    }
+//     void attributes_service_class() {
+//      "#{namespace}::SetAttributesService".constantize
+//    }
 
-     void instance_class() {
-      namespace.singularize.constantize
-    }
+//     void instance_class() {
+//      namespace.singularize.constantize
+//    }
 
-     void namespace() {
-      this->class.name.deconstantize
-    }
-  }
+//     void namespace_() {
+//      this->class.name.deconstantize
+//    }
+  };
+}
 }

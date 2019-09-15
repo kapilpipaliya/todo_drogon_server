@@ -111,7 +111,7 @@ class Activity::BaseActivityProvider
     table[column].as(name)
   }
 
-  class UndefinedEventTypeError : public StandardError; } {
+  class UndefinedEventTypeError : public StandardError{};
    void event_type(_event, _activity) {
     raise UndefinedEventTypeError.new('Abstract method event_type called')
   }

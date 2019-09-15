@@ -169,8 +169,145 @@
 
 // seeders 42 files
 
-// services 113 files
+#include "core/service/openproj/services/add_attachment_service.h"
+#include "core/service/openproj/services/add_work_package_note_service.h"
 
+#include "core/service/openproj/services/api/v3/params_to_query_service.h"
+#include "core/service/openproj/services/api/v3/parse_query_params_service.h"
+#include "core/service/openproj/services/api/v3/parse_resource_params_service.h"
+#include "core/service/openproj/services/api/v3/update_query_from_v3_params_service.h"
+#include "core/service/openproj/services/api/v3/work_package_collection_from_query_params_service.h"
+#include "core/service/openproj/services/api/v3/work_package_collection_from_query_service.h"
+
+#include "core/service/openproj/services/attachments/set_replacements.h"
+
+#include "core/service/openproj/services/authorization/abstract_query.h"
+#include "core/service/openproj/services/authorization/abstract_user_query.h"
+#include "core/service/openproj/services/authorization/enterprise_service.h"
+#include "core/service/openproj/services/authorization/project_query.h"
+#include "core/service/openproj/services/authorization/query_transformation.h"
+#include "core/service/openproj/services/authorization/query_transformations.h"
+#include "core/service/openproj/services/authorization/query_transformations_order.h"
+#include "core/service/openproj/services/authorization/query_transformation_visitor.h"
+#include "core/service/openproj/services/authorization/user_allowed_query.h"
+#include "core/service/openproj/services/authorization/user_allowed_service.h"
+#include "core/service/openproj/services/authorization/user_global_roles_query.h"
+#include "core/service/openproj/services/authorization/user_project_roles_query.h"
+#include "core/service/openproj/services/authorization/user_roles_query.h"
+#include "core/service/openproj/services/authorization.h"
+#include "core/service/openproj/services/authorization_service.h"
+#include "core/service/openproj/services/base_project_service.h"
+
+#include "core/service/openproj/services/base_services/create.h"
+#include "core/service/openproj/services/base_services/delete.h"
+#include "core/service/openproj/services/base_services/set_attributes.h"
+#include "core/service/openproj/services/base_services/update.h"
+#include "core/service/openproj/services/base_type_service.h"
+
+#include "core/service/openproj/services/changesets/log_time_service.h"
+
+#include "core/service/openproj/services/concerns/contracted.h"
+#include "core/service/openproj/services/create_type_service.h"
+
+#include "core/service/openproj/services/custom_actions/base_service.h"
+#include "core/service/openproj/services/custom_actions/create_service.h"
+#include "core/service/openproj/services/custom_actions/update_service.h"
+#include "core/service/openproj/services/custom_actions/update_work_package_service.h"
+
+#include "core/service/openproj/services/members/create_service.h"
+#include "core/service/openproj/services/members/delete_service.h"
+#include "core/service/openproj/services/members/edit_membership_service.h"
+#include "core/service/openproj/services/members/set_attributes_service.h"
+#include "core/service/openproj/services/members/update_service.h"
+
+#include "core/service/openproj/services/oauth/persist_application_service.h"
+#include "core/service/openproj/services/params_to_query_service.h"
+#include "core/service/openproj/services/parse_schema_filter_params_service.h"
+
+#include "core/service/openproj/services/projects/delete_project_service.h"
+#include "core/service/openproj/services/projects/set_attributes_service.h"
+#include "core/service/openproj/services/projects/update_service.h"
+
+#include "core/service/openproj/services/queries/create_query_service.h"
+#include "core/service/openproj/services/queries/query_service.h"
+#include "core/service/openproj/services/queries/update_query_service.h"
+
+#include "core/service/openproj/services/relations/base_service.h"
+#include "core/service/openproj/services/relations/create_service.h"
+#include "core/service/openproj/services/relations/update_service.h"
+
+#include "core/service/openproj/services/reports/assignee_report.h"
+#include "core/service/openproj/services/reports/author_report.h"
+#include "core/service/openproj/services/reports/category_report.h"
+#include "core/service/openproj/services/reports/priority_report.h"
+#include "core/service/openproj/services/reports/report.h"
+#include "core/service/openproj/services/reports/reports_service.h"
+#include "core/service/openproj/services/reports/responsible_report.h"
+#include "core/service/openproj/services/reports/subproject_report.h"
+#include "core/service/openproj/services/reports/type_report.h"
+#include "core/service/openproj/services/reports/version_report.h"
+
+#include "core/service/openproj/services/roles/create_service.h"
+#include "core/service/openproj/services/roles/notify_mixin.h"
+#include "core/service/openproj/services/roles/set_attributes_service.h"
+#include "core/service/openproj/services/roles/update_service.h"
+
+#include "core/service/openproj/services/scm/base_repository_service.h"
+#include "core/service/openproj/services/scm/checkout_instructions_service.h"
+#include "core/service/openproj/services/scm/create_managed_repository_service.h"
+#include "core/service/openproj/services/scm/delete_managed_repository_service.h"
+#include "core/service/openproj/services/scm/repository_factory_service.h"
+#include "core/service/openproj/services/service_result.h"
+
+#include "core/service/openproj/services/sessions/base_service.h"
+#include "core/service/openproj/services/sessions/drop_other_sessions_service.h"
+#include "core/service/openproj/services/sessions/initialize_session_service.h"
+#include "core/service/openproj/services/set_localization_service.h"
+
+#include "core/service/openproj/services/settings/update_service.h"
+
+#include "core/service/openproj/services/shared/block_service.h"
+#include "core/service/openproj/services/shared/service_context.h"
+
+#include "core/service/openproj/services/time_entries/create_service.h"
+#include "core/service/openproj/services/time_entries/delete_service.h"
+#include "core/service/openproj/services/time_entries/set_attributes_service.h"
+#include "core/service/openproj/services/time_entries/update_service.h"
+#include "core/service/openproj/services/update_projects_types_service.h"
+#include "core/service/openproj/services/update_query_from_params_service.h"
+#include "core/service/openproj/services/update_type_service.h"
+#include "core/service/openproj/services/update_user_email_settings_service.h"
+
+#include "core/service/openproj/services/users/change_password_service.h"
+#include "core/service/openproj/services/users/create_user_service.h"
+#include "core/service/openproj/services/users/delete_service.h"
+#include "core/service/openproj/services/users/update_service.h"
+#include "core/service/openproj/services/users/update_user_service.h"
+#include "core/service/openproj/services/user_search_service.h"
+
+#include "core/service/openproj/services/versions/create_service.h"
+#include "core/service/openproj/services/versions/delete_service.h"
+#include "core/service/openproj/services/versions/set_attributes_service.h"
+#include "core/service/openproj/services/versions/update_service.h"
+
+#include "core/service/openproj/services/workflows/bulk_update_service.h"
+
+#include "core/service/openproj/services/work_packages/bulk/update_service.h"
+#include "core/service/openproj/services/work_packages/copy_service.h"
+#include "core/service/openproj/services/work_packages/create_service.h"
+#include "core/service/openproj/services/work_packages/delete_service.h"
+#include "core/service/openproj/services/work_packages/move_service.h"
+#include "core/service/openproj/services/work_packages/reschedule_service.h"
+#include "core/service/openproj/services/work_packages/schedule_dependency.h"
+#include "core/service/openproj/services/work_packages/set_attributes_service.h"
+#include "core/service/openproj/services/work_packages/set_schedule_service.h"
+
+#include "core/service/openproj/services/work_packages/shared/update_ancestors.h"
+#include "core/service/openproj/services/work_packages/shared/update_attributes.h"
+#include "core/service/openproj/services/work_packages/update_ancestors_service.h"
+#include "core/service/openproj/services/work_packages/update_service.h"
+
+//---
 #include "core/service/openproj/uploaders/file_uploader.h"
 #include "core/service/openproj/uploaders/fog_file_uploader.h"
 #include "core/service/openproj/uploaders/local_file_uploader.h"
@@ -198,6 +335,7 @@
 #include "core/service/openproj/workers/scm/relocate_repository_job.h"
 #include "core/service/openproj/workers/scm/remote_repository_job.h"
 #include "core/service/openproj/workers/scm/storage_updater_job.h"
+
 namespace todo {
 namespace service {
 Auth::Auth(std::shared_ptr<websocket::todo::TodoContext> context_)

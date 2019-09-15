@@ -1,12 +1,16 @@
-#pragma oncea
+
+#ifndef _JADMINACTOR33333333333_H
+#define _JADMINACTOR33333333333_H
 namespace openproj {
 class BaseProjectService {
-public:
+//public:
 //   BaseProjectService(project) {
 //    this->project = project
 //  }
 
-  private:
+//  private:
 
   // attr_accessor :project
 };
+}
+#endif

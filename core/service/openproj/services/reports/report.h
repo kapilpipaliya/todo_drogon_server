@@ -1,36 +1,39 @@
 #pragma once
 namespace openproj {
-class Reports::Report
-   Report(project) {
-    this->project = project
-  }
+namespace Reports{
+class Report {
+//   Report(project) {
+//    this->project = project
+//  }
 
    void report_type() {
-    'default'
+//    'default'
   }
 
-   void report_type() {
-    this->class.report_type
-  }
+//   void report_type() {
+//    this->class.report_type
+//  }
 
    void statuses() {
-    this->statuses ||= Status.all
+//    this->statuses ||= Status.all
   }
 
   // ---- every report needs to implement these methods to supply all needed data for a report -----
    void field() {
-    raise NotImplementedError
+//    raise NotImplementedError
   }
 
    void rows() {
-    raise NotImplementedError
+//    raise NotImplementedError
   }
 
    void data() {
-    raise NotImplementedError
+//    raise NotImplementedError
   }
 
    void title() {
-    raise NotImplementedError
+//    raise NotImplementedError
   }
+};
+}
 }

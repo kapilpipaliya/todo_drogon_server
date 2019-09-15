@@ -1,23 +1,27 @@
 #pragma once
+#include "report.h"
 namespace openproj {
-class Reports::AuthorReport : public Reports::Report {
+namespace Reports {
+class AuthorReport : public Report {
    void report_type() {
-    'author'
+//    'author'
   }
 
    void field() {
-    'author_id'
+//    'author_id'
   }
 
    void rows() {
-    this->rows ||= this->project.members.map(&:user).sort
+//    this->rows ||= this->project.members.map(&:user).sort
   }
 
    void data() {
-    this->data ||= WorkPackage.by_author(this->project)
+//    this->data ||= WorkPackage.by_author(this->project)
   }
 
    void title() {
-    this->title ||= WorkPackage.human_attribute_name(:author)
+//    this->title ||= WorkPackage.human_attribute_name(:author)
   }
+};
+}
 }

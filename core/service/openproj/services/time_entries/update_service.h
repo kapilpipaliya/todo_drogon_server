@@ -1,3 +1,7 @@
 #pragma once
+#include "../../services/base_services/update.h"
 namespace openproj {
-class TimeEntries::UpdateService : public ::BaseServices::Update; } {
+namespace TimeEntries{
+class UpdateService : public BaseServices::Update{};
+}
+}

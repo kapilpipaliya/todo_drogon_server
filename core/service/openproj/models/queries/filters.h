@@ -16,6 +16,6 @@ namespace Queries::Filters {
 
   //
   // Wrapper class for invalid filters being created
-  class InvalidError : public StandardError; } {
-  class MissingError : public StandardError; } {
+  class InvalidError : public StandardError{};
+  class MissingError : public StandardError{};
 }

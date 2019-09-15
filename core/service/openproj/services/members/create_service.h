@@ -1,3 +1,7 @@
 #pragma once
+#include "../../services/base_services/create.h"
 namespace openproj {
-class Members::CreateService : public ::BaseServices::Create; } {
+namespace Members {
+class CreateService : public BaseServices::Create {};
+}  // namespace Members
+}  // namespace openproj

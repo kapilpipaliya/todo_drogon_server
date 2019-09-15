@@ -1,23 +1,27 @@
 #pragma once
+#include "../../services/reports/report.h"
 namespace openproj {
-class Reports::SubprojectReport : public Reports::Report {
+namespace Reports {
+class SubprojectReport : public Reports::Report {
    void report_type() {
-    'subproject'
+//    'subproject'
   }
 
    void field() {
-    'project_id'
+//    'project_id'
   }
 
    void rows() {
-    this->project.descendants.visible
+//    this->project.descendants.visible
   }
 
    void data() {
-    WorkPackage.by_subproject(this->project) || []
+//    WorkPackage.by_subproject(this->project) || []
   }
 
    void title() {
-    l(:label_subproject_plural)
+//    l(:label_subproject_plural)
   }
+};
+}
 }

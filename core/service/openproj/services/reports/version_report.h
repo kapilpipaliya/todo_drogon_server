@@ -1,23 +1,27 @@
 #pragma once
+#include "report.h"
 namespace openproj {
-class Reports::VersionReport : public Reports::Report {
+namespace Reports{
+class VersionReport : public Reports::Report {
    void report_type() {
-    'version'
+//    'version'
   }
 
    void field() {
-    this->field ||= 'fixed_version_id'
+//    this->field ||= 'fixed_version_id'
   }
 
    void rows() {
-    this->rows ||= this->project.shared_versions.sort
+//    this->rows ||= this->project.shared_versions.sort
   }
 
    void data() {
-    this->data ||= WorkPackage.by_version(this->project)
+//    this->data ||= WorkPackage.by_version(this->project)
   }
 
    void title() {
-    this->title ||= WorkPackage.human_attribute_name(:version)
+//    this->title ||= WorkPackage.human_attribute_name(:version)
   }
+};
+}
 }
