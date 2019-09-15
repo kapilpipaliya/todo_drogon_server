@@ -1,3 +1,5 @@
+#pragma once
+#include "remote_repository_job.h"
 //
 // Provides an asynchronous job to create a managed repository on a remote system
 // using a simple HTTP callback
@@ -7,16 +9,19 @@
 // creation and deletion of repositories BOTH on the database and filesystem.
 // Until then, a synchronous process is more failsafe.
 namespace openproject {
-class Scm::CreateRemoteRepositoryJob : public Scm::RemoteRepositoryJob {
+namespace Scm {
+class CreateRemoteRepositoryJob : public Scm::RemoteRepositoryJob {
+public:
    void perform() {
-    response = send_request(repository_request.merge(action: :create))
-    repository.root_url = response['path']
-    repository.url = response['url']
+//    response = send_request(repository_request.merge(action: :create))
+//    repository.root_url = response['path']
+//    repository.url = response['url']
 
-    unless repository.save
-      raise OpenProject::Scm::Exceptions::ScmError.new(
-        I18n.t('repositories.errors.remote_save_failed')
-      )
+//    unless repository.save
+//      raise OpenProject::Scm::Exceptions::ScmError.new(
+//        I18n.t('repositories.errors.remote_save_failed')
+//      )
     }
-  }
+  };
+}
 }

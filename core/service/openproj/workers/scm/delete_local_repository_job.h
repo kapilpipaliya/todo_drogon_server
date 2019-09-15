@@ -1,3 +1,5 @@
+#pragma once
+#include "../application_job.h"
 //
 // Provides an asynchronous job to delete a managed repository on the filesystem.
 // Currently, this is run synchronously due to potential issues
@@ -6,17 +8,22 @@
 // creation and deletion of repositories BOTH on the database and filesystem.
 // Until then, a synchronous process is more failsafe.
 namespace openproject {
-class Scm::DeleteLocalRepositoryJob : public ApplicationJob {
-   DeleteLocalRepositoryJob(managed_path) {
-    this->managed_path = managed_path
-  }
+namespace Scm {
+
+class DeleteLocalRepositoryJob : public ApplicationJob {
+public:
+//   DeleteLocalRepositoryJob(managed_path) {
+//    this->managed_path = managed_path
+//  }
 
    void perform() {
     // Delete the repository project itself.
-    FileUtils.remove_dir(this->managed_path)
+//    FileUtils.remove_dir(this->managed_path)
   }
 
-   void destroy_failed_jobs?() {
-    true
+   bool destroy_failed_jobs() {
+    return true;
   }
+};
+}
 }

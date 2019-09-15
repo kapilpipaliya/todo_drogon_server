@@ -1,3 +1,5 @@
+#pragma once
+#include "application_job.h"
 //
 // We use this extra job instead of just calling
 //
@@ -19,47 +21,49 @@
 // ```
 namespace openproject {
 class MailUserJob : public ApplicationJob {
-  attr_reader :mail
+public:
+//  attr_reader :mail
 
-   MailUserJob(mail, *args) {
-    this->mail = mail
-    this->serialized_params = args.map { |arg| serialize_param arg }
-  }
+//   MailUserJob(mail, *args) {
+//    this->mail = mail
+//    this->serialized_params = args.map { |arg| serialize_param arg }
+//  }
 
    void perform() {
-    UserMailer.send(mail, *params).deliver_now
+//    UserMailer.send(mail, *params).deliver_now
   }
 
    void params() {
-    this->params ||= this->serialized_params.map { |type, param, model_name|
-      if ( type == :model) {
-        deserialize_model param, model_name
-      else
-        param
-      }
-    }
+//    this->params ||= this->serialized_params.map { |type, param, model_name|
+//      if ( type == :model) {
+//        deserialize_model param, model_name
+//      else
+//        param
+//      }
+//    }
   }
 
-   void method_missing(method, *args, &block) {
-    UserMailer.send method unless UserMailer.respond_to? method // fail with NoMethodError
+//   void method_missing(method, *args, &block) {
+//    UserMailer.send method unless UserMailer.respond_to? method // fail with NoMethodError
 
-    job = MailUserJob.new method, *args
+//    job = MailUserJob.new method, *args
 
-    Delayed::Job.enqueue job,
-                         priority: ::ApplicationJob.priority_number(:notification)
-  }
+//    Delayed::Job.enqueue job,
+//                         priority: ::ApplicationJob.priority_number(:notification)
+//  }
 
   private:
 
-   void serialize_param(param) {
-    if ( param.is_a? ActiveRecord::Base) {
-      [:model, param.id, param.class.name]
-    else
-      [:plain, param]
-    }
-  }
+//   void serialize_param(param) {
+//    if ( param.is_a? ActiveRecord::Base) {
+//      [:model, param.id, param.class.name]
+//    else
+//      [:plain, param]
+//    }
+//  }
 
-   void deserialize_model(id, model_name) {
-    model_name.constantize.find_by(id: id)
-  }
+//   void deserialize_model(id, model_name) {
+//    model_name.constantize.find_by(id: id)
+//  }
+};
 }

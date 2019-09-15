@@ -181,7 +181,27 @@
 
 #include "core/service/openproj/validators/url_validator.h"
 
-//workers 21 files
+#include "core/service/openproj/workers/application_job.h"
+#include "core/service/openproj/workers/attachments/cleanup_uncontainered_job.h"
+#include "core/service/openproj/workers/copy_project_job.h"
+#include "core/service/openproj/workers/delete_user_job.h"
+#include "core/service/openproj/workers/deliver_invitation_job.h"
+#include "core/service/openproj/workers/deliver_notification_job.h"
+#include "core/service/openproj/workers/deliver_watcher_notification_job.h"
+#include "core/service/openproj/workers/deliver_work_package_notification_job.h"
+#include "core/service/openproj/workers/enqueue_work_package_notification_job.h"
+#include "core/service/openproj/workers/extract_fulltext_job.h"
+#include "core/service/openproj/workers/mail_user_job.h"
+#include "core/service/openproj/workers/oauth/cleanup_job.h"
+#include "core/service/openproj/workers/projects/delete_project_job.h"
+#include "core/service/openproj/workers/rake_job.h"
+#include "core/service/openproj/workers/scm/create_local_repository_job.h"
+#include "core/service/openproj/workers/scm/create_remote_repository_job.h"
+#include "core/service/openproj/workers/scm/delete_local_repository_job.h"
+#include "core/service/openproj/workers/scm/delete_remote_repository_job.h"
+#include "core/service/openproj/workers/scm/relocate_repository_job.h"
+#include "core/service/openproj/workers/scm/remote_repository_job.h"
+#include "core/service/openproj/workers/scm/storage_updater_job.h"
 
 todo::Auth::Auth(std::shared_ptr<websocket::todo::TodoContext> context_)
     : context(std::move(context_)) {
