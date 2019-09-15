@@ -1,3 +1,4 @@
+#pragma once
 namespace openproject {
 class CustomActions::CreateService : public CustomActions::BaseService {
    CreateService(user:) {

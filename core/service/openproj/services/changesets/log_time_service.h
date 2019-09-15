@@ -1,4 +1,6 @@
-namespace Changesets {
+#pragma once
+nnamespace openproj {
+amespace Changesets {
   class LogTimeService
      LogTimeService(user:, changeset:) {
       this->user = user

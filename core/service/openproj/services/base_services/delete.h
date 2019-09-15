@@ -1,3 +1,4 @@
+#pragma once
 namespace BaseServices {
   class Delete
     // include ::Shared::ServiceContext

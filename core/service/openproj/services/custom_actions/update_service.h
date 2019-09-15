@@ -1,3 +1,4 @@
+#pragma once
 namespace openproject {
 class CustomActions::UpdateService : public CustomActions::BaseService {
   // attr_accessor :user,

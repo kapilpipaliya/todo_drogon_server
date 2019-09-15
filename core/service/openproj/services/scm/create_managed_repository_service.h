@@ -1,5 +1,7 @@
 //
 // Implements the creation of a local repository.
+#pragma once
+namespace openproj {
 namespace openproject {
 class Scm::CreateManagedRepositoryService : public Scm::BaseRepositoryService {
   //

@@ -1,3 +1,4 @@
+#pragma once
 //
 // Implements a repository service for building checkout instructions if supported
 namespace openproject {

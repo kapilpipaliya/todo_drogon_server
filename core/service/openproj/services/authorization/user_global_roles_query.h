@@ -1,3 +1,4 @@
+#pragma once
 namespace openproject {
 class Authorization::UserGlobalRolesQuery : public Authorization::UserRolesQuery {
   transformations.register roles_member_roles_join,

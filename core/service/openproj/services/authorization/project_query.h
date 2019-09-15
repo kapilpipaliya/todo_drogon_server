@@ -1,3 +1,4 @@
+#pragma once
 namespace openproject {
 class Authorization::ProjectQuery : public Authorization::AbstractQuery {
   this->model = Project

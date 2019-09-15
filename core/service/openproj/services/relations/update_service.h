@@ -1,4 +1,5 @@
-namespace openproject {
+n#pragma once
+amespace openproject {
 class Relations::UpdateService : public Relations::BaseService {
   // attr_accessor :relation
 

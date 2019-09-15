@@ -1,5 +1,7 @@
+#pragma once
 //
 // Implements the deletion of a user.
+namespace openproj {
 namespace Users {
   class DeleteService
     attr_reader :user, :actor

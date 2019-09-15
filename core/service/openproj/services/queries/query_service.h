@@ -1,3 +1,4 @@
+#pragma once
 namespace openproject {
 class QueryService
   // include Concerns::Contracted

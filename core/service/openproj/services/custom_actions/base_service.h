@@ -1,3 +1,4 @@
+#pragma once
 namespace openproject {
 class CustomActions::BaseService
   // include Shared::BlockService

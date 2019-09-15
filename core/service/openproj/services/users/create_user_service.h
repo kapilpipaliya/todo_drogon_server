@@ -1,6 +1,8 @@
+#pragma once
 #include "work_packages/create_contract"
 #include "concerns/user_invitation"
 
+namespace openproj {
 namespace Users {
   class CreateUserService
     // include Concerns::Contracted

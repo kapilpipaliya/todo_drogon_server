@@ -1,3 +1,5 @@
+#pragma once
+namespace openproj {
 namespace API {
   namespace V3 {
     class UpdateQueryFromV3ParamsService

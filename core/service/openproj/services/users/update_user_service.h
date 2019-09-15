@@ -1,3 +1,5 @@
+#pragma once
+namespace openproj {
 namespace Users {
   class UpdateUserService
     // include Concerns::Contracted

@@ -1,3 +1,4 @@
+#pragma once
 namespace openproject {
 class Authorization::UserRolesQuery : public Authorization::AbstractUserQuery {
   this->model = Role

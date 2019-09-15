@@ -1,3 +1,4 @@
+#pragma once
 namespace openproject {
 class Authorization::AbstractUserQuery : public Authorization::AbstractQuery {
   transformations.register :all,

@@ -1,3 +1,5 @@
+#pragma once
+namespace openproj {
 namespace Sessions {
   class BaseService
     class << self

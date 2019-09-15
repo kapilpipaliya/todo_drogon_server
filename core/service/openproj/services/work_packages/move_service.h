@@ -1,3 +1,4 @@
+#pragma once
 // Moves/copies an work_package to a new project and type
 
 namespace openproject {

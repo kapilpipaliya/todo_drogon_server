@@ -1,3 +1,4 @@
+#pragma once
 namespace openproject {
 class WorkPackages::CreateService
   // include ::WorkPackages::Shared::UpdateAncestors

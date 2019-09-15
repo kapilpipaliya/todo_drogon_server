@@ -1,3 +1,4 @@
+#pragma once
 UpdateUserEmailSettingsService = Struct.new(:user) {
    void call(mail_notification: nil,
            self_notified: nil,

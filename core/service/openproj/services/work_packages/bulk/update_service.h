@@ -1,3 +1,4 @@
+#pragma once
 namespace WorkPackages {
   namespace Bulk {
     class UpdateService

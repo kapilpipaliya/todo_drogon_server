@@ -1,3 +1,4 @@
+#pragma once
 namespace openproject {
 class WorkPackages::UpdateAncestorsService
   // attr_accessor :user,

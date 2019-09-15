@@ -1,3 +1,4 @@
+#pragma once
 namespace openproject {
 class WorkPackages::CopyService
   // include ::Shared::ServiceContext

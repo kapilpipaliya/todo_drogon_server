@@ -1,3 +1,4 @@
+#pragma once
 //
 // Implements the asynchronous deletion of a local repository.
 namespace openproject {

@@ -1,3 +1,5 @@
+#pragma once
+namespace openproj {
 namespace Concerns::Contracted {
   // extend ActiveSupport::Concern
 

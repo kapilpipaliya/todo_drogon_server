@@ -1,3 +1,5 @@
+#pragma once
+namespace openproj {
 namespace Roles {
   class SetAttributesService : public ::BaseServices::SetAttributes {
      void set_default_attributes() {

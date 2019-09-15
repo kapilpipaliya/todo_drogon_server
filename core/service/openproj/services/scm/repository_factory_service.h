@@ -1,3 +1,4 @@
+#pragma once
 //
 // Implements a repository factory for building temporary and permanent repositories.
 namespace openproject {

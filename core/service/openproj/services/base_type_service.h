@@ -1,3 +1,4 @@
+#pragma once
 namespace openproject {
 class BaseTypeService
   // include Shared::BlockService

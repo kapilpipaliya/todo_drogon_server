@@ -1,4 +1,6 @@
-namespace Attachments {
+#pragma once
+nnamespace openproj {
+amespace Attachments {
   namespace SetReplacements {
     // extend ActiveSupport::Concern
 

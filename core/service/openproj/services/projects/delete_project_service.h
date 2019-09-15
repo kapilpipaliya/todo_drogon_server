@@ -1,3 +1,5 @@
+#pragma once
+namespace openproj {
 namespace Projects {
   class DeleteProjectService
     // attr_accessor :user, :project

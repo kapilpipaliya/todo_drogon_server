@@ -1,3 +1,5 @@
+#pragma once
+namespace openproj {
 namespace Versions {
   class UpdateService : public ::BaseServices::Update {
     private:

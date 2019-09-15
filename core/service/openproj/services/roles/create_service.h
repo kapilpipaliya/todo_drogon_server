@@ -1,3 +1,4 @@
+#pragma once
 namespace openproject {
 class Roles::CreateService : public ::BaseServices::Create {
   // include Roles::NotifyMixin

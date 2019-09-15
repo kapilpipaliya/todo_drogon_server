@@ -1,3 +1,5 @@
+#pragma once
+namespace openproj {
 namespace TimeEntries {
   class SetAttributesService : public ::BaseServices::SetAttributes {
     private:

@@ -1,3 +1,4 @@
+#pragma once
 namespace openproject {
 class Relations::BaseService
   // include Concerns::Contracted

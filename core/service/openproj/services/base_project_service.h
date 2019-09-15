@@ -1,10 +1,12 @@
+#pragma oncea
 namespace openproject {
-class BaseProjectService
-   BaseProjectService(project) {
-    this->project = project
-  }
+class BaseProjectService {
+public:
+//   BaseProjectService(project) {
+//    this->project = project
+//  }
 
   private:
 
   // attr_accessor :project
-}
+};

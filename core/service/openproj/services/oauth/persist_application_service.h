@@ -1,6 +1,8 @@
+#pragma once
 require_dependency 'user'
 require_dependency 'principal'
 
+namespace openproj {
 namespace OAuth {
   class PersistApplicationService
     // include Concerns::Contracted

@@ -1,5 +1,7 @@
+#pragma once
 #include "./base_service.h"
 
+namespace openproj {
 namespace Sessions {
   class InitializeSessionService : public BaseService {
     class << self

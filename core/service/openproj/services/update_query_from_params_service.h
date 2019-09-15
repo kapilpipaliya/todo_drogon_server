@@ -1,3 +1,4 @@
+#pragma once
 namespace openproject {
 class UpdateQueryFromParamsService
    UpdateQueryFromParamsService(query, user) {

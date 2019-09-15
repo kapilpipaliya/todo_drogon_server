@@ -1,3 +1,4 @@
+#pragma once
 namespace Versions {
   class SetAttributesService : public ::BaseServices::SetAttributes {
     private:

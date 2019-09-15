@@ -1,3 +1,4 @@
+#pragma once
 namespace openproject {
 class Reports::SubprojectReport : public Reports::Report {
    void report_type() {

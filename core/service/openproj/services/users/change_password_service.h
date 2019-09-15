@@ -1,3 +1,4 @@
+#pragma once
 namespace Users {
   class ChangePasswordService
     // attr_accessor :current_user

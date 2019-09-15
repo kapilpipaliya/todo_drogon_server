@@ -1,3 +1,4 @@
+#pragma once
 #include "./query_service.h"
 
 namespace openproject {

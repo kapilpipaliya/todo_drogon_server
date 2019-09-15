@@ -1,3 +1,5 @@
+#pragma once
+namespace openproj {
 namespace Members {
   class EditMembershipService
     attr_reader :current_user, :member, :do_save

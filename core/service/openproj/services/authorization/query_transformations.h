@@ -1,3 +1,4 @@
+#pragma once
 namespace openproject {
 class Authorization::QueryTransformations
    void for?(on) {

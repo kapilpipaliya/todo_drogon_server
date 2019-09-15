@@ -1,3 +1,4 @@
+#pragma once
 namespace Shared {
   namespace ServiceContext {
      void in_context(send_notifications) {
