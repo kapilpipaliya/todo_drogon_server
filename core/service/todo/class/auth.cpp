@@ -154,6 +154,35 @@
 #include "core/service/openproj/helpers/work_packages_filter_helper.h"
 #include "core/service/openproj/helpers/work_packages_helper.h"
 
+
+#include "core/service/openproj/mailers/base_mailer.h"
+#include "core/service/openproj/mailers/project_mailer.h"
+#include "core/service/openproj/mailers/user_mailer.h"
+
+//models 467 files
+
+#include "core/service/openproj/policies/base_policy.h"
+#include "core/service/openproj/policies/query_policy.h"
+#include "core/service/openproj/policies/redirect_policy.h"
+#include "core/service/openproj/policies/version_policy.h"
+#include "core/service/openproj/policies/work_package_policy.h"
+
+#include "core/service/openproj/policies/scm/authorization_policy.h"
+#include "core/service/openproj/policies/scm/git_authorization_policy.h"
+#include "core/service/openproj/policies/scm/subversion_authorization_policy.h"
+
+//seeders 42 files
+
+//services 113 files
+
+#include "core/service/openproj/uploaders/file_uploader.h"
+#include "core/service/openproj/uploaders/fog_file_uploader.h"
+#include "core/service/openproj/uploaders/local_file_uploader.h"
+
+#include "core/service/openproj/validators/url_validator.h"
+
+//workers 21 files
+
 todo::Auth::Auth(std::shared_ptr<websocket::todo::TodoContext> context_)
     : context(std::move(context_)) {
   setupTable();
