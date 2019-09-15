@@ -5,7 +5,7 @@
 #include "../../../strfns.h"
 
 namespace jadmin {
-Tag::Tag(std::shared_ptr<websocket::JAdminContext> context_)
+Tag::Tag(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("post", "tag", "t"));
   setupTable();
@@ -34,21 +34,23 @@ nlohmann::json Tag::handleEvent(nlohmann::json event, unsigned long next,
 void Tag::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
-      sql::SelectedColumn({"Id", "id", "", "t", PG_TYPES::INT8, false}),
-      sql::SelectedColumn({"Slug", "slug", "", "t", PG_TYPES::TEXT, true}),
-      sql::SelectedColumn({"Name", "name", "", "t", PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"Id", "id", "", "t", sql::PG_TYPES::INT8, false}),
+      sql::SelectedColumn({"Slug", "slug", "", "t", sql::PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"Name", "name", "", "t", sql::PG_TYPES::TEXT, true}),
       sql::SelectedColumn(
-          {"Description", "description", "", "t", PG_TYPES::TEXT, true}),
+          {"Description", "description", "", "t", sql::PG_TYPES::TEXT, true}),
       // sql::SelectedColumn({"Created By", "create_user_id", "", "t",
-      // PG_TYPES::INT8, true, 1, 0, false}),
+      // sql::PG_TYPES::INT8, true, 1, 0, false}),
       // sql::SelectedColumn({"u1_username", "username", "", "u1",
-      // PG_TYPES::TEXT, false, 0, 0, false}), sql::SelectedColumn({"Updated
-      // By", "update_user_id", "", "t", PG_TYPES::INT8, true, 1, 0, false}),
+      // sql::PG_TYPES::TEXT, false, 0, 0, false}),
+      // sql::SelectedColumn({"Updated By", "update_user_id", "", "t",
+      // sql::PG_TYPES::INT8, true, 1, 0, false}),
       // sql::SelectedColumn({"u2_username", "username", "", "u2",
-      // PG_TYPES::TEXT, false, 0, 0, false}), sql::SelectedColumn({"Create
-      // Time", "inserted_at", "", "t", PG_TYPES::TIMESTAMP, true, 0, 0,
-      // false}), sql::SelectedColumn({"Update Time", "updated_at", "", "t",
-      // PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+      // sql::PG_TYPES::TEXT, false, 0, 0, false}),
+      // sql::SelectedColumn({"Create Time", "inserted_at", "", "t",
+      // sql::PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+      // sql::SelectedColumn({"Update Time", "updated_at", "", "t",
+      // sql::PG_TYPES::TIMESTAMP, true, 0, 0, false}),
   });
 
   auto m = sql::ObjectIdentifier("material", "metal", "m");
@@ -73,9 +75,9 @@ nlohmann::json Tag::ins(nlohmann::json event, nlohmann::json args) {
   auto clientPtr = drogon::app().getDbClient("sce");
   auto transPtr = clientPtr->newTransaction();
   try {
-    Dba::writeInTrans(transPtr, strSql, args[0]["slug"].get<std::string>(),
-                      args[0]["name"].get<std::string>(),
-                      args[0]["description"].get<std::string>());
+    sql::Dba::writeInTrans(transPtr, strSql, args[0]["slug"].get<std::string>(),
+                           args[0]["name"].get<std::string>(),
+                           args[0]["description"].get<std::string>());
 
     nlohmann::json ret;
     ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
@@ -101,10 +103,10 @@ nlohmann::json Tag::upd(nlohmann::json event, nlohmann::json args) {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     try {
-      Dba::writeInTrans(transPtr, strSql, args[0]["id"].get<long>(),
-                        args[0]["slug"].get<std::string>(),
-                        args[0]["name"].get<std::string>(),
-                        args[0]["description"].get<std::string>());
+      sql::Dba::writeInTrans(transPtr, strSql, args[0]["id"].get<long>(),
+                             args[0]["slug"].get<std::string>(),
+                             args[0]["name"].get<std::string>(),
+                             args[0]["description"].get<std::string>());
 
       nlohmann::json ret;
       ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
@@ -117,7 +119,8 @@ nlohmann::json Tag::upd(nlohmann::json event, nlohmann::json args) {
     }
   }
   nlohmann::json ret;
-  ret[0] = websocket::WsFns::successJsonObject(event, false, "Not Valid Structure");
+  ret[0] =
+      websocket::WsFns::successJsonObject(event, false, "Not Valid Structure");
   return ret;
 }
 }  // namespace jadmin

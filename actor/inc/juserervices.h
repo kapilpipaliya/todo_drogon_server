@@ -67,7 +67,7 @@
 
 #define REGISTER(s, T)                                              \
   else if (in[0][0].get<std::string>() == (s)) {                    \
-    auto contx = wsConnPtr->getContext<websocket::JAdminContext>(); \
+    auto contx = wsConnPtr->getContext<websocket::jadmin::JAdminContext>(); \
     T p{contx};                                                     \
     auto r = p.handleEvent(in[0], 1, in[1]);                        \
     if (!r.is_null()) return r;                                     \

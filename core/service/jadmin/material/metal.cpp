@@ -1,8 +1,8 @@
 #include "metal.h"
 
 #include <utility>
-#include "../../../strfns.h"
 #include "../../../sql/dba.h"
+#include "../../../strfns.h"
 
 #define ids2(s, array)                                 \
   std::string array = "{";                             \
@@ -12,7 +12,8 @@
   if ((s).size() > 0) array.pop_back();                \
   array += "}";
 namespace jadmin {
-Metal::Metal(std::shared_ptr<websocket::JAdminContext> context_) : context(std::move(context_)) {
+Metal::Metal(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
+    : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("material", "metal", "m"));
   setupTable();
 }
@@ -40,30 +41,31 @@ nlohmann::json Metal::handleEvent(nlohmann::json event, unsigned long next,
 void Metal::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
-      sql::SelectedColumn({"Id", "id", "", "m", PG_TYPES::INT8, false}),
-      //        sql::SelectedColumn({"Rank", "rank", "", "m", PG_TYPES::INT4,
-      //        false}),
-      sql::SelectedColumn({"Code", "slug", "", "m", PG_TYPES::TEXT, true}),
-      sql::SelectedColumn({"Name", "name", "", "m", PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"Id", "id", "", "m", sql::PG_TYPES::INT8, false}),
+      //        sql::SelectedColumn({"Rank", "rank", "", "m",
+      //        sql::PG_TYPES::INT4, false}),
+      sql::SelectedColumn({"Code", "slug", "", "m", sql::PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"Name", "name", "", "m", sql::PG_TYPES::TEXT, true}),
       sql::SelectedColumn({"Specific_density", "specific_density", "", "m",
-                            PG_TYPES::DOUBLE, true}),
+                           sql::PG_TYPES::DOUBLE, true}),
       sql::SelectedColumn({"Melting Point in C", "melting_point_in_c", "", "m",
-                            PG_TYPES::DOUBLE, true}),
+                           sql::PG_TYPES::DOUBLE, true}),
       sql::SelectedColumn(
-          {"Currency_id", "currency_id", "", "m", PG_TYPES::INT8, true}),
-      sql::SelectedColumn({"Price", "price", "", "m", PG_TYPES::DOUBLE, true}),
+          {"Currency_id", "currency_id", "", "m", sql::PG_TYPES::INT8, true}),
       sql::SelectedColumn(
-          {"Created By", "create_user_id", "", "m", PG_TYPES::INT8, true, 1}),
-      sql::SelectedColumn({"u1_username", "username", "", "u1", PG_TYPES::TEXT,
-                            false, 0, 0, false}),
-      sql::SelectedColumn(
-          {"Updated By", "update_user_id", "", "m", PG_TYPES::INT8, true, 1}),
-      sql::SelectedColumn({"u2_username", "username", "", "u2", PG_TYPES::TEXT,
-                            false, 0, 0, false}),
+          {"Price", "price", "", "m", sql::PG_TYPES::DOUBLE, true}),
+      sql::SelectedColumn({"Created By", "create_user_id", "", "m",
+                           sql::PG_TYPES::INT8, true, 1}),
+      sql::SelectedColumn({"u1_username", "username", "", "u1",
+                           sql::PG_TYPES::TEXT, false, 0, 0, false}),
+      sql::SelectedColumn({"Updated By", "update_user_id", "", "m",
+                           sql::PG_TYPES::INT8, true, 1}),
+      sql::SelectedColumn({"u2_username", "username", "", "u2",
+                           sql::PG_TYPES::TEXT, false, 0, 0, false}),
       sql::SelectedColumn({"Create Time", "inserted_at", "", "m",
-                            PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+                           sql::PG_TYPES::TIMESTAMP, true, 0, 0, false}),
       sql::SelectedColumn({"Update Time", "updated_at", "", "m",
-                            PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+                           sql::PG_TYPES::TIMESTAMP, true, 0, 0, false}),
   });
 
   auto u1 = sql::ObjectIdentifier("entity", "entity_user", "u1");
@@ -88,11 +90,11 @@ nlohmann::json Metal::ins(nlohmann::json event, nlohmann::json args) {
   auto clientPtr = drogon::app().getDbClient("sce");
   auto transPtr = clientPtr->newTransaction();
   try {
-    Dba::writeInTrans(transPtr, strSql, args[0]["slug"].get<std::string>(),
-                      args[0]["name"].get<std::string>(),
-                      args[0]["specific_density"].get<float>(),
-                      args[0]["price"].get<float>(),
-                      args[0]["melting_point_in_c"].get<float>());
+    sql::Dba::writeInTrans(transPtr, strSql, args[0]["slug"].get<std::string>(),
+                           args[0]["name"].get<std::string>(),
+                           args[0]["specific_density"].get<float>(),
+                           args[0]["price"].get<float>(),
+                           args[0]["melting_point_in_c"].get<float>());
 
     nlohmann::json ret;
     ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
@@ -118,12 +120,12 @@ nlohmann::json Metal::upd(nlohmann::json event, nlohmann::json args) {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     try {
-      Dba::writeInTrans(transPtr, strSql, args[0]["id"].get<long>(),
-                        args[0]["slug"].get<std::string>(),
-                        args[0]["name"].get<std::string>(),
-                        args[0]["specific_density"].get<float>(),
-                        args[0]["price"].get<float>(),
-                        args[0]["melting_point_in_c"].get<float>());
+      sql::Dba::writeInTrans(transPtr, strSql, args[0]["id"].get<long>(),
+                             args[0]["slug"].get<std::string>(),
+                             args[0]["name"].get<std::string>(),
+                             args[0]["specific_density"].get<float>(),
+                             args[0]["price"].get<float>(),
+                             args[0]["melting_point_in_c"].get<float>());
       // 1 purity_metal
       auto pr_update = R"(
                              update material.purity_metal pm
@@ -134,8 +136,8 @@ nlohmann::json Metal::upd(nlohmann::json event, nlohmann::json args) {
                              pm.metal_id = $1
                              returning pm.purity_id;
                              )";
-      auto pr =
-          Dba::writeInTrans(transPtr, pr_update, args[0]["id"].get<long>());
+      auto pr = sql::Dba::writeInTrans(transPtr, pr_update,
+                                       args[0]["id"].get<long>());
 
       ids2(pr, id1)
           // 2. purity
@@ -148,8 +150,8 @@ nlohmann::json Metal::upd(nlohmann::json event, nlohmann::json args) {
                                p.metal_id = $1
                                returning p.id;
                                )";
-      auto pr0 =
-          Dba::writeInTrans(transPtr, pr_update01, args[0]["id"].get<long>());
+      auto pr0 = sql::Dba::writeInTrans(transPtr, pr_update01,
+                                        args[0]["id"].get<long>());
       ids2(pr, id2)
           // 3. purity_tone
           auto pr_update2 = R"(
@@ -166,7 +168,7 @@ nlohmann::json Metal::upd(nlohmann::json event, nlohmann::json args) {
                               where
                               pt.purity_id = ANY($1::bigint[]) or pt.purity_id = ANY($2::bigint[])
                               )";
-      auto pr2 = Dba::writeInTrans(transPtr, pr_update2, id1, id2);
+      auto pr2 = sql::Dba::writeInTrans(transPtr, pr_update2, id1, id2);
 
       auto pr_update3 = R"(
                               update product.product p
@@ -186,7 +188,8 @@ nlohmann::json Metal::upd(nlohmann::json event, nlohmann::json args) {
                               where
                               p.purity_id = ANY($1::bigint[]) or p.purity_id = ANY($2::bigint[]) returning p.post_id
                               )";
-      auto product_update = Dba::writeInTrans(transPtr, pr_update3, id1, id2);
+      auto product_update =
+          sql::Dba::writeInTrans(transPtr, pr_update3, id1, id2);
       ids2(product_update, id3)
 
           auto pr_update4 = R"(
@@ -211,7 +214,7 @@ nlohmann::json Metal::upd(nlohmann::json event, nlohmann::json args) {
                               --returning pt.post_id, pt.purity_id, pt.weight, pt.price
                               )";
 
-      auto pr4 = Dba::writeInTrans(transPtr, pr_update4, id1, id2, id3);
+      auto pr4 = sql::Dba::writeInTrans(transPtr, pr_update4, id1, id2, id3);
 
       nlohmann::json ret;
       ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
@@ -224,7 +227,8 @@ nlohmann::json Metal::upd(nlohmann::json event, nlohmann::json args) {
     }
   }
   nlohmann::json ret;
-  ret[0] = websocket::WsFns::successJsonObject(event, false, "Not Valid Structure");
+  ret[0] =
+      websocket::WsFns::successJsonObject(event, false, "Not Valid Structure");
   return ret;
 }
 }  // namespace jadmin

@@ -14,7 +14,7 @@ class CondFormat {
                       const std::string& encoding = std::string());
 
   static std::string filterToSqlCondition(
-      const std::string& value, PG_TYPES column_type,
+      const std::string& value, sql::PG_TYPES column_type,
       const std::string& encoding = std::string());
 
   [[nodiscard]] std::string sqlCondition() const { return m_sqlCondition; }

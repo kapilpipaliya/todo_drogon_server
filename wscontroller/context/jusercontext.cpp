@@ -5,6 +5,7 @@
 #include "./core/sql/dba.h"
 #include "spdlogfix.h"
 namespace websocket {
+namespace juser {
 JUserContext::JUserContext(const drogon::HttpRequestPtr &req,
                            const drogon::WebSocketConnectionPtr &wsConnPtr_)
     : wsConnPtr(wsConnPtr_) {
@@ -24,7 +25,7 @@ std::tuple<long, long> JUserContext::generateContext(
   try {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
-    auto r = Dba::writeInTrans(transPtr, sqlSession, session_id);
+    auto r = sql::Dba::writeInTrans(transPtr, sqlSession, session_id);
     if (!r.empty()) {
       return {r[0]["id"].as<long>(), r[0]["user_id"].as<long>()};
     }
@@ -43,7 +44,7 @@ void JUserContext::setUser() {
     auto sqlSession = "SELECT * FROM entity.entity_user where id = $1";
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
-    auto r = Dba::writeInTrans(transPtr, sqlSession, user_id);
+    auto r = sql::Dba::writeInTrans(transPtr, sqlSession, user_id);
     if (!r.empty()) {
       //      user.id = r[0]["id"].as<long>();
       //      user.type = r[0]["type"].as<std::string>();
@@ -52,4 +53,5 @@ void JUserContext::setUser() {
     SPDLOG_TRACE(e.what());
   }
 }
+}  // namespace juser
 }  // namespace websocket

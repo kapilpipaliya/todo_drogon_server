@@ -9,7 +9,7 @@
 namespace madmin {
 class Config {
  public:
-  Config(std::shared_ptr<websocket::MAdminContext>);
+  Config(std::shared_ptr<websocket::music::MAdminContext>);
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
   void setupTable();
@@ -54,7 +54,7 @@ class Config {
   static void set_by_array(int array, bool clobber = false);
 
  private:
-  std::shared_ptr<websocket::MAdminContext> context;
+  std::shared_ptr<websocket::music::MAdminContext> context;
   sql::Query query;
 };
 }  // namespace madmin

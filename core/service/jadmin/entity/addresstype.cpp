@@ -3,7 +3,8 @@
 #include <utility>
 
 namespace jadmin {
-AddressType::AddressType(std::shared_ptr<websocket::JAdminContext> context_)
+AddressType::AddressType(
+    std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("entity", "address_type", "a"));
   setupTable();
@@ -33,12 +34,12 @@ nlohmann::json AddressType::handleEvent(nlohmann::json event,
 void AddressType::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
-      sql::SelectedColumn({"Id", "id", "", "a", PG_TYPES::INT8, true}),
-      sql::SelectedColumn({"Name", "name", "", "a", PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"Id", "id", "", "a", sql::PG_TYPES::INT8, true}),
+      sql::SelectedColumn({"Name", "name", "", "a", sql::PG_TYPES::TEXT, true}),
       sql::SelectedColumn({"Create Time", "inserted_at", "", "a",
-                            PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+                           sql::PG_TYPES::TIMESTAMP, true, 0, 0, false}),
       sql::SelectedColumn({"Update Time", "updated_at", "", "a",
-                            PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+                           sql::PG_TYPES::TIMESTAMP, true, 0, 0, false}),
   });
 }
 

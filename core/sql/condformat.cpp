@@ -7,11 +7,12 @@ namespace sql {
 CondFormat::CondFormat(const std::string& filter, const std::string& encoding)
     : m_filter(filter) {
   if (!filter.empty())
-    m_sqlCondition = filterToSqlCondition(filter, PG_TYPES::TEXT, encoding);
+    m_sqlCondition =
+        filterToSqlCondition(filter, sql::PG_TYPES::TEXT, encoding);
 }
 
 std::string CondFormat::filterToSqlCondition(const std::string& value,
-                                             PG_TYPES column_type,
+                                             sql::PG_TYPES column_type,
                                              const std::string& encoding) {
   // Check for any special comparison operators at the beginning of the value
   // string. If there are none default to LIKE.
@@ -82,13 +83,13 @@ std::string CondFormat::filterToSqlCondition(const std::string& value,
       }
       if (val != "NULL") {
         switch (column_type) {
-          case PG_TYPES::INT4:
-          case PG_TYPES::INT8:
+          case sql::PG_TYPES::INT4:
+          case sql::PG_TYPES::INT8:
             val = std::to_string(
                 stof(val, numericp));  // may be risky:
                                        // https://stackoverflow.com/a/35345427
             break;
-          case PG_TYPES::PSJSON:
+          case sql::PG_TYPES::PSJSON:
             numeric = false;
             break;
           default:
@@ -111,20 +112,20 @@ std::string CondFormat::filterToSqlCondition(const std::string& value,
       }
     } else {
       switch (column_type) {
-        case PG_TYPES::INT4:
-        case PG_TYPES::INT8:
+        case sql::PG_TYPES::INT4:
+        case sql::PG_TYPES::INT8:
           val = value;
           op = "=";
           numeric = true;
           break;
-        case PG_TYPES::ENUM: {
+        case sql::PG_TYPES::ENUM: {
           if (!value.empty()) {
             val = "'" + value + "'";
           }
           op = "=";
           break;
         }
-        case PG_TYPES::TEXT: {
+        case sql::PG_TYPES::TEXT: {
           // Keep the default LIKE operator
 
           // Set the escape character if one has been specified in the settings
@@ -159,7 +160,8 @@ std::string CondFormat::filterToSqlCondition(const std::string& value,
   // Quote and escape value, but only if it's not numeric and not the empty
   // string sequence
   if (!numeric && !numericp && val != "''" &&
-      (column_type == PG_TYPES::TEXT || column_type == PG_TYPES::PSJSON)) {
+      (column_type == sql::PG_TYPES::TEXT ||
+       column_type == sql::PG_TYPES::PSJSON)) {
     ReplaceAll2(val, "'", "''");
     val = "'" + val + "'";
   }

@@ -11,7 +11,7 @@
 namespace madmin {
 class CatalogLocal : public Catalog {
  public:
-  CatalogLocal(const std::shared_ptr<websocket::MAdminContext> &);
+  CatalogLocal(const std::shared_ptr<websocket::music::MAdminContext> &);
   void setupTable();
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);

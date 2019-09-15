@@ -2,6 +2,7 @@
 //#include "cgi"
 #include <string>
 
+namespace openproj {
 namespace ApplicationHelper {
   // include OpenProject::TextFormatting
   // include OpenProject::ObjectLinking
@@ -496,4 +497,5 @@ namespace ApplicationHelper {
 //    s += raw '<br /><em>' + rules + '</em>' unless rules.empty?
 //    s
   }
+}
 }

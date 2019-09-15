@@ -2,7 +2,7 @@
 #define GetTableData_H
 
 #include "../wstestbase.h"
-
+namespace wstest {
 class GetTableData : public WSTestBase {
  public:
   GetTableData(std::string table);
@@ -14,5 +14,5 @@ class GetTableData : public WSTestBase {
  private:
   std::string table;
 };
-
+}
 #endif  // GetTableData_H

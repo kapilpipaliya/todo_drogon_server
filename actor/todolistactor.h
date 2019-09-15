@@ -5,6 +5,7 @@
 
 #include "useractorbase.h"
 namespace superactor {
+namespace todoactor {
 class TodoListActor : public caf::event_based_actor, public UserActorBase {
  public:
   TodoListActor(caf::actor_config& cfg);
@@ -17,5 +18,6 @@ class TodoListActor : public caf::event_based_actor, public UserActorBase {
   virtual nlohmann::json handleBinaryMessage(
       const drogon::WebSocketConnectionPtr& wsConnPtr, std::string& message);
 };
+}  // namespace todoactor
 }  // namespace superactor
 #endif

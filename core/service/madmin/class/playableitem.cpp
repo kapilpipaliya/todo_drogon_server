@@ -1,3 +1,3 @@
 #include "playableitem.h"
 
-PlayableItem::PlayableItem() = default;
+madmin::PlayableItem::PlayableItem() = default;

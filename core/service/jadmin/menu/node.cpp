@@ -3,7 +3,8 @@
 #include <utility>
 
 namespace jadmin {
-Node::Node(std::shared_ptr<websocket::JAdminContext> context_) : context(std::move(context_)) {
+Node::Node(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
+    : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("menu", "node", "m"));
   setupTable();
 }
@@ -31,31 +32,34 @@ nlohmann::json Node::handleEvent(nlohmann::json event, unsigned long next,
 void Node::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
-      sql::SelectedColumn({"Id", "id", "", "m", PG_TYPES::INT8, true}),
+      sql::SelectedColumn({"Id", "id", "", "m", sql::PG_TYPES::INT8, true}),
       sql::SelectedColumn(
-          {"Parent", "parent_id", "", "m", PG_TYPES::INT4, true}),
-      sql::SelectedColumn({"Rank", "rank", "", "m", PG_TYPES::INT4, true}),
-      sql::SelectedColumn({"Code", "slug", "", "m", PG_TYPES::TEXT, true}),
-      sql::SelectedColumn({"Label", "label", "", "m", PG_TYPES::TEXT, true}),
-      sql::SelectedColumn({"Active", "active", "", "m", PG_TYPES::BOOL, true}),
-      sql::SelectedColumn({"Url", "url", "", "m", PG_TYPES::TEXT, true}),
+          {"Parent", "parent_id", "", "m", sql::PG_TYPES::INT4, true}),
+      sql::SelectedColumn({"Rank", "rank", "", "m", sql::PG_TYPES::INT4, true}),
+      sql::SelectedColumn({"Code", "slug", "", "m", sql::PG_TYPES::TEXT, true}),
       sql::SelectedColumn(
-          {"Web Icon", "web_icon", "", "m", PG_TYPES::TEXT, true}),
+          {"Label", "label", "", "m", sql::PG_TYPES::TEXT, true}),
       sql::SelectedColumn(
-          {"Description", "description", "", "m", PG_TYPES::TEXT, true}),
-      sql::SelectedColumn({"Class", "class", "", "m", PG_TYPES::TEXT, true}),
+          {"Active", "active", "", "m", sql::PG_TYPES::BOOL, true}),
+      sql::SelectedColumn({"Url", "url", "", "m", sql::PG_TYPES::TEXT, true}),
       sql::SelectedColumn(
-          {"Created By", "create_user_id", "", "m", PG_TYPES::INT8, true, 1}),
-      sql::SelectedColumn({"u1_username", "username", "", "u1", PG_TYPES::TEXT,
-                            false, 0, 0, false}),
+          {"Web Icon", "web_icon", "", "m", sql::PG_TYPES::TEXT, true}),
       sql::SelectedColumn(
-          {"Updated By", "update_user_id", "", "m", PG_TYPES::INT8, true, 1}),
-      sql::SelectedColumn({"u2_username", "username", "", "u2", PG_TYPES::TEXT,
-                            false, 0, 0, false}),
+          {"Description", "description", "", "m", sql::PG_TYPES::TEXT, true}),
+      sql::SelectedColumn(
+          {"Class", "class", "", "m", sql::PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"Created By", "create_user_id", "", "m",
+                           sql::PG_TYPES::INT8, true, 1}),
+      sql::SelectedColumn({"u1_username", "username", "", "u1",
+                           sql::PG_TYPES::TEXT, false, 0, 0, false}),
+      sql::SelectedColumn({"Updated By", "update_user_id", "", "m",
+                           sql::PG_TYPES::INT8, true, 1}),
+      sql::SelectedColumn({"u2_username", "username", "", "u2",
+                           sql::PG_TYPES::TEXT, false, 0, 0, false}),
       sql::SelectedColumn({"Create Time", "inserted_at", "", "m",
-                            PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+                           sql::PG_TYPES::TIMESTAMP, true, 0, 0, false}),
       sql::SelectedColumn({"Update Time", "updated_at", "", "m",
-                            PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+                           sql::PG_TYPES::TIMESTAMP, true, 0, 0, false}),
   });
 
   auto u1 = sql::ObjectIdentifier("entity", "entity_user", "u1");

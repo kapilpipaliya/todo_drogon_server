@@ -1,3 +1,4 @@
+namespace openproj {
 namespace GroupsHelper {
    void group_settings_tabs() {
 //    [{ name: 'general', partial: 'groups/general', label: :label_general },
@@ -11,4 +12,5 @@ namespace GroupsHelper {
 //    this->autocompleter_filters.push({ selector: 'status', operator: '=', values: ['active'] })
 //    this->autocompleter_filters.push({ selector: 'group', operator: '!', values: [this->group.id] })
   }
+}
 }

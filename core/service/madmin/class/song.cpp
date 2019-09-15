@@ -3,7 +3,7 @@
 #include <utility>
 #include "../../../sql/dba.h"
 
-madmin::Song::Song(std::shared_ptr<websocket::MAdminContext> context_)
+madmin::Song::Song(std::shared_ptr<websocket::music::MAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("music", "song", "s"));
   setupTable();
@@ -12,61 +12,66 @@ madmin::Song::Song(std::shared_ptr<websocket::MAdminContext> context_)
 void madmin::Song::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
-      sql::SelectedColumn({"ID No", "id", "", "s", PG_TYPES::INT8}),
-      sql::SelectedColumn({"file", "file", "", "s", PG_TYPES::TEXT, false}),
+      sql::SelectedColumn({"ID No", "id", "", "s", sql::PG_TYPES::INT8}),
       sql::SelectedColumn(
-          {"Catalog", "catalog_id", "", "s", PG_TYPES::INT8, true, 1, 1}),
+          {"file", "file", "", "s", sql::PG_TYPES::TEXT, false}),
       sql::SelectedColumn(
-          {"c_name", "name", "", "c", PG_TYPES::TEXT, false, 0, 0, false}),
+          {"Catalog", "catalog_id", "", "s", sql::PG_TYPES::INT8, true, 1, 1}),
+      sql::SelectedColumn(
+          {"c_name", "name", "", "c", sql::PG_TYPES::TEXT, false, 0, 0, false}),
       //            sql::SelectedColumn({"Album", "album_id", "", "s",
-      //            PG_TYPES::INT8}), sql::SelectedColumn({"Year", "year", "",
-      //            "s", PG_TYPES::INT4}), sql::SelectedColumn({"Artist",
-      //            "artist_id", "", "s", PG_TYPES::INT8}),
-      sql::SelectedColumn({"Title", "title", "", "s", PG_TYPES::TEXT}),
+      //            sql::PG_TYPES::INT8}), sql::SelectedColumn({"Year", "year",
+      //            "", "s", sql::PG_TYPES::INT4}),
+      //            sql::SelectedColumn({"Artist", "artist_id", "", "s",
+      //            sql::PG_TYPES::INT8}),
+      sql::SelectedColumn({"Title", "title", "", "s", sql::PG_TYPES::TEXT}),
       //            sql::SelectedColumn({"bitrate", "bitrate", "", "s",
-      //            PG_TYPES::INT4}), sql::SelectedColumn({"rate", "rate", "",
-      //            "s", PG_TYPES::INT4}), sql::SelectedColumn({"mode", "mode",
-      //            "", "s", PG_TYPES::ENUM}),
-      sql::SelectedColumn({"size", "size", "", "s", PG_TYPES::INT8}),
+      //            sql::PG_TYPES::INT4}), sql::SelectedColumn({"rate", "rate",
+      //            "", "s", sql::PG_TYPES::INT4}), sql::SelectedColumn({"mode",
+      //            "mode",
+      //            "", "s", sql::PG_TYPES::ENUM}),
+      sql::SelectedColumn({"size", "size", "", "s", sql::PG_TYPES::INT8}),
       //            sql::SelectedColumn({"time", "time", "", "s",
-      //            PG_TYPES::INT4}), sql::SelectedColumn({"track", "track",
-      //            "", "s", PG_TYPES::INT4}), sql::SelectedColumn({"mbid",
-      //            "mbid", "", "s", PG_TYPES::TEXT}),
+      //            sql::PG_TYPES::INT4}), sql::SelectedColumn({"track",
+      //            "track",
+      //            "", "s", sql::PG_TYPES::INT4}), sql::SelectedColumn({"mbid",
+      //            "mbid", "", "s", sql::PG_TYPES::TEXT}),
       //            sql::SelectedColumn({"played", "played", "", "s",
-      //            PG_TYPES::BOOL}), sql::SelectedColumn({"enabled",
-      //            "enabled", "", "s", PG_TYPES::BOOL}),
+      //            sql::PG_TYPES::BOOL}), sql::SelectedColumn({"enabled",
+      //            "enabled", "", "s", sql::PG_TYPES::BOOL}),
       //            sql::SelectedColumn({"update_time", "update_time", "", "s",
-      //            PG_TYPES::TIMESTAMP}),
+      //            sql::PG_TYPES::TIMESTAMP}),
       //            sql::SelectedColumn({"addition_time", "addition_time",
-      //            "", "s", PG_TYPES::TIMESTAMP}),
+      //            "", "s", sql::PG_TYPES::TIMESTAMP}),
       //            sql::SelectedColumn({"user_upload", "user_upload", "", "s",
-      //            PG_TYPES::INT8}), sql::SelectedColumn({"license",
-      //            "license", "", "s", PG_TYPES::INT8}),
+      //            sql::PG_TYPES::INT8}), sql::SelectedColumn({"license",
+      //            "license", "", "s", sql::PG_TYPES::INT8}),
       //            sql::SelectedColumn({"composer", "composer", "", "s",
-      //            PG_TYPES::TEXT}), sql::SelectedColumn({"channels",
-      //            "channels", "", "s", PG_TYPES::INT4}),
+      //            sql::PG_TYPES::TEXT}), sql::SelectedColumn({"channels",
+      //            "channels", "", "s", sql::PG_TYPES::INT4}),
 
-      // sql::SelectedColumn({"no", "no", "", "s", PG_TYPES::TEXT}),
+      // sql::SelectedColumn({"no", "no", "", "s", sql::PG_TYPES::TEXT}),
       // sql::SelectedColumn({"sequence_id", "sequence_id", "", "s",
-      // PG_TYPES::INT8, false}), sql::SelectedColumn({"Create Date",
-      // "last_update", "", "s", PG_TYPES::TIMESTAMP}),
+      // sql::PG_TYPES::INT8, false}), sql::SelectedColumn({"Create Date",
+      // "last_update", "", "s", sql::PG_TYPES::TIMESTAMP}),
       // sql::SelectedColumn({"last_clean Date", "last_clean", "", "s",
-      // PG_TYPES::TIMESTAMP}), sql::SelectedColumn({"last_add Date",
-      // "last_add", "", "s", PG_TYPES::TIMESTAMP}),
+      // sql::PG_TYPES::TIMESTAMP}), sql::SelectedColumn({"last_add Date",
+      // "last_add", "", "s", sql::PG_TYPES::TIMESTAMP}),
       // sql::SelectedColumn({"Rename Pattern", "rename_pattern", "", "s",
-      // PG_TYPES::TEXT, true}), sql::SelectedColumn({"Sort Pattern",
-      // "sort_pattern", "", "s", PG_TYPES::TEXT, true}),
+      // sql::PG_TYPES::TEXT, true}), sql::SelectedColumn({"Sort Pattern",
+      // "sort_pattern", "", "s", sql::PG_TYPES::TEXT, true}),
       // sql::SelectedColumn({"Gather Types", "gather_types", "", "s",
-      // PG_TYPES::TEXT, true}), sql::SelectedColumn({"Created By",
-      // "create_user_id", "", "s", PG_TYPES::INT8, true, 1, 0, false}),
+      // sql::PG_TYPES::TEXT, true}), sql::SelectedColumn({"Created By",
+      // "create_user_id", "", "s", sql::PG_TYPES::INT8, true, 1, 0, false}),
       // sql::SelectedColumn({"u1_username", "username", "", "u1",
-      // PG_TYPES::TEXT, false, 0, 0, false}), sql::SelectedColumn({"Updated
-      // By", "update_user_id", "", "s", PG_TYPES::INT8, true, 1, 0, false}),
+      // sql::PG_TYPES::TEXT, false, 0, 0, false}),
+      // sql::SelectedColumn({"Updated By", "update_user_id", "", "s",
+      // sql::PG_TYPES::INT8, true, 1, 0, false}),
       // sql::SelectedColumn({"u2_username", "username", "", "u2",
-      // PG_TYPES::TEXT, false, 0, 0, false}), sql::SelectedColumn({"Create
-      // Time", "inserted_at", "", "s", PG_TYPES::TIMESTAMP, true, 0, 0,
+      // sql::PG_TYPES::TEXT, false, 0, 0, false}), sql::SelectedColumn({"Create
+      // Time", "inserted_at", "", "s", sql::PG_TYPES::TIMESTAMP, true, 0, 0,
       // false}), sql::SelectedColumn({"Update Time", "updated_at", "", "s",
-      // PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+      // sql::PG_TYPES::TIMESTAMP, true, 0, 0, false}),
   });
   auto c = sql::ObjectIdentifier("music", "catalog", "c");
   // auto u1 = sql::ObjectIdentifier("entity", "entity_user", "u1");
@@ -160,8 +165,8 @@ nlohmann::json madmin::Song::save_song_binary(
   auto clientPtr = drogon::app().getDbClient("sce");
   auto transPtr = clientPtr->newTransaction();
   try {
-    auto r = Dba::writeInTrans(transPtr, strSql, session_id);
-    Dba::writeInTrans(
+    auto r = sql::Dba::writeInTrans(transPtr, strSql, session_id);
+    sql::Dba::writeInTrans(
         transPtr,
         sql::CRUDHelper::dele_("music.temp_file_meta",
                                "where session_id = $1 and event = $2"),
@@ -172,8 +177,7 @@ nlohmann::json madmin::Song::save_song_binary(
 
     auto event_json = nlohmann::json::parse(r[0]["event"].c_str());
 
-    namespace fs = boost::filesystem;
-    auto home = fs::path(getenv("HOME"));
+    auto home = boost::filesystem::path(getenv("HOME"));
 
     std::string name = r[0][1].c_str();
     auto size = r[0][2].as<long>();
@@ -212,7 +216,8 @@ nlohmann::json madmin::Song::save_song_binary(
     nlohmann::json ret;
     nlohmann::json jresult;
     jresult[0] = event_json;
-    auto insert_result = Dba::writeInTrans(transPtr, strSql, name, size, type);
+    auto insert_result =
+        sql::Dba::writeInTrans(transPtr, strSql, name, size, type);
     jresult[1] = insert_result[0]["id"].as<long>();
     // jresult[1] = e.what();
     ret[0] = jresult;

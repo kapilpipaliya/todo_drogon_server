@@ -1,3 +1,4 @@
+namespace openproj {
 namespace AccountsHelper {
   class Footer{
     // include OpenProject::TextFormatting
@@ -48,4 +49,5 @@ namespace AccountsHelper {
 //      Setting.registration_footer[lang.to_s].presence
 //    }
 //  }
+}
 }

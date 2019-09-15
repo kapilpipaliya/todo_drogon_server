@@ -2,6 +2,7 @@
 
 #include <drogon/WebSocketController.h>
 namespace websocket {
+namespace juser {
 class JUserContext {
  public:
   JUserContext(const drogon::HttpRequestPtr &req,
@@ -19,4 +20,5 @@ class JUserContext {
   long user_id = 0;
   const drogon::WebSocketConnectionPtr &wsConnPtr;
 };
+}  // namespace juser
 }  // namespace websocket

@@ -3,6 +3,7 @@
 
 #include "inc/todoservices.h"
 namespace superactor {
+namespace todoactor {
 TodoActor::TodoActor(caf::actor_config &cfg) : caf::event_based_actor(cfg) {}
 
 caf::behavior TodoActor::make_behavior() {
@@ -80,4 +81,5 @@ nlohmann::json TodoActor::handleBinaryMessage(
   return ret;
 }
 
+}  // namespace todoactor
 }  // namespace superactor

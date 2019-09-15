@@ -10,6 +10,7 @@
  * work, this lists all required functions and the expected
  * input
  */
+namespace madmin {
 class PlayableItem {
  public:
   PlayableItem();
@@ -67,5 +68,5 @@ class PlayableItem {
    */
   virtual std::vector<int> get_catalogs() = 0;
 };
-
+}
 #endif  // PLAYABLEITEM_H

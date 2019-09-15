@@ -11,13 +11,14 @@
 
 #include "context/madmincontext.h"
 namespace websocket {
+namespace music {
 void MusicWebsock::handleNewMessage(
     const drogon::WebSocketConnectionPtr& wsConnPtr, std::string&& message,
     const drogon::WebSocketMessageType& type) {
   // std::chrono::seconds(10)
   superactor::globalCAF.communicateWithActors()
       ->request(superactor::globalCAF.mainActor(), caf::infinite,
-                run_atom::value, MainActorType::MAdmin, wsConnPtr,
+                run_atom::value, superactor::MainActorType::MAdmin, wsConnPtr,
                 std::move(message), type)
       .receive(
           [&]() {
@@ -35,7 +36,7 @@ void MusicWebsock::handleNewMessage(
 void MusicWebsock::handleNewConnection(
     const drogon::HttpRequestPtr& req,
     const drogon::WebSocketConnectionPtr& wsConnPtr) {
-  std::shared_ptr<websocket::MAdminContext> context =
+  std::shared_ptr<websocket::music::MAdminContext> context =
       std::make_shared<MAdminContext>(req, wsConnPtr);
   wsConnPtr->setContext(context);
 }
@@ -45,4 +46,5 @@ void MusicWebsock::handleConnectionClosed(
       superactor::globalCAF.mainActor(), caf::infinite, exit_atom::value,
       wsConnPtr);
 }
+}  // namespace music
 }  // namespace websocket

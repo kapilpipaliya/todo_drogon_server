@@ -11,7 +11,7 @@
 namespace madmin {
 class UI {
  public:
-  UI(std::shared_ptr<websocket::MAdminContext>);
+  UI(std::shared_ptr<websocket::music::MAdminContext>);
   void setupTable();
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
@@ -133,7 +133,7 @@ class UI {
   // static void get_logo_url();
   // static void is_grid_view($type);
  private:
-  std::shared_ptr<websocket::MAdminContext> context;
+  std::shared_ptr<websocket::music::MAdminContext> context;
   sql::Query query;
 };
 }  // namespace madmin

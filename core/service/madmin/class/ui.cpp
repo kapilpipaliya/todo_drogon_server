@@ -3,7 +3,8 @@
 #include <utility>
 #include "../../../sql/dba.h"
 
-madmin::UI::UI(std::shared_ptr<websocket::MAdminContext> context_) : context(std::move(context_)) {
+madmin::UI::UI(std::shared_ptr<websocket::music::MAdminContext> context_)
+    : context(std::move(context_)) {
   setupTable();
 }
 
@@ -115,7 +116,7 @@ nlohmann::json madmin::UI::getUserTypeData() {
 
 nlohmann::json madmin::UI::getCatalogFilterData() {
   std::string sql = "select id, name from music.catalog order by id";
-  auto r = Dba::read(sql);
+  auto r = sql::Dba::read(sql);
   nlohmann::json out =
       nlohmann::json::array({nlohmann::json::array({"All", nullptr})});
   for (const auto& i : r) {

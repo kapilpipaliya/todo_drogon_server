@@ -6,7 +6,7 @@
 namespace jadmin {
 class CertifiedBy {
  public:
-  CertifiedBy(std::shared_ptr<websocket::JAdminContext>);
+  CertifiedBy(std::shared_ptr<websocket::jadmin::JAdminContext>);
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
 
@@ -14,7 +14,7 @@ class CertifiedBy {
   void setupTable();
   nlohmann::json ins(nlohmann::json event, nlohmann::json args);
   nlohmann::json upd(nlohmann::json event, nlohmann::json args);
-  std::shared_ptr<websocket::JAdminContext> context;
+  std::shared_ptr<websocket::jadmin::JAdminContext> context;
   sql::Query query;
 };
 }  // namespace jadmin

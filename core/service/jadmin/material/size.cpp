@@ -3,7 +3,8 @@
 #include <utility>
 
 namespace jadmin {
-Size::Size(std::shared_ptr<websocket::JAdminContext> context_) : context(std::move(context_)) {
+Size::Size(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
+    : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("material", "size", "s"));
   setupTable();
 }
@@ -31,18 +32,19 @@ nlohmann::json Size::handleEvent(nlohmann::json event, unsigned long next,
 void Size::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
-      sql::SelectedColumn({"Id", "id", "", "s", PG_TYPES::INT8, false}),
-      sql::SelectedColumn({"Name", "name", "", "s", PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"Id", "id", "", "s", sql::PG_TYPES::INT8, false}),
+      sql::SelectedColumn({"Name", "name", "", "s", sql::PG_TYPES::TEXT, true}),
       // sql::SelectedColumn({"Created By", "create_user_id", "", "sm",
-      // PG_TYPES::INT8, true, 1, 0, false}),
+      // sql::PG_TYPES::INT8, true, 1, 0, false}),
       // sql::SelectedColumn({"u1_username", "username", "", "u1",
-      // PG_TYPES::TEXT, false, 0, 0, false}), sql::SelectedColumn({"Updated
-      // By", "update_user_id", "", "sm", PG_TYPES::INT8, true, 1, 0, false}),
+      // sql::PG_TYPES::TEXT, false, 0, 0, false}),
+      // sql::SelectedColumn({"Updated By", "update_user_id", "", "sm",
+      // sql::PG_TYPES::INT8, true, 1, 0, false}),
       // sql::SelectedColumn({"u2_username", "username", "", "u2",
-      // PG_TYPES::TEXT, false, 0, 0, false}), sql::SelectedColumn({"Create
-      // Time", "inserted_at", "", "sm", PG_TYPES::TIMESTAMP, true, 0, 0,
+      // sql::PG_TYPES::TEXT, false, 0, 0, false}), sql::SelectedColumn({"Create
+      // Time", "inserted_at", "", "sm", sql::PG_TYPES::TIMESTAMP, true, 0, 0,
       // false}), sql::SelectedColumn({"Update Time", "updated_at", "", "sm",
-      // PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+      // sql::PG_TYPES::TIMESTAMP, true, 0, 0, false}),
   });
   auto u1 = sql::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sql::ObjectIdentifier("entity", "entity_user", "u2");

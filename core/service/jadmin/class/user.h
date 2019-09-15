@@ -41,7 +41,7 @@ class User {
   struct Catalog {};
 
  public:
-  User(std::shared_ptr<websocket::JAdminContext>);
+  User(std::shared_ptr<websocket::jadmin::JAdminContext>);
   // User(int user_id);
   void setupTable();
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
@@ -447,7 +447,7 @@ class User {
   nlohmann::json checkout(const nlohmann::json& event,
                           const nlohmann::json& args);
 
-  std::shared_ptr<websocket::JAdminContext> context;
+  std::shared_ptr<websocket::jadmin::JAdminContext> context;
   sql::Query query;
 };
 }  // namespace jadmin

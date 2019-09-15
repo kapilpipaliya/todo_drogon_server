@@ -50,6 +50,7 @@
 // - Introduces param :sort
 //
 
+namespace openproj {
 namespace SortHelper {
   class SortCriteria{
 //    attr_reader :criteria
@@ -333,4 +334,5 @@ namespace SortHelper {
 //    caption
 //  }
 };
+}
 }

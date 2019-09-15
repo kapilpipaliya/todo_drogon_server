@@ -3,7 +3,7 @@
 
 #include "inc/juserervices.h"
 namespace superactor {
-
+namespace juseractor {
 JUserActor::JUserActor(caf::actor_config &cfg) : caf::event_based_actor(cfg) {}
 
 caf::behavior JUserActor::make_behavior() {
@@ -102,7 +102,8 @@ nlohmann::json JUserActor::handleBinaryMessage(
     const drogon::WebSocketConnectionPtr &wsConnPtr, std::string &message) {
   nlohmann::json event;
   try {
-    long c = wsConnPtr->getContext<websocket::JUserContext>()->sessionId();
+    long c =
+        wsConnPtr->getContext<websocket::juser::JUserContext>()->sessionId();
     auto sqlSession =
         "SELECT event FROM public.temp_image where session_id = $1";
     auto clientPtr = drogon::app().getDbClient("sce");
@@ -139,4 +140,5 @@ nlohmann::json JUserActor::handleBinaryMessage(
   return ret;
 }
 
+}  // namespace juseractor
 }  // namespace superactor

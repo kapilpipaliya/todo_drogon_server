@@ -6,6 +6,7 @@
 #include "spdlogfix.h"
 #include "useractorbase.h"
 namespace superactor {
+namespace musicactor {
 class MAdminActor : public caf::event_based_actor, public UserActorBase {
  public:
   MAdminActor(caf::actor_config& cfg);
@@ -22,8 +23,9 @@ class MAdminActor : public caf::event_based_actor, public UserActorBase {
       std::string& message) override;
 
   template <typename T>
-  nlohmann::json handleService(std::shared_ptr<websocket::MAdminContext> contx,
-                               nlohmann::json in) {
+  nlohmann::json handleService(
+      std::shared_ptr<websocket::music::MAdminContext> contx,
+      nlohmann::json in) {
     try {
       T p{contx};
       auto r = p.handleEvent(in[0], 1, in[1]);
@@ -35,5 +37,6 @@ class MAdminActor : public caf::event_based_actor, public UserActorBase {
     }
   }
 };
+}  // namespace musicactor
 }  // namespace superactor
 #endif

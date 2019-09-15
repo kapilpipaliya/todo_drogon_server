@@ -4,7 +4,6 @@
 #include "../../../sql/dba.h"
 #include "./session.h"
 
-
 #include "core/service/openproj/controllers/account_controller.h"
 #include "core/service/openproj/controllers/activities_controller.h"
 #include "core/service/openproj/controllers/admin_controller.h"
@@ -81,12 +80,10 @@
 #include "core/service/openproj/controllers/work_packages/calendars_controller.h"
 #include "core/service/openproj/controllers/work_packages/moves_controller.h"
 #include "core/service/openproj/controllers/work_packages/reports_controller.h"
-//#include "core/service/openproj/controllers/work_packages/settings_controller.h"
+//#include
+//"core/service/openproj/controllers/work_packages/settings_controller.h"
 
 #include "core/service/openproj/controllers/work_packages_controller.h"
-
-
-
 
 #include "core/service/openproj/helpers/accessibility_helper.h"
 #include "core/service/openproj/helpers/accounts_helper.h"
@@ -154,12 +151,11 @@
 #include "core/service/openproj/helpers/work_packages_filter_helper.h"
 #include "core/service/openproj/helpers/work_packages_helper.h"
 
-
 #include "core/service/openproj/mailers/base_mailer.h"
 #include "core/service/openproj/mailers/project_mailer.h"
 #include "core/service/openproj/mailers/user_mailer.h"
 
-//models 467 files
+// models 467 files
 
 #include "core/service/openproj/policies/base_policy.h"
 #include "core/service/openproj/policies/query_policy.h"
@@ -171,9 +167,9 @@
 #include "core/service/openproj/policies/scm/git_authorization_policy.h"
 #include "core/service/openproj/policies/scm/subversion_authorization_policy.h"
 
-//seeders 42 files
+// seeders 42 files
 
-//services 113 files
+// services 113 files
 
 #include "core/service/openproj/uploaders/file_uploader.h"
 #include "core/service/openproj/uploaders/fog_file_uploader.h"
@@ -221,7 +217,7 @@ nlohmann::json todo::Auth::handleEvent(nlohmann::json event, unsigned long next,
           "select (u.expiry > now()) as isexpired, u.disabled from music.user "
           "as u WHERE "
           "username = $1";
-      auto r = Dba::read(isauthorised, args["user"].get<std::string>());
+      auto r = sql::Dba::read(isauthorised, args["user"].get<std::string>());
       if (r.empty()) {
         return {websocket::WsFns::successJsonObject(event, false, "Error")};
       } else if (!r[0]["isexpired"].isNull() && r[0]["isexpired"].as<bool>()) {
@@ -267,7 +263,8 @@ nlohmann::json todo::Auth::saveFileMeta(const nlohmann::json& event,
                                         nlohmann::json args) {
   if (!args.is_array() || args.size() <= 3) {
     nlohmann::json ret;
-    ret[0] = websocket::WsFns::successJsonObject(event, false, "No Valid arguments");
+    ret[0] =
+        websocket::WsFns::successJsonObject(event, false, "No Valid arguments");
     return ret;
   }
   long c = context->sessionId();
@@ -282,8 +279,8 @@ nlohmann::json todo::Auth::saveFileMeta(const nlohmann::json& event,
   try {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
-    auto r = Dba::writeInTrans(transPtr, strSql);
-    // auto r = Dba::writeInTrans(transPtr, strSql, c, args[0].dump(),
+    auto r = sql::Dba::writeInTrans(transPtr, strSql);
+    // auto r = sql::Dba::writeInTrans(transPtr, strSql, c, args[0].dump(),
     // args[1].get<std::string>(), args[2].get<long>(),
     // args[3].get<std::string>());
     nlohmann::json ret;
@@ -343,14 +340,14 @@ std::tuple<long, long> todo::Auth::login(const std::string& username,
           "password = $2";
       auto clientPtr = drogon::app().getDbClient("sce");
       auto transPtr = clientPtr->newTransaction();
-      auto r = Dba::writeInTrans(transPtr, sql, username, password);
+      auto r = sql::Dba::writeInTrans(transPtr, sql, username, password);
 
       if (r.size() == 1) {
         user_id = r[0]["id"].as<long>();
         auto sqlSession =
             "INSERT INTO music.session (user_id, expire, value) VALUES ($1, "
             "$2, $3) returning id";
-        auto rs = Dba::writeInTrans(transPtr, sqlSession, user_id, 0L, "");
+        auto rs = sql::Dba::writeInTrans(transPtr, sqlSession, user_id, 0L, "");
         session_id = rs[0]["id"].as<long>();
       }
     } catch (const std::exception& e) {

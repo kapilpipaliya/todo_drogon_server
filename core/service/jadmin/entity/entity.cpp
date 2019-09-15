@@ -4,7 +4,7 @@
 #include "../../../sql/dba.h"
 
 namespace jadmin {
-Entity::Entity(std::shared_ptr<websocket::JAdminContext> context_)
+Entity::Entity(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("entity", "entity", "e"));
   setupTable();
@@ -33,79 +33,86 @@ nlohmann::json Entity::handleEvent(nlohmann::json event, unsigned long next,
 void Entity::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns(
-      {sql::SelectedColumn({"id", "id", "", "e", PG_TYPES::INT8}),
+      {sql::SelectedColumn({"id", "id", "", "e", sql::PG_TYPES::INT8}),
        sql::SelectedColumn({"Entity Type", "entity_type_id", "", "e",
-                            PG_TYPES::INT8, true, 1, 1}),
+                            sql::PG_TYPES::INT8, true, 1, 1}),
+       sql::SelectedColumn({"et_name", "name", "", "et", sql::PG_TYPES::TEXT,
+                            false, 0, 0, false}),
+       sql::SelectedColumn({"no", "no", "", "e", sql::PG_TYPES::TEXT}),
        sql::SelectedColumn(
-           {"et_name", "name", "", "et", PG_TYPES::TEXT, false, 0, 0, false}),
-       sql::SelectedColumn({"no", "no", "", "e", PG_TYPES::TEXT}),
+           {"sequence_id", "sequence_id", "", "e", sql::PG_TYPES::INT8, false}),
+       sql::SelectedColumn({"Code", "slug", "", "e", sql::PG_TYPES::TEXT}),
        sql::SelectedColumn(
-           {"sequence_id", "sequence_id", "", "e", PG_TYPES::INT8, false}),
-       sql::SelectedColumn({"Code", "slug", "", "e", PG_TYPES::TEXT}),
-       sql::SelectedColumn({"Parent", "parent_id", "", "e", PG_TYPES::INT8}),
+           {"Parent", "parent_id", "", "e", sql::PG_TYPES::INT8}),
        sql::SelectedColumn(
-           {"Legal Name", "legal_name", "", "e", PG_TYPES::TEXT}),
+           {"Legal Name", "legal_name", "", "e", sql::PG_TYPES::TEXT}),
        sql::SelectedColumn(
-           {"tax_no", "tax_no", "", "e", PG_TYPES::TEXT, false}),
+           {"tax_no", "tax_no", "", "e", sql::PG_TYPES::TEXT, false}),
        sql::SelectedColumn(
-           {"First Name", "first_name", "", "e", PG_TYPES::TEXT}),
+           {"First Name", "first_name", "", "e", sql::PG_TYPES::TEXT}),
        sql::SelectedColumn(
-           {"Middle Name", "middle_name", "", "e", PG_TYPES::TEXT}),
-       sql::SelectedColumn({"Last Name", "last_name", "", "e", PG_TYPES::TEXT}),
-       sql::SelectedColumn({"Email", "email", "", "e", PG_TYPES::TEXT, true}),
+           {"Middle Name", "middle_name", "", "e", sql::PG_TYPES::TEXT}),
        sql::SelectedColumn(
-           {"Password", "password", "", "eu", PG_TYPES::TEXT, true}),
+           {"Last Name", "last_name", "", "e", sql::PG_TYPES::TEXT}),
        sql::SelectedColumn(
-           {"Birth Date", "birth_date", "", "e", PG_TYPES::TIMESTAMP, false}),
+           {"Email", "email", "", "e", sql::PG_TYPES::TEXT, true}),
        sql::SelectedColumn(
-           {"Start Date", "start_date", "", "e", PG_TYPES::TIMESTAMP}),
+           {"Password", "password", "", "eu", sql::PG_TYPES::TEXT, true}),
+       sql::SelectedColumn({"Birth Date", "birth_date", "", "e",
+                            sql::PG_TYPES::TIMESTAMP, false}),
        sql::SelectedColumn(
-           {"End Date", "end_date", "", "e", PG_TYPES::TIMESTAMP}),
+           {"Start Date", "start_date", "", "e", sql::PG_TYPES::TIMESTAMP}),
        sql::SelectedColumn(
-           {"Salary", "salary", "", "e", PG_TYPES::DOUBLE, false}),
-       sql::SelectedColumn({"Rate", "rate", "", "e", PG_TYPES::DOUBLE, false}),
+           {"End Date", "end_date", "", "e", sql::PG_TYPES::TIMESTAMP}),
        sql::SelectedColumn(
-           {"Active", "active", "", "e", PG_TYPES::BOOL, false}),
+           {"Salary", "salary", "", "e", sql::PG_TYPES::DOUBLE, false}),
        sql::SelectedColumn(
-           {"Pay To Name", "pay_to_name", "", "e", PG_TYPES::TEXT, false}),
+           {"Rate", "rate", "", "e", sql::PG_TYPES::DOUBLE, false}),
        sql::SelectedColumn(
-           {"Threshold", "threshold", "", "e", PG_TYPES::DOUBLE, false}),
+           {"Active", "active", "", "e", sql::PG_TYPES::BOOL, false}),
        sql::SelectedColumn(
-           {"Credit Limit", "credit_limit", "", "e", PG_TYPES::DOUBLE, false}),
-       sql::SelectedColumn({"Terms", "terms", "", "e", PG_TYPES::INT4, false}),
+           {"Pay To Name", "pay_to_name", "", "e", sql::PG_TYPES::TEXT, false}),
        sql::SelectedColumn(
-           {"Discount", "discount", "", "e", PG_TYPES::DOUBLE, false}),
+           {"Threshold", "threshold", "", "e", sql::PG_TYPES::DOUBLE, false}),
+       sql::SelectedColumn({"Credit Limit", "credit_limit", "", "e",
+                            sql::PG_TYPES::DOUBLE, false}),
+       sql::SelectedColumn(
+           {"Terms", "terms", "", "e", sql::PG_TYPES::INT4, false}),
+       sql::SelectedColumn(
+           {"Discount", "discount", "", "e", sql::PG_TYPES::DOUBLE, false}),
        sql::SelectedColumn({"Discount Terms", "discount_terms", "", "e",
-                            PG_TYPES::INT4, false}),
+                            sql::PG_TYPES::INT4, false}),
        sql::SelectedColumn({"discount_account_id", "discount_account_id", "",
-                            "e", PG_TYPES::INT8, false}),
+                            "e", sql::PG_TYPES::INT8, false}),
        sql::SelectedColumn({"ar_ap_account_id", "ar_ap_account_id", "", "e",
-                            PG_TYPES::INT8, false}),
+                            sql::PG_TYPES::INT8, false}),
        sql::SelectedColumn({"cash_account_id", "cash_account_id", "", "e",
-                            PG_TYPES::INT8, false}),
+                            sql::PG_TYPES::INT8, false}),
        sql::SelectedColumn(
-           {"currency_id", "currency_id", "", "e", PG_TYPES::INT8, false}),
+           {"currency_id", "currency_id", "", "e", sql::PG_TYPES::INT8, false}),
        sql::SelectedColumn({"price_group_id", "price_group_id", "", "e",
-                            PG_TYPES::INT8, false}),
-       sql::SelectedColumn(
-           {"tax_included", "tax_included", "", "e", PG_TYPES::BOOL, false}),
+                            sql::PG_TYPES::INT8, false}),
+       sql::SelectedColumn({"tax_included", "tax_included", "", "e",
+                            sql::PG_TYPES::BOOL, false}),
 
        // sql::SelectedColumn({"Created By", "create_user_id", "", "e",
-       // PG_TYPES::INT8, true, 1, 0, false}),
+       // sql::PG_TYPES::INT8, true, 1, 0, false}),
        // sql::SelectedColumn({"u1_username", "username", "", "u1",
-       // PG_TYPES::TEXT, false, 0, 0, false}), sql::SelectedColumn({"Updated
-       // By", "update_user_id", "", "e", PG_TYPES::INT8, true, 1, 0, false}),
+       // sql::PG_TYPES::TEXT, false, 0, 0, false}),
+       // sql::SelectedColumn({"Updated By", "update_user_id", "", "e",
+       // sql::PG_TYPES::INT8, true, 1, 0, false}),
        // sql::SelectedColumn({"u2_username", "username", "", "u2",
-       // PG_TYPES::TEXT, false, 0, 0, false}), sql::SelectedColumn({"Create
-       // Time", "inserted_at", "", "e", PG_TYPES::TIMESTAMP, true, 0, 0,
-       // false}), sql::SelectedColumn({"Update Time", "updated_at", "", "e",
-       // PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+       // sql::PG_TYPES::TEXT, false, 0, 0, false}),
+       // sql::SelectedColumn({"Create Time", "inserted_at", "", "e",
+       // sql::PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+       // sql::SelectedColumn({"Update Time", "updated_at", "", "e",
+       // sql::PG_TYPES::TIMESTAMP, true, 0, 0, false}),
        sql::SelectedColumn(
            {"Addresses", "entity_address",
             "json_agg(distinct jsonb_build_array(ea.id, ea.address_type_id, "
             "ea.line1, ea.line2, ea.line3, ea.city, ea.state, ea.country, "
             "ea.zipcode, ea.phone, ea.ismain ))",
-            "ea", PG_TYPES::PSJSON, false})});
+            "ea", sql::PG_TYPES::PSJSON, false})});
   auto entity_type = sql::ObjectIdentifier("entity", "entity_type", "et");
   auto entity_address = sql::ObjectIdentifier("entity", "entity_address", "ea");
   auto entity_user = sql::ObjectIdentifier("entity", "entity_user", "eu");
@@ -173,30 +180,35 @@ void save_Entity_Address(
                           i[10].get<bool>()});
   }
 
-  auto all_ct = Dba::writeInTrans(transPtr, strSqlPostCategories, entity_id);
+  auto all_ct =
+      sql::Dba::writeInTrans(transPtr, strSqlPostCategories, entity_id);
   // For each saved tones, If saved tone not exist in new tones, delete it.
   for (auto r : all_ct) {
     auto it = std::find_if(
         inVector.begin(), inVector.end(),
         [&](const EntityAddress &t) { return t.id == r["id"].as<long>(); });
     if (it == inVector.end()) {  // Element not Found
-      Dba::writeInTrans(transPtr, strSqlPostCategoryDel, r["id"].as<long>());
+      sql::Dba::writeInTrans(transPtr, strSqlPostCategoryDel,
+                             r["id"].as<long>());
     }
   }
   // For each new tones, insert it if it not already exist.
   for (const auto &r : inVector) {
-    auto y = Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind, r.id);
+    auto y =
+        sql::Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind, r.id);
     if (y.empty()) {
-      Dba::writeInTrans(transPtr, strSqlPostCategoryInsert, entity_id,
-                        r.addess_type_id, r.line1, r.line2, r.line3, r.city,
-                        r.state, r.country, r.zipcode, r.phone, r.ismain);
+      sql::Dba::writeInTrans(transPtr, strSqlPostCategoryInsert, entity_id,
+                             r.addess_type_id, r.line1, r.line2, r.line3,
+                             r.city, r.state, r.country, r.zipcode, r.phone,
+                             r.ismain);
     } else {  // update
       // if(y[0][0].as<long>() != r.addess_type_id || y[0][2].as<int>() != r.pcs
       // || y[0][3].as<double>() != r.weight || y[0][4].as<double>() != r.price
       // || y[0][5].as<bool>() != r.ismain) {
-      Dba::writeInTrans(transPtr, strSqlPostCategoryUpdateAtt, r.id,
-                        r.addess_type_id, r.line1, r.line2, r.line3, r.city,
-                        r.state, r.country, r.zipcode, r.phone, r.ismain);
+      sql::Dba::writeInTrans(transPtr, strSqlPostCategoryUpdateAtt, r.id,
+                             r.addess_type_id, r.line1, r.line2, r.line3,
+                             r.city, r.state, r.country, r.zipcode, r.phone,
+                             r.ismain);
       //}
     }
   }
@@ -217,7 +229,7 @@ nlohmann::json Entity::ins(nlohmann::json event, nlohmann::json args) {
   auto clientPtr = drogon::app().getDbClient("sce");
   auto transPtr = clientPtr->newTransaction();
   try {
-    auto x = Dba::writeInTrans(
+    auto x = sql::Dba::writeInTrans(
         transPtr, strSql, args[0]["entity_type_id"].get<long>(),
         args[0]["no"].get<std::string>(),
         args[0]["sequence_id"].is_null() ? 0L
@@ -263,10 +275,10 @@ nlohmann::json Entity::ins(nlohmann::json event, nlohmann::json args) {
     std::string strSqlUser =
         "INSERT INTO entity.entity_user (entity_id, username, password, "
         "password_hash) VALUES ($1, $2, $3, $4)";
-    Dba::writeInTrans(transPtr, strSqlUser, entity_id,
-                      args[0]["email"].get<std::string>(),
-                      args[0]["eu_password"].get<std::string>(),
-                      args[0]["eu_password"].get<std::string>());
+    sql::Dba::writeInTrans(transPtr, strSqlUser, entity_id,
+                           args[0]["email"].get<std::string>(),
+                           args[0]["eu_password"].get<std::string>(),
+                           args[0]["eu_password"].get<std::string>());
     save_Entity_Address(args, transPtr, entity_id);
 
     nlohmann::json ret;
@@ -296,7 +308,7 @@ nlohmann::json Entity::upd(nlohmann::json event, nlohmann::json args) {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     try {
-      Dba::writeInTrans(
+      sql::Dba::writeInTrans(
           transPtr, strSql, args[0]["id"].get<long>(),
           args[0]["entity_type_id"].get<long>(),
           args[0]["no"].get<std::string>(),
@@ -346,10 +358,10 @@ nlohmann::json Entity::upd(nlohmann::json event, nlohmann::json args) {
       std::string strSqlUser =
           "UPDATE entity.entity_user set (username, password, password_hash) = "
           "ROW($2, $3, $4) where entity_id = $1";
-      Dba::writeInTrans(transPtr, strSqlUser, entity_id,
-                        args[0]["email"].get<std::string>(),
-                        args[0]["eu_password"].get<std::string>(),
-                        args[0]["eu_password"].get<std::string>());
+      sql::Dba::writeInTrans(transPtr, strSqlUser, entity_id,
+                             args[0]["email"].get<std::string>(),
+                             args[0]["eu_password"].get<std::string>(),
+                             args[0]["eu_password"].get<std::string>());
       save_Entity_Address(args, transPtr, entity_id);
 
       nlohmann::json ret;
@@ -374,52 +386,53 @@ nlohmann::json Entity::del(nlohmann::json event, nlohmann::json args) {
   auto transPtr = clientPtr->newTransaction();
   try {
     auto entity_id = args[0][0].get<long>();
-    Dba::writeInTrans(transPtr,
-                      sql::CRUDHelper::dele_("entity.notification",
-                                             "where from_entity_id = $1"),
-                      entity_id);
-    Dba::writeInTrans(transPtr,
-                      sql::CRUDHelper::dele_("entity.notification",
-                                             "where to_entity_id = $1"),
-                      entity_id);
+    sql::Dba::writeInTrans(transPtr,
+                           sql::CRUDHelper::dele_("entity.notification",
+                                                  "where from_entity_id = $1"),
+                           entity_id);
+    sql::Dba::writeInTrans(transPtr,
+                           sql::CRUDHelper::dele_("entity.notification",
+                                                  "where to_entity_id = $1"),
+                           entity_id);
 
-    Dba::writeInTrans(transPtr,
-                      sql::CRUDHelper::dele_("entity.entity_bank_account",
-                                             "where entity_id = $1"),
-                      entity_id);
-    Dba::writeInTrans(
+    sql::Dba::writeInTrans(transPtr,
+                           sql::CRUDHelper::dele_("entity.entity_bank_account",
+                                                  "where entity_id = $1"),
+                           entity_id);
+    sql::Dba::writeInTrans(
         transPtr,
         sql::CRUDHelper::dele_("entity.entity_contact", "where entity_id = $1"),
         entity_id);
-    Dba::writeInTrans(
+    sql::Dba::writeInTrans(
         transPtr,
         sql::CRUDHelper::dele_("entity.entity_file", "where entity_id = $1"),
         entity_id);
-    Dba::writeInTrans(
+    sql::Dba::writeInTrans(
         transPtr,
         sql::CRUDHelper::dele_("entity.entity_image", "where entity_id = $1"),
         entity_id);
-    Dba::writeInTrans(
+    sql::Dba::writeInTrans(
         transPtr,
         sql::CRUDHelper::dele_("entity.entity_note", "where entity_id = $1"),
         entity_id);
-    Dba::writeInTrans(
+    sql::Dba::writeInTrans(
         transPtr,
         sql::CRUDHelper::dele_("entity.entity_address", "where entity_id = $1"),
         entity_id);
-    // Dba::writeInTrans(transPtr, "delete from entity.session where
+    // sql::Dba::writeInTrans(transPtr, "delete from entity.session where
     // value->>'value' = $1;", entity_id);
-    Dba::writeInTrans(
-        transPtr, "delete from entity.session where entity_id = $1;", entity_id);
-    Dba::writeInTrans(
+    sql::Dba::writeInTrans(transPtr,
+                           "delete from entity.session where entity_id = $1;",
+                           entity_id);
+    sql::Dba::writeInTrans(
         transPtr,
         sql::CRUDHelper::dele_("entity.entity_user", "where entity_id = $1"),
         entity_id);  // This cant be deleted easily, set the table where it used
                      // null values or deleted user... 2. Also it is used in
                      // same entity table too.!
-    Dba::writeInTrans(transPtr,
-                      sql::CRUDHelper::dele_("entity.entity", "where id = $1"),
-                      entity_id);
+    sql::Dba::writeInTrans(
+        transPtr, sql::CRUDHelper::dele_("entity.entity", "where id = $1"),
+        entity_id);
 
     nlohmann::json ret;
     ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");

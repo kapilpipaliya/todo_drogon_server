@@ -6,7 +6,7 @@
 namespace jadmin {
 class Clarity {
  public:
-  Clarity(std::shared_ptr<websocket::JAdminContext>);
+  Clarity(std::shared_ptr<websocket::jadmin::JAdminContext>);
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
 
@@ -14,7 +14,7 @@ class Clarity {
   void setupTable();
   nlohmann::json ins(nlohmann::json event, nlohmann::json args);
   nlohmann::json upd(nlohmann::json event, nlohmann::json args);
-  std::shared_ptr<websocket::JAdminContext> context;
+  std::shared_ptr<websocket::jadmin::JAdminContext> context;
   sql::Query query;
 };
 }  // namespace jadmin

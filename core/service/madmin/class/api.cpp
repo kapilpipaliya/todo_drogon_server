@@ -2,7 +2,7 @@
 
 #include <utility>
 
-madmin::Api::Api(std::shared_ptr<websocket::MAdminContext> context_) : context(std::move(context_)) {
+madmin::Api::Api(std::shared_ptr<websocket::music::MAdminContext> context_) : context(std::move(context_)) {
   setupTable();
 }
 

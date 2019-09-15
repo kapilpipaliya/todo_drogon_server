@@ -431,24 +431,24 @@ nlohmann::json Query::getJsonData() {
       }
       auto ctype = selectedColumns().at(column).column_type;
       switch (ctype) {
-        case PG_TYPES::INT4:
-        case PG_TYPES::INT8:
+        case sql::PG_TYPES::INT4:
+        case sql::PG_TYPES::INT8:
           // jsonRow[column] = (long)strtolong(row, column);
           jsonRow[column] = result[row][column].as<long>();
           break;
-        case PG_TYPES::BOOL: {
+        case sql::PG_TYPES::BOOL: {
           // jsonRow[column] = strbool(row, column);
           auto r5 = result[row][column].as<std::string>();
           // jsonRow[column] = result[row][column].as<bool>();
           jsonRow[column] = result[row][column].as<std::string>() == "t";
           break;
         }
-          //          case PG_TYPES::
-        case PG_TYPES::DOUBLE:
+          //          case sql::PG_TYPES::
+        case sql::PG_TYPES::DOUBLE:
           // jsonRow[column] = strbool(row, column);
           jsonRow[column] = result[row][column].as<double>();
           break;
-        /*case PG_TYPES::ARRAYINT: {
+        /*case sql::PG_TYPES::ARRAYINT: {
             auto jsonArray = json(nlohmann::json::array());
             auto ar = result[row][column].as_array();
             auto jnc = ar.get_next();
@@ -463,7 +463,7 @@ nlohmann::json Query::getJsonData() {
             jsonRow[column] = jsonArray;
         }
         break;
-        case PG_TYPES::ARRAYTEXT: {
+        case sql::PG_TYPES::ARRAYTEXT: {
             auto jsonArray = json(nlohmann::json::array());
             auto ar = result[row][column].as_array();
             auto jnc = ar.get_next();
@@ -476,11 +476,11 @@ nlohmann::json Query::getJsonData() {
             jsonRow[column] = jsonArray;
         }
         break;*/
-        case PG_TYPES::PSJSON: {
+        case sql::PG_TYPES::PSJSON: {
           auto valin = nlohmann::json::parse(result[row][column].c_str());
           jsonRow[column] = valin;
         } break;
-        case PG_TYPES::TEXT:
+        case sql::PG_TYPES::TEXT:
         default:
           // jsonRow[column] = getValue(row, column);
           jsonRow[column] = result[row][column].c_str();

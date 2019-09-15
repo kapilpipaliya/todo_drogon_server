@@ -3,6 +3,7 @@
 
 #include "todolistservices.h"
 namespace superactor {
+namespace todoactor {
 TodoListActor::TodoListActor(caf::actor_config &cfg)
     : caf::event_based_actor(cfg) {}
 
@@ -30,4 +31,5 @@ nlohmann::json TodoListActor::handleBinaryMessage(
   return nlohmann::json::array();
 }
 
+}  // namespace todoactor
 }  // namespace superactor

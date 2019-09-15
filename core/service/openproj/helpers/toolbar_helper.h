@@ -1,3 +1,4 @@
+namespace openproj {
 namespace ToolbarHelper {
   // include ERB::Util
   // include ActionView::Helpers::OutputSafetyHelper
@@ -72,4 +73,5 @@ namespace ToolbarHelper {
 //      yield
 //    }
   }
+}
 }

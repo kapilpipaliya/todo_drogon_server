@@ -1,5 +1,6 @@
 #include "dba.h"
 #include "spdlogfix.h"
+namespace sql {
 Dba::Dba() = default;
 
 drogon::orm::Result Dba::read(const std::string& sql) {
@@ -30,3 +31,4 @@ unsigned long Dba::num_rows(drogon::orm::Result& resource) {
 
   // return 0;
 }
+}  // namespace sql

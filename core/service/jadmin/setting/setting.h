@@ -7,7 +7,7 @@
 namespace jadmin {
 class Setting {
  public:
-  Setting(std::shared_ptr<websocket::JAdminContext>);
+  Setting(std::shared_ptr<websocket::jadmin::JAdminContext>);
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
 
@@ -15,7 +15,7 @@ class Setting {
   void setupTable();
   nlohmann::json save(const nlohmann::json& event, nlohmann::json args);
   nlohmann::json del(nlohmann::json event, nlohmann::json args);
-  std::shared_ptr<websocket::JAdminContext> context;
+  std::shared_ptr<websocket::jadmin::JAdminContext> context;
   sql::Query query;
 };
 }  // namespace jadmin

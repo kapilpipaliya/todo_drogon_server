@@ -5,7 +5,7 @@
 #include "../../../strfns.h"
 
 namespace jadmin {
-Product::Product(std::shared_ptr<websocket::JAdminContext> context_)
+Product::Product(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("post", "post", "post"));
   setupTable();
@@ -14,168 +14,176 @@ Product::Product(std::shared_ptr<websocket::JAdminContext> context_)
 void Product::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
-      sql::SelectedColumn({"Id", "id", "", "post", PG_TYPES::INT8, true}),
-      // sql::SelectedColumn({"Directory", "dir_path", "", "p", PG_TYPES::TEXT,
-      // true}), sql::SelectedColumn({"File Name", " "",file_name", "p",
-      // PG_TYPES::TEXT, true}), sql::SelectedColumn({"Color", "color_id", "",
-      // "p", PG_TYPES::INT8, true, 1, 2}), sql::SelectedColumn({"C_slug",
-      // "slug", "", "c", PG_TYPES::TEXT, false, 0, 0, false}),
-      // sql::SelectedColumn({"C_name", "name", "", "c", PG_TYPES::TEXT, false,
-      // 0, 0, false}), sql::SelectedColumn({"Category", "part_group_id", "",
-      // "p", PG_TYPES::INT8, true, 1, 2}), sql::SelectedColumn({"Pg_slug",
-      // "slug", "", "pg", PG_TYPES::TEXT, false, 0, 0, false}),
-      // sql::SelectedColumn({"Pg_name", "name", "", "pg", PG_TYPES::TEXT,
-      // false, 0, 0, false}),
-      sql::SelectedColumn(
-          {"Purchase_Note", "purchase_note", "", "p", PG_TYPES::TEXT, false}),
+      sql::SelectedColumn({"Id", "id", "", "post", sql::PG_TYPES::INT8, true}),
+      // sql::SelectedColumn({"Directory", "dir_path", "", "p",
+      // sql::PG_TYPES::TEXT, true}), sql::SelectedColumn({"File Name", "
+      // "",file_name", "p", sql::PG_TYPES::TEXT, true}),
+      // sql::SelectedColumn({"Color", "color_id", "", "p", sql::PG_TYPES::INT8,
+      // true, 1, 2}), sql::SelectedColumn({"C_slug", "slug", "", "c",
+      // sql::PG_TYPES::TEXT, false, 0, 0, false}),
+      // sql::SelectedColumn({"C_name", "name", "", "c", sql::PG_TYPES::TEXT,
+      // false, 0, 0, false}), sql::SelectedColumn({"Category", "part_group_id",
+      // "", "p", sql::PG_TYPES::INT8, true, 1, 2}),
+      // sql::SelectedColumn({"Pg_slug", "slug", "", "pg", sql::PG_TYPES::TEXT,
+      // false, 0, 0, false}), sql::SelectedColumn({"Pg_name", "name", "", "pg",
+      // sql::PG_TYPES::TEXT, false, 0, 0, false}),
+      sql::SelectedColumn({"Purchase_Note", "purchase_note", "", "p",
+                           sql::PG_TYPES::TEXT, false}),
 
       sql::SelectedColumn(
-          {"Product Id", "id", "p.id", "p", PG_TYPES::INT8, false}),
+          {"Product Id", "id", "p.id", "p", sql::PG_TYPES::INT8, false}),
       sql::SelectedColumn({"Product_short_description", "excerpt", "", "post",
-                           PG_TYPES::TEXT, false}),
+                           sql::PG_TYPES::TEXT, false}),
+      sql::SelectedColumn({"Product_Content", "content", "", "post",
+                           sql::PG_TYPES::TEXT, false}),
       sql::SelectedColumn(
-          {"Product_Content", "content", "", "post", PG_TYPES::TEXT, false}),
+          {"Menu_Order", "menu_order", "", "post", sql::PG_TYPES::INT8, false}),
       sql::SelectedColumn(
-          {"Menu_Order", "menu_order", "", "post", PG_TYPES::INT8, false}),
+          {"Date", "date", "", "post", sql::PG_TYPES::TIMESTAMP, true}),
       sql::SelectedColumn(
-          {"Date", "date", "", "post", PG_TYPES::TIMESTAMP, true}),
-      sql::SelectedColumn({"Title", "title", "", "post", PG_TYPES::TEXT, true}),
-      sql::SelectedColumn({"Slug", "name", "", "post", PG_TYPES::TEXT, true}),
+          {"Title", "title", "", "post", sql::PG_TYPES::TEXT, true}),
       sql::SelectedColumn(
-          {"Status", "status", "", "post", PG_TYPES::ENUM, true}),
+          {"Slug", "name", "", "post", sql::PG_TYPES::TEXT, true}),
       sql::SelectedColumn(
-          {"Comment", "comment_status", "", "post", PG_TYPES::BOOL, true}),
+          {"Status", "status", "", "post", sql::PG_TYPES::ENUM, true}),
       sql::SelectedColumn(
-          {"Password", "password", "", "post", PG_TYPES::TEXT, false}),
+          {"Comment", "comment_status", "", "post", sql::PG_TYPES::BOOL, true}),
       sql::SelectedColumn(
-          {"Modified", "modified", "", "post", PG_TYPES::TIMESTAMP, true}),
+          {"Password", "password", "", "post", sql::PG_TYPES::TEXT, false}),
       sql::SelectedColumn(
-          {"Parent", "parent", "", "post", PG_TYPES::INT8, true}),
+          {"Modified", "modified", "", "post", sql::PG_TYPES::TIMESTAMP, true}),
       sql::SelectedColumn(
-          {"Post Type", "type", "", "post", PG_TYPES::ENUM, true}),
+          {"Parent", "parent", "", "post", sql::PG_TYPES::INT8, true}),
       sql::SelectedColumn(
-          {"MIME Type", "post_mime_type", "", "post", PG_TYPES::ENUM, false}),
-      sql::SelectedColumn(
-          {"Comment Count", "comment_count", "", "post", PG_TYPES::INT8, true}),
+          {"Post Type", "type", "", "post", sql::PG_TYPES::ENUM, true}),
+      sql::SelectedColumn({"MIME Type", "post_mime_type", "", "post",
+                           sql::PG_TYPES::ENUM, false}),
+      sql::SelectedColumn({"Comment Count", "comment_count", "", "post",
+                           sql::PG_TYPES::INT8, true}),
 
-      sql::SelectedColumn({"SKU", "sku", "", "p", PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"SKU", "sku", "", "p", sql::PG_TYPES::TEXT, true}),
       sql::SelectedColumn(
-          {"Virtual", "virtual", "", "p", PG_TYPES::BOOL, false}),
+          {"Virtual", "virtual", "", "p", sql::PG_TYPES::BOOL, false}),
+      sql::SelectedColumn({"Downloadable", "downloadable", "", "p",
+                           sql::PG_TYPES::BOOL, false}),
       sql::SelectedColumn(
-          {"Downloadable", "downloadable", "", "p", PG_TYPES::BOOL, false}),
+          {"Min Price", "min_price", "", "p", sql::PG_TYPES::DOUBLE, false}),
       sql::SelectedColumn(
-          {"Min Price", "min_price", "", "p", PG_TYPES::DOUBLE, false}),
+          {"Max Price", "max_price", "", "p", sql::PG_TYPES::DOUBLE, false}),
       sql::SelectedColumn(
-          {"Max Price", "max_price", "", "p", PG_TYPES::DOUBLE, false}),
+          {"Weight", "weight", "", "p", sql::PG_TYPES::DOUBLE, true}),
       sql::SelectedColumn(
-          {"Weight", "weight", "", "p", PG_TYPES::DOUBLE, true}),
+          {"Purity", "purity_id", "", "p", sql::PG_TYPES::INT8, true}),
       sql::SelectedColumn(
-          {"Purity", "purity_id", "", "p", PG_TYPES::INT8, true}),
+          {"Length", "length", "", "p", sql::PG_TYPES::DOUBLE, true}),
       sql::SelectedColumn(
-          {"Length", "length", "", "p", PG_TYPES::DOUBLE, true}),
-      sql::SelectedColumn({"Width", "width", "", "p", PG_TYPES::DOUBLE, true}),
+          {"Width", "width", "", "p", sql::PG_TYPES::DOUBLE, true}),
       sql::SelectedColumn(
-          {"Height", "height", "", "p", PG_TYPES::DOUBLE, true}),
-      sql::SelectedColumn({"On sale", "onsale", "", "p", PG_TYPES::BOOL, true}),
+          {"Height", "height", "", "p", sql::PG_TYPES::DOUBLE, true}),
+      sql::SelectedColumn(
+          {"On sale", "onsale", "", "p", sql::PG_TYPES::BOOL, true}),
       sql::SelectedColumn({"Stock Quantity", "stock_quantity", "", "p",
-                           PG_TYPES::DOUBLE, true}),
+                           sql::PG_TYPES::DOUBLE, true}),
       sql::SelectedColumn(
-          {"Stock Status", "stock_status", "", "p", PG_TYPES::ENUM, true}),
+          {"Stock Status", "stock_status", "", "p", sql::PG_TYPES::ENUM, true}),
       sql::SelectedColumn(
-          {"Rating Count", "rating_count", "", "p", PG_TYPES::INT4, true}),
+          {"Rating Count", "rating_count", "", "p", sql::PG_TYPES::INT4, true}),
       sql::SelectedColumn({"Average Rating", "average_rating", "", "p",
-                           PG_TYPES::DOUBLE, true}),
+                           sql::PG_TYPES::DOUBLE, true}),
       sql::SelectedColumn(
-          {"Total Sales", "total_sales", "", "p", PG_TYPES::INT8, true}),
+          {"Total Sales", "total_sales", "", "p", sql::PG_TYPES::INT8, true}),
       sql::SelectedColumn(
-          {"Featured", "featured", "", "p", PG_TYPES::BOOL, true}),
+          {"Featured", "featured", "", "p", sql::PG_TYPES::BOOL, true}),
       sql::SelectedColumn({"Shipping Class", "shipping_class_id", "", "p",
-                           PG_TYPES::INT8, true}),
+                           sql::PG_TYPES::INT8, true}),
+      sql::SelectedColumn({"Manage Stock", "manage_stock", "", "p",
+                           sql::PG_TYPES::BOOL, false}),
       sql::SelectedColumn(
-          {"Manage Stock", "manage_stock", "", "p", PG_TYPES::BOOL, false}),
-      sql::SelectedColumn(
-          {"Visibility", "visibility", "", "post", PG_TYPES::ENUM, true}),
+          {"Visibility", "visibility", "", "post", sql::PG_TYPES::ENUM, true}),
       sql::SelectedColumn({"Catalog Visibility", "catalog_visibility", "", "p",
-                           PG_TYPES::ENUM, true}),
+                           sql::PG_TYPES::ENUM, true}),
       sql::SelectedColumn(
-          {"Backorders", "backorders", "", "p", PG_TYPES::ENUM, true}),
+          {"Backorders", "backorders", "", "p", sql::PG_TYPES::ENUM, true}),
       sql::SelectedColumn(
-          {"Product Type", "product_type", "", "p", PG_TYPES::ENUM, true}),
+          {"Product Type", "product_type", "", "p", sql::PG_TYPES::ENUM, true}),
       sql::SelectedColumn(
           {"Tags", "name",
            "json_agg(distinct tags.name ORDER BY tags.name ASC)", "tags",
-           PG_TYPES::PSJSON, true}),
+           sql::PG_TYPES::PSJSON, true}),
       sql::SelectedColumn({"category_id", "category_id",
                            "json_agg(distinct pc.category_id)", "pc",
-                           PG_TYPES::PSJSON, false}),
+                           sql::PG_TYPES::PSJSON, false}),
       sql::SelectedColumn({"Categories", "category_id_name",
-                           "json_agg(distinct c.name)", "pc", PG_TYPES::PSJSON,
+                           "json_agg(distinct c.name)", "pc",
+                           sql::PG_TYPES::PSJSON,
                            true}),  // This is to Display on Main Table only.
       sql::SelectedColumn({"tone_id", "tone_id",
                            "json_agg(distinct p_tones.tone_id)", "p_tones",
-                           PG_TYPES::PSJSON, false}),
+                           sql::PG_TYPES::PSJSON, false}),
       sql::SelectedColumn({"Tones", "tone_id_name",
                            "json_agg(distinct tones.name)", "tones",
-                           PG_TYPES::PSJSON, true}),
+                           sql::PG_TYPES::PSJSON, true}),
       sql::SelectedColumn(
           {"clarity_id", "clarity_id",
            "json_agg(distinct jsonb_build_array(p_clarity.clarity_id, "
            "p_clarity.pcs, p_clarity.weight, p_clarity.price, "
            "p_clarity.ismain))",
-           "p_clarity", PG_TYPES::PSJSON, false}),
+           "p_clarity", sql::PG_TYPES::PSJSON, false}),
       sql::SelectedColumn(
           {"purity_id", "purity_id",
            "json_agg(distinct jsonb_build_array(p_purities.purity_id, "
            "COALESCE(pu_tone.pt2, jsonb_build_array()), p_purities.ismain))",
-           "p_purities", PG_TYPES::PSJSON, false}),
+           "p_purities", sql::PG_TYPES::PSJSON, false}),
       sql::SelectedColumn({"Purities", "purity_id_name",
                            "json_agg(distinct purities.name)", "purities",
-                           PG_TYPES::PSJSON,
+                           sql::PG_TYPES::PSJSON,
                            true}),  // This is to Display on Main Table only.
       sql::SelectedColumn(
           {"attachement_id", "attachement_id",
            "json_agg( distinct jsonb_build_array(p_attachments.id, "
            "p_attachments.tone_id, 0, p_attachments.main_image, version))",
-           "p_attachments", PG_TYPES::PSJSON, false}),
+           "p_attachments", sql::PG_TYPES::PSJSON, false}),
       sql::SelectedColumn(
           {"diamond_size_id", "diamond_size_id",
            "json_agg( distinct jsonb_build_array(p_d_size.id, "
            "p_d_size.shape_id, p_d_size.color_id, p_d_size.size_id, "
            "p_d_size.pcs, p_d_size.setting_type_id, diamond_price.pa))",
-           "p_d_size", PG_TYPES::PSJSON, false}),
+           "p_d_size", sql::PG_TYPES::PSJSON, false}),
       sql::SelectedColumn(
           {"cs_size_id", "cs_size_id",
            "json_agg( distinct jsonb_build_array(p_cs_size.id, "
            "p_cs_size.cs_type_id, p_cs_size.shape_id, p_cs_size.color_id, "
            "p_cs_size.size_id, p_cs_size.pcs, p_cs_size.setting_type_id, "
            "cs_price.pa))",
-           "p_cs_size", PG_TYPES::PSJSON, false}),
+           "p_cs_size", sql::PG_TYPES::PSJSON, false}),
       sql::SelectedColumn(
           {"p_cs_total", "p_cs_total",
            "json_agg( distinct jsonb_build_array(p_cs_total.pcs, "
            "p_cs_total.weight, p_cs_total.price))",
-           "p_cs_total", PG_TYPES::PSJSON, false}),
+           "p_cs_total", sql::PG_TYPES::PSJSON, false}),
       sql::SelectedColumn({"Low Stock Amount", "low_stock_amount", "", "p",
-                           PG_TYPES::INT4, true}),
+                           sql::PG_TYPES::INT4, true}),
       sql::SelectedColumn({"Sold Individually", "sold_individually", "", "p",
-                           PG_TYPES::BOOL, false}),
+                           sql::PG_TYPES::BOOL, false}),
       sql::SelectedColumn({"Making Charges", "making_charges", "", "p",
-                           PG_TYPES::DOUBLE, false}),
+                           sql::PG_TYPES::DOUBLE, false}),
+      sql::SelectedColumn({"Discount Per", "discount_per", "", "p",
+                           sql::PG_TYPES::DOUBLE, false}),
       sql::SelectedColumn(
-          {"Discount Per", "discount_per", "", "p", PG_TYPES::DOUBLE, false}),
+          {"Volume", "volume", "", "p", sql::PG_TYPES::DOUBLE, false}),
       sql::SelectedColumn(
-          {"Volume", "volume", "", "p", PG_TYPES::DOUBLE, false}),
-      sql::SelectedColumn({"Tone", "tone_id", "", "p", PG_TYPES::INT8, false}),
+          {"Tone", "tone_id", "", "p", sql::PG_TYPES::INT8, false}),
       sql::SelectedColumn({"Certified By", "certified_by",
                            "json_agg(distinct p_certified_by.certified_by_id)",
-                           "p_certified_by", PG_TYPES::PSJSON, false}),
+                           "p_certified_by", sql::PG_TYPES::PSJSON, false}),
       sql::SelectedColumn({"Policy", "post_policy",
                            "json_agg(distinct p_policy.policy_id)", "p_policy",
-                           PG_TYPES::PSJSON, false}),
+                           sql::PG_TYPES::PSJSON, false}),
 
       // sql::SelectedColumn({"Create Time", "inserted_at", "", "p",
-      // PG_TYPES::TIMESTAMP, true, 0, 0, false}), sql::SelectedColumn({"Update
-      // Time", "updated_at", "", "p", PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+      // sql::PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+      // sql::SelectedColumn({"Update Time", "updated_at", "", "p",
+      // sql::PG_TYPES::TIMESTAMP, true, 0, 0, false}),
   });
   // select json_agg(nlohmann::json_build_array(a,b,c)) from (values (1, 'foo',
   // true),(2,'bar',false)) v(a,b,c); --> [[1, "foo", true], [2, "bar", false]]
@@ -319,23 +327,24 @@ nlohmann::json Product::handleEvent(nlohmann::json event, unsigned long next,
       if (!i.is_null()) inNewTones.push_back(i);                              \
     }                                                                         \
                                                                               \
-    auto all_ct = Dba::writeInTrans(transPtr, strSqlPostCategories, idv1);    \
+    auto all_ct =                                                             \
+        sql::Dba::writeInTrans(transPtr, strSqlPostCategories, idv1);         \
     /* For each saved tones, If saved tone not exist in new tones, delete     \
      * it.*/                                                                  \
     for (auto r : all_ct) {                                                   \
       std::vector<long>::iterator it =                                        \
           std::find(inNewTones.begin(), inNewTones.end(), r[1].as<long>());   \
       if (it == inNewTones.end()) { /* Element not Found*/                    \
-        Dba::writeInTrans(transPtr, strSqlPostCategoryDel, r[id1].as<long>(), \
-                          r[id2].as<long>());                                 \
+        sql::Dba::writeInTrans(transPtr, strSqlPostCategoryDel,               \
+                               r[id1].as<long>(), r[id2].as<long>());         \
       }                                                                       \
     }                                                                         \
     /* For each new tones, insert it if it not already exist.*/               \
     for (auto x : inNewTones) {                                               \
-      auto y =                                                                \
-          Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind, idv1, x); \
+      auto y = sql::Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind, \
+                                      idv1, x);                               \
       if (y.size() == 0) {                                                    \
-        Dba::writeInTrans(transPtr, strSqlPostCategoryInsert, idv1, x);       \
+        sql::Dba::writeInTrans(transPtr, strSqlPostCategoryInsert, idv1, x);  \
       }                                                                       \
     }                                                                         \
   }
@@ -358,20 +367,21 @@ void purejoinTableSaveF(
     if (!i.is_null()) inNewTones.push_back(i);
   }
 
-  auto all_ct = Dba::writeInTrans(transPtr, strSqlPostCategories, idv1);
+  auto all_ct = sql::Dba::writeInTrans(transPtr, strSqlPostCategories, idv1);
   /* For each saved tones, If saved tone not exist in new tones, delete it.*/
   for (const auto& r : all_ct) {
     auto it = std::find(inNewTones.begin(), inNewTones.end(), r[1].as<long>());
     if (it == inNewTones.end()) { /* Element not Found*/
-      Dba::writeInTrans(transPtr, strSqlPostCategoryDel, r[id1].as<long>(),
-                        r[id2].as<long>());
+      sql::Dba::writeInTrans(transPtr, strSqlPostCategoryDel, r[id1].as<long>(),
+                             r[id2].as<long>());
     }
   }
   /* For each new tones, insert it if it not already exist.*/
   for (auto x : inNewTones) {
-    auto y = Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind, idv1, x);
+    auto y =
+        sql::Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind, idv1, x);
     if (y.empty()) {
-      Dba::writeInTrans(transPtr, strSqlPostCategoryInsert, idv1, x);
+      sql::Dba::writeInTrans(transPtr, strSqlPostCategoryInsert, idv1, x);
     }
   }
 }
@@ -427,28 +437,28 @@ void product_tags_process(
   // 1.find a tag, if not exist then insert.
   while (ss >> tag) {
     inNewTagsVector.push_back(tag);
-    auto x = Dba::writeInTrans(transPtr, strSqlTag, tag);
+    auto x = sql::Dba::writeInTrans(transPtr, strSqlTag, tag);
     if (x.empty()) {
-      Dba::writeInTrans(transPtr, strSqlTagInsert, tag, tag, tag);
+      sql::Dba::writeInTrans(transPtr, strSqlTagInsert, tag, tag, tag);
     }
   }
-  auto all_pt = Dba::writeInTrans(transPtr, strSqlPostTags, post_id);
+  auto all_pt = sql::Dba::writeInTrans(transPtr, strSqlPostTags, post_id);
   // For each saved tags, If saved tag not exist in new tags, delete it.
   for (const auto& r : all_pt) {
     if (inNewTags.find(r[2].c_str()) == std::string::npos) {
-      Dba::writeInTrans(transPtr, strSqlPostTagsDel, r["post_id"].as<long>(),
-                        r["tag_id"].as<long>());
+      sql::Dba::writeInTrans(transPtr, strSqlPostTagsDel,
+                             r["post_id"].as<long>(), r["tag_id"].as<long>());
     }
   }
   // For each new tags, insert it if it not already exist.
   for (const auto& r : inNewTagsVector) {
-    auto x = Dba::writeInTrans(transPtr, strSqlTag, r);
+    auto x = sql::Dba::writeInTrans(transPtr, strSqlTag, r);
 
-    auto y = Dba::writeInTrans(transPtr, strSqlPostTagSimpleFind, post_id,
-                               x[0]["id"].as<long>());
+    auto y = sql::Dba::writeInTrans(transPtr, strSqlPostTagSimpleFind, post_id,
+                                    x[0]["id"].as<long>());
     if (y.empty()) {
-      Dba::writeInTrans(transPtr, strSqlPostTagsInsert, post_id,
-                        x[0]["id"].as<long>());
+      sql::Dba::writeInTrans(transPtr, strSqlPostTagsInsert, post_id,
+                             x[0]["id"].as<long>());
     }
   }
 }
@@ -482,25 +492,25 @@ void save_product_categories(
 
   // std::vector<long>updatedCategories;
 
-  auto all_ct = Dba::writeInTrans(transPtr, strSqlPostCategories, post_id);
+  auto all_ct = sql::Dba::writeInTrans(transPtr, strSqlPostCategories, post_id);
   // For each saved categories, If saved category not exist in new categories,
   // delete it.
   for (const auto& r : all_ct) {
     auto it = std::find(inNewCategories.begin(), inNewCategories.end(),
                         r[1].as<long>());
     if (it == inNewCategories.end()) {  // Element not Found
-      Dba::writeInTrans(transPtr, strSqlPostCategoryDel,
-                        r["post_id"].as<long>(), r[1].as<long>());
+      sql::Dba::writeInTrans(transPtr, strSqlPostCategoryDel,
+                             r["post_id"].as<long>(), r[1].as<long>());
       // updatedCategories.push_back(r[1].as<long>());
     }
   }
 
   // For each new categories, insert it if it not already exist.
   for (auto x : inNewCategories) {
-    auto y =
-        Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind, post_id, x);
+    auto y = sql::Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind,
+                                    post_id, x);
     if (y.empty()) {
-      Dba::writeInTrans(transPtr, strSqlPostCategoryInsert, post_id, x);
+      sql::Dba::writeInTrans(transPtr, strSqlPostCategoryInsert, post_id, x);
       // auto it = std::find(inNewCategories.begin(), inNewCategories.end(), x);
       // if (it == inNewCategories.end()) updatedCategories.push_back(x);
     }
@@ -550,7 +560,7 @@ void save_product_clarities(
                           i[3].get<double>(), i[4].get<bool>()});
   }
 
-  auto all_ct = Dba::writeInTrans(transPtr, strSqlPostCategories, post_id);
+  auto all_ct = sql::Dba::writeInTrans(transPtr, strSqlPostCategories, post_id);
   // For each saved tones, If saved tone not exist in new tones, delete it.
   for (auto r : all_ct) {
     auto it =
@@ -558,17 +568,17 @@ void save_product_clarities(
           return t.clarity_id == r["clarity_id"].as<long>();
         });
     if (it == inVector.end()) {  // Element not Found
-      Dba::writeInTrans(transPtr, strSqlPostCategoryDel, post_id,
-                        r["clarity_id"].as<long>());
+      sql::Dba::writeInTrans(transPtr, strSqlPostCategoryDel, post_id,
+                             r["clarity_id"].as<long>());
     }
   }
   // For each new tones, insert it if it not already exist.
   for (auto r : inVector) {
-    auto y = Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind, post_id,
-                               r.clarity_id);
+    auto y = sql::Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind,
+                                    post_id, r.clarity_id);
     if (y.empty()) {
-      Dba::writeInTrans(transPtr, strSqlPostCategoryInsert, post_id,
-                        r.clarity_id, r.pcs, r.weight, r.price, r.ismain);
+      sql::Dba::writeInTrans(transPtr, strSqlPostCategoryInsert, post_id,
+                             r.clarity_id, r.pcs, r.weight, r.price, r.ismain);
     } else {  // update
       auto c_id = y[0]["clarity_id"].as<long>();
       auto pcs_ = y[0]["pcs"].as<int>();
@@ -577,8 +587,9 @@ void save_product_clarities(
       auto b_ = y[0]["ismain"].as<bool>();
       if (c_id != r.clarity_id || pcs_ != r.pcs || wt_ != r.weight ||
           pri_ != r.price || b_ != r.ismain) {
-        Dba::writeInTrans(transPtr, strSqlPostCategoryUpdateAtt, post_id,
-                          r.clarity_id, r.pcs, r.weight, r.price, r.ismain);
+        sql::Dba::writeInTrans(transPtr, strSqlPostCategoryUpdateAtt, post_id,
+                               r.clarity_id, r.pcs, r.weight, r.price,
+                               r.ismain);
       }
     }
   }
@@ -623,8 +634,8 @@ void save_purity_tone_(
     }
   }
 
-  auto all_ct =
-      Dba::writeInTrans(transPtr, strSqlPostCategories, post_id, purity_id);
+  auto all_ct = sql::Dba::writeInTrans(transPtr, strSqlPostCategories, post_id,
+                                       purity_id);
   // For each saved attachments, If it not exist in new attachments, delete it.
   for (auto r : all_ct) {
     auto it =
@@ -634,23 +645,25 @@ void save_purity_tone_(
                  t.tone_id == r["tone_id"].as<long>();
         });
     if (it == inNewPrice.end()) {  // Element not Found
-      Dba::writeInTrans(transPtr, strSqlPostCategoryDel, post_id,
-                        r[1].as<long>(), r[2].as<long>());
+      sql::Dba::writeInTrans(transPtr, strSqlPostCategoryDel, post_id,
+                             r[1].as<long>(), r[2].as<long>());
     }
   }
   // For each new attachments, insert it if it not already exist.
   for (auto r : inNewPrice) {
-    auto y = Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind,
-                               r.post_id, r.purity_id, r.tone_id);
+    auto y = sql::Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind,
+                                    r.post_id, r.purity_id, r.tone_id);
     if (y.empty()) {  // insert
-      Dba::writeInTrans(transPtr, strSqlPostCategoryInsert, post_id,
-                        r.purity_id, r.tone_id, r.weight, r.price, r.ismain);
+      sql::Dba::writeInTrans(transPtr, strSqlPostCategoryInsert, post_id,
+                             r.purity_id, r.tone_id, r.weight, r.price,
+                             r.ismain);
     } else {  // update
       if (y[0]["weight"].as<double>() != r.weight ||
           y[0]["price"].as<double>() != r.price ||
           y[0]["ismain"].as<bool>() != r.ismain) {
-        Dba::writeInTrans(transPtr, strSqlPostCategoryUpdateAtt, post_id,
-                          r.purity_id, r.tone_id, r.weight, r.price, r.ismain);
+        sql::Dba::writeInTrans(transPtr, strSqlPostCategoryUpdateAtt, post_id,
+                               r.purity_id, r.tone_id, r.weight, r.price,
+                               r.ismain);
       }
     }
   }
@@ -696,7 +709,7 @@ void save_product_purities(
       inVector.push_back({i[0].get<long>(), i[2].get<bool>(), i[1]});
   }
 
-  auto all_ct = Dba::writeInTrans(transPtr, strSqlPostCategories, post_id);
+  auto all_ct = sql::Dba::writeInTrans(transPtr, strSqlPostCategories, post_id);
   // For each saved tones, If saved tone not exist in new tones, delete it.
   for (auto r : all_ct) {
     auto it = std::find_if(inVector.begin(), inVector.end(),
@@ -704,27 +717,28 @@ void save_product_purities(
                              return t.purity_id == r["purity_id"].as<long>();
                            });
     if (it == inVector.end()) {  // Element not Found
-      Dba::writeInTrans(transPtr,
-                        "DELETE FROM product.purity_tone WHERE post_id = $1 "
-                        "and purity_id = $2",
-                        post_id, r["purity_id"].as<long>());
-      Dba::writeInTrans(transPtr, strSqlPostCategoryDel, post_id,
-                        r["purity_id"].as<long>());
+      sql::Dba::writeInTrans(
+          transPtr,
+          "DELETE FROM product.purity_tone WHERE post_id = $1 "
+          "and purity_id = $2",
+          post_id, r["purity_id"].as<long>());
+      sql::Dba::writeInTrans(transPtr, strSqlPostCategoryDel, post_id,
+                             r["purity_id"].as<long>());
     }
   }
   // For each new tones, insert it if it not already exist.
   for (auto r : inVector) {
-    auto y = Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind, post_id,
-                               r.purity_id);
+    auto y = sql::Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind,
+                                    post_id, r.purity_id);
     if (y.empty()) {
-      Dba::writeInTrans(transPtr, strSqlPostCategoryInsert, post_id,
-                        r.purity_id, r.ismain);
+      sql::Dba::writeInTrans(transPtr, strSqlPostCategoryInsert, post_id,
+                             r.purity_id, r.ismain);
       save_purity_tone_(r.tones, transPtr, post_id, r.purity_id);
     } else {  // update
       if (y[0]["purity_id"].as<long>() != r.purity_id ||
           y[0]["ismain"].as<bool>() != r.ismain) {
-        Dba::writeInTrans(transPtr, strSqlPostCategoryUpdateAtt, post_id,
-                          r.purity_id, r.ismain);
+        sql::Dba::writeInTrans(transPtr, strSqlPostCategoryUpdateAtt, post_id,
+                               r.purity_id, r.ismain);
       }
       save_purity_tone_(r.tones, transPtr, post_id, r.purity_id);
     }
@@ -768,7 +782,8 @@ void save_diamond_price(
     }
   }
 
-  auto all_ct = Dba::writeInTrans(transPtr, strSqlPostCategories, diamond_id);
+  auto all_ct =
+      sql::Dba::writeInTrans(transPtr, strSqlPostCategories, diamond_id);
   // For each saved attachments, If it not exist in new attachments, delete it.
   for (auto r : all_ct) {
     auto it =
@@ -777,33 +792,32 @@ void save_diamond_price(
                  t.clarity_id == r[1].as<long>();
         });
     if (it == inNewPrice.end()) {  // Element not Found
-      Dba::writeInTrans(transPtr, strSqlPostCategoryDel, diamond_id,
-                        r[1].as<long>());
+      sql::Dba::writeInTrans(transPtr, strSqlPostCategoryDel, diamond_id,
+                             r[1].as<long>());
     }
   }
   // For each new attachments, insert it if it not already exist.
   for (auto r : inNewPrice) {
-    auto y = Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind,
-                               r.diamond_id, r.clarity_id);
+    auto y = sql::Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind,
+                                    r.diamond_id, r.clarity_id);
     if (y.empty()) {  // insert
-      Dba::writeInTrans(transPtr, strSqlPostCategoryInsert, diamond_id,
-                        r.clarity_id, r.weight, r.total_weight, r.rate,
-                        r.price);
+      sql::Dba::writeInTrans(transPtr, strSqlPostCategoryInsert, diamond_id,
+                             r.clarity_id, r.weight, r.total_weight, r.rate,
+                             r.price);
     } else {  // update
       // if(y[0][1].as<long>() != r.shape_id || y[0][2].as<long>() != r.color_id
       // || y[0][3].c_str() != r.dsize || y[0][4].as<int>() != r.pcs ||
       // y[0][5].as<double>() != r.price) {
-      Dba::writeInTrans(transPtr, strSqlPostCategoryUpdateAtt, diamond_id,
-                        r.clarity_id, r.weight, r.total_weight, r.rate,
-                        r.price);
+      sql::Dba::writeInTrans(transPtr, strSqlPostCategoryUpdateAtt, diamond_id,
+                             r.clarity_id, r.weight, r.total_weight, r.rate,
+                             r.price);
       //}
     }
   }
 }
 
 void save_product_diamond_sizes(
-    const sql::ObjectIdentifier& post_diamond_sizes_table,
-    nlohmann::json& args,
+    const sql::ObjectIdentifier& post_diamond_sizes_table, nlohmann::json& args,
     const std::shared_ptr<drogon::orm::Transaction>& transPtr, long post_id) {
   std::string strSqlPostCategories =
       "SELECT id, post_id, shape_id, color_id, size_id, pcs FROM "
@@ -842,26 +856,28 @@ void save_product_diamond_sizes(
     }
   }
 
-  auto all_ct = Dba::writeInTrans(transPtr, strSqlPostCategories, post_id);
+  auto all_ct = sql::Dba::writeInTrans(transPtr, strSqlPostCategories, post_id);
   // For each saved attachments, If it not exist in new attachments, delete it.
   for (auto r : all_ct) {
     auto it = std::find_if(
         inNewAttachments.begin(), inNewAttachments.end(),
         [&](const PostDiamondSize& t) { return t.id == r["id"].as<long>(); });
     if (it == inNewAttachments.end()) {  // Element not Found
-      Dba::writeInTrans(
+      sql::Dba::writeInTrans(
           transPtr, "DELETE FROM product.diamond_price WHERE diamond_id = $1",
           r["id"].as<long>());
-      Dba::writeInTrans(transPtr, strSqlPostCategoryDel, r["id"].as<long>());
+      sql::Dba::writeInTrans(transPtr, strSqlPostCategoryDel,
+                             r["id"].as<long>());
     }
   }
   // For each new attachments, insert it if it not already exist.
   for (auto r : inNewAttachments) {
-    auto y = Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind, r.id);
+    auto y =
+        sql::Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind, r.id);
     if (y.empty()) {  // insert
-      auto i = Dba::writeInTrans(transPtr, strSqlPostCategoryInsert, post_id,
-                                 r.shape_id, r.color_id, r.dsize_id, r.pcs,
-                                 r.setting_type_id);
+      auto i = sql::Dba::writeInTrans(transPtr, strSqlPostCategoryInsert,
+                                      post_id, r.shape_id, r.color_id,
+                                      r.dsize_id, r.pcs, r.setting_type_id);
       save_diamond_price(r.clarity_price, transPtr, i[0]["id"].as<long>());
     } else {  // update
       auto set_id = y[0]["setting_type_id"].isNull()
@@ -871,9 +887,9 @@ void save_product_diamond_sizes(
           y[0]["color_id"].as<long>() != r.color_id ||
           y[0]["size_id"].as<long>() != r.dsize_id ||
           y[0]["pcs"].as<int>() != r.pcs || set_id != r.setting_type_id) {
-        Dba::writeInTrans(transPtr, strSqlPostCategoryUpdateAtt, r.id, post_id,
-                          r.shape_id, r.color_id, r.dsize_id, r.pcs,
-                          r.setting_type_id);
+        sql::Dba::writeInTrans(transPtr, strSqlPostCategoryUpdateAtt, r.id,
+                               post_id, r.shape_id, r.color_id, r.dsize_id,
+                               r.pcs, r.setting_type_id);
       }
       save_diamond_price(r.clarity_price, transPtr, y[0]["id"].as<long>());
     }
@@ -914,29 +930,30 @@ void save_cs_price(nlohmann::json& args,
     }
   }
 
-  auto all_ct = Dba::writeInTrans(transPtr, strSqlPostCategories, cs_id);
+  auto all_ct = sql::Dba::writeInTrans(transPtr, strSqlPostCategories, cs_id);
   // For each saved attachments, If it not exist in new attachments, delete it.
   for (auto r : all_ct) {
     auto it = std::find_if(
         inNewPrice.begin(), inNewPrice.end(),
         [&](DiamondPrice t) { return t.cs_id == r["cs_id"].as<long>(); });
     if (it == inNewPrice.end()) {  // Element not Found
-      Dba::writeInTrans(transPtr, strSqlPostCategoryDel, cs_id,
-                        r[1].as<long>());
+      sql::Dba::writeInTrans(transPtr, strSqlPostCategoryDel, cs_id,
+                             r[1].as<long>());
     }
   }
   // For each new attachments, insert it if it not already exist.
   for (auto r : inNewPrice) {
-    auto y = Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind, r.cs_id);
+    auto y =
+        sql::Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind, r.cs_id);
     if (y.empty()) {  // insert
-      Dba::writeInTrans(transPtr, strSqlPostCategoryInsert, cs_id, r.weight,
-                        r.total_weight, r.rate, r.price);
+      sql::Dba::writeInTrans(transPtr, strSqlPostCategoryInsert, cs_id,
+                             r.weight, r.total_weight, r.rate, r.price);
     } else {  // update
       // if(y[0][1].as<long>() != r.shape_id || y[0][2].as<long>() != r.color_id
       // || y[0][3].c_str() != r.dsize || y[0][4].as<int>() != r.pcs ||
       // y[0][5].as<double>() != r.price) {
-      Dba::writeInTrans(transPtr, strSqlPostCategoryUpdateAtt, cs_id, r.weight,
-                        r.total_weight, r.rate, r.price);
+      sql::Dba::writeInTrans(transPtr, strSqlPostCategoryUpdateAtt, cs_id,
+                             r.weight, r.total_weight, r.rate, r.price);
       //}
     }
   }
@@ -984,26 +1001,28 @@ void save_product_cs_sizes(
     }
   }
 
-  auto all_ct = Dba::writeInTrans(transPtr, strSqlPostCategories, post_id);
+  auto all_ct = sql::Dba::writeInTrans(transPtr, strSqlPostCategories, post_id);
   // For each saved attachments, If it not exist in new attachments, delete it.
   for (auto r : all_ct) {
     auto it = std::find_if(
         inNewAttachments.begin(), inNewAttachments.end(),
         [&](const PostCSSize& t) { return t.id == r["id"].as<long>(); });
     if (it == inNewAttachments.end()) {  // Element not Found
-      Dba::writeInTrans(transPtr,
-                        "DELETE FROM product.cs_price WHERE cs_id = $1",
-                        r["id"].as<long>());
-      Dba::writeInTrans(transPtr, strSqlPostCategoryDel, r["id"].as<long>());
+      sql::Dba::writeInTrans(transPtr,
+                             "DELETE FROM product.cs_price WHERE cs_id = $1",
+                             r["id"].as<long>());
+      sql::Dba::writeInTrans(transPtr, strSqlPostCategoryDel,
+                             r["id"].as<long>());
     }
   }
   // For each new attachments, insert it if it not already exist.
   for (auto r : inNewAttachments) {
-    auto y = Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind, r.id);
+    auto y =
+        sql::Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind, r.id);
     if (y.empty()) {  // insert
-      auto i = Dba::writeInTrans(transPtr, strSqlPostCategoryInsert, post_id,
-                                 r.cs_type_id, r.shape_id, r.color_id,
-                                 r.dsize_id, r.pcs, r.setting_type_id);
+      auto i = sql::Dba::writeInTrans(
+          transPtr, strSqlPostCategoryInsert, post_id, r.cs_type_id, r.shape_id,
+          r.color_id, r.dsize_id, r.pcs, r.setting_type_id);
       save_cs_price(r.clarity_price, transPtr, i[0]["id"].as<long>());
     } else {  // update
       auto set_id = y[0]["setting_type_id"].isNull()
@@ -1013,9 +1032,9 @@ void save_product_cs_sizes(
           y[0][3].as<long>() != r.color_id ||
           y[0][4].as<long>() != r.dsize_id || y[0][5].as<int>() != r.pcs ||
           set_id != r.setting_type_id) {
-        Dba::writeInTrans(transPtr, strSqlPostCategoryUpdateAtt, r.id, post_id,
-                          r.cs_type_id, r.shape_id, r.color_id, r.dsize_id,
-                          r.pcs, r.setting_type_id);
+        sql::Dba::writeInTrans(transPtr, strSqlPostCategoryUpdateAtt, r.id,
+                               post_id, r.cs_type_id, r.shape_id, r.color_id,
+                               r.dsize_id, r.pcs, r.setting_type_id);
       }
       save_cs_price(r.clarity_price, transPtr, y[0]["id"].as<long>());
     }
@@ -1055,31 +1074,31 @@ void save_product_cs_total(
     }
   }
 
-  auto all_ct = Dba::writeInTrans(transPtr, strSqlPostCategories, post_id);
+  auto all_ct = sql::Dba::writeInTrans(transPtr, strSqlPostCategories, post_id);
   // For each saved attachments, If it not exist in new attachments, delete it.
   for (auto r : all_ct) {
     auto it = std::find_if(
         inNewAttachments.begin(), inNewAttachments.end(),
         [&](PostCSTotal t) { return t.post_id == r["post_id"].as<long>(); });
     if (it == inNewAttachments.end()) {  // Element not Found
-      Dba::writeInTrans(transPtr, strSqlPostCategoryDel,
-                        r["post_id"].as<long>());
+      sql::Dba::writeInTrans(transPtr, strSqlPostCategoryDel,
+                             r["post_id"].as<long>());
     }
   }
   // For each new attachments, insert it if it not already exist.
   for (auto r : inNewAttachments) {
-    auto y =
-        Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind, r.post_id);
+    auto y = sql::Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind,
+                                    r.post_id);
     if (y.empty()) {  // insert
-      auto i = Dba::writeInTrans(transPtr, strSqlPostCategoryInsert, post_id,
-                                 r.pcs, r.weight, r.price);
+      auto i = sql::Dba::writeInTrans(transPtr, strSqlPostCategoryInsert,
+                                      post_id, r.pcs, r.weight, r.price);
     } else {  // update
       if (y[0]["post_id"].as<long>() != r.post_id ||
           y[0]["pcs"].as<int>() != r.pcs ||
           y[0]["weight"].as<double>() != r.weight ||
           y[0]["price"].as<double>() != r.price) {
-        Dba::writeInTrans(transPtr, strSqlPostCategoryUpdateAtt, r.post_id,
-                          r.pcs, r.weight, r.price);
+        sql::Dba::writeInTrans(transPtr, strSqlPostCategoryUpdateAtt, r.post_id,
+                               r.pcs, r.weight, r.price);
       }
     }
   }
@@ -1137,29 +1156,31 @@ void save_product_Attachments(
         {i[0].get<long>(), i[1].get<long>(), i[2].get<long>(), ismain});
   }
 
-  auto all_ct = Dba::writeInTrans(transPtr, strSqlPostCategories, post_id);
+  auto all_ct = sql::Dba::writeInTrans(transPtr, strSqlPostCategories, post_id);
   // For each saved attachments, If it not exist in new attachments, delete it.
   for (auto r : all_ct) {
     auto it =
         std::find_if(inNewAttachments.begin(), inNewAttachments.end(),
                      [&](Attachment t) { return t.id == r["id"].as<long>(); });
     if (it == inNewAttachments.end()) {  // Element not Found
-      Dba::writeInTrans(transPtr, strSqlPostCategoryDel, r["id"].as<long>());
+      sql::Dba::writeInTrans(transPtr, strSqlPostCategoryDel,
+                             r["id"].as<long>());
     }
   }
   // For each new attachments, insert it if it not already exist.
   for (auto r : inNewAttachments) {
-    auto y = Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind, r.id);
+    auto y =
+        sql::Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind, r.id);
     if (y.empty()) {  // insert
       auto temp_id = r.temp_id;
       if (temp_id != 0) {
-        auto z = Dba::writeInTrans(transPtr, strSqlTempImage, temp_id);
+        auto z = sql::Dba::writeInTrans(transPtr, strSqlTempImage, temp_id);
         if (z.size() == 1) {
-          Dba::writeInTrans(transPtr, strSqlPostCategoryInsert, post_id,
-                            r.tone_id, z[0]["name"].as<std::string>(),
-                            z[0]["size"].as<long>(),
-                            z[0]["type"].as<std::string>(), r.main_image);
-          Dba::writeInTrans(transPtr, strSqlTempImageDel, temp_id);
+          sql::Dba::writeInTrans(transPtr, strSqlPostCategoryInsert, post_id,
+                                 r.tone_id, z[0]["name"].as<std::string>(),
+                                 z[0]["size"].as<long>(),
+                                 z[0]["type"].as<std::string>(), r.main_image);
+          sql::Dba::writeInTrans(transPtr, strSqlTempImageDel, temp_id);
         }
       }
     } else {  // update
@@ -1168,18 +1189,18 @@ void save_product_Attachments(
           r.temp_id != 0) {  // can also update image
         auto temp_id = r.temp_id;
         if (temp_id != 0) {
-          auto z = Dba::writeInTrans(transPtr, strSqlTempImage, temp_id);
+          auto z = sql::Dba::writeInTrans(transPtr, strSqlTempImage, temp_id);
           if (z.size() == 1) {
             auto name = z[0]["name"].as<std::string>();
             auto size = z[0]["size"].as<long>();
             auto type = z[0]["type"].as<std::string>();
-            Dba::writeInTrans(transPtr, strSqlPostCategoryUpdateAtt, r.id,
-                              r.tone_id, name, size, type, r.main_image);
-            Dba::writeInTrans(transPtr, strSqlTempImageDel, temp_id);
+            sql::Dba::writeInTrans(transPtr, strSqlPostCategoryUpdateAtt, r.id,
+                                   r.tone_id, name, size, type, r.main_image);
+            sql::Dba::writeInTrans(transPtr, strSqlTempImageDel, temp_id);
           }
         } else {
-          Dba::writeInTrans(transPtr, strSqlPostCategoryUpdate, r.id, r.tone_id,
-                            r.main_image);
+          sql::Dba::writeInTrans(transPtr, strSqlPostCategoryUpdate, r.id,
+                                 r.tone_id, r.main_image);
         }
       }
     }
@@ -1233,7 +1254,7 @@ nlohmann::json Product::ins(nlohmann::json event, nlohmann::json args) {
   auto clientPtr = drogon::app().getDbClient("sce");
   auto transPtr = clientPtr->newTransaction();
   try {
-    auto x = Dba::writeInTrans(
+    auto x = sql::Dba::writeInTrans(
         transPtr, strSqlPost, args[0]["comment_status"].get<bool>(),
         args[0]["menu_order"].get<int>(), args[0]["excerpt"].get<std::string>(),
         args[0]["content"].get<std::string>(),
@@ -1244,7 +1265,7 @@ nlohmann::json Product::ins(nlohmann::json event, nlohmann::json args) {
         args[0]["visibility"].get<std::string>());
     auto post_id = x[0]["id"].as<long>();
 
-    Dba::writeInTrans(
+    sql::Dba::writeInTrans(
         transPtr, strSqlProduct, post_id, args[0]["p_sku"].get<std::string>(),
         args[0]["p_min_price"].get<double>(),
         args[0]["p_max_price"].get<double>(), args[0]["p_weight"].get<double>(),
@@ -1342,20 +1363,20 @@ nlohmann::json Product::upd(nlohmann::json event, nlohmann::json args) {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     try {
-      Dba::writeInTrans(transPtr, strSqlPost, args[0]["id"].get<long>(),
-                        args[0]["comment_status"].get<bool>(),
-                        args[0]["menu_order"].get<int>(),
-                        args[0]["excerpt"].get<std::string>(),
-                        args[0]["content"].get<std::string>(),
-                        args[0]["title"].get<std::string>(),
-                        args[0]["name"].get<std::string>(),
-                        args[0]["password"].get<std::string>(),
-                        args[0]["status"].get<std::string>(),
-                        args[0]["date"].get<std::string>(),
-                        args[0]["type"].get<std::string>(),
-                        args[0]["visibility"].get<std::string>());
+      sql::Dba::writeInTrans(transPtr, strSqlPost, args[0]["id"].get<long>(),
+                             args[0]["comment_status"].get<bool>(),
+                             args[0]["menu_order"].get<int>(),
+                             args[0]["excerpt"].get<std::string>(),
+                             args[0]["content"].get<std::string>(),
+                             args[0]["title"].get<std::string>(),
+                             args[0]["name"].get<std::string>(),
+                             args[0]["password"].get<std::string>(),
+                             args[0]["status"].get<std::string>(),
+                             args[0]["date"].get<std::string>(),
+                             args[0]["type"].get<std::string>(),
+                             args[0]["visibility"].get<std::string>());
       auto post_id = args[0]["id"].get<long>();
-      Dba::writeInTrans(
+      sql::Dba::writeInTrans(
           transPtr, strSqlProduct, args[0]["p_id"].get<long>(), post_id,
           args[0]["p_sku"].get<std::string>(),
           args[0]["p_min_price"].get<double>(),
@@ -1533,25 +1554,25 @@ nlohmann::json Product::del(nlohmann::json event, nlohmann::json args) {
     auto post_policy_del = "DELETE FROM product.post_policy WHERE post_id = $1";
 
     auto post_id = args[0][0].get<long>();
-    Dba::writeInTrans(transPtr, post_policy_del, post_id);
-    Dba::writeInTrans(transPtr, post_certified_by_del, post_id);
-    Dba::writeInTrans(transPtr, post_cs_total_del, post_id);
-    Dba::writeInTrans(transPtr, post_cs_price_del, post_id);
-    Dba::writeInTrans(transPtr, post_cs_sizes_del, post_id);
-    Dba::writeInTrans(transPtr, post_diamond_price_id, post_id);
-    Dba::writeInTrans(transPtr, post_diamond_sizes_del, post_id);
-    Dba::writeInTrans(transPtr, post_attachment_del, post_id);
-    Dba::writeInTrans(transPtr, post_purity_tone_del, post_id);
-    Dba::writeInTrans(transPtr, post_purity_del, post_id);
-    Dba::writeInTrans(transPtr, post_tone_del, post_id);
-    Dba::writeInTrans(transPtr, post_tone_del, post_id);
-    Dba::writeInTrans(transPtr, post_clarity_del, post_id);
-    Dba::writeInTrans(transPtr, post_category_del, post_id);
-    Dba::writeInTrans(transPtr, post_tag_del, post_id);
-    // Dba::writeInTrans(transPtr, tags_del, post_id); // Fix This. If Tag is
-    // not used in any product delete it
-    Dba::writeInTrans(transPtr, product_del, post_id);
-    Dba::writeInTrans(transPtr, post_del, post_id);
+    sql::Dba::writeInTrans(transPtr, post_policy_del, post_id);
+    sql::Dba::writeInTrans(transPtr, post_certified_by_del, post_id);
+    sql::Dba::writeInTrans(transPtr, post_cs_total_del, post_id);
+    sql::Dba::writeInTrans(transPtr, post_cs_price_del, post_id);
+    sql::Dba::writeInTrans(transPtr, post_cs_sizes_del, post_id);
+    sql::Dba::writeInTrans(transPtr, post_diamond_price_id, post_id);
+    sql::Dba::writeInTrans(transPtr, post_diamond_sizes_del, post_id);
+    sql::Dba::writeInTrans(transPtr, post_attachment_del, post_id);
+    sql::Dba::writeInTrans(transPtr, post_purity_tone_del, post_id);
+    sql::Dba::writeInTrans(transPtr, post_purity_del, post_id);
+    sql::Dba::writeInTrans(transPtr, post_tone_del, post_id);
+    sql::Dba::writeInTrans(transPtr, post_tone_del, post_id);
+    sql::Dba::writeInTrans(transPtr, post_clarity_del, post_id);
+    sql::Dba::writeInTrans(transPtr, post_category_del, post_id);
+    sql::Dba::writeInTrans(transPtr, post_tag_del, post_id);
+    // sql::Dba::writeInTrans(transPtr, tags_del, post_id); // Fix This. If Tag
+    // is not used in any product delete it
+    sql::Dba::writeInTrans(transPtr, product_del, post_id);
+    sql::Dba::writeInTrans(transPtr, post_del, post_id);
 
     nlohmann::json ret;
     ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
@@ -1578,13 +1599,13 @@ nlohmann::json save_category(const nlohmann::json& event, nlohmann::json args) {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     try {
-      Dba::writeInTrans(transPtr, strSql, args[0]["id"].get<long>(),
-                        args[0]["slug"].get<std::string>(),
-                        args[0]["name"].get<std::string>(),
-                        args[0]["description"].get<std::string>(),
-                        args[0]["display_type"].get<std::string>(),
-                        args[0]["parent_id"].get<long>(),
-                        args[0]["position"].get<int>());
+      sql::Dba::writeInTrans(transPtr, strSql, args[0]["id"].get<long>(),
+                             args[0]["slug"].get<std::string>(),
+                             args[0]["name"].get<std::string>(),
+                             args[0]["description"].get<std::string>(),
+                             args[0]["display_type"].get<std::string>(),
+                             args[0]["parent_id"].get<long>(),
+                             args[0]["position"].get<int>());
 
       nlohmann::json ret;
       ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
@@ -1605,12 +1626,12 @@ nlohmann::json save_category(const nlohmann::json& event, nlohmann::json args) {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     try {
-      Dba::writeInTrans(transPtr, strSql, args[0]["slug"].get<std::string>(),
-                        args[0]["name"].get<std::string>(),
-                        args[0]["description"].get<std::string>(),
-                        args[0]["display_type"].get<std::string>(),
-                        args[0]["parent_id"].get<long>(),
-                        args[0]["position"].get<int>());
+      sql::Dba::writeInTrans(
+          transPtr, strSql, args[0]["slug"].get<std::string>(),
+          args[0]["name"].get<std::string>(),
+          args[0]["description"].get<std::string>(),
+          args[0]["display_type"].get<std::string>(),
+          args[0]["parent_id"].get<long>(), args[0]["position"].get<int>());
 
       nlohmann::json ret;
       ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
@@ -1653,7 +1674,7 @@ nlohmann::json Product::get_product_diamond_price_data(nlohmann::json event,
           "WHERE "
           "shape_id = $1 AND color_id = $2 AND size_id = $3 AND  clarity_id = "
           "ANY($4::bigint[])";
-      auto x = Dba::writeInTrans(transPtr, sql, shape, color, size, s);
+      auto x = sql::Dba::writeInTrans(transPtr, sql, shape, color, size, s);
 
       nlohmann::json d(nlohmann::json::array());
       for (const auto& r : x) {
@@ -1700,7 +1721,7 @@ nlohmann::json Product::get_product_cs_price_data(nlohmann::json event,
       auto sql =
           "SELECT weight, rate FROM material.color_stone_size_meta WHERE "
           "cs_type_id = $1 and shape_id = $2 AND size_id = $3";
-      auto x = Dba::writeInTrans(transPtr, sql, type, shape, size);
+      auto x = sql::Dba::writeInTrans(transPtr, sql, type, shape, size);
 
       nlohmann::json d(nlohmann::json::array());
       for (const auto& r : x) {
@@ -1753,7 +1774,7 @@ select * ,
        from tree
        ORDER BY tree.position;
 )";
-    auto x = Dba::writeInTrans(transPtr, sql);
+    auto x = sql::Dba::writeInTrans(transPtr, sql);
 
     nlohmann::json d(nlohmann::json::array());
     for (const auto& r : x) {

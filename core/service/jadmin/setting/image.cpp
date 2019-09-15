@@ -4,7 +4,7 @@
 #include "../../../sql/dba.h"
 
 namespace jadmin {
-Image::Image(std::shared_ptr<websocket::JAdminContext> context_)
+Image::Image(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("post", "image", "a"));
   setupTable();
@@ -13,32 +13,35 @@ Image::Image(std::shared_ptr<websocket::JAdminContext> context_)
 void Image::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
-      sql::SelectedColumn({"Id", "id", "", "a", PG_TYPES::INT8, true}),
+      sql::SelectedColumn({"Id", "id", "", "a", sql::PG_TYPES::INT8, true}),
       sql::SelectedColumn({"Collection", "image_collection_id", "", "a",
-                            PG_TYPES::INT8, true, 1, 1}),
-      sql::SelectedColumn({"Name", "name", "", "c", PG_TYPES::TEXT, false}),
+                           sql::PG_TYPES::INT8, true, 1, 1}),
       sql::SelectedColumn(
-          {"Position", "position", "", "a", PG_TYPES::INT4, true}),
-      sql::SelectedColumn({"Title", "title", "", "a", PG_TYPES::TEXT, true}),
-      sql::SelectedColumn({"Url", "url", "", "a", PG_TYPES::TEXT, true}),
+          {"Name", "name", "", "c", sql::PG_TYPES::TEXT, false}),
       sql::SelectedColumn(
-          {"Description", "description", "", "a", PG_TYPES::TEXT, true}),
-      sql::SelectedColumn({"Name", "name", "", "a", PG_TYPES::TEXT, true}),
-      sql::SelectedColumn({"Size", "size", "", "a", PG_TYPES::INT8, true}),
-      sql::SelectedColumn({"Type", "type", "", "a", PG_TYPES::TEXT, true}),
+          {"Position", "position", "", "a", sql::PG_TYPES::INT4, true}),
       sql::SelectedColumn(
-          {"Version", "version", "", "a", PG_TYPES::TEXT, false}),
+          {"Title", "title", "", "a", sql::PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"Url", "url", "", "a", sql::PG_TYPES::TEXT, true}),
+      sql::SelectedColumn(
+          {"Description", "description", "", "a", sql::PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"Name", "name", "", "a", sql::PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"Size", "size", "", "a", sql::PG_TYPES::INT8, true}),
+      sql::SelectedColumn({"Type", "type", "", "a", sql::PG_TYPES::TEXT, true}),
+      sql::SelectedColumn(
+          {"Version", "version", "", "a", sql::PG_TYPES::TEXT, false}),
       // sql::SelectedColumn({"Created By", "create_user_id", "", "a",
-      // PG_TYPES::INT8, true, 1, 0, false}),
+      // sql::PG_TYPES::INT8, true, 1, 0, false}),
       // sql::SelectedColumn({"u1_username", "username", "", "u1",
-      // PG_TYPES::TEXT, false, 0, 0, false}), sql::SelectedColumn({"Updated
-      // By", "update_user_id", "", "a", PG_TYPES::INT8, true, 1, 0, false}),
+      // sql::PG_TYPES::TEXT, false, 0, 0, false}),
+      // sql::SelectedColumn({"Updated By", "update_user_id", "", "a",
+      // sql::PG_TYPES::INT8, true, 1, 0, false}),
       // sql::SelectedColumn({"u2_username", "username", "", "u2",
-      // PG_TYPES::TEXT, false, 0, 0, false}),
+      // sql::PG_TYPES::TEXT, false, 0, 0, false}),
       sql::SelectedColumn({"Create Time", "inserted_at", "", "a",
-                            PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+                           sql::PG_TYPES::TIMESTAMP, true, 0, 0, false}),
       sql::SelectedColumn({"Update Time", "updated_at", "", "a",
-                            PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+                           sql::PG_TYPES::TIMESTAMP, true, 0, 0, false}),
   });
 
   auto c = sql::ObjectIdentifier("post", "image_collection", "c");
@@ -93,19 +96,20 @@ nlohmann::json Image::ins(nlohmann::json event, nlohmann::json args) {
   try {
     auto temp_id = args[0]["temp_id"].get<long>();
     if (temp_id != 0) {
-      auto z = Dba::writeInTrans(transPtr, strSqlTempImage, temp_id);
+      auto z = sql::Dba::writeInTrans(transPtr, strSqlTempImage, temp_id);
       if (z.size() == 1) {
-        Dba::writeInTrans(
+        sql::Dba::writeInTrans(
             transPtr, strSql, args[0]["image_collection_id"].get<long>(),
             z[0]["name"].c_str(), z[0]["size"].as<long>(), z[0]["type"].c_str(),
             args[0]["title"].get<std::string>(),
             args[0]["description"].get<std::string>(),
             args[0]["url"].get<std::string>(), args[0]["position"].get<int>());
-        Dba::writeInTrans(transPtr, strSqlTempImageDel, temp_id);
+        sql::Dba::writeInTrans(transPtr, strSqlTempImageDel, temp_id);
       }
     } else {
       nlohmann::json ret;
-      ret[0] = websocket::WsFns::successJsonObject(event, false, "Please Upload Image");
+      ret[0] = websocket::WsFns::successJsonObject(event, false,
+                                                   "Please Upload Image");
       return ret;
     }
 
@@ -141,20 +145,20 @@ nlohmann::json Image::upd(nlohmann::json event, nlohmann::json args) {
       auto temp_id =
           args[0]["temp_id"].is_null() ? 0 : args[0]["temp_id"].get<long>();
       if (temp_id != 0) {
-        auto z = Dba::writeInTrans(transPtr, strSqlTempImage, temp_id);
+        auto z = sql::Dba::writeInTrans(transPtr, strSqlTempImage, temp_id);
         if (z.size() == 1) {
-          Dba::writeInTrans(transPtr, strSql, args[0]["id"].get<long>(),
-                            args[0]["image_collection_id"].get<long>(),
-                            z[0]["name"].c_str(), z[0]["size"].as<long>(),
-                            z[0]["type"].c_str(),
-                            args[0]["title"].get<std::string>(),
-                            args[0]["description"].get<std::string>(),
-                            args[0]["url"].get<std::string>(),
-                            args[0]["position"].get<int>());
-          Dba::writeInTrans(transPtr, strSqlTempImageDel, temp_id);
+          sql::Dba::writeInTrans(transPtr, strSql, args[0]["id"].get<long>(),
+                                 args[0]["image_collection_id"].get<long>(),
+                                 z[0]["name"].c_str(), z[0]["size"].as<long>(),
+                                 z[0]["type"].c_str(),
+                                 args[0]["title"].get<std::string>(),
+                                 args[0]["description"].get<std::string>(),
+                                 args[0]["url"].get<std::string>(),
+                                 args[0]["position"].get<int>());
+          sql::Dba::writeInTrans(transPtr, strSqlTempImageDel, temp_id);
         }
       } else {
-        Dba::writeInTrans(
+        sql::Dba::writeInTrans(
             transPtr,
             "UPDATE post.image SET (title, description, url, position, "
             "version) = ROW($2, $3, $4, $5, version + 1) WHERE id = $1",
@@ -174,7 +178,8 @@ nlohmann::json Image::upd(nlohmann::json event, nlohmann::json args) {
     }
   }
   nlohmann::json ret;
-  ret[0] = websocket::WsFns::successJsonObject(event, false, "Not Valid Structure");
+  ret[0] =
+      websocket::WsFns::successJsonObject(event, false, "Not Valid Structure");
   return ret;
 }
 }  // namespace jadmin

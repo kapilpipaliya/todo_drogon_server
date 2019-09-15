@@ -3,6 +3,7 @@
 #include <drogon/WebSocketController.h>
 #include "json.hpp"
 namespace websocket {
+namespace jadmin {
 class JAdminContext {
  public:
   JAdminContext(const drogon::HttpRequestPtr &req,
@@ -21,4 +22,5 @@ class JAdminContext {
   long user_id = 0;
   const drogon::WebSocketConnectionPtr &wsConnPtr;
 };
+}  // namespace jadmin
 }  // namespace websocket

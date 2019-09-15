@@ -1,6 +1,7 @@
 //
 // Logging helper to forward to the OpenProject log delegator
 // which will log and report errors appropriately.
+namespace openproj {
 namespace OpenProjectErrorHelper {
    void op_logger() {
 //    ::OpenProject.logger
@@ -33,4 +34,5 @@ namespace OpenProjectErrorHelper {
 //      env: try(:env),
 //    }
   }
+}
 }

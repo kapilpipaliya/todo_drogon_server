@@ -2,7 +2,7 @@
 
 #include <utility>
 
-madmin::SongPreview::SongPreview(std::shared_ptr<websocket::MAdminContext> context_)
+madmin::SongPreview::SongPreview(std::shared_ptr<websocket::music::MAdminContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }

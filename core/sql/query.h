@@ -15,6 +15,10 @@
 
 #include "json.hpp"
 
+/*
+ * This file's classes should not talk to database directly
+ * */
+namespace sql {
 enum PG_TYPES {
   BOOL = 16,
   //    ByTea = 17,
@@ -31,11 +35,6 @@ enum PG_TYPES {
   // ARRAYTEXT = 9998, // fix
   PSJSON = 9999
 };
-
-/*
- * This file's classes should not talk to database directly
- * */
-namespace sql {
 class CRUDHelper {
  public:
   static std::string ins_(const std::string& t, const std::string& c,

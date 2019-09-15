@@ -4,7 +4,10 @@
 #include "caf/all.hpp"
 
 #include "useractorbase.h"
+#include "context/todocontext.h"
+#include "spdlogfix.h"
 namespace superactor {
+namespace todoactor {
 class TodoActor : public caf::event_based_actor, public UserActorBase {
  public:
   TodoActor(caf::actor_config& cfg);
@@ -19,6 +22,21 @@ class TodoActor : public caf::event_based_actor, public UserActorBase {
   nlohmann::json handleBinaryMessage(
       const drogon::WebSocketConnectionPtr& wsConnPtr,
       std::string& message) override;
+
+  template <typename T>
+  nlohmann::json handleService(
+      std::shared_ptr<websocket::todo::TodoContext> contx, nlohmann::json in) {
+    try {
+      T p{contx};
+      auto r = p.handleEvent(in[0], 1, in[1]);
+      if (!r.is_null()) return r;
+      return nlohmann::json::array();
+    } catch (const std::exception& e) {
+      SPDLOG_TRACE(e.what());
+      return nlohmann::json::array({{e.what()}});
+    }
+  }
 };
+}  // namespace todoactor
 }  // namespace superactor
 #endif

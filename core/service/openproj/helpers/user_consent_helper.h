@@ -1,3 +1,4 @@
+namespace openproj {
 namespace UserConsentHelper {
 
    bool consent_param() {
@@ -24,4 +25,5 @@ namespace UserConsentHelper {
 //      true
 //    }
   }
+}
 }

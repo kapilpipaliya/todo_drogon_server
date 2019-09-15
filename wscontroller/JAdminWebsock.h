@@ -2,7 +2,9 @@
 #include <drogon/WebSocketController.h>
 #include "../actor/mainactor.h"
 namespace websocket {
-class EchoWebSocket : public drogon::WebSocketController<EchoWebSocket> {
+namespace jadmin {
+
+class JAdminWebSocket : public drogon::WebSocketController<JAdminWebSocket> {
  public:
   void handleNewMessage(const drogon::WebSocketConnectionPtr &, std::string &&,
                         const drogon::WebSocketMessageType &) override;
@@ -13,4 +15,5 @@ class EchoWebSocket : public drogon::WebSocketController<EchoWebSocket> {
   WS_PATH_ADD("/jadmin");
   WS_PATH_LIST_END
 };
+}  // namespace jadmin
 }  // namespace websocket

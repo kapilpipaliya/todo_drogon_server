@@ -3,7 +3,8 @@
 #include "../../../sql/dba.h"
 #include "./session.h"
 namespace jadmin {
-jadmin::Session::Session(std::shared_ptr<websocket::JAdminContext> context_)
+jadmin::Session::Session(
+    std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }
@@ -38,7 +39,7 @@ bool jadmin::Session::destroy(long key) {
 
   // Remove anything and EVERYTHING
   std::string sql = "DELETE FROM entity.session WHERE id = $1";
-  auto r = Dba::write(sql, key);
+  auto r = sql::Dba::write(sql, key);
   return r.affectedRows() == 1;
   // debug_event("SESSION", "Deleting Session with key:" . key, 6);
 

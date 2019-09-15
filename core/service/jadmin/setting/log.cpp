@@ -3,7 +3,7 @@
 #include <utility>
 
 namespace jadmin {
-Log::Log(std::shared_ptr<websocket::JAdminContext> context_)
+Log::Log(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("entity", "simple_log", "a"));
   setupTable();
@@ -32,19 +32,21 @@ nlohmann::json Log::handleEvent(nlohmann::json event, unsigned long next,
 void Log::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
-      sql::SelectedColumn({"Id", "id", "", "a", PG_TYPES::INT8, false}),
-      sql::SelectedColumn({"Detail", "detail", "", "a", PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"Id", "id", "", "a", sql::PG_TYPES::INT8, false}),
+      sql::SelectedColumn(
+          {"Detail", "detail", "", "a", sql::PG_TYPES::TEXT, true}),
       // sql::SelectedColumn({"Created By", "create_user_id", "", "a",
-      // PG_TYPES::INT8, true, 1, 0, false}),
+      // sql::PG_TYPES::INT8, true, 1, 0, false}),
       // sql::SelectedColumn({"u1_username", "username", "", "u1",
-      // PG_TYPES::TEXT, false, 0, 0, false}), sql::SelectedColumn({"Updated
-      // By", "update_user_id", "", "a", PG_TYPES::INT8, true, 1, 0, false}),
+      // sql::PG_TYPES::TEXT, false, 0, 0, false}),
+      // sql::SelectedColumn({"Updated By", "update_user_id", "", "a",
+      // sql::PG_TYPES::INT8, true, 1, 0, false}),
       // sql::SelectedColumn({"u2_username", "username", "", "u2",
-      // PG_TYPES::TEXT, false, 0, 0, false}),
+      // sql::PG_TYPES::TEXT, false, 0, 0, false}),
       sql::SelectedColumn({"Create Time", "inserted_at", "", "a",
-                            PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+                           sql::PG_TYPES::TIMESTAMP, true, 0, 0, false}),
       sql::SelectedColumn({"Update Time", "updated_at", "", "a",
-                            PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+                           sql::PG_TYPES::TIMESTAMP, true, 0, 0, false}),
   });
 
   // auto m = sql::ObjectIdentifier("material", "metal", "m");

@@ -5,7 +5,7 @@
 #include "../../../sql/dba.h"
 #include "wscontroller/wsfns.h"
 namespace jadmin {
-Txn::Txn(std::shared_ptr<websocket::JAdminContext> context_)
+Txn::Txn(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("account", "txn", "a"));
   setupTable();
@@ -34,86 +34,93 @@ nlohmann::json Txn::handleEvent(nlohmann::json event, unsigned long next,
 void Txn::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
-      sql::SelectedColumn({"id", "id", "", "a", PG_TYPES::INT8}),
+      sql::SelectedColumn({"id", "id", "", "a", sql::PG_TYPES::INT8}),
       sql::SelectedColumn({"Journal Type", "journal_type_id", "", "a",
-                           PG_TYPES::INT8, true, 1, 1}),
-      sql::SelectedColumn(
-          {"jt_name", "name", "", "jt", PG_TYPES::TEXT, false, 0, 0, false}),
-      sql::SelectedColumn(
-          {"Party", "party_id", "", "a", PG_TYPES::INT8, true, 1, 1}),
-      sql::SelectedColumn({"party_slug", "slug", "", "party", PG_TYPES::TEXT,
+                           sql::PG_TYPES::INT8, true, 1, 1}),
+      sql::SelectedColumn({"jt_name", "name", "", "jt", sql::PG_TYPES::TEXT,
                            false, 0, 0, false}),
-      sql::SelectedColumn({"no", "no", "", "a", PG_TYPES::TEXT}),
       sql::SelectedColumn(
-          {"sequence_id", "sequence_id", "", "a", PG_TYPES::INT8}),
-      sql::SelectedColumn({"Date", "date", "", "a", PG_TYPES::TIMESTAMP}),
-      sql::SelectedColumn({"entity_id", "entity_id", "", "a", PG_TYPES::INT8}),
+          {"Party", "party_id", "", "a", sql::PG_TYPES::INT8, true, 1, 1}),
+      sql::SelectedColumn({"party_slug", "slug", "", "party",
+                           sql::PG_TYPES::TEXT, false, 0, 0, false}),
+      sql::SelectedColumn({"no", "no", "", "a", sql::PG_TYPES::TEXT}),
       sql::SelectedColumn(
-          {"account_id", "account_id", "", "a", PG_TYPES::INT8}),
+          {"sequence_id", "sequence_id", "", "a", sql::PG_TYPES::INT8}),
+      sql::SelectedColumn({"Date", "date", "", "a", sql::PG_TYPES::TIMESTAMP}),
       sql::SelectedColumn(
-          {"tax_included", "tax_included", "", "a", PG_TYPES::BOOL}),
+          {"entity_id", "entity_id", "", "a", sql::PG_TYPES::INT8}),
       sql::SelectedColumn(
-          {"due_date", "due_date", "", "a", PG_TYPES::TIMESTAMP}),
-      sql::SelectedColumn({"till", "till", "", "a", PG_TYPES::TEXT}),
+          {"account_id", "account_id", "", "a", sql::PG_TYPES::INT8}),
       sql::SelectedColumn(
-          {"order_number", "order_number", "", "a", PG_TYPES::TEXT}),
+          {"tax_included", "tax_included", "", "a", sql::PG_TYPES::BOOL}),
       sql::SelectedColumn(
-          {"quo_number", "quo_number", "", "a", PG_TYPES::TEXT}),
-      sql::SelectedColumn({"Currency", "currency_id", "", "a", PG_TYPES::INT8}),
-      sql::SelectedColumn({"invoice", "invoice", "", "a", PG_TYPES::BOOL}),
+          {"due_date", "due_date", "", "a", sql::PG_TYPES::TIMESTAMP}),
+      sql::SelectedColumn({"till", "till", "", "a", sql::PG_TYPES::TEXT}),
       sql::SelectedColumn(
-          {"amount_bc", "amount_bc", "", "a", PG_TYPES::DOUBLE}),
+          {"order_number", "order_number", "", "a", sql::PG_TYPES::TEXT}),
       sql::SelectedColumn(
-          {"amount_tc", "amount_tc", "", "a", PG_TYPES::DOUBLE}),
+          {"quo_number", "quo_number", "", "a", sql::PG_TYPES::TEXT}),
       sql::SelectedColumn(
-          {"net_amount_bc", "net_amount_bc", "", "a", PG_TYPES::DOUBLE}),
+          {"Currency", "currency_id", "", "a", sql::PG_TYPES::INT8}),
+      sql::SelectedColumn({"invoice", "invoice", "", "a", sql::PG_TYPES::BOOL}),
       sql::SelectedColumn(
-          {"net_amount_tc", "net_amount_tc", "", "a", PG_TYPES::DOUBLE}),
-      sql::SelectedColumn({"notes", "notes", "", "a", PG_TYPES::TEXT}),
+          {"amount_bc", "amount_bc", "", "a", sql::PG_TYPES::DOUBLE}),
       sql::SelectedColumn(
-          {"internal_notes", "internal_notes", "", "a", PG_TYPES::TEXT}),
+          {"amount_tc", "amount_tc", "", "a", sql::PG_TYPES::DOUBLE}),
       sql::SelectedColumn(
-          {"description", "description", "", "a", PG_TYPES::TEXT}),
-      sql::SelectedColumn({"status_id", "status_id", "", "a", PG_TYPES::TEXT}),
-      sql::SelectedColumn({"branch_id", "branch_id", "", "a", PG_TYPES::INT8}),
-      sql::SelectedColumn({"ship_via", "ship_via", "", "a", PG_TYPES::TEXT}),
+          {"net_amount_bc", "net_amount_bc", "", "a", sql::PG_TYPES::DOUBLE}),
       sql::SelectedColumn(
-          {"language_code", "language_code", "", "a", PG_TYPES::TEXT}),
-      sql::SelectedColumn({"po_number", "po_number", "", "a", PG_TYPES::TEXT}),
+          {"net_amount_tc", "net_amount_tc", "", "a", sql::PG_TYPES::DOUBLE}),
+      sql::SelectedColumn({"notes", "notes", "", "a", sql::PG_TYPES::TEXT}),
       sql::SelectedColumn(
-          {"shipping_point", "shipping_point", "", "a", PG_TYPES::TEXT}),
-      sql::SelectedColumn({"on_hold", "on_hold", "", "a", PG_TYPES::BOOL}),
+          {"internal_notes", "internal_notes", "", "a", sql::PG_TYPES::TEXT}),
       sql::SelectedColumn(
-          {"force_closed", "force_closed", "", "a", PG_TYPES::BOOL}),
-      sql::SelectedColumn({"reverse", "reverse", "", "a", PG_TYPES::BOOL}),
-      sql::SelectedColumn({"terms", "terms", "", "a", PG_TYPES::INT4}),
-      sql::SelectedColumn({"is_return", "is_return", "", "a", PG_TYPES::BOOL}),
+          {"description", "description", "", "a", sql::PG_TYPES::TEXT}),
+      sql::SelectedColumn(
+          {"status_id", "status_id", "", "a", sql::PG_TYPES::TEXT}),
+      sql::SelectedColumn(
+          {"branch_id", "branch_id", "", "a", sql::PG_TYPES::INT8}),
+      sql::SelectedColumn(
+          {"ship_via", "ship_via", "", "a", sql::PG_TYPES::TEXT}),
+      sql::SelectedColumn(
+          {"language_code", "language_code", "", "a", sql::PG_TYPES::TEXT}),
+      sql::SelectedColumn(
+          {"po_number", "po_number", "", "a", sql::PG_TYPES::TEXT}),
+      sql::SelectedColumn(
+          {"shipping_point", "shipping_point", "", "a", sql::PG_TYPES::TEXT}),
+      sql::SelectedColumn({"on_hold", "on_hold", "", "a", sql::PG_TYPES::BOOL}),
+      sql::SelectedColumn(
+          {"force_closed", "force_closed", "", "a", sql::PG_TYPES::BOOL}),
+      sql::SelectedColumn({"reverse", "reverse", "", "a", sql::PG_TYPES::BOOL}),
+      sql::SelectedColumn({"terms", "terms", "", "a", sql::PG_TYPES::INT4}),
+      sql::SelectedColumn(
+          {"is_return", "is_return", "", "a", sql::PG_TYPES::BOOL}),
       // sql::SelectedColumn({"created_date", "created_date", "", "a",
-      // PG_TYPES::date}),
+      // sql::PG_TYPES::date}),
       sql::SelectedColumn(
-          {"is_approved", "is_approved", "", "a", PG_TYPES::BOOL}),
+          {"is_approved", "is_approved", "", "a", sql::PG_TYPES::BOOL}),
       sql::SelectedColumn(
-          {"approved_by_id", "approved_by_id", "", "a", PG_TYPES::INT8}),
+          {"approved_by_id", "approved_by_id", "", "a", sql::PG_TYPES::INT8}),
       sql::SelectedColumn(
-          {"approved_at", "approved_at", "", "a", PG_TYPES::TIMESTAMP}),
+          {"approved_at", "approved_at", "", "a", sql::PG_TYPES::TIMESTAMP}),
       sql::SelectedColumn({"order_item", "order_item",
                            "json_agg( distinct jsonb_build_array(o_i.id, "
                            "o_i.post_id, o_i.pcs, o_i.purity_id, o_i.tone_id, "
                            "o_i.clarity_id, o_i.price, o_i.instruction))",
-                           "o_i", PG_TYPES::PSJSON, false}),
+                           "o_i", sql::PG_TYPES::PSJSON, false}),
 
       sql::SelectedColumn({"Created By", "create_user_id", "", "a",
-                           PG_TYPES::INT8, true, 1, 0, false}),
-      sql::SelectedColumn({"u1_username", "username", "", "u1", PG_TYPES::TEXT,
-                           false, 0, 0, false}),
+                           sql::PG_TYPES::INT8, true, 1, 0, false}),
+      sql::SelectedColumn({"u1_username", "username", "", "u1",
+                           sql::PG_TYPES::TEXT, false, 0, 0, false}),
       sql::SelectedColumn({"Updated By", "update_user_id", "", "a",
-                           PG_TYPES::INT8, true, 1, 0, false}),
-      sql::SelectedColumn({"u2_username", "username", "", "u2", PG_TYPES::TEXT,
-                           false, 0, 0, false}),
+                           sql::PG_TYPES::INT8, true, 1, 0, false}),
+      sql::SelectedColumn({"u2_username", "username", "", "u2",
+                           sql::PG_TYPES::TEXT, false, 0, 0, false}),
       sql::SelectedColumn({"Create Time", "inserted_at", "", "a",
-                           PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+                           sql::PG_TYPES::TIMESTAMP, true, 0, 0, false}),
       sql::SelectedColumn({"Update Time", "updated_at", "", "a",
-                           PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+                           sql::PG_TYPES::TIMESTAMP, true, 0, 0, false}),
   });
 
   auto jt = sql::ObjectIdentifier("account", "journal_type", "jt");
@@ -147,8 +154,8 @@ nlohmann::json Txn::del(const nlohmann::json event, const nlohmann::json args) {
     auto txn_id = args[0][0].get<long>();
     auto txn_del = "DELETE FROM account.txn WHERE id = $1";
     auto order_item_del = "DELETE FROM order1.order_item WHERE txn_id = $1";
-    Dba::writeInTrans(transPtr, order_item_del, txn_id);
-    Dba::writeInTrans(transPtr, txn_del, txn_id);
+    sql::Dba::writeInTrans(transPtr, order_item_del, txn_id);
+    sql::Dba::writeInTrans(transPtr, txn_del, txn_id);
 
     nlohmann::json ret;
     ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
@@ -199,34 +206,37 @@ void save_txn_order_item(
     }
   }
 
-  auto all_ct = Dba::writeInTrans(transPtr, strSqlPostCategories, txn_id);
+  auto all_ct = sql::Dba::writeInTrans(transPtr, strSqlPostCategories, txn_id);
   // For each saved attachments, If it not exist in new attachments, delete it.
   for (auto r : all_ct) {
     auto it = std::find_if(
         newItems.begin(), newItems.end(),
         [&](const OrderItem &t) { return t.id == r["id"].as<long>(); });
     if (it == newItems.end()) {  // Element not Found
-      Dba::writeInTrans(transPtr, "DELETE FROM order1.order_item WHERE id = $1",
-                        r["id"].as<long>());
-      Dba::writeInTrans(transPtr, strSqlPostCategoryDel, r["id"].as<long>());
+      sql::Dba::writeInTrans(transPtr,
+                             "DELETE FROM order1.order_item WHERE id = $1",
+                             r["id"].as<long>());
+      sql::Dba::writeInTrans(transPtr, strSqlPostCategoryDel,
+                             r["id"].as<long>());
     }
   }
   // For each new attachments, insert it if it not already exist.
   for (const auto &r : newItems) {
-    auto y = Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind, r.id);
+    auto y =
+        sql::Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind, r.id);
     if (y.empty()) {  // insert
-      auto i = Dba::writeInTrans(transPtr, strSqlPostCategoryInsert, txn_id,
-                                 r.post_id, r.pcs, r.purity_id, r.tone_id,
-                                 r.clarity_id, r.price, r.instruction);
+      auto i = sql::Dba::writeInTrans(
+          transPtr, strSqlPostCategoryInsert, txn_id, r.post_id, r.pcs,
+          r.purity_id, r.tone_id, r.clarity_id, r.price, r.instruction);
     } else {  // update
       if (y[0][1].as<long>() != txn_id || y[0][2].as<long>() != r.post_id ||
           y[0][3].as<int>() != r.pcs || y[0][4].as<long>() != r.purity_id ||
           y[0][5].as<long>() != r.tone_id ||
           y[0][6].as<long>() != r.clarity_id ||
           y[0][7].as<double>() != r.price || y[0][8].c_str() != r.instruction) {
-        Dba::writeInTrans(transPtr, strSqlPostCategoryUpdateAtt, r.id, txn_id,
-                          r.post_id, r.pcs, r.purity_id, r.tone_id,
-                          r.clarity_id, r.price, r.instruction);
+        sql::Dba::writeInTrans(transPtr, strSqlPostCategoryUpdateAtt, r.id,
+                               txn_id, r.post_id, r.pcs, r.purity_id, r.tone_id,
+                               r.clarity_id, r.price, r.instruction);
       }
     }
   }
@@ -242,7 +252,7 @@ nlohmann::json Txn::ins(nlohmann::json event, nlohmann::json args) {
   try {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
-    auto x = Dba::writeInTrans(
+    auto x = sql::Dba::writeInTrans(
         transPtr, strSqlPost, args[0]["journal_type_id"].get<long>(),
         args[0]["party_id"].get<long>(), args[0]["date"].get<std::string>(),
         args[0]["description"].get<std::string>());
@@ -268,11 +278,11 @@ nlohmann::json Txn::upd(nlohmann::json event, nlohmann::json args) {
     try {
       auto clientPtr = drogon::app().getDbClient("sce");
       auto transPtr = clientPtr->newTransaction();
-      Dba::writeInTrans(transPtr, strSqlPost, args[0]["id"].get<long>(),
-                        args[0]["journal_type_id"].get<long>(),
-                        args[0]["party_id"].get<long>(),
-                        args[0]["date"].get<std::string>(),
-                        args[0]["description"].get<std::string>());
+      sql::Dba::writeInTrans(transPtr, strSqlPost, args[0]["id"].get<long>(),
+                             args[0]["journal_type_id"].get<long>(),
+                             args[0]["party_id"].get<long>(),
+                             args[0]["date"].get<std::string>(),
+                             args[0]["description"].get<std::string>());
       auto txn_id = args[0]["id"].get<long>();
       save_txn_order_item(args, transPtr, txn_id);
 

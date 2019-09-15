@@ -3,6 +3,7 @@
 
 //
 // Intended to be used by the AccountController to handle omniauth logins
+namespace openproj {
 namespace Concerns::OmniauthLogin {
   // extend ActiveSupport::Concern
 
@@ -196,4 +197,5 @@ namespace Concerns::OmniauthLogin {
 //      uri.query = URI.encode_www_form(query) unless query.empty?
 //    }.to_s
 //  }
+}
 }

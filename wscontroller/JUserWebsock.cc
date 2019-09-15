@@ -11,13 +11,14 @@
 
 #include "context/jusercontext.h"
 namespace websocket {
+namespace juser {
 void JUserWebsock::handleNewMessage(
     const drogon::WebSocketConnectionPtr& wsConnPtr, std::string&& message,
     const drogon::WebSocketMessageType& type) {
   // std::chrono::seconds(10)
   superactor::globalCAF.communicateWithActors()
       ->request(superactor::globalCAF.mainActor(), caf::infinite,
-                run_atom::value, MainActorType::JUser, wsConnPtr,
+                run_atom::value, superactor::MainActorType::JUser, wsConnPtr,
                 std::move(message), type)
       .receive(
           [&]() {
@@ -45,4 +46,5 @@ void JUserWebsock::handleConnectionClosed(
       superactor::globalCAF.mainActor(), caf::infinite, exit_atom::value,
       wsConnPtr);
 }
+}  // namespace juser
 }  // namespace websocket

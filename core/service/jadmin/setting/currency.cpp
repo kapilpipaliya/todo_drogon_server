@@ -3,7 +3,7 @@
 #include <utility>
 
 namespace jadmin {
-Currency::Currency(std::shared_ptr<websocket::JAdminContext> context_)
+Currency::Currency(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("account", "currency", "c"));
   setupTable();
@@ -32,13 +32,15 @@ nlohmann::json Currency::handleEvent(nlohmann::json event, unsigned long next,
 void Currency::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
-      sql::SelectedColumn({"Id", "id", "", "c", PG_TYPES::INT8, false}),
-      sql::SelectedColumn({"Code", "slug", "", "c", PG_TYPES::TEXT, true}),
-      sql::SelectedColumn({"Name", "name", "", "c", PG_TYPES::TEXT, true}),
-      sql::SelectedColumn({"Symbol", "symbol", "", "c", PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"Id", "id", "", "c", sql::PG_TYPES::INT8, false}),
+      sql::SelectedColumn({"Code", "slug", "", "c", sql::PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"Name", "name", "", "c", sql::PG_TYPES::TEXT, true}),
       sql::SelectedColumn(
-          {"Rounding", "rounding", "", "c", PG_TYPES::DOUBLE, true}),
-      sql::SelectedColumn({"Active", "active", "", "c", PG_TYPES::BOOL, true}),
+          {"Symbol", "symbol", "", "c", sql::PG_TYPES::TEXT, true}),
+      sql::SelectedColumn(
+          {"Rounding", "rounding", "", "c", sql::PG_TYPES::DOUBLE, true}),
+      sql::SelectedColumn(
+          {"Active", "active", "", "c", sql::PG_TYPES::BOOL, true}),
   });
 
   // auto m = sql::ObjectIdentifier("material", "metal", "m");

@@ -5,7 +5,7 @@
 #include "json.hpp"
 
 #include <fmt/format.h>
-
+namespace wstest {
 SaveDelete::SaveDelete(std::string table, std::string insert_query,
                        std::string update_query, std::string delete_query)
     : table(table),
@@ -98,4 +98,5 @@ void SaveDelete::setMessageHandler() {
           quit(false, "Not a Text Type Message!!");
         }
       });
+}
 }

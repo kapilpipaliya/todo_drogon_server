@@ -38,7 +38,7 @@ bool todo::Session::destroy(long key) {
 
   // Remove anything and EVERYTHING
   std::string sql = "DELETE FROM music.session WHERE id = $1";
-  auto r = Dba::write(sql, key);
+  auto r = sql::Dba::write(sql, key);
   return r.affectedRows() == 1;
   // debug_event("SESSION", "Deleting Session with key:" . key, 6);
 

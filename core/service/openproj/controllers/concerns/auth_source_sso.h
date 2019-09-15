@@ -1,4 +1,5 @@
 #pragma once
+namespace openproj {
 namespace Concerns {
   //
   // If OPENPROJECT_AUTH__SOURCE__SSO_HEADER and OPENPROJECT_AUTH__SOURCE__SSO_SECRET are
@@ -137,4 +138,5 @@ namespace Concerns {
 //      redirect_to sso_failure_path
 //    }
   }
+}
 }

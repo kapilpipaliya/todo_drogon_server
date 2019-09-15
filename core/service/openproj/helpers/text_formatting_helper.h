@@ -1,3 +1,4 @@
+namespace openproj {
 namespace TextFormattingHelper {
   // extend Forwardable
 //  def_delegators :current_formatting_helper,
@@ -47,4 +48,5 @@ namespace TextFormattingHelper {
 //      project_preview_context(object, project)
 //    }
 //  }
+}
 }

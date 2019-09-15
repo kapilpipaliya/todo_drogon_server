@@ -4,7 +4,7 @@
 #include <map>
 #include <string>
 #include "json.hpp"
-
+namespace wstest {
 class BatchResultTest {
  private:
   std::map<nlohmann::json, std::tuple<nlohmann::json, bool> > event;
@@ -28,4 +28,5 @@ class BatchResultTest {
   template <typename T>
   void setResult(T event_, bool res = true);
 };
+}
 #endif

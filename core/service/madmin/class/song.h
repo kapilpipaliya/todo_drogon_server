@@ -13,7 +13,7 @@ class Song {
  public:
   // class Song extends database_object implements media, library_item  {
   //   use \Lib\Metadata\Metadata;
-  Song(std::shared_ptr<websocket::MAdminContext>);
+  Song(std::shared_ptr<websocket::music::MAdminContext>);
   void setupTable();
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
@@ -623,7 +623,7 @@ class Song {
    */
   // public function remove_from_disk()
  private:
-  std::shared_ptr<websocket::MAdminContext> context;
+  std::shared_ptr<websocket::music::MAdminContext> context;
   sql::Query query;
   // Binary functin:
   nlohmann::json save_song_binary(const nlohmann::json &event,

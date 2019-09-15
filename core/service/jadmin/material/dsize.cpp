@@ -5,7 +5,7 @@
 #include "../../../strfns.h"
 
 namespace jadmin {
-DSize::DSize(std::shared_ptr<websocket::JAdminContext> context_)
+DSize::DSize(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   query =
       sql::Query(sql::ObjectIdentifier("material", "diamond_size_meta", "sm"));
@@ -35,54 +35,56 @@ nlohmann::json DSize::handleEvent(nlohmann::json event, unsigned long next,
 void DSize::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
-      sql::SelectedColumn({"Id", "id", "", "sm", PG_TYPES::INT8, false}),
+      sql::SelectedColumn({"Id", "id", "", "sm", sql::PG_TYPES::INT8, false}),
       sql::SelectedColumn(
-          {"Clarity", "clarity_id", "", "sm", PG_TYPES::INT8, true, 2, 2}),
+          {"Clarity", "clarity_id", "", "sm", sql::PG_TYPES::INT8, true, 2, 2}),
       sql::SelectedColumn({"clarity_slug", "slug", "", "clarity",
-                           PG_TYPES::TEXT, false, 0, 0, false}),
+                           sql::PG_TYPES::TEXT, false, 0, 0, false}),
       sql::SelectedColumn({"clarity_name", "name", "", "clarity",
-                           PG_TYPES::TEXT, false, 0, 0, false}),
+                           sql::PG_TYPES::TEXT, false, 0, 0, false}),
       sql::SelectedColumn(
-          {"Shape", "shape_id", "", "sm", PG_TYPES::INT8, true, 2, 2}),
-      sql::SelectedColumn({"shape_slug", "slug", "", "shape", PG_TYPES::TEXT,
-                           false, 0, 0, false}),
-      sql::SelectedColumn({"shape_name", "name", "", "shape", PG_TYPES::TEXT,
-                           false, 0, 0, false}),
+          {"Shape", "shape_id", "", "sm", sql::PG_TYPES::INT8, true, 2, 2}),
+      sql::SelectedColumn({"shape_slug", "slug", "", "shape",
+                           sql::PG_TYPES::TEXT, false, 0, 0, false}),
+      sql::SelectedColumn({"shape_name", "name", "", "shape",
+                           sql::PG_TYPES::TEXT, false, 0, 0, false}),
       sql::SelectedColumn(
-          {"Color", "color_id", "", "sm", PG_TYPES::INT8, true, 2, 2}),
-      sql::SelectedColumn({"color_slug", "slug", "", "color", PG_TYPES::TEXT,
-                           false, 0, 0, false}),
-      sql::SelectedColumn({"color_name", "name", "", "color", PG_TYPES::TEXT,
-                           false, 0, 0, false}),
-      // sql::SelectedColumn({"Rank", "rank", "", "sm", PG_TYPES::INT4,
+          {"Color", "color_id", "", "sm", sql::PG_TYPES::INT8, true, 2, 2}),
+      sql::SelectedColumn({"color_slug", "slug", "", "color",
+                           sql::PG_TYPES::TEXT, false, 0, 0, false}),
+      sql::SelectedColumn({"color_name", "name", "", "color",
+                           sql::PG_TYPES::TEXT, false, 0, 0, false}),
+      // sql::SelectedColumn({"Rank", "rank", "", "sm", sql::PG_TYPES::INT4,
       // false}), sql::SelectedColumn({"Code", "slug", "", "sm",
-      // PG_TYPES::TEXT, true}),
+      // sql::PG_TYPES::TEXT, true}),
       sql::SelectedColumn(
-          {"Size", "size_id", "", "sm", PG_TYPES::INT8, true, 1, 1}),
-      sql::SelectedColumn({"Name", "name", "", "size", PG_TYPES::TEXT, false}),
+          {"Size", "size_id", "", "sm", sql::PG_TYPES::INT8, true, 1, 1}),
       sql::SelectedColumn(
-          {"Weight", "weight", "", "sm", PG_TYPES::DOUBLE, true}),
+          {"Name", "name", "", "size", sql::PG_TYPES::TEXT, false}),
       sql::SelectedColumn(
-          {"Currency", "currency_id", "", "sm", PG_TYPES::INT8, true, 1, 2}),
+          {"Weight", "weight", "", "sm", sql::PG_TYPES::DOUBLE, true}),
+      sql::SelectedColumn({"Currency", "currency_id", "", "sm",
+                           sql::PG_TYPES::INT8, true, 1, 2}),
       sql::SelectedColumn({"currency_slug", "slug", "", "currency",
-                           PG_TYPES::TEXT, false, 0, 0, false}),
+                           sql::PG_TYPES::TEXT, false, 0, 0, false}),
       sql::SelectedColumn({"currency_name", "name", "", "currency",
-                           PG_TYPES::TEXT, false, 0, 0, false}),
+                           sql::PG_TYPES::TEXT, false, 0, 0, false}),
       sql::SelectedColumn(
-          {"Rate_On", "rate_on_id", "", "sm", PG_TYPES::ENUM, true}),
-      sql::SelectedColumn({"Rate", "rate", "", "sm", PG_TYPES::DOUBLE, true}),
+          {"Rate_On", "rate_on_id", "", "sm", sql::PG_TYPES::ENUM, true}),
+      sql::SelectedColumn(
+          {"Rate", "rate", "", "sm", sql::PG_TYPES::DOUBLE, true}),
       sql::SelectedColumn({"Created By", "create_user_id", "", "sm",
-                           PG_TYPES::INT8, true, 1, 0, false}),
-      sql::SelectedColumn({"u1_username", "username", "", "u1", PG_TYPES::TEXT,
-                           false, 0, 0, false}),
+                           sql::PG_TYPES::INT8, true, 1, 0, false}),
+      sql::SelectedColumn({"u1_username", "username", "", "u1",
+                           sql::PG_TYPES::TEXT, false, 0, 0, false}),
       sql::SelectedColumn({"Updated By", "update_user_id", "", "sm",
-                           PG_TYPES::INT8, true, 1, 0, false}),
-      sql::SelectedColumn({"u2_username", "username", "", "u2", PG_TYPES::TEXT,
-                           false, 0, 0, false}),
+                           sql::PG_TYPES::INT8, true, 1, 0, false}),
+      sql::SelectedColumn({"u2_username", "username", "", "u2",
+                           sql::PG_TYPES::TEXT, false, 0, 0, false}),
       sql::SelectedColumn({"Create Time", "inserted_at", "", "sm",
-                           PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+                           sql::PG_TYPES::TIMESTAMP, true, 0, 0, false}),
       sql::SelectedColumn({"Update Time", "updated_at", "", "sm",
-                           PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+                           sql::PG_TYPES::TIMESTAMP, true, 0, 0, false}),
   });
 
   auto size = sql::ObjectIdentifier("material", "size", "size");
@@ -146,15 +148,15 @@ nlohmann::json DSize::ins(nlohmann::json event, nlohmann::json args) {
   auto transPtr = clientPtr->newTransaction();
   try {
     long size_id;
-    auto r = Dba::writeInTrans(transPtr, strSqlSizeSel, size_name);
+    auto r = sql::Dba::writeInTrans(transPtr, strSqlSizeSel, size_name);
     if (r.empty()) {  // insert
-      auto r1 = Dba::writeInTrans(transPtr, strSqlSizeIns, size_name);
+      auto r1 = sql::Dba::writeInTrans(transPtr, strSqlSizeIns, size_name);
       size_id = r1[0]["id"].as<long>();
     } else {
       size_id = r[0]["id"].as<long>();
     }
 
-    Dba::writeInTrans(
+    sql::Dba::writeInTrans(
         transPtr, strSql, args[0]["clarity_id"].get<long>(),
         args[0]["shape_id"].get<long>(), args[0]["color_id"].get<long>(),
         size_id, args[0]["weight"].get<float>(),
@@ -169,15 +171,15 @@ nlohmann::json DSize::ins(nlohmann::json event, nlohmann::json args) {
     };
     std::vector<ProductUpdate> productUpdate;
 
-    auto s = Dba::writeInTrans(transPtr, strSqlSizeGet,
-                               args[0]["shape_id"].get<long>(),
-                               args[0]["color_id"].get<long>(), size_id,
-                               args[0]["clarity_id"].get<long>());
+    auto s = sql::Dba::writeInTrans(transPtr, strSqlSizeGet,
+                                    args[0]["shape_id"].get<long>(),
+                                    args[0]["color_id"].get<long>(), size_id,
+                                    args[0]["clarity_id"].get<long>());
     for (auto prow : s) {
       auto w = args[0]["weight"].get<float>();
       auto rate = args[0]["rate"].get<float>();
       auto pcs = prow[2].as<int>();
-      Dba::writeInTrans(
+      sql::Dba::writeInTrans(
           transPtr, strSqlPriceUpdate, prow["diamond_id"].as<long>(),
           prow["clarity_id"].as<long>(), w, w * pcs, rate, pcs * w * rate);
       // Get all post_ids:
@@ -194,10 +196,10 @@ nlohmann::json DSize::ins(nlohmann::json event, nlohmann::json args) {
 
     for (const auto& p : productUpdate) {
       for (auto c : p.clarityId) {
-        auto rsum = Dba::writeInTrans(transPtr, q, p.postId, c);
-        Dba::writeInTrans(transPtr, pc, p.postId, c,
-                          rsum[0]["sum_weight"].as<double>(),
-                          rsum[0]["sum_price"].as<double>());
+        auto rsum = sql::Dba::writeInTrans(transPtr, q, p.postId, c);
+        sql::Dba::writeInTrans(transPtr, pc, p.postId, c,
+                               rsum[0]["sum_weight"].as<double>(),
+                               rsum[0]["sum_price"].as<double>());
       }
     }
 
@@ -266,19 +268,19 @@ nlohmann::json DSize::upd(nlohmann::json event, nlohmann::json args) {
     auto transPtr = clientPtr->newTransaction();
     try {
       long size_id;
-      auto r = Dba::writeInTrans(transPtr, strSqlSizeSel, size_name);
+      auto r = sql::Dba::writeInTrans(transPtr, strSqlSizeSel, size_name);
       if (r.empty()) {  // insert
-        auto r1 = Dba::writeInTrans(transPtr, strSqlSizeIns, size_name);
+        auto r1 = sql::Dba::writeInTrans(transPtr, strSqlSizeIns, size_name);
         size_id = r1[0]["id"].as<long>();
       } else {
         size_id = r[0]["id"].as<long>();
       }
 
-      auto old_row =
-          Dba::writeInTrans(transPtr, strSqlSizeId, args[0]["id"].get<long>());
+      auto old_row = sql::Dba::writeInTrans(transPtr, strSqlSizeId,
+                                            args[0]["id"].get<long>());
       long old_size_id = old_row[0]["size_id"].as<long>();
 
-      Dba::writeInTrans(
+      sql::Dba::writeInTrans(
           transPtr, strSql, args[0]["id"].get<long>(),
           args[0]["clarity_id"].get<long>(), args[0]["shape_id"].get<long>(),
           args[0]["color_id"].get<long>(), size_id,
@@ -286,13 +288,14 @@ nlohmann::json DSize::upd(nlohmann::json event, nlohmann::json args) {
           args[0]["rate_on_id"].get<std::string>(),
           args[0]["rate"].get<float>());
       // If old size count = 0, delete size:
-      auto r3 = Dba::writeInTrans(transPtr, strSqlSizeCount, old_size_id);
-      auto r4 = Dba::writeInTrans(transPtr, strSqlColorSizeCount, old_size_id);
+      auto r3 = sql::Dba::writeInTrans(transPtr, strSqlSizeCount, old_size_id);
+      auto r4 =
+          sql::Dba::writeInTrans(transPtr, strSqlColorSizeCount, old_size_id);
       if (r3[0]["count"].as<long>() == 0 && r4[0]["count"].as<long>() == 0) {
-        Dba::writeInTrans(transPtr, strSqlSizeDel,
-                          args[0]["shape_id"].get<long>(),
-                          args[0]["color_id"].get<long>(), size_id,
-                          args[0]["clarity_id"].get<long>());
+        sql::Dba::writeInTrans(transPtr, strSqlSizeDel,
+                               args[0]["shape_id"].get<long>(),
+                               args[0]["color_id"].get<long>(), size_id,
+                               args[0]["clarity_id"].get<long>());
       }
 
       // update product weight and price:..
@@ -302,17 +305,17 @@ nlohmann::json DSize::upd(nlohmann::json event, nlohmann::json args) {
       };
       std::vector<ProductUpdate> productUpdate;
 
-      auto s = Dba::writeInTrans(transPtr, strSqlSizeGet,
-                                 args[0]["shape_id"].get<long>(),
-                                 args[0]["color_id"].get<long>(), size_id,
-                                 args[0]["clarity_id"].get<long>());
+      auto s = sql::Dba::writeInTrans(transPtr, strSqlSizeGet,
+                                      args[0]["shape_id"].get<long>(),
+                                      args[0]["color_id"].get<long>(), size_id,
+                                      args[0]["clarity_id"].get<long>());
       for (auto prow : s) {
         auto w = args[0]["weight"].get<float>();
         auto rate = args[0]["rate"].get<float>();
         auto pcs = prow[2].as<int>();
-        Dba::writeInTrans(transPtr, strSqlPriceUpdate,
-                          prow["diamond_id"].as<long>(), prow[1].as<long>(), w,
-                          w * pcs, rate, pcs * w * rate);
+        sql::Dba::writeInTrans(
+            transPtr, strSqlPriceUpdate, prow["diamond_id"].as<long>(),
+            prow[1].as<long>(), w, w * pcs, rate, pcs * w * rate);
         auto it = std::find_if(productUpdate.begin(), productUpdate.end(),
                                [&](const ProductUpdate& t) {
                                  return t.postId == prow[3].as<long>();
@@ -326,10 +329,10 @@ nlohmann::json DSize::upd(nlohmann::json event, nlohmann::json args) {
 
       for (const auto& p : productUpdate) {
         for (auto c : p.clarityId) {
-          auto rsum = Dba::writeInTrans(transPtr, q, p.postId, c);
-          Dba::writeInTrans(transPtr, pc, p.postId, c,
-                            rsum[0]["sum_weight"].as<double>(),
-                            rsum[0]["sum_price"].as<double>());
+          auto rsum = sql::Dba::writeInTrans(transPtr, q, p.postId, c);
+          sql::Dba::writeInTrans(transPtr, pc, p.postId, c,
+                                 rsum[0]["sum_weight"].as<double>(),
+                                 rsum[0]["sum_price"].as<double>());
         }
       }
 
@@ -358,13 +361,13 @@ nlohmann::json DSize::del(nlohmann::json event, nlohmann::json args) {
     auto get_row =
         "SELECT id, size_id FROM material.diamond_size_meta where id = $1";
     auto id = args[0][0].get<long>();
-    auto r = Dba::writeInTrans(transPtr, get_row, id);
+    auto r = sql::Dba::writeInTrans(transPtr, get_row, id);
 
-    Dba::writeInTrans(transPtr,
-                      "DELETE FROM "
-                      "material.diamond_size_meta"
-                      " WHERE id = $1",
-                      id);
+    sql::Dba::writeInTrans(transPtr,
+                           "DELETE FROM "
+                           "material.diamond_size_meta"
+                           " WHERE id = $1",
+                           id);
 
     auto d_size_count =
         "SELECT count(*) FROM material.diamond_size_meta where size_id = $1";
@@ -373,14 +376,14 @@ nlohmann::json DSize::del(nlohmann::json event, nlohmann::json args) {
         "$1";
 
     auto size_id = r[0][1].as<long>();
-    auto c1 = Dba::writeInTrans(transPtr, d_size_count, size_id);
-    auto c2 = Dba::writeInTrans(transPtr, cs_size_count, size_id);
+    auto c1 = sql::Dba::writeInTrans(transPtr, d_size_count, size_id);
+    auto c2 = sql::Dba::writeInTrans(transPtr, cs_size_count, size_id);
     if (c1[0]["count"].as<long>() == 0 && c2[0]["count"].as<long>() == 0) {
-      Dba::writeInTrans(transPtr,
-                        "DELETE FROM "
-                        "material.size"
-                        " WHERE id = $1",
-                        size_id);
+      sql::Dba::writeInTrans(transPtr,
+                             "DELETE FROM "
+                             "material.size"
+                             " WHERE id = $1",
+                             size_id);
     }
 
     nlohmann::json ret;

@@ -22,39 +22,44 @@ User::User(std::shared_ptr<websocket::todo::TodoContext> context_)
 void User ::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
-      sql::SelectedColumn({"ID No", "id", "", "e", PG_TYPES::INT8}),
-      sql::SelectedColumn({"Account Type", "type", "", "e", PG_TYPES::ENUM}),
-      // sql::SelectedColumn({"no", "no", "", "e", PG_TYPES::TEXT}),
-      // sql::SelectedColumn({"sequence_id", "sequence_id", "", "e",
-      // PG_TYPES::INT8, false}),
-      sql::SelectedColumn({"User Name", "username", "", "e", PG_TYPES::TEXT}),
+      sql::SelectedColumn({"ID No", "id", "", "e", sql::PG_TYPES::INT8}),
       sql::SelectedColumn(
-          {"Password", "password", "", "e", PG_TYPES::TEXT, true}),
+          {"Account Type", "type", "", "e", sql::PG_TYPES::ENUM}),
+      // sql::SelectedColumn({"no", "no", "", "e", sql::PG_TYPES::TEXT}),
+      // sql::SelectedColumn({"sequence_id", "sequence_id", "", "e",
+      // sql::PG_TYPES::INT8, false}),
+      sql::SelectedColumn(
+          {"User Name", "username", "", "e", sql::PG_TYPES::TEXT}),
+      sql::SelectedColumn(
+          {"Password", "password", "", "e", sql::PG_TYPES::TEXT, true}),
       //      sql::SelectedColumn({"Full Name", "fullname", "", "e",
-      //      PG_TYPES::TEXT}),
+      //      sql::PG_TYPES::TEXT}),
       sql::SelectedColumn({"Parent User Name", "parent_id", "", "e",
-                           PG_TYPES::INT8, true, 1, 1}),
-      sql::SelectedColumn({"username", "username", "", "p", PG_TYPES::TEXT,
+                           sql::PG_TYPES::INT8, true, 1, 1}),
+      sql::SelectedColumn({"username", "username", "", "p", sql::PG_TYPES::TEXT,
                            false, 0, 0, false}),
       sql::SelectedColumn(
-          {"Create Date", "create_date", "", "e", PG_TYPES::TIMESTAMP}),
+          {"Create Date", "create_date", "", "e", sql::PG_TYPES::TIMESTAMP}),
       sql::SelectedColumn(
-          {"Expiry Date", "expiry", "", "e", PG_TYPES::TIMESTAMP}),
-      sql::SelectedColumn({"Disabled", "disabled", "", "e", PG_TYPES::BOOL}),
-      //        sql::SelectedColumn({"Email", "email", "", "e", PG_TYPES::TEXT,
-      //        true}), sql::SelectedColumn({"City", "city", "", "e",
-      //        PG_TYPES::TEXT, true}), sql::SelectedColumn({"State", "state",
-      //        "", "e", PG_TYPES::TEXT, true}),
+          {"Expiry Date", "expiry", "", "e", sql::PG_TYPES::TIMESTAMP}),
+      sql::SelectedColumn(
+          {"Disabled", "disabled", "", "e", sql::PG_TYPES::BOOL}),
+      //        sql::SelectedColumn({"Email", "email", "", "e",
+      //        sql::PG_TYPES::TEXT, true}), sql::SelectedColumn({"City",
+      //        "city", "", "e", sql::PG_TYPES::TEXT, true}),
+      //        sql::SelectedColumn({"State", "state",
+      //        "", "e", sql::PG_TYPES::TEXT, true}),
       // sql::SelectedColumn({"Created By", "create_user_id", "", "e",
-      // PG_TYPES::INT8, true, 1, 0, false}),
+      // sql::PG_TYPES::INT8, true, 1, 0, false}),
       // sql::SelectedColumn({"u1_username", "username", "", "u1",
-      // PG_TYPES::TEXT, false, 0, 0, false}), sql::SelectedColumn({"Updated
-      // By", "update_user_id", "", "e", PG_TYPES::INT8, true, 1, 0, false}),
+      // sql::PG_TYPES::TEXT, false, 0, 0, false}),
+      // sql::SelectedColumn({"Updated By", "update_user_id", "", "e",
+      // sql::PG_TYPES::INT8, true, 1, 0, false}),
       // sql::SelectedColumn({"u2_username", "username", "", "u2",
-      // PG_TYPES::TEXT, false, 0, 0, false}), sql::SelectedColumn({"Create
-      // Time", "inserted_at", "", "e", PG_TYPES::TIMESTAMP, true, 0, 0,
+      // sql::PG_TYPES::TEXT, false, 0, 0, false}), sql::SelectedColumn({"Create
+      // Time", "inserted_at", "", "e", sql::PG_TYPES::TIMESTAMP, true, 0, 0,
       // false}), sql::SelectedColumn({"Update Time", "updated_at", "", "e",
-      // PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+      // sql::PG_TYPES::TIMESTAMP, true, 0, 0, false}),
   });
   auto p = sql::ObjectIdentifier("music", "user", "p");
   // auto u1 = sql::ObjectIdentifier("entity", "entity_user", "u1");
@@ -201,7 +206,7 @@ void User::load_playlist() {
 
 void User::get_valid_users() {
   std::string sql = fmt::format("SELECT id FROM user WHERE disabled = false");
-  auto db_results = Dba::read(sql);
+  auto db_results = sql::Dba::read(sql);
   for (auto r : db_results) {
   }
 }
@@ -230,7 +235,7 @@ std::string User::get_password() {
   try {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
-    auto r = Dba::writeInTrans(transPtr, sql, this->context->getUserId());
+    auto r = sql::Dba::writeInTrans(transPtr, sql, this->context->getUserId());
     if (r.size() == 1) {
       return r[0]["password"].as<std::string>();
     }
@@ -240,12 +245,11 @@ std::string User::get_password() {
   return "";
 }
 
-long User::create(const std::string& username,
-                  const std::string& fullname, const std::string& email,
-                  const std::string& website,
-                  const std::string& password,
-                  const std::string& access, const std::string& state,
-                  const std::string& city, bool disabled) {
+long User::create(const std::string& username, const std::string& fullname,
+                  const std::string& email, const std::string& website,
+                  const std::string& password, const std::string& access,
+                  const std::string& state, const std::string& city,
+                  bool disabled) {
   // website     = rtrim(website, "/");
   // std::string password    = hash('sha256', password);
   // bool disabled    = disabled $ 1 : 0;
@@ -282,14 +286,14 @@ long User::create(const std::string& username,
   }
 
   sql += ")";
-  db_results = Dba::write(sql, params);
+  db_results = sql::Dba::write(sql, params);
 
   if (!db_results) {
       return false;
   }
 
   // Get the insert_id
-  std::string insert_id = Dba::insert_id();
+  std::string insert_id = sql::Dba::insert_id();
   */
 
   /* Populates any missing preferences, in this case all of them */
@@ -301,13 +305,13 @@ long User::create(const std::string& username,
 
 bool User::update_password(std::string new_password) {
   // std::string new_password = hash('sha256', new_password);
-  // new_password = Dba::escape(new_password);
+  // new_password = sql::Dba::escape(new_password);
   std::string sql = "UPDATE music.user SET password = $2 WHERE id = $1";
   try {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
-    auto r = Dba::writeInTrans(transPtr, sql, this->context->getUserId(),
-                               std::move(new_password));
+    auto r = sql::Dba::writeInTrans(transPtr, sql, this->context->getUserId(),
+                                    std::move(new_password));
     if (r.affectedRows() == 1) {
       return true;
     }
@@ -325,89 +329,89 @@ bool User::delNew(long user_id) {
   */
   // if (this->has_access(100)) {
   // sql        = "SELECT id FROM user WHERE access='100' AND id != $";
-  // db_results = Dba::read(sql, user_id);
-  // if (!Dba::num_rows(db_results)) {
+  // db_results = sql::Dba::read(sql, user_id);
+  // if (!sql::Dba::num_rows(db_results)) {
   //    return false;
   //}
   auto sql = "SELECT id FROM music.user WHERE access='100' AND  id <> $1";
-  auto db_results = Dba::read(sql, user_id);
-  if (!Dba::num_rows(db_results)) {
+  auto db_results = sql::Dba::read(sql, user_id);
+  if (!sql::Dba::num_rows(db_results)) {
     return false;
   }
   //} // if this is an admin check for others
 
   // Delete their playlists
   auto sql1 = "DELETE FROM music.playlist WHERE user_id = $1";
-  Dba::write(sql1, user_id);
+  sql::Dba::write(sql1, user_id);
 
   // Clean up the playlist data table
   // auto sql2 = "DELETE FROM music.playlist_data USING playlist_data "
   //   "LEFT JOIN playlist ON playlist.id=playlist_data.playlist "
   // "WHERE playlist.id IS NULL";
-  // Dba::write(sql2);
+  // sql::Dba::write(sql2);
 
   // Delete any stats they have
   auto sql3 = "DELETE FROM music.object_count WHERE user_id = $1";
-  Dba::write(sql3, user_id);
+  sql::Dba::write(sql3, user_id);
 
   // Clear the IP history for this user
   auto sql4 = "DELETE FROM music.ip_history WHERE user_id = $1";
-  Dba::write(sql4, user_id);
+  sql::Dba::write(sql4, user_id);
 
   // Nuke any access lists that are specific to this user
   auto sql5 = "DELETE FROM music.access_list WHERE user_id = $1";
-  Dba::write(sql5, user_id);
+  sql::Dba::write(sql5, user_id);
 
   // Delete their ratings
   auto sql6 = "DELETE FROM music.rating WHERE user_id = $1";
-  Dba::write(sql6, user_id);
+  sql::Dba::write(sql6, user_id);
 
   // Delete their tags
   auto sql7 = "DELETE FROM music.tag_map WHERE user_id = $1";
-  Dba::write(sql7, user_id);
+  sql::Dba::write(sql7, user_id);
 
   // Clean out the tags
   // auto sql8 = "DELETE FROM music.tag USING tag_map LEFT JOIN music.tag_map ON
-  // tag_map.id=tag.map_id AND tag_map.id IS NULL"; Dba::write(sql8);
+  // tag_map.id=tag.map_id AND tag_map.id IS NULL"; sql::Dba::write(sql8);
 
   // Delete their preferences
   auto sql9 = "DELETE FROM music.user_preference WHERE user_id = $1";
-  Dba::write(sql9, user_id);
+  sql::Dba::write(sql9, user_id);
 
   // Delete their voted stuff in democratic play
   auto sql10 = "DELETE FROM music.user_vote WHERE user_id = $1";
-  Dba::write(sql10, user_id);
+  sql::Dba::write(sql10, user_id);
 
   // Delete their shoutbox posts
   auto sql11 = "DELETE FROM music.user_shout WHERE user_id = $1";
-  Dba::write(sql11, user_id);
+  sql::Dba::write(sql11, user_id);
 
   // Delete their private messages posts
   auto sql12 =
       "DELETE FROM music.user_pvmsg WHERE from_user_id = $1 OR to_user_id = $2";
-  Dba::write(sql12, user_id, user_id);
+  sql::Dba::write(sql12, user_id, user_id);
 
   // Delete their following/followers
   auto sql13 =
       "DELETE FROM music.user_follower WHERE user_id = $1 OR follow_user_id = "
       "$2";
-  Dba::write(sql13, user_id, user_id);
+  sql::Dba::write(sql13, user_id, user_id);
 
   // Added
   auto sql15 = "DELETE FROM music.user_activity WHERE user_id = $1";
-  Dba::write(sql15, user_id);
+  sql::Dba::write(sql15, user_id);
   // Added
   auto sql16 = "DELETE FROM music.search WHERE user_id = $1";
-  Dba::write(sql16, user_id);
+  sql::Dba::write(sql16, user_id);
   auto sql17 = "DELETE FROM music.session WHERE user_id = $1";
-  Dba::write(sql17, user_id);
+  sql::Dba::write(sql17, user_id);
 
   // Delete the user itself
   auto sql14 = "DELETE FROM music.user WHERE id = $1";
-  Dba::write(sql14, user_id);
+  sql::Dba::write(sql14, user_id);
 
   //    auto sql15 = "DELETE FROM music.session WHERE username = $";
-  //    Dba::write(sql, array(this->username));
+  //    sql::Dba::write(sql, array(this->username));
 
   return true;
 }

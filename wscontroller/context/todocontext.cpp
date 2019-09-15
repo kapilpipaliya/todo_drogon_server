@@ -24,7 +24,7 @@ std::tuple<long, long> TodoContext::generateContext(
   try {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
-    auto r = Dba::writeInTrans(transPtr, sqlSession, session_id);
+    auto r = sql::Dba::writeInTrans(transPtr, sqlSession, session_id);
     if (!r.empty()) {
       return {r[0]["id"].as<long>(), r[0]["user_id"].as<long>()};
     }
@@ -43,7 +43,7 @@ void TodoContext::setUser() {
     auto sqlSession = "SELECT * FROM music.user where id = $1";
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
-    auto r = Dba::writeInTrans(transPtr, sqlSession, user_id);
+    auto r = sql::Dba::writeInTrans(transPtr, sqlSession, user_id);
     if (!r.empty()) {
       //      user.id = r[0]["id"].as<long>();
       //      user.type = r[0]["type"].as<std::string>();

@@ -6,7 +6,7 @@
 namespace jadmin {
 class Image {
  public:
-  Image(std::shared_ptr<websocket::JAdminContext>);
+  Image(std::shared_ptr<websocket::jadmin::JAdminContext>);
   nlohmann::json handleEvent(nlohmann::json event, int next,
                              const nlohmann::json& args);
 
@@ -14,7 +14,7 @@ class Image {
   void setupTable();
   nlohmann::json ins(nlohmann::json event, nlohmann::json args);
   nlohmann::json upd(nlohmann::json event, nlohmann::json args);
-  std::shared_ptr<websocket::JAdminContext> context;
+  std::shared_ptr<websocket::jadmin::JAdminContext> context;
   sql::Query query;
 };
 }  // namespace jadmin

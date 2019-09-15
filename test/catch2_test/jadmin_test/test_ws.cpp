@@ -16,7 +16,7 @@ TEST_CASE("is connection possible", "[WSTest]") {
   char **argv;
   int i = 0;
   QCoreApplication a(i, argv);
-  auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/jadmin")));
+  auto w2 = wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/jadmin")));
 
   bool r0 = false;
   Once::connect(&w2.getWebSocket(), &QWebSocket::connected, [&r0]() {
@@ -35,7 +35,7 @@ TEST_CASE("server reply error on string type of message.", "[WSTest]") {
   char **argv;
   int i = 0;
   QCoreApplication a(i, argv);
-  auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/jadmin")));
+  auto w2 = wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/jadmin")));
   std::string str = "hello";
   nlohmann::json j = str;
   // Bind not work because reply is not an array
@@ -63,7 +63,7 @@ TEST_CASE("authorisation check without cookies", "[WSTest]") {
   char **argv;
   int i = 0;
   QCoreApplication a(i, argv);
-  auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/jadmin")));
+  auto w2 = wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/jadmin")));
   nlohmann::json event = nlohmann::json::array({"user", "is_logged_in", 0});
   nlohmann::json payload = nlohmann::json::array({{event, {{}}}});
   //    nlohmann::json j = R"( [ [["user","is_logged_in",0],[[]]]] )"_json;
@@ -88,7 +88,7 @@ TEST_CASE("login on backend with username and password", "[WSTest]") {
   char **argv;
   int i = 0;
   QCoreApplication a(i, argv);
-  auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/jadmin")));
+  auto w2 = wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/jadmin")));
   nlohmann::json event = nlohmann::json::array({"auth", "admin_login", 0});
   nlohmann::json payload = nlohmann::json::array(
       {{event, nlohmann::json::object(
@@ -125,7 +125,7 @@ REQUIRE(w1.isTestSuccess() == true);
 */
 #define GetTableD(s)                     \
   {                                      \
-    GetTableData w1{s};                  \
+    wstest::GetTableData w1{s};                  \
     w1.setpath("/jadmin");               \
     w1.init();                           \
     w1.run();                            \
@@ -176,7 +176,7 @@ TEST_CASE("check that all table data are correctly replied", "[WSTest]") {
 
 #define SUD(t, ins, upd, del)            \
   {                                      \
-    SaveDelete w1{t, ins, upd, del};     \
+    wstest::SaveDelete w1{t, ins, upd, del};     \
     w1.setpath("/jadmin");               \
     w1.init();                           \
     w1.run();                            \

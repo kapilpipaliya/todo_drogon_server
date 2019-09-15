@@ -1,3 +1,4 @@
+namespace openproj {
 namespace BreadcrumbHelper {
    void full_breadcrumb() {
 //    if ( show_defaults) {
@@ -77,4 +78,5 @@ namespace BreadcrumbHelper {
 //      }
 //    }
 //  }
+}
 }

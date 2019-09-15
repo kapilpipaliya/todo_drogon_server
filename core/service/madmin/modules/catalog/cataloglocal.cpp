@@ -1,6 +1,7 @@
 #include "cataloglocal.h"
 
-madmin::CatalogLocal::CatalogLocal(const std::shared_ptr<websocket::MAdminContext> &context_)
+madmin::CatalogLocal::CatalogLocal(
+    const std::shared_ptr<websocket::music::MAdminContext> &context_)
     : Catalog(context_) {
   query = sql::Query(sql::ObjectIdentifier("music", "catalog", "c"));
   setupTable();
@@ -9,32 +10,34 @@ madmin::CatalogLocal::CatalogLocal(const std::shared_ptr<websocket::MAdminContex
 void madmin::CatalogLocal::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
-      sql::SelectedColumn({"ID No", "id", "", "c", PG_TYPES::INT8}),
+      sql::SelectedColumn({"ID No", "id", "", "c", sql::PG_TYPES::INT8}),
       // sql::SelectedColumn({"Catalog Type", "catalog_type", "", "c",
-      // PG_TYPES::ENUM}), sql::SelectedColumn({"no", "no", "", "c",
-      // PG_TYPES::TEXT}), sql::SelectedColumn({"sequence_id", "sequence_id",
-      // "", "c", PG_TYPES::INT8, false}),
-      sql::SelectedColumn({"Name", "name", "", "c", PG_TYPES::TEXT, true}),
+      // sql::PG_TYPES::ENUM}), sql::SelectedColumn({"no", "no", "", "c",
+      // sql::PG_TYPES::TEXT}), sql::SelectedColumn({"sequence_id",
+      // "sequence_id",
+      // "", "c", sql::PG_TYPES::INT8, false}),
+      sql::SelectedColumn({"Name", "name", "", "c", sql::PG_TYPES::TEXT, true}),
       // sql::SelectedColumn({"Create Date", "last_update", "", "c",
-      // PG_TYPES::TIMESTAMP}), sql::SelectedColumn({"last_clean Date",
-      // "last_clean", "", "c", PG_TYPES::TIMESTAMP}),
+      // sql::PG_TYPES::TIMESTAMP}), sql::SelectedColumn({"last_clean Date",
+      // "last_clean", "", "c", sql::PG_TYPES::TIMESTAMP}),
       // sql::SelectedColumn({"last_add Date", "last_add", "", "c",
-      // PG_TYPES::TIMESTAMP}),
-      sql::SelectedColumn({"Active", "enabled", "", "c", PG_TYPES::BOOL}),
+      // sql::PG_TYPES::TIMESTAMP}),
+      sql::SelectedColumn({"Active", "enabled", "", "c", sql::PG_TYPES::BOOL}),
       // sql::SelectedColumn({"Rename Pattern", "rename_pattern", "", "c",
-      // PG_TYPES::TEXT, true}), sql::SelectedColumn({"Sort Pattern",
-      // "sort_pattern", "", "c", PG_TYPES::TEXT, true}),
+      // sql::PG_TYPES::TEXT, true}), sql::SelectedColumn({"Sort Pattern",
+      // "sort_pattern", "", "c", sql::PG_TYPES::TEXT, true}),
       // sql::SelectedColumn({"Gather Types", "gather_types", "", "c",
-      // PG_TYPES::TEXT, true}), sql::SelectedColumn({"Created By",
-      // "create_user_id", "", "c", PG_TYPES::INT8, true, 1, 0, false}),
+      // sql::PG_TYPES::TEXT, true}), sql::SelectedColumn({"Created By",
+      // "create_user_id", "", "c", sql::PG_TYPES::INT8, true, 1, 0, false}),
       // sql::SelectedColumn({"u1_username", "username", "", "u1",
-      // PG_TYPES::TEXT, false, 0, 0, false}), sql::SelectedColumn({"Updated
-      // By", "update_user_id", "", "c", PG_TYPES::INT8, true, 1, 0, false}),
+      // sql::PG_TYPES::TEXT, false, 0, 0, false}),
+      // sql::SelectedColumn({"Updated By", "update_user_id", "", "c",
+      // sql::PG_TYPES::INT8, true, 1, 0, false}),
       // sql::SelectedColumn({"u2_username", "username", "", "u2",
-      // PG_TYPES::TEXT, false, 0, 0, false}), sql::SelectedColumn({"Create
-      // Time", "inserted_at", "", "c", PG_TYPES::TIMESTAMP, true, 0, 0,
+      // sql::PG_TYPES::TEXT, false, 0, 0, false}), sql::SelectedColumn({"Create
+      // Time", "inserted_at", "", "c", sql::PG_TYPES::TIMESTAMP, true, 0, 0,
       // false}), sql::SelectedColumn({"Update Time", "updated_at", "", "c",
-      // PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+      // sql::PG_TYPES::TIMESTAMP, true, 0, 0, false}),
   });
   // auto p = sql::ObjectIdentifier("music", "user", "p");
   // auto u1 = sql::ObjectIdentifier("entity", "entity_user", "u1");

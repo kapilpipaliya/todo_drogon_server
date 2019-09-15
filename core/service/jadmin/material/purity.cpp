@@ -14,7 +14,7 @@
   if ((s).size() > 0) array.pop_back();                \
   array += "}";
 namespace jadmin {
-Purity::Purity(std::shared_ptr<websocket::JAdminContext> context_)
+Purity::Purity(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("material", "purity", "p"));
   setupTable();
@@ -43,44 +43,46 @@ nlohmann::json Purity::handleEvent(nlohmann::json event, unsigned long next,
 void Purity::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
-      sql::SelectedColumn({"Id", "id", "", "p", PG_TYPES::INT8, false}),
+      sql::SelectedColumn({"Id", "id", "", "p", sql::PG_TYPES::INT8, false}),
       //        sql::SelectedColumn({"Metal", "metal_id", "", "p",
-      //        PG_TYPES::INT8, true, 1, 2}), sql::SelectedColumn({"m_slug",
-      //        "slug", "", "m", PG_TYPES::TEXT, false, 0, 0, false}),
-      //        sql::SelectedColumn({"m_name", "name", "", "m", PG_TYPES::TEXT,
-      //        false, 0, 0, false}),
-      sql::SelectedColumn({"Rank", "rank", "", "p", PG_TYPES::INT4, false}),
-      sql::SelectedColumn({"Code", "slug", "", "p", PG_TYPES::TEXT, true}),
-      sql::SelectedColumn({"Name", "name", "", "p", PG_TYPES::TEXT, true}),
+      //        sql::PG_TYPES::INT8, true, 1, 2}),
+      //        sql::SelectedColumn({"m_slug", "slug", "", "m",
+      //        sql::PG_TYPES::TEXT, false, 0, 0, false}),
+      //        sql::SelectedColumn({"m_name", "name", "", "m",
+      //        sql::PG_TYPES::TEXT, false, 0, 0, false}),
       sql::SelectedColumn(
-          {"Metal", "metal_id", "", "p", PG_TYPES::DOUBLE, true}),
+          {"Rank", "rank", "", "p", sql::PG_TYPES::INT4, false}),
+      sql::SelectedColumn({"Code", "slug", "", "p", sql::PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"Name", "name", "", "p", sql::PG_TYPES::TEXT, true}),
       sql::SelectedColumn(
-          {"Purity", "purity", "", "p", PG_TYPES::DOUBLE, true}),
+          {"Metal", "metal_id", "", "p", sql::PG_TYPES::DOUBLE, true}),
+      sql::SelectedColumn(
+          {"Purity", "purity", "", "p", sql::PG_TYPES::DOUBLE, true}),
       sql::SelectedColumn({"Specific Density", "specific_density", "", "m",
-                           PG_TYPES::DOUBLE, true}),
+                           sql::PG_TYPES::DOUBLE, true}),
       sql::SelectedColumn({"purity_tone", "purity_tone",
                            "json_agg(distinct jsonb_build_array(pt.tone_id, "
                            "pu_metal.pt2, pt.price))",
                            //"json_agg(distinct jsonb_build_array(mp.metal_id,
                            // mp.purity, mp.price, m.specific_density))",
-                           "pt", PG_TYPES::PSJSON, false}),
+                           "pt", sql::PG_TYPES::PSJSON, false}),
       sql::SelectedColumn(
-          {"Price", "price", "p.price", "p", PG_TYPES::DOUBLE, true}),
+          {"Price", "price", "p.price", "p", sql::PG_TYPES::DOUBLE, true}),
 
       sql::SelectedColumn(
-          {"Description", "description", "", "p", PG_TYPES::TEXT, true}),
-      sql::SelectedColumn(
-          {"Created By", "create_user_id", "", "p", PG_TYPES::INT8, true, 1}),
-      sql::SelectedColumn({"u1_username", "username", "", "u1", PG_TYPES::TEXT,
-                           false, 0, 0, false}),
-      sql::SelectedColumn(
-          {"Updated By", "update_user_id", "", "p", PG_TYPES::INT8, true, 1}),
-      sql::SelectedColumn({"u2_username", "username", "", "u2", PG_TYPES::TEXT,
-                           false, 0, 0, false}),
+          {"Description", "description", "", "p", sql::PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"Created By", "create_user_id", "", "p",
+                           sql::PG_TYPES::INT8, true, 1}),
+      sql::SelectedColumn({"u1_username", "username", "", "u1",
+                           sql::PG_TYPES::TEXT, false, 0, 0, false}),
+      sql::SelectedColumn({"Updated By", "update_user_id", "", "p",
+                           sql::PG_TYPES::INT8, true, 1}),
+      sql::SelectedColumn({"u2_username", "username", "", "u2",
+                           sql::PG_TYPES::TEXT, false, 0, 0, false}),
       sql::SelectedColumn({"Create Time", "inserted_at", "", "p",
-                           PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+                           sql::PG_TYPES::TIMESTAMP, true, 0, 0, false}),
       sql::SelectedColumn({"Update Time", "updated_at", "", "p",
-                           PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+                           sql::PG_TYPES::TIMESTAMP, true, 0, 0, false}),
   });
 
   auto pt = sql::ObjectIdentifier("material", "purity_tone", "pt");
@@ -145,31 +147,31 @@ void save_purity_metal_(
           {i[0].get<long>(), i[1].get<float>(), i[2].get<float>()});
   }
 
-  auto all_ct =
-      Dba::writeInTrans(transPtr, strSqlPostCategories, purity_id, tone_id);
+  auto all_ct = sql::Dba::writeInTrans(transPtr, strSqlPostCategories,
+                                       purity_id, tone_id);
   // For each saved tones, If saved tone not exist in new tones, delete it.
   for (auto r : all_ct) {
     auto it = std::find_if(inVector.begin(), inVector.end(), [&](PriceMetal t) {
       return t.metal_id == r["metal_id"].as<long>();
     });
     if (it == inVector.end()) {  // Element not Found
-      Dba::writeInTrans(transPtr, strSqlPostCategoryDel, purity_id, tone_id,
-                        r["metal_id"].as<long>());
+      sql::Dba::writeInTrans(transPtr, strSqlPostCategoryDel, purity_id,
+                             tone_id, r["metal_id"].as<long>());
     }
   }
   // For each new tones, insert it if it not already exist.
   for (auto r : inVector) {
-    auto y = Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind,
-                               purity_id, tone_id, r.metal_id);
+    auto y = sql::Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind,
+                                    purity_id, tone_id, r.metal_id);
     if (y.empty()) {
-      Dba::writeInTrans(transPtr, strSqlPostCategoryInsert, purity_id, tone_id,
-                        r.metal_id, r.purity, r.price);
+      sql::Dba::writeInTrans(transPtr, strSqlPostCategoryInsert, purity_id,
+                             tone_id, r.metal_id, r.purity, r.price);
     } else {  // update
       if (y[0][2].as<long>() != r.metal_id ||
           y[0]["purity"].as<double>() != r.purity ||
           y[0]["price"].as<double>() != r.price) {
-        Dba::writeInTrans(transPtr, strSqlPostCategoryUpdateAtt, purity_id,
-                          tone_id, r.metal_id, r.purity, r.price);
+        sql::Dba::writeInTrans(transPtr, strSqlPostCategoryUpdateAtt, purity_id,
+                               tone_id, r.metal_id, r.purity, r.price);
       }
     }
   }
@@ -202,7 +204,8 @@ void save_purity_tone_(
       inVector.push_back({i[0].get<long>(), i[2].get<float>(), i[1]});
   }
 
-  auto all_ct = Dba::writeInTrans(transPtr, strSqlPostCategories, purity_id);
+  auto all_ct =
+      sql::Dba::writeInTrans(transPtr, strSqlPostCategories, purity_id);
   // For each saved tones, If saved tone not exist in new tones, delete it.
   for (auto r : all_ct) {
     auto it = std::find_if(inVector.begin(), inVector.end(),
@@ -211,29 +214,29 @@ void save_purity_tone_(
                            });
     if (it == inVector.end()) {  // Element not Found
       // because when tone_id change it actually inserting new entries..
-      Dba::writeInTrans(
+      sql::Dba::writeInTrans(
           transPtr,
           sql::CRUDHelper::dele_("material.purity_metal",
                                  "where purity_id = $1 and tone_id = $2"),
           purity_id, r["tone_id"].as<long>());
-      Dba::writeInTrans(transPtr, strSqlPostCategoryDel, purity_id,
-                        r["tone_id"].as<long>());
+      sql::Dba::writeInTrans(transPtr, strSqlPostCategoryDel, purity_id,
+                             r["tone_id"].as<long>());
     }
   }
   // For each new tones, insert it if it not already exist.
   for (auto r : inVector) {
-    auto y = Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind,
-                               purity_id, r.tone_id);
+    auto y = sql::Dba::writeInTrans(transPtr, strSqlPostCategorySimpleFind,
+                                    purity_id, r.tone_id);
     if (y.empty()) {
-      auto z = Dba::writeInTrans(transPtr, strSqlPostCategoryInsert, purity_id,
-                                 r.tone_id, r.price);
+      auto z = sql::Dba::writeInTrans(transPtr, strSqlPostCategoryInsert,
+                                      purity_id, r.tone_id, r.price);
       save_purity_metal_(r.j, transPtr, z[0]["purity_id"].as<long>(),
                          z[0]["tone_id"].as<long>());
     } else {  // update
       if (y[0]["tone_id"].as<long>() != r.tone_id ||
           y[0]["price"].as<double>() != r.price) {
-        Dba::writeInTrans(transPtr, strSqlPostCategoryUpdateAtt, purity_id,
-                          r.tone_id, r.price);
+        sql::Dba::writeInTrans(transPtr, strSqlPostCategoryUpdateAtt, purity_id,
+                               r.tone_id, r.price);
       }
       save_purity_metal_(r.j, transPtr, purity_id, r.tone_id);
     }
@@ -254,7 +257,7 @@ nlohmann::json Purity::ins(nlohmann::json event, nlohmann::json args) {
   auto clientPtr = drogon::app().getDbClient("sce");
   auto transPtr = clientPtr->newTransaction();
   try {
-    auto x = Dba::writeInTrans(
+    auto x = sql::Dba::writeInTrans(
         transPtr, strSql, args[0]["slug"].get<std::string>(),
         args[0]["name"].get<std::string>(), args[0]["metal_id"].get<long>(),
         args[0]["purity"].get<float>(), args[0]["price"].get<float>(),
@@ -287,7 +290,7 @@ nlohmann::json Purity::upd(nlohmann::json event, nlohmann::json args) {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     try {
-      Dba::writeInTrans(
+      sql::Dba::writeInTrans(
           transPtr, strSql, args[0]["id"].get<long>(),
           args[0]["slug"].get<std::string>(),
           args[0]["name"].get<std::string>(), args[0]["metal_id"].get<long>(),
@@ -315,8 +318,8 @@ nlohmann::json Purity::upd(nlohmann::json event, nlohmann::json args) {
                               p.purity_id = $1 returning p.post_id
                               )";
 
-      auto product_update =
-          Dba::writeInTrans(transPtr, pr_update3, args[0]["id"].get<long>());
+      auto product_update = sql::Dba::writeInTrans(transPtr, pr_update3,
+                                                   args[0]["id"].get<long>());
       ids2(product_update, ids);
       auto pr_update4 = R"(
                               UPDATE product.purity_tone pt
@@ -340,7 +343,7 @@ nlohmann::json Purity::upd(nlohmann::json event, nlohmann::json args) {
                               --returning pt.post_id, pt.purity_id, pt.weight, pt.price
                               )";
 
-      auto pr = Dba::writeInTrans(transPtr, pr_update4, purity_id, ids);
+      auto pr = sql::Dba::writeInTrans(transPtr, pr_update4, purity_id, ids);
 
       nlohmann::json ret;
       ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
@@ -365,21 +368,21 @@ nlohmann::json Purity::del(nlohmann::json event, nlohmann::json args) {
   auto transPtr = clientPtr->newTransaction();
   try {
     auto post_id = args[0][0].get<long>();
-    Dba::writeInTrans(transPtr,
-                      "DELETE FROM "
-                      "material.purity_metal"
-                      " WHERE purity_id = $1",
-                      post_id);
-    Dba::writeInTrans(transPtr,
-                      "DELETE FROM "
-                      "material.purity_tone"
-                      " WHERE purity_id = $1",
-                      post_id);
-    Dba::writeInTrans(transPtr,
-                      "DELETE FROM "
-                      "material.purity"
-                      " WHERE id = $1",
-                      post_id);
+    sql::Dba::writeInTrans(transPtr,
+                           "DELETE FROM "
+                           "material.purity_metal"
+                           " WHERE purity_id = $1",
+                           post_id);
+    sql::Dba::writeInTrans(transPtr,
+                           "DELETE FROM "
+                           "material.purity_tone"
+                           " WHERE purity_id = $1",
+                           post_id);
+    sql::Dba::writeInTrans(transPtr,
+                           "DELETE FROM "
+                           "material.purity"
+                           " WHERE id = $1",
+                           post_id);
 
     nlohmann::json ret;
     ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");

@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+namespace openproj {
 namespace UserInvitation {
 //  namespace Events {
 //    class << self {
@@ -130,4 +131,5 @@ namespace UserInvitation {
 
 //    [user, nil]
 //  }
+}
 }

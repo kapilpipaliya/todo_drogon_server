@@ -3,7 +3,8 @@
 #include <utility>
 
 namespace jadmin {
-Shape::Shape(std::shared_ptr<websocket::JAdminContext> context_) : context(std::move(context_)) {
+Shape::Shape(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
+    : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("material", "shape", "gs"));
   setupTable();
 }
@@ -31,27 +32,31 @@ nlohmann::json Shape::handleEvent(nlohmann::json event, unsigned long next,
 void Shape::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
-      sql::SelectedColumn({"Id", "id", "", "gs", PG_TYPES::INT8, false}),
+      sql::SelectedColumn({"Id", "id", "", "gs", sql::PG_TYPES::INT8, false}),
       //        sql::SelectedColumn({"Material", "material_id", "", "gs",
-      //        PG_TYPES::INT8, true, 1, 2}), sql::SelectedColumn({"m_slug",
-      //        "slug", "", "m", PG_TYPES::TEXT, false, 0, 0, false}),
-      //        sql::SelectedColumn({"m_name", "name", "", "m", PG_TYPES::TEXT,
-      //        false, 0, 0, false}),
-      sql::SelectedColumn({"Rank", "rank", "", "gs", PG_TYPES::INT4, false}),
-      sql::SelectedColumn({"Code", "slug", "", "gs", PG_TYPES::TEXT, true}),
-      sql::SelectedColumn({"Name", "name", "", "gs", PG_TYPES::TEXT, true}),
+      //        sql::PG_TYPES::INT8, true, 1, 2}),
+      //        sql::SelectedColumn({"m_slug", "slug", "", "m",
+      //        sql::PG_TYPES::TEXT, false, 0, 0, false}),
+      //        sql::SelectedColumn({"m_name", "name", "", "m",
+      //        sql::PG_TYPES::TEXT, false, 0, 0, false}),
       sql::SelectedColumn(
-          {"Created By", "create_user_id", "", "gs", PG_TYPES::INT8, true, 1}),
-      sql::SelectedColumn({"u1_username", "username", "", "u1", PG_TYPES::TEXT,
-                            false, 0, 0, false}),
+          {"Rank", "rank", "", "gs", sql::PG_TYPES::INT4, false}),
       sql::SelectedColumn(
-          {"Updated By", "update_user_id", "", "gs", PG_TYPES::INT8, true, 1}),
-      sql::SelectedColumn({"u2_username", "username", "", "u2", PG_TYPES::TEXT,
-                            false, 0, 0, false}),
+          {"Code", "slug", "", "gs", sql::PG_TYPES::TEXT, true}),
+      sql::SelectedColumn(
+          {"Name", "name", "", "gs", sql::PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"Created By", "create_user_id", "", "gs",
+                           sql::PG_TYPES::INT8, true, 1}),
+      sql::SelectedColumn({"u1_username", "username", "", "u1",
+                           sql::PG_TYPES::TEXT, false, 0, 0, false}),
+      sql::SelectedColumn({"Updated By", "update_user_id", "", "gs",
+                           sql::PG_TYPES::INT8, true, 1}),
+      sql::SelectedColumn({"u2_username", "username", "", "u2",
+                           sql::PG_TYPES::TEXT, false, 0, 0, false}),
       sql::SelectedColumn({"Create Time", "inserted_at", "", "gs",
-                            PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+                           sql::PG_TYPES::TIMESTAMP, true, 0, 0, false}),
       sql::SelectedColumn({"Update Time", "updated_at", "", "gs",
-                            PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+                           sql::PG_TYPES::TIMESTAMP, true, 0, 0, false}),
   });
 
   //    auto m = sql::ObjectIdentifier("material", "metal", "m");

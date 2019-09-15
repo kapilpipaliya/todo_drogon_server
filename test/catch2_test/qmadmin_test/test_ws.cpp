@@ -12,7 +12,7 @@ TEST_CASE("is connection possible", "[WSTest]") {
   char **argv;
   int i = 0;
   QCoreApplication a(i, argv);
-  auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/madmin")));
+  auto w2 = wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/madmin")));
 
   bool r0 = false;
   Once::connect(&w2.getWebSocket(), &QWebSocket::connected, [&r0]() {
@@ -31,7 +31,7 @@ TEST_CASE("server reply error on string type of message.", "[WSTest]") {
   char **argv;
   int i = 0;
   QCoreApplication a(i, argv);
-  auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/madmin")));
+  auto w2 = wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/madmin")));
   std::string str = "hello";
   nlohmann::json j = str;
   // Bind not work because reply is not an array
@@ -60,12 +60,12 @@ TEST_CASE("authorisation check without cookies", "[WSTest]") {
   char **argv;
   int i = 0;
   QCoreApplication a(i, argv);
-  auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/madmin")));
+  auto w2 = wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/madmin")));
   nlohmann::json event = nlohmann::json::array({"user", "is_logged_in", 0});
   nlohmann::json payload = nlohmann::json::array({{event, {{}}}});
   //    json j = R"( [ [["user","is_logged_in",0],[[]]]] )"_json;
   SPDLOG_TRACE(payload.dump());
-  BatchResultTest bt;
+  wstest::BatchResultTest bt;
   bt.addEvent(event, {});
   auto b = w2.bindOnce(event, [&bt, &event](nlohmann::json r) {
     SPDLOG_TRACE("This should be false");
@@ -89,7 +89,7 @@ TEST_CASE("login on backend with username and password", "[WSTest]") {
   char **argv;
   int i = 0;
   QCoreApplication a(i, argv);
-  auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/madmin")));
+  auto w2 = wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/madmin")));
   nlohmann::json event = nlohmann::json::array({"auth", "login", 0});
   nlohmann::json payload = nlohmann::json::array(
       {{event,
@@ -122,7 +122,7 @@ TEST_CASE("check that all table Super Admin data are correctly replied",
   char **argv;
   int i = 0;
   QCoreApplication a(i, argv);
-  auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/madmin")));
+  auto w2 = wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/madmin")));
   nlohmann::json event1 = nlohmann::json::array({"auth", "login", 0});
   nlohmann::json event11 = nlohmann::json::array({"auth", "set_cookie", 0});
   nlohmann::json event2 = nlohmann::json::array({"auth", "is_logged_in", 0});
@@ -187,7 +187,7 @@ TEST_CASE("password change should work.") {
   char **argv;
   int i = 0;
   QCoreApplication a(i, argv);
-  auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/madmin")));
+  auto w2 = wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/madmin")));
   nlohmann::json event1 = nlohmann::json::array({"auth", "login", 0});
   nlohmann::json event11 = nlohmann::json::array({"auth", "set_cookie", 0});
   nlohmann::json event2 = nlohmann::json::array({"user", "update_password", 0});
@@ -240,7 +240,7 @@ TEST_CASE("Logout successfull") {
   char **argv;
   int i = 0;
   QCoreApplication a(i, argv);
-  auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/madmin")));
+  auto w2 = wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/madmin")));
   nlohmann::json event1 = nlohmann::json::array({"auth", "login", 0});
   nlohmann::json event11 = nlohmann::json::array({"auth", "set_cookie", 0});
   nlohmann::json event2 = nlohmann::json::array({"auth", "logout", 0});
@@ -321,7 +321,7 @@ TEST_CASE("create update delete successfull") {
   char **argv;
   int i = 0;
   QCoreApplication a(i, argv);
-  auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/madmin")));
+  auto w2 = wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/madmin")));
   nlohmann::json event1 = nlohmann::json::array({"auth", "login", 0});
   nlohmann::json event11 = nlohmann::json::array({"auth", "set_cookie", 0});
   nlohmann::json event2 = nlohmann::json::array({"user", "is_logged_in", 0});

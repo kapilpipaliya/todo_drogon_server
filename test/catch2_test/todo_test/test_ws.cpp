@@ -11,7 +11,7 @@ TEST_CASE("is connection possible", "[WSTest]") {
   char **argv;
   int i = 0;
   QCoreApplication a(i, argv);
-  auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
+  auto w2 = wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
 
   bool r0 = false;
   Once::connect(&w2.getWebSocket(), &QWebSocket::connected, [&r0]() {
@@ -30,7 +30,7 @@ TEST_CASE("server reply error on string type of message.", "[WSTest]") {
   char **argv;
   int i = 0;
   QCoreApplication a(i, argv);
-  auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
+  auto w2 = wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
   std::string str = "hello";
   nlohmann::json j = str;
   // Bind not work because reply is not an array
@@ -57,7 +57,7 @@ TEST_CASE("authorisation check without cookies", "[WSTest]") {
   char **argv;
   int i = 0;
   QCoreApplication a(i, argv);
-  auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
+  auto w2 = wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
   nlohmann::json event = nlohmann::json::array({"user", "is_logged_in", 0});
   nlohmann::json payload = nlohmann::json::array({{event, {{}}}});
   //    json j = R"( [ [["user","is_logged_in",0],[[]]]] )"_json;
@@ -82,7 +82,7 @@ TEST_CASE("login on backend with username and password", "[WSTest]") {
   char **argv;
   int i = 0;
   QCoreApplication a(i, argv);
-  auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
+  auto w2 = wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
   nlohmann::json event = nlohmann::json::array({"auth", "login", 0});
   nlohmann::json payload = nlohmann::json::array(
       {{event,
@@ -106,9 +106,9 @@ TEST_CASE("all events test", "[WSTest]") {
   char **argv;
   int i = 0;
   QCoreApplication a(i, argv);
-  auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
+  auto w2 = wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
 
-  BatchResultTest bt;
+  wstest::BatchResultTest bt;
   using nlohmann::json;
   bt.addEvent(json::array({"auth", "login", 0}), json::array({}));
   bt.addEvent(json::array({"auth", "logout", 0}), json::array({}));
@@ -160,7 +160,7 @@ TEST_CASE("check that all table Super Admin data are correctly replied",
   char **argv;
   int i = 0;
   QCoreApplication a(i, argv);
-  auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
+  auto w2 = wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
   nlohmann::json event1 = nlohmann::json::array({"auth", "login", 0});
   nlohmann::json event11 = nlohmann::json::array({"auth", "set_cookie", 0});
   nlohmann::json event2 = nlohmann::json::array({"auth", "is_logged_in", 0});
@@ -225,7 +225,7 @@ TEST_CASE("password change should work.") {
   char **argv;
   int i = 0;
   QCoreApplication a(i, argv);
-  auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
+  auto w2 = wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
   nlohmann::json event1 = nlohmann::json::array({"auth", "login", 0});
   nlohmann::json event11 = nlohmann::json::array({"auth", "set_cookie", 0});
   nlohmann::json event2 = nlohmann::json::array({"user", "update_password", 0});
@@ -278,7 +278,7 @@ TEST_CASE("Logout successfull") {
   char **argv;
   int i = 0;
   QCoreApplication a(i, argv);
-  auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
+  auto w2 = wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
   nlohmann::json event1 = nlohmann::json::array({"auth", "login", 0});
   nlohmann::json event11 = nlohmann::json::array({"auth", "set_cookie", 0});
   nlohmann::json event2 = nlohmann::json::array({"auth", "logout", 0});
@@ -362,7 +362,7 @@ R"([{"username":"username","fullname":"fullname","email":"email@email.com","pass
   char **argv;
   int i = 0;
   QCoreApplication a(i, argv);
-  auto w2 = SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
+  auto w2 = wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
   nlohmann::json event1 = nlohmann::json::array({"auth", "login", 0});
   nlohmann::json event11 = nlohmann::json::array({"auth", "set_cookie", 0});
   nlohmann::json event2 = nlohmann::json::array({"user", "is_logged_in", 0});

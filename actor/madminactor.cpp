@@ -3,6 +3,7 @@
 
 #include "madminservices.h"
 namespace superactor {
+namespace musicactor {
 MAdminActor::MAdminActor(caf::actor_config &cfg)
     : caf::event_based_actor(cfg) {}
 
@@ -25,7 +26,7 @@ nlohmann::json MAdminActor::handleTextMessage(
   if (!in.is_array() || !in[0].is_array() || !in[0][0].is_string()) {
     return nlohmann::json::array();
   }
-  auto contx = wsConnPtr->getContext<websocket::MAdminContext>();
+  auto contx = wsConnPtr->getContext<websocket::music::MAdminContext>();
   auto evt = in[0][0].get<std::string>();
   if (evt == "auth") {
     return handleService<madmin::Auth>(contx, in);
@@ -46,7 +47,7 @@ nlohmann::json MAdminActor::handleBinaryMessage(
     const drogon::WebSocketConnectionPtr &wsConnPtr, std::string &message) {
   nlohmann::json event;
   try {
-    auto contx = wsConnPtr->getContext<websocket::MAdminContext>();
+    auto contx = wsConnPtr->getContext<websocket::music::MAdminContext>();
     long c = contx->sessionId();
     auto sqlSession =
         "SELECT event FROM music.temp_file_meta where session_id = $1";
@@ -82,4 +83,5 @@ nlohmann::json MAdminActor::handleBinaryMessage(
   return ret;
 }
 
+}  // namespace musicactor
 }  // namespace superactor

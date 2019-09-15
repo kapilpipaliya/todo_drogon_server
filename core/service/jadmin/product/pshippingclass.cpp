@@ -3,7 +3,8 @@
 #include <utility>
 
 namespace jadmin {
-PShippingClass::PShippingClass(std::shared_ptr<websocket::JAdminContext> context_)
+PShippingClass::PShippingClass(
+    std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("product", "shipping_class", "t"));
   setupTable();
@@ -33,23 +34,24 @@ nlohmann::json PShippingClass::handleEvent(nlohmann::json event,
 void PShippingClass::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
-      sql::SelectedColumn({"Id", "id", "", "t", PG_TYPES::INT8, false}),
-      sql::SelectedColumn({"Code", "slug", "", "t", PG_TYPES::TEXT, true}),
-      sql::SelectedColumn({"Name", "name", "", "t", PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"Id", "id", "", "t", sql::PG_TYPES::INT8, false}),
+      sql::SelectedColumn({"Code", "slug", "", "t", sql::PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"Name", "name", "", "t", sql::PG_TYPES::TEXT, true}),
       sql::SelectedColumn(
-          {"Description", "description", "", "t", PG_TYPES::TEXT, true}),
-      sql::SelectedColumn(
-          {"Product Count", "product_count", "", "t", PG_TYPES::INT4, true}),
+          {"Description", "description", "", "t", sql::PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"Product Count", "product_count", "", "t",
+                           sql::PG_TYPES::INT4, true}),
       // sql::SelectedColumn({"Created By", "create_user_id", "", "t",
-      // PG_TYPES::INT8, true, 1, 0, false}),
+      // sql::PG_TYPES::INT8, true, 1, 0, false}),
       // sql::SelectedColumn({"u1_username", "username", "", "u1",
-      // PG_TYPES::TEXT, false, 0, 0, false}), sql::SelectedColumn({"Updated
-      // By", "update_user_id", "", "t", PG_TYPES::INT8, true, 1, 0, false}),
+      // sql::PG_TYPES::TEXT, false, 0, 0, false}),
+      // sql::SelectedColumn({"Updated By", "update_user_id", "", "t",
+      // sql::PG_TYPES::INT8, true, 1, 0, false}),
       // sql::SelectedColumn({"u2_username", "username", "", "u2",
-      // PG_TYPES::TEXT, false, 0, 0, false}), sql::SelectedColumn({"Create
-      // Time", "inserted_at", "", "t", PG_TYPES::TIMESTAMP, true, 0, 0,
+      // sql::PG_TYPES::TEXT, false, 0, 0, false}), sql::SelectedColumn({"Create
+      // Time", "inserted_at", "", "t", sql::PG_TYPES::TIMESTAMP, true, 0, 0,
       // false}), sql::SelectedColumn({"Update Time", "updated_at", "", "t",
-      // PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+      // sql::PG_TYPES::TIMESTAMP, true, 0, 0, false}),
   });
 
   // auto m = sql::ObjectIdentifier("material", "metal", "m");

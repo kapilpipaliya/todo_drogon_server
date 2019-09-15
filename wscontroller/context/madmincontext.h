@@ -5,6 +5,8 @@
 
 #include <drogon/WebSocketController.h>
 namespace websocket {
+namespace music {
+
 struct MusicUser {
   long id{0};
   std::string type{""};
@@ -29,5 +31,6 @@ class MAdminContext {
   MusicUser user;
   const drogon::WebSocketConnectionPtr &wsConnPtr;
 };
+}  // namespace music
 }  // namespace websocket
 #endif  // CONTEXT_H

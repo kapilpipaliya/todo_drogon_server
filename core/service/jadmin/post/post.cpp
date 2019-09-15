@@ -5,7 +5,7 @@
 #include "../../../strfns.h"
 
 namespace jadmin {
-Post1::Post1(std::shared_ptr<websocket::JAdminContext> context_)
+Post1::Post1(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("post", "post", "post"));
   setupTable();
@@ -33,34 +33,36 @@ nlohmann::json Post1::handleEvent(nlohmann::json event, unsigned long next,
 
 void Post1::setupTable() {
   query.setSelectedColumns({
-      sql::SelectedColumn({"Id", "id", "", "post", PG_TYPES::INT8, true}),
+      sql::SelectedColumn({"Id", "id", "", "post", sql::PG_TYPES::INT8, true}),
       sql::SelectedColumn(
-          {"Post Type", "type", "", "post", PG_TYPES::ENUM, true}),
+          {"Post Type", "type", "", "post", sql::PG_TYPES::ENUM, true}),
       sql::SelectedColumn(
-          {"Visibility", "visibility", "", "post", PG_TYPES::ENUM, true}),
-      sql::SelectedColumn({"Title", "title", "", "post", PG_TYPES::TEXT, true}),
-      sql::SelectedColumn({"Slug", "name", "", "post", PG_TYPES::TEXT, true}),
+          {"Visibility", "visibility", "", "post", sql::PG_TYPES::ENUM, true}),
+      sql::SelectedColumn(
+          {"Title", "title", "", "post", sql::PG_TYPES::TEXT, true}),
+      sql::SelectedColumn(
+          {"Slug", "name", "", "post", sql::PG_TYPES::TEXT, true}),
       sql::SelectedColumn({"Product_short_description", "excerpt", "", "post",
-                           PG_TYPES::TEXT, false}),
+                           sql::PG_TYPES::TEXT, false}),
+      sql::SelectedColumn({"Product_Content", "content", "", "post",
+                           sql::PG_TYPES::TEXT, false}),
       sql::SelectedColumn(
-          {"Product_Content", "content", "", "post", PG_TYPES::TEXT, false}),
+          {"Position", "menu_order", "", "post", sql::PG_TYPES::INT8, true}),
       sql::SelectedColumn(
-          {"Position", "menu_order", "", "post", PG_TYPES::INT8, true}),
+          {"Date", "date", "", "post", sql::PG_TYPES::TIMESTAMP, true}),
       sql::SelectedColumn(
-          {"Date", "date", "", "post", PG_TYPES::TIMESTAMP, true}),
+          {"Status", "status", "", "post", sql::PG_TYPES::ENUM, true}),
       sql::SelectedColumn(
-          {"Status", "status", "", "post", PG_TYPES::ENUM, true}),
+          {"Comment", "comment_status", "", "post", sql::PG_TYPES::BOOL, true}),
       sql::SelectedColumn(
-          {"Comment", "comment_status", "", "post", PG_TYPES::BOOL, true}),
+          {"Password", "password", "", "post", sql::PG_TYPES::TEXT, false}),
       sql::SelectedColumn(
-          {"Password", "password", "", "post", PG_TYPES::TEXT, false}),
-      sql::SelectedColumn(
-          {"Modified", "modified", "", "post", PG_TYPES::TIMESTAMP, true}),
-      // sql::SelectedColumn({"Parent", "parent", "", "post", PG_TYPES::INT8,
-      // true}), sql::SelectedColumn({"MIME Type", "post_mime_type", "",
-      // "post", PG_TYPES::ENUM, false}),
-      sql::SelectedColumn(
-          {"Comment Count", "comment_count", "", "post", PG_TYPES::INT8, true}),
+          {"Modified", "modified", "", "post", sql::PG_TYPES::TIMESTAMP, true}),
+      // sql::SelectedColumn({"Parent", "parent", "", "post",
+      // sql::PG_TYPES::INT8, true}), sql::SelectedColumn({"MIME Type",
+      // "post_mime_type", "", "post", sql::PG_TYPES::ENUM, false}),
+      sql::SelectedColumn({"Comment Count", "comment_count", "", "post",
+                           sql::PG_TYPES::INT8, true}),
   });
 }
 
@@ -79,7 +81,7 @@ nlohmann::json Post1::ins(nlohmann::json event, nlohmann::json args) {
   auto clientPtr = drogon::app().getDbClient("sce");
   auto transPtr = clientPtr->newTransaction();
   try {
-    auto x = Dba::writeInTrans(
+    auto x = sql::Dba::writeInTrans(
         transPtr, strSqlPost, args[0]["comment_status"].get<bool>(),
         args[0]["menu_order"].get<int>(), args[0]["excerpt"].get<std::string>(),
         args[0]["content"].get<std::string>(),
@@ -118,18 +120,18 @@ nlohmann::json Post1::upd(nlohmann::json event, nlohmann::json args) {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     try {
-      Dba::writeInTrans(transPtr, strSqlPost, args[0]["id"].get<long>(),
-                        args[0]["comment_status"].get<bool>(),
-                        args[0]["menu_order"].get<int>(),
-                        args[0]["excerpt"].get<std::string>(),
-                        args[0]["content"].get<std::string>(),
-                        args[0]["title"].get<std::string>(),
-                        args[0]["name"].get<std::string>(),
-                        args[0]["password"].get<std::string>(),
-                        args[0]["status"].get<std::string>(),
-                        args[0]["date"].get<std::string>(),
-                        args[0]["type"].get<std::string>(),
-                        args[0]["visibility"].get<std::string>());
+      sql::Dba::writeInTrans(transPtr, strSqlPost, args[0]["id"].get<long>(),
+                             args[0]["comment_status"].get<bool>(),
+                             args[0]["menu_order"].get<int>(),
+                             args[0]["excerpt"].get<std::string>(),
+                             args[0]["content"].get<std::string>(),
+                             args[0]["title"].get<std::string>(),
+                             args[0]["name"].get<std::string>(),
+                             args[0]["password"].get<std::string>(),
+                             args[0]["status"].get<std::string>(),
+                             args[0]["date"].get<std::string>(),
+                             args[0]["type"].get<std::string>(),
+                             args[0]["visibility"].get<std::string>());
       // auto post_id = args[0]["id"].get<long>();
 
       // product_tags_process(tags_table, post_tag_table, in, txn, post_id);
@@ -146,7 +148,8 @@ nlohmann::json Post1::upd(nlohmann::json event, nlohmann::json args) {
     }
   }
   nlohmann::json ret;
-  ret[0] = websocket::WsFns::successJsonObject(event, false, "Not Valid Structure");
+  ret[0] =
+      websocket::WsFns::successJsonObject(event, false, "Not Valid Structure");
   return ret;
 }
 }  // namespace jadmin

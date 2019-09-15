@@ -10,7 +10,7 @@
 #include "spdlogfix.h"
 
 namespace jadmin {
-Auth::Auth(std::shared_ptr<websocket::JAdminContext> context_)
+Auth::Auth(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }
@@ -67,7 +67,7 @@ std::tuple<long, long> Auth::login(const std::string &username,
           "on u.entity_id = e.id where e.email = $1 and u.password = $2";
       auto clientPtr = drogon::app().getDbClient("sce");
       auto transPtr = clientPtr->newTransaction();
-      auto r = Dba::writeInTrans(transPtr, sql, username, password);
+      auto r = sql::Dba::writeInTrans(transPtr, sql, username, password);
 
       if (r.size() == 1) {
         user_id = r[0]["id"].as<long>();
@@ -75,7 +75,7 @@ std::tuple<long, long> Auth::login(const std::string &username,
             "INSERT INTO entity.session (entity_id, expire, value) VALUES "
             "($1, "
             "$2, $3) returning id";
-        auto rs = Dba::writeInTrans(transPtr, sqlSession, user_id, 0L, "");
+        auto rs = sql::Dba::writeInTrans(transPtr, sqlSession, user_id, 0L, "");
         session_id = rs[0]["id"].as<long>();
       }
     } catch (const std::exception &e) {
@@ -125,7 +125,7 @@ void Auth::deleteuserSession() {
         try {
             auto clientPtr = drogon::app().getDbClient("sce");
             auto transPtr = clientPtr->newTransaction();
-            auto r = Dba::writeInTrans(transPtr, sqlSession, user);
+            auto r = sql::Dba::writeInTrans(transPtr, sqlSession, user);
             user = 0 ;
         } catch (const std::exception &e) {
             SPDLOG_TRACE(e.what());
@@ -159,8 +159,8 @@ nlohmann::json Auth::saveFileMeta(const nlohmann::json &event,
   try {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
-    auto r = Dba::writeInTrans(transPtr, strSql);
-    // auto r = Dba::writeInTrans(transPtr, strSql, c, args[0].dump(),
+    auto r = sql::Dba::writeInTrans(transPtr, strSql);
+    // auto r = sql::Dba::writeInTrans(transPtr, strSql, c, args[0].dump(),
     // args[1].get<std::string>(), args[2].get<long>(),
     // args[3].get<std::string>());
     nlohmann::json ret;
@@ -190,10 +190,10 @@ nlohmann::json Auth::saveImageMeta(const nlohmann::json &event,
     auto strSql_ =
         fmt::format(strSql, c, args[0].dump(), args[1].get<std::string>(),
                     args[2].get<long>(), args[3].get<std::string>());
-    // auto r = Dba::writeInTrans(transPtr, strSql, c, args[0].dump(),
+    // auto r = sql::Dba::writeInTrans(transPtr, strSql, c, args[0].dump(),
     // args[1].get<std::string>(), args[2].get<long>(),
     // args[3].get<std::string>());
-    auto r = Dba::writeInTrans(transPtr, strSql_);
+    auto r = sql::Dba::writeInTrans(transPtr, strSql_);
     nlohmann::json ret;
     ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
     return ret;
@@ -229,7 +229,7 @@ nlohmann::json Auth::thumb_data( nlohmann::json event, nlohmann::json args)
     auto transPtr = clientPtr->newTransaction();
     try {
         auto sql = "SELECT name FROM post.image WHERE id = $1";
-        auto x = Dba::writeInTrans(transPtr, sql, args.get<int>());
+        auto x = sql::Dba::writeInTrans(transPtr, sql, args.get<int>());
 
         if (x.size() == 1) {
             std::streampos size;
@@ -263,7 +263,7 @@ drogon::WebSocketMessageType::Binary);
 */
 
 // save image in disk and return temporary id:
-nlohmann::json Auth::save_setting_attachment(const nlohmann::json & event,
+nlohmann::json Auth::save_setting_attachment(const nlohmann::json &event,
                                              std::string &message) {
   auto session_id = context->sessionId();
   auto strSql = sql::CRUDHelper::sel_(
@@ -271,8 +271,8 @@ nlohmann::json Auth::save_setting_attachment(const nlohmann::json & event,
   auto clientPtr = drogon::app().getDbClient("sce");
   auto transPtr = clientPtr->newTransaction();
   try {
-    auto r = Dba::writeInTrans(transPtr, strSql, session_id);
-    Dba::writeInTrans(
+    auto r = sql::Dba::writeInTrans(transPtr, strSql, session_id);
+    sql::Dba::writeInTrans(
         transPtr,
         sql::CRUDHelper::dele_("public.temp_image",
                                "where session_id = $1 and event = $2"),
@@ -327,7 +327,8 @@ nlohmann::json Auth::save_setting_attachment(const nlohmann::json & event,
     nlohmann::json ret;
     nlohmann::json jresult;
     jresult[0] = event_json;
-    auto insert_result = Dba::writeInTrans(transPtr, strSql, name, size, type);
+    auto insert_result =
+        sql::Dba::writeInTrans(transPtr, strSql, name, size, type);
     jresult[1] = insert_result[0]["id"].as<long>();
     // jresult[1] = e.what();
     ret[0] = jresult;

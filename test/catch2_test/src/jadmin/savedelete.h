@@ -3,6 +3,7 @@
 
 #include "../wstestbase.h"
 
+namespace wstest{
 class SaveDelete : public WSTestBase {
  public:
   SaveDelete(std::string table, std::string insert_query,
@@ -20,5 +21,5 @@ class SaveDelete : public WSTestBase {
 
   int id = 0;
 };
-
+}
 #endif  // SaveDelete_H

@@ -2,7 +2,7 @@
 
 #include <utility>
 
-madmin::Registration::Registration(std::shared_ptr<websocket::MAdminContext> context_)
+madmin::Registration::Registration(std::shared_ptr<websocket::music::MAdminContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }

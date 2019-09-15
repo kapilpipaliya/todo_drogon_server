@@ -3,7 +3,7 @@
 #include <utility>
 
 namespace jadmin {
-Support::Support(std::shared_ptr<websocket::JAdminContext> context_)
+Support::Support(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("entity", "support", "a"));
   setupTable();
@@ -32,23 +32,26 @@ nlohmann::json Support::handleEvent(nlohmann::json event, unsigned long next,
 void Support::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
-      sql::SelectedColumn({"Id", "id", "", "a", PG_TYPES::INT8, false}),
-      sql::SelectedColumn({"Name", "name", "", "a", PG_TYPES::TEXT, true}),
-      sql::SelectedColumn({"Email", "email", "", "a", PG_TYPES::TEXT, true}),
-      sql::SelectedColumn({"Phone", "phone", "", "a", PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"Id", "id", "", "a", sql::PG_TYPES::INT8, false}),
+      sql::SelectedColumn({"Name", "name", "", "a", sql::PG_TYPES::TEXT, true}),
       sql::SelectedColumn(
-          {"Message", "message", "", "a", PG_TYPES::TEXT, true}),
+          {"Email", "email", "", "a", sql::PG_TYPES::TEXT, true}),
+      sql::SelectedColumn(
+          {"Phone", "phone", "", "a", sql::PG_TYPES::TEXT, true}),
+      sql::SelectedColumn(
+          {"Message", "message", "", "a", sql::PG_TYPES::TEXT, true}),
       // sql::SelectedColumn({"Created By", "create_user_id", "", "a",
-      // PG_TYPES::INT8, true, 1, 0, false}),
+      // sql::PG_TYPES::INT8, true, 1, 0, false}),
       // sql::SelectedColumn({"u1_username", "username", "", "u1",
-      // PG_TYPES::TEXT, false, 0, 0, false}), sql::SelectedColumn({"Updated
-      // By", "update_user_id", "", "a", PG_TYPES::INT8, true, 1, 0, false}),
+      // sql::PG_TYPES::TEXT, false, 0, 0, false}),
+      // sql::SelectedColumn({"Updated By", "update_user_id", "", "a",
+      // sql::PG_TYPES::INT8, true, 1, 0, false}),
       // sql::SelectedColumn({"u2_username", "username", "", "u2",
-      // PG_TYPES::TEXT, false, 0, 0, false}),
+      // sql::PG_TYPES::TEXT, false, 0, 0, false}),
       sql::SelectedColumn({"Create Time", "inserted_at", "", "a",
-                            PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+                           sql::PG_TYPES::TIMESTAMP, true, 0, 0, false}),
       sql::SelectedColumn({"Update Time", "updated_at", "", "a",
-                            PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+                           sql::PG_TYPES::TIMESTAMP, true, 0, 0, false}),
   });
 
   // auto u1 = sql::ObjectIdentifier("entity", "entity_user", "u1");

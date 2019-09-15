@@ -8,13 +8,13 @@
 namespace madmin {
 class Stats {
  public:
-  Stats(std::shared_ptr<websocket::MAdminContext>);
+  Stats(std::shared_ptr<websocket::music::MAdminContext>);
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
   void setupTable();
 
  private:
-  std::shared_ptr<websocket::MAdminContext> context;
+  std::shared_ptr<websocket::music::MAdminContext> context;
   sql::Query query;
 };
 }  // namespace madmin

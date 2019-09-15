@@ -3,7 +3,7 @@
 
 #include "jadminservices.h"
 namespace superactor {
-
+namespace jadminactor {
 JAdminActor::JAdminActor(caf::actor_config &cfg)
     : caf::event_based_actor(cfg) {}
 
@@ -103,7 +103,8 @@ nlohmann::json JAdminActor::handleBinaryMessage(
     const drogon::WebSocketConnectionPtr &wsConnPtr, std::string &message) {
   nlohmann::json event;
   try {
-    long c = wsConnPtr->getContext<websocket::JAdminContext>()->sessionId();
+    long c =
+        wsConnPtr->getContext<websocket::jadmin::JAdminContext>()->sessionId();
     auto sqlSession =
         "SELECT event FROM public.temp_image where session_id = $1";
     auto clientPtr = drogon::app().getDbClient("sce");
@@ -113,7 +114,8 @@ nlohmann::json JAdminActor::handleBinaryMessage(
         event = nlohmann::json::parse(r[0]["event"].c_str());
         // p.handleBinaryEvent creates new transaction.
         if (event[0] == "image") {
-          auto contx = wsConnPtr->getContext<websocket::JAdminContext>();
+          auto contx =
+              wsConnPtr->getContext<websocket::jadmin::JAdminContext>();
           jadmin::Auth p{contx};
           auto res = p.handleBinaryEvent(event, 1, message);
           if (!res.is_null()) {
@@ -140,4 +142,5 @@ nlohmann::json JAdminActor::handleBinaryMessage(
   return ret;
 }
 
+}  // namespace jadminactor
 }  // namespace superactor

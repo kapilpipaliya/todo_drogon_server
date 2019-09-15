@@ -3,7 +3,8 @@
 #include "../../../sql/dba.h"
 #include "./session.h"
 
-madmin::Session::Session(std::shared_ptr<websocket::MAdminContext> context_)
+madmin::Session::Session(
+    std::shared_ptr<websocket::music::MAdminContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }
@@ -38,7 +39,7 @@ bool madmin::Session::destroy(long key) {
 
   // Remove anything and EVERYTHING
   std::string sql = "DELETE FROM music.session WHERE id = $1";
-  auto r = Dba::write(sql, key);
+  auto r = sql::Dba::write(sql, key);
   return r.affectedRows() == 1;
   // debug_event("SESSION", "Deleting Session with key:" . key, 6);
 

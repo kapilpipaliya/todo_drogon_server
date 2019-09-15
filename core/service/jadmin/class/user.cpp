@@ -5,7 +5,7 @@
 
 // using namespace std::chrono;
 namespace jadmin {
-User::User(std::shared_ptr<websocket::JAdminContext> context_)
+User::User(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("music", "user", "e"));
   setupTable();
@@ -112,7 +112,7 @@ user.last_seen > 2"); return count;
 
 void User::get_valid_users() {
   std::string sql = fmt::format("SELECT id FROM user WHERE disabled = false");
-  auto db_results = Dba::read(sql);
+  auto db_results = sql::Dba::read(sql);
   for (auto r : db_results) {
   }
 }
@@ -136,7 +136,7 @@ std::string User::get_password() {
   try {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
-    auto r = Dba::writeInTrans(transPtr, sql, this->context->getUserId());
+    auto r = sql::Dba::writeInTrans(transPtr, sql, this->context->getUserId());
     if (r.size() == 1) {
       return r[0]["password"].as<std::string>();
     }
@@ -146,12 +146,11 @@ std::string User::get_password() {
   return "";
 }
 
-long User::create(const std::string& username,
-                  const std::string& fullname, const std::string& email,
-                  const std::string& website,
-                  const std::string& password,
-                  const std::string& access, const std::string& state,
-                  const std::string& city, bool disabled) {
+long User::create(const std::string& username, const std::string& fullname,
+                  const std::string& email, const std::string& website,
+                  const std::string& password, const std::string& access,
+                  const std::string& state, const std::string& city,
+                  bool disabled) {
   // website     = rtrim(website, "/");
   // string password    = hash('sha256', password);
   // bool disabled    = disabled $ 1 : 0;
@@ -188,14 +187,14 @@ long User::create(const std::string& username,
   }
 
   sql += ")";
-  db_results = Dba::write(sql, params);
+  db_results = sql::Dba::write(sql, params);
 
   if (!db_results) {
       return false;
   }
 
   // Get the insert_id
-  string insert_id = Dba::insert_id();
+  string insert_id = sql::Dba::insert_id();
   */
 
   /* Populates any missing preferences, in this case all of them */
@@ -207,13 +206,13 @@ long User::create(const std::string& username,
 
 bool User::update_password(std::string new_password) {
   // std::string new_password = hash('sha256', new_password);
-  // new_password = Dba::escape(new_password);
+  // new_password = sql::Dba::escape(new_password);
   std::string sql = "UPDATE music.user SET password = $2 WHERE id = $1";
   try {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
-    auto r = Dba::writeInTrans(transPtr, sql, this->context->getUserId(),
-                               std::move(new_password));
+    auto r = sql::Dba::writeInTrans(transPtr, sql, this->context->getUserId(),
+                                    std::move(new_password));
     if (r.affectedRows() == 1) {
       return true;
     }
@@ -241,14 +240,14 @@ nlohmann::json User::userRegister(const nlohmann::json& event,
     std::transform(data.begin(), data.end(), data.begin(),
                    [](char ch) { return ch == ' ' ? '_' : ch; });
 
-    auto x = Dba::writeInTrans(transPtr, strSql, 6, "",
-                               args["legal_name"].get<std::string>(), data,
-                               args["email"].get<std::string>());
+    auto x = sql::Dba::writeInTrans(transPtr, strSql, 6, "",
+                                    args["legal_name"].get<std::string>(), data,
+                                    args["email"].get<std::string>());
     auto entity_id = x[0]["id"].as<long>();
     std::string strSqlUser =
         "INSERT INTO entity.entity_user (entity_id, username, password, "
         "password_hash) VALUES ($1, $2, $3, $4)";
-    Dba::writeInTrans(
+    sql::Dba::writeInTrans(
         transPtr, strSqlUser, entity_id, args["email"].get<std::string>(),
         args["pass"].get<std::string>(), args["pass"].get<std::string>());
 
@@ -270,18 +269,20 @@ nlohmann::json User::userLogin(const nlohmann::json& event,
   try {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
-    auto r = Dba::writeInTrans(transPtr, sql, args["email"].get<std::string>(),
+    auto r =
+        sql::Dba::writeInTrans(transPtr, sql, args["email"].get<std::string>(),
                                args["pass"].get<std::string>());
 
     if (r.size() == 1) {
       nlohmann::json j;
       j["value"] = r[0]["id"].as<long>();
       auto sqlSession =
-          "INSERT INTO entity.session (key, value) VALUES ($1, $2) returning id";
+          "INSERT INTO entity.session (key, value) VALUES ($1, $2) returning "
+          "id";
       // To serialize the nlohmann::json into a Json document, you should use a
       // Json writer, or json::dump().
       LOG_INFO << j.dump();
-      auto rs = Dba::writeInTrans(transPtr, sqlSession, "user", j.dump());
+      auto rs = sql::Dba::writeInTrans(transPtr, sqlSession, "user", j.dump());
       nlohmann::json login_result =
           websocket::WsFns::successJsonObject(event, true, "Done");
 
@@ -323,7 +324,7 @@ nlohmann::json User::userId(const nlohmann::json& event,
     try {
       auto clientPtr = drogon::app().getDbClient("sce");
       auto transPtr = clientPtr->newTransaction();
-      auto r = Dba::writeInTrans(transPtr, sqlSession, c);
+      auto r = sql::Dba::writeInTrans(transPtr, sqlSession, c);
       // send id
       // websocket::WsFns::successJsonObject(event, true, r[0][1].c_str());
       nlohmann::json jresult;
@@ -360,7 +361,7 @@ nlohmann::json User::checkout(const nlohmann::json& event,
     try {
       auto clientPtr = drogon::app().getDbClient("sce");
       auto transPtr = clientPtr->newTransaction();
-      auto r = Dba::writeInTrans(transPtr, sqlSession, c);
+      auto r = sql::Dba::writeInTrans(transPtr, sqlSession, c);
       // send id
       nlohmann::json jresult;
       jresult[0] = event;

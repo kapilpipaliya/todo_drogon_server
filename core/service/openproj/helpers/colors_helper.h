@@ -1,3 +1,4 @@
+namespace openproj {
 namespace ColorsHelper {
 //   void options_for_colors(colored_thing, allow_bright_colors) {
 //    colors = []
@@ -93,4 +94,5 @@ namespace ColorsHelper {
 
 //    content_tag(:span, ' ', options)
 //  }
+}
 }

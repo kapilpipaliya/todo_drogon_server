@@ -1,7 +1,7 @@
 
 #include "BatchResultTest.h"
 #include <iostream>
-
+namespace wstest {
 bool BatchResultTest::addEvent(const nlohmann::json &event_,
                                const nlohmann::json &payload) {
   event.insert({event_, {payload, false}});
@@ -37,4 +37,5 @@ bool BatchResultTest::result() {
     }
   }
   return res;
+}
 }

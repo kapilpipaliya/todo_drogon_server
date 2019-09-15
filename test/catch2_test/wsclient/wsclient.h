@@ -16,7 +16,7 @@
 #include <functional>
 
 #include "json.hpp"
-
+namespace wstest{
 class SslEchoClient : public QObject {
   Q_OBJECT
 
@@ -65,5 +65,5 @@ class WsInst {
   WsInst();
   static SslEchoClient &getClient();
 };
-
+}
 #endif  // WSCLIENT_H

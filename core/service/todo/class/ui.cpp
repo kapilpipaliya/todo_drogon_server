@@ -116,7 +116,7 @@ nlohmann::json todo::UI::getUserTypeData() {
 
 nlohmann::json todo::UI::getCatalogFilterData() {
   std::string sql = "select id, name from music.catalog order by id";
-  auto r = Dba::read(sql);
+  auto r = sql::Dba::read(sql);
   nlohmann::json out =
       nlohmann::json::array({nlohmann::json::array({"All", nullptr})});
   for (const auto& i : r) {

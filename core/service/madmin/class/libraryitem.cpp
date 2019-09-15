@@ -1,3 +1,3 @@
 #include "libraryitem.h"
 
-LibraryItem::LibraryItem() = default;
+madmin::LibraryItem::LibraryItem() = default;

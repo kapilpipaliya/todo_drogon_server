@@ -9,6 +9,7 @@
  * input
  */
 // interface library_item extends playable_item
+namespace madmin {
 class LibraryItem {
  public:
   LibraryItem();
@@ -22,5 +23,5 @@ class LibraryItem {
   //  virtual void update(array $data) = 0;
   //  public static function gc() = 0;
 };
-
+}
 #endif  // LIBRARYITEM_H

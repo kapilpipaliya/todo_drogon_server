@@ -3,7 +3,7 @@
 #include <catch2/catch.hpp>
 #include <iostream>
 #include "spdlogfix.h"
-
+namespace wstest{
 WSTestBase::WSTestBase() { /*init();*/
 }  // should be called after derived class
 WSTestBase::~WSTestBase() {}
@@ -81,3 +81,4 @@ void WSTestBase::quit(bool isPass, std::string reason) {
 }
 
 void WSTestBase::run() { drogon::app().run(); }
+}

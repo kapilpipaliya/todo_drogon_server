@@ -2,6 +2,8 @@
 #include "./core/sql/dba.h"
 #include "spdlogfix.h"
 namespace websocket {
+namespace music {
+
 MAdminContext::MAdminContext(const drogon::HttpRequestPtr &req,
                              const drogon::WebSocketConnectionPtr &wsConnPtr_)
     : wsConnPtr(wsConnPtr_) {
@@ -22,7 +24,7 @@ std::tuple<long, long> MAdminContext::generateContext(
   try {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
-    auto r = Dba::writeInTrans(transPtr, sqlSession, session_id);
+    auto r = sql::Dba::writeInTrans(transPtr, sqlSession, session_id);
     if (!r.empty()) {
       return {r[0]["id"].as<long>(), r[0]["user_id"].as<long>()};
     }
@@ -41,7 +43,7 @@ void MAdminContext::setUser() {
     auto sqlSession = "SELECT * FROM music.user where id = $1";
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
-    auto r = Dba::writeInTrans(transPtr, sqlSession, user_id);
+    auto r = sql::Dba::writeInTrans(transPtr, sqlSession, user_id);
     if (!r.empty()) {
       user.id = r[0]["id"].as<long>();
       user.type = r[0]["type"].as<std::string>();
@@ -50,4 +52,5 @@ void MAdminContext::setUser() {
     SPDLOG_TRACE(e.what());
   }
 }
+}  // namespace music
 }  // namespace websocket

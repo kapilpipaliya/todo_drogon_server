@@ -11,7 +11,7 @@
 namespace jadmin {
 class Session {
  public:
-  Session(std::shared_ptr<websocket::JAdminContext>);
+  Session(std::shared_ptr<websocket::jadmin::JAdminContext>);
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
   void setupTable();
@@ -165,7 +165,7 @@ class Session {
    */
   // static void ungimp_ie();
  private:
-  std::shared_ptr<websocket::JAdminContext> context;
+  std::shared_ptr<websocket::jadmin::JAdminContext> context;
   sql::Query query;
 };
 }  // namespace jadmin

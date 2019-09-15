@@ -1,6 +1,7 @@
 #pragma once
 #include <drogon/WebSocketController.h>
 namespace websocket {
+namespace juser {
 class JUserWebsock : public drogon::WebSocketController<JUserWebsock> {
  public:
   void handleNewMessage(const drogon::WebSocketConnectionPtr &, std::string &&,
@@ -12,4 +13,5 @@ class JUserWebsock : public drogon::WebSocketController<JUserWebsock> {
   WS_PATH_ADD("/juser");
   WS_PATH_LIST_END
 };
+}  // namespace juser
 }  // namespace websocket

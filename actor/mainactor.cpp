@@ -84,7 +84,7 @@ void MainActor::passToUser(MainActorType actortype,
     case MainActorType::JAdmin: {
       auto it = actorMap.find(wsConnPtr);
       if (it == actorMap.end()) {
-        caf::actor userActor = spawn<JAdminActor>();
+        caf::actor userActor = spawn<jadminactor::JAdminActor>();
         monitor(userActor);  // this will send message when it down
         request(userActor, caf::infinite, wsConnPtr, std::move(message), type);
         actorMap.insert({wsConnPtr, userActor});
@@ -98,7 +98,7 @@ void MainActor::passToUser(MainActorType actortype,
     case MainActorType::JUser: {
       auto it = actorMap.find(wsConnPtr);
       if (it == actorMap.end()) {
-        caf::actor userActor = spawn<JUserActor>();
+        caf::actor userActor = spawn<juseractor::JUserActor>();
         monitor(userActor);  // this will send message when it down
         request(userActor, caf::infinite, wsConnPtr, std::move(message), type);
         actorMap.insert({wsConnPtr, userActor});
@@ -112,7 +112,7 @@ void MainActor::passToUser(MainActorType actortype,
     case MainActorType::MAdmin: {
       auto it = actorMap.find(wsConnPtr);
       if (it == actorMap.end()) {
-        caf::actor userActor = spawn<MAdminActor>();
+        caf::actor userActor = spawn<musicactor::MAdminActor>();
         monitor(userActor);  // this will send message when it down
         request(userActor, caf::infinite, wsConnPtr, std::move(message), type);
         actorMap.insert({wsConnPtr, userActor});
@@ -126,7 +126,7 @@ void MainActor::passToUser(MainActorType actortype,
     case MainActorType::TODO: {
       auto it = actorMap.find(wsConnPtr);
       if (it == actorMap.end()) {
-        caf::actor todoActor = spawn<TodoActor>();
+        caf::actor todoActor = spawn<todoactor::TodoActor>();
         monitor(todoActor);  // this will send message when it down
         request(todoActor, caf::infinite, wsConnPtr, std::move(message), type);
         actorMap.insert({wsConnPtr, todoActor});

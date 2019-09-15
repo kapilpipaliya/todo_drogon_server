@@ -4,7 +4,7 @@
 #include <fmt/format.h>
 #include <catch2/catch.hpp>
 #include "json.hpp"
-
+namespace wstest {
 GetTableData::GetTableData(std::string table) : table(table) {}
 
 void GetTableData::connectToServer() {
@@ -82,4 +82,5 @@ void GetTableData::setMessageHandler() {
           // quit(true);
         }
       });
+}
 }

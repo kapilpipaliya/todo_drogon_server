@@ -11,13 +11,14 @@
 
 #include "context/todocontext.h"
 namespace websocket {
+namespace todo {
 void TodoWebsock::handleNewMessage(
     const drogon::WebSocketConnectionPtr& wsConnPtr, std::string&& message,
     const drogon::WebSocketMessageType& type) {
   // std::chrono::seconds(10)
   superactor::globalCAF.communicateWithActors()
       ->request(superactor::globalCAF.mainActor(), caf::infinite,
-                run_atom::value, MainActorType::TODO, wsConnPtr,
+                run_atom::value, superactor::MainActorType::TODO, wsConnPtr,
                 std::move(message), type)
       .receive(
           [&]() {
@@ -45,4 +46,5 @@ void TodoWebsock::handleConnectionClosed(
       superactor::globalCAF.mainActor(), caf::infinite, exit_atom::value,
       wsConnPtr);
 }
+}  // namespace todo
 }  // namespace websocket

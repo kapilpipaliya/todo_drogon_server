@@ -1,5 +1,6 @@
 //#include "will_paginate"
 
+namespace openproj {
 namespace PaginationHelper {
 //   void pagination_links_full(paginator, options = {}) {
 //    return unless paginator.total_entries > 0
@@ -175,4 +176,5 @@ namespace PaginationHelper {
 //      params: {}
 //    }
 //  }
+}
 }

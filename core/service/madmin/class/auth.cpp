@@ -4,7 +4,8 @@
 #include "../../../sql/dba.h"
 #include "session.h"
 
-madmin::Auth::Auth(std::shared_ptr<websocket::MAdminContext> context_) : context(std::move(context_)) {
+madmin::Auth::Auth(std::shared_ptr<websocket::music::MAdminContext> context_)
+    : context(std::move(context_)) {
   setupTable();
 }
 
@@ -22,7 +23,7 @@ nlohmann::json madmin::Auth::handleEvent(nlohmann::json event,
           "select (u.expiry > now()) as isexpired, u.disabled from music.user "
           "as u WHERE "
           "username = $1";
-      auto r = Dba::read(isauthorised, args["user"].get<std::string>());
+      auto r = sql::Dba::read(isauthorised, args["user"].get<std::string>());
       if (r.empty()) {
         return {websocket::WsFns::successJsonObject(event, false, "Error")};
       } else if (!r[0]["isexpired"].isNull() && r[0]["isexpired"].as<bool>()) {
@@ -78,8 +79,8 @@ nlohmann::json madmin::Auth::saveFileMeta(const nlohmann::json& event,
   try {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
-    auto r = Dba::writeInTrans(transPtr, strSql);
-    // auto r = Dba::writeInTrans(transPtr, strSql, c, args[0].dump(),
+    auto r = sql::Dba::writeInTrans(transPtr, strSql);
+    // auto r = sql::Dba::writeInTrans(transPtr, strSql, c, args[0].dump(),
     // args[1].get<std::string>(), args[2].get<long>(),
     // args[3].get<std::string>());
     nlohmann::json ret;
@@ -139,14 +140,14 @@ std::tuple<long, long> madmin::Auth::login(const std::string& username,
           "password = $2";
       auto clientPtr = drogon::app().getDbClient("sce");
       auto transPtr = clientPtr->newTransaction();
-      auto r = Dba::writeInTrans(transPtr, sql, username, password);
+      auto r = sql::Dba::writeInTrans(transPtr, sql, username, password);
 
       if (r.size() == 1) {
         user_id = r[0]["id"].as<long>();
         auto sqlSession =
             "INSERT INTO music.session (user_id, expire, value) VALUES ($1, "
             "$2, $3) returning id";
-        auto rs = Dba::writeInTrans(transPtr, sqlSession, user_id, 0L, "");
+        auto rs = sql::Dba::writeInTrans(transPtr, sqlSession, user_id, 0L, "");
         session_id = rs[0]["id"].as<long>();
       }
     } catch (const std::exception& e) {

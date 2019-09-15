@@ -2,7 +2,7 @@
 
 #include <utility>
 
-madmin::PlayListBase::PlayListBase(std::shared_ptr<websocket::MAdminContext> context_)
+madmin::PlayListBase::PlayListBase(std::shared_ptr<websocket::music::MAdminContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }

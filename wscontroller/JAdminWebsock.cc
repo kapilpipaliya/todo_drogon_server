@@ -11,13 +11,15 @@
 
 #include "context/jadmincontext.h"
 namespace websocket {
-void EchoWebSocket::handleNewMessage(
+namespace jadmin {
+
+void JAdminWebSocket::handleNewMessage(
     const drogon::WebSocketConnectionPtr &wsConnPtr, std::string &&message,
     const drogon::WebSocketMessageType &type) {
   // std::chrono::seconds(10)
   superactor::globalCAF.communicateWithActors()
       ->request(superactor::globalCAF.mainActor(), caf::infinite,
-                run_atom::value, MainActorType::JAdmin, wsConnPtr,
+                run_atom::value, superactor::MainActorType::JAdmin, wsConnPtr,
                 std::move(message), type)
       .receive(
           [&]() {
@@ -32,18 +34,19 @@ void EchoWebSocket::handleNewMessage(
                 << err.code() << std::endl;
           });
 }
-void EchoWebSocket::handleNewConnection(
+void JAdminWebSocket::handleNewConnection(
     const drogon::HttpRequestPtr &req,
     const drogon::WebSocketConnectionPtr &wsConnPtr) {
-  std::shared_ptr<websocket::JAdminContext> context =
+  std::shared_ptr<websocket::jadmin::JAdminContext> context =
       std::make_shared<JAdminContext>(req, wsConnPtr);
   wsConnPtr->setContext(context);
 }
-void EchoWebSocket::handleConnectionClosed(
+void JAdminWebSocket::handleConnectionClosed(
     const drogon::WebSocketConnectionPtr &wsConnPtr) {
   superactor::globalCAF.communicateWithActors()->request(
       superactor::globalCAF.mainActor(), caf::infinite, exit_atom::value,
       wsConnPtr);
   // LOG_DEBUG << "connection closed!\n" <<wsConnPtr->peerAddr().toIp();
 }
+}  // namespace jadmin
 }  // namespace websocket

@@ -1,3 +1,4 @@
+namespace openproj {
 namespace CustomFieldsHelper {
    void custom_fields_tabs() {
 //    [
@@ -132,4 +133,5 @@ namespace CustomFieldsHelper {
 //      format.label.is_a?(Proc) ? format.label.call : I18n.t(format.label)
 //    }
 //  }
+}
 }

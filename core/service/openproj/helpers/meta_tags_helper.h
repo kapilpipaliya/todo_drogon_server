@@ -1,3 +1,4 @@
+namespace openproj {
 namespace MetaTagsHelper {
   //
   // Use meta-tags to output title and site name
@@ -27,4 +28,5 @@ namespace MetaTagsHelper {
 //      if ( this->html_title) { parts.concat this->html_title.map(&:to_s) ;}
 //    }
   }
+}
 }

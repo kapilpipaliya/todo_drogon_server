@@ -16,6 +16,7 @@
  * database simplifying queries in most cases.
  *
  */
+namespace sql {
 class Dba {
  public:
   Dba();
@@ -200,4 +201,5 @@ class Dba {
    */
   // static void optimize_tables();
 };
+}  // namespace sql
 #endif  // DBA_H

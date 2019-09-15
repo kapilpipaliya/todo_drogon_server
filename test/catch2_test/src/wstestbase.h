@@ -7,7 +7,7 @@
 #include "json.hpp"
 
 // using namespace std::chrono_literals;
-
+namespace wstest{
 class WSTestBase {
  public:
   WSTestBase();
@@ -38,4 +38,5 @@ class WSTestBase {
   drogon::WebSocketClientPtr wsPtr =
       drogon::WebSocketClient::newWebSocketClient("127.0.0.1", 8400);
 };
+}
 #endif  // WSTESTBASE_H

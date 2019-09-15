@@ -2,10 +2,10 @@
 
 #include <utility>
 namespace jadmin {
-AccountHeading::AccountHeading(std::shared_ptr<websocket::JAdminContext> context_)
+AccountHeading::AccountHeading(
+    std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
-  query =
-      sql::Query(sql::ObjectIdentifier("account", "account_heading", "a"));
+  query = sql::Query(sql::ObjectIdentifier("account", "account_heading", "a"));
   setupTable();
 }
 
@@ -32,9 +32,10 @@ nlohmann::json AccountHeading::handleEvent(nlohmann::json event,
 void AccountHeading::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
-      sql::SelectedColumn({"Id", "id", "", "a", PG_TYPES::INT8, false}),
-      sql::SelectedColumn({"Acc No", "accno", "", "a", PG_TYPES::TEXT, true}),
-      sql::SelectedColumn({"Name", "name", "", "a", PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"Id", "id", "", "a", sql::PG_TYPES::INT8, false}),
+      sql::SelectedColumn(
+          {"Acc No", "accno", "", "a", sql::PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"Name", "name", "", "a", sql::PG_TYPES::TEXT, true}),
   });
 
   // auto pg = sql::ObjectIdentifier("part", "part_category", "pg");

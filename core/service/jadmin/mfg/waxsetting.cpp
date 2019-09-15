@@ -3,7 +3,8 @@
 #include <utility>
 
 namespace jadmin {
-WaxSetting::WaxSetting(std::shared_ptr<websocket::JAdminContext> context_)
+WaxSetting::WaxSetting(
+    std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("mfg", "wax_setting", "m"));
   setupTable();
@@ -32,39 +33,39 @@ nlohmann::json WaxSetting::handleEvent(nlohmann::json event, unsigned long next,
 void WaxSetting::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
-      sql::SelectedColumn({"Id", "id", "", "m", PG_TYPES::INT8, false}),
-      sql::SelectedColumn({"Rank", "rank", "", "m", PG_TYPES::INT4, true}),
-      sql::SelectedColumn({"No", "no", "", "m", PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"Id", "id", "", "m", sql::PG_TYPES::INT8, false}),
+      sql::SelectedColumn({"Rank", "rank", "", "m", sql::PG_TYPES::INT4, true}),
+      sql::SelectedColumn({"No", "no", "", "m", sql::PG_TYPES::TEXT, true}),
       sql::SelectedColumn(
-          {"Sequence", "sequence_id", "", "m", PG_TYPES::INT8, true}),
+          {"Sequence", "sequence_id", "", "m", sql::PG_TYPES::INT8, true}),
       sql::SelectedColumn(
-          {"Date", "date", "", "m", PG_TYPES::TIMESTAMP, true}),
+          {"Date", "date", "", "m", sql::PG_TYPES::TIMESTAMP, true}),
       sql::SelectedColumn({"Department", "department_id", "", "m",
-                            PG_TYPES::INT8, false, 1, 1}),
+                           sql::PG_TYPES::INT8, false, 1, 1}),
       sql::SelectedColumn(
-          {"Name", "name", "", "dep", PG_TYPES::TEXT, false, 0, 0, false}),
+          {"Name", "name", "", "dep", sql::PG_TYPES::TEXT, false, 0, 0, false}),
+      sql::SelectedColumn({"Employee", "employee_id", "", "m",
+                           sql::PG_TYPES::INT8, false, 1, 1}),
       sql::SelectedColumn(
-          {"Employee", "employee_id", "", "m", PG_TYPES::INT8, false, 1, 1}),
+          {"e_name", "slug", "", "e", sql::PG_TYPES::TEXT, false, 0, 0, false}),
       sql::SelectedColumn(
-          {"e_name", "slug", "", "e", PG_TYPES::TEXT, false, 0, 0, false}),
+          {"Description", "description", "", "m", sql::PG_TYPES::TEXT, true}),
       sql::SelectedColumn(
-          {"Description", "description", "", "m", PG_TYPES::TEXT, true}),
+          {"Status", "status_id", "", "m", sql::PG_TYPES::TEXT, true}),
       sql::SelectedColumn(
-          {"Status", "status_id", "", "m", PG_TYPES::TEXT, true}),
-      sql::SelectedColumn(
-          {"Branch", "branch_id", "", "m", PG_TYPES::INT8, true}),
-      sql::SelectedColumn(
-          {"Created By", "create_user_id", "", "m", PG_TYPES::INT8, true, 1}),
-      sql::SelectedColumn({"u1_username", "username", "", "u1", PG_TYPES::TEXT,
-                            false, 0, 0, false}),
-      sql::SelectedColumn(
-          {"Updated By", "update_user_id", "", "m", PG_TYPES::INT8, true, 1}),
-      sql::SelectedColumn({"u2_username", "username", "", "u2", PG_TYPES::TEXT,
-                            false, 0, 0, false}),
+          {"Branch", "branch_id", "", "m", sql::PG_TYPES::INT8, true}),
+      sql::SelectedColumn({"Created By", "create_user_id", "", "m",
+                           sql::PG_TYPES::INT8, true, 1}),
+      sql::SelectedColumn({"u1_username", "username", "", "u1",
+                           sql::PG_TYPES::TEXT, false, 0, 0, false}),
+      sql::SelectedColumn({"Updated By", "update_user_id", "", "m",
+                           sql::PG_TYPES::INT8, true, 1}),
+      sql::SelectedColumn({"u2_username", "username", "", "u2",
+                           sql::PG_TYPES::TEXT, false, 0, 0, false}),
       sql::SelectedColumn({"Create Time", "inserted_at", "", "m",
-                            PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+                           sql::PG_TYPES::TIMESTAMP, true, 0, 0, false}),
       sql::SelectedColumn({"Update Time", "updated_at", "", "m",
-                            PG_TYPES::TIMESTAMP, true, 0, 0, false}),
+                           sql::PG_TYPES::TIMESTAMP, true, 0, 0, false}),
   });
 
   auto dep = sql::ObjectIdentifier("mfg", "department", "dep");

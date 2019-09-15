@@ -8,7 +8,7 @@
 #include <QtWebSockets/QWebSocket>
 #include "once.h"
 #include "spdlogfix.h"
-
+namespace wstest{
 short int SslEchoClient::PING_INTERVAL = 5000;
 short int SslEchoClient::PING_INTERVAL_COUNT_MAX = 3;
 
@@ -191,4 +191,5 @@ SslEchoClient &WsInst::getClient() {
   static auto wsclient =
       SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/madmin")));
   return wsclient;
+}
 }

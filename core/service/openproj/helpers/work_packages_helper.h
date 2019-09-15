@@ -1,3 +1,4 @@
+namespace openproj {
 namespace WorkPackagesHelper {
   // include AccessibilityHelper
   // extend DeprecatedAlias
@@ -216,4 +217,5 @@ namespace WorkPackagesHelper {
 
 //    [responsible, assignee].compact.join('<br>').html_safe
 //  }
+}
 }

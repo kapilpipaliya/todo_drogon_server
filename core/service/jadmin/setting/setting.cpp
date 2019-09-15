@@ -4,7 +4,7 @@
 #include "../../../sql/dba.h"
 
 namespace jadmin {
-Setting::Setting(std::shared_ptr<websocket::JAdminContext> context_)
+Setting::Setting(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("entity", "setting", "gs"));
   setupTable();
@@ -18,7 +18,7 @@ nlohmann::json Setting::handleEvent(nlohmann::json event, unsigned long next,
   }
   if (event_cmp == "header") {
     return query.headerData(event, args);
-  } else if (event_cmp == "save" || event_cmp == "ins" || event_cmp  == "upd" ) {
+  } else if (event_cmp == "save" || event_cmp == "ins" || event_cmp == "upd") {
     return save(event, args);
   } else if (event_cmp == "del") {
     return del(event, args);
@@ -31,17 +31,17 @@ nlohmann::json Setting::handleEvent(nlohmann::json event, unsigned long next,
 void Setting::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
-      sql::SelectedColumn({"Key", "key", "", "gs", PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"Key", "key", "", "gs", sql::PG_TYPES::TEXT, true}),
+      sql::SelectedColumn({"Setting Type", "setting_type", "", "gs",
+                           sql::PG_TYPES::TEXT, true}),
       sql::SelectedColumn(
-          {"Setting Type", "setting_type", "", "gs", PG_TYPES::TEXT, true}),
+          {"Integer", "value_int", "", "gs", sql::PG_TYPES::INT8, true}),
       sql::SelectedColumn(
-          {"Integer", "value_int", "", "gs", PG_TYPES::INT8, true}),
+          {"Decimal", "value_num", "", "gs", sql::PG_TYPES::DOUBLE, true}),
       sql::SelectedColumn(
-          {"Decimal", "value_num", "", "gs", PG_TYPES::DOUBLE, true}),
+          {"Text", "value_text", "", "gs", sql::PG_TYPES::TEXT, true}),
       sql::SelectedColumn(
-          {"Text", "value_text", "", "gs", PG_TYPES::TEXT, true}),
-      sql::SelectedColumn(
-          {"Internal", "setting", "", "gs", PG_TYPES::PSJSON, true}),
+          {"Internal", "setting", "", "gs", sql::PG_TYPES::PSJSON, true}),
   });
   // auto m = sql::ObjectIdentifier("material", "metal", "m");
   // auto u1 = sql::ObjectIdentifier("entity", "entity_user", "u1");
@@ -60,9 +60,9 @@ nlohmann::json Setting::del(nlohmann::json event, nlohmann::json args) {
   auto clientPtr = drogon::app().getDbClient("sce");
   auto transPtr = clientPtr->newTransaction();
   try {
-    auto res = Dba::writeInTrans(transPtr,
-                                 "DELETE FROM entity.setting WHERE key = $1",
-                                 args[0][0].get<std::string>());
+    auto res = sql::Dba::writeInTrans(
+        transPtr, "DELETE FROM entity.setting WHERE key = $1",
+        args[0][0].get<std::string>());
     if (res.size() > 1) {
       throw std::runtime_error("not valid arguments");
     }
@@ -81,20 +81,23 @@ nlohmann::json Setting::save(const nlohmann::json &event, nlohmann::json args) {
   auto clientPtr = drogon::app().getDbClient("sce");
   auto transPtr = clientPtr->newTransaction();
   auto key = args[0]["key"].get<std::string>();
-  auto y = Dba::writeInTrans(
+  auto y = sql::Dba::writeInTrans(
       transPtr, "select key from entity.setting where key = $1", key);
-auto int_value = !args[0]["value_int"].is_null() ? args[0]["value_int"].get<int>() : 0;
-auto float_value  =!args[0]["value_num"].is_null() ? args[0]["value_num"].get<float>() : 0;
-auto string_value = !args[0]["value_text"].is_null() ? args[0]["value_text"].get<std::string>() : "";
+  auto int_value =
+      !args[0]["value_int"].is_null() ? args[0]["value_int"].get<int>() : 0;
+  auto float_value =
+      !args[0]["value_num"].is_null() ? args[0]["value_num"].get<float>() : 0;
+  auto string_value = !args[0]["value_text"].is_null()
+                          ? args[0]["value_text"].get<std::string>()
+                          : "";
   if (!y.empty()) {
     std::string strSql =
         "update entity.setting set (value_int, value_num, value_text) = "
         "ROW($2, $3, $4) where key=$1";
     try {
-      Dba::writeInTrans(transPtr, strSql, args[0]["key"].get<std::string>(),
-                        int_value,
-                        float_value,
-                        string_value);
+      sql::Dba::writeInTrans(transPtr, strSql,
+                             args[0]["key"].get<std::string>(), int_value,
+                             float_value, string_value);
 
       nlohmann::json ret;
       ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
@@ -110,13 +113,10 @@ auto string_value = !args[0]["value_text"].is_null() ? args[0]["value_text"].get
         "INSERT INTO entity.setting (key, value_int, value_num, value_text, "
         "setting_type, setting) values($1, $2, $3, $4, $5, $6)";
     try {
-      Dba::writeInTrans(transPtr, strSql, args[0]["key"].get<std::string>(),
-                        int_value,
-                        float_value,
-                        string_value,
-                        args[0]["setting_type"].get<std::string>(),
-                        nlohmann::json::object().dump()
-                       );
+      sql::Dba::writeInTrans(
+          transPtr, strSql, args[0]["key"].get<std::string>(), int_value,
+          float_value, string_value, args[0]["setting_type"].get<std::string>(),
+          nlohmann::json::object().dump());
 
       nlohmann::json ret;
       ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
