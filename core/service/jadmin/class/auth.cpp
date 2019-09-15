@@ -72,7 +72,7 @@ std::tuple<long, long> Auth::login(const std::string &username,
       if (r.size() == 1) {
         user_id = r[0]["id"].as<long>();
         auto sqlSession =
-            "INSERT INTO user1.session (entity_id, expire, value) VALUES "
+            "INSERT INTO entity.session (entity_id, expire, value) VALUES "
             "($1, "
             "$2, $3) returning id";
         auto rs = Dba::writeInTrans(transPtr, sqlSession, user_id, 0L, "");
@@ -121,7 +121,7 @@ bool Auth::logout(long key, bool /*relogin*/) {
 /*
 void Auth::deleteuserSession() {
     if (user != 0) {
-        auto sqlSession = "DELETE FROM user1.session where id = $1";
+        auto sqlSession = "DELETE FROM entity.session where id = $1";
         try {
             auto clientPtr = drogon::app().getDbClient("sce");
             auto transPtr = clientPtr->newTransaction();
@@ -179,10 +179,10 @@ nlohmann::json Auth::saveImageMeta(const nlohmann::json &event,
                                    nlohmann::json args) {
   long c = context->sessionId();
 
-  // auto strSql = "INSERT INTO user1.temp_image ( session_id, event, name,
+  // auto strSql = "INSERT INTO public.temp_image ( session_id, event, name,
   // size, type ) VALUES( $1, $2, $3, $4, $5 )";
   auto strSql =
-      "INSERT INTO user1.temp_image ( session_id, event, name, size, type ) "
+      "INSERT INTO public.temp_image ( session_id, event, name, size, type ) "
       "VALUES( '{0}', '{1}', '{2}', '{3}', '{4}' )";
   try {
     auto clientPtr = drogon::app().getDbClient("sce");
@@ -228,7 +228,7 @@ nlohmann::json Auth::thumb_data( nlohmann::json event, nlohmann::json args)
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     try {
-        auto sql = "SELECT name FROM setting.image WHERE id = $1";
+        auto sql = "SELECT name FROM post.image WHERE id = $1";
         auto x = Dba::writeInTrans(transPtr, sql, args.get<int>());
 
         if (x.size() == 1) {
@@ -267,14 +267,14 @@ nlohmann::json Auth::save_setting_attachment(const nlohmann::json & /*event*/,
                                              std::string &message) {
   auto session_id = context->sessionId();
   auto strSql = sql::CRUDHelper::sel_(
-      "user1.temp_image", "event,  name, size, type", "where session_id = $1");
+      "public.temp_image", "event,  name, size, type", "where session_id = $1");
   auto clientPtr = drogon::app().getDbClient("sce");
   auto transPtr = clientPtr->newTransaction();
   try {
     auto r = Dba::writeInTrans(transPtr, strSql, session_id);
     Dba::writeInTrans(
         transPtr,
-        sql::CRUDHelper::dele_("user1.temp_image",
+        sql::CRUDHelper::dele_("public.temp_image",
                                "where session_id = $1 and event = $2"),
         session_id, r[0]["event"].as<std::string>());
 
@@ -317,7 +317,7 @@ nlohmann::json Auth::save_setting_attachment(const nlohmann::json & /*event*/,
 
     // Insert Image
     auto temp_image_table =
-        sql::ObjectIdentifier("setting", "temp_image_id", "pa");
+        sql::ObjectIdentifier("entity", "temp_image_id", "pa");
     std::string strSql =
         "INSERT INTO %1.%2 (name, size, type) VALUES ($1, $2, $3) RETURNING "
         "id";

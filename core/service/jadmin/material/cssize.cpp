@@ -82,7 +82,7 @@ void CSSize::setupTable() {
   //    auto clarity = sql::ObjectIdentifier("material", "clarity", "clarity");
   auto shape = sql::ObjectIdentifier("material", "shape", "shape");
   //    auto color = sql::ObjectIdentifier("material", "cs_color", "color");
-  auto currency = sql::ObjectIdentifier("setting", "currency", "currency");
+  auto currency = sql::ObjectIdentifier("account", "currency", "currency");
   auto u1 = sql::ObjectIdentifier("entity", "entity_user", "u1");
   auto u2 = sql::ObjectIdentifier("entity", "entity_user", "u2");
 

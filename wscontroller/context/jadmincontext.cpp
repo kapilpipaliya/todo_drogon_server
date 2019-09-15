@@ -20,7 +20,7 @@ std::tuple<long, long> JAdminContext::generateContext(
     return {0, 0};
   }
   auto session_id = stol(c);
-  auto sqlSession = "SELECT * FROM user1.session where id = $1";
+  auto sqlSession = "SELECT * FROM entity.session where id = $1";
   try {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();

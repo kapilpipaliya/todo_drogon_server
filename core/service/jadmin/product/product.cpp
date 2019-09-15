@@ -1117,9 +1117,9 @@ void save_product_Attachments(
       "$1;";
 
   std::string strSqlTempImage =
-      "SELECT name, size, type FROM setting.temp_image_id WHERE id = $1";
+      "SELECT name, size, type FROM entity.temp_image_id WHERE id = $1";
   std::string strSqlTempImageDel =
-      "DELETE FROM setting.temp_image_id WHERE id = $1";
+      "DELETE FROM entity.temp_image_id WHERE id = $1";
 
   struct Attachment {
     long id;

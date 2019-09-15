@@ -375,11 +375,11 @@ nlohmann::json Entity::del(nlohmann::json event, nlohmann::json args) {
   try {
     auto entity_id = args[0][0].get<long>();
     Dba::writeInTrans(transPtr,
-                      sql::CRUDHelper::dele_("setting.notification",
+                      sql::CRUDHelper::dele_("entity.notification",
                                              "where from_entity_id = $1"),
                       entity_id);
     Dba::writeInTrans(transPtr,
-                      sql::CRUDHelper::dele_("setting.notification",
+                      sql::CRUDHelper::dele_("entity.notification",
                                              "where to_entity_id = $1"),
                       entity_id);
 
@@ -407,10 +407,10 @@ nlohmann::json Entity::del(nlohmann::json event, nlohmann::json args) {
         transPtr,
         sql::CRUDHelper::dele_("entity.entity_address", "where entity_id = $1"),
         entity_id);
-    // Dba::writeInTrans(transPtr, "delete from user1.session where
+    // Dba::writeInTrans(transPtr, "delete from entity.session where
     // value->>'value' = $1;", entity_id);
     Dba::writeInTrans(
-        transPtr, "delete from user1.session where entity_id = $1;", entity_id);
+        transPtr, "delete from entity.session where entity_id = $1;", entity_id);
     Dba::writeInTrans(
         transPtr,
         sql::CRUDHelper::dele_("entity.entity_user", "where entity_id = $1"),

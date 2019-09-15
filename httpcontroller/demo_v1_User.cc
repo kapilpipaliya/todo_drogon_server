@@ -47,7 +47,7 @@ void User::thumb_id(
   auto c = req->getCookie("admin");
   auto clientPtr = drogon::app().getDbClient("sce");
   try {
-    auto sql = "SELECT name FROM setting.image where id = $1";
+    auto sql = "SELECT name FROM post.image where id = $1";
     auto x = clientPtr->execSqlSync(sql, id);
     if (!x.empty()) {
       //  auto new_path = std::string("/home/kapili3/fileuploads/") +

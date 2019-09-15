@@ -6,7 +6,7 @@
 namespace jadmin {
 Setting::Setting(std::shared_ptr<websocket::JAdminContext> context_)
     : context(std::move(context_)) {
-  query = sql::Query(sql::ObjectIdentifier("setting", "setting", "gs"));
+  query = sql::Query(sql::ObjectIdentifier("entity", "setting", "gs"));
   setupTable();
 }
 
@@ -18,7 +18,7 @@ nlohmann::json Setting::handleEvent(nlohmann::json event, unsigned long next,
   }
   if (event_cmp == "header") {
     return query.headerData(event, args);
-  } else if (event_cmp == "save") {
+  } else if (event_cmp == "save" || event_cmp == "ins" || event_cmp  == "upd" ) {
     return save(event, args);
   } else if (event_cmp == "del") {
     return del(event, args);
@@ -61,7 +61,7 @@ nlohmann::json Setting::del(nlohmann::json event, nlohmann::json args) {
   auto transPtr = clientPtr->newTransaction();
   try {
     auto res = Dba::writeInTrans(transPtr,
-                                 "DELETE FROM setting.setting WHERE key = $1",
+                                 "DELETE FROM entity.setting WHERE key = $1",
                                  args[0][0].get<std::string>());
     if (res.size() > 1) {
       throw std::runtime_error("not valid arguments");
@@ -82,17 +82,19 @@ nlohmann::json Setting::save(const nlohmann::json &event, nlohmann::json args) {
   auto transPtr = clientPtr->newTransaction();
   auto key = args[0]["key"].get<std::string>();
   auto y = Dba::writeInTrans(
-      transPtr, "select key from setting.setting where key = $1", key);
-
+      transPtr, "select key from entity.setting where key = $1", key);
+auto int_value = !args[0]["value_int"].is_null() ? args[0]["value_int"].get<int>() : 0;
+auto float_value  =!args[0]["value_num"].is_null() ? args[0]["value_num"].get<float>() : 0;
+auto string_value = !args[0]["value_text"].is_null() ? args[0]["value_text"].get<std::string>() : "";
   if (!y.empty()) {
     std::string strSql =
-        "update setting.setting set (value_int, value_num, value_text) = "
+        "update entity.setting set (value_int, value_num, value_text) = "
         "ROW($2, $3, $4) where key=$1";
     try {
       Dba::writeInTrans(transPtr, strSql, args[0]["key"].get<std::string>(),
-                        args[0]["value_int"].get<int>(),
-                        args[0]["value_num"].get<float>(),
-                        args[0]["value_text"].get<std::string>());
+                        int_value,
+                        float_value,
+                        string_value);
 
       nlohmann::json ret;
       ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
@@ -105,15 +107,16 @@ nlohmann::json Setting::save(const nlohmann::json &event, nlohmann::json args) {
     }
   } else {
     std::string strSql =
-        "INSERT INTO setting.setting (key, value_int, value_num, value_text, "
+        "INSERT INTO entity.setting (key, value_int, value_num, value_text, "
         "setting_type, setting) values($1, $2, $3, $4, $5, $6)";
     try {
       Dba::writeInTrans(transPtr, strSql, args[0]["key"].get<std::string>(),
-                        args[0]["value_int"].get<int>(),
-                        args[0]["value_num"].get<float>(),
-                        args[0]["value_text"].get<std::string>(),
+                        int_value,
+                        float_value,
+                        string_value,
                         args[0]["setting_type"].get<std::string>(),
-                        args[0]["setting"].dump());
+                        nlohmann::json::object().dump()
+                       );
 
       nlohmann::json ret;
       ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");

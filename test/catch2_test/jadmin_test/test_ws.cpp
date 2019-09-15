@@ -161,8 +161,9 @@ TEST_CASE("check that all table data are correctly replied", "[WSTest]") {
                           GetTableD("address_type") GetTableD("contact_type")
                               GetTableD("entity_type") GetTableD("entity")
 
-                                  GetTableD("setting") GetTableD("currency")
-                                      GetTableD("log") GetTableD("support")
+                                  GetTableD("setting")
+          GetTableD("currency")
+                                       GetTableD("support")
                                           GetTableD("image_collection")
                                               GetTableD("image")
                                                   GetTableD("payment_method")
@@ -316,12 +317,12 @@ TEST_CASE("insert of ", "[WSTest]") {
   //        "url": "12345688", "description": "Hi whats app1"}])", R"([[null,
   //        null, "=name1"]])"
   //        )
-  //    SUD("setting",
-  //        R"({"name":"name", "url": "123456", "description": "Hi whats
-  //        app"})", R"([      [null,null, "=name"]            ,{"name":"name1",
-  //        "url": "12345688", "description": "Hi whats app1"}])", R"([[null,
-  //        null, "=name1"]])"
-  //        )
+//    note different syntx for arguments
+      SUD("setting",
+          R"([{"key":"name", "setting_type": "text", "value_txt": "Hi whats  app"}])",
+          R"([   {"key":"name", "setting_type": "text", "value_txt": "Hi whats  app3"}])",
+          R"([["name"]])"
+          )
   SUD("currency",
       R"([{
         "slug": "slug1",
@@ -332,9 +333,9 @@ TEST_CASE("insert of ", "[WSTest]") {
         }])",
       R"([               {"slug": "slug2","name":"name1", "symbol": "12345688", "rounding": 0.05, "active": false},    [null, "=slug1"]  ])",
       R"([[null, "=slug2"]])")
-  SUD("log", R"([{"detail":"name"}])",
-      R"([                {"detail":"name1"}, [null,"=name"]  ])",
-      R"([[null,  "=name1"]])")
+//  SUD("log", R"([{"detail":"name"}])",
+//      R"([                {"detail":"name1"}, [null,"=name"]  ])",
+//      R"([[null,  "=name1"]])")
   SUD("support",
       R"([{
         "name":"name",

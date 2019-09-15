@@ -6,7 +6,7 @@ namespace jadmin {
 ImageCollection::ImageCollection(std::shared_ptr<websocket::JAdminContext> context_)
     : context(std::move(context_)) {
   query =
-      sql::Query(sql::ObjectIdentifier("setting", "image_collection", "a"));
+      sql::Query(sql::ObjectIdentifier("post", "image_collection", "a"));
   setupTable();
 }
 

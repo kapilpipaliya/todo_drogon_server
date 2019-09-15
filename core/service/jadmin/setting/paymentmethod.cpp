@@ -5,7 +5,7 @@
 namespace jadmin {
 PaymentMethod::PaymentMethod(std::shared_ptr<websocket::JAdminContext> context_)
     : context(std::move(context_)) {
-  query = sql::Query(sql::ObjectIdentifier("setting", "payment_method", "t"));
+  query = sql::Query(sql::ObjectIdentifier("account", "payment_method", "t"));
   setupTable();
 }
 

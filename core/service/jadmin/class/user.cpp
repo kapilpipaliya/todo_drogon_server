@@ -277,7 +277,7 @@ nlohmann::json User::userLogin(const nlohmann::json& event,
       nlohmann::json j;
       j["value"] = r[0]["id"].as<long>();
       auto sqlSession =
-          "INSERT INTO user1.session (key, value) VALUES ($1, $2) returning id";
+          "INSERT INTO entity.session (key, value) VALUES ($1, $2) returning id";
       // To serialize the nlohmann::json into a Json document, you should use a
       // Json writer, or json::dump().
       LOG_INFO << j.dump();
@@ -319,7 +319,7 @@ nlohmann::json User::userId(const nlohmann::json& event,
                             const nlohmann::json&) {
   long c = context->sessionId();
   if (c != 0) {
-    auto sqlSession = "SELECT key, value FROM user1.session where id = $1";
+    auto sqlSession = "SELECT key, value FROM entity.session where id = $1";
     try {
       auto clientPtr = drogon::app().getDbClient("sce");
       auto transPtr = clientPtr->newTransaction();
@@ -356,7 +356,7 @@ nlohmann::json User::checkout(const nlohmann::json& event,
                               const nlohmann::json& /*args*/) {
   long c = context->sessionId();
   if (c != 0) {
-    auto sqlSession = "SELECT key, value FROM user1.session where id = $1";
+    auto sqlSession = "SELECT key, value FROM entity.session where id = $1";
     try {
       auto clientPtr = drogon::app().getDbClient("sce");
       auto transPtr = clientPtr->newTransaction();

@@ -5,7 +5,7 @@
 namespace jadmin {
 Currency::Currency(std::shared_ptr<websocket::JAdminContext> context_)
     : context(std::move(context_)) {
-  query = sql::Query(sql::ObjectIdentifier("setting", "currency", "c"));
+  query = sql::Query(sql::ObjectIdentifier("account", "currency", "c"));
   setupTable();
 }
 

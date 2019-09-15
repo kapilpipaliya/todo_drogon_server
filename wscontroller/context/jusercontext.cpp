@@ -20,7 +20,7 @@ std::tuple<long, long> JUserContext::generateContext(
     return {0, 0};
   }
   auto session_id = stol(c);
-  auto sqlSession = "SELECT * FROM user1.session where id = $1";
+  auto sqlSession = "SELECT * FROM entity.session where id = $1";
   try {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
@@ -40,7 +40,7 @@ void JUserContext::setUser() {
   if (!user_id) return;
 
   try {
-    auto sqlSession = "SELECT * FROM user1.user where id = $1";
+    auto sqlSession = "SELECT * FROM entity.entity_user where id = $1";
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     auto r = Dba::writeInTrans(transPtr, sqlSession, user_id);

@@ -37,7 +37,7 @@ bool jadmin::Session::destroy(long key) {
   }
 
   // Remove anything and EVERYTHING
-  std::string sql = "DELETE FROM user1.session WHERE id = $1";
+  std::string sql = "DELETE FROM entity.session WHERE id = $1";
   auto r = Dba::write(sql, key);
   return r.affectedRows() == 1;
   // debug_event("SESSION", "Deleting Session with key:" . key, 6);

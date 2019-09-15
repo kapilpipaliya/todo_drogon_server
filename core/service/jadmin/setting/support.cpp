@@ -5,7 +5,7 @@
 namespace jadmin {
 Support::Support(std::shared_ptr<websocket::JAdminContext> context_)
     : context(std::move(context_)) {
-  query = sql::Query(sql::ObjectIdentifier("setting", "support", "a"));
+  query = sql::Query(sql::ObjectIdentifier("entity", "support", "a"));
   setupTable();
 }
 

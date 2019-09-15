@@ -662,7 +662,7 @@ nlohmann::json Query::del(nlohmann::json event, nlohmann::json args) {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     updateFilterBase(args[0]);
-    if (m_where.size() > 0 && !m_custm_where.empty()) {
+    if (m_where.size() > 0 || !m_custm_where.empty()) {
       auto res = Dba::writeInTrans(transPtr, buildDeleteQuery());
       if (res.size() > 1) {
         throw std::runtime_error("not valid arguments");

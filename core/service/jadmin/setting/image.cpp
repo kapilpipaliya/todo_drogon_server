@@ -6,7 +6,7 @@
 namespace jadmin {
 Image::Image(std::shared_ptr<websocket::JAdminContext> context_)
     : context(std::move(context_)) {
-  query = sql::Query(sql::ObjectIdentifier("setting", "image", "a"));
+  query = sql::Query(sql::ObjectIdentifier("post", "image", "a"));
   setupTable();
 }
 
@@ -41,7 +41,7 @@ void Image::setupTable() {
                             PG_TYPES::TIMESTAMP, true, 0, 0, false}),
   });
 
-  auto c = sql::ObjectIdentifier("setting", "image_collection", "c");
+  auto c = sql::ObjectIdentifier("post", "image_collection", "c");
   // auto u1 = sql::ObjectIdentifier("entity", "entity_user", "u1");
   // auto u2 = sql::ObjectIdentifier("entity", "entity_user", "u2");
 
@@ -74,16 +74,16 @@ nlohmann::json Image::handleEvent(nlohmann::json event, int next,
 
 // this is normal images..
 nlohmann::json Image::ins(nlohmann::json event, nlohmann::json args) {
-  auto metal_purity_table = sql::ObjectIdentifier("setting", "image", "c");
-  std::string t = "setting.image";
+  auto metal_purity_table = sql::ObjectIdentifier("post", "image", "c");
+  std::string t = "post.image";
   std::string c =
       "image_collection_id, name, size, type, title, description, url, "
       "position";
 
   std::string strSqlTempImage =
-      "SELECT name, size, type FROM setting.temp_image_id WHERE id = $1";
+      "SELECT name, size, type FROM entity.temp_image_id WHERE id = $1";
   std::string strSqlTempImageDel =
-      "DELETE FROM setting.temp_image_id WHERE id = $1";
+      "DELETE FROM entity.temp_image_id WHERE id = $1";
 
   std::string strSql =
       "INSERT INTO " + t + " (" + c +
@@ -121,15 +121,15 @@ nlohmann::json Image::ins(nlohmann::json event, nlohmann::json args) {
 }
 // this is normal images..
 nlohmann::json Image::upd(nlohmann::json event, nlohmann::json args) {
-  auto metal_purity_table = sql::ObjectIdentifier("setting", "image", "c");
-  std::string t = "setting.image";
+  auto metal_purity_table = sql::ObjectIdentifier("post", "image", "c");
+  std::string t = "post.image";
   std::string c =
       "image_collection_id, name, size, type, title, description, url, "
       "position";
   std::string strSqlTempImage =
-      "SELECT name, size, type FROM setting.temp_image_id WHERE id = $1";
+      "SELECT name, size, type FROM entity.temp_image_id WHERE id = $1";
   std::string strSqlTempImageDel =
-      "DELETE FROM setting.temp_image_id WHERE id = $1";
+      "DELETE FROM entity.temp_image_id WHERE id = $1";
 
   if (args[0]["id"].get<long>()) {
     std::string strSql = "update " + t + " set (" + c +
@@ -156,7 +156,7 @@ nlohmann::json Image::upd(nlohmann::json event, nlohmann::json args) {
       } else {
         Dba::writeInTrans(
             transPtr,
-            "UPDATE setting.image SET (title, description, url, position, "
+            "UPDATE post.image SET (title, description, url, position, "
             "version) = ROW($2, $3, $4, $5, version + 1) WHERE id = $1",
             args[0]["id"].get<long>(), args[0]["title"].get<std::string>(),
             args[0]["description"].get<std::string>(),
