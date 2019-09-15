@@ -1,3 +1,3 @@
 #include "libraryitem.h"
 
-madmin::LibraryItem::LibraryItem() = default;
+music::service::LibraryItem::LibraryItem() = default;

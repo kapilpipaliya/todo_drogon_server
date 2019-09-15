@@ -3,15 +3,17 @@
 #include <utility>
 #include "../../../sql/dba.h"
 
-madmin::UI::UI(std::shared_ptr<websocket::music::MAdminContext> context_)
+music::service::UI::UI(
+    std::shared_ptr<websocket::music::MAdminContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }
 
-void madmin::UI ::setupTable() {}
+void music::service::UI ::setupTable() {}
 
-nlohmann::json madmin::UI::handleEvent(nlohmann::json event, unsigned long next,
-                                       nlohmann::json args) {
+nlohmann::json music::service::UI::handleEvent(nlohmann::json event,
+                                               unsigned long next,
+                                               nlohmann::json args) {
   auto event_cmp = event[next].get<std::string>();
   if (event_cmp == "menu_data") {
     return {{event, getMenuData()}};
@@ -36,7 +38,7 @@ nlohmann::json madmin::UI::handleEvent(nlohmann::json event, unsigned long next,
   }
 }
 
-nlohmann::json madmin::UI::getMenuData() {
+nlohmann::json music::service::UI::getMenuData() {
   if (context->getUser().type == "super admin") {
     nlohmann::json j = nlohmann::json::array(
         {nlohmann::json::array({"Dashboard", "music/dashboard"}),
@@ -71,7 +73,7 @@ nlohmann::json madmin::UI::getMenuData() {
   }
 }
 
-std::string madmin::UI::getPageTitle() {
+std::string music::service::UI::getPageTitle() {
   if (context->getUser().type == "super admin") {
     return "Admins";
   }
@@ -82,7 +84,7 @@ std::string madmin::UI::getPageTitle() {
   }
 }
 
-std::string madmin::UI::getUserAccountType() {
+std::string music::service::UI::getUserAccountType() {
   if (context->getUser().type == "super admin") {
     return "Super Admin";
   }
@@ -93,7 +95,7 @@ std::string madmin::UI::getUserAccountType() {
   }
 }
 
-nlohmann::json madmin::UI::getUserTypeData() {
+nlohmann::json music::service::UI::getUserTypeData() {
   if (context->getUser().type == "super admin") {
     nlohmann::json j = nlohmann::json::array({
         nlohmann::json::array({"All", nullptr}),
@@ -114,7 +116,7 @@ nlohmann::json madmin::UI::getUserTypeData() {
   }
 }
 
-nlohmann::json madmin::UI::getCatalogFilterData() {
+nlohmann::json music::service::UI::getCatalogFilterData() {
   std::string sql = "select id, name from music.catalog order by id";
   auto r = sql::Dba::read(sql);
   nlohmann::json out =

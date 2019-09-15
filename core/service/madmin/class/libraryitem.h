@@ -9,7 +9,8 @@
  * input
  */
 // interface library_item extends playable_item
-namespace madmin {
+namespace music {
+namespace service {
 class LibraryItem {
  public:
   LibraryItem();
@@ -23,5 +24,6 @@ class LibraryItem {
   //  virtual void update(array $data) = 0;
   //  public static function gc() = 0;
 };
-}
+}  // namespace service
+}  // namespace music
 #endif  // LIBRARYITEM_H

@@ -9,7 +9,8 @@
  * This class handles all of the session related stuff in Ampache
  *
  */
-namespace madmin {
+namespace music {
+namespace service {
 class Session {
  public:
   Session(std::shared_ptr<websocket::music::MAdminContext>);
@@ -169,4 +170,5 @@ class Session {
   std::shared_ptr<websocket::music::MAdminContext> context;
   sql::Query query;
 };
-}  // namespace madmin
+}  // namespace service
+}  // namespace music

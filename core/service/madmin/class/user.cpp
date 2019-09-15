@@ -4,7 +4,8 @@
 #include "../../../sql/dba.h"
 
 // using namespace std::chrono;
-madmin::User::User(std::shared_ptr<websocket::music::MAdminContext> context_)
+music::service::User::User(
+    std::shared_ptr<websocket::music::MAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("music", "user", "e"));
   setupTable();
@@ -18,7 +19,7 @@ madmin::User::User(std::shared_ptr<websocket::music::MAdminContext> context_)
 
 //}
 
-void madmin::User ::setupTable() {
+void music::service::User ::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
       sql::SelectedColumn({"ID No", "id", "", "e", sql::PG_TYPES::INT8}),
@@ -71,9 +72,9 @@ void madmin::User ::setupTable() {
   });
 }
 
-nlohmann::json madmin::User::handleEvent(nlohmann::json event,
-                                         unsigned long next,
-                                         nlohmann::json args) {
+nlohmann::json music::service::User::handleEvent(nlohmann::json event,
+                                                 unsigned long next,
+                                                 nlohmann::json args) {
   auto event_cmp = event[next].get<std::string>();
   if (event_cmp == "is_logged_in") {
     nlohmann::json res = {{event}};
@@ -127,7 +128,7 @@ nlohmann::json madmin::User::handleEvent(nlohmann::json event,
   }
 }
 
-nlohmann::json madmin::User::getUserTypeFormData() {
+nlohmann::json music::service::User::getUserTypeFormData() {
   if (context->getUser().type == "super admin") {
     nlohmann::json j = nlohmann::json::array({
         nlohmann::json::array({"Super Admin", "super admin"}),
@@ -146,7 +147,7 @@ nlohmann::json madmin::User::getUserTypeFormData() {
   }
 }
 
-madmin::User::Info madmin::User ::get_info() {
+music::service::User::Info music::service::User ::get_info() {
   // If user is in cache return from it.
   // If user is system user return system data.
 
@@ -200,11 +201,11 @@ FROM session INNER JOIN user ON session.username = user.username "
 user.last_seen > 2"); return count;
 }
 */
-void madmin::User::load_playlist() {
+void music::service::User::load_playlist() {
   // playlist_id = Tmp_Playlist::get_from_session(session_id);
 }
 
-void madmin::User::get_valid_users() {
+void music::service::User::get_valid_users() {
   std::string sql = fmt::format("SELECT id FROM user WHERE disabled = false");
   auto db_results = sql::Dba::read(sql);
   for (auto r : db_results) {
@@ -226,11 +227,11 @@ void madmin::User::get_valid_users() {
 
 //}
 
-bool madmin::User::is_logged_in() {
+bool music::service::User::is_logged_in() {
   // auto sql = "SELECT id,ip FROM session WHERE username=1 AND expire > now()";
   return context->sessionId() != 0;
 }
-std::string madmin::User::get_password() {
+std::string music::service::User::get_password() {
   auto sql = "SELECT * FROM music.user WHERE id = $1";
   try {
     auto clientPtr = drogon::app().getDbClient("sce");
@@ -245,12 +246,11 @@ std::string madmin::User::get_password() {
   return "";
 }
 
-long madmin::User::create(const std::string& username,
-                          const std::string& fullname, const std::string& email,
-                          const std::string& website,
-                          const std::string& password,
-                          const std::string& access, const std::string& state,
-                          const std::string& city, bool disabled) {
+long music::service::User::create(
+    const std::string& username, const std::string& fullname,
+    const std::string& email, const std::string& website,
+    const std::string& password, const std::string& access,
+    const std::string& state, const std::string& city, bool disabled) {
   // website     = rtrim(website, "/");
   // std::string password    = hash('sha256', password);
   // bool disabled    = disabled $ 1 : 0;
@@ -304,7 +304,7 @@ long madmin::User::create(const std::string& username,
   return 0;
 }
 
-bool madmin::User::update_password(std::string new_password) {
+bool music::service::User::update_password(std::string new_password) {
   // std::string new_password = hash('sha256', new_password);
   // new_password = sql::Dba::escape(new_password);
   std::string sql = "UPDATE music.user SET password = $2 WHERE id = $1";
@@ -323,7 +323,7 @@ bool madmin::User::update_password(std::string new_password) {
   return false;
 }
 
-bool madmin::User::delNew(long user_id) {
+bool music::service::User::delNew(long user_id) {
   /*
     Before we do anything make sure that they aren't the last
     admin

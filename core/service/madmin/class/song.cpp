@@ -3,13 +3,14 @@
 #include <utility>
 #include "../../../sql/dba.h"
 
-madmin::Song::Song(std::shared_ptr<websocket::music::MAdminContext> context_)
+music::service::Song::Song(
+    std::shared_ptr<websocket::music::MAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("music", "song", "s"));
   setupTable();
 }
 
-void madmin::Song::setupTable() {
+void music::service::Song::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
       sql::SelectedColumn({"ID No", "id", "", "s", sql::PG_TYPES::INT8}),
@@ -84,9 +85,9 @@ void madmin::Song::setupTable() {
   });
 }
 
-nlohmann::json madmin::Song::handleEvent(nlohmann::json event,
-                                         unsigned long next,
-                                         nlohmann::json args) {
+nlohmann::json music::service::Song::handleEvent(nlohmann::json event,
+                                                 unsigned long next,
+                                                 nlohmann::json args) {
   auto event_cmp = event[next].get<std::string>();
   if (event_cmp == "header") {  // required
     return query.headerData(event, args);
@@ -146,9 +147,9 @@ nlohmann::json madmin::Song::handleEvent(nlohmann::json event,
   }
 }
 
-nlohmann::json madmin::Song::handleBinaryEvent(nlohmann::json event,
-                                               unsigned long next,
-                                               std::string &message) {
+nlohmann::json music::service::Song::handleBinaryEvent(nlohmann::json event,
+                                                       unsigned long next,
+                                                       std::string &message) {
   if (event[next].get<std::string>() == "song") {
     return save_song_binary(event, message);
   }
@@ -156,7 +157,7 @@ nlohmann::json madmin::Song::handleBinaryEvent(nlohmann::json event,
   return ret;
 }
 
-nlohmann::json madmin::Song::save_song_binary(
+nlohmann::json music::service::Song::save_song_binary(
     [[maybe_unused]] const nlohmann::json &event, std::string &message) {
   auto session_id = context->sessionId();
   auto strSql =

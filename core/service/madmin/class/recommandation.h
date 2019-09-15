@@ -5,7 +5,8 @@
 
 #include "core/sql/query.h"
 
-namespace madmin {
+namespace music {
+namespace service {
 class Recommandation {
  public:
   Recommandation(std::shared_ptr<websocket::music::MAdminContext>);
@@ -17,5 +18,6 @@ class Recommandation {
   std::shared_ptr<websocket::music::MAdminContext> context;
   sql::Query query;
 };
-}  // namespace madmin
+}  // namespace service
+}  // namespace music
 #endif  // RECOMMANDATION_H

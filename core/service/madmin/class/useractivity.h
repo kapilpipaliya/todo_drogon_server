@@ -4,7 +4,8 @@
 #include "../../../../wscontroller/context/madmincontext.h"
 #include "core/sql/query.h"
 
-namespace madmin {
+namespace music {
+namespace service {
 class UserActivity {
  public:
   UserActivity(std::shared_ptr<websocket::music::MAdminContext>);
@@ -16,5 +17,6 @@ class UserActivity {
   std::shared_ptr<websocket::music::MAdminContext> context;
   sql::Query query;
 };
-}  // namespace madmin
+}  // namespace service
+}  // namespace music
 #endif  // USERACTIVITY_H

@@ -19,7 +19,8 @@
 
 #include "core/sql/query.h"
 
-namespace madmin {
+namespace music {
+namespace service {
 /**
  * User Class
  *
@@ -447,5 +448,6 @@ class User {
   int id{};
   int playlist_id{};
 };
-}  // namespace madmin
+}  // namespace service
+}  // namespace music
 #endif  // USER_H

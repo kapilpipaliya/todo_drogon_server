@@ -8,7 +8,8 @@
 #include "spdlogfix.h"
 
 // A collection of methods related to the user interface
-namespace madmin {
+namespace music {
+namespace service {
 class UI {
  public:
   UI(std::shared_ptr<websocket::music::MAdminContext>);
@@ -136,5 +137,6 @@ class UI {
   std::shared_ptr<websocket::music::MAdminContext> context;
   sql::Query query;
 };
-}  // namespace madmin
+}  // namespace service
+}  // namespace music
 #endif  // UI_H

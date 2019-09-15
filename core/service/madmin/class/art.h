@@ -5,7 +5,8 @@
 
 #include "core/sql/query.h"
 
-namespace madmin {
+namespace music {
+namespace service {
 class Art {
  public:
   Art(std::shared_ptr<websocket::music::MAdminContext>);
@@ -17,5 +18,6 @@ class Art {
   std::shared_ptr<websocket::music::MAdminContext> context;
   sql::Query query;
 };
-}  // namespace madmin
+}  // namespace service
+}  // namespace music
 #endif  // ART_H

@@ -8,7 +8,8 @@
 
 #include "core/sql/query.h"
 
-namespace madmin {
+namespace music {
+namespace service {
 class Song {
  public:
   // class Song extends database_object implements media, library_item  {
@@ -629,5 +630,6 @@ class Song {
   nlohmann::json save_song_binary(const nlohmann::json &event,
                                   std::string &message);
 };
-}  // namespace madmin
+}  // namespace service
+}  // namespace music
 #endif  // SONG_H

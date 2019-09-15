@@ -3,15 +3,15 @@
 #include <utility>
 #include "../../../sql/dba.h"
 
-madmin::Catalog::Catalog(
+music::service::Catalog::Catalog(
     std::shared_ptr<websocket::music::MAdminContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }
 
-nlohmann::json madmin::Catalog::handleEvent(nlohmann::json event,
-                                            unsigned long next,
-                                            nlohmann::json args) {
+nlohmann::json music::service::Catalog::handleEvent(nlohmann::json event,
+                                                    unsigned long next,
+                                                    nlohmann::json args) {
   auto event_cmp = event[next].get<std::string>();
   if (event_cmp == "data") {
     return query.allData(event, args);
@@ -30,9 +30,9 @@ nlohmann::json madmin::Catalog::handleEvent(nlohmann::json event,
   }
 }
 
-void madmin::Catalog::setupTable() {}
+void music::service::Catalog::setupTable() {}
 
-void madmin::Catalog::clean_empty_albums() {
+void music::service::Catalog::clean_empty_albums() {
   /*
   auto sql = "SELECT id FROM music.album WHERE NOT EXISTS "
       "(SELECT id FROM song WHERE song.album = album.id)";
@@ -44,7 +44,7 @@ void madmin::Catalog::clean_empty_albums() {
   }*/
 }
 
-bool madmin::Catalog::delet(long catalog_id, const std::string& type) {
+bool music::service::Catalog::delet(long catalog_id, const std::string& type) {
   // Large catalog deletion can take time
   // set_time_limit(0);
 

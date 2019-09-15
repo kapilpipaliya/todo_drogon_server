@@ -2,13 +2,15 @@
 
 #include <utility>
 
-madmin::Media::Media(std::shared_ptr<websocket::music::MAdminContext> context_) : context(std::move(context_)) {
+music::service::Media::Media(
+    std::shared_ptr<websocket::music::MAdminContext> context_)
+    : context(std::move(context_)) {
   setupTable();
 }
 
-nlohmann::json madmin::Media::handleEvent(nlohmann::json event,
-                                          unsigned long next,
-                                          nlohmann::json args) {
+nlohmann::json music::service::Media::handleEvent(nlohmann::json event,
+                                                  unsigned long next,
+                                                  nlohmann::json args) {
   auto event_cmp = event[next].get<std::string>();
   if (event_cmp == "data") {
     return query.allData(event, args);
@@ -27,4 +29,4 @@ nlohmann::json madmin::Media::handleEvent(nlohmann::json event,
   }
 }
 
-void madmin::Media::setupTable() {}
+void music::service::Media::setupTable() {}

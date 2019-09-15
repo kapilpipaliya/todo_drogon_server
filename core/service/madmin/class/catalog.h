@@ -5,7 +5,8 @@
 
 #include "core/sql/query.h"
 
-namespace madmin {
+namespace music {
+namespace service {
 class Catalog {
  public:
   Catalog(std::shared_ptr<websocket::music::MAdminContext>);
@@ -576,7 +577,9 @@ class Catalog {
   // protected static function getSongTags($type, int id);
   // static void can_remove($libitem, $user = null);
   // static void process_action($action, $catalogs, $options = null);
-  std::shared_ptr<websocket::music::MAdminContext>& getContext() { return context; }
+  std::shared_ptr<websocket::music::MAdminContext>& getContext() {
+    return context;
+  }
 
  private:
   int $id{};
@@ -599,5 +602,6 @@ class Catalog {
   std::shared_ptr<websocket::music::MAdminContext> context;
   sql::Query query;
 };
-}  // namespace madmin
+}  // namespace service
+}  // namespace music
 #endif  // CATALOG_H

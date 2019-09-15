@@ -29,15 +29,15 @@ nlohmann::json MAdminActor::handleTextMessage(
   auto contx = wsConnPtr->getContext<websocket::music::MAdminContext>();
   auto evt = in[0][0].get<std::string>();
   if (evt == "auth") {
-    return handleService<madmin::Auth>(contx, in);
+    return handleService<music::service::Auth>(contx, in);
   } else if (evt == "user" || evt == "users") {
-    return handleService<madmin::User>(contx, in);
+    return handleService<music::service::User>(contx, in);
   } else if (evt == "ui") {
-    return handleService<madmin::UI>(contx, in);
+    return handleService<music::service::UI>(contx, in);
   } else if (evt == "catalog_local") {
-    return handleService<madmin::CatalogLocal>(contx, in);
+    return handleService<music::service::CatalogLocal>(contx, in);
   } else if (evt == "song") {
-    return handleService<madmin::Song>(contx, in);
+    return handleService<music::service::Song>(contx, in);
   } else {
     return nlohmann::json::array();
   }
@@ -59,7 +59,7 @@ nlohmann::json MAdminActor::handleBinaryMessage(
         // p.handleBinaryEvent creates new transaction.
 
         if (event[0] == "song") {
-          madmin::Song p{contx};
+          music::service::Song p{contx};
           auto r = p.handleBinaryEvent(event, 1, message);
           if (!r.is_null()) return r;
         }

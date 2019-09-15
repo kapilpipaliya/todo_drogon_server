@@ -6,7 +6,8 @@
 
 #include "core/sql/query.h"
 
-namespace madmin {
+namespace music {
+namespace service {
 class Config {
  public:
   Config(std::shared_ptr<websocket::music::MAdminContext>);
@@ -57,5 +58,6 @@ class Config {
   std::shared_ptr<websocket::music::MAdminContext> context;
   sql::Query query;
 };
-}  // namespace madmin
+}  // namespace service
+}  // namespace music
 #endif  // CONFIG_H

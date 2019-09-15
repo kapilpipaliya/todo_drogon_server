@@ -3,15 +3,15 @@
 #include "../../../sql/dba.h"
 #include "./session.h"
 
-madmin::Session::Session(
+music::service::Session::Session(
     std::shared_ptr<websocket::music::MAdminContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }
 
-nlohmann::json madmin::Session::handleEvent(nlohmann::json event,
-                                            unsigned long next,
-                                            nlohmann::json args) {
+nlohmann::json music::service::Session::handleEvent(nlohmann::json event,
+                                                    unsigned long next,
+                                                    nlohmann::json args) {
   auto event_cmp = event[next].get<std::string>();
   if (event_cmp == "data") {
     return query.allData(event, args);
@@ -30,9 +30,9 @@ nlohmann::json madmin::Session::handleEvent(nlohmann::json event,
   }
 }
 
-void madmin::Session::setupTable() {}
+void music::service::Session::setupTable() {}
 
-bool madmin::Session::destroy(long key) {
+bool music::service::Session::destroy(long key) {
   if (!key) {  // !key.empty()
     return false;
   }

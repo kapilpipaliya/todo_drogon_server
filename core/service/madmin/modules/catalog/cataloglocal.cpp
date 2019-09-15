@@ -1,13 +1,14 @@
 #include "cataloglocal.h"
-
-madmin::CatalogLocal::CatalogLocal(
+namespace music {
+namespace service {
+CatalogLocal::CatalogLocal(
     const std::shared_ptr<websocket::music::MAdminContext> &context_)
     : Catalog(context_) {
   query = sql::Query(sql::ObjectIdentifier("music", "catalog", "c"));
   setupTable();
 }
 
-void madmin::CatalogLocal::setupTable() {
+void CatalogLocal::setupTable() {
   // m_query.setRowIdColumn("id");
   query.setSelectedColumns({
       sql::SelectedColumn({"ID No", "id", "", "c", sql::PG_TYPES::INT8}),
@@ -50,9 +51,9 @@ void madmin::CatalogLocal::setupTable() {
   });
 }
 
-nlohmann::json madmin::CatalogLocal::handleEvent(nlohmann::json event,
-                                                 unsigned long next,
-                                                 nlohmann::json args) {
+nlohmann::json CatalogLocal::handleEvent(nlohmann::json event,
+                                         unsigned long next,
+                                         nlohmann::json args) {
   auto event_cmp = event[next].get<std::string>();
   if (event_cmp == "header") {  // required
     return query.headerData(event, args);
@@ -84,3 +85,5 @@ nlohmann::json madmin::CatalogLocal::handleEvent(nlohmann::json event,
     return nullptr;
   }
 }
+}  // namespace service
+}  // namespace music

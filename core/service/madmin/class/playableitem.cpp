@@ -1,3 +1,3 @@
 #include "playableitem.h"
 
-madmin::PlayableItem::PlayableItem() = default;
+music::service::PlayableItem::PlayableItem() = default;

@@ -3,7 +3,8 @@
 #include "../../../../wscontroller/context/madmincontext.h"
 
 #include "core/sql/query.h"
-namespace madmin {
+namespace music {
+namespace service {
 class Access {
  public:
   Access(std::shared_ptr<websocket::music::MAdminContext>);
@@ -15,4 +16,5 @@ class Access {
   std::shared_ptr<websocket::music::MAdminContext> context;
   sql::Query query;
 };
-}  // namespace madmin
+}  // namespace service
+}  // namespace music

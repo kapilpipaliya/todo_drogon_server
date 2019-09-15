@@ -8,7 +8,8 @@
  * This class handles all actual work in regards to local catalogs.
  *
  */
-namespace madmin {
+namespace music {
+namespace service {
 class CatalogLocal : public Catalog {
  public:
   CatalogLocal(const std::shared_ptr<websocket::music::MAdminContext> &);
@@ -160,5 +161,7 @@ class CatalogLocal : public Catalog {
 
   sql::Query query;
 };
-}  // namespace madmin
+}  // namespace service
+}  // namespace music
+
 #endif  // CATALOGLOCAL_H

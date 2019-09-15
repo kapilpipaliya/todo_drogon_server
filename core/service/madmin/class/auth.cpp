@@ -4,16 +4,17 @@
 #include "../../../sql/dba.h"
 #include "session.h"
 
-madmin::Auth::Auth(std::shared_ptr<websocket::music::MAdminContext> context_)
+music::service::Auth::Auth(
+    std::shared_ptr<websocket::music::MAdminContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }
 
-void madmin::Auth::setupTable() {}
+void music::service::Auth::setupTable() {}
 
-nlohmann::json madmin::Auth::handleEvent(nlohmann::json event,
-                                         unsigned long next,
-                                         nlohmann::json args) {
+nlohmann::json music::service::Auth::handleEvent(nlohmann::json event,
+                                                 unsigned long next,
+                                                 nlohmann::json args) {
   auto event_cmp = event[next].get<std::string>();
   if (event_cmp == "login") {
     nlohmann::json res = {{}, {}};
@@ -65,8 +66,8 @@ nlohmann::json madmin::Auth::handleEvent(nlohmann::json event,
   }
 }
 // Save Image meta on server temporary
-nlohmann::json madmin::Auth::saveFileMeta(const nlohmann::json& event,
-                                          nlohmann::json args) {
+nlohmann::json music::service::Auth::saveFileMeta(const nlohmann::json& event,
+                                                  nlohmann::json args) {
   long c = context->sessionId();
 
   // auto strSql = "INSERT INTO music.temp_file_meta ( session_id, event, name,
@@ -94,7 +95,7 @@ nlohmann::json madmin::Auth::saveFileMeta(const nlohmann::json& event,
   }
 }
 
-bool madmin::Auth::logout(long key, [[maybe_unused]] bool relogin) {
+bool music::service::Auth::logout(long key, [[maybe_unused]] bool relogin) {
   // If no key is passed try to find the session id
   key = key ? key : context->sessionId();
 
@@ -128,9 +129,9 @@ bool madmin::Auth::logout(long key, [[maybe_unused]] bool relogin) {
   //}
 }
 
-std::tuple<long, long> madmin::Auth::login(const std::string& username,
-                                           const std::string& password,
-                                           [[maybe_unused]] bool allow_ui) {
+std::tuple<long, long> music::service::Auth::login(
+    const std::string& username, const std::string& password,
+    [[maybe_unused]] bool allow_ui) {
   long session_id = 0;
   long user_id = 0;
   if (!password.empty() && !username.empty()) {
