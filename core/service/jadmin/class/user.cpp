@@ -146,12 +146,12 @@ std::string User::get_password() {
   return "";
 }
 
-long User::create(const std::string& /*username*/,
-                  const std::string& /*fullname*/, const std::string& /*email*/,
-                  const std::string& /*website*/,
-                  const std::string& /*password*/,
-                  const std::string& /*access*/, const std::string& /*state*/,
-                  const std::string& /*city*/, bool /*disabled*/) {
+long User::create(const std::string& username,
+                  const std::string& fullname, const std::string& email,
+                  const std::string& website,
+                  const std::string& password,
+                  const std::string& access, const std::string& state,
+                  const std::string& city, bool disabled) {
   // website     = rtrim(website, "/");
   // string password    = hash('sha256', password);
   // bool disabled    = disabled $ 1 : 0;
@@ -353,7 +353,7 @@ nlohmann::json User::userId(const nlohmann::json& event,
   return ret;
 }
 nlohmann::json User::checkout(const nlohmann::json& event,
-                              const nlohmann::json& /*args*/) {
+                              const nlohmann::json& args) {
   long c = context->sessionId();
   if (c != 0) {
     auto sqlSession = "SELECT key, value FROM entity.session where id = $1";

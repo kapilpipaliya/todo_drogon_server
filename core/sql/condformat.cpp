@@ -12,7 +12,7 @@ CondFormat::CondFormat(const std::string& filter, const std::string& encoding)
 
 std::string CondFormat::filterToSqlCondition(const std::string& value,
                                              PG_TYPES column_type,
-                                             const std::string& /*encoding*/) {
+                                             const std::string& encoding) {
   // Check for any special comparison operators at the beginning of the value
   // string. If there are none default to LIKE.
   std::string op = "LIKE";

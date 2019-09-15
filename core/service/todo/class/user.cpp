@@ -240,12 +240,12 @@ std::string User::get_password() {
   return "";
 }
 
-long User::create(const std::string& /*username*/,
-                  const std::string& /*fullname*/, const std::string& /*email*/,
-                  const std::string& /*website*/,
-                  const std::string& /*password*/,
-                  const std::string& /*access*/, const std::string& /*state*/,
-                  const std::string& /*city*/, bool /*disabled*/) {
+long User::create(const std::string& username,
+                  const std::string& fullname, const std::string& email,
+                  const std::string& website,
+                  const std::string& password,
+                  const std::string& access, const std::string& state,
+                  const std::string& city, bool disabled) {
   // website     = rtrim(website, "/");
   // std::string password    = hash('sha256', password);
   // bool disabled    = disabled $ 1 : 0;

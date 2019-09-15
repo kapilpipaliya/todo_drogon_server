@@ -85,7 +85,7 @@ std::tuple<long, long> Auth::login(const std::string &username,
   return {session_id, user_id};
 }
 
-bool Auth::logout(long key, bool /*relogin*/) {
+bool Auth::logout(long key, bool relogin) {
   // If no key is passed try to find the session id
   key = key ? key : context->sessionId();
 
@@ -263,7 +263,7 @@ drogon::WebSocketMessageType::Binary);
 */
 
 // save image in disk and return temporary id:
-nlohmann::json Auth::save_setting_attachment(const nlohmann::json & /*event*/,
+nlohmann::json Auth::save_setting_attachment(const nlohmann::json & event,
                                              std::string &message) {
   auto session_id = context->sessionId();
   auto strSql = sql::CRUDHelper::sel_(

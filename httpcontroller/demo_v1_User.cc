@@ -8,7 +8,7 @@ using namespace http::v1;
 void User::download_id(
     const drogon::HttpRequestPtr &req,
     std::function<void(const drogon::HttpResponsePtr &)> &&callback, long id,
-    int /*version*/) {
+    int version) {
   //    auto id = req->getParameter("path", "default.png"); //?path=
   namespace fs = boost::filesystem;
   auto home = fs::path(getenv("HOME"));
@@ -41,7 +41,7 @@ void User::download_id(
 void User::thumb_id(
     const drogon::HttpRequestPtr &req,
     std::function<void(const drogon::HttpResponsePtr &)> &&callback, long id,
-    int /*version*/) {
+    int version) {
   namespace fs = boost::filesystem;
   auto home = fs::path(getenv("HOME"));
   auto c = req->getCookie("admin");

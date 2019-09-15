@@ -802,7 +802,7 @@ void save_diamond_price(
 }
 
 void save_product_diamond_sizes(
-    const sql::ObjectIdentifier& /*post_diamond_sizes_table*/,
+    const sql::ObjectIdentifier& post_diamond_sizes_table,
     nlohmann::json& args,
     const std::shared_ptr<drogon::orm::Transaction>& transPtr, long post_id) {
   std::string strSqlPostCategories =
@@ -943,7 +943,7 @@ void save_cs_price(nlohmann::json& args,
 }
 
 void save_product_cs_sizes(
-    const sql::ObjectIdentifier& /*post_color_stone_size_table*/,
+    const sql::ObjectIdentifier& post_color_stone_size_table,
     nlohmann::json& args,
     const std::shared_ptr<drogon::orm::Transaction>& transPtr, long post_id) {
   std::string strSqlPostCategories =
@@ -1023,7 +1023,7 @@ void save_product_cs_sizes(
 }
 
 void save_product_cs_total(
-    const sql::ObjectIdentifier& /*post_cs_total_table*/, nlohmann::json& args,
+    const sql::ObjectIdentifier& post_cs_total_table, nlohmann::json& args,
     const std::shared_ptr<drogon::orm::Transaction>& transPtr, long post_id) {
   std::string strSqlPostCategories =
       "SELECT post_id, pcs, weight, price FROM product.post_cs_total where "
@@ -1729,7 +1729,7 @@ nlohmann::json Product::get_product_cs_price_data(nlohmann::json event,
 }
 
 nlohmann::json Product::get_product_category_tree_data(
-    nlohmann::json event, const nlohmann::json& /*args*/) {
+    nlohmann::json event, const nlohmann::json& args) {
   nlohmann::json batch;
   nlohmann::json jresult;
   jresult[0] = std::move(event);
