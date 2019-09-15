@@ -3,15 +3,14 @@
 #include "../../../sql/dba.h"
 #include "./session.h"
 namespace jadmin {
-jadmin::Session::Session(
-    std::shared_ptr<websocket::jadmin::JAdminContext> context_)
+namespace service {
+Session::Session(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }
 
-nlohmann::json jadmin::Session::handleEvent(nlohmann::json event,
-                                            unsigned long next,
-                                            nlohmann::json args) {
+nlohmann::json Session::handleEvent(nlohmann::json event, unsigned long next,
+                                    nlohmann::json args) {
   auto event_cmp = event[next].get<std::string>();
   if (event_cmp == "data") {
     return query.allData(event, args);
@@ -30,9 +29,9 @@ nlohmann::json jadmin::Session::handleEvent(nlohmann::json event,
   }
 }
 
-void jadmin::Session::setupTable() {}
+void Session::setupTable() {}
 
-bool jadmin::Session::destroy(long key) {
+bool Session::destroy(long key) {
   if (!key) {  // !key.empty()
     return false;
   }
@@ -56,4 +55,5 @@ bool jadmin::Session::destroy(long key) {
 
   // return true;
 }
+}  // namespace service
 }  // namespace jadmin

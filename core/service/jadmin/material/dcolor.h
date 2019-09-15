@@ -4,6 +4,7 @@
 #include "core/sql/query.h"
 
 namespace jadmin {
+namespace service {
 class DColor {
  public:
   DColor(std::shared_ptr<websocket::jadmin::JAdminContext>);
@@ -17,5 +18,6 @@ class DColor {
   std::shared_ptr<websocket::jadmin::JAdminContext> context;
   sql::Query query;
 };
+}  // namespace service
 }  // namespace jadmin
 #endif  // DCOLOR_H

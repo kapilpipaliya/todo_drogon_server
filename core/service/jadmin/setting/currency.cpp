@@ -3,6 +3,7 @@
 #include <utility>
 
 namespace jadmin {
+namespace service {
 Currency::Currency(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("account", "currency", "c"));
@@ -69,4 +70,5 @@ nlohmann::json Currency::upd(nlohmann::json event, nlohmann::json args) {
       args[0]["symbol"].get<std::string>(), args[0]["rounding"].get<float>(),
       args[0]["active"].get<bool>());
 }
+}  // namespace service
 }  // namespace jadmin

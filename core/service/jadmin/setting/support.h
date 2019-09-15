@@ -4,6 +4,7 @@
 #include "core/sql/query.h"
 
 namespace jadmin {
+namespace service {
 class Support {
  public:
   Support(std::shared_ptr<websocket::jadmin::JAdminContext>);
@@ -17,4 +18,5 @@ class Support {
   std::shared_ptr<websocket::jadmin::JAdminContext> context;
   sql::Query query;
 };
+}  // namespace service
 }  // namespace jadmin

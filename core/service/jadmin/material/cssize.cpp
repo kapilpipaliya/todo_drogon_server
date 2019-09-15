@@ -5,6 +5,7 @@
 #include "../../../strfns.h"
 
 namespace jadmin {
+namespace service {
 CSSize::CSSize(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(
@@ -364,4 +365,5 @@ nlohmann::json CSSize::del(nlohmann::json event, nlohmann::json args) {
     return ret;
   }
 }
+}  // namespace service
 }  // namespace jadmin

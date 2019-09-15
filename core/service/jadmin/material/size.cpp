@@ -3,6 +3,7 @@
 #include <utility>
 
 namespace jadmin {
+namespace service {
 Size::Size(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("material", "size", "s"));
@@ -59,4 +60,5 @@ nlohmann::json Size::upd(nlohmann::json event, nlohmann::json args) {
   return query.updBase(event, args, "name", "$1",
                        args[0]["name"].get<std::string>());
 }
+}  // namespace service
 }  // namespace jadmin

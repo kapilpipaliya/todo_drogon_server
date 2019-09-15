@@ -4,6 +4,7 @@
 #include "core/sql/query.h"
 
 namespace jadmin {
+namespace service {
 class JournalType {
  public:
   JournalType(std::shared_ptr<websocket::jadmin::JAdminContext>);
@@ -17,5 +18,6 @@ class JournalType {
   std::shared_ptr<websocket::jadmin::JAdminContext> context;
   sql::Query query;
 };
+}  // namespace service
 }  // namespace jadmin
 #endif  // JOURNALTYPE_H

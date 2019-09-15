@@ -9,6 +9,7 @@
  *
  */
 namespace jadmin {
+namespace service {
 class Session {
  public:
   Session(std::shared_ptr<websocket::jadmin::JAdminContext>);
@@ -168,4 +169,5 @@ class Session {
   std::shared_ptr<websocket::jadmin::JAdminContext> context;
   sql::Query query;
 };
+}  // namespace service
 }  // namespace jadmin

@@ -5,6 +5,7 @@
 #include "../../../strfns.h"
 
 namespace jadmin {
+namespace service {
 DSize::DSize(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   query =
@@ -396,4 +397,5 @@ nlohmann::json DSize::del(nlohmann::json event, nlohmann::json args) {
     return ret;
   }
 }
+}  // namespace service
 }  // namespace jadmin

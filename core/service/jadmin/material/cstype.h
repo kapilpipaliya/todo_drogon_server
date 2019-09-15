@@ -4,6 +4,7 @@
 #include "core/sql/query.h"
 
 namespace jadmin {
+namespace service {
 class CSType {
  public:
   CSType(std::shared_ptr<websocket::jadmin::JAdminContext>);
@@ -17,5 +18,6 @@ class CSType {
   std::shared_ptr<websocket::jadmin::JAdminContext> context;
   sql::Query query;
 };
+}  // namespace service
 }  // namespace jadmin
 #endif  // CSTYPE_H

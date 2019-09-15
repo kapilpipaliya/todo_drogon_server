@@ -5,6 +5,7 @@
 #include "../../../strfns.h"
 
 namespace jadmin {
+namespace service {
 Product::Product(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("post", "post", "post"));
@@ -1794,4 +1795,5 @@ select * ,
     return r;
   }
 }
+}  // namespace service
 }  // namespace jadmin

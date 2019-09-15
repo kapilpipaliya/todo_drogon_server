@@ -4,6 +4,7 @@
 #include "../../../sql/dba.h"
 
 namespace jadmin {
+namespace service {
 Image::Image(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("post", "image", "a"));
@@ -182,4 +183,5 @@ nlohmann::json Image::upd(nlohmann::json event, nlohmann::json args) {
       websocket::WsFns::successJsonObject(event, false, "Not Valid Structure");
   return ret;
 }
+}  // namespace service
 }  // namespace jadmin

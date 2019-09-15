@@ -4,6 +4,7 @@
 #include "core/sql/query.h"
 
 namespace jadmin {
+namespace service {
 class Auth {
  public:
   Auth(std::shared_ptr<websocket::jadmin::JAdminContext>);
@@ -118,4 +119,5 @@ class Auth {
   std::shared_ptr<websocket::jadmin::JAdminContext> context;
   sql::Query query;
 };
+}  // namespace service
 }  // namespace jadmin

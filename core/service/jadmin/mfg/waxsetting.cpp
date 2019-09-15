@@ -3,6 +3,7 @@
 #include <utility>
 
 namespace jadmin {
+namespace service {
 WaxSetting::WaxSetting(
     std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
@@ -98,4 +99,5 @@ nlohmann::json WaxSetting::upd(nlohmann::json event, nlohmann::json args) {
       args[0]["description"].get<std::string>(),
       args[0]["status_id"].get<std::string>());
 }
+}  // namespace service
 }  // namespace jadmin

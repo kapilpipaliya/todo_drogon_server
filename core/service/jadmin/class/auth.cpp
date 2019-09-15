@@ -10,6 +10,7 @@
 #include "spdlogfix.h"
 
 namespace jadmin {
+namespace service {
 Auth::Auth(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   setupTable();
@@ -341,4 +342,5 @@ nlohmann::json Auth::save_setting_attachment(const nlohmann::json &event,
     return ret;
   }
 }
+}  // namespace service
 }  // namespace jadmin

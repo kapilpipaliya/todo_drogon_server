@@ -3,6 +3,7 @@
 #include <utility>
 
 namespace jadmin {
+namespace service {
 CSType::CSType(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("material", "cs_type", "ct"));
@@ -70,4 +71,5 @@ nlohmann::json CSType::upd(nlohmann::json event, nlohmann::json args) {
   return query.updBase(event, args, "name", "$1",
                        args[0]["name"].get<std::string>());
 }
+}  // namespace service
 }  // namespace jadmin

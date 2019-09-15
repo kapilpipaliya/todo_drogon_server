@@ -5,6 +5,7 @@
 
 // using namespace std::chrono;
 namespace jadmin {
+namespace service {
 User::User(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("music", "user", "e"));
@@ -381,4 +382,5 @@ nlohmann::json User::checkout(const nlohmann::json& event,
     return ret;
   }
 }
+}  // namespace service
 }  // namespace jadmin

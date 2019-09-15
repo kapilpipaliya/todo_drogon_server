@@ -14,6 +14,7 @@
   if ((s).size() > 0) array.pop_back();                \
   array += "}";
 namespace jadmin {
+namespace service {
 Purity::Purity(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("material", "purity", "p"));
@@ -394,4 +395,5 @@ nlohmann::json Purity::del(nlohmann::json event, nlohmann::json args) {
     return ret;
   }
 }
+}  // namespace service
 }  // namespace jadmin

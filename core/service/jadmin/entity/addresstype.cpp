@@ -3,6 +3,7 @@
 #include <utility>
 
 namespace jadmin {
+namespace service {
 AddressType::AddressType(
     std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
@@ -52,4 +53,5 @@ nlohmann::json AddressType::upd(nlohmann::json event, nlohmann::json args) {
   return query.updBase(event, args, "name", "$1",
                        args[0]["name"].get<std::string>());
 }
+}  // namespace service
 }  // namespace jadmin

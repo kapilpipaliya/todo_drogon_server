@@ -5,6 +5,7 @@
 #include "../../../strfns.h"
 
 namespace jadmin {
+namespace service {
 Tag::Tag(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("post", "tag", "t"));
@@ -123,4 +124,5 @@ nlohmann::json Tag::upd(nlohmann::json event, nlohmann::json args) {
       websocket::WsFns::successJsonObject(event, false, "Not Valid Structure");
   return ret;
 }
+}  // namespace service
 }  // namespace jadmin

@@ -3,6 +3,7 @@
 #include "core/sql/query.h"
 
 namespace jadmin {
+namespace service {
 class SettingType {
  public:
   SettingType(std::shared_ptr<websocket::jadmin::JAdminContext>);
@@ -16,4 +17,5 @@ class SettingType {
   std::shared_ptr<websocket::jadmin::JAdminContext> context;
   sql::Query query;
 };
+}  // namespace service
 }  // namespace jadmin

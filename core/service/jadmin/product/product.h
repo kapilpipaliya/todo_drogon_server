@@ -4,6 +4,7 @@
 #include "core/sql/query.h"
 
 namespace jadmin {
+namespace service {
 class Product {
  public:
   Product(std::shared_ptr<websocket::jadmin::JAdminContext>);
@@ -25,5 +26,6 @@ class Product {
   std::shared_ptr<websocket::jadmin::JAdminContext> context;
   sql::Query query;
 };
+}  // namespace service
 }  // namespace jadmin
 #endif  // PRODUCT_H

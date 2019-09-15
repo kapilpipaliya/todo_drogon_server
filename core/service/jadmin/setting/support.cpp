@@ -3,6 +3,7 @@
 #include <utility>
 
 namespace jadmin {
+namespace service {
 Support::Support(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("entity", "support", "a"));
@@ -78,4 +79,5 @@ nlohmann::json Support::upd(nlohmann::json event, nlohmann::json args) {
                        args[0]["phone"].get<std::string>(),
                        args[0]["message"].get<std::string>());
 }
+}  // namespace service
 }  // namespace jadmin

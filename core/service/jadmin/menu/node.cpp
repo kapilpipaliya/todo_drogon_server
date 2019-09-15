@@ -3,6 +3,7 @@
 #include <utility>
 
 namespace jadmin {
+namespace service {
 Node::Node(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("menu", "node", "m"));
@@ -95,4 +96,5 @@ nlohmann::json Node::upd(nlohmann::json event, nlohmann::json args) {
       args[0]["description"].get<std::string>(),
       args[0]["class"].get<std::string>());
 }
+}  // namespace service
 }  // namespace jadmin

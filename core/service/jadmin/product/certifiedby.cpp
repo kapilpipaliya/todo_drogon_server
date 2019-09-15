@@ -3,6 +3,7 @@
 #include <utility>
 
 namespace jadmin {
+namespace service {
 CertifiedBy::CertifiedBy(
     std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
@@ -83,4 +84,5 @@ nlohmann::json CertifiedBy::upd(nlohmann::json event, nlohmann::json args) {
                        args[0]["description"].get<std::string>());
 }
 
+}  // namespace service
 }  // namespace jadmin

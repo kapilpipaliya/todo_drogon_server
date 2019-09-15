@@ -5,6 +5,7 @@
 #include "../../../strfns.h"
 
 namespace jadmin {
+namespace service {
 Post1::Post1(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("post", "post", "post"));
@@ -152,4 +153,5 @@ nlohmann::json Post1::upd(nlohmann::json event, nlohmann::json args) {
       websocket::WsFns::successJsonObject(event, false, "Not Valid Structure");
   return ret;
 }
+}  // namespace service
 }  // namespace jadmin

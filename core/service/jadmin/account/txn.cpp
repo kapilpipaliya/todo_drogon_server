@@ -5,6 +5,7 @@
 #include "../../../sql/dba.h"
 #include "wscontroller/wsfns.h"
 namespace jadmin {
+namespace service {
 Txn::Txn(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("account", "txn", "a"));
@@ -301,4 +302,5 @@ nlohmann::json Txn::upd(nlohmann::json event, nlohmann::json args) {
       websocket::WsFns::successJsonObject(event, false, "Not Valid Structure");
   return ret;
 }
+}  // namespace service
 }  // namespace jadmin

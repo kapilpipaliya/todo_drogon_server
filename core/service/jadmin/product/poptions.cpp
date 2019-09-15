@@ -3,6 +3,7 @@
 #include <utility>
 
 namespace jadmin {
+namespace service {
 POption::POption(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("product", "option", "o"));
@@ -73,4 +74,5 @@ nlohmann::json POption::upd(nlohmann::json event, nlohmann::json args) {
                        args[0]["value"].get<std::string>(),
                        args[0]["auoload"].get<std::string>());
 }
+}  // namespace service
 }  // namespace jadmin

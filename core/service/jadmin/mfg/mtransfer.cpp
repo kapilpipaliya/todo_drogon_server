@@ -3,6 +3,7 @@
 #include <utility>
 
 namespace jadmin {
+namespace service {
 MTransfer::MTransfer(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("mfg", "m_transfer", "m"));
@@ -77,4 +78,5 @@ nlohmann::json MTransfer::upd(nlohmann::json event, nlohmann::json args) {
   return query.updBase(event, args, "name", "$1",
                        args[0]["name"].get<std::string>());
 }
+}  // namespace service
 }  // namespace jadmin

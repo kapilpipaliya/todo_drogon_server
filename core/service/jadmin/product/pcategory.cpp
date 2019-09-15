@@ -2,6 +2,7 @@
 
 #include <utility>
 namespace jadmin {
+namespace service {
 
 PCategory::PCategory(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
@@ -95,4 +96,5 @@ nlohmann::json PCategory::upd(nlohmann::json event, nlohmann::json args) {
       args[0]["parent_id"].get<long>(),  // why this ask for get<int>()?
       args[0]["position"].get<int>());
 }
+}  // namespace service
 }  // namespace jadmin

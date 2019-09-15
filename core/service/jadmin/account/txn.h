@@ -4,6 +4,7 @@
 #include "core/sql/query.h"
 
 namespace jadmin {
+namespace service {
 class Txn {
  public:
   Txn(std::shared_ptr<websocket::jadmin::JAdminContext>);
@@ -18,5 +19,6 @@ class Txn {
   std::shared_ptr<websocket::jadmin::JAdminContext> context;
   sql::Query query;
 };
+}  // namespace service
 }  // namespace jadmin
 #endif  // TXN_H

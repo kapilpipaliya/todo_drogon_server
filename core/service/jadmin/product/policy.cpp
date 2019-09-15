@@ -3,6 +3,7 @@
 #include <utility>
 
 namespace jadmin {
+namespace service {
 Policy::Policy(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("product", "policy", "t"));
@@ -75,4 +76,5 @@ nlohmann::json Policy::upd(nlohmann::json event, nlohmann::json args) {
                        args[0]["url"].get<std::string>(),
                        args[0]["description"].get<std::string>());
 }
+}  // namespace service
 }  // namespace jadmin

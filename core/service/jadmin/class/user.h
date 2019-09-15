@@ -20,6 +20,7 @@
 #include "core/sql/query.h"
 
 namespace jadmin {
+namespace service {
 /**
  * User Class
  *
@@ -450,5 +451,6 @@ class User {
   std::shared_ptr<websocket::jadmin::JAdminContext> context;
   sql::Query query;
 };
+}  // namespace service
 }  // namespace jadmin
 #endif  // USER_H

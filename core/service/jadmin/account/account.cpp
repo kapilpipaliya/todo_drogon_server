@@ -2,6 +2,7 @@
 
 #include <utility>
 namespace jadmin {
+namespace service {
 Account::Account(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("account", "account", "a"));
@@ -81,4 +82,5 @@ nlohmann::json Account::upd(nlohmann::json event, nlohmann::json args) {
                        args[0]["description"].get<std::string>());
 }
 
+}  // namespace service
 }  // namespace jadmin

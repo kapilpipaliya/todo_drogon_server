@@ -4,6 +4,7 @@
 #include "../../../sql/dba.h"
 
 namespace jadmin {
+namespace service {
 Setting::Setting(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("entity", "setting", "gs"));
@@ -129,4 +130,5 @@ nlohmann::json Setting::save(const nlohmann::json &event, nlohmann::json args) {
     }
   }
 }
+}  // namespace service
 }  // namespace jadmin

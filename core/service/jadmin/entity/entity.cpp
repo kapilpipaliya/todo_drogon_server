@@ -4,6 +4,7 @@
 #include "../../../sql/dba.h"
 
 namespace jadmin {
+namespace service {
 Entity::Entity(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("entity", "entity", "e"));
@@ -444,4 +445,5 @@ nlohmann::json Entity::del(nlohmann::json event, nlohmann::json args) {
     return ret;
   }
 }
+}  // namespace service
 }  // namespace jadmin

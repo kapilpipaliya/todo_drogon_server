@@ -3,6 +3,7 @@
 #include <utility>
 
 namespace jadmin {
+namespace service {
 Priority::Priority(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("account", "priority", "a"));
@@ -72,4 +73,5 @@ nlohmann::json Priority::upd(nlohmann::json event, nlohmann::json args) {
       event, args, "rank, slug, name", "$1, $2, $3", args[0]["rank"].get<int>(),
       args[0]["slug"].get<std::string>(), args[0]["name"].get<std::string>());
 }
+}  // namespace service
 }  // namespace jadmin

@@ -3,6 +3,7 @@
 #include <utility>
 
 namespace jadmin {
+namespace service {
 DColor::DColor(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("material", "diamond_color", "gt"));
@@ -73,4 +74,5 @@ nlohmann::json DColor::upd(nlohmann::json event, nlohmann::json args) {
                        args[0]["slug"].get<std::string>(),
                        args[0]["name"].get<std::string>());
 }
+}  // namespace service
 }  // namespace jadmin
