@@ -4,7 +4,7 @@
 #include "caf/all.hpp"
 
 #include "context/todocontext.h"
-#include "spdlogfix.h"
+
 #include "useractorbase.h"
 namespace superactor {
 namespace todoactor {
@@ -32,7 +32,7 @@ class TodoActor : public caf::event_based_actor, public system::UserActorBase {
       if (!r.is_null()) return r;
       return nlohmann::json::array();
     } catch (const std::exception& e) {
-      SPDLOG_TRACE(e.what());
+      LOG_DEBUG << e.what();
       return nlohmann::json::array({{e.what()}});
     }
   }

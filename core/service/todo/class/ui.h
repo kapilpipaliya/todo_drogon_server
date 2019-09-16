@@ -4,7 +4,7 @@
 
 #include <fmt/format.h>
 #include "json.hpp"
-#include "spdlogfix.h"
+
 
 // A collection of methods related to the user interface
 namespace todo {

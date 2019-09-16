@@ -1,5 +1,6 @@
 #include "wsclient.h"
 
+#include <drogon/drogon.h>
 #include <QCoreApplication>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -7,8 +8,8 @@
 #include <QtCore/QDebug>
 #include <QtWebSockets/QWebSocket>
 #include "once.h"
-#include "spdlogfix.h"
-namespace wstest{
+
+namespace wstest {
 short int SslEchoClient::PING_INTERVAL = 5000;
 short int SslEchoClient::PING_INTERVAL_COUNT_MAX = 3;
 
@@ -19,7 +20,7 @@ SslEchoClient::SslEchoClient(const QUrl &url, QObject *parent)
       intervals_from_last_pong(0) {
   connect(ping_timer, &QTimer::timeout, [=, this] {
     if (intervals_from_last_pong >= PING_INTERVAL_COUNT_MAX) {
-      SPDLOG_TRACE("Connection lost. ( no pongs )");
+      LOG_DEBUG << "Connection lost. ( no pongs )";
       reconnect();
     } else {
       m_webSocket.ping();
@@ -41,7 +42,7 @@ SslEchoClient::SslEchoClient(const QUrl &url, QObject *parent)
   reconnect();
 }
 void SslEchoClient::onConnected() {
-  SPDLOG_TRACE("WebSocket connected");
+  LOG_DEBUG << "WebSocket connected";
 
   ping_timer->start();
 
@@ -53,8 +54,8 @@ void SslEchoClient::onConnected() {
 
 void SslEchoClient::onSslErrors(const QList<QSslError> &errors) {
   Q_UNUSED(errors)
-  SPDLOG_TRACE("SslEchoClient::onSslErrors()");
-  SPDLOG_TRACE(m_webSocket.errorString().toStdString());
+  LOG_DEBUG << "SslEchoClient::onSslErrors()";
+  LOG_DEBUG << m_webSocket.errorString().toStdString();
 
   // WARNING: Never ignore SSL errors in production code.
   // The proper way to handle self-signed certificates is to add a custom root
@@ -65,7 +66,7 @@ void SslEchoClient::onSslErrors(const QList<QSslError> &errors) {
 void SslEchoClient::reconnect() {
   ping_timer->stop();
 
-  SPDLOG_TRACE("QSlackJukebox::reconnect()");
+  LOG_DEBUG << "QSlackJukebox::reconnect()";
   m_webSocket.open(url);
 }
 
@@ -74,9 +75,9 @@ nlohmann::json SslEchoClient::jsonparse(std::string msg) {
     auto j = nlohmann::json::parse(msg);
     return j;
   } catch ([[maybe_unused]] nlohmann::json::parse_error &e) {
-    // SPDLOG_TRACE("message: {}", e.what());
-    // SPDLOG_TRACE("exception id: {}", e.id);
-    // SPDLOG_TRACE("byte position of error:", e.byte);
+    // LOG_DEBUG << "message: {}", e.what();
+    // LOG_DEBUG << "exception id: {}", e.id;
+    // LOG_DEBUG << "byte position of error:", e.byte;
     throw std::runtime_error("Json can not be parsed");
   }
 }
@@ -108,11 +109,11 @@ void SslEchoClient::dispatch(nlohmann::json event, nlohmann::json data) {
     auto isOnce = std::get<0>(search->second);
     if (isOnce == 0) {
       auto r = unbind(event);
-      SPDLOG_TRACE(r);
+      LOG_DEBUG << r;
     }
   } else {
-    SPDLOG_TRACE("Not found callback for:");
-    SPDLOG_TRACE(event.dump());
+    LOG_DEBUG << "Not found callback for:";
+    LOG_DEBUG << event.dump();
   }
 }
 void SslEchoClient::sendMessage(QString message) {
@@ -153,14 +154,14 @@ void SslEchoClient::sendMessage(QString message) {
   //       ).toJson().toStdString()
   //   );
 
-  SPDLOG_TRACE("SslEchoClient::sendMessage");
-  SPDLOG_TRACE("  ", message.toStdString());
+  LOG_DEBUG << "SslEchoClient::sendMessage";
+  LOG_DEBUG << "  ", message.toStdString();
 }
 
 void SslEchoClient::onTextMessageReceived(QString message) {
-  SPDLOG_TRACE("Message received: ", message.toStdString());
+  LOG_DEBUG << "Message received: ", message.toStdString();
 
-  SPDLOG_TRACE(message.toStdString());
+  LOG_DEBUG << message.toStdString();
 
   // QJsonObject
   // _message(QJsonDocument::fromJson(QByteArray::fromStdString(message.toStdString())
@@ -192,4 +193,4 @@ SslEchoClient &WsInst::getClient() {
       SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/madmin")));
   return wsclient;
 }
-}
+}  // namespace wstest

@@ -3,7 +3,7 @@
 #include <algorithm>
 #include "../sql/dba.h"
 #include "condformat.h"
-#include "spdlogfix.h"
+
 
 namespace sql {
 
@@ -184,7 +184,7 @@ std::string Query::buildCountQuery() const {
   std::string q = "SELECT COUNT(*) FROM " + m_table.toString() + " " +
                   m_table.as() + " " + buildJoinPart() + buildWherePart() +
                   " " + buildGroupByPart();
-  // SPDLOG_TRACE(q);
+  // LOG_DEBUG << q;
   return q;
 }
 
@@ -348,14 +348,14 @@ std::vector<SelectedColumn>::const_iterator Query::findSelectedColumnBySelector(
 size_t Query::filterCount() const { return where().size(); }
 bool Query::select() {
   auto q = buildQuery(true);
-  // SPDLOG_TRACE(q);
+  // LOG_DEBUG << q;
   // crash !! auto clientPtr = drogon::app().getFastDbClient("sce");
   auto clientPtr = drogon::app().getDbClient("sce");
   *clientPtr << q << drogon::orm::Mode::Blocking >>
       [this](const drogon::orm::Result& r) { result = r; } >>
       [q](const drogon::orm::DrogonDbException& e) {
-        SPDLOG_TRACE("query: {}", q);
-        SPDLOG_TRACE(e.base().what());
+        LOG_DEBUG << "query: {}", q;
+        LOG_DEBUG << e.base().what();
         // testOutput(false, "DbClient streaming-type interface(0)");
         throw;
       };
@@ -607,7 +607,7 @@ nlohmann::json Query::ins(nlohmann::json event, nlohmann::json args) {
       return ret;
     }
   } catch (const std::exception& e) {
-    SPDLOG_TRACE("error: {0}, sql: {1}", e.what(), strSql);
+    LOG_DEBUG << "error: {0}, sql: {1}", e.what(), strSql;
     throw;
   }
   try {
@@ -617,7 +617,7 @@ nlohmann::json Query::ins(nlohmann::json event, nlohmann::json args) {
     ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
     return ret;
   } catch (const std::exception& e) {
-    SPDLOG_TRACE("error: {0}, sql: {1}", e.what(), strSql);
+    LOG_DEBUG << "error: {0}, sql: {1}", e.what(), strSql;
     nlohmann::json ret;
     ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
     return ret;
@@ -637,14 +637,14 @@ nlohmann::json Query::upd(nlohmann::json event, nlohmann::json args) {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto res = clientPtr->execSqlSync(strSql);
     if (res.size() > 1) {
-      SPDLOG_TRACE("error: Argus Must update one row");
+      LOG_DEBUG << "error: Argus Must update one row";
       throw std::runtime_error("not valid arguments");
     }
     nlohmann::json ret;
     ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
     return ret;
   } catch (const std::exception& e) {
-    SPDLOG_TRACE("error: {0}, sql: {1}", e.what(), strSql);
+    LOG_DEBUG << "error: {0}, sql: {1}", e.what(), strSql;
     nlohmann::json ret;
     ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
     return ret;
@@ -680,7 +680,7 @@ nlohmann::json Query::del(nlohmann::json event, nlohmann::json args) {
                                                  "Invalid condition to delete");
     return ret;
   } catch (const std::exception& e) {
-    SPDLOG_TRACE(e.what());
+    LOG_DEBUG << e.what();
     nlohmann::json ret;
     ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
     return ret;
@@ -694,7 +694,7 @@ nlohmann::json Query::count(nlohmann::json event, nlohmann::json args) {
     updateFilterBase(args[0]);
     updateSortBase(args[1]);
     updatePaginationBase(args[2]);
-    // SPDLOG_TRACE(buildCountQuery());
+    // LOG_DEBUG << buildCountQuery();
     auto res = Dba::writeInTrans(transPtr, buildCountQuery());
     // affected rows should be returned too.
     // Dba::writeInTrans(transPtr, "DELETE FROM " +
@@ -704,7 +704,7 @@ nlohmann::json Query::count(nlohmann::json event, nlohmann::json args) {
     ret[0] = nlohmann::json::array({event, res[0]["count"].as<long>()});
     return ret;
   } catch (const std::exception& e) {
-    SPDLOG_TRACE(e.what());
+    LOG_DEBUG << e.what();
     nlohmann::json ret;
     ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
     return ret;

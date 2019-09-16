@@ -1,9 +1,9 @@
+#include <drogon/drogon.h>
 #include <QCoreApplication>
 #include <catch2/catch.hpp>
 #include "../src/BatchResultTest.h"
 #include "../wsclient/once.h"
 #include "../wsclient/wsclient.h"
-#include "spdlogfix.h"
 // To Benchmark do
 // https://github.com/catchorg/Catch2/blob/master/docs/benchmarks.md
 // BENCHMARK("MY FUNC") { return my_func(); };
@@ -17,7 +17,7 @@ TEST_CASE("is connection possible", "[WSTest]") {
 
   bool r0 = false;
   Once::connect(&w2.getWebSocket(), &QWebSocket::connected, [&r0]() {
-    SPDLOG_TRACE("Connection successfull");
+    LOG_DEBUG << "Connection successfull";
     REQUIRE(true);
     r0 = true;
   });
@@ -45,7 +45,7 @@ TEST_CASE("server reply error on string type of message.", "[WSTest]") {
   w2.sendMessage(QString::fromStdString(j.dump()));
   bool r0 = false;
   Once::connect(&w2.getWebSocket(), &QWebSocket::textMessageReceived, [&r0]() {
-    SPDLOG_TRACE("Connection Not successfull");
+    LOG_DEBUG << "Connection Not successfull";
     REQUIRE(true);
     r0 = true;
   });
@@ -67,11 +67,11 @@ TEST_CASE("authorisation check without cookies", "[WSTest]") {
   nlohmann::json event = nlohmann::json::array({"user", "is_logged_in", 0});
   nlohmann::json payload = nlohmann::json::array({{event, {{}}}});
   //    json j = R"( [ [["user","is_logged_in",0],[[]]]] )"_json;
-  SPDLOG_TRACE(payload.dump());
+  LOG_DEBUG << payload.dump();
   wstest::BatchResultTest bt;
   bt.addEvent(event, {});
   auto b = w2.bindOnce(event, [&bt, &event](nlohmann::json r) {
-    SPDLOG_TRACE("This should be false");
+    LOG_DEBUG << "This should be false";
     REQUIRE(r[0] == false);
     bt.setResult(event);
   });
@@ -98,7 +98,7 @@ TEST_CASE("login on backend with username and password", "[WSTest]") {
   nlohmann::json payload = nlohmann::json::array(
       {{event,
         nlohmann::json::object({{"user", "sadmin"}, {"pass", "123456"}})}});
-  SPDLOG_TRACE(payload.dump());
+  LOG_DEBUG << payload.dump();
   bool r0 = false;
   auto b = w2.bindOnce(event, [&r0](nlohmann::json r) {
     REQUIRE(r[0]["ok"] == true);
@@ -141,7 +141,7 @@ TEST_CASE("check that all table Super Admin data are correctly replied",
       {event4, nlohmann::json::array({{}})},
   });
 
-  SPDLOG_TRACE(payload.dump());
+  LOG_DEBUG << payload.dump();
   bool r0, r1, r2, r3, r4 = false;
   auto b1 = w2.bindOnce(event1, [&r0](nlohmann::json r) {
     REQUIRE(r[0]["ok"] == true);
@@ -207,7 +207,7 @@ TEST_CASE("password change should work.") {
                    {{"old_password", "999999"}, {"new_password", "123456"}})})},
   });
 
-  SPDLOG_TRACE(payload.dump());
+  LOG_DEBUG << payload.dump();
   bool r0, r1, r2, r3 = false;
   auto b1 = w2.bindOnce(event1, [&r0](nlohmann::json r) {
     REQUIRE(r[0]["ok"] == true);
@@ -259,7 +259,7 @@ TEST_CASE("Logout successfull") {
       {event3, nlohmann::json::array()},
   });
 
-  SPDLOG_TRACE(payload.dump());
+  LOG_DEBUG << payload.dump();
   bool r0, r1, r2 = false;
   auto b1 = w2.bindOnce(event1,
                         [](nlohmann::json r) { REQUIRE(r[0]["ok"] == true); });
@@ -350,7 +350,7 @@ TEST_CASE("create update delete successfull") {
                    {R"([[null, null, null, null, "=very_new_song2"]])"_json})},
   });
 
-  SPDLOG_TRACE(payload.dump());
+  LOG_DEBUG << payload.dump();
   bool r0, r1, r2, r3, r4, r5 = false;
   auto b1 = w2.bindOnce(event1, [&r0](nlohmann::json r) {
     REQUIRE(r[0]["ok"] == true);

@@ -3,6 +3,7 @@
 #include <utility>
 #include "../../../sql/dba.h"
 #include "./session.h"
+#include "fmt/format.h"
 
 #include "core/service/openproj/controllers/account_controller.h"
 #include "core/service/openproj/controllers/activities_controller.h"
@@ -474,7 +475,7 @@ nlohmann::json Auth::saveFileMeta(const nlohmann::json& event,
     ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
     return ret;
   } catch (const std::exception& e) {
-    SPDLOG_TRACE(e.what());
+    LOG_DEBUG << e.what();
     nlohmann::json ret;
     ret[0] = websocket::WsFns::successJsonObject(event, false, "Error");
     return ret;
@@ -537,7 +538,7 @@ std::tuple<long, long> Auth::login(const std::string& username,
         session_id = rs[0]["id"].as<long>();
       }
     } catch (const std::exception& e) {
-      SPDLOG_TRACE(e.what());
+      LOG_DEBUG << e.what();
     }
   }
   return {session_id, user_id};

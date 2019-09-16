@@ -4,12 +4,12 @@ WsFns::WsFns() = default;
 void WsFns::sendJson(const drogon::WebSocketConnectionPtr &wsConnPtr,
                      nlohmann::json &j) {
   try {
-    // SPDLOG_TRACE("sending a message: {}", j.dump());
+    // LOG_DEBUG << "sending a message: {}", j.dump();
     wsConnPtr->send(j.dump());
   } catch (nlohmann::json::parse_error &e) {
-    SPDLOG_TRACE("message: {}", e.what());
-    SPDLOG_TRACE("exception id: {}", e.id);
-    SPDLOG_TRACE("byte position of error:", e.byte);
+    LOG_DEBUG << "message: {}", e.what();
+    LOG_DEBUG << "exception id: {}", e.id;
+    LOG_DEBUG << "byte position of error:", e.byte;
     nlohmann::json r =
         std::string("cant parse internal json reason: ") + e.what();
     wsConnPtr->send(r.dump());

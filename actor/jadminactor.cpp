@@ -93,7 +93,7 @@ nlohmann::json JAdminActor::handleTextMessage(
     }
     return nlohmann::json::array();
   } catch (const std::exception &e) {
-    SPDLOG_TRACE(e.what());
+    LOG_DEBUG << e.what();
     return nlohmann::json::array({{e.what()}});
     // throw; // This actor must not die.
   }
@@ -122,16 +122,16 @@ nlohmann::json JAdminActor::handleBinaryMessage(
           }
         }
       } catch (nlohmann::json::parse_error &e) {
-        SPDLOG_TRACE("message: {}", e.what());
-        SPDLOG_TRACE("exception id: {}", e.id);
-        SPDLOG_TRACE("byte position of error:", e.byte);
+        LOG_DEBUG << "message: {}", e.what();
+        LOG_DEBUG << "exception id: {}", e.id;
+        LOG_DEBUG << "byte position of error:", e.byte;
         nlohmann::json j =
             std::string("cant parse json reason: ") + e.what() + event.dump();
         websocket::WsFns::sendJson(wsConnPtr, j);
       }
     }
   } catch (const std::exception &e) {
-    SPDLOG_TRACE(e.what());
+    LOG_DEBUG << e.what();
     nlohmann::json jresult;
     jresult[0] = event;
     jresult[1] = e.what();

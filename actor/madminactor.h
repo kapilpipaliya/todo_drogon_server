@@ -3,7 +3,7 @@
 
 #include "../wscontroller/context/madmincontext.h"
 #include "caf/all.hpp"
-#include "spdlogfix.h"
+
 #include "useractorbase.h"
 namespace superactor {
 namespace musicactor {
@@ -33,7 +33,7 @@ class MAdminActor : public caf::event_based_actor,
       if (!r.is_null()) return r;
       return nlohmann::json::array();
     } catch (const std::exception& e) {
-      SPDLOG_TRACE(e.what());
+      LOG_DEBUG << e.what();
       return nlohmann::json::array({{e.what()}});
     }
   }

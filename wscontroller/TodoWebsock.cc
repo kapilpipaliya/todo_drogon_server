@@ -4,7 +4,7 @@
 #include <chrono>
 
 #include "../actor/caf.h"
-#include "spdlogfix.h"
+
 
 #include "../actor/mainactor.h"
 #include "../actor/mainactortype.h"
@@ -23,7 +23,7 @@ void TodoWebsock::handleNewMessage(
                 std::move(message), type)
       .receive(
           [&]() {
-            // SPDLOG_TRACE("Output: {}", message.c_str());
+            // LOG_DEBUG << "Output: {}", message.c_str();
           },
           [&](caf::error& err) {
             aout(superactor::system::globalCAF.communicateWithActors())

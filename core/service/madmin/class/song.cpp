@@ -130,7 +130,7 @@ nlohmann::json music::service::Song::handleEvent(nlohmann::json event,
       return query.ins(event, args);  // Make this to pass test.
 
     } catch (const std::exception &e) {
-      SPDLOG_TRACE(e.what());
+      LOG_DEBUG << e.what();
       nlohmann::json ret;
       ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
       return ret;
@@ -226,7 +226,7 @@ nlohmann::json music::service::Song::save_song_binary(
     return ret;
 
   } catch (const std::exception &e) {
-    SPDLOG_TRACE(e.what());
+    LOG_DEBUG << e.what();
     nlohmann::json null;
     return null;
   }

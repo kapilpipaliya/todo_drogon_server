@@ -2,7 +2,7 @@
 #include "../wscontroller/context/jadmincontext.h"
 #include "../wscontroller/wsfns.h"
 #include "mainactortype.h"
-#include "spdlogfix.h"
+
 
 #include "core/service/jadmin/account/account.h"
 #include "core/service/jadmin/account/accountheading.h"

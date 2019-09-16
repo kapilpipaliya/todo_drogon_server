@@ -3,8 +3,9 @@
 #include "admin_user_seeder.h"
 #include "demo_data_seeder.h"
 #include "development_data_seeder.h"
+#include "drogon/drogon.h"
 #include "seeder.h"
-#include "spdlogfix.h"
+
 // Seeds the minimum data required to run OpenProject (BasicDataSeeder,
 // AdminUserSeeder) as well as optional demo data (DemoDataSeeder) to give a
 // user some orientation.
@@ -27,11 +28,11 @@ class RootSeeder : public Seeder {
     // Basic data needs be seeded before anything else.
     seed_basic_data();
 
-    SPDLOG_TRACE("*** Seeding admin user");
+    LOG_DEBUG << "*** Seeding admin user";
     openproj::seeder::AdminUserSeeder a;
     a.seed();
 
-    SPDLOG_TRACE("*** Seeding demo data");
+    LOG_DEBUG << "*** Seeding demo data";
     openproj::seeder::DemoDataSeeder d;
     d.seed();
 
@@ -40,7 +41,7 @@ class RootSeeder : public Seeder {
     //      }
 
     //      rails_engines.each { |engine|
-    SPDLOG_TRACE("*** Loading #{engine.engine_name} seed data");
+    LOG_DEBUG << "*** Loading #{engine.engine_name} seed data";
     //        engine.load_seed
     //      }
     //    }
@@ -72,7 +73,7 @@ class RootSeeder : public Seeder {
 
  private:
   void seed_development_data() {
-    SPDLOG_TRACE("*** Seeding development data");
+    LOG_DEBUG << "*** Seeding development data";
     //    #include "factory_bot"
     //    // Load FactoryBot factories
     //    begin
@@ -85,9 +86,9 @@ class RootSeeder : public Seeder {
     d.seed();
   }
   void seed_basic_data() {
-    SPDLOG_TRACE(
-        "*** Seeding basic data for #{OpenProject::Configuration['edition']} "
-        "edition");
+    LOG_DEBUG << "*** Seeding basic data for "
+                 "#{OpenProject::Configuration['edition']} "
+                 "edition";
     openproj::seeder::StandardSeeder::BasicDataSeeder n;
     n.seed();
   }

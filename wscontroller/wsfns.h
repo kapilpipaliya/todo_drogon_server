@@ -2,7 +2,7 @@
 #define WSFNS_H
 #include <drogon/WebSocketController.h>
 #include "json.hpp"
-#include "spdlogfix.h"
+
 namespace websocket {
 class WsFns {
  public:

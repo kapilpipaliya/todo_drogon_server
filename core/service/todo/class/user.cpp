@@ -162,7 +162,7 @@ User::Info User ::get_info() {
     info.access = res[0]["access"].as<int>();
     return info;
   } catch (const std::exception& e) {
-    SPDLOG_TRACE(e.what());
+    LOG_DEBUG << e.what();
     Info info;
     return info;
   }
@@ -179,14 +179,14 @@ User::Info User ::get_info() {
         auto res = clientPtr->execSqlSync(strSql);
         count.users = res[0]["count"].as<int>();
     } catch (const std::exception &e) {
-       SPDLOG_TRACE(e.what());
+       LOG_DEBUG << e.what();
     }
     try {
         auto clientPtr = drogon::app().getDbClient("sce");
         auto res = clientPtr->execSqlSync(strSql);
         count.users = res[0]["count"].as<int>();
     } catch (const std::exception &e) {
-       SPDLOG_TRACE(e.what());
+       LOG_DEBUG << e.what();
     }
 
 
@@ -241,7 +241,7 @@ std::string User::get_password() {
       return r[0]["password"].as<std::string>();
     }
   } catch (const std::exception& e) {
-    SPDLOG_TRACE(e.what());
+    LOG_DEBUG << e.what();
   }
   return "";
 }
@@ -318,7 +318,7 @@ bool User::update_password(std::string new_password) {
     }
     // todo: save updated password in cache...
   } catch (const std::exception& e) {
-    SPDLOG_TRACE(e.what());
+    LOG_DEBUG << e.what();
   }
   return false;
 }

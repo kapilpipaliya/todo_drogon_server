@@ -1,6 +1,6 @@
 #include "madmincontext.h"
 #include "./core/sql/dba.h"
-#include "spdlogfix.h"
+
 namespace websocket {
 namespace music {
 
@@ -31,7 +31,7 @@ std::tuple<long, long> MAdminContext::generateContext(
     return {0, 0};
 
   } catch (const std::exception &e) {
-    SPDLOG_TRACE(e.what());
+    LOG_DEBUG << e.what();
     return {0, 0};
   }
 }
@@ -49,7 +49,7 @@ void MAdminContext::setUser() {
       user.type = r[0]["type"].as<std::string>();
     }
   } catch (const std::exception &e) {
-    SPDLOG_TRACE(e.what());
+    LOG_DEBUG << e.what();
   }
 }
 }  // namespace music

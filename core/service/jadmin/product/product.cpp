@@ -1326,7 +1326,7 @@ nlohmann::json Product::ins(nlohmann::json event, nlohmann::json args) {
     ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
     return ret;
   } catch (const std::exception& e) {
-    SPDLOG_TRACE(e.what());
+    LOG_DEBUG << e.what();
     nlohmann::json ret;
     ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
     return ret;
@@ -1422,7 +1422,7 @@ nlohmann::json Product::upd(nlohmann::json event, nlohmann::json args) {
         product_tags_process(tags_table, post_tag_table, args, transPtr,
                              post_id);
       } catch (const std::exception& e) {
-        SPDLOG_TRACE(e.what());
+        LOG_DEBUG << e.what();
         nlohmann::json ret;
         ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
         return ret;
@@ -1430,7 +1430,7 @@ nlohmann::json Product::upd(nlohmann::json event, nlohmann::json args) {
       try {
         save_product_categories(post_category_table, args, transPtr, post_id);
       } catch (const std::exception& e) {
-        SPDLOG_TRACE(e.what());
+        LOG_DEBUG << e.what();
         nlohmann::json ret;
         ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
         return ret;
@@ -1439,7 +1439,7 @@ nlohmann::json Product::upd(nlohmann::json event, nlohmann::json args) {
         purejoinTableSaveF("product.post_tone", args, transPtr,
                            "p_tones_tone_id", "post_id", "tone_id", post_id);
       } catch (const std::exception& e) {
-        SPDLOG_TRACE(e.what());
+        LOG_DEBUG << e.what();
         nlohmann::json ret;
         ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
         return ret;
@@ -1447,7 +1447,7 @@ nlohmann::json Product::upd(nlohmann::json event, nlohmann::json args) {
       try {
         save_product_clarities(post_clarity_table, args, transPtr, post_id);
       } catch (const std::exception& e) {
-        SPDLOG_TRACE(e.what());
+        LOG_DEBUG << e.what();
         nlohmann::json ret;
         ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
         return ret;
@@ -1455,7 +1455,7 @@ nlohmann::json Product::upd(nlohmann::json event, nlohmann::json args) {
       try {
         save_product_purities(post_purity_table, args, transPtr, post_id);
       } catch (const std::exception& e) {
-        SPDLOG_TRACE(e.what());
+        LOG_DEBUG << e.what();
         nlohmann::json ret;
         ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
         return ret;
@@ -1464,7 +1464,7 @@ nlohmann::json Product::upd(nlohmann::json event, nlohmann::json args) {
         save_product_Attachments(post_attachment_table, args, transPtr,
                                  post_id);
       } catch (const std::exception& e) {
-        SPDLOG_TRACE(e.what());
+        LOG_DEBUG << e.what();
         nlohmann::json ret;
         ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
         return ret;
@@ -1473,7 +1473,7 @@ nlohmann::json Product::upd(nlohmann::json event, nlohmann::json args) {
         save_product_diamond_sizes(post_diamond_sizes_table, args, transPtr,
                                    post_id);
       } catch (const std::exception& e) {
-        SPDLOG_TRACE(e.what());
+        LOG_DEBUG << e.what();
         nlohmann::json ret;
         ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
         return ret;
@@ -1482,7 +1482,7 @@ nlohmann::json Product::upd(nlohmann::json event, nlohmann::json args) {
         save_product_cs_sizes(post_diamond_sizes_table, args, transPtr,
                               post_id);
       } catch (const std::exception& e) {
-        SPDLOG_TRACE(e.what());
+        LOG_DEBUG << e.what();
         nlohmann::json ret;
         ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
         return ret;
@@ -1490,7 +1490,7 @@ nlohmann::json Product::upd(nlohmann::json event, nlohmann::json args) {
       try {
         save_product_cs_total(post_cs_total_table, args, transPtr, post_id);
       } catch (const std::exception& e) {
-        SPDLOG_TRACE(e.what());
+        LOG_DEBUG << e.what();
         nlohmann::json ret;
         ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
         return ret;
@@ -1500,7 +1500,7 @@ nlohmann::json Product::upd(nlohmann::json event, nlohmann::json args) {
                            "p_certified_by_certified_by", "post_id",
                            "certified_by_id", post_id);
       } catch (const std::exception& e) {
-        SPDLOG_TRACE(e.what());
+        LOG_DEBUG << e.what();
         nlohmann::json ret;
         ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
         return ret;
@@ -1510,7 +1510,7 @@ nlohmann::json Product::upd(nlohmann::json event, nlohmann::json args) {
                            "p_policy_post_policy", "post_id", "policy_id",
                            post_id);
       } catch (const std::exception& e) {
-        SPDLOG_TRACE(e.what());
+        LOG_DEBUG << e.what();
         nlohmann::json ret;
         ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
         return ret;
@@ -1520,7 +1520,7 @@ nlohmann::json Product::upd(nlohmann::json event, nlohmann::json args) {
       ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
       return ret;
     } catch (const std::exception& e) {
-      SPDLOG_TRACE(e.what());
+      LOG_DEBUG << e.what();
       nlohmann::json ret;
       ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
       return ret;
@@ -1594,7 +1594,7 @@ nlohmann::json Product::del(nlohmann::json event, nlohmann::json args) {
     ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
     return ret;
   } catch (const std::exception& e) {
-    SPDLOG_TRACE(e.what());
+    LOG_DEBUG << e.what();
     nlohmann::json ret;
     ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
     return ret;
@@ -1627,7 +1627,7 @@ nlohmann::json save_category(const nlohmann::json& event, nlohmann::json args) {
       ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
       return ret;
     } catch (const std::exception& e) {
-      SPDLOG_TRACE(e.what());
+      LOG_DEBUG << e.what();
       nlohmann::json ret;
       ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
       return ret;
@@ -1653,7 +1653,7 @@ nlohmann::json save_category(const nlohmann::json& event, nlohmann::json args) {
       ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
       return ret;
     } catch (const std::exception& e) {
-      SPDLOG_TRACE(e.what());
+      LOG_DEBUG << e.what();
       nlohmann::json ret;
       ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
       return ret;
@@ -1708,7 +1708,7 @@ nlohmann::json Product::get_product_diamond_price_data(nlohmann::json event,
       batch[0] = jresult;
       return batch;
     } catch (const std::exception& e) {
-      SPDLOG_TRACE(e.what());
+      LOG_DEBUG << e.what();
       // websocket::WsFns::successJsonObject(event, false, e.what());
       return nlohmann::json::array();
     }
@@ -1755,7 +1755,7 @@ nlohmann::json Product::get_product_cs_price_data(nlohmann::json event,
       batch[0] = jresult;
       return batch;
     } catch (const std::exception& e) {
-      SPDLOG_TRACE(e.what());
+      LOG_DEBUG << e.what();
       // websocket::WsFns::successJsonObject(event, false, e.what());
       nlohmann::json ret;
       return ret;
@@ -1804,7 +1804,7 @@ select * ,
 
     return batch;
   } catch (const std::exception& e) {
-    SPDLOG_TRACE(e.what());
+    LOG_DEBUG << e.what();
     // websocket::WsFns::successJsonObject(event, false, e.what());
     nlohmann::json r;
     return r;

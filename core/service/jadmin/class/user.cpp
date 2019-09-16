@@ -71,7 +71,7 @@ User::Info User::get_info() {
     info.access = res[0]["access"].as<int>();
     return info;
   } catch (const std::exception& e) {
-    SPDLOG_TRACE(e.what());
+    LOG_DEBUG << e.what();
     Info info;
     return info;
   }
@@ -88,14 +88,14 @@ User::Info User::get_info() {
         auto res = clientPtr->execSqlSync(strSql);
         count.users = res[0]["count"].as<int>();
     } catch (const std::exception &e) {
-       SPDLOG_TRACE(e.what());
+       LOG_DEBUG << e.what();
     }
     try {
         auto clientPtr = drogon::app().getDbClient("sce");
         auto res = clientPtr->execSqlSync(strSql);
         count.users = res[0]["count"].as<int>();
     } catch (const std::exception &e) {
-       SPDLOG_TRACE(e.what());
+       LOG_DEBUG << e.what();
     }
 
 
@@ -142,7 +142,7 @@ std::string User::get_password() {
       return r[0]["password"].as<std::string>();
     }
   } catch (const std::exception& e) {
-    SPDLOG_TRACE(e.what());
+    LOG_DEBUG << e.what();
   }
   return "";
 }
@@ -219,7 +219,7 @@ bool User::update_password(std::string new_password) {
     }
     // todo: save updated password in cache...
   } catch (const std::exception& e) {
-    SPDLOG_TRACE(e.what());
+    LOG_DEBUG << e.what();
   }
   return false;
 }
@@ -255,7 +255,7 @@ nlohmann::json User::userRegister(const nlohmann::json& event,
     // websocket::WsFns::successJsonObject(event, true, "Done");
     return userLogin(event, args);
   } catch (const std::exception& e) {
-    SPDLOG_TRACE(e.what());
+    LOG_DEBUG << e.what();
     nlohmann::json ret;
     ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
     return ret;
@@ -310,7 +310,7 @@ nlohmann::json User::userLogin(const nlohmann::json& event,
     return ret;
 
   } catch (const std::exception& e) {
-    SPDLOG_TRACE(e.what());
+    LOG_DEBUG << e.what();
     nlohmann::json ret;
     ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
     return ret;
@@ -336,14 +336,14 @@ nlohmann::json User::userId(const nlohmann::json& event,
         jresult[1] = root["value"];
       } catch (nlohmann::json::parse_error& e) {
         jresult[1] = 0;
-        SPDLOG_TRACE("message: {}", e.what());
-        SPDLOG_TRACE("exception id: {}", e.id);
-        SPDLOG_TRACE("byte position of error:", e.byte);
+        LOG_DEBUG << "message: {}", e.what();
+        LOG_DEBUG << "exception id: {}", e.id;
+        LOG_DEBUG << "byte position of error:", e.byte;
         nlohmann::json j = std::string("cant parse json reason: ") + e.what();
       }
       return jresult;
     } catch (const std::exception& e) {
-      SPDLOG_TRACE(e.what());
+      LOG_DEBUG << e.what();
       nlohmann::json jresult;
       jresult[0] = event;
       jresult[1] = 0;
@@ -371,7 +371,7 @@ nlohmann::json User::checkout(const nlohmann::json& event,
       jresult[1] = root["value"];
       return jresult;
     } catch (const std::exception& e) {
-      SPDLOG_TRACE(e.what());
+      LOG_DEBUG << e.what();
       nlohmann::json jresult;
       jresult[0] = event;
       jresult[1] = 0;

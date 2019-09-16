@@ -1,8 +1,7 @@
 #pragma once
 
-#include "wsfns.h"
 #include "mainactortype.h"
-#include "spdlogfix.h"
+#include "wsfns.h"
 
 #include "context/todocontext.h"
 

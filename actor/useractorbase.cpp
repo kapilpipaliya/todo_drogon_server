@@ -1,6 +1,6 @@
 #include "useractorbase.h"
 #include "./wscontroller/wsfns.h"
-#include "spdlogfix.h"
+
 namespace superactor {
 namespace system {
 UserActorBase::UserActorBase() = default;
@@ -37,9 +37,9 @@ void UserActorBase::blocking_run(
           websocket::WsFns::sendJson(wsConnPtr, j);
         }
       } catch (nlohmann::json::parse_error &e) {
-        SPDLOG_TRACE("message: {}", e.what());
-        SPDLOG_TRACE("exception id: {}", e.id);
-        SPDLOG_TRACE("byte position of error:", e.byte);
+        LOG_DEBUG << "message: {}", e.what();
+        LOG_DEBUG << "exception id: {}", e.id;
+        LOG_DEBUG << "byte position of error:", e.byte;
         nlohmann::json j = std::string("cant parse json reason: ") + e.what();
         websocket::WsFns::sendJson(wsConnPtr, j);
       }

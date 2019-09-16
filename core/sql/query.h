@@ -8,7 +8,7 @@
 #include <utility>
 #include <vector>
 #include "json.hpp"
-#include "spdlogfix.h"
+
 
 #include <drogon/drogon.h>
 #include "wscontroller/wsfns.h"
@@ -213,7 +213,7 @@ class Query {
       ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
       return ret;
     } catch (const std::exception& e) {
-      SPDLOG_TRACE(e.what());
+      LOG_DEBUG << e.what();
       nlohmann::json ret;
       ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
       return ret;
@@ -233,7 +233,7 @@ class Query {
       ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
       return ret;
     } catch (const std::exception& e) {
-      SPDLOG_TRACE(e.what());
+      LOG_DEBUG << e.what();
       nlohmann::json ret;
       ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
       return ret;

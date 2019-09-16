@@ -1,5 +1,5 @@
 #include "gettabledata.h"
-#include "spdlogfix.h"
+
 
 #include <fmt/format.h>
 #include <catch2/catch.hpp>
@@ -25,7 +25,7 @@ void GetTableData::connectToServer() {
                                             ]
                                             )";
           auto s = fmt::format(in, table, table);
-          SPDLOG_TRACE(s);
+          LOG_DEBUG << s;
           auto j = jsonparse(s);
 
           wsPtr->getConnection()->send(j.dump());
@@ -41,7 +41,7 @@ void GetTableData::setMessageHandler() {
              const drogon::WebSocketMessageType &type) {
         if (type == drogon::WebSocketMessageType::Text) {
           auto j = jsonparse(message);
-          SPDLOG_TRACE(j.dump());
+          LOG_DEBUG << j.dump();
           // event
           auto e = j[0][0];
           REQUIRE(e[0] == "auth");

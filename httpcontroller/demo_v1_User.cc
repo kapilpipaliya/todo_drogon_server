@@ -1,7 +1,7 @@
 #include "demo_v1_User.h"
 #include <boost/filesystem.hpp>
 #include "json.hpp"
-#include "spdlogfix.h"
+
 
 using namespace http::v1;
 
@@ -32,7 +32,7 @@ void User::download_id(
       callback(resp);
     }
   } catch (const std::exception &e) {
-    SPDLOG_TRACE(e.what());
+    LOG_DEBUG << e.what();
     auto resp = drogon::HttpResponse::newHttpResponse();
     resp->setBody(e.what());
     callback(resp);
@@ -64,7 +64,7 @@ void User::thumb_id(
       callback(resp);
     }
   } catch (const std::exception &e) {
-    SPDLOG_TRACE(e.what());
+    LOG_DEBUG << e.what();
     auto resp = drogon::HttpResponse::newHttpResponse();
     resp->setBody(e.what());
     callback(resp);
@@ -105,7 +105,7 @@ void User::music_id(
       // callback(resp);
       //}
     } catch (const std::exception &e) {
-      SPDLOG_TRACE(e.what());
+      LOG_DEBUG << e.what();
       auto resp = drogon::HttpResponse::newHttpResponse();
       resp->setBody(e.what());
       callback(resp);

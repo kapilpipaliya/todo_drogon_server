@@ -271,7 +271,7 @@ nlohmann::json Purity::ins(nlohmann::json event, nlohmann::json args) {
     ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
     return ret;
   } catch (const std::exception &e) {
-    SPDLOG_TRACE(e.what());
+    LOG_DEBUG << e.what();
     nlohmann::json ret;
     ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
     return ret;
@@ -351,7 +351,7 @@ nlohmann::json Purity::upd(nlohmann::json event, nlohmann::json args) {
       ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
       return ret;
     } catch (const std::exception &e) {
-      SPDLOG_TRACE(e.what());
+      LOG_DEBUG << e.what();
       nlohmann::json ret;
       ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
       return ret;
@@ -390,7 +390,7 @@ nlohmann::json Purity::del(nlohmann::json event, nlohmann::json args) {
     ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
     return ret;
   } catch (const std::exception &e) {
-    SPDLOG_TRACE(e.what());
+    LOG_DEBUG << e.what();
     nlohmann::json ret;
     ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
     return ret;

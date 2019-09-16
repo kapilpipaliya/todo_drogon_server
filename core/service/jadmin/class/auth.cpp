@@ -8,7 +8,7 @@
 #include "../../../sql/query.h"
 #include "../../../strfns.h"
 #include "session.h"
-#include "spdlogfix.h"
+
 namespace jewel {
 namespace service {
 Auth::Auth(std::shared_ptr<websocket::jewel::JAdminContext> context_)
@@ -79,7 +79,7 @@ std::tuple<long, long> Auth::login(const std::string &username,
         session_id = rs[0]["id"].as<long>();
       }
     } catch (const std::exception &e) {
-      SPDLOG_TRACE(e.what());
+      LOG_DEBUG << e.what();
     }
   }
   return {session_id, user_id};
@@ -128,7 +128,7 @@ void Auth::deleteuserSession() {
             auto r = sql::Dba::writeInTrans(transPtr, sqlSession, user);
             user = 0 ;
         } catch (const std::exception &e) {
-            SPDLOG_TRACE(e.what());
+            LOG_DEBUG << e.what();
         }
     }
 }
@@ -167,7 +167,7 @@ nlohmann::json Auth::saveFileMeta(const nlohmann::json &event,
     ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
     return ret;
   } catch (const std::exception &e) {
-    SPDLOG_TRACE(e.what());
+    LOG_DEBUG << e.what();
     nlohmann::json ret;
     ret[0] = websocket::WsFns::successJsonObject(event, false, "Error");
     return ret;
@@ -198,7 +198,7 @@ nlohmann::json Auth::saveImageMeta(const nlohmann::json &event,
     ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
     return ret;
   } catch (const std::exception &e) {
-    SPDLOG_TRACE(e.what());
+    LOG_DEBUG << e.what();
     nlohmann::json ret;
     ret[0] = websocket::WsFns::successJsonObject(event, false, "Error");
     return ret;
@@ -242,7 +242,7 @@ https://stackoverflow.com/questions/116038/what-is-the-best-way-to-read-an-entir
 x[0]["name"].c_str(), std::ios::in | std::ios::binary | std::ios::ate); if
 (file.is_open()) { auto memblock = read_all(file); file.close();
 
-                //SPDLOG_TRACE("the entire file content is in memory");
+                //LOG_DEBUG << "the entire file content is in memory";
                 wsConnPtr->send(memblock,
 drogon::WebSocketMessageType::Binary);
 // Note when server not able to send this file, front end crash.
@@ -254,7 +254,7 @@ drogon::WebSocketMessageType::Binary);
         return json(nlohmann::json::nullValue);
     } catch (const std::exception &e) {
 
-        SPDLOG_TRACE(e.what());
+        LOG_DEBUG << e.what();
         //websocket::WsFns::successJsonObject(event, false, e.what());
         return json(nlohmann::json::nullValue);
     }
@@ -336,7 +336,7 @@ nlohmann::json Auth::save_setting_attachment(const nlohmann::json &event,
     return ret;
 
   } catch (const std::exception &e) {
-    SPDLOG_TRACE(e.what());
+    LOG_DEBUG << e.what();
     nlohmann::json ret;
     return ret;
   }

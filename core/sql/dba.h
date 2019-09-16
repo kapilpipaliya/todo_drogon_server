@@ -3,7 +3,7 @@
 #include <drogon/HttpAppFramework.h>
 #include <string>
 #include "json.hpp"
-#include "spdlogfix.h"
+
 
 /**
  * Dba Class
@@ -47,7 +47,7 @@ class Dba {
       auto r = transPtr->execSqlSync(sql, args...);
       return r;
     } catch (const std::exception &e) {
-      SPDLOG_TRACE(e.what());
+      LOG_DEBUG << e.what();
       throw std::runtime_error("Invalid Sql At Dba write");
     }
   }
@@ -64,7 +64,7 @@ class Dba {
       auto r = transPtr->execSqlSync(sql, args...);
       return r;
     } catch (const std::exception &e) {
-      SPDLOG_TRACE(e.what());
+      LOG_DEBUG << e.what();
       throw std::runtime_error("Invalid Sql At Dba write");
     }
   }
@@ -76,7 +76,7 @@ class Dba {
       auto r = transPtr->execSqlSync(sql, args...);
       return r;
     } catch (const std::exception &e) {
-      SPDLOG_TRACE(e.what());
+      LOG_DEBUG << e.what();
       throw std::runtime_error("Invalid Sql At Dba write");
     }
   }

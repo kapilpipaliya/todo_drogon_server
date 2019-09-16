@@ -1,5 +1,5 @@
 #include "dba.h"
-#include "spdlogfix.h"
+
 namespace sql {
 Dba::Dba() = default;
 
@@ -9,7 +9,7 @@ drogon::orm::Result Dba::read(const std::string& sql) {
     auto res = clientPtr->execSqlSync(sql);
     return res;
   } catch (const std::exception& e) {
-    SPDLOG_TRACE(e.what());
+    LOG_DEBUG << e.what();
     throw std::runtime_error("Invalid Sql At Dba");
   }
 }

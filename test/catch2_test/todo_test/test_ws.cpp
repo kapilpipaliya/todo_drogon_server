@@ -1,9 +1,9 @@
+#include <drogon/drogon.h>
 #include <QCoreApplication>
 #include <catch2/catch.hpp>
 #include "../src/BatchResultTest.h"
 #include "../wsclient/once.h"
 #include "../wsclient/wsclient.h"
-#include "spdlogfix.h"
 // https://github.com/catchorg/Catch2/blob/master/docs/benchmarks.md
 // BENCHMARK("MY FUNC") { return my_func(); };
 
@@ -11,11 +11,12 @@ TEST_CASE("is connection possible", "[WSTest]") {
   char **argv;
   int i = 0;
   QCoreApplication a(i, argv);
-  auto w2 = wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
+  auto w2 =
+      wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
 
   bool r0 = false;
   Once::connect(&w2.getWebSocket(), &QWebSocket::connected, [&r0]() {
-    SPDLOG_TRACE("Connection successfull");
+    LOG_DEBUG << "Connection successfull";
     REQUIRE(true);
     r0 = true;
   });
@@ -30,7 +31,8 @@ TEST_CASE("server reply error on string type of message.", "[WSTest]") {
   char **argv;
   int i = 0;
   QCoreApplication a(i, argv);
-  auto w2 = wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
+  auto w2 =
+      wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
   std::string str = "hello";
   nlohmann::json j = str;
   // Bind not work because reply is not an array
@@ -42,7 +44,7 @@ TEST_CASE("server reply error on string type of message.", "[WSTest]") {
   w2.sendMessage(QString::fromStdString(j.dump()));
   bool r0 = false;
   Once::connect(&w2.getWebSocket(), &QWebSocket::textMessageReceived, [&r0]() {
-    SPDLOG_TRACE("Connection Not successfull");
+    LOG_DEBUG << "Connection Not successfull";
     REQUIRE(true);
     r0 = true;
   });
@@ -57,14 +59,15 @@ TEST_CASE("authorisation check without cookies", "[WSTest]") {
   char **argv;
   int i = 0;
   QCoreApplication a(i, argv);
-  auto w2 = wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
+  auto w2 =
+      wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
   nlohmann::json event = nlohmann::json::array({"user", "is_logged_in", 0});
   nlohmann::json payload = nlohmann::json::array({{event, {{}}}});
   //    json j = R"( [ [["user","is_logged_in",0],[[]]]] )"_json;
-  SPDLOG_TRACE(payload.dump());
+  LOG_DEBUG << payload.dump();
   bool r0 = false;
   auto b = w2.bindOnce(event, [&r0](nlohmann::json r) {
-    SPDLOG_TRACE("This should be false");
+    LOG_DEBUG << "This should be false";
     REQUIRE(r[0] == false);
     r0 = true;
   });
@@ -82,12 +85,13 @@ TEST_CASE("login on backend with username and password", "[WSTest]") {
   char **argv;
   int i = 0;
   QCoreApplication a(i, argv);
-  auto w2 = wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
+  auto w2 =
+      wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
   nlohmann::json event = nlohmann::json::array({"auth", "login", 0});
   nlohmann::json payload = nlohmann::json::array(
       {{event,
         nlohmann::json::object({{"user", "sadmin"}, {"pass", "123456"}})}});
-  SPDLOG_TRACE(payload.dump());
+  LOG_DEBUG << payload.dump();
   bool r0 = false;
   auto b = w2.bindOnce(event, [&r0](nlohmann::json r) {
     REQUIRE(r[0]["ok"] == true);
@@ -106,7 +110,8 @@ TEST_CASE("all events test", "[WSTest]") {
   char **argv;
   int i = 0;
   QCoreApplication a(i, argv);
-  auto w2 = wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
+  auto w2 =
+      wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
 
   wstest::BatchResultTest bt;
   using nlohmann::json;
@@ -160,7 +165,8 @@ TEST_CASE("check that all table Super Admin data are correctly replied",
   char **argv;
   int i = 0;
   QCoreApplication a(i, argv);
-  auto w2 = wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
+  auto w2 =
+wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
   nlohmann::json event1 = nlohmann::json::array({"auth", "login", 0});
   nlohmann::json event11 = nlohmann::json::array({"auth", "set_cookie", 0});
   nlohmann::json event2 = nlohmann::json::array({"auth", "is_logged_in", 0});
@@ -174,7 +180,7 @@ TEST_CASE("check that all table Super Admin data are correctly replied",
       {event4, nlohmann::json::array({{}})},
   });
 
-  SPDLOG_TRACE(payload.dump());
+  LOG_DEBUG << payload.dump();
   bool r0, r1, r2, r3, r4 = false;
   auto b1 = w2.bindOnce(event1, [&r0](nlohmann::json r) {
     REQUIRE(r[0]["ok"] == true);
@@ -225,7 +231,8 @@ TEST_CASE("password change should work.") {
   char **argv;
   int i = 0;
   QCoreApplication a(i, argv);
-  auto w2 = wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
+  auto w2 =
+wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
   nlohmann::json event1 = nlohmann::json::array({"auth", "login", 0});
   nlohmann::json event11 = nlohmann::json::array({"auth", "set_cookie", 0});
   nlohmann::json event2 = nlohmann::json::array({"user", "update_password", 0});
@@ -239,7 +246,7 @@ TEST_CASE("password change should work.") {
                    {{"old_password", "999999"}, {"new_password", "123456"}})})},
   });
 
-  SPDLOG_TRACE(payload.dump());
+  LOG_DEBUG << payload.dump();
   bool r0, r1, r2, r3 = false;
   auto b1 = w2.bindOnce(event1, [&r0](nlohmann::json r) {
     REQUIRE(r[0]["ok"] == true);
@@ -278,7 +285,8 @@ TEST_CASE("Logout successfull") {
   char **argv;
   int i = 0;
   QCoreApplication a(i, argv);
-  auto w2 = wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
+  auto w2 =
+wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
   nlohmann::json event1 = nlohmann::json::array({"auth", "login", 0});
   nlohmann::json event11 = nlohmann::json::array({"auth", "set_cookie", 0});
   nlohmann::json event2 = nlohmann::json::array({"auth", "logout", 0});
@@ -290,7 +298,7 @@ TEST_CASE("Logout successfull") {
       {event3, nlohmann::json::array()},
   });
 
-  SPDLOG_TRACE(payload.dump());
+  LOG_DEBUG << payload.dump();
   bool r0, r1, r2 = false;
   auto b1 = w2.bindOnce(event1,
                         [](nlohmann::json r) { REQUIRE(r[0]["ok"] == true); });
@@ -362,7 +370,8 @@ R"([{"username":"username","fullname":"fullname","email":"email@email.com","pass
   char **argv;
   int i = 0;
   QCoreApplication a(i, argv);
-  auto w2 = wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
+  auto w2 =
+wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
   nlohmann::json event1 = nlohmann::json::array({"auth", "login", 0});
   nlohmann::json event11 = nlohmann::json::array({"auth", "set_cookie", 0});
   nlohmann::json event2 = nlohmann::json::array({"user", "is_logged_in", 0});
@@ -383,7 +392,7 @@ R"([{"username":"username","fullname":"fullname","email":"email@email.com","pass
                    {R"([[null, null, null, null, "=very_new_song2"]])"_json})},
   });
 
-  SPDLOG_TRACE(payload.dump());
+  LOG_DEBUG << payload.dump();
   bool r0, r1, r2, r3, r4, r5 = false;
   auto b1 = w2.bindOnce(event1, [&r0](nlohmann::json r) {
     REQUIRE(r[0]["ok"] == true);

@@ -1,5 +1,5 @@
 #include "savedelete.h"
-#include "spdlogfix.h"
+
 
 #include <catch2/catch.hpp>
 #include "json.hpp"
@@ -33,7 +33,7 @@ void SaveDelete::connectToServer() {
                                             )";
           auto s = fmt::v5::format(in, table, insert_query, update_query,
                                    delete_query);
-          SPDLOG_TRACE(s);
+          LOG_DEBUG << s;
           auto j = jsonparse(s);
 
           wsPtr->getConnection()->send(j.dump());
@@ -49,7 +49,7 @@ void SaveDelete::setMessageHandler() {
              const drogon::WebSocketMessageType &type) {
         if (type == drogon::WebSocketMessageType::Text) {
           auto j = jsonparse(message);
-          SPDLOG_TRACE(j.dump());
+          LOG_DEBUG << j.dump();
           // event
           auto e = j[0][0];
           REQUIRE(e[0] == "auth");

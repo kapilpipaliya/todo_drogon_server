@@ -2,7 +2,7 @@
 #include <fmt/format.h>
 #include <catch2/catch.hpp>
 #include <iostream>
-#include "spdlogfix.h"
+
 namespace wstest{
 WSTestBase::WSTestBase() { /*init();*/
 }  // should be called after derived class
@@ -15,9 +15,9 @@ nlohmann::json WSTestBase::jsonparse(std::string msg) {
     auto j = nlohmann::json::parse(msg);
     return j;
   } catch (nlohmann::json::parse_error &e) {
-    SPDLOG_TRACE("message: {}", e.what());
-    SPDLOG_TRACE("exception id: {}", e.id);
-    SPDLOG_TRACE("byte position of error:", e.byte);
+    LOG_DEBUG << "message: {}", e.what();
+    LOG_DEBUG << "exception id: {}", e.id;
+    LOG_DEBUG << "byte position of error:", e.byte;
     throw std::runtime_error("Json can not be parsed");
   }
 }
@@ -35,10 +35,10 @@ void WSTestBase::setMessageHandler() {
       []([[maybe_unused]] const std::string &message,
          [[maybe_unused]] const drogon::WebSocketClientPtr &wsPtr,
          const drogon::WebSocketMessageType &type) {
-        //        SPDLOG_TRACE("new message: {}", message);
+        //        LOG_DEBUG << "new message: {}", message;
         //        REQUIRE(message.empty() == true);
         if (type == drogon::WebSocketMessageType::Pong) {
-          SPDLOG_TRACE("recv a pong");
+          LOG_DEBUG << "recv a pong";
           // if (!continually) { app().getLoop()->quit(); }
         }
       });
@@ -46,7 +46,7 @@ void WSTestBase::setMessageHandler() {
 void WSTestBase::setConnectionClosedHandler() {
   wsPtr->setConnectionClosedHandler(
       []([[maybe_unused]] const drogon::WebSocketClientPtr &wsPtr) {
-        SPDLOG_TRACE("ws closed!");
+        LOG_DEBUG << "ws closed!";
       });
 }
 void WSTestBase::connectToServer() {
@@ -56,7 +56,7 @@ void WSTestBase::connectToServer() {
                   [[maybe_unused]] const drogon::HttpResponsePtr &resp,
                   [[maybe_unused]] const drogon::WebSocketClientPtr &wsPtr) {
         if (r == drogon::ReqResult::Ok) {
-          // SPDLOG_TRACE("ws connected!");
+          // LOG_DEBUG << "ws connected!";
           // wsPtr->getConnection()->setPingMessage("", 2s);
           // wsPtr->getConnection()->send("hello!");
         } else {
@@ -76,7 +76,7 @@ void WSTestBase::quit(bool isPass, std::string reason) {
   // if(app().isRunning()){ app().quit(); }
   testResult = isPass;
   if (!reason.empty()) {
-    SPDLOG_TRACE(reason);
+    LOG_DEBUG << reason;
   }
 }
 

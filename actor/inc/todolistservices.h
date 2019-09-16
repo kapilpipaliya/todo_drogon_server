@@ -1,7 +1,7 @@
 #pragma once
 
 #include "mainactortype.h"
-#include "spdlogfix.h"
+
 #include "wsfns.h"
 
 #include "context/todocontext.h"
