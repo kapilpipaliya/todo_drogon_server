@@ -1,6 +1,7 @@
 #pragma once
 #include "base_policy.h"
 namespace openproj {
+namespace policy {
 class QueryPolicy : public BasePolicy {
   private:
 
@@ -95,4 +96,5 @@ class QueryPolicy : public BasePolicy {
 //    this->manage_public_queries_cache[query.project]
 //  }
 };
+}
 }

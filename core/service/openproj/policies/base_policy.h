@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace policy {
 class BasePolicy{
 public:
   // attr_accessor :user
@@ -16,4 +17,5 @@ public:
 //    cache(object)[action]
 //  }
 };
+}
 }

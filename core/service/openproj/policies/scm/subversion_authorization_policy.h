@@ -1,6 +1,7 @@
 #pragma once
 #include "authorization_policy.h"
 namespace openproj {
+namespace policy {
 namespace Scm {
 
 class SubversionAuthorizationPolicy : public Scm::AuthoriziationPolicy {
@@ -11,5 +12,6 @@ class SubversionAuthorizationPolicy : public Scm::AuthoriziationPolicy {
 //    %w(GET PROPFIND REPORT OPTIONS).include?(method)
 //  }
 };
+}
 }
 }

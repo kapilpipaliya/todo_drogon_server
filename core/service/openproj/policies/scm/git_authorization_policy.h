@@ -1,6 +1,7 @@
 #pragma once
 #include "authorization_policy.h"
 namespace openproj {
+namespace policy {
 namespace Scm {
 
 class GitAuthorizationPolicy : public Scm::AuthoriziationPolicy {
@@ -13,5 +14,6 @@ class GitAuthorizationPolicy : public Scm::AuthoriziationPolicy {
 //    !%r{^#{location}/*[^/]+/+(info/refs\?service=)?git\-receive\-pack$}o.match(uri)
 //  }
 };
+}
 }
 }

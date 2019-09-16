@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace policy {
 namespace Scm {
 
 class AuthoriziationPolicy{
@@ -40,5 +41,6 @@ class AuthoriziationPolicy{
 //    user.allowed_to?(:commit_access, project)
 //  }
 };
+}
 }
 }

@@ -5,6 +5,7 @@
 // This capsulates the validation of a requested redirect URL.
 //
 namespace openproj {
+namespace policy {
 class RedirectPolicy{
 //  attr_reader :validated_redirect_url, :request
 
@@ -121,4 +122,5 @@ class RedirectPolicy{
 //    relative_root.blank? || this->requested_url.path.starts_with?(relative_root)
   }
 };
+}
 }

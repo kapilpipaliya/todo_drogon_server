@@ -1,6 +1,7 @@
 #pragma once
 #include "base_policy.h"
 namespace openproj {
+namespace policy {
 class VersionPolicy : public BasePolicy {
   private:
 
@@ -26,4 +27,5 @@ class VersionPolicy : public BasePolicy {
 //    this->show_cache[version]
 //  }
 };
+}
 }
