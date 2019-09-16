@@ -2,9 +2,9 @@
 
 #include "../../../sql/dba.h"
 #include "./session.h"
-namespace jadmin {
+namespace jewel {
 namespace service {
-Session::Session(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
+Session::Session(std::shared_ptr<websocket::jewel::JAdminContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }

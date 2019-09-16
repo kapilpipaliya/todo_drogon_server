@@ -8,7 +8,6 @@
 #include "spdlogfix.h"
 
 #include "jadminactor.h"
-#include "juseractor.h"
 #include "madminactor.h"
 #include "todoactor.h"
 
@@ -84,10 +83,10 @@ void MainActor::passToUser(MainActorType actortype,
                            std::string &&message,
                            const drogon::WebSocketMessageType &type) {
   switch (actortype) {
-    case MainActorType::JAdmin: {
+    case MainActorType::Jewel: {
       auto it = actorMap.find(wsConnPtr);
       if (it == actorMap.end()) {
-        caf::actor userActor = spawn<jadminactor::JAdminActor>();
+        caf::actor userActor = spawn<jewelactor::JAdminActor>();
         monitor(userActor);  // this will send message when it down
         request(userActor, caf::infinite, wsConnPtr, std::move(message), type);
         actorMap.insert({wsConnPtr, userActor});
@@ -98,21 +97,7 @@ void MainActor::passToUser(MainActorType actortype,
 
       break;
     }
-    case MainActorType::JUser: {
-      auto it = actorMap.find(wsConnPtr);
-      if (it == actorMap.end()) {
-        caf::actor userActor = spawn<juseractor::JUserActor>();
-        monitor(userActor);  // this will send message when it down
-        request(userActor, caf::infinite, wsConnPtr, std::move(message), type);
-        actorMap.insert({wsConnPtr, userActor});
-      } else {
-        caf::actor userActor = it->second;
-        request(userActor, caf::infinite, wsConnPtr, std::move(message), type);
-      }
-
-      break;
-    }
-    case MainActorType::MAdmin: {
+    case MainActorType::Music: {
       auto it = actorMap.find(wsConnPtr);
       if (it == actorMap.end()) {
         caf::actor userActor = spawn<musicactor::MAdminActor>();
@@ -126,7 +111,7 @@ void MainActor::passToUser(MainActorType actortype,
 
       break;
     }
-    case MainActorType::TODO: {
+    case MainActorType::Todo: {
       auto it = actorMap.find(wsConnPtr);
       if (it == actorMap.end()) {
         caf::actor todoActor = spawn<todoactor::TodoActor>();
@@ -140,8 +125,6 @@ void MainActor::passToUser(MainActorType actortype,
 
       break;
     }
-    default:
-      break;
   }
 }
 }  // namespace system

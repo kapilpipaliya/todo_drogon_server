@@ -4,9 +4,9 @@
 
 #include "../../../sql/dba.h"
 #include "wscontroller/wsfns.h"
-namespace jadmin {
+namespace jewel {
 namespace service {
-Txn::Txn(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
+Txn::Txn(std::shared_ptr<websocket::jewel::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("account", "txn", "a"));
   setupTable();

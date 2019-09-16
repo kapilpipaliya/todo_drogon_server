@@ -3,11 +3,11 @@
 #include "../../../../wscontroller/context/jadmincontext.h"
 #include "core/sql/query.h"
 
-namespace jadmin {
+namespace jewel {
 namespace service {
 class Clarity {
  public:
-  Clarity(std::shared_ptr<websocket::jadmin::JAdminContext>);
+  Clarity(std::shared_ptr<websocket::jewel::JAdminContext>);
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
 
@@ -15,9 +15,9 @@ class Clarity {
   void setupTable();
   nlohmann::json ins(nlohmann::json event, nlohmann::json args);
   nlohmann::json upd(nlohmann::json event, nlohmann::json args);
-  std::shared_ptr<websocket::jadmin::JAdminContext> context;
+  std::shared_ptr<websocket::jewel::JAdminContext> context;
   sql::Query query;
 };
 }  // namespace service
-}  // namespace jadmin
+}  // namespace jewel
 #endif  // CLARITY_H

@@ -3,11 +3,11 @@
 #include "../../../../wscontroller/context/jadmincontext.h"
 #include "core/sql/query.h"
 
-namespace jadmin {
+namespace jewel {
 namespace service {
 class Auth {
  public:
-  Auth(std::shared_ptr<websocket::jadmin::JAdminContext>);
+  Auth(std::shared_ptr<websocket::jewel::JAdminContext>);
   void setupTable();
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
@@ -116,7 +116,7 @@ class Auth {
   nlohmann::json save_setting_attachment(const nlohmann::json& event,
                                          std::string& message);
 
-  std::shared_ptr<websocket::jadmin::JAdminContext> context;
+  std::shared_ptr<websocket::jewel::JAdminContext> context;
   sql::Query query;
 };
 }  // namespace service

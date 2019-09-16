@@ -2,9 +2,9 @@
 
 #include <utility>
 
-namespace jadmin {
+namespace jewel {
 namespace service {
-Priority::Priority(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
+Priority::Priority(std::shared_ptr<websocket::jewel::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("account", "priority", "a"));
   setupTable();

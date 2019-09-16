@@ -11,7 +11,7 @@
 
 #include "context/jadmincontext.h"
 namespace websocket {
-namespace jadmin {
+namespace jewel {
 
 void JAdminWebSocket::handleNewMessage(
     const drogon::WebSocketConnectionPtr &wsConnPtr, std::string &&message,
@@ -20,7 +20,7 @@ void JAdminWebSocket::handleNewMessage(
   superactor::system::globalCAF.communicateWithActors()
       ->request(superactor::system::globalCAF.mainActor(), caf::infinite,
                 superactor::system::run_atom::value,
-                superactor::system::MainActorType::JAdmin, wsConnPtr,
+                superactor::system::MainActorType::Jewel, wsConnPtr,
                 std::move(message), type)
       .receive(
           [&]() {
@@ -38,7 +38,7 @@ void JAdminWebSocket::handleNewMessage(
 void JAdminWebSocket::handleNewConnection(
     const drogon::HttpRequestPtr &req,
     const drogon::WebSocketConnectionPtr &wsConnPtr) {
-  std::shared_ptr<websocket::jadmin::JAdminContext> context =
+  std::shared_ptr<websocket::jewel::JAdminContext> context =
       std::make_shared<JAdminContext>(req, wsConnPtr);
   wsConnPtr->setContext(context);
 }

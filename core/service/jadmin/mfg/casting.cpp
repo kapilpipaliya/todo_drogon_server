@@ -2,9 +2,9 @@
 
 #include <utility>
 
-namespace jadmin {
+namespace jewel {
 namespace service {
-Casting::Casting(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
+Casting::Casting(std::shared_ptr<websocket::jewel::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("mfg", "casting", "m"));
   setupTable();

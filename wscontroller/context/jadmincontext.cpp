@@ -5,7 +5,7 @@
 #include "./core/sql/dba.h"
 #include "spdlogfix.h"
 namespace websocket {
-namespace jadmin {
+namespace jewel {
 JAdminContext::JAdminContext(const drogon::HttpRequestPtr &req,
                              const drogon::WebSocketConnectionPtr &wsConnPtr_)
     : wsConnPtr(wsConnPtr_) {

@@ -4,9 +4,9 @@
 #include "../../../sql/dba.h"
 
 // using namespace std::chrono;
-namespace jadmin {
+namespace jewel {
 namespace service {
-User::User(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
+User::User(std::shared_ptr<websocket::jewel::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("music", "user", "e"));
   setupTable();

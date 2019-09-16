@@ -2,7 +2,7 @@
 #include <drogon/WebSocketController.h>
 #include "../actor/mainactor.h"
 namespace websocket {
-namespace jadmin {
+namespace jewel {
 
 class JAdminWebSocket : public drogon::WebSocketController<JAdminWebSocket> {
  public:

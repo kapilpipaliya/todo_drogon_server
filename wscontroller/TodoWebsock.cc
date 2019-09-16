@@ -19,7 +19,7 @@ void TodoWebsock::handleNewMessage(
   superactor::system::globalCAF.communicateWithActors()
       ->request(superactor::system::globalCAF.mainActor(), caf::infinite,
                 superactor::system::run_atom::value,
-                superactor::system::MainActorType::TODO, wsConnPtr,
+                superactor::system::MainActorType::Todo, wsConnPtr,
                 std::move(message), type)
       .receive(
           [&]() {

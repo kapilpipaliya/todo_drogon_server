@@ -4,7 +4,7 @@
 #include "caf/all.hpp"
 namespace superactor {
 namespace system {
-enum MainActorType { JAdmin, JUser, MAdmin, TODO };
+enum MainActorType { Jewel, Music, Todo };
 using run_atom = caf::atom_constant<caf::atom("run")>;
 using exit_atom = caf::atom_constant<caf::atom("exit")>;
 }  // namespace system

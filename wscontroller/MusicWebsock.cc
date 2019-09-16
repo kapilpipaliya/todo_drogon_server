@@ -19,7 +19,7 @@ void MusicWebsock::handleNewMessage(
   superactor::system::globalCAF.communicateWithActors()
       ->request(superactor::system::globalCAF.mainActor(), caf::infinite,
                 superactor::system::run_atom::value,
-                superactor::system::MainActorType::MAdmin, wsConnPtr,
+                superactor::system::MainActorType::Music, wsConnPtr,
                 std::move(message), type)
       .receive(
           [&]() {

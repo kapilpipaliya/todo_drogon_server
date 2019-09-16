@@ -2,9 +2,9 @@
 
 #include <utility>
 
-namespace jadmin {
+namespace jewel {
 namespace service {
-Accessory::Accessory(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
+Accessory::Accessory(std::shared_ptr<websocket::jewel::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("material", "accessory", "a"));
   setupTable();

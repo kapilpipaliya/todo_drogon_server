@@ -5,7 +5,7 @@
 
 #include "useractorbase.h"
 namespace superactor {
-namespace jadminactor {
+namespace jewelactor {
 class JAdminActor : public caf::event_based_actor,
                     public system::UserActorBase {
  public:
@@ -22,6 +22,6 @@ class JAdminActor : public caf::event_based_actor,
       const drogon::WebSocketConnectionPtr& wsConnPtr,
       std::string& message) override;
 };
-}  // namespace jadminactor
+}  // namespace jewelactor
 }  // namespace superactor
 #endif

@@ -2,10 +2,10 @@
 #include <boost/filesystem.hpp>
 #include <utility>
 
-namespace jadmin {
+namespace jewel {
 namespace service {
 PaymentMethod::PaymentMethod(
-    std::shared_ptr<websocket::jadmin::JAdminContext> context_)
+    std::shared_ptr<websocket::jewel::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("account", "payment_method", "t"));
   setupTable();

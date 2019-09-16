@@ -3,11 +3,11 @@
 #include "../../../../wscontroller/context/jadmincontext.h"
 #include "core/sql/query.h"
 
-namespace jadmin {
+namespace jewel {
 namespace service {
 class Product {
  public:
-  Product(std::shared_ptr<websocket::jadmin::JAdminContext>);
+  Product(std::shared_ptr<websocket::jewel::JAdminContext>);
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
   nlohmann::json del(nlohmann::json event, nlohmann::json args);
@@ -23,7 +23,7 @@ class Product {
                                            nlohmann::json args);
   nlohmann::json get_product_category_tree_data(nlohmann::json event,
                                                 const nlohmann::json& args);
-  std::shared_ptr<websocket::jadmin::JAdminContext> context;
+  std::shared_ptr<websocket::jewel::JAdminContext> context;
   sql::Query query;
 };
 }  // namespace service

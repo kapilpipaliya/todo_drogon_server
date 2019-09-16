@@ -2,10 +2,10 @@
 
 #include <utility>
 
-namespace jadmin {
+namespace jewel {
 namespace service {
 JournalType::JournalType(
-    std::shared_ptr<websocket::jadmin::JAdminContext> context_)
+    std::shared_ptr<websocket::jewel::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("account", "journal_type", "a"));
   setupTable();

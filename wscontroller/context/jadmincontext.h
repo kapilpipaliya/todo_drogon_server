@@ -3,7 +3,7 @@
 #include <drogon/WebSocketController.h>
 #include "json.hpp"
 namespace websocket {
-namespace jadmin {
+namespace jewel {
 class JAdminContext {
  public:
   JAdminContext(const drogon::HttpRequestPtr &req,

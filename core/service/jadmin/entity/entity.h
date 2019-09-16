@@ -3,11 +3,11 @@
 #include "../../../../wscontroller/context/jadmincontext.h"
 #include "core/sql/query.h"
 
-namespace jadmin {
+namespace jewel {
 namespace service {
 class Entity {
  public:
-  Entity(std::shared_ptr<websocket::jadmin::JAdminContext>);
+  Entity(std::shared_ptr<websocket::jewel::JAdminContext>);
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
 
@@ -16,7 +16,7 @@ class Entity {
   nlohmann::json ins(nlohmann::json event, nlohmann::json args);
   nlohmann::json upd(nlohmann::json event, nlohmann::json args);
   nlohmann::json del(nlohmann::json event, nlohmann::json args);
-  std::shared_ptr<websocket::jadmin::JAdminContext> context;
+  std::shared_ptr<websocket::jewel::JAdminContext> context;
   sql::Query query;
 };
 }  // namespace service

@@ -3,7 +3,7 @@
 
 #include "jadminservices.h"
 namespace superactor {
-namespace jadminactor {
+namespace jewelactor {
 JAdminActor::JAdminActor(caf::actor_config &cfg)
     : caf::event_based_actor(cfg) {}
 
@@ -30,64 +30,64 @@ nlohmann::json JAdminActor::handleTextMessage(
 
     if constexpr (false) {
     }
-    REGISTER("auth", jadmin::service::Auth)
-    REGISTER("user", jadmin::service::User)
-    REGISTER("account_type", jadmin::service::AccountType)
-    REGISTER("account", jadmin::service::Account)
-    REGISTER("account_heading", jadmin::service::AccountHeading)
-    REGISTER("journal_type", jadmin::service::JournalType)
-    REGISTER("txn", jadmin::service::Txn)
-    REGISTER("priority", jadmin::service::Priority)
+    REGISTER("auth", jewel::service::Auth)
+    REGISTER("user", jewel::service::User)
+    REGISTER("account_type", jewel::service::AccountType)
+    REGISTER("account", jewel::service::Account)
+    REGISTER("account_heading", jewel::service::AccountHeading)
+    REGISTER("journal_type", jewel::service::JournalType)
+    REGISTER("txn", jewel::service::Txn)
+    REGISTER("priority", jewel::service::Priority)
 
-    REGISTER("node", jadmin::service::Node)
-    REGISTER("role", jadmin::service::Role)
-    REGISTER("task", jadmin::service::Task)
+    REGISTER("node", jewel::service::Node)
+    REGISTER("role", jewel::service::Role)
+    REGISTER("task", jewel::service::Task)
 
-    REGISTER("department_type", jadmin::service::DepartmentType)
-    REGISTER("department", jadmin::service::Department)
-    REGISTER("casting", jadmin::service::Casting)
-    REGISTER("wax_setting", jadmin::service::WaxSetting)
-    REGISTER("metal_issue", jadmin::service::MetalIssue)
-    REGISTER("MFG_txn", jadmin::service::MfgTxn)
-    REGISTER("refining", jadmin::service::Refining)
-    REGISTER("m_transfer", jadmin::service::MTransfer)
+    REGISTER("department_type", jewel::service::DepartmentType)
+    REGISTER("department", jewel::service::Department)
+    REGISTER("casting", jewel::service::Casting)
+    REGISTER("wax_setting", jewel::service::WaxSetting)
+    REGISTER("metal_issue", jewel::service::MetalIssue)
+    REGISTER("MFG_txn", jewel::service::MfgTxn)
+    REGISTER("refining", jewel::service::Refining)
+    REGISTER("m_transfer", jewel::service::MTransfer)
 
-    REGISTER("metal", jadmin::service::Metal)
-    REGISTER("purity", jadmin::service::Purity)
-    REGISTER("tone", jadmin::service::Tone)
-    REGISTER("accessory", jadmin::service::Accessory)
+    REGISTER("metal", jewel::service::Metal)
+    REGISTER("purity", jewel::service::Purity)
+    REGISTER("tone", jewel::service::Tone)
+    REGISTER("accessory", jewel::service::Accessory)
 
-    REGISTER("clarity", jadmin::service::Clarity)
-    REGISTER("shape", jadmin::service::Shape)
-    REGISTER("d_color", jadmin::service::DColor)
-    REGISTER("cs_color", jadmin::service::CSColor)
-    REGISTER("cs_type", jadmin::service::CSType)
-    REGISTER("size", jadmin::service::Size)  // CRUD not required
-    REGISTER("d_size", jadmin::service::DSize)
-    REGISTER("cs_size", jadmin::service::CSSize)
+    REGISTER("clarity", jewel::service::Clarity)
+    REGISTER("shape", jewel::service::Shape)
+    REGISTER("d_color", jewel::service::DColor)
+    REGISTER("cs_color", jewel::service::CSColor)
+    REGISTER("cs_type", jewel::service::CSType)
+    REGISTER("size", jewel::service::Size)  // CRUD not required
+    REGISTER("d_size", jewel::service::DSize)
+    REGISTER("cs_size", jewel::service::CSSize)
 
-    REGISTER("address_type", jadmin::service::AddressType)
-    REGISTER("contact_type", jadmin::service::ContactType)
-    REGISTER("entity_type", jadmin::service::EntityType)
-    REGISTER("entity", jadmin::service::Entity)
+    REGISTER("address_type", jewel::service::AddressType)
+    REGISTER("contact_type", jewel::service::ContactType)
+    REGISTER("entity_type", jewel::service::EntityType)
+    REGISTER("entity", jewel::service::Entity)
 
-    REGISTER("setting", jadmin::service::Setting)
-    REGISTER("currency", jadmin::service::Currency)
-    REGISTER("log", jadmin::service::Log)
-    REGISTER("support", jadmin::service::Support)
-    REGISTER("image_collection", jadmin::service::ImageCollection)
-    REGISTER("image", jadmin::service::Image)
-    REGISTER("payment_method", jadmin::service::PaymentMethod)
+    REGISTER("setting", jewel::service::Setting)
+    REGISTER("currency", jewel::service::Currency)
+    REGISTER("log", jewel::service::Log)
+    REGISTER("support", jewel::service::Support)
+    REGISTER("image_collection", jewel::service::ImageCollection)
+    REGISTER("image", jewel::service::Image)
+    REGISTER("payment_method", jewel::service::PaymentMethod)
 
-    REGISTER("option", jadmin::service::POption)  // CRUD Not required
-    REGISTER("product", jadmin::service::Product)
-    REGISTER("post", jadmin::service::Post1)
-    REGISTER("category", jadmin::service::PCategory)
-    REGISTER("tag", jadmin::service::Tag)
-    REGISTER("shipping_class", jadmin::service::PShippingClass)
-    REGISTER("setting_type", jadmin::service::SettingType)
-    REGISTER("certified_by", jadmin::service::CertifiedBy)
-    REGISTER("policy", jadmin::service::Policy)
+    REGISTER("option", jewel::service::POption)  // CRUD Not required
+    REGISTER("product", jewel::service::Product)
+    REGISTER("post", jewel::service::Post1)
+    REGISTER("category", jewel::service::PCategory)
+    REGISTER("tag", jewel::service::Tag)
+    REGISTER("shipping_class", jewel::service::PShippingClass)
+    REGISTER("setting_type", jewel::service::SettingType)
+    REGISTER("certified_by", jewel::service::CertifiedBy)
+    REGISTER("policy", jewel::service::Policy)
     else {
       return nlohmann::json::array();
     }
@@ -104,7 +104,7 @@ nlohmann::json JAdminActor::handleBinaryMessage(
   nlohmann::json event;
   try {
     long c =
-        wsConnPtr->getContext<websocket::jadmin::JAdminContext>()->sessionId();
+        wsConnPtr->getContext<websocket::jewel::JAdminContext>()->sessionId();
     auto sqlSession =
         "SELECT event FROM public.temp_image where session_id = $1";
     auto clientPtr = drogon::app().getDbClient("sce");
@@ -114,9 +114,8 @@ nlohmann::json JAdminActor::handleBinaryMessage(
         event = nlohmann::json::parse(r[0]["event"].c_str());
         // p.handleBinaryEvent creates new transaction.
         if (event[0] == "image") {
-          auto contx =
-              wsConnPtr->getContext<websocket::jadmin::JAdminContext>();
-          jadmin::service::Auth p{contx};
+          auto contx = wsConnPtr->getContext<websocket::jewel::JAdminContext>();
+          jewel::service::Auth p{contx};
           auto res = p.handleBinaryEvent(event, 1, message);
           if (!res.is_null()) {
             return res;
@@ -142,5 +141,5 @@ nlohmann::json JAdminActor::handleBinaryMessage(
   return ret;
 }
 
-}  // namespace jadminactor
+}  // namespace jewelactor
 }  // namespace superactor

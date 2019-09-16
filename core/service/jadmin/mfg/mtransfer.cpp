@@ -2,9 +2,9 @@
 
 #include <utility>
 
-namespace jadmin {
+namespace jewel {
 namespace service {
-MTransfer::MTransfer(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
+MTransfer::MTransfer(std::shared_ptr<websocket::jewel::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("mfg", "m_transfer", "m"));
   setupTable();

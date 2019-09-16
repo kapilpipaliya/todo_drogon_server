@@ -158,7 +158,7 @@ nlohmann::json music::service::Song::handleBinaryEvent(nlohmann::json event,
 }
 
 nlohmann::json music::service::Song::save_song_binary(
-    [[maybe_unused]] const nlohmann::json &event, std::string &message) {
+    const nlohmann::json &event, std::string &message) {
   auto session_id = context->sessionId();
   auto strSql =
       sql::CRUDHelper::sel_("music.temp_file_meta", "event,  name, size, type",

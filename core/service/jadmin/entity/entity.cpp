@@ -3,9 +3,9 @@
 #include <utility>
 #include "../../../sql/dba.h"
 
-namespace jadmin {
+namespace jewel {
 namespace service {
-Entity::Entity(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
+Entity::Entity(std::shared_ptr<websocket::jewel::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("entity", "entity", "e"));
   setupTable();

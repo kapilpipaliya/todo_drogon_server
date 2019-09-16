@@ -1,9 +1,9 @@
 #include "account.h"
 
 #include <utility>
-namespace jadmin {
+namespace jewel {
 namespace service {
-Account::Account(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
+Account::Account(std::shared_ptr<websocket::jewel::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("account", "account", "a"));
   setupTable();

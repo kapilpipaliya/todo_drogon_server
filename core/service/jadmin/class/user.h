@@ -19,7 +19,7 @@
 
 #include "core/sql/query.h"
 
-namespace jadmin {
+namespace jewel {
 namespace service {
 /**
  * User Class
@@ -42,7 +42,7 @@ class User {
   struct Catalog {};
 
  public:
-  User(std::shared_ptr<websocket::jadmin::JAdminContext>);
+  User(std::shared_ptr<websocket::jewel::JAdminContext>);
   // User(int user_id);
   void setupTable();
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
@@ -448,7 +448,7 @@ class User {
   nlohmann::json checkout(const nlohmann::json& event,
                           const nlohmann::json& args);
 
-  std::shared_ptr<websocket::jadmin::JAdminContext> context;
+  std::shared_ptr<websocket::jewel::JAdminContext> context;
   sql::Query query;
 };
 }  // namespace service

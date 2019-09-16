@@ -1,10 +1,10 @@
 #include "accountheading.h"
 
 #include <utility>
-namespace jadmin {
+namespace jewel {
 namespace service {
 AccountHeading::AccountHeading(
-    std::shared_ptr<websocket::jadmin::JAdminContext> context_)
+    std::shared_ptr<websocket::jewel::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("account", "account_heading", "a"));
   setupTable();

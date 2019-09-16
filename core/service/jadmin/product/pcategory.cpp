@@ -1,10 +1,10 @@
 #include "pcategory.h"
 
 #include <utility>
-namespace jadmin {
+namespace jewel {
 namespace service {
 
-PCategory::PCategory(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
+PCategory::PCategory(std::shared_ptr<websocket::jewel::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("product", "category", "c"));
   setupTable();

@@ -181,20 +181,20 @@
 
 #include "core/service/openproj/services/attachments/set_replacements.h"
 
+#include "core/service/openproj/services/authorization.h"
 #include "core/service/openproj/services/authorization/abstract_query.h"
 #include "core/service/openproj/services/authorization/abstract_user_query.h"
 #include "core/service/openproj/services/authorization/enterprise_service.h"
 #include "core/service/openproj/services/authorization/project_query.h"
 #include "core/service/openproj/services/authorization/query_transformation.h"
+#include "core/service/openproj/services/authorization/query_transformation_visitor.h"
 #include "core/service/openproj/services/authorization/query_transformations.h"
 #include "core/service/openproj/services/authorization/query_transformations_order.h"
-#include "core/service/openproj/services/authorization/query_transformation_visitor.h"
 #include "core/service/openproj/services/authorization/user_allowed_query.h"
 #include "core/service/openproj/services/authorization/user_allowed_service.h"
 #include "core/service/openproj/services/authorization/user_global_roles_query.h"
 #include "core/service/openproj/services/authorization/user_project_roles_query.h"
 #include "core/service/openproj/services/authorization/user_roles_query.h"
-#include "core/service/openproj/services/authorization.h"
 #include "core/service/openproj/services/authorization_service.h"
 #include "core/service/openproj/services/base_project_service.h"
 
@@ -278,12 +278,12 @@
 #include "core/service/openproj/services/update_type_service.h"
 #include "core/service/openproj/services/update_user_email_settings_service.h"
 
+#include "core/service/openproj/services/user_search_service.h"
 #include "core/service/openproj/services/users/change_password_service.h"
 #include "core/service/openproj/services/users/create_user_service.h"
 #include "core/service/openproj/services/users/delete_service.h"
 #include "core/service/openproj/services/users/update_service.h"
 #include "core/service/openproj/services/users/update_user_service.h"
-#include "core/service/openproj/services/user_search_service.h"
 
 #include "core/service/openproj/services/versions/create_service.h"
 #include "core/service/openproj/services/versions/delete_service.h"
@@ -433,7 +433,7 @@ nlohmann::json Auth::saveFileMeta(const nlohmann::json& event,
   }
 }
 
-bool Auth::logout(long key, [[maybe_unused]] bool relogin) {
+bool Auth::logout(long key, bool relogin) {
   // If no key is passed try to find the session id
   key = key ? key : context->sessionId();
 
@@ -468,8 +468,7 @@ bool Auth::logout(long key, [[maybe_unused]] bool relogin) {
 }
 
 std::tuple<long, long> Auth::login(const std::string& username,
-                                   const std::string& password,
-                                   [[maybe_unused]] bool allow_ui) {
+                                   const std::string& password, bool allow_ui) {
   long session_id = 0;
   long user_id = 0;
   if (!password.empty() && !username.empty()) {

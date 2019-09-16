@@ -13,9 +13,9 @@
   }                                                    \
   if ((s).size() > 0) array.pop_back();                \
   array += "}";
-namespace jadmin {
+namespace jewel {
 namespace service {
-Purity::Purity(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
+Purity::Purity(std::shared_ptr<websocket::jewel::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("material", "purity", "p"));
   setupTable();

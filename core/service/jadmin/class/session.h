@@ -8,11 +8,11 @@
  * This class handles all of the session related stuff in Ampache
  *
  */
-namespace jadmin {
+namespace jewel {
 namespace service {
 class Session {
  public:
-  Session(std::shared_ptr<websocket::jadmin::JAdminContext>);
+  Session(std::shared_ptr<websocket::jewel::JAdminContext>);
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
   void setupTable();
@@ -166,7 +166,7 @@ class Session {
    */
   // static void ungimp_ie();
  private:
-  std::shared_ptr<websocket::jadmin::JAdminContext> context;
+  std::shared_ptr<websocket::jewel::JAdminContext> context;
   sql::Query query;
 };
 }  // namespace service

@@ -4,9 +4,9 @@
 #include "../../../sql/dba.h"
 #include "../../../strfns.h"
 
-namespace jadmin {
+namespace jewel {
 namespace service {
-Product::Product(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
+Product::Product(std::shared_ptr<websocket::jewel::JAdminContext> context_)
     : context(std::move(context_)) {
   query = sql::Query(sql::ObjectIdentifier("post", "post", "post"));
   setupTable();

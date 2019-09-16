@@ -9,9 +9,9 @@
 #include "session.h"
 #include "spdlogfix.h"
 
-namespace jadmin {
+namespace jewel {
 namespace service {
-Auth::Auth(std::shared_ptr<websocket::jadmin::JAdminContext> context_)
+Auth::Auth(std::shared_ptr<websocket::jewel::JAdminContext> context_)
     : context(std::move(context_)) {
   setupTable();
 }
@@ -56,8 +56,7 @@ nlohmann::json Auth::handleEvent(nlohmann::json event, unsigned long next,
 }
 
 std::tuple<long, long> Auth::login(const std::string &username,
-                                   const std::string &password,
-                                   [[maybe_unused]] bool allow_ui) {
+                                   const std::string &password, bool allow_ui) {
   long session_id = 0;
   long user_id = 0;
   if (!password.empty() && !username.empty()) {
@@ -343,4 +342,4 @@ nlohmann::json Auth::save_setting_attachment(const nlohmann::json &event,
   }
 }
 }  // namespace service
-}  // namespace jadmin
+}  // namespace jewel
