@@ -1,6 +1,7 @@
 #pragma once
 #include "application_controller.h"
 namespace openproj {
+namespace controller {
 class CopyProjectsController : public ApplicationController {
   // before_action :find_project
   // before_action :authorize
@@ -75,4 +76,5 @@ class CopyProjectsController : public ApplicationController {
 //      .merge(custom_field_values: this->copy_project.custom_value_attributes)
   }
 };
+}
 }

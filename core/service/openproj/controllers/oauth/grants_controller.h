@@ -2,6 +2,7 @@
 #include "../application_controller.h"
 namespace openproj {
 
+namespace controller {
 namespace OAuth {
   class GrantsController : public ApplicationController {
     // before_action :require_login
@@ -38,5 +39,6 @@ namespace OAuth {
 //        .take
     }
   };
+}
 }
 }

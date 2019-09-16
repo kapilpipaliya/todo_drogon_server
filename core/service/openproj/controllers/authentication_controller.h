@@ -1,6 +1,7 @@
 #pragma once
 #include "application_controller.h"
 namespace openproj {
+namespace controller {
 class AuthenticationController : public ApplicationController {
 public:
   // before_action :require_login
@@ -36,4 +37,5 @@ public:
     return true;
   }
 };
+}
 }

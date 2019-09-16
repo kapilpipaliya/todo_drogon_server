@@ -1,7 +1,7 @@
 
 #include "reports_controller.h"
-
-namespace TimeEntries {
-
-
-} // namespace TimeEntries
+namespace openproj {
+namespace controller {
+namespace TimeEntries {}  // namespace TimeEntries
+}  // namespace controller
+}  // namespace openproj

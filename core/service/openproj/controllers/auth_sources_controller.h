@@ -1,6 +1,7 @@
 #pragma once
 #include "application_controller.h"
 namespace openproj {
+namespace controller {
 class AuthSourcesController : public ApplicationController {
 public:
   // include PaginationHelper
@@ -94,4 +95,5 @@ public:
 //    if ( OpenProject::Configuration.disable_password_login?) { render_404 ;}
   }
 };
+}
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "../application_controller.h"
 namespace openproj {
+namespace controller {
 namespace News {
 
 class CommentsController : public ApplicationController {
@@ -24,5 +25,6 @@ class CommentsController : public ApplicationController {
 //    redirect_to news_path(this->news)
   }
 };
+}
 }
 }

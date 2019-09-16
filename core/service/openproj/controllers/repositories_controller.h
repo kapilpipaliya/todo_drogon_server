@@ -11,6 +11,7 @@
 
 #include "application_controller.h"
 namespace openproj {
+namespace controller {
 class RepositoriesController : public ApplicationController {
 public:
   // include PaginationHelper
@@ -484,4 +485,5 @@ private :
 //    starts_with?('/') ? self : "/#{self}"
 //  }
 //};
+}
 }

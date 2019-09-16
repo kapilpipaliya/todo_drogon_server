@@ -1,6 +1,7 @@
 #pragma once
 #include "application_controller.h"
 namespace openproj {
+namespace controller {
 class CustomActionsController : public ApplicationController {
 public:
   // before_action :require_admin
@@ -96,4 +97,5 @@ public:
     return true;
   }
 };
+}
 }

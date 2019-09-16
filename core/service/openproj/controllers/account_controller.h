@@ -1,6 +1,7 @@
 #pragma once
 #include "application_controller.h"
 namespace openproj {
+namespace controller {
 class AccountController : public ApplicationController {
 public:
   // include CustomFieldsHelper
@@ -615,4 +616,5 @@ void activate() {
 //                          redirect_to home_url
     }
     };
+}
 }

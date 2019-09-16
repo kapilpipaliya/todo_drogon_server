@@ -3,6 +3,7 @@
 #include "application_controller.h"
 
 namespace openproj {
+namespace controller {
 class SysController : public ActionController::Base {
 public:
   // before_action :check_enabled
@@ -137,4 +138,5 @@ public:
 //    user || User.find_by(id: user_id.to_i)
   }
 };
+}
 }

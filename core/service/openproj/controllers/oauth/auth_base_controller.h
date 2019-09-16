@@ -2,6 +2,7 @@
 #include "../application_controller.h"
 namespace openproj {
 
+namespace controller {
 namespace OAuth {
   //
   // Base controller for doorkeeper to skip the login check
@@ -11,5 +12,6 @@ namespace OAuth {
     // skip_before_action :check_if_login_required
     // layout 'only_logo'
   };
+}
 }
 }

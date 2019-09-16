@@ -1,6 +1,7 @@
 #pragma once
 #include "application_controller.h"
 namespace openproj {
+namespace controller {
 class SearchController : public ApplicationController {
 public:
   // include Concerns::Layout
@@ -179,4 +180,5 @@ public:
 //    }
   }
 };
+}
 }

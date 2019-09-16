@@ -1,6 +1,7 @@
 #pragma once
 #include "application_controller.h"
 namespace openproj {
+namespace controller {
 class EnumerationsController : public ApplicationController {
 public:
   // layout 'admin'
@@ -97,4 +98,5 @@ public:
 //    nil
 //  }
 };
+}
 }

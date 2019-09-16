@@ -1,6 +1,7 @@
 #pragma once
 #include "application_controller.h"
 namespace openproj {
+namespace controller {
 class OnboardingController : public ApplicationController {
 public:
    void user_settings() {
@@ -22,4 +23,5 @@ public:
 //    redirect_to uri.to_s
   }
 };
+}
 }

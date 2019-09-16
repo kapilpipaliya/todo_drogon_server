@@ -1,6 +1,7 @@
 #pragma once
 #include "application_controller.h"
 namespace openproj {
+namespace controller {
 class WorkPackagesController : public ApplicationController {
 public:
   // include QueriesHelper
@@ -201,4 +202,5 @@ public:
 //    params.permit(:query_id, :state, :query_props)
   }
 };
+}
 }

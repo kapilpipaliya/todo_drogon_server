@@ -1,6 +1,7 @@
 #pragma once
 #include "application_controller.h"
 namespace openproj {
+namespace controller {
 class AnnouncementsController : public ApplicationController {
 public:
   // layout 'admin'
@@ -36,4 +37,5 @@ public:
 //    params.require(:announcement).permit('text', 'show_until', 'active')
   }
 };
+}
 }

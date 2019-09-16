@@ -1,6 +1,7 @@
 #pragma once
 #include "../application_controller.h"
 namespace openproj {
+namespace controller {
 namespace Users {
 
 class MembershipsController : public ApplicationController {
@@ -49,5 +50,6 @@ class MembershipsController : public ApplicationController {
 //    render_404
   }
 };
+}
 }
 }

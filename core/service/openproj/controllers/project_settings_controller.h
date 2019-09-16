@@ -1,6 +1,7 @@
 #pragma once
 #include "application_controller.h"
 namespace openproj {
+namespace controller {
 class ProjectSettingsController : public ApplicationController {
 public:
   // menu_item :settings
@@ -71,4 +72,5 @@ public:
 //    render_404
   }
 };
+}
 }

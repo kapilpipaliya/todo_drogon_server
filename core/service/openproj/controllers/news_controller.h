@@ -1,6 +1,7 @@
 #pragma once
 #include "application_controller.h"
 namespace openproj {
+namespace controller {
 class NewsController : public ApplicationController {
 public:
   // include PaginationHelper
@@ -97,4 +98,5 @@ public:
 //    render_404
   }
 };
+}
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "application_controller.h"
 namespace openproj {
+namespace controller {
 class WatchersController : public ApplicationController {
 public:
   // before_action :find_watched_by_object
@@ -41,4 +42,5 @@ public:
 //    redirect_back(fallback_location: home_url)
 //  }
 };
+}
 }

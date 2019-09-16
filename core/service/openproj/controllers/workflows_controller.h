@@ -1,6 +1,7 @@
 #pragma once
 #include "application_controller.h"
 namespace openproj {
+namespace controller {
 class WorkflowsController : public ApplicationController {
 public :
   // layout 'admin'
@@ -123,4 +124,5 @@ public :
 //    this->type = ::Type.find_by(id: params[:type_id])
   }
 };
+}
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "application_controller.h"
 namespace openproj {
+namespace controller {
 class AdminController : public ApplicationController {
 public:
   // layout 'admin'
@@ -95,4 +96,5 @@ public:
 //    ]
   }
 };
+}
 }

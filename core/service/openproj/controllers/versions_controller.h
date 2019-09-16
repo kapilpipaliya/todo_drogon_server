@@ -1,6 +1,7 @@
 #pragma once
 #include "application_controller.h"
 namespace openproj {
+namespace controller {
 class VersionsController : public ApplicationController {
 public:
   // menu_item :roadmap
@@ -129,4 +130,5 @@ public:
 //    }
 //  }
 };
+}
 }

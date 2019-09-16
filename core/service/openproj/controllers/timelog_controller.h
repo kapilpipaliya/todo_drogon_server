@@ -1,6 +1,7 @@
 #pragma once
 #include "application_controller.h"
 namespace openproj {
+namespace controller {
 class TimelogController : public ApplicationController {
 public:
   // before_action :find_work_package, only: %i[new create]
@@ -200,4 +201,5 @@ public:
 //    I18n.t(:label_spent_time)
   }
 };
+}
 }

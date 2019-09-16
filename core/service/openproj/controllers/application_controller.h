@@ -14,6 +14,7 @@
 // ApplicationController. This gives you one class to configure things such as
 // request forgery protection and filtering of sensitive request parameters.
 namespace openproj {
+namespace controller {
 namespace ActionController {
 class Base {};
 }  // namespace ActionController
@@ -670,5 +671,5 @@ public:
   //  prepend Concerns::AuthSourceSSO
 };
 }
-
+}
 #endif

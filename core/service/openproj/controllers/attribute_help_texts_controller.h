@@ -1,6 +1,7 @@
 #pragma once
 #include "application_controller.h"
 namespace openproj {
+namespace controller {
 class AttributeHelpTextsController : public ApplicationController {
 public:
   // layout 'admin'
@@ -90,4 +91,5 @@ public:
 //    render_404 unless EnterpriseToken.allows_to?(:attribute_help_texts)
   }
 };
+}
 }

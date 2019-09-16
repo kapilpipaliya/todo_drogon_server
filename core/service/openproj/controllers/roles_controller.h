@@ -1,6 +1,7 @@
 #pragma once
 #include "application_controller.h"
 namespace openproj {
+namespace controller {
 class RolesController : public ApplicationController {
 public:
   // include PaginationHelper
@@ -156,4 +157,5 @@ public:
 //             global_role: params[:global_role])
   }
 };
+}
 }
