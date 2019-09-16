@@ -19,11 +19,11 @@ namespace superactor {
 MainActor::MainActor(caf::actor_config &cfg) : caf::event_based_actor(cfg) {
   set_error_handler([=]([[maybe_unused]] caf::error &err) {
     SPDLOG_TRACE("Main Actor Error :");
-    SPDLOG_TRACE(superactor::globalCAF.getReasonString(err));
+    SPDLOG_TRACE(superactor::system::globalCAF.getReasonString(err));
   });
   set_down_handler([=](caf::down_msg &msg) {
     SPDLOG_TRACE("Main Actor Error Down Error :");
-    SPDLOG_TRACE(superactor::globalCAF.getReasonString(msg.reason));
+    SPDLOG_TRACE(superactor::system::globalCAF.getReasonString(msg.reason));
   });
   // If this exception error occur: server freeze.
   set_exception_handler([=](caf::scheduled_actor *,

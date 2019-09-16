@@ -3,9 +3,9 @@
 
 #include "caf/all.hpp"
 
-#include "useractorbase.h"
 #include "context/todocontext.h"
 #include "spdlogfix.h"
+#include "useractorbase.h"
 namespace superactor {
 namespace todoactor {
 class TodoActor : public caf::event_based_actor, public UserActorBase {

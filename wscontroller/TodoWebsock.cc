@@ -16,8 +16,8 @@ void TodoWebsock::handleNewMessage(
     const drogon::WebSocketConnectionPtr& wsConnPtr, std::string&& message,
     const drogon::WebSocketMessageType& type) {
   // std::chrono::seconds(10)
-  superactor::globalCAF.communicateWithActors()
-      ->request(superactor::globalCAF.mainActor(), caf::infinite,
+  superactor::system::globalCAF.communicateWithActors()
+      ->request(superactor::system::globalCAF.mainActor(), caf::infinite,
                 run_atom::value, superactor::MainActorType::TODO, wsConnPtr,
                 std::move(message), type)
       .receive(
@@ -25,9 +25,9 @@ void TodoWebsock::handleNewMessage(
             // SPDLOG_TRACE("Output: {}", message.c_str());
           },
           [&](caf::error& err) {
-            aout(superactor::globalCAF.communicateWithActors())
+            aout(superactor::system::globalCAF.communicateWithActors())
                 << " -> "
-                << superactor::globalCAF.communicateWithActors()
+                << superactor::system::globalCAF.communicateWithActors()
                        ->system()
                        .render(err)
                 << err.code() << std::endl;
@@ -42,8 +42,8 @@ void TodoWebsock::handleNewConnection(
 }
 void TodoWebsock::handleConnectionClosed(
     const drogon::WebSocketConnectionPtr& wsConnPtr) {
-  superactor::globalCAF.communicateWithActors()->request(
-      superactor::globalCAF.mainActor(), caf::infinite, exit_atom::value,
+  superactor::system::globalCAF.communicateWithActors()->request(
+      superactor::system::globalCAF.mainActor(), caf::infinite, exit_atom::value,
       wsConnPtr);
 }
 }  // namespace todo
