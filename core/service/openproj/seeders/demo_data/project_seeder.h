@@ -7,7 +7,7 @@ namespace DemoData {
   public:
     // Careful: The seeding recreates the seeded project before it runs, so any changes
     // on the seeded project will be lost.
-     bool seed_data() {
+     void seed_data() {
 //      seed_projects = demo_data_for('projects').keys
 
 //      seed_projects.each { |key|
