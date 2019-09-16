@@ -1,41 +1,49 @@
+#pragma once
+#include "../../../queries/work_packages/filter/work_package_filter.h"
 namespace openproj {
-class Queries::WorkPackages::Filter::SubjectOrIdFilter <
-  Queries::WorkPackages::Filter::WorkPackageFilter
+namespace Queries {
+namespace WorkPackages {
+namespace Filter {
+class SubjectOrIdFilter  : openproj::Queries::WorkPackages::Filter::WorkPackageFilter {
   // include Queries::WorkPackages::Filter::OrFilterForWpMixin
 
-  CONTAINS_OPERATOR = '~'.freeze
-  EQUALS_OPERATOR = '='.freeze
+//  CONTAINS_OPERATOR = '~'.freeze
+//  EQUALS_OPERATOR = '='.freeze
 
-  FILTERS = [
-    Queries::WorkPackages::Filter::FilterConfiguration.new(
-      Queries::WorkPackages::Filter::SubjectFilter,
-      :subject,
-      CONTAINS_OPERATOR
-    ),
-    Queries::WorkPackages::Filter::FilterConfiguration.new(
-      Queries::WorkPackages::Filter::IdFilter,
-      :id,
-      EQUALS_OPERATOR
-    )
-  ].freeze
+//  FILTERS = [
+//    Queries::WorkPackages::Filter::FilterConfiguration.new(
+//      Queries::WorkPackages::Filter::SubjectFilter,
+//      :subject,
+//      CONTAINS_OPERATOR
+//    ),
+//    Queries::WorkPackages::Filter::FilterConfiguration.new(
+//      Queries::WorkPackages::Filter::IdFilter,
+//      :id,
+//      EQUALS_OPERATOR
+//    )
+//  ].freeze
 
    void key() {
-    :subject_or_id
+//    :subject_or_id
   }
 
    void name() {
-    :subject_or_id
+//    :subject_or_id
   }
 
    void type() {
-    :search
+//    :search
   }
 
    void human_name() {
-    I18n.t('label_subject_or_id')
+//    I18n.t('label_subject_or_id')
   }
 
    void filter_configurations() {
-    FILTERS
+//    FILTERS
   }
+};
+}
+}
+}
 }

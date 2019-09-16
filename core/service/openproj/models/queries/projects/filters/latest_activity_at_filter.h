@@ -1,28 +1,38 @@
+#pragma once
+#include "../../../queries/projects/filters/project_filter.h"
 namespace openproj {
-class Queries::Projects::Filters::LatestActivityAtFilter : public Queries::Projects::Filters::ProjectFilter {
-  this->model = Project.with_latest_activity
+namespace Queries {
+namespace Projects {
+namespace Filters {
+class LatestActivityAtFilter : public openproj::Queries::Projects::Filters::ProjectFilter {
+//  this->model = Project.with_latest_activity
 
    void type() {
-    :datetime_past
+//    :datetime_past
   }
 
    void key() {
-    :latest_activity_at
+//    :latest_activity_at
   }
 
    void name() {
-    :latest_activity_at
+//    :latest_activity_at
   }
 
-   void available?() {
-    User.current.admin?
-  }
+//   void available?() {
+//    User.current.admin?
+//  }
 
    void human_name() {
-    I18n.t('activerecord.attributes.project.latest_activity_at')
+//    I18n.t('activerecord.attributes.project.latest_activity_at')
   }
 
    void where() {
-    operator_strategy.sql_for_field(values, "activity", this->class.key)
+//    operator_strategy.sql_for_field(values, "activity", this->class.key)
   }
+};
 }
+}
+}
+}
+

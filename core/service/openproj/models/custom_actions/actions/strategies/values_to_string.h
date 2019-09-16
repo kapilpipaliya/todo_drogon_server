@@ -1,15 +1,18 @@
+#pragma once
+namespace openproj{
 namespace CustomActions::Actions::Strategies::ValuesToString {
-   void values=(values) {
-    super(Array(values).map { |v| to_string_or_nil(v) }.uniq)
-  }
+//   void values=(values) {
+//    super(Array(values).map { |v| to_string_or_nil(v) }.uniq)
+//  }
 
-  private:
+//  private:
 
-   void to_string_or_nil(value) {
-    if ( value.nil?) { return nil ;}
+//   void to_string_or_nil(value) {
+//    if ( value.nil?) { return nil ;}
 
-    String(value)
-  rescue TypeError, ArgumentError
-    nil
-  }
+//    String(value)
+//  rescue TypeError, ArgumentError
+//    nil
+//  }
+}
 }

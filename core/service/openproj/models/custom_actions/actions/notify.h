@@ -1,40 +1,47 @@
+#pragma once
+#include "base.h"
 namespace openproj {
-class CustomActions::Actions::Notify : public CustomActions::Actions::Base {
+namespace CustomActions {
+namespace Actions {
+class Notify : public CustomActions::Actions::Base {
   // include CustomActions::Actions::Strategies::Associated
 
-   void apply(work_package) {
-    comment = principals.where(id: values).map { |p|
-      prefix = if ( p.is_a?(User)) {
-                 'user'
-               else
-                 'group'
-               }
+//   void apply(work_package) {
+//    comment = principals.where(id: values).map { |p|
+//      prefix = if ( p.is_a?(User)) {
+//                 'user'
+//               else
+//                 'group'
+//               }
 
-      "#{prefix}##{p.id}"
-    }.join(', ')
+//      "#{prefix}##{p.id}"
+//    }.join(', ')
 
-    work_package.journal_notes = comment
-  }
+//    work_package.journal_notes = comment
+//  }
 
    void associated() {
-    principals
-      .map { |u| [u.id, u.name] }
+//    principals
+//      .map { |u| [u.id, u.name] }
   }
 
    void key() {
-    :notify
+//    :notify
   }
 
-   void multi_value?() {
-    true
-  }
+//   void multi_value?() {
+//    true
+//  }
 
   private:
 
    void principals() {
-    Principal
-      .active_or_registered
-      .select(:id, :firstname, :lastname, :type)
-      .order_by_name
+//    Principal
+//      .active_or_registered
+//      .select(:id, :firstname, :lastname, :type)
+//      .order_by_name
   }
+};
+}
+}
 }

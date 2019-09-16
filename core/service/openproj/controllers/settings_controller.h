@@ -35,7 +35,7 @@ public:
 //      redirect_to action: 'edit', tab: params[:tab]
 //    else
 //      this->options = {}
-//      this->options[:user_format] = User::USER_FORMATS_STRUCTURE.keys.map { |f| [User.current.name(f), f.to_s] }
+//      this->options[:user_format] = UserN::USER_FORMATS_STRUCTURE.keys.map { |f| [User.current.name(f), f.to_s] }
 //      this->deliveries = ActionMailer::Base.perform_deliveries
 
 //      this->guessed_host = request.host_with_port.dup

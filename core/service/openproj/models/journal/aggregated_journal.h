@@ -1,3 +1,4 @@
+#pragma once
 // Similar to regular Journals, but under the following circumstances journals are aggregated:
 //  * they are in temporal proximity
 //  * they belong to the same resource
@@ -11,121 +12,122 @@
 //  * in case an older row had notes, take the notes from the older row, since they shall not
 //    be dropped
 namespace openproj {
-class Journal::AggregatedJournal
-  class << self
+namespace JournalN {
+class AggregatedJournal {
+//  class << self {
     // Returns the aggregated journal that contains the specified (vanilla/pure) journal.
-     void for_journal(pure_journal) {
-      raw = Journal::AggregatedJournal.query_aggregated_journals(journable: pure_journal.journable)
-            .where("#{version_projection} >= ?", pure_journal.version)
-            .first
+//     void for_journal(pure_journal) {
+//      raw = JournalN::AggregatedJournal.query_aggregated_journals(journable: pure_journal.journable)
+//            .where("#{version_projection} >= ?", pure_journal.version)
+//            .first
 
-      raw ? Journal::AggregatedJournal.new(raw) : nil
-    }
+//      raw ? JournalN::AggregatedJournal.new(raw) : nil
+//    }
 
-    // Returns the aggregated journal that contains the vanilla/pure journal with the specified id.
-     void with_notes_id(notes_id) {
-      // We need to limit the journal aggregation as soon as possible for performance reasons.
-      // Therefore we have to provide the notes_id to the aggregation on top of it being used
-      // in the where clause to pick the desired AggregatedJournal.
-      raw_journal = query_aggregated_journals(journal_id: notes_id)
-                    .where("#{table_name}.id = ?", notes_id)
-                    .first
+//    // Returns the aggregated journal that contains the vanilla/pure journal with the specified id.
+//     void with_notes_id(notes_id) {
+//      // We need to limit the journal aggregation as soon as possible for performance reasons.
+//      // Therefore we have to provide the notes_id to the aggregation on top of it being used
+//      // in the where clause to pick the desired AggregatedJournal.
+//      raw_journal = query_aggregated_journals(journal_id: notes_id)
+//                    .where("#{table_name}.id = ?", notes_id)
+//                    .first
 
-      raw_journal ? Journal::AggregatedJournal.new(raw_journal) : nil
-    }
+//      raw_journal ? JournalN::AggregatedJournal.new(raw_journal) : nil
+//    }
 
     //
     // The +journable+ parameter allows to filter for aggregated journals of a given journable.
     //
     // The +until_version+ parameter can be used in conjunction with the +journable+ parameter
     // to see the aggregated journals as if no versions were known after the specified version.
-     void aggregated_journals(journable: nil, until_version: nil, includes: []) {
-      raw_journals = query_aggregated_journals(journable: journable, until_version: until_version)
-      predecessors = {}
-      raw_journals.each { |journal|
-        journable_key = [journal.journable_type, journal.journable_id]
-        predecessors[journable_key] = [nil] unless predecessors[journable_key]
-        predecessors[journable_key] << journal
-      }
+//     void aggregated_journals(journable: nil, until_version: nil, includes: []) {
+//      raw_journals = query_aggregated_journals(journable: journable, until_version: until_version)
+//      predecessors = {}
+//      raw_journals.each { |journal|
+//        journable_key = [journal.journable_type, journal.journable_id]
+//        predecessors[journable_key] = [nil] unless predecessors[journable_key]
+//        predecessors[journable_key] << journal
+//      }
 
-      aggregated_journals = raw_journals.map { |journal|
-        journable_key = [journal.journable_type, journal.journable_id]
+//      aggregated_journals = raw_journals.map { |journal|
+//        journable_key = [journal.journable_type, journal.journable_id]
 
-        Journal::AggregatedJournal.new(journal, predecessor: predecessors[journable_key].shift)
-      }
+//        JournalN::AggregatedJournal.new(journal, predecessor: predecessors[journable_key].shift)
+//      }
 
-      preload_associations(journable, aggregated_journals, includes)
+//      preload_associations(journable, aggregated_journals, includes)
 
-      aggregated_journals
-    }
+//      aggregated_journals
+//    }
 
-     void query_aggregated_journals(journable: nil, until_version: nil, journal_id: nil) {
-      // Using the roughly aggregated groups from :sql_rough_group we need to merge journals
-      // where an entry with empty notes follows an entry containing notes, so that the notes
-      // from the main entry are taken, while the remaining information is taken from the
-      // more recent entry. We therefore join the rough groups with itself
-      // _wherever a merge would be valid_.
-      // Since the results are already pre-merged, this can only happen if Our first entry (master)
-      // had a comment and its successor (addition) had no comment, but can be merged.
-      // This alone would, however, leave the addition in the result set, leaving a "no change"
-      // journal entry back. By an additional self-join towards the predecessor, we can make sure
-      // that our own row (master) would not already have been merged by its predecessor. If it is
-      // (that means if we can find a valid predecessor), we drop our current row, because it will
-      // already be present (in a merged form) in the row of our predecessor.
-      Journal.from("(#{sql_rough_group(journable, until_version, journal_id)}) #{table_name}")
-      .joins(Arel.sql("LEFT OUTER JOIN (#{sql_rough_group(journable, until_version, journal_id)}) addition
-                              ON #{sql_on_groups_belong_condition(table_name, 'addition')}"))
-      .joins(Arel.sql("LEFT OUTER JOIN (#{sql_rough_group(journable, until_version, journal_id)}) predecessor
-                         ON #{sql_on_groups_belong_condition('predecessor', table_name)}"))
-      .where(Arel.sql('predecessor.id IS NULL'))
-      .order(Arel.sql("COALESCE(addition.created_at, #{table_name}.created_at) ASC"))
-      .order(Arel.sql("#{version_projection} ASC"))
-      .select(Arel.sql("#{table_name}.journable_id,
-               #{table_name}.journable_type,
-               #{table_name}.user_id,
-               #{table_name}.notes,
-               #{table_name}.id \"notes_id\",
-               #{table_name}.version \"notes_version\",
-               #{table_name}.activity_type,
-               COALESCE(addition.created_at, #{table_name}.created_at) \"created_at\",
-               COALESCE(addition.id, #{table_name}.id) \"id\",
-               #{version_projection} \"version\""))
-    }
+//     void query_aggregated_journals(journable: nil, until_version: nil, journal_id: nil) {
+//      // Using the roughly aggregated groups from :sql_rough_group we need to merge journals
+//      // where an entry with empty notes follows an entry containing notes, so that the notes
+//      // from the main entry are taken, while the remaining information is taken from the
+//      // more recent entry. We therefore join the rough groups with itself
+//      // _wherever a merge would be valid_.
+//      // Since the results are already pre-merged, this can only happen if Our first entry (master)
+//      // had a comment and its successor (addition) had no comment, but can be merged.
+//      // This alone would, however, leave the addition in the result set, leaving a "no change"
+//      // journal entry back. By an additional self-join towards the predecessor, we can make sure
+//      // that our own row (master) would not already have been merged by its predecessor. If it is
+//      // (that means if we can find a valid predecessor), we drop our current row, because it will
+//      // already be present (in a merged form) in the row of our predecessor.
+//      Journal.from("(#{sql_rough_group(journable, until_version, journal_id)}) #{table_name}")
+//      .joins(Arel.sql("LEFT OUTER JOIN (#{sql_rough_group(journable, until_version, journal_id)}) addition
+//                              ON #{sql_on_groups_belong_condition(table_name, 'addition')}"))
+//      .joins(Arel.sql("LEFT OUTER JOIN (#{sql_rough_group(journable, until_version, journal_id)}) predecessor
+//                         ON #{sql_on_groups_belong_condition('predecessor', table_name)}"))
+//      .where(Arel.sql('predecessor.id IS NULL'))
+//      .order(Arel.sql("COALESCE(addition.created_at, #{table_name}.created_at) ASC"))
+//      .order(Arel.sql("#{version_projection} ASC"))
+//      .select(Arel.sql("#{table_name}.journable_id,
+//               #{table_name}.journable_type,
+//               #{table_name}.user_id,
+//               #{table_name}.notes,
+//               #{table_name}.id \"notes_id\",
+//               #{table_name}.version \"notes_version\",
+//               #{table_name}.activity_type,
+//               COALESCE(addition.created_at, #{table_name}.created_at) \"created_at\",
+//               COALESCE(addition.id, #{table_name}.id) \"id\",
+//               #{version_projection} \"version\""))
+//    }
 
     // Returns whether "notification-hiding" should be assumed for the given journal pair.
     // This leads to an aggregated journal effectively blocking notifications of an earlier journal,
     // because it "steals" the addition from its predecessor. See the specs section under
     // "mail suppressing aggregation" (for EnqueueWorkPackageNotificationJob) for more details
-     void hides_notifications?(successor, predecessor) {
-      return false unless successor && predecessor
+//     void hides_notifications?(successor, predecessor) {
+//      return false unless successor && predecessor
 
-      timeout = Setting.journal_aggregation_time_minutes.to_i.minutes
+//      timeout = Setting.journal_aggregation_time_minutes.to_i.minutes
 
-      if ( successor.journable_type != predecessor.journable_type ||) {
-         successor.journable_id != predecessor.journable_id ||
-         successor.user_id != predecessor.user_id ||
-         (successor.created_at - predecessor.created_at) <= timeout
-        return false
-      }
+//      if ( successor.journable_type != predecessor.journable_type ||) {
+//         successor.journable_id != predecessor.journable_id ||
+//         successor.user_id != predecessor.user_id ||
+//         (successor.created_at - predecessor.created_at) <= timeout
+//        return false
+//      }
 
-      // imaginary state in which the successor never existed
-      // if this makes the predecessor disappear, the successor must have taken journals
-      // from it (that now became part of the predecessor again).
-      !Journal::AggregatedJournal
-        .query_aggregated_journals(
-          journable: successor.journable,
-          until_version: successor.version - 1)
-        .where("#{version_projection} = ?", predecessor.version)
-        .exists?
-    }
+//      // imaginary state in which the successor never existed
+//      // if this makes the predecessor disappear, the successor must have taken journals
+//      // from it (that now became part of the predecessor again).
+//      !JournalN::AggregatedJournal
+//        .query_aggregated_journals(
+//          journable: successor.journable,
+//          until_version: successor.version - 1)
+//        .where("#{version_projection} = ?", predecessor.version)
+//        .exists?
+//    }
 
-     void table_name() {
-      Journal.table_name
-    }
+//     void table_name() {
+//      Journal.table_name
+//    }
 
-     void version_projection() {
-      "COALESCE(addition.version, #{table_name}.version)"
-    }
+//     void version_projection() {
+//      "COALESCE(addition.version, #{table_name}.version)"
+//    }
 
     private:
 
@@ -138,146 +140,146 @@ class Journal::AggregatedJournal
     // To be able to self-join results of this statement, we add an additional column called
     // "group_number" to the result. This allows to compare a group resulting from this query with
     // its predecessor and successor.
-     void sql_rough_group(journable, until_version, journal_id) {
-      if ( until_version && !journable) {
-        raise 'need to provide a journable, when specifying a version limit'
-      } else if ( journable && journable.id.nil?) {
-        raise 'journable has no id'
-      }
+//     void sql_rough_group(journable, until_version, journal_id) {
+//      if ( until_version && !journable) {
+//        raise 'need to provide a journable, when specifying a version limit'
+//      } else if ( journable && journable.id.nil?) {
+//        raise 'journable has no id'
+//      }
 
-      conditions = additional_conditions(journable, until_version, journal_id)
+//      conditions = additional_conditions(journable, until_version, journal_id)
 
-      "SELECT predecessor.*, #{sql_group_counter} AS group_number
-      FROM journals predecessor
-      #{sql_rough_group_join(conditions[:join_conditions])}
-      #{sql_rough_group_where(conditions[:where_conditions])}
-      #{sql_rough_group_order}"
-    }
+//      "SELECT predecessor.*, #{sql_group_counter} AS group_number
+//      FROM journals predecessor
+//      #{sql_rough_group_join(conditions[:join_conditions])}
+//      #{sql_rough_group_where(conditions[:where_conditions])}
+//      #{sql_rough_group_order}"
+//    }
 
-     void additional_conditions(journable, until_version, journal_id) {
-      where_conditions = ''
-      join_conditions = ''
+//     void additional_conditions(journable, until_version, journal_id) {
+//      where_conditions = ''
+//      join_conditions = ''
 
-      if ( journable) {
-        where_conditions += " AND predecessor.journable_type = '#{journable.class.name}' AND
-                                  predecessor.journable_id = #{journable.id}"
+//      if ( journable) {
+//        where_conditions += " AND predecessor.journable_type = '#{journable.class.name}' AND
+//                                  predecessor.journable_id = #{journable.id}"
 
-        if ( until_version) {
-          where_conditions += " AND predecessor.version <= #{until_version}"
-          join_conditions += "AND successor.version <= #{until_version}"
-        }
-      }
+//        if ( until_version) {
+//          where_conditions += " AND predecessor.version <= #{until_version}"
+//          join_conditions += "AND successor.version <= #{until_version}"
+//        }
+//      }
 
-      if ( journal_id) {
-        where_conditions += "AND predecessor.id IN (
-                SELECT id_key.id
-                FROM #{table_name} id_key JOIN #{table_name} journable_key
-                  ON id_key.journable_id = journable_key.journable_id
-                  AND id_key.journable_type = journable_key.journable_type
-                  AND journable_key.id = #{journal_id})"
-      }
+//      if ( journal_id) {
+//        where_conditions += "AND predecessor.id IN (
+//                SELECT id_key.id
+//                FROM #{table_name} id_key JOIN #{table_name} journable_key
+//                  ON id_key.journable_id = journable_key.journable_id
+//                  AND id_key.journable_type = journable_key.journable_type
+//                  AND journable_key.id = #{journal_id})"
+//      }
 
-      { where_conditions: where_conditions,
-        join_conditions: join_conditions }
-    }
+//      { where_conditions: where_conditions,
+//        join_conditions: join_conditions }
+//    }
 
-     void sql_rough_group_join(additional_conditions) {
-      "LEFT OUTER JOIN #{table_name} successor
-        ON predecessor.version + 1 = successor.version AND
-           predecessor.journable_type = successor.journable_type AND
-           predecessor.journable_id = successor.journable_id
-           #{additional_conditions}"
-    }
+//     void sql_rough_group_join(additional_conditions) {
+//      "LEFT OUTER JOIN #{table_name} successor
+//        ON predecessor.version + 1 = successor.version AND
+//           predecessor.journable_type = successor.journable_type AND
+//           predecessor.journable_id = successor.journable_id
+//           #{additional_conditions}"
+//    }
 
-     void sql_rough_group_where(additional_conditions) {
-      "WHERE (predecessor.user_id != successor.user_id OR
-             (predecessor.notes != '' AND predecessor.notes IS NOT NULL) OR
-             #{sql_beyond_aggregation_time?('predecessor', 'successor')} OR
-             successor.id IS NULL)
-             #{additional_conditions}"
-    }
+//     void sql_rough_group_where(additional_conditions) {
+//      "WHERE (predecessor.user_id != successor.user_id OR
+//             (predecessor.notes != '' AND predecessor.notes IS NOT NULL) OR
+//             #{sql_beyond_aggregation_time?('predecessor', 'successor')} OR
+//             successor.id IS NULL)
+//             #{additional_conditions}"
+//    }
 
-     void sql_rough_group_order() {
-      "ORDER BY predecessor.created_at"
-    }
+//     void sql_rough_group_order() {
+//      "ORDER BY predecessor.created_at"
+//    }
 
     // This method returns the appropriate statement to be used inside a SELECT to
     // obtain the current group number.
-     void sql_group_counter() {
-      'row_number() OVER (ORDER BY predecessor.version ASC)'
-    }
+//     void sql_group_counter() {
+//      'row_number() OVER (ORDER BY predecessor.version ASC)'
+//    }
 
     // Similar to the WHERE statement used in :sql_rough_group. However, this condition will
     // match (return true) for all pairs where a merge/aggregation IS possible.
-     void sql_on_groups_belong_condition(predecessor, successor) {
-      "#{predecessor}.group_number + 1 = #{successor}.group_number AND
-      (NOT #{sql_beyond_aggregation_time?(predecessor, successor)} AND
-      #{predecessor}.user_id = #{successor}.user_id AND
-      #{successor}.journable_type = #{predecessor}.journable_type AND
-      #{successor}.journable_id = #{predecessor}.journable_id AND
-      NOT ((#{predecessor}.notes != '' AND #{predecessor}.notes IS NOT NULL) AND
-      (#{successor}.notes != '' AND #{successor}.notes IS NOT NULL)))"
-    }
+//     void sql_on_groups_belong_condition(predecessor, successor) {
+//      "#{predecessor}.group_number + 1 = #{successor}.group_number AND
+//      (NOT #{sql_beyond_aggregation_time?(predecessor, successor)} AND
+//      #{predecessor}.user_id = #{successor}.user_id AND
+//      #{successor}.journable_type = #{predecessor}.journable_type AND
+//      #{successor}.journable_id = #{predecessor}.journable_id AND
+//      NOT ((#{predecessor}.notes != '' AND #{predecessor}.notes IS NOT NULL) AND
+//      (#{successor}.notes != '' AND #{successor}.notes IS NOT NULL)))"
+//    }
 
     // Returns a SQL condition that will determine whether two entries are too far apart (temporal)
     // to be considered for aggregation. This takes the current instance settings for temporal
     // proximity into account.
-     void sql_beyond_aggregation_time?(predecessor, successor) {
-      aggregation_time_seconds = Setting.journal_aggregation_time_minutes.to_i.minutes
-      if ( aggregation_time_seconds == 0) {
-        // if ( aggregation is disabled, we consider everything to be beyond aggregation time) {
-        // even if ( creation dates are exactly equal) {
-        return '(true = true)'
-      }
+//     void sql_beyond_aggregation_time?(predecessor, successor) {
+//      aggregation_time_seconds = Setting.journal_aggregation_time_minutes.to_i.minutes
+//      if ( aggregation_time_seconds == 0) {
+//        // if ( aggregation is disabled, we consider everything to be beyond aggregation time) {
+//        // even if ( creation dates are exactly equal) {
+//        return '(true = true)'
+//      }
 
-      difference = "(#{successor}.created_at - #{predecessor}.created_at)"
-      threshold = "interval '#{aggregation_time_seconds} second'"
+//      difference = "(#{successor}.created_at - #{predecessor}.created_at)"
+//      threshold = "interval '#{aggregation_time_seconds} second'"
 
-      "(#{difference} > #{threshold})"
-    }
+//      "(#{difference} > #{threshold})"
+//    }
 
-     void preload_associations(journable, aggregated_journals, includes) {
-      return unless includes.length > 1
+//     void preload_associations(journable, aggregated_journals, includes) {
+//      return unless includes.length > 1
 
-      journal_ids = aggregated_journals.map(&:id)
+//      journal_ids = aggregated_journals.map(&:id)
 
-      customizable_journals = if ( includes.include?(:customizable_journals)) {
-                                Journal::CustomizableJournal
-                                .where(journal_id: journal_ids)
-                                .all
-                                .group_by(&:journal_id)
-                              }
+//      customizable_journals = if ( includes.include?(:customizable_journals)) {
+//                                JournalN::CustomizableJournal
+//                                .where(journal_id: journal_ids)
+//                                .all
+//                                .group_by(&:journal_id)
+//                              }
 
-      attachable_journals = if ( includes.include?(:customizable_journals)) {
-                              Journal::AttachableJournal
-                              .where(journal_id: journal_ids)
-                              .all
-                              .group_by(&:journal_id)
-                            }
+//      attachable_journals = if ( includes.include?(:customizable_journals)) {
+//                              JournalN::AttachableJournal
+//                              .where(journal_id: journal_ids)
+//                              .all
+//                              .group_by(&:journal_id)
+//                            }
 
-      data = if ( includes.include?(:data)) {
-               "Journal::#{journable.class}Journal".constantize
-               .where(journal_id: journal_ids)
-               .all
-               .group_by(&:journal_id)
-             }
+//      data = if ( includes.include?(:data)) {
+//               "JournalN::#{journable.class}Journal".constantize
+//               .where(journal_id: journal_ids)
+//               .all
+//               .group_by(&:journal_id)
+//             }
 
-      aggregated_journals.each { |journal|
-        if ( includes.include?(:customizable_journals)) {
-          journal.set_preloaded_customizable_journals customizable_journals[journal.id]
-        }
-        if ( includes.include?(:attachable_journals)) {
-          journal.set_preloaded_attachable_journals attachable_journals[journal.id]
-        }
-        if ( includes.include?(:data)) {
-          journal.set_preloaded_data data[journal.id].first
-        }
-        if ( journable) {
-          journal.set_preloaded_journable journable
-        }
-      }
-    }
-  }
+//      aggregated_journals.each { |journal|
+//        if ( includes.include?(:customizable_journals)) {
+//          journal.set_preloaded_customizable_journals customizable_journals[journal.id]
+//        }
+//        if ( includes.include?(:attachable_journals)) {
+//          journal.set_preloaded_attachable_journals attachable_journals[journal.id]
+//        }
+//        if ( includes.include?(:data)) {
+//          journal.set_preloaded_data data[journal.id].first
+//        }
+//        if ( journable) {
+//          journal.set_preloaded_journable journable
+//        }
+//      }
+//    }
+//  }
 
   // include JournalChanges
   // include JournalFormatter
@@ -287,7 +289,7 @@ class Journal::AggregatedJournal
   // register_journal_formatter :attachment, OpenProject::JournalFormatter::Attachment
   // register_journal_formatter :custom_field, OpenProject::JournalFormatter::CustomField
 
-  alias_method :details, :get_changes
+//  alias_method :details, :get_changes
 
   // delegate :journable_type,
   //          :journable_id,
@@ -317,77 +319,79 @@ class Journal::AggregatedJournal
   // Initializes a new AggregatedJournal. Allows to explicitly set a predecessor, if it is already
   // known. Providing a predecessor is only to improve efficiency, it is not required.
   // In case the predecessor is not known, it will be lazily retrieved.
-   Journal(journal, predecessor: false) {
-    this->journal = journal
+//   Journal(journal, predecessor: false) {
+//    this->journal = journal
 
-    // explicitly checking false to allow passing nil as "no predecessor"
-    // mind that we check this->predecessor with defined? below, so don't assign to it in all cases!
-    unless predecessor == false
-      this->predecessor = predecessor
-    }
-  }
+//    // explicitly checking false to allow passing nil as "no predecessor"
+//    // mind that we check this->predecessor with defined? below, so don't assign to it in all cases!
+//    unless predecessor == false
+//      this->predecessor = predecessor
+//    }
+//  }
 
   // returns an instance of this class that is reloaded from the database
-   void reloaded() {
-    this->class.with_notes_id(notes_id)
-  }
+//   void reloaded() {
+//    this->class.with_notes_id(notes_id)
+//  }
 
-   void user() {
-    this->user ||= User.find(user_id)
-  }
+//   void user() {
+//    this->user ||= User.find(user_id)
+//  }
 
-   void predecessor() {
-    unless defined? this->predecessor
-      raw_journal = this->class.query_aggregated_journals(journable: journable)
-                    .where("#{this->class.version_projection} < ?", version)
-                    .except(:order)
-                    .order(Arel.sql("#{this->class.version_projection} DESC"))
-                    .first
+//   void predecessor() {
+//    unless defined? this->predecessor
+//      raw_journal = this->class.query_aggregated_journals(journable: journable)
+//                    .where("#{this->class.version_projection} < ?", version)
+//                    .except(:order)
+//                    .order(Arel.sql("#{this->class.version_projection} DESC"))
+//                    .first
 
-      this->predecessor = raw_journal ? Journal::AggregatedJournal.new(raw_journal) : nil
-    }
+//      this->predecessor = raw_journal ? JournalN::AggregatedJournal.new(raw_journal) : nil
+//    }
 
-    this->predecessor
-  }
+//    this->predecessor
+//  }
 
-   void successor() {
-    unless defined? this->successor
-      raw_journal = this->class.query_aggregated_journals(journable: journable)
-                      .where("#{this->class.version_projection} > ?", version)
-                      .except(:order)
-                      .order(Arel.sql("#{this->class.version_projection} ASC"))
-                      .first
+//   void successor() {
+//    unless defined? this->successor
+//      raw_journal = this->class.query_aggregated_journals(journable: journable)
+//                      .where("#{this->class.version_projection} > ?", version)
+//                      .except(:order)
+//                      .order(Arel.sql("#{this->class.version_projection} ASC"))
+//                      .first
 
-      this->successor = raw_journal ? Journal::AggregatedJournal.new(raw_journal) : nil
-    }
+//      this->successor = raw_journal ? JournalN::AggregatedJournal.new(raw_journal) : nil
+//    }
 
-    this->successor
-  }
+//    this->successor
+//  }
 
-   void set_preloaded_customizable_journals(loaded_journals) {
-    if ( loaded_journals) { this->customizable_journals = loaded_journals ;}
-    customizable_journals.proxy_association.loaded!
-  }
+//   void set_preloaded_customizable_journals(loaded_journals) {
+//    if ( loaded_journals) { this->customizable_journals = loaded_journals ;}
+//    customizable_journals.proxy_association.loaded!
+//  }
 
-   void set_preloaded_attachable_journals(loaded_journals) {
-    if ( loaded_journals) { this->attachable_journals = loaded_journals ;}
-    attachable_journals.proxy_association.loaded!
-  }
+//   void set_preloaded_attachable_journals(loaded_journals) {
+//    if ( loaded_journals) { this->attachable_journals = loaded_journals ;}
+//    attachable_journals.proxy_association.loaded!
+//  }
 
-   void set_preloaded_data(loaded_data) {
-    this->data = loaded_data
-  }
+//   void set_preloaded_data(loaded_data) {
+//    this->data = loaded_data
+//  }
 
-   void set_preloaded_journable(loaded_journable) {
-    this->journable = loaded_journable
-    journal.association(:journable).loaded!
-  }
+//   void set_preloaded_journable(loaded_journable) {
+//    this->journable = loaded_journable
+//    journal.association(:journable).loaded!
+//  }
 
-   void initial?() {
-    predecessor.nil?
-  }
+//   void initial?() {
+//    predecessor.nil?
+//  }
 
-  private:
+//  private:
 
-  attr_reader :journal
+//  attr_reader :journal
+};
+}
 }

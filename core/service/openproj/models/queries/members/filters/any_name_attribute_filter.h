@@ -1,4 +1,13 @@
+#pragma once
+#include "name_filter.h"
 namespace openproj {
-class Queries::Members::Filters::AnyNameAttributeFilter : public Queries::Members::Filters::NameFilter {
+namespace Queries {
+namespace Members {
+namespace Filters {
+class AnyNameAttributeFilter : public openproj::Queries::Members::Filters::NameFilter {
   // include Queries::Filters::Shared::AnyUserNameAttributeFilter
+};
+}
+}
+}
 }

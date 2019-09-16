@@ -1,16 +1,26 @@
+#pragma once
+#include "../../../queries/principals/filters/principal_filter.h"
 namespace openproj {
-class Queries::Principals::Filters::StatusFilter : public Queries::Principals::Filters::PrincipalFilter {
+namespace Queries {
+namespace Principals {
+namespace Filters {
+class StatusFilter : public openproj::Queries::Principals::Filters::PrincipalFilter {
    void allowed_values() {
-    ::Principal::STATUSES.map { |key, value|
-      [key, value]
-    }
+//    ::Principal::STATUSES.map { |key, value|
+//      [key, value]
+//    }
   }
 
    void type() {
-    :list
+//    :list
   }
 
    void key() {
-    :status
+//    :status
   }
+};
 }
+}
+}
+}
+

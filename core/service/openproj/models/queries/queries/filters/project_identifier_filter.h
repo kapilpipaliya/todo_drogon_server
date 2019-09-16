@@ -1,22 +1,31 @@
+#pragma once
+#include "../../queries/filters/query_filter.h"
 namespace openproj {
-class Queries::Queries::Filters::ProjectIdentifierFilter : public Queries::Queries::Filters::QueryFilter {
+namespace Queries {
+namespace Queries {
+namespace Filters {
+class ProjectIdentifierFilter : public openproj::Queries::Queries::Filters::QueryFilter {
    void type() {
-    :list
+//    :list
   }
 
    void key() {
-    :project_identifier
+//    :project_identifier
   }
 
    void joins() {
-    :project
+//    :project
   }
 
    void where() {
-    operator_strategy.sql_for_field(values, 'projects', 'identifier')
+//    operator_strategy.sql_for_field(values, 'projects', 'identifier')
   }
 
    void allowed_values() {
-    Project.visible.pluck(:name, :identifier)
+//    Project.visible.pluck(:name, :identifier)
   }
+};
+}
+}
+}
 }

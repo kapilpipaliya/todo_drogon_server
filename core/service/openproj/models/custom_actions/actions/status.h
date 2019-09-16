@@ -1,21 +1,28 @@
+#pragma once
+#include "base.h"
 namespace openproj {
-class CustomActions::Actions::Status : public CustomActions::Actions::Base {
+namespace CustomActions {
+namespace Actions {
+class Status : public CustomActions::Actions::Base {
   // include CustomActions::Actions::Strategies::Associated
 
    void key() {
-    :status
+//    :status
   }
 
-   void required?() {
-    true
-  }
+//   void required?() {
+//    true
+//  }
 
   private:
 
    void associated() {
-    Status
-      .select(:id, :name)
-      .order(:name)
-      .map { |u| [u.id, u.name] }
+//    Status
+//      .select(:id, :name)
+//      .order(:name)
+//      .map { |u| [u.id, u.name] }
   }
+};
+}
+}
 }

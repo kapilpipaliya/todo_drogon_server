@@ -1,22 +1,32 @@
+#pragma once
+#include "../../base_order.h"
 namespace openproj {
-class Queries::Users::Orders::GroupOrder : public Queries::BaseOrder {
-  this->model = User
+namespace Queries {
+namespace Users {
+namespace Orders {
+class GroupOrder : public openproj::Queries::BaseOrder {
+//  this->model = User
 
    void key() {
-    :group
+//    :group
   }
 
   private:
 
    void order() {
-    order_string = "groups_users.lastname"
+//    order_string = "groups_users.lastname"
 
-    if ( direction == :desc) { order_string += " DESC" ;}
+//    if ( direction == :desc) { order_string += " DESC" ;}
 
-    model.order(order_string)
+//    model.order(order_string)
   }
 
    void joins() {
-    :groups
+//    :groups
   }
+};
 }
+}
+}
+}
+

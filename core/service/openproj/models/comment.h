@@ -1,3 +1,5 @@
+#pragma once
+#include "activerecord.h"
 namespace openproj {
 class Comment : public ActiveRecord::Base {
   // belongs_to :commented, polymorphic: true, counter_cache: true
@@ -8,23 +10,25 @@ class Comment : public ActiveRecord::Base {
   // after_create :send_news_comment_added_mail
 
    void text() {
-    comments
+//    comments
   }
 
-   void post!() {
-    save!
-  }
+//   void post!() {
+//    save!
+//  }
 
   private:
 
    void send_news_comment_added_mail() {
-    return unless Setting.notified_events.include?('news_comment_added')
+//    return unless Setting.notified_events.include?('news_comment_added')
 
-    return unless commented.is_a?(News)
+//    return unless commented.is_a?(News)
 
-    recipients = commented.recipients + commented.watcher_recipients
-    recipients.uniq.each { |user|
-      UserMailer.news_comment_added(user, self, User.current).deliver_now
-    }
+//    recipients = commented.recipients + commented.watcher_recipients
+//    recipients.uniq.each { |user|
+//      UserMailer.news_comment_added(user, self, User.current).deliver_now
+//    }
   }
+};
 }
+

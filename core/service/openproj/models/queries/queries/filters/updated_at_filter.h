@@ -1,6 +1,16 @@
+#pragma once
+#include "query_filter.h"
 namespace openproj {
-class Queries::Queries::Filters::UpdatedAtFilter : public Queries::Queries::Filters::QueryFilter {
+namespace Queries {
+namespace Queries {
+namespace Filters {
+class UpdatedAtFilter : public openproj::Queries::Queries::Filters::QueryFilter {
    void type() {
-    :datetime_past
+//    :datetime_past
   }
+};
 }
+}
+}
+}
+

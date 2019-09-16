@@ -50,8 +50,8 @@ public:
 //      this->status = :all
 //      scope = scope.not_builtin
 //    else
-//      this->status = params[:status] ? params[:status].to_i : User::STATUSES[:active]
-//      if ( users_only && this->status == User::STATUSES[:active]) { scope = scope.not_blocked ;}
+//      this->status = params[:status] ? params[:status].to_i : UserN::STATUSES[:active]
+//      if ( users_only && this->status == UserN::STATUSES[:active]) { scope = scope.not_blocked ;}
 //      c << ['status = ?', this->status]
 //    }
 

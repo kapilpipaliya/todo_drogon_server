@@ -72,7 +72,7 @@ namespace TimelogHelper {
 //      // Export custom fields
 //      headers += custom_fields.map(&:name)
 
-//      csv << WorkPackage::Exporter::CSV.encode_csv_columns(headers)
+//      csv << WorkPackageN::Exporter::CSV.encode_csv_columns(headers)
 //      // csv lines
 //      entries.each { |entry|
 //        fields = [format_date(entry.spent_on),
@@ -87,7 +87,7 @@ namespace TimelogHelper {
 //                 ]
 //        fields += custom_fields.map { |f| show_value(entry.custom_value_for(f)) }
 
-//        csv << WorkPackage::Exporter::CSV.encode_csv_columns(fields)
+//        csv << WorkPackageN::Exporter::CSV.encode_csv_columns(fields)
 //      }
 //    }
 //    export

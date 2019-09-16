@@ -1,8 +1,18 @@
+#pragma once
+#include "../../filters/base.h"
 namespace openproj {
-class Queries::Users::Filters::UserFilter : public Queries::Filters::Base {
-  this->model = User
+namespace Queries {
+namespace Users {
+namespace Filters {
+class UserFilter : public openproj::Queries::Filters::Base {
+//  this->model = User
 
    void human_name() {
-    User.human_attribute_name(name)
+//    User.human_attribute_name(name)
   }
+};
 }
+}
+}
+}
+

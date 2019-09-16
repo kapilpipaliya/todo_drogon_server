@@ -1,15 +1,22 @@
+#pragma once
+#include "base.h"
 namespace openproj {
-class CustomActions::Conditions::Status : public CustomActions::Conditions::Base {
+namespace CustomActions {
+namespace Conditions {
+class Status : public CustomActions::Conditions::Base {
    void key() {
-    :status
+//    :status
   }
 
   private:
 
    void associated() {
-    ::Status
-      .select(:id, :name)
-      .order(:name)
-      .map { |u| [u.id, u.name] }
+//    ::Status
+//      .select(:id, :name)
+//      .order(:name)
+//      .map { |u| [u.id, u.name] }
   }
+};
+}
+}
 }

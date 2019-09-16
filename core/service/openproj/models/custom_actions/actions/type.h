@@ -1,27 +1,34 @@
+#pragma once
+#include "base.h"
 namespace openproj {
-class CustomActions::Actions::Type : public CustomActions::Actions::Base {
+namespace CustomActions {
+namespace Actions {
+class Type : public CustomActions::Actions::Base {
   // include CustomActions::Actions::Strategies::Associated
 
-  PRIORITY = 20
+//  PRIORITY = 20
 
    void key() {
-    :type
+//    :type
   }
 
-   void required?() {
-    true
-  }
+//   void required?() {
+//    true
+//  }
 
    void priority() {
-    PRIORITY
+//    PRIORITY
   }
 
   private:
 
    void associated() {
-    ::Type
-      .select(:id, :name)
-      .order(:position)
-      .map { |u| [u.id, u.name] }
+//    ::Type
+//      .select(:id, :name)
+//      .order(:position)
+//      .map { |u| [u.id, u.name] }
   }
+};
+}
+}
 }

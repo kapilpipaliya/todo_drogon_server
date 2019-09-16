@@ -1,16 +1,25 @@
+#pragma once
+#include "../../../queries/versions/filters/version_filter.h"
 namespace openproj {
-class Queries::Versions::Filters::SharingFilter : public Queries::Versions::Filters::VersionFilter {
+namespace Queries {
+namespace Versions {
+namespace Filters {
+class SharingFilter : public openproj::Queries::Versions::Filters::VersionFilter {
    void allowed_values() {
-    Version::VERSION_SHARINGS.map { |name|
-      [I18n.t(:"label_version_sharing_#{name}"), name]
-    }
+//    VersionN::VERSION_SHARINGS.map { |name|
+//      [I18n.t(:"label_version_sharing_#{name}"), name]
+//    }
   }
 
    void type() {
-    :list
+//    :list
   }
 
    void key() {
-    :sharing
+//    :sharing
   }
+};
+}
+}
+}
 }

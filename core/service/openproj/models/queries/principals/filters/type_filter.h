@@ -1,23 +1,33 @@
+#pragma once
+#include "../../../queries/principals/filters/principal_filter.h"
 namespace openproj {
-class Queries::Principals::Filters::TypeFilter : public Queries::Principals::Filters::PrincipalFilter {
+namespace Queries {
+namespace Principals {
+namespace Filters {
+class TypeFilter : public openproj::Queries::Principals::Filters::PrincipalFilter {
    void allowed_values() {
-    [[Group.to_s, Group.to_s],
-     [User.to_s, User.to_s]]
+//    [[Group.to_s, Group.to_s],
+//     [User.to_s, User.to_s]]
   }
 
    void type() {
-    :list
+//    :list
   }
 
    void key() {
-    :type
+//    :type
   }
 
    void scope() {
-    if ( operator == '=') {
-      Principal.where(type: values)
-    else
-      Principal.where.not(type: values)
-    }
+//    if ( operator == '=') {
+//      Principal.where(type: values)
+//    else
+//      Principal.where.not(type: values)
+//    }
   }
+};
 }
+}
+}
+}
+

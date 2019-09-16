@@ -1,10 +1,20 @@
+#pragma once
+#include "../../../queries/users/filters/user_filter.h"
 namespace openproj {
-class Queries::Users::Filters::LoginFilter : public Queries::Users::Filters::UserFilter {
+namespace Queries {
+namespace Users {
+namespace Filters {
+class LoginFilter : public openproj::Queries::Users::Filters::UserFilter {
    void type() {
-    :string
+//    :string
   }
 
    void key() {
-    :login
+//    :login
   }
+};
 }
+}
+}
+}
+

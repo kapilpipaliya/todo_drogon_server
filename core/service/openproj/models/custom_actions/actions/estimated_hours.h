@@ -1,16 +1,23 @@
+#pragma once
+#include "base.h"
 namespace openproj {
-class CustomActions::Actions::EstimatedHours : public CustomActions::Actions::Base {
+namespace CustomActions {
+namespace Actions {
+class EstimatedHours : public CustomActions::Actions::Base {
   // include CustomActions::Actions::Strategies::Float
 
    void key() {
-    :estimated_hours
+//    :estimated_hours
   }
 
-   void apply(work_package) {
-    work_package.estimated_hours = values.first
-  }
+//   void apply(work_package) {
+//    work_package.estimated_hours = values.first
+//  }
 
    void minimum() {
-    0
+//    0
   }
+};
+}
+}
 }

@@ -1,6 +1,13 @@
+#pragma once
+#include "../base_query.h"
 namespace openproj {
-class Queries::Versions::VersionQuery : public Queries::BaseQuery {
+namespace Queries {
+namespace  Versions {
+class VersionQuery : public openproj::Queries::BaseQuery {
    void model() {
-    Version
+//    Version
   }
+};
+}
+}
 }

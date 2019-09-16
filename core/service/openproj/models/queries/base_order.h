@@ -1,11 +1,13 @@
+#pragma once
 namespace openproj {
-class Queries::BaseOrder
+namespace Queries {
+class BaseOrder {
   // include ActiveModel::Validations
 
-  VALID_DIRECTIONS = %i(asc desc).freeze
+//  VALID_DIRECTIONS = %i(asc desc).freeze
 
    void i18n_scope() {
-    :activerecord
+//    :activerecord
   }
 
   // validates :direction, inclusion: { in: VALID_DIRECTIONS }
@@ -14,37 +16,39 @@ class Queries::BaseOrder
   // attr_accessor :direction,
                 // :attribute
 
-   BaseOrder(attribute) {
-    this->attribute = attribute
-  }
+//   BaseOrder(attribute) {
+//    this->attribute = attribute
+//  }
 
    virtual void key() = 0;
 
    void scope() {
-    scope = order
-    if ( joins) { scope = scope.joins(joins) ;}
-    scope
+//    scope = order
+//    if ( joins) { scope = scope.joins(joins) ;}
+//    scope
   }
 
    void name() {
-    attribute
+//    attribute
   }
 
   private:
 
    void order() {
-    model.order(name => direction)
+//    model.order(name => direction)
   }
 
    void joins() {
-    nil
+//    nil
   }
 
    void with_raise_on_invalid() {
-    if ( VALID_DIRECTIONS.include?(direction)) {
-      yield
-    else
-      raise ArgumentError, "Only one of #{VALID_DIRECTIONS} allowed. #{direction} is provided."
-    }
+//    if ( VALID_DIRECTIONS.include?(direction)) {
+//      yield
+//    else
+//      raise ArgumentError, "Only one of #{VALID_DIRECTIONS} allowed. #{direction} is provided."
+//    }
   }
+};
+}
 }

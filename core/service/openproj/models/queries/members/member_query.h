@@ -1,10 +1,17 @@
+#pragma once
+#include "../../queries/base_query.h"
 namespace openproj {
-class Queries::Members::MemberQuery : public Queries::BaseQuery {
+namespace Queries {
+namespace Members {
+class MemberQuery : public openproj::Queries::BaseQuery {
    void model() {
-    Member
+//    Member
   }
 
    void default_scope() {
-    Member.visible(User.current)
+//    Member.visible(User.current)
   }
+};
+}
+}
 }

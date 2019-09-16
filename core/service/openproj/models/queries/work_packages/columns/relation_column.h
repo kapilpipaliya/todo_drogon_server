@@ -1,10 +1,19 @@
+#pragma once
+#include "../../../queries/work_packages/columns/work_package_column.h"
 namespace openproj {
-class Queries::WorkPackages::Columns::RelationColumn : public Queries::WorkPackages::Columns::WorkPackageColumn {
+namespace Queries {
+namespace WorkPackages {
+namespace Columns {
+class RelationColumn : public openproj::Queries::WorkPackages::Columns::WorkPackageColumn {
   // attr_accessor :type
 
    void granted_by_enterprise_token() {
-    EnterpriseToken.allows_to?(:work_package_query_relation_columns)
+//    EnterpriseToken.allows_to?(:work_package_query_relation_columns)
   }
 
-  private_class_method :granted_by_enterprise_token
+//  private_class_method :granted_by_enterprise_token
+};
+}
+}
+}
 }

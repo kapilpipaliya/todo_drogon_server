@@ -1,12 +1,19 @@
+#pragma once
+#include "../exporter/result.h"
 namespace openproj {
-class WorkPackage::Exporter::Error : public WorkPackage::Exporter::Result {
+namespace WorkPackageN {
+namespace Exporter {
+class Error : public WorkPackageN::Exporter::Result {
   // attr_accessor :message
 
-   Error(message) {
-    this->message = message
-  }
+//   Error(message) {
+//    this->message = message
+//  }
 
-   void error?() {
-    true
-  }
+//   void error?() {
+//    true
+//  }
+};
+}
+}
 }

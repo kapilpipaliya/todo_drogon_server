@@ -1,3 +1,7 @@
+#pragma once
 namespace openproj {
-class ::Query::StatementInvalid : public ActiveRecord::StatementInvalid {
+namespace QueryN {
+class StatementInvalid {//: public ActiveRecord::StatementInvalid {
+};
+}
 }

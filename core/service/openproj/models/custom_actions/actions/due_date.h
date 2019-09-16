@@ -1,8 +1,16 @@
+#pragma once
+#include "base.h"
 namespace openproj {
-class CustomActions::Actions::DueDate : public CustomActions::Actions::Base {
+namespace CustomActions {
+namespace Actions {
+class DueDate : public CustomActions::Actions::Base {
   // include CustomActions::Actions::Strategies::DateProperty
 
    void key() {
-    :due_date
+//    :due_date
   }
+};
 }
+}
+}
+

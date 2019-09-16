@@ -1,39 +1,49 @@
+#pragma once
+#include "../../../queries/work_packages/filter/work_package_filter.h"
 namespace openproj {
-class Queries::WorkPackages::Filter::ManualSortFilter <
-  Queries::WorkPackages::Filter::WorkPackageFilter
+namespace Queries {
+namespace WorkPackages {
+namespace Filter {
+class ManualSortFilter  :
+  openproj::Queries::WorkPackages::Filter::WorkPackageFilter {
 
   // include ::Queries::WorkPackages::Common::ManualSorting
 
    void available_operators() {
-    [Queries::Operators::OrderedWorkPackages]
+//    [Queries::Operators::OrderedWorkPackages]
   }
 
-   void available?() {
-    true
-  }
+//   void available?() {
+//    true
+//  }
 
    void type() {
-    :empty_value
+//    :empty_value
   }
 
    void where() {
-    WorkPackage
-      .arel_table[:id]
-      .in(context.ordered_work_packages.pluck(:work_package_id))
-      .to_sql
+//    WorkPackage
+//      .arel_table[:id]
+//      .in(context.ordered_work_packages.pluck(:work_package_id))
+//      .to_sql
   }
 
    void key() {
-    :manual_sort
+//    :manual_sort
   }
 
-   void ar_object_filter?() {
-    true
-  }
+//   void ar_object_filter?() {
+//    true
+//  }
 
   private:
 
    void operator_strategy() {
-    Queries::Operators::OrderedWorkPackages
+//    Queries::Operators::OrderedWorkPackages
   }
+};
 }
+}
+}
+}
+

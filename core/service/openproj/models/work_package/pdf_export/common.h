@@ -1,37 +1,39 @@
-namespace WorkPackage::PdfExport::Common {
+#pragma once
+namespace openproj {
+namespace WorkPackageN::PdfExport::Common {
   // include Redmine::I18n
   // include ActionView::Helpers::TextHelper
   // include ActionView::Helpers::NumberHelper
   // include CustomFieldsHelper
-  // include WorkPackage::PdfExport::ToPdfHelper
+  // include WorkPackageN::PdfExport::ToPdfHelper
 
-   void field_value(work_package, attribute) {
-    value = work_package.send(attribute)
+//   void field_value(work_package, attribute) {
+//    value = work_package.send(attribute)
 
-    if ( value.is_a? Date) {
-      format_date value
-    } else if ( value.is_a? Time) {
-      format_time value
-    else
-      value.to_s
-    }
-  }
+//    if ( value.is_a? Date) {
+//      format_date value
+//    } else if ( value.is_a? Time) {
+//      format_time value
+//    else
+//      value.to_s
+//    }
+//  }
 
-   void success(content) {
-    WorkPackage::Exporter::Success
-      .new format: :csv,
-           title: title,
-           content: content,
-           mime_type: 'application/pdf'
-  }
+//   void success(content) {
+//    WorkPackageN::Exporter::Success
+//      .new format: :csv,
+//           title: title,
+//           content: content,
+//           mime_type: 'application/pdf'
+//  }
 
-   void error(message) {
-    WorkPackage::Exporter::Error.new message
-  }
+//   void error(message) {
+//    WorkPackageN::Exporter::Error.new message
+//  }
 
-   void cell_padding() {
-    this->cell_padding ||= [2, 5, 2, 5]
-  }
+//   void cell_padding() {
+//    this->cell_padding ||= [2, 5, 2, 5]
+//  }
 
   //
   // Creates a number of cell rows to show the description.
@@ -47,56 +49,57 @@ namespace WorkPackage::PdfExport::Common {
   // @param options [Hash] Allows changing the number of lines per cell
   //                       through the :max_lines_per_cell option.
   // @return [Array] An array of rows to be added to the work packages table.
-   void make_description(description, options = {}) {
-    lines = description.lines
-    max = options[:max_lines_per_cell] || max_lines_per_description_cell
+//   void make_description(description, options = {}) {
+//    lines = description.lines
+//    max = options[:max_lines_per_cell] || max_lines_per_description_cell
 
-    if ( lines.size > max_lines_per_description_cell) {
-      cells = split_description lines, max: max, cell_options: Hash(options[:cell_options])
+//    if ( lines.size > max_lines_per_description_cell) {
+//      cells = split_description lines, max: max, cell_options: Hash(options[:cell_options])
 
-      format_description_segments!(cells)
-    else
-      [make_single_description(description, Hash(options[:cell_options]))]
-    }
-  }
+//      format_description_segments!(cells)
+//    else
+//      [make_single_description(description, Hash(options[:cell_options]))]
+//    }
+//  }
 
   //
   // Formats the cells so that they appear to be one big cell.
-   void format_description_segments!(cells) {
-    cells.first.padding[0] = cell_padding[0] // top padding
-    cells.last.padding[2] = cell_padding[2] // bottom padding
-    cells.last.borders = [:left, :right, :bottom]
-    cells
-  }
+//   void format_description_segments!(cells) {
+//    cells.first.padding[0] = cell_padding[0] // top padding
+//    cells.last.padding[2] = cell_padding[2] // bottom padding
+//    cells.last.borders = [:left, :right, :bottom]
+//    cells
+//  }
 
-   void split_description(lines, max: max_lines_per_description_cell, cell_options: {}) {
-    head = make_description_segment lines.take(max).join, cell_options
+//   void split_description(lines, max: max_lines_per_description_cell, cell_options: {}) {
+//    head = make_description_segment lines.take(max).join, cell_options
 
-    if ( lines.size > max) {
-      [head] + split_description(lines.drop(max), max: max, cell_options: cell_options)
-    else
-      [head]
-    }
-  }
+//    if ( lines.size > max) {
+//      [head] + split_description(lines.drop(max), max: max, cell_options: cell_options)
+//    else
+//      [head]
+//    }
+//  }
 
-   void make_description_segment(description, options = {}) {
-    cell_options = {
-      borders: [:left, :right],
-      padding: [0, cell_padding[1], 0, cell_padding[3]]
-    }
+//   void make_description_segment(description, options = {}) {
+//    cell_options = {
+//      borders: [:left, :right],
+//      padding: [0, cell_padding[1], 0, cell_padding[3]]
+//    }
 
-    make_single_description description, cell_options.merge(options)
-  }
+//    make_single_description description, cell_options.merge(options)
+//  }
 
-   void make_single_description(description, options = {}) {
-    cell_options = { colspan: description_colspan }
+//   void make_single_description(description, options = {}) {
+//    cell_options = { colspan: description_colspan }
 
-    pdf.make_cell description, cell_options.merge(options)
-  }
+//    pdf.make_cell description, cell_options.merge(options)
+//  }
 
-   void max_lines_per_description_cell() {
-    3
-  }
+//   void max_lines_per_description_cell() {
+//    3
+//  }
 
-   void description_colspan() = 0;
+//   void description_colspan() = 0;
+}
 }

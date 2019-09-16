@@ -33,7 +33,7 @@ namespace Versions {
 //    }
 
 //     void version_sharings() {
-//      Version::VERSION_SHARINGS
+//      VersionN::VERSION_SHARINGS
 //    }
   };
 }

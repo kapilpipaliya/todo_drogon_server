@@ -1,14 +1,19 @@
+#pragma once
+#include "base_order.h"
 namespace openproj {
-class Queries::NotExistingOrder : public Queries::BaseOrder {
-  validate :always_false
+namespace Queries {
+class NotExistingOrder : public openproj::Queries::BaseOrder {
+//  validate :always_false
 
    void key() {
-    :inexistent
+//    :inexistent
   }
 
   private:
 
    void always_false() {
-    errors.add :base, I18n.t(:'activerecord.errors.messages.does_not_exist')
+//    errors.add :base, I18n.t(:'activerecord.errors.messages.does_not_exist')
   }
+};
+}
 }

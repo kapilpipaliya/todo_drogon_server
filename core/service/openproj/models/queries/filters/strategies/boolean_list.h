@@ -1,29 +1,33 @@
+#pragma once
+#include "list.h"
+namespace openproj {
 namespace Queries::Filters::Strategies {
   class BooleanList : public List {
      void validate() {
-      super
+//      super
 
-      if ( too_many_values) {
-        errors.add(:values, "only one value allowed")
-      }
+//      if ( too_many_values) {
+//        errors.add(:values, "only one value allowed")
+//      }
     }
 
-     void valid_values!() {
-      filter.values &= allowed_values.map(&:last).map(&:to_s)
-    }
+//     void valid_values!() {
+//      filter.values &= allowed_values.map(&:last).map(&:to_s)
+//    }
 
     private:
 
      void operator_map() {
-      super_value = super.dup
-      super_value['='] = ::Queries::Operators::BooleanEquals
-      super_value['!'] = ::Queries::Operators::BooleanNotEquals
+//      super_value = super.dup
+//      super_value['='] = ::Queries::Operators::BooleanEquals
+//      super_value['!'] = ::Queries::Operators::BooleanNotEquals
 
-      super_value
+//      super_value
     }
 
      void too_many_values() {
-      values.reject(&:blank?).length > 1
+//      values.reject(&:blank?).length > 1
     }
-  }
+  };
+}
 }

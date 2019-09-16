@@ -1,8 +1,13 @@
+#pragma once
+#include "base_journal.h"
 namespace openproj {
-class Journal::CustomizableJournal : public Journal::BaseJournal {
-  this->table_name = 'customizable_journals'
+namespace JournalN {
+class CustomizableJournal : public JournalN::BaseJournal {
+//  this->table_name = 'customizable_journals'
 
   // belongs_to :custom_field, foreign_key: :custom_field_id
+};
+}
 }
 
-::CustomizableJournal = Journal::CustomizableJournal
+//::CustomizableJournal = JournalN::CustomizableJournal

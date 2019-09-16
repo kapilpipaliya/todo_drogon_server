@@ -1,22 +1,30 @@
+#pragma once
 // Filter for all work packages that are (or are not) requiring work packages with the provided values.
-
+#include "../../../queries/work_packages/filter/work_package_filter.h"
 namespace openproj {
-class Queries::WorkPackages::Filter::RequiresFilter <
-  Queries::WorkPackages::Filter::WorkPackageFilter
+namespace Queries {
+namespace WorkPackages {
+namespace Filter {
+class RequiresFilter  : openproj::Queries::WorkPackages::Filter::WorkPackageFilter {
 
   // include ::Queries::WorkPackages::Filter::FilterOnDirectedRelationsMixin
 
    void relation_type() {
-    ::Relation::TYPE_REQUIRES
+//    ::Relation::TYPE_REQUIRES
   }
 
   private:
 
    void relation_filter() {
-    { from_id: values }
+//    { from_id: values }
   }
 
    void relation_select() {
-    :to_id
+//    :to_id
   }
+};
 }
+}
+}
+}
+

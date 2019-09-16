@@ -1,10 +1,19 @@
+#pragma once
+#include "../base_query.h"
 namespace openproj {
-class Queries::Users::UserQuery : public Queries::BaseQuery {
+namespace Queries {
+namespace Users {
+class UserQuery : public openproj::Queries::BaseQuery {
    void model() {
-    User
+//    User
   }
 
    void default_scope() {
-    User.not_builtin
+//    User.not_builtin
   }
+};
 }
+}
+}
+
+

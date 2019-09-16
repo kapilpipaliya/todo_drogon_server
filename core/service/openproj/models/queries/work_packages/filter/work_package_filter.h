@@ -1,19 +1,25 @@
+#pragma once
+
+#include "../../../queries/filters/base.h"
 namespace openproj {
-class Queries::WorkPackages::Filter::WorkPackageFilter : public ::Queries::Filters::Base {
+namespace Queries {
+namespace WorkPackages {
+namespace Filter {
+class WorkPackageFilter : public openproj::Queries::Filters::Base {
   // include ::Queries::Filters::Serializable
 
-  this->model = WorkPackage
+//  this->model = WorkPackage
 
    void human_name() {
-    WorkPackage.human_attribute_name(name)
+//    WorkPackage.human_attribute_name(name)
   }
 
    void project() {
-    context.project
+//    context.project
   }
 
    void includes() {
-    nil
+//    nil
   }
 
    void scope() {
@@ -21,6 +27,11 @@ class Queries::WorkPackages::Filter::WorkPackageFilter : public ::Queries::Filte
     // (this one's subclasses) currently do not follow the base filter approach of using the scope.
     // The intend is to have more and more wp filters use the scope method just like the
     // rest of the queries (e.g. project)
-    WorkPackage.unscoped
+//    WorkPackage.unscoped
   }
+};
 }
+}
+}
+}
+

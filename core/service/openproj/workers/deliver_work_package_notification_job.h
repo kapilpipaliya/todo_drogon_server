@@ -33,7 +33,7 @@ public:
   }
 
    void find_aggregated_journal() {
-//    wp_journals = Journal::AggregatedJournal.aggregated_journals(journable: work_package)
+//    wp_journals = JournalN::AggregatedJournal.aggregated_journals(journable: work_package)
 //    wp_journals.detect { |journal| journal.version == raw_journal.version }
   }
 

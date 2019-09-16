@@ -1,2 +1,9 @@
+#pragma once
+#include "../base_query.h"
 namespace openproj {
-class Queries::Roles::RoleQuery : public Queries::BaseQuery{};
+namespace Queries {
+namespace Roles {
+class RoleQuery : public openproj::Queries::BaseQuery{};
+}
+}
+}

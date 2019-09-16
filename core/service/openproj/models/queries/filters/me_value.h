@@ -1,16 +1,22 @@
+#pragma once
 namespace openproj {
-class Queries::Filters::MeValue
-  KEY = 'me'.freeze
+namespace Queries {
+namespace Filters {
+class MeValue {
+//  KEY = 'me'.freeze
 
    void id() {
-    KEY
+//    KEY
   }
 
    void name() {
-    I18n.t(:label_me)
+//    I18n.t(:label_me)
   }
 
-   void class() {
-    User
+   void class_() {
+//    User
   }
+};
+}
+}
 }

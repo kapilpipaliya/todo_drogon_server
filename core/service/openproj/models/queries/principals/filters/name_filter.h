@@ -1,4 +1,13 @@
+#pragma once
+#include "../../../queries/principals/filters/principal_filter.h"
 namespace openproj {
-class Queries::Principals::Filters::NameFilter : public Queries::Principals::Filters::PrincipalFilter {
+namespace Queries {
+namespace Principals {
+namespace Filters {
+class NameFilter : public openproj::Queries::Principals::Filters::PrincipalFilter {
   // include Queries::Filters::Shared::UserNameFilter
+};
+}
+}
+}
 }

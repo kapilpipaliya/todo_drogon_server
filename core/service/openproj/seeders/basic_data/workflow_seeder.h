@@ -9,7 +9,7 @@ namespace BasicData {
 //      colors = Color.all
 //      colors = colors.map { |c| { c.name => c.id } }.reduce({}, :merge)
 
-//      if ( WorkPackage.where(type_id: nil).any? || Journal::WorkPackageJournal.where(type_id: nil).any?) {
+//      if ( WorkPackage.where(type_id: nil).any? || JournalN::WorkPackageJournal.where(type_id: nil).any?) {
 //        // Fixes work packages that do not have a type yet. They receive the standard type.
 //        //
 //        // This can happen when an existing database, having timelines planning elements,
@@ -30,7 +30,7 @@ namespace BasicData {
 //                                                 is_in_roadmap: true,
 //                                                 is_milestone: false)
 
-//          [WorkPackage, Journal::WorkPackageJournal].each { |klass|
+//          [WorkPackage, JournalN::WorkPackageJournal].each { |klass|
 //            klass.where(type_id: nil).update_all(type_id: standard_type.id)
 //          }
 //        }

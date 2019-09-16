@@ -6,7 +6,7 @@ class UserAllowedService {
 public:
   // attr_accessor :user
 
-//   UserAllowedService(user, role_cache: User::ProjectRoleCache.new(user)) {
+//   UserAllowedService(user, role_cache: UserN::ProjectRoleCache.new(user)) {
 //    this->user = user
 //    this->project_role_cache = role_cache
 //  }
@@ -89,7 +89,7 @@ public:
 //  }
 
 //   void project_authorization_cache() {
-//    this->project_authorization_cache ||= User::ProjectAuthorizationCache.new(user)
+//    this->project_authorization_cache ||= UserN::ProjectAuthorizationCache.new(user)
 //  }
 
 //   void normalize_action(action) {

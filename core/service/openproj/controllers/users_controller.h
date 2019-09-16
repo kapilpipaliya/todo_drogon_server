@@ -199,8 +199,8 @@ public:
 //      this->user.activate
 //    }
 //    // Was the account activated? (do it before User#save clears the change)
-//    was_activated = (this->user.status_change == [User::STATUSES[:registered],
-//                                             User::STATUSES[:active]])
+//    was_activated = (this->user.status_change == [UserN::STATUSES[:registered],
+//                                             UserN::STATUSES[:active]])
 
 //    if ( params[:activate] && this->user.missing_authentication_method?) {
 //      flash[:error] = I18n.t(:error_status_change_failed,

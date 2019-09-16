@@ -1,26 +1,36 @@
+#pragma once
+#include "../../../queries/work_packages/filter/work_package_filter.h"
 namespace openproj {
-class Queries::WorkPackages::Filter::CommentFilter : public Queries::WorkPackages::Filter::WorkPackageFilter {
+namespace Queries {
+namespace WorkPackages {
+namespace Filter {
+class CommentFilter : public openproj::Queries::WorkPackages::Filter::WorkPackageFilter {
   // include Queries::WorkPackages::Filter::TextFilterOnJoinMixin
 
    void type() {
-    :text
+//    :text
   }
 
    void join_condition() {
-    <<-SQL
-     #{join_table_alias}.journable_id = #{WorkPackage.table_name}.id
-	   AND #{join_table_alias}.journable_type = '#{WorkPackage.name}'
-     AND #{notes_condition}
-    SQL
+//    <<-SQL
+//     #{join_table_alias}.journable_id = #{WorkPackage.table_name}.id
+//	   AND #{join_table_alias}.journable_type = '#{WorkPackage.name}'
+//     AND #{notes_condition}
+//    SQL
   }
 
   private:
 
    void join_table() {
-    Journal.table_name
+//    Journal.table_name
   }
 
    void notes_condition() {
-    Queries::Operators::Contains.sql_for_field(values, join_table_alias, 'notes')
+//    Queries::Operators::Contains.sql_for_field(values, join_table_alias, 'notes')
   }
+};
 }
+}
+}
+}
+

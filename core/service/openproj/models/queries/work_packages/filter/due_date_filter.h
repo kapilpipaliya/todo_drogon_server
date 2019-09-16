@@ -1,6 +1,16 @@
+#pragma once
+#include "../../../queries/work_packages/filter/work_package_filter.h"
 namespace openproj {
-class Queries::WorkPackages::Filter::DueDateFilter : public Queries::WorkPackages::Filter::WorkPackageFilter {
+namespace Queries {
+namespace WorkPackages {
+namespace Filter {
+class DueDateFilter : public openproj::Queries::WorkPackages::Filter::WorkPackageFilter {
    void type() {
-    :date
+//    :date
   }
+};
 }
+}
+}
+}
+

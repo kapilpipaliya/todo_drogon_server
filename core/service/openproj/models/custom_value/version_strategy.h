@@ -1,12 +1,17 @@
+#pragma once
+#include "ar_object_strategy.h"
 namespace openproj {
-class CustomValue::VersionStrategy : public CustomValue::ARObjectStrategy {
+namespace CustomValueN {
+class VersionStrategy : public CustomValueN::ARObjectStrategy {
   private:
 
    void ar_class() {
-    Version
+//    Version
   }
 
-   void ar_object(value) {
-    Version.find_by(id: value)
-  }
+//   void ar_object(value) {
+//    Version.find_by(id: value)
+//  }
+};
+}
 }

@@ -1,23 +1,27 @@
+#pragma once
+#include "../../../queries/relations/filters/relation_filter.h"
+namespace openproj {
 namespace Queries {
   namespace Relations {
     namespace Filters {
-      class FromFilter : public ::Queries::Relations::Filters::RelationFilter {
+      class FromFilter : public openproj::Queries::Relations::Filters::RelationFilter {
         // include ::Queries::Relations::Filters::VisibilityChecking
 
          void type() {
-          :integer
+//          :integer
         }
 
          void key() {
-          :from_id
+//          :from_id
         }
 
         private:
 
-         void visibility_checked_sql(operator, values, visible_sql) {
-          ["from_id #{operator} (?) AND to_id IN (#{visible_sql})", values]
-        }
-      }
+//         void visibility_checked_sql(operator, values, visible_sql) {
+//          ["from_id #{operator} (?) AND to_id IN (#{visible_sql})", values]
+//        }
+      };
     }
   }
 }
+    }

@@ -1,5 +1,7 @@
-require_dependency 'token/base'
-
+#pragma once
+//require_dependency 'token/base'
+#include "base.h"
+namespace openproj {
 namespace Token {
   class Invitation : public Base {
     // include ExpirableToken
@@ -7,7 +9,7 @@ namespace Token {
     //
     // Invitation tokens are valid for one day.
      void validity_time() {
-      (Setting.invitation_expiration_days || 1).days
+//      (Setting.invitation_expiration_days || 1).days
     }
 
     //
@@ -17,5 +19,6 @@ namespace Token {
     // expired. A new invitation token will be generated which deletes the expired one
     // implicitly.
      void delete_expired_tokens() {}
-  }
+  };
+}
 }

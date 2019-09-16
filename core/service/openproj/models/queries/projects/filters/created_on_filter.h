@@ -1,10 +1,20 @@
+#pragma once
+#include "../../../queries/projects/filters/project_filter.h"
 namespace openproj {
-class Queries::Projects::Filters::CreatedOnFilter : public Queries::Projects::Filters::ProjectFilter {
+namespace Queries {
+namespace Projects {
+namespace Filters {
+class CreatedOnFilter : public openproj::Queries::Projects::Filters::ProjectFilter {
    void type() {
-    :datetime_past
+//    :datetime_past
   }
 
-   void available?() {
-    User.current.admin?
-  }
+//   void available?() {
+//    User.current.admin?
+//  }
+};
 }
+}
+}
+}
+

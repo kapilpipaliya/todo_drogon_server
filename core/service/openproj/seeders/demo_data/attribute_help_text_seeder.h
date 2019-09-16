@@ -28,7 +28,7 @@ namespace DemoData {
     }
 
 //     void create_attribute_help_text(help_text_attr) {
-//      help_text_attr[:type] = AttributeHelpText::WorkPackage
+//      help_text_attr[:type] = AttributeHelpTextN::WorkPackage
 
 //      attribute_help_text = AttributeHelpText.new help_text_attr
 //      attribute_help_text.save

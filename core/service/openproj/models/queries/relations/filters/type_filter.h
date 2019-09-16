@@ -1,31 +1,35 @@
+#pragma once
+#include "../../../queries/relations/filters/relation_filter.h"
+namespace openproj {
 namespace Queries {
   namespace Relations {
     namespace Filters {
-      class TypeFilter : public ::Queries::Relations::Filters::RelationFilter {
+      class TypeFilter : public openproj::Queries::Relations::Filters::RelationFilter {
          void allowed_values() {
-          ::Relation::TYPES.map { |_, value|
-            [I18n.t(value[:name]), value[:sym]]
-          }
+//          ::Relation::TYPES.map { |_, value|
+//            [I18n.t(value[:name]), value[:sym]]
+//          }
         }
 
          void type() {
-          :list
+//          :list
         }
 
          void key() {
-          :type
+//          :type
         }
 
          void where() {
-          Array(values).map { |value|
-            column = Relation.relation_column(value)
+//          Array(values).map { |value|
+//            column = Relation.relation_column(value)
 
-            operator_strategy.sql_for_field(['1'],
-                                            this->class.model.table_name,
-                                            column)
-          }.join(' OR ')
+//            operator_strategy.sql_for_field(['1'],
+//                                            this->class.model.table_name,
+//                                            column)
+//          }.join(' OR ')
         }
-      }
+      };
     }
   }
+}
 }

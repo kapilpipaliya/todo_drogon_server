@@ -1,13 +1,16 @@
+#pragma once
+namespace openproj {
 namespace Queries::Filters::Strategies {
   namespace FloatNumeric {
-    private:
+//    private:
 
      void numeric_class() {
-      ::Float
+//      ::Float
     }
 
      void error_message() {
-      :not_a_float
+//      :not_a_float
     }
   }
+}
 }

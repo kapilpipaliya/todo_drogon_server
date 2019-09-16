@@ -1,20 +1,29 @@
+#pragma once
+#include "../../../queries/base_order.h"
 namespace openproj {
-class Queries::Versions::Orders::NameOrder : public Queries::BaseOrder {
-  this->model = Version
+namespace Queries {
+namespace Versions {
+namespace Orders {
+class NameOrder : public openproj::Queries::BaseOrder {
+//  this->model = Version
 
    void key() {
-    :name
+//    :name
   }
 
   private:
 
    void order() {
-    ordered = Version.order_by_name
+//    ordered = Version.order_by_name
 
-    if ( direction == :desc) {
-      ordered = ordered.reverse_order
-    }
+//    if ( direction == :desc) {
+//      ordered = ordered.reverse_order
+//    }
 
-    ordered
+//    ordered
   }
+};
+}
+}
+}
 }

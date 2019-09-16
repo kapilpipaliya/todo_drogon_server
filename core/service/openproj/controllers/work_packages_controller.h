@@ -26,7 +26,7 @@ public:
 //        render :show, locals: { work_package: work_package, menu_name: project_or_wp_query_menu }, layout: 'angular'
 //      }
 
-//      format.any(*WorkPackage::Exporter.single_formats) {
+//      format.any(*WorkPackageN::Exporter.single_formats) {
 //        export_single(request.format.symbol)
 //      }
 
@@ -47,7 +47,7 @@ public:
 //                       // layout: 'angular'
 //      }
 
-//      format.any(*WorkPackage::Exporter.list_formats) {
+//      format.any(*WorkPackageN::Exporter.list_formats) {
 //        export_list(request.format.symbol)
 //      }
 
@@ -65,14 +65,14 @@ public:
   }
 
    void export_list(std::string mime_type) {
-//    exporter = WorkPackage::Exporter.for_list(mime_type)
+//    exporter = WorkPackageN::Exporter.for_list(mime_type)
 //    exporter.list(this->query, params) { |export|
 //      render_export_response export, fallback_path: index_redirect_path
 //    }
   }
 
    void export_single(std::string mime_type) {
-//    exporter = WorkPackage::Exporter.for_single(mime_type)
+//    exporter = WorkPackageN::Exporter.for_single(mime_type)
 //    exporter.single(work_package, params) { |export|
 //      render_export_response export, fallback_path: work_package_path(work_package)
 //    }
@@ -128,7 +128,7 @@ public:
   }
 
    void supported_export_formats() {
-//    %w[atom rss] + WorkPackage::Exporter.list_formats.map(&:to_s)
+//    %w[atom rss] + WorkPackageN::Exporter.list_formats.map(&:to_s)
   }
 
    void load_and_validate_query() {

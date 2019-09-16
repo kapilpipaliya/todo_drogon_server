@@ -1,14 +1,23 @@
+#pragma once
+#include "../../../queries/work_packages/columns/work_package_column.h"
 namespace openproj {
-class Queries::WorkPackages::Columns::ManualSortingColumn : public Queries::WorkPackages::Columns::WorkPackageColumn {
+namespace Queries {
+namespace WorkPackages {
+namespace Columns {
+class ManualSortingColumn : public openproj::Queries::WorkPackages::Columns::WorkPackageColumn {
   // include ::Queries::WorkPackages::Common::ManualSorting
 
    ManualSortingColumn() {
-    super :manual_sorting,
-          default_order: 'asc',
-          sortable: "#{OrderedWorkPackage.table_name}.position NULLS LAST, #{WorkPackage.table_name}.id"
+//    super :manual_sorting,
+//          default_order: 'asc',
+//          sortable: "#{OrderedWorkPackage.table_name}.position NULLS LAST, #{WorkPackage.table_name}.id"
   }
 
-   void sortable_join_statement(query) {
-    ordered_work_packages_join(query)
-  }
+//   void sortable_join_statement(query) {
+//    ordered_work_packages_join(query)
+//  }
+};
+}
+}
+}
 }

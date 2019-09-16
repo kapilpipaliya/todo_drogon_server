@@ -26,7 +26,7 @@ public:
 
 //    // Do not deliver notifications if a follow-up journal will already have sent a notification
 //    // on behalf of this job.
-//    unless Journal::AggregatedJournal.hides_notifications?(this->journal.successor, this->journal)
+//    unless JournalN::AggregatedJournal.hides_notifications?(this->journal.successor, this->journal)
 //      deliver_notifications_for(this->journal)
 //    }
   }
@@ -34,7 +34,7 @@ public:
   private:
 
    void find_aggregated_journal() {
-//    wp_journals = Journal::AggregatedJournal.aggregated_journals(journable: work_package)
+//    wp_journals = JournalN::AggregatedJournal.aggregated_journals(journable: work_package)
 //    wp_journals.detect { |journal| journal.version == raw_journal.version }
   }
 
@@ -66,7 +66,7 @@ public:
    void mentioned() {
 //    mentioned_ids
 //      .where(id: User.allowed(:view_work_packages, this->work_package.project))
-//      .where.not(mail_notification: User::USER_MAIL_OPTION_NON.first)
+//      .where.not(mail_notification: UserN::USER_MAIL_OPTION_NON.first)
   }
 
    void text_for_mentions() {

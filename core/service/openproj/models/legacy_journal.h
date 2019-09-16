@@ -1,9 +1,11 @@
-#include "journal_formatter"
-#include "redmine/acts/journalized/format_hooks"
-#include "open_project/journal_formatter/diff"
-#include "open_project/journal_formatter/attachment"
-#include "open_project/journal_formatter/custom_field"
-#include "journal_deprecated"
+#pragma once
+#include "activerecord.h"
+//#include "journal_formatter"
+//#include "redmine/acts/journalized/format_hooks"
+//#include "open_project/journal_formatter/diff"
+//#include "open_project/journal_formatter/attachment"
+//#include "open_project/journal_formatter/custom_field"
+//#include "journal_deprecated"
 
 // The ActiveRecord model representing journals.
 namespace openproj {
@@ -16,7 +18,7 @@ class LegacyJournal : public ActiveRecord::Base {
   // Make sure each journaled model instance only has unique version ids
   // validates_uniqueness_of :version, scope: [:journaled_id, :type]
 
-  // Define a default class_name to prevent `uninitialized constant Journal::Journaled`
+  // Define a default class_name to prevent `uninitialized constant JournalN::Journaled`
   // subclasses will be given an actual class name when they are created by aaj
   //
   //  e.g. IssueJournal will get class_name: 'Issue'
@@ -33,77 +35,77 @@ class LegacyJournal : public ActiveRecord::Base {
   // Scopes to all journals excluding the initial journal - useful for change
   // logs like the history on issue#show
   // scope :changing, -> {
-    where(['version > 1'])
-  }
+//    where(['version > 1'])
+//  }
 
   // let all child classes have Journal as it's model name
   // used to not having to create another route for every subclass of Journal
-   void inherited(child) {
-    child.instance_eval {
-       void model_name() {
-        Journal.model_name
-      }
-    }
-    super
-  }
+//   void inherited(child) {
+//    child.instance_eval {
+//       void model_name() {
+//        Journal.model_name
+//      }
+//    }
+//    super
+//  }
 
-   void touch_journaled_after_creation() {
-    journaled.touch
-  }
+//   void touch_journaled_after_creation() {
+//    journaled.touch
+//  }
 
-  // In conjunction with the included Comparable module, allows comparison of journal records
-  // based on their corresponding version numbers, creation timestamps and IDs.
-   void <=>(other) {
-    [version, created_at, id].map(&:to_i) <=> [other.version, other.created_at, other.id].map(&:to_i)
-  }
+//  // In conjunction with the included Comparable module, allows comparison of journal records
+//  // based on their corresponding version numbers, creation timestamps and IDs.
+//   void <=>(other) {
+//    [version, created_at, id].map(&:to_i) <=> [other.version, other.created_at, other.id].map(&:to_i)
+//  }
 
-  // Returns whether the version has a version number of 1. Useful when deciding whether to ignore
-  // the version during reversion, as initial versions have no serialized changes attached. Helps
-  // maintain backwards compatibility.
-   void initial?() {
-    version < 2
-  }
+//  // Returns whether the version has a version number of 1. Useful when deciding whether to ignore
+//  // the version during reversion, as initial versions have no serialized changes attached. Helps
+//  // maintain backwards compatibility.
+//   void initial?() {
+//    version < 2
+//  }
 
-  // The anchor number for html output
-   void anchor() {
-    version - 1
-  }
+//  // The anchor number for html output
+//   void anchor() {
+//    version - 1
+//  }
 
-  // Possible shortcut to the associated project
-   void project() {
-    if ( journaled.respond_to?(:project)) {
-      journaled.project
-    } else if ( journaled.is_a? Project) {
-      journaled
-    }
-  }
+//  // Possible shortcut to the associated project
+//   void project() {
+//    if ( journaled.respond_to?(:project)) {
+//      journaled.project
+//    } else if ( journaled.is_a? Project) {
+//      journaled
+//    }
+//  }
 
-   void editable_by?(user) {
-    journaled.journal_editable_by?(user)
-  }
+//   void editable_by?(user) {
+//    journaled.journal_editable_by?(user)
+//  }
 
-   void details() {
-    attributes['changed_data'] || {}
-  }
+//   void details() {
+//    attributes['changed_data'] || {}
+//  }
 
-  // TODO Evaluate whether this can be removed without disturbing any migrations
-  alias_method :changed_data, :details
+//  // TODO Evaluate whether this can be removed without disturbing any migrations
+//  alias_method :changed_data, :details
 
-   void new_value_for(prop) {
-    if ( details.keys.include? prop.to_s) { details[prop.to_s].last ;}
-  }
+//   void new_value_for(prop) {
+//    if ( details.keys.include? prop.to_s) { details[prop.to_s].last ;}
+//  }
 
-   void old_value_for(prop) {
-    if ( details.keys.include? prop.to_s) { details[prop.to_s].first ;}
-  }
+//   void old_value_for(prop) {
+//    if ( details.keys.include? prop.to_s) { details[prop.to_s].first ;}
+//  }
 
-  // Returns a string of css classes
-   void css_classes() {
-    s = 'journal'
-    s << ' has-notes' unless notes.blank?
-    s << ' has-details' unless details.empty?
-    s
-  }
+//  // Returns a string of css classes
+//   void css_classes() {
+//    s = 'journal'
+//    s << ' has-notes' unless notes.blank?
+//    s << ' has-details' unless details.empty?
+//    s
+//  }
 
   // This is here to allow people to disregard the difference between working with a
   // Journal and the object it is attached to.
@@ -111,10 +113,12 @@ class LegacyJournal : public ActiveRecord::Base {
   //// => Call super if the method corresponds to one of our attributes (will } up in AR::Base)
   //// => Try the journaled object with the same method and arguments
   //// => On error, call super
-   void method_missing(method, *args, &block) {
-    if ( respond_to?(method) || attributes[method.to_s]) { return super ;}
-    journaled.send(method, *args, &block)
-  rescue NoMethodError => e
-    e.name == method ? super : raise(e)
-  }
+//   void method_missing(method, *args, &block) {
+//    if ( respond_to?(method) || attributes[method.to_s]) { return super ;}
+//    journaled.send(method, *args, &block)
+//  rescue NoMethodError => e
+//    e.name == method ? super : raise(e)
+//  }
+};
 }
+

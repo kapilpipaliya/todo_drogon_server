@@ -1,10 +1,17 @@
+#pragma once
+#include "../base_query.h"
 namespace openproj {
-class Queries::Principals::PrincipalQuery : public Queries::BaseQuery {
+namespace Queries {
+namespace Principals {
+class PrincipalQuery : public openproj::Queries::BaseQuery {
    void model() {
-    Principal
+//    Principal
   }
 
    void default_scope() {
-    Principal.not_builtin
+//    Principal.not_builtin
   }
+};
+}
+}
 }

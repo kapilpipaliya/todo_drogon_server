@@ -5,7 +5,7 @@ namespace ReportsHelper {
 
 //   void aggregate(data, criteria) {
 //    data&.inject(0) { |sum, row|
-//      match = criteria&.all? { |k, v| row[k].to_s == v.to_s || (k == 'closed' && row[k] == ActiveRecord::Type::Boolean.new.cast(v)) }
+//      match = criteria&.all? { |k, v| row[k].to_s == v.to_s || (k == 'closed' && row[k] == ActiveRecord::TypeN::Boolean.new.cast(v)) }
 
 //      if ( match) { sum += row['total'].to_i ;}
 

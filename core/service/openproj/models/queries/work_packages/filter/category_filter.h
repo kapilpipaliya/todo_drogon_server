@@ -1,36 +1,46 @@
+#pragma once
+#include "../../../queries/work_packages/filter/work_package_filter.h"
 namespace openproj {
-class Queries::WorkPackages::Filter::CategoryFilter <
-  Queries::WorkPackages::Filter::WorkPackageFilter
+namespace Queries {
+namespace WorkPackages {
+namespace Filter {
+class CategoryFilter  :
+  openproj::Queries::WorkPackages::Filter::WorkPackageFilter {
    void allowed_values() {
-    all_project_categories.map { |s| [s.name, s.id.to_s] }
+//    all_project_categories.map { |s| [s.name, s.id.to_s] }
   }
 
-   void available?() {
-    project &&
-      project.categories.exists?
-  }
+//   void available?() {
+//    project &&
+//      project.categories.exists?
+//  }
 
    void type() {
-    :list_optional
+//    :list_optional
   }
 
    void key() {
-    :category_id
+//    :category_id
   }
 
    void value_objects() {
-    int_values = values.map(&:to_i)
+//    int_values = values.map(&:to_i)
 
-    all_project_categories.select { |c| int_values.include?(c.id) }
+//    all_project_categories.select { |c| int_values.include?(c.id) }
   }
 
-   void ar_object_filter?() {
-    true
-  }
+//   void ar_object_filter?() {
+//    true
+//  }
 
   private:
 
    void all_project_categories() {
-    this->all_project_categories ||= project.categories
+//    this->all_project_categories ||= project.categories
   }
+};
 }
+}
+}
+}
+

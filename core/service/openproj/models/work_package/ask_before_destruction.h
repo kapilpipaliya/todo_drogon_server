@@ -1,69 +1,72 @@
-namespace WorkPackage::AskBeforeDestruction {
+#pragma once
+namespace openproj {
+namespace WorkPackageN::AskBeforeDestruction {
   // extend ActiveSupport::Concern
 
-  DestructionRegistration = Struct.new(:klass, :check, :action)
+//  DestructionRegistration = Struct.new(:klass, :check, :action)
 
-   void included(base) {
-    base.extend(ClassMethods)
+//   void included(base) {
+//    base.extend(ClassMethods)
 
-    base.class_attribute :registered_associated_to_ask_before_destruction
-  }
+//    base.class_attribute :registered_associated_to_ask_before_destruction
+//  }
 
   namespace ClassMethods {
-     void cleanup_action_required_before_destructing?(work_packages) {
-      !associated_to_ask_before_destruction_of(work_packages).empty?
-    }
+//     void cleanup_action_required_before_destructing?(work_packages) {
+//      !associated_to_ask_before_destruction_of(work_packages).empty?
+//    }
 
-     void cleanup_associated_before_destructing_if_required(work_packages, user, to_do = { action: 'destroy' }) {
-      cleanup_required = cleanup_action_required_before_destructing?(work_packages)
+//     void cleanup_associated_before_destructing_if_required(work_packages, user, to_do = { action: 'destroy' }) {
+//      cleanup_required = cleanup_action_required_before_destructing?(work_packages)
 
-      (!cleanup_required ||
-       (cleanup_required &&
-        cleanup_each_associated_class(work_packages, user, to_do)))
-    }
+//      (!cleanup_required ||
+//       (cleanup_required &&
+//        cleanup_each_associated_class(work_packages, user, to_do)))
+//    }
 
-     void associated_classes_to_address_before_destruction_of(work_packages) {
-      associated = []
+//     void associated_classes_to_address_before_destruction_of(work_packages) {
+//      associated = []
 
-      registered_associated_to_ask_before_destruction.each { |registration|
-        if ( registration.check.call(work_packages)) { associated << registration.klass ;}
-      }
+//      registered_associated_to_ask_before_destruction.each { |registration|
+//        if ( registration.check.call(work_packages)) { associated << registration.klass ;}
+//      }
 
-      associated
-    }
+//      associated
+//    }
 
-    private:
+//    private:
 
-     void associated_to_ask_before_destruction_of(work_packages) {
-      associated = {}
+//     void associated_to_ask_before_destruction_of(work_packages) {
+//      associated = {}
 
-      registered_associated_to_ask_before_destruction.each { |registration|
-        if ( registration.check.call(work_packages)) { associated[registration.klass] = registration.action ;}
-      }
+//      registered_associated_to_ask_before_destruction.each { |registration|
+//        if ( registration.check.call(work_packages)) { associated[registration.klass] = registration.action ;}
+//      }
 
-      associated
-    }
+//      associated
+//    }
 
-     void associated_to_ask_before_destruction(klass, check, action) {
-      this->registered_associated_to_ask_before_destruction ||= []
+//     void associated_to_ask_before_destruction(klass, check, action) {
+//      this->registered_associated_to_ask_before_destruction ||= []
 
-      registration = DestructionRegistration.new(klass, check, action)
+//      registration = DestructionRegistration.new(klass, check, action)
 
-      this->registered_associated_to_ask_before_destruction << registration
-    }
+//      this->registered_associated_to_ask_before_destruction << registration
+//    }
 
-     void cleanup_each_associated_class(work_packages, user, to_do) {
-      ret = false
+//     void cleanup_each_associated_class(work_packages, user, to_do) {
+//      ret = false
 
-      transaction {
-        associated_to_ask_before_destruction_of(work_packages).each { |_klass, method|
-          ret = method.call(work_packages, user, to_do)
-        }
+//      transaction {
+//        associated_to_ask_before_destruction_of(work_packages).each { |_klass, method|
+//          ret = method.call(work_packages, user, to_do)
+//        }
 
-        raise ActiveRecord::Rollback unless ret
-      }
+//        raise ActiveRecord::Rollback unless ret
+//      }
 
-      ret
-    }
+//      ret
+//    }
   }
+}
 }

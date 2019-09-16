@@ -1,15 +1,21 @@
+#pragma once
 namespace openproj {
-class CustomActions::Conditions::Project : public CustomActions::Conditions::Base {
+namespace CustomActions {
+namespace Conditions {
+class Project : public CustomActions::Conditions::Base {
    void key() {
-    :project
+//    :project
   }
 
   private:
 
    void associated() {
-    ::Project
-      .select(:id, :name)
-      .order(Arel.sql('LOWER(name)'))
-      .map { |u| [u.id, u.name] }
+//    ::Project
+//      .select(:id, :name)
+//      .order(Arel.sql('LOWER(name)'))
+//      .map { |u| [u.id, u.name] }
   }
+};
+}
+}
 }

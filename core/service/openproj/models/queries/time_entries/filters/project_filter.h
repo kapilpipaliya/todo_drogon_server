@@ -1,4 +1,13 @@
+#pragma once
+#include "../../time_entries/filters/time_entry_filter.h"
 namespace openproj {
-class Queries::TimeEntries::Filters::ProjectFilter : public Queries::TimeEntries::Filters::TimeEntryFilter {
+namespace Queries {
+namespace TimeEntries {
+namespace Filters {
+class ProjectFilter : public openproj::Queries::TimeEntries::Filters::TimeEntryFilter {
   // include Queries::Filters::Shared::ProjectFilter
+};
+}
+}
+}
 }

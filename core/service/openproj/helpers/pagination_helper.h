@@ -128,7 +128,7 @@ namespace PaginationHelper {
 //    }
 //  }
 
-  class LinkRenderer {//: public ::WillPaginate::ActionView::LinkRenderer {
+  class LinkRenderer {//: public WillPaginate::ActionView::LinkRenderer {
   public:
      void to_html() {
 //      pagination.inject('') { |html, item|

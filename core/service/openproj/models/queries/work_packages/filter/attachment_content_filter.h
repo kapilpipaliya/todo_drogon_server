@@ -1,18 +1,28 @@
+#pragma once
+#include "../../../queries/work_packages/filter/attachment_base_filter.h"
 namespace openproj {
-class Queries::WorkPackages::Filter::AttachmentContentFilter : public Queries::WorkPackages::Filter::AttachmentBaseFilter {
+namespace Queries {
+namespace WorkPackages {
+namespace Filter {
+class AttachmentContentFilter : public openproj::Queries::WorkPackages::Filter::AttachmentBaseFilter {
    void key() {
-    :attachment_content
+//    :attachment_content
   }
 
    void name() {
-    :attachment_content
+//    :attachment_content
   }
 
    void human_name() {
-    Attachment.human_attribute_name('attachment_content')
+//    Attachment.human_attribute_name('attachment_content')
   }
 
    void search_column() {
-    'fulltext'
+//    'fulltext'
   }
+};
 }
+}
+}
+}
+

@@ -1,11 +1,20 @@
+#pragma once
 
 namespace openproj {
-class Queries::WorkPackages::Filter::FilterConfiguration
+namespace Queries {
+namespace WorkPackages {
+namespace Filter {
+class FilterConfiguration {
   // attr_accessor(:filter_class, :filter_name, :operator)
 
-   FilterConfiguration(filter_class, filter_name, operator) {
-    this->filter_class = filter_class
-    this->filter_name = filter_name
-    this->operator = operator
-  }
+//   FilterConfiguration(filter_class, filter_name, operator) {
+//    this->filter_class = filter_class
+//    this->filter_name = filter_name
+//    this->operator = operator
+//  }
+};
 }
+}
+}
+}
+

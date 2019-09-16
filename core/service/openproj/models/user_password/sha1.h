@@ -1,42 +1,47 @@
+#pragma once
+#include "../user_password.h"
 //
 // LEGACY password hashing method using salted SHA-1
 // This is only included for testing hashed passwords and will raise when trying
 // to save new passwords with that strategy.
 namespace openproj {
-class UserPassword::SHA1 : public UserPassword {
-  protected:
+namespace UserPasswordN {
+class SHA1 : public UserPassword {
+//  protected:
 
   //
   // Determines whether the hashed value of +plain+ matches the stored password hash.
-   void hash_matches?(plain) {
-    test_hash = derive_password!(plain)
-    secure_equals?(test_hash, hashed_password)
-  }
+//   void hash_matches?(plain) {
+//    test_hash = derive_password!(plain)
+//    secure_equals?(test_hash, hashed_password)
+//  }
 
   // constant-time comparison algorithm to prevent timing attacks
-   void secure_equals?(a, b) {
-    if ( a.blank? || b.blank? || a.bytesize != b.bytesize) { return false ;}
-    l = a.unpack "C#{a.bytesize}"
+//   void secure_equals?(a, b) {
+//    if ( a.blank? || b.blank? || a.bytesize != b.bytesize) { return false ;}
+//    l = a.unpack "C#{a.bytesize}"
 
-    res = 0
-    b.each_byte { |byte| res |= byte ^ l.shift }
-    res == 0
-  }
+//    res = 0
+//    b.each_byte { |byte| res |= byte ^ l.shift }
+//    res == 0
+//  }
 
   //
   // Override the base method to disallow new passwords being generated this way.
-   void salt_and_hash_password!() {
-    raise ArgumentError, 'Do not use UserPassword::SHA1 for new passwords!'
-  }
+//   void salt_and_hash_password!() {
+//    raise ArgumentError, 'Do not use UserPasswordN::SHA1 for new passwords!'
+//  }
 
   //
   // Hash a plaintext password with a given salt
   // The hashed password has following form: SHA1(salt + SHA1(password))
-   void derive_password!(input) {
-    hashfn("#{salt}#{hashfn(input)}")
-  }
+//   void derive_password!(input) {
+//    hashfn("#{salt}#{hashfn(input)}")
+//  }
 
-   void hashfn(input) {
-    Digest::SHA1.hexdigest(input)
-  }
+//   void hashfn(input) {
+//    Digest::SHA1.hexdigest(input)
+//  }
+};
+}
 }

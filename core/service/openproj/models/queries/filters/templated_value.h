@@ -1,23 +1,30 @@
+#pragma once
 namespace openproj {
-class Queries::Filters::TemplatedValue
-  KEY = '{id}'.freeze
-  DEPRECATED_KEY = 'templated'.freeze
+namespace Queries {
+namespace Filters {
+class TemplatedValue {
+//  KEY = '{id}'.freeze
+//  DEPRECATED_KEY = 'templated'.freeze
 
   // attr_accessor :templated_class
 
-   TemplatedValue(templated_class) {
-    this->templated_class = templated_class
-  }
+//   TemplatedValue(templated_class) {
+//    this->templated_class = templated_class
+//  }
 
    void id() {
-    '{id}'
+//    '{id}'
   }
 
    void name() {
-    nil
+//    nil
   }
 
-   void class() {
-    templated_class
+   void class_() {
+//    templated_class
   }
+};
 }
+}
+}
+

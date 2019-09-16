@@ -1,10 +1,17 @@
+#pragma once
+#include "../../queries/base_query.h"
 namespace openproj {
-class Queries::News::NewsQuery : public Queries::BaseQuery {
+namespace Queries {
+namespace News {
+class NewsQuery : public openproj::Queries::BaseQuery {
    void model() {
-    News
+//    News
   }
 
    void default_scope() {
-    News.visible(User.current)
+//    News.visible(User.current)
   }
+};
+}
+}
 }

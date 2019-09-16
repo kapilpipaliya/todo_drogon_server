@@ -1,13 +1,16 @@
+#pragma once
+namespace openproj {
 namespace Queries::Filters::Strategies {
   namespace IntegerNumeric {
-    private:
+//    private:
 
      void numeric_class() {
-      ::Integer
+//      ::Integer
     }
 
      void error_message() {
-      :not_an_integer
+//      :not_an_integer
     }
   }
+}
 }

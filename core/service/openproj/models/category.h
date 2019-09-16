@@ -1,3 +1,5 @@
+#pragma once
+#include "activerecord.h"
 namespace openproj {
 class Category : public ActiveRecord::Base {
   // belongs_to :project
@@ -15,20 +17,22 @@ class Category : public ActiveRecord::Base {
   //   }
   // }
 
-  alias :destroy_without_reassign :destroy
+//  alias :destroy_without_reassign :destroy
 
-  // Destroy the category
-  // If a category is specified, issues are reassigned to this category
-   void destroy(reassign_to = nil) {
-    if ( reassign_to && reassign_to.is_a?(Category) && reassign_to.project == project) {
-      WorkPackage.where("category_id = #{id}").update_all("category_id = #{reassign_to.id}")
-    }
-    destroy_without_reassign
-  }
+//  // Destroy the category
+//  // If a category is specified, issues are reassigned to this category
+//   void destroy(reassign_to = nil) {
+//    if ( reassign_to && reassign_to.is_a?(Category) && reassign_to.project == project) {
+//      WorkPackage.where("category_id = #{id}").update_all("category_id = #{reassign_to.id}")
+//    }
+//    destroy_without_reassign
+//  }
 
-   void <=>(category) {
-    name <=> category.name
-  }
+//   void <=>(category) {
+//    name <=> category.name
+//  }
 
-   void to_s; name }() {
+//   void to_s; name }() {
+};
 }
+

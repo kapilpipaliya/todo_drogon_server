@@ -1,52 +1,57 @@
+#pragma once
+#include "filters/base.h"
 namespace openproj {
-class Queries::NotExistingFilter : public Queries::Filters::Base {
-   void available?() {
-    false
-  }
+namespace Queries {
+class NotExistingFilter : public openproj::Queries::Filters::Base {
+//   void available?() {
+//    false
+//  }
 
    void type() {
-    :inexistent
+//    :inexistent
   }
 
    void key() {
-    :not_existent
+//    :not_existent
   }
 
    void human_name() {
-    name.to_s.blank? ? type : name.to_s
+//    name.to_s.blank? ? type : name.to_s
   }
 
-  validate :always_false
+//  validate :always_false
 
    void always_false() {
-    errors.add :base, I18n.t(:'activerecord.errors.messages.does_not_exist')
+//    errors.add :base, I18n.t(:'activerecord.errors.messages.does_not_exist')
   }
 
   // deactivating superclass validation
    void validate_inclusion_of_operator() {}
 
    void to_hash() {
-    {
-      non_existent_filter: {
-        operator: operator,
-        values: values
-      }
-    }
+//    {
+//      non_existent_filter: {
+//        operator: operator,
+//        values: values
+//      }
+//    }
   }
 
    void scope() {
     // TODO: remove switch once the WP query is a
     // subclass of Queries::Base
-    model = if ( context.respond_to?(:model)) {
-              context.model
-            else
-              WorkPackage
-            }
+//    model = if ( context.respond_to?(:model)) {
+//              context.model
+//            else
+//              WorkPackage
+//            }
 
-    model.unscoped
+//    model.unscoped
   }
 
    void attributes_hash() {
-    nil
+//    nil
   }
+};
+}
 }

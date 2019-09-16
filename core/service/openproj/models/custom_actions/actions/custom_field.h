@@ -1,68 +1,75 @@
+#pragma once
+#include "base.h"
 namespace openproj {
-class CustomActions::Actions::CustomField : public CustomActions::Actions::Base {
-   void key() {
-    :"custom_field_#{custom_field.id}"
-  }
+namespace CustomActions {
+namespace Actions {
+class CustomField : public CustomActions::Actions::Base {
+//   void key() {
+//    :"custom_field_#{custom_field.id}"
+//  }
 
-   virtual void custom_field() = 0;
+//   virtual void custom_field() = 0;
 
-   void custom_field() {
-    this->class.custom_field
-  }
+//   void custom_field() {
+//    this->class.custom_field
+//  }
 
-   void human_name() {
-    custom_field.name
-  }
+//   void human_name() {
+//    custom_field.name
+//  }
 
-   void apply(work_package) {
-    if ( work_package.respond_to?(:"#{custom_field.accessor_name}=")) { work_package.send(:"#{custom_field.accessor_name}=", values) ;}
-  }
+//   void apply(work_package) {
+//    if ( work_package.respond_to?(:"#{custom_field.accessor_name}=")) { work_package.send(:"#{custom_field.accessor_name}=", values) ;}
+//  }
 
-   void all() {
-    WorkPackageCustomField
-      .order(:name)
-      .map { |cf|
-        create_subclass(cf)
-      }
-  }
+//   void all() {
+//    WorkPackageCustomField
+//      .order(:name)
+//      .map { |cf|
+//        create_subclass(cf)
+//      }
+//  }
 
-   void for(key) {
-    match_result = key.match /custom_field_(\d+)/
+//   void for(key) {
+//    match_result = key.match /custom_field_(\d+)/
 
-    if ( match_result && (cf = WorkPackageCustomField.find_by(id: match_result[1]))) {
-      create_subclass(cf)
-    }
-  }
+//    if ( match_result && (cf = WorkPackageCustomField.find_by(id: match_result[1]))) {
+//      create_subclass(cf)
+//    }
+//  }
 
-   void create_subclass(custom_field) {
-    klass = Class.new(CustomActions::Actions::CustomField)
-    klass.define_singleton_method(:custom_field) {
-      custom_field
-    }
+//   void create_subclass(custom_field) {
+//    klass = Class.new(CustomActions::Actions::CustomField)
+//    klass.define_singleton_method(:custom_field) {
+//      custom_field
+//    }
 
-    klass.include(strategy(custom_field))
-    klass
-  }
-  private_class_method :create_subclass
+//    klass.include(strategy(custom_field))
+//    klass
+//  }
+//  private_class_method :create_subclass
 
-   void strategy(custom_field) {
-    case custom_field.field_format
-    when 'string'
-      CustomActions::Actions::Strategies::String
-    when 'text'
-      CustomActions::Actions::Strategies::Text
-    when 'int'
-      CustomActions::Actions::Strategies::Integer
-    when 'float'
-      CustomActions::Actions::Strategies::Float
-    when 'date'
-      CustomActions::Actions::Strategies::Date
-    when 'bool'
-      CustomActions::Actions::Strategies::Boolean
-    when 'list', 'version', 'user'
-      CustomActions::Actions::Strategies::AssociatedCustomField
-    }
-  }
+//   void strategy(custom_field) {
+//    case custom_field.field_format
+//    when 'string'
+//      CustomActions::Actions::Strategies::String
+//    when 'text'
+//      CustomActions::Actions::Strategies::Text
+//    when 'int'
+//      CustomActions::Actions::Strategies::Integer
+//    when 'float'
+//      CustomActions::Actions::Strategies::Float
+//    when 'date'
+//      CustomActions::Actions::Strategies::Date
+//    when 'bool'
+//      CustomActions::Actions::Strategies::Boolean
+//    when 'list', 'version', 'user'
+//      CustomActions::Actions::Strategies::AssociatedCustomField
+//    }
+//  }
 
-  private_class_method :strategy
+//  private_class_method :strategy
+};
+}
+}
 }

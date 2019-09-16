@@ -1,10 +1,18 @@
+#pragma once
+#include "../base_query.h"
 namespace openproj {
-class Queries::TimeEntries::TimeEntryQuery : public Queries::BaseQuery {
+namespace Queries {
+namespace TimeEntries {
+class TimeEntryQuery : public openproj::Queries::BaseQuery {
    void model() {
-    TimeEntry
+//    TimeEntry
   }
 
    void default_scope() {
-    TimeEntry.visible(User.current)
+//    TimeEntry.visible(User.current)
   }
+};
 }
+}
+}
+

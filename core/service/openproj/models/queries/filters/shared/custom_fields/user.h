@@ -1,5 +1,6 @@
+#pragma once
 #include "./list_optional.h"
-
+namespace openproj{
 namespace Queries::Filters::Shared {
   namespace CustomFields {
     class User : public ListOptional {
@@ -9,10 +10,11 @@ namespace Queries::Filters::Shared {
       // include ::Queries::WorkPackages::Filter::MeValueFilterMixin
 
        void allowed_values() {
-        this->allowed_values ||= begin
-          me_allowed_value + super
-        }
+//        this->allowed_values ||= begin
+//          me_allowed_value + super
+//        }
       }
-    }
+    };
   }
 }
+  }

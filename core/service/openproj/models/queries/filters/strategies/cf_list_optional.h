@@ -1,13 +1,17 @@
+#pragma once
+#include "list_optional.h"
+namespace openproj {
 namespace Queries::Filters::Strategies {
   class CfListOptional : public ListOptional {
     private:
 
      void operator_map() {
-      super_value = super.dup
-      super_value['!*'] = ::Queries::Operators::NoneOrBlank
-      super_value['*'] = ::Queries::Operators::AllAndNonBlank
+//      super_value = super.dup
+//      super_value['!*'] = ::Queries::Operators::NoneOrBlank
+//      super_value['*'] = ::Queries::Operators::AllAndNonBlank
 
-      super_value
+//      super_value
     }
-  }
+  };
+}
 }

@@ -1,6 +1,15 @@
+#pragma once
+#include "../../../queries/projects/filters/project_filter.h"
 namespace openproj {
-class Queries::Projects::Filters::IdFilter : public Queries::Projects::Filters::ProjectFilter {
+namespace Queries {
+namespace Projects {
+namespace Filters {
+class IdFilter : public openproj::Queries::Projects::Filters::ProjectFilter {
    void type() {
-    :integer
+//    :integer
   }
+};
+}
+}
+}
 }

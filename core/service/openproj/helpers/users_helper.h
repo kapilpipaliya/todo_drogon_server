@@ -8,7 +8,7 @@ namespace UsersHelper {
   // @param extra [Hash] A hash containing extra entries with a count for each.
   //                     For example: { random: 42 }
 //   void users_status_options_for_select(selected, extra: {}) {
-//    statuses = User::StatusOptions.user_statuses_with_count extra: extra
+//    statuses = UserN::StatusOptions.user_statuses_with_count extra: extra
 
 //    options = statuses.map { |sym, count|
 //      ["#{translate_user_status(sym)} (#{count})", sym]
@@ -24,7 +24,7 @@ namespace UsersHelper {
   // Format user status, including brute force prevention status
 //   void full_user_status(user, include_num_failed_logins = false) {
 //    user_status = ''
-//    unless [User::STATUSES[:active], User::STATUSES[:builtin]].include?(user.status)
+//    unless [UserN::STATUSES[:active], UserN::STATUSES[:builtin]].include?(user.status)
 //      user_status = translate_user_status(user.status_name)
 //    }
 //    brute_force_status = ''

@@ -40,7 +40,7 @@ public:
   }
 
    void diff() {
-//    journal = Journal::AggregatedJournal.for_journal(this->journal)
+//    journal = JournalN::AggregatedJournal.for_journal(this->journal)
 //    field = params[:field].parameterize.underscore.to_sym
 
 //    unless valid_diff?

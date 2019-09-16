@@ -1,8 +1,18 @@
+#pragma once
+#include "../../base_order.h"
 namespace openproj {
-class Queries::Users::Orders::DefaultOrder : public Queries::BaseOrder {
-  this->model = User
+namespace Queries {
+namespace Users {
+namespace Orders {
+class DefaultOrder : public openproj::Queries::BaseOrder {
+//  this->model = User
 
    void key() {
-    /id|lastname|firstname|mail|login/
+//    /id|lastname|firstname|mail|login/
   }
+};
 }
+}
+}
+}
+

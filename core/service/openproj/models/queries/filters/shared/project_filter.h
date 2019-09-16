@@ -1,19 +1,21 @@
+#pragma once
+namespace openproj {
 namespace Queries::Filters::Shared::ProjectFilter {
-   void included(base) {
-    base.include(InstanceMethods)
-    base.extend(ClassMethods)
-  }
+//   void included(base) {
+//    base.include(InstanceMethods)
+//    base.extend(ClassMethods)
+//  }
 
   namespace InstanceMethods {
      void allowed_values() {
-      this->allowed_values ||= begin
+//      this->allowed_values ||= begin
         // We don't care for the first value as we do not display the values visibly
-        ::Project.visible.pluck(:id).map { |id| [id, id.to_s] }
+//        ::Project.visible.pluck(:id).map { |id| [id, id.to_s] }
       }
     }
 
      void type() {
-      :list_optional
+//      :list_optional
     }
 
      void type_strategy() {
@@ -21,13 +23,13 @@ namespace Queries::Filters::Shared::ProjectFilter {
       // to see we only check that the value is an integer.  Non valid ids
       // will then simply create an empty result but will not cause any
       // harm.
-      this->type_strategy ||= ::Queries::Filters::Strategies::IntegerListOptional.new(self)
+//      this->type_strategy ||= ::Queries::Filters::Strategies::IntegerListOptional.new(self)
     }
   }
 
   namespace ClassMethods {
-     void key() {
-      :project_id
-    }
+//     void key() {
+//      :project_id
+//    }
   }
 }

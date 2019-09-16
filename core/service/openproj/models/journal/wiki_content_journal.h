@@ -1,6 +1,11 @@
+#pragma once
+#include "base_journal.h"
 namespace openproj {
-class Journal::WikiContentJournal : public Journal::BaseJournal {
-  this->table_name = 'wiki_content_journals'
+namespace JournalN {
+class WikiContentJournal : public JournalN::BaseJournal {
+//  this->table_name = 'wiki_content_journals'
+};
+}
 }
 
-::WikiContentJournal = Journal::WikiContentJournal
+//::WikiContentJournal = JournalN::WikiContentJournal

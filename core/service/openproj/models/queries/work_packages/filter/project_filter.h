@@ -1,42 +1,52 @@
+#pragma once
+#include "../../../queries/work_packages/filter/work_package_filter.h"
 namespace openproj {
-class Queries::WorkPackages::Filter::ProjectFilter : public Queries::WorkPackages::Filter::WorkPackageFilter {
+namespace Queries {
+namespace WorkPackages {
+namespace Filter {
+class ProjectFilter : public openproj::Queries::WorkPackages::Filter::WorkPackageFilter {
    void allowed_values() {
-    this->allowed_values ||= begin
-      project_values = []
-      Project.project_tree(visible_projects) { |p, level|
-        prefix = (level > 0 ? ('--' * level + ' ') : '')
-        project_values << ["#{prefix}#{p.name}", p.id.to_s]
-      }
+//    this->allowed_values ||= begin
+//      project_values = []
+//      Project.project_tree(visible_projects) { |p, level|
+//        prefix = (level > 0 ? ('--' * level + ' ') : '')
+//        project_values << ["#{prefix}#{p.name}", p.id.to_s]
+//      }
 
-      project_values
-    }
+//      project_values
+//    }
   }
 
-   void available?() {
-    !project && visible_projects.exists?
-  }
+//   void available?() {
+//    !project && visible_projects.exists?
+//  }
 
    void type() {
-    :list
+//    :list
   }
 
    void key() {
-    :project_id
+//    :project_id
   }
 
-   void ar_object_filter?() {
-    true
-  }
+//   void ar_object_filter?() {
+//    true
+//  }
 
    void value_objects() {
-    value_ints = values.map(&:to_i)
+//    value_ints = values.map(&:to_i)
 
-    visible_projects.select { |p| value_ints.include?(p.id) }
+//    visible_projects.select { |p| value_ints.include?(p.id) }
   }
 
   private:
 
    void visible_projects() {
-    this->visible_projects ||= Project.visible
+//    this->visible_projects ||= Project.visible
   }
+};
 }
+}
+}
+}
+

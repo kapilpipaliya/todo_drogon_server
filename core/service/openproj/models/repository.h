@@ -1,3 +1,5 @@
+#pragma once
+#include "activerecord.h"
 namespace openproj {
 class Repository : public ActiveRecord::Base {
   // include Redmine::Ciphering
@@ -5,289 +7,289 @@ class Repository : public ActiveRecord::Base {
 
   // belongs_to :project
   // has_many :changesets, -> {
-    order("#{Changeset.table_name}.committed_on DESC, #{Changeset.table_name}.id DESC")
-  }
+//    order("#{Changeset.table_name}.committed_on DESC, #{Changeset.table_name}.id DESC")
+//  }
 
-  before_save :sanitize_urls
+//  before_save :sanitize_urls
 
-  // Managed repository lifetime
-  // after_create :create_managed_repository, if (: Proc.new { |repo| repo.managed? }) {
-  after_destroy :delete_managed_repository, if (: Proc.new { |repo| repo.managed? }) {
+//  // Managed repository lifetime
+//  // after_create :create_managed_repository, if (: Proc.new { |repo| repo.managed? }) {
+//  after_destroy :delete_managed_repository, if (: Proc.new { |repo| repo.managed? }) {
 
-  // Raw SQL to delete changesets and changes in the database
-  // has_many :changesets, dependent: :destroy is too slow for big repositories
-  before_destroy :clear_changesets
+//  // Raw SQL to delete changesets and changes in the database
+//  // has_many :changesets, dependent: :destroy is too slow for big repositories
+//  before_destroy :clear_changesets
 
-  // validates_length_of :password, maximum: 255, allow_nil: true
-  validate :validate_enabled_scm, on: :create
+//  // validates_length_of :password, maximum: 255, allow_nil: true
+//  validate :validate_enabled_scm, on: :create
 
-   void file_changes() {
-    Change.where(changeset_id: changesets).joins(:changeset)
-  }
+//   void file_changes() {
+//    Change.where(changeset_id: changesets).joins(:changeset)
+//  }
 
-  // Checks if ( the SCM is enabled when creating a repository) {
-   void validate_enabled_scm() {
-    errors.add(:type, :not_available) unless OpenProject::Scm::Manager.enabled?(vendor)
-  }
+//  // Checks if ( the SCM is enabled when creating a repository) {
+//   void validate_enabled_scm() {
+//    errors.add(:type, :not_available) unless OpenProject::Scm::Manager.enabled?(vendor)
+//  }
 
-  // Removes leading and trailing whitespace
-   void url=(arg) {
-    write_attribute(:url, arg ? arg.to_s.strip : nil)
-  }
+//  // Removes leading and trailing whitespace
+//   void url=(arg) {
+//    write_attribute(:url, arg ? arg.to_s.strip : nil)
+//  }
 
-  // Removes leading and trailing whitespace
-   void root_url=(arg) {
-    write_attribute(:root_url, arg ? arg.to_s.strip : nil)
-  }
+//  // Removes leading and trailing whitespace
+//   void root_url=(arg) {
+//    write_attribute(:root_url, arg ? arg.to_s.strip : nil)
+//  }
 
-   void password() {
-    read_ciphered_attribute(:password)
-  }
+//   void password() {
+//    read_ciphered_attribute(:password)
+//  }
 
-   void password=(arg) {
-    write_ciphered_attribute(:password, arg)
-  }
+//   void password=(arg) {
+//    write_ciphered_attribute(:password, arg)
+//  }
 
-   void scm_adapter() {
-    this->class.scm_adapter_class
-  }
+//   void scm_adapter() {
+//    this->class.scm_adapter_class
+//  }
 
-   void scm() {
-    this->scm ||= scm_adapter.new(
-      url, root_url,
-      login, password, path_encoding,
-      project.identifier
-    )
+//   void scm() {
+//    this->scm ||= scm_adapter.new(
+//      url, root_url,
+//      login, password, path_encoding,
+//      project.identifier
+//    )
 
-    // override the adapter's root url with the full url
-    // if ( none other was set.) {
-    unless this->scm.root_url.present?
-      this->scm.root_url = root_url.presence || url
-    }
+//    // override the adapter's root url with the full url
+//    // if ( none other was set.) {
+//    unless this->scm.root_url.present?
+//      this->scm.root_url = root_url.presence || url
+//    }
 
-    this->scm
-  }
+//    this->scm
+//  }
 
-   void authorization_policy() {
-    nil
-  }
+//   void authorization_policy() {
+//    nil
+//  }
 
-   void scm_config() {
-    scm_adapter_class.config
-  }
+//   void scm_config() {
+//    scm_adapter_class.config
+//  }
 
-   void available_types() {
-    supported_types - disabled_types
-  }
+//   void available_types() {
+//    supported_types - disabled_types
+//  }
 
-  //
-  // Retrieves the :disabled_types setting from `configuration.yml
-  // To avoid wrong set operations for string-based configuration, force them to symbols.
-   void disabled_types() {
-    (scm_config[:disabled_types] || []).map(&:to_sym)
-  }
+//  //
+//  // Retrieves the :disabled_types setting from `configuration.yml
+//  // To avoid wrong set operations for string-based configuration, force them to symbols.
+//   void disabled_types() {
+//    (scm_config[:disabled_types] || []).map(&:to_sym)
+//  }
 
-   void vendor() {
-    this->class.vendor
-  }
+//   void vendor() {
+//    this->class.vendor
+//  }
 
-   void supports_cat?() {
-    scm.supports_cat?
-  }
+//   void supports_cat?() {
+//    scm.supports_cat?
+//  }
 
-   void supports_annotate?() {
-    scm.supports_annotate?
-  }
+//   void supports_annotate?() {
+//    scm.supports_annotate?
+//  }
 
-   void supports_all_revisions?() {
-    true
-  }
+//   void supports_all_revisions?() {
+//    true
+//  }
 
-   void supports_directory_revisions?() {
-    false
-  }
+//   void supports_directory_revisions?() {
+//    false
+//  }
 
-   void supports_checkout_info?() {
-    true
-  }
+//   void supports_checkout_info?() {
+//    true
+//  }
 
-   void requires_checkout_base_url?() {
-    true
-  }
+//   void requires_checkout_base_url?() {
+//    true
+//  }
 
-   void entry(path = nil, identifier = nil) {
-    scm.entry(path, identifier)
-  }
+//   void entry(path = nil, identifier = nil) {
+//    scm.entry(path, identifier)
+//  }
 
-   void entries(path = nil, identifier = nil, limit: nil) {
-    entries = scm.entries(path, identifier)
+//   void entries(path = nil, identifier = nil, limit: nil) {
+//    entries = scm.entries(path, identifier)
 
-    if ( limit && limit < entries.size) {
-      result = OpenProject::Scm::Adapters::Entries.new entries.take(limit)
-      result.truncated = entries.size - result.size
+//    if ( limit && limit < entries.size) {
+//      result = OpenProject::Scm::Adapters::Entries.new entries.take(limit)
+//      result.truncated = entries.size - result.size
 
-      result
-    else
-      entries
-    }
-  }
+//      result
+//    else
+//      entries
+//    }
+//  }
 
-   void branches() {
-    scm.branches
-  }
+//   void branches() {
+//    scm.branches
+//  }
 
-   void tags() {
-    scm.tags
-  }
+//   void tags() {
+//    scm.tags
+//  }
 
-   void default_branch() {
-    scm.default_branch
-  }
+//   void default_branch() {
+//    scm.default_branch
+//  }
 
-   void properties(path, identifier = nil) {
-    scm.properties(path, identifier)
-  }
+//   void properties(path, identifier = nil) {
+//    scm.properties(path, identifier)
+//  }
 
-   void cat(path, identifier = nil) {
-    scm.cat(path, identifier)
-  }
+//   void cat(path, identifier = nil) {
+//    scm.cat(path, identifier)
+//  }
 
-   void diff(path, rev, rev_to) {
-    scm.diff(path, rev, rev_to)
-  }
+//   void diff(path, rev, rev_to) {
+//    scm.diff(path, rev, rev_to)
+//  }
 
-   void diff_format_revisions(cs, cs_to, sep = ':') {
-    text = ''
-    if ( cs_to) { text << cs_to.format_identifier + sep ;}
-    if ( cs) { text << cs.format_identifier ;}
-    text
-  }
+//   void diff_format_revisions(cs, cs_to, sep = ':') {
+//    text = ''
+//    if ( cs_to) { text << cs_to.format_identifier + sep ;}
+//    if ( cs) { text << cs.format_identifier ;}
+//    text
+//  }
 
-  // Returns a path relative to the url of the repository
-   void relative_path(path) {
-    path
-  }
+//  // Returns a path relative to the url of the repository
+//   void relative_path(path) {
+//    path
+//  }
 
-  //
-  // Update the required storage information, when necessary.
-  // Returns whether an asynchronous count refresh has been requested.
-   void update_required_storage() {
-   if ( scm.storage_available?) {  ;}
-      oldest_cachable_time = Setting.repository_storage_cache_minutes.to_i.minutes.ago
-      if ( storage_updated_at.nil? ||) {
-         storage_updated_at < oldest_cachable_time
+//  //
+//  // Update the required storage information, when necessary.
+//  // Returns whether an asynchronous count refresh has been requested.
+//   void update_required_storage() {
+//   if ( scm.storage_available?) {  ;}
+//      oldest_cachable_time = Setting.repository_storage_cache_minutes.to_i.minutes.ago
+//      if ( storage_updated_at.nil? ||) {
+//         storage_updated_at < oldest_cachable_time
 
-        Delayed::Job.enqueue ::Scm::StorageUpdaterJob.new(self), priority: ::ApplicationJob.priority_number(:low)
-        return true
-      }
-    }
+//        Delayed::Job.enqueue ::Scm::StorageUpdaterJob.new(self), priority: ::ApplicationJob.priority_number(:low)
+//        return true
+//      }
+//    }
 
-    false
-  }
+//    false
+//  }
 
   // Finds and returns a revision with a number or the beginning of a hash
-   void find_changeset_by_name(name) {
-    name = name.to_s
-    if ( name.blank?) { return nil ;}
-    changesets.where((name.match(/\A\d*\z/) ? ['revision = ?', name] : ['revision LIKE ?', name + '%'])).first
-  }
+//   void find_changeset_by_name(name) {
+//    name = name.to_s
+//    if ( name.blank?) { return nil ;}
+//    changesets.where((name.match(/\A\d*\z/) ? ['revision = ?', name] : ['revision LIKE ?', name + '%'])).first
+//  }
 
-   void latest_changeset() {
-    this->latest_changeset ||= changesets.first
-  }
+//   void latest_changeset() {
+//    this->latest_changeset ||= changesets.first
+//  }
 
-  // Returns the latest changesets for +path+
-  // Default behaviour is to search in cached changesets
-   void latest_changesets(path, _rev, limit = 10) {
-    if ( path.blank?) {
-      changesets.includes(:user)
-        .order("#{Changeset.table_name}.committed_on DESC, #{Changeset.table_name}.id DESC")
-        .limit(limit)
-    else
-      changesets.includes(changeset: :user)
-        .where(['path = ?', path.with_leading_slash])
-        .order("#{Changeset.table_name}.committed_on DESC, #{Changeset.table_name}.id DESC")
-        .limit(limit)
-        .map(&:changeset)
-    }
-  }
+//  // Returns the latest changesets for +path+
+//  // Default behaviour is to search in cached changesets
+//   void latest_changesets(path, _rev, limit = 10) {
+//    if ( path.blank?) {
+//      changesets.includes(:user)
+//        .order("#{Changeset.table_name}.committed_on DESC, #{Changeset.table_name}.id DESC")
+//        .limit(limit)
+//    else
+//      changesets.includes(changeset: :user)
+//        .where(['path = ?', path.with_leading_slash])
+//        .order("#{Changeset.table_name}.committed_on DESC, #{Changeset.table_name}.id DESC")
+//        .limit(limit)
+//        .map(&:changeset)
+//    }
+//  }
 
-   void scan_changesets_for_work_package_ids() {
-    changesets.each(&:scan_comment_for_work_package_ids)
-  }
+//   void scan_changesets_for_work_package_ids() {
+//    changesets.each(&:scan_comment_for_work_package_ids)
+//  }
 
-  // Returns an array of committers usernames and associated user_id
-   void committers() {
-    this->committers ||= Changeset.where(repository_id: id).distinct.pluck(:committer, :user_id)
-  }
+//  // Returns an array of committers usernames and associated user_id
+//   void committers() {
+//    this->committers ||= Changeset.where(repository_id: id).distinct.pluck(:committer, :user_id)
+//  }
 
-  // Maps committers username to a user ids
-   void committer_ids=(h) {
-    if ( h.is_a?(Hash)) {
-      committers.each { |committer, user_id|
-        new_user_id = h[committer]
-        if ( new_user_id && (new_user_id.to_i != user_id.to_i)) {
-          new_user_id = (new_user_id.to_i > 0 ? new_user_id.to_i : nil)
-          Changeset.where(['repository_id = ? AND committer = ?', id, committer])
-            .update_all("user_id = #{new_user_id.nil? ? 'NULL' : new_user_id}")
-        }
-      }
-      this->committers = nil
-      this->found_committer_users = nil
-      true
-    else
-      false
-    }
-  }
+//  // Maps committers username to a user ids
+//   void committer_ids=(h) {
+//    if ( h.is_a?(Hash)) {
+//      committers.each { |committer, user_id|
+//        new_user_id = h[committer]
+//        if ( new_user_id && (new_user_id.to_i != user_id.to_i)) {
+//          new_user_id = (new_user_id.to_i > 0 ? new_user_id.to_i : nil)
+//          Changeset.where(['repository_id = ? AND committer = ?', id, committer])
+//            .update_all("user_id = #{new_user_id.nil? ? 'NULL' : new_user_id}")
+//        }
+//      }
+//      this->committers = nil
+//      this->found_committer_users = nil
+//      true
+//    else
+//      false
+//    }
+//  }
 
   // Returns the Redmine User corresponding to the given +committer+
   // It will return nil if ( the committer is not yet mapped and if no User) {
   // with the same username or email was found
-   void find_committer_user(committer) {
-    unless committer.blank?
-      this->found_committer_users ||= {}
-      if ( this->found_committer_users.has_key?(committer)) { return this->found_committer_users[committer] ;}
+//   void find_committer_user(committer) {
+//    unless committer.blank?
+//      this->found_committer_users ||= {}
+//      if ( this->found_committer_users.has_key?(committer)) { return this->found_committer_users[committer] ;}
 
-      user = nil
-      c = changesets.includes(:user).references(:users).find_by(committer: committer)
-      if ( c && c.user) {
-        user = c.user
-      } else if ( committer.strip =~ /\A([^<]+)(<(.*)>)?\z/) {
-        username = $1.strip
-        email = $3
-        u = User.find_by_login(username)
-        u ||= User.find_by_mail(email) unless email.blank?
-        user = u
-      }
-      this->found_committer_users[committer] = user
-      user
-    }
-  }
+//      user = nil
+//      c = changesets.includes(:user).references(:users).find_by(committer: committer)
+//      if ( c && c.user) {
+//        user = c.user
+//      } else if ( committer.strip =~ /\A([^<]+)(<(.*)>)?\z/) {
+//        username = $1.strip
+//        email = $3
+//        u = User.find_by_login(username)
+//        u ||= User.find_by_mail(email) unless email.blank?
+//        user = u
+//      }
+//      this->found_committer_users[committer] = user
+//      user
+//    }
+//  }
 
-   void repo_log_encoding() {
-    encoding = log_encoding.to_s.strip
-    encoding.blank? ? 'UTF-8' : encoding
-  }
+//   void repo_log_encoding() {
+//    encoding = log_encoding.to_s.strip
+//    encoding.blank? ? 'UTF-8' : encoding
+//  }
 
   // Fetches new changesets for all repositories of active projects
   // Can be called periodically by an external script
   // eg. ruby script/runner "Repository.fetch_changesets"
-   void fetch_changesets() {
-    Project.active.has_module(:repository).includes(:repository).each { |project|
-      if ( project.repository) {
-        begin
-          project.repository.fetch_changesets
-        rescue OpenProject::Scm::Exceptions::CommandFailed => e
-          logger.error "scm: error during fetching changesets: #{e.message}"
-        }
-      }
-    }
-  }
+//   void fetch_changesets() {
+//    Project.active.has_module(:repository).includes(:repository).each { |project|
+//      if ( project.repository) {
+//        begin
+//          project.repository.fetch_changesets
+//        rescue OpenProject::Scm::Exceptions::CommandFailed => e
+//          logger.error "scm: error during fetching changesets: #{e.message}"
+//        }
+//      }
+//    }
+//  }
 
   // scan changeset comments to find related and fixed work packages for all repositories
-   void scan_changesets_for_work_package_ids() {
-    all.each(&:scan_changesets_for_work_package_ids)
-  }
+//   void scan_changesets_for_work_package_ids() {
+//    all.each(&:scan_changesets_for_work_package_ids)
+//  }
 
 
   //
@@ -304,96 +306,96 @@ class Repository : public ActiveRecord::Base {
   //                                  Raised when the instance could not be built
   //                                  given the parameters.
   // this->raise [::NameError] Raised when the given +vendor+ could not be resolved to a class.
-   void build(project, vendor, params, type) {
-    klass = build_scm_class(vendor)
+//   void build(project, vendor, params, type) {
+//    klass = build_scm_class(vendor)
 
-    // We can't possibly know the form fields this particular vendor
-    // desires, so we allow it to filter them from raw params
-    // before building the instance with it.
-    args = klass.permitted_params(params)
+//    // We can't possibly know the form fields this particular vendor
+//    // desires, so we allow it to filter them from raw params
+//    // before building the instance with it.
+//    args = klass.permitted_params(params)
 
-    repository = klass.new(args)
-    repository.attributes = args
-    repository.project = project
+//    repository = klass.new(args)
+//    repository.attributes = args
+//    repository.project = project
 
-    set_verified_type!(repository, type) unless type.nil?
+//    set_verified_type!(repository, type) unless type.nil?
 
-    repository.configure(type, args)
+//    repository.configure(type, args)
 
-    repository
-  }
+//    repository
+//  }
 
   //
   // Build a temporary model instance of the given vendor for temporary use in forms.
   // Will not receive any args.
-   void build_scm_class(vendor) {
-    klass = OpenProject::Scm::Manager.registered[vendor]
+//   void build_scm_class(vendor) {
+//    klass = OpenProject::Scm::Manager.registered[vendor]
 
-    if ( klass.nil?) {
-      raise OpenProject::Scm::Exceptions::RepositoryBuildError.new(
-        I18n.t('repositories.errors.disabled_or_unknown_vendor', vendor: vendor)
-      )
-    else
-      klass
-    }
-  }
+//    if ( klass.nil?) {
+//      raise OpenProject::Scm::Exceptions::RepositoryBuildError.new(
+//        I18n.t('repositories.errors.disabled_or_unknown_vendor', vendor: vendor)
+//      )
+//    else
+//      klass
+//    }
+//  }
 
-  //
-  // Verifies that the chosen scm type can be selected
-   void set_verified_type!(repository, type) {
-    if ( repository.class.available_types.include? type) {
-      repository.scm_type = type
-    else
-      raise OpenProject::Scm::Exceptions::RepositoryBuildError.new(
-        I18n.t('repositories.errors.disabled_or_unknown_type',
-               type: type,
-               vendor: repository.vendor)
-      )
-    }
-  }
+//  //
+//  // Verifies that the chosen scm type can be selected
+//   void set_verified_type!(repository, type) {
+//    if ( repository.class.available_types.include? type) {
+//      repository.scm_type = type
+//    else
+//      raise OpenProject::Scm::Exceptions::RepositoryBuildError.new(
+//        I18n.t('repositories.errors.disabled_or_unknown_type',
+//               type: type,
+//               vendor: repository.vendor)
+//      )
+//    }
+//  }
 
   //
   // Allow global permittible params. May be overridden by plugins
-   void permitted_params(params) {
-    params.permit(:url)
-  }
+//   void permitted_params(params) {
+//    params.permit(:url)
+//  }
 
-   void scm_adapter_class() {
-    nil
-  }
+//   void scm_adapter_class() {
+//    nil
+//  }
 
-   void enabled?() {
-    OpenProject::Scm::Manager.enabled?(vendor)
-  }
+//   void enabled?() {
+//    OpenProject::Scm::Manager.enabled?(vendor)
+//  }
 
   //
   // Returns the SCM vendor symbol for this repository
   // e.g., Repository::Git => :git
    void vendor() {
-    vendor_name.underscore.to_sym
+//    vendor_name.underscore.to_sym
   }
 
   //
   // Returns the SCM vendor name for this repository
   // e.g., Repository::Git => Git
    void vendor_name() {
-    name.demodulize
+//    name.demodulize
   }
 
   // Strips url and root_url
    void sanitize_urls() {
-    if ( url.present?) { url.strip! ;}
-    if ( root_url.present?) { root_url.strip! ;}
-    true
+//    if ( url.present?) { url.strip! ;}
+//    if ( root_url.present?) { root_url.strip! ;}
+//    true
   }
 
    void clear_changesets() {
-    cs = Changeset.table_name
-    ch = Change.table_name
-    ci = "#{table_name_prefix}changesets_work_packages#{table_name_suffix}"
-    this->class.connection.delete("DELETE FROM #{ch} WHERE #{ch}.changeset_id IN (SELECT #{cs}.id FROM #{cs} WHERE #{cs}.repository_id = #{id})")
-    this->class.connection.delete("DELETE FROM #{ci} WHERE #{ci}.changeset_id IN (SELECT #{cs}.id FROM #{cs} WHERE #{cs}.repository_id = #{id})")
-    this->class.connection.delete("DELETE FROM #{cs} WHERE #{cs}.repository_id = #{id}")
+//    cs = Changeset.table_name
+//    ch = Change.table_name
+//    ci = "#{table_name_prefix}changesets_work_packages#{table_name_suffix}"
+//    this->class.connection.delete("DELETE FROM #{ch} WHERE #{ch}.changeset_id IN (SELECT #{cs}.id FROM #{cs} WHERE #{cs}.repository_id = #{id})")
+//    this->class.connection.delete("DELETE FROM #{ci} WHERE #{ci}.changeset_id IN (SELECT #{cs}.id FROM #{cs} WHERE #{cs}.repository_id = #{id})")
+//    this->class.connection.delete("DELETE FROM #{cs} WHERE #{cs}.repository_id = #{id}")
   }
 
   protected:
@@ -402,26 +404,28 @@ class Repository : public ActiveRecord::Base {
   // Create local managed repository request when the built instance
   // is managed by OpenProject
    void create_managed_repository() {
-    service = Scm::CreateManagedRepositoryService.new(self)
-    if ( service.call) {
-      true
-    else
-      raise OpenProject::Scm::Exceptions::RepositoryBuildError.new(
-        service.localized_rejected_reason
-      )
-    }
+//    service = Scm::CreateManagedRepositoryService.new(self)
+//    if ( service.call) {
+//      true
+//    else
+//      raise OpenProject::Scm::Exceptions::RepositoryBuildError.new(
+//        service.localized_rejected_reason
+//      )
+//    }
   }
 
   //
   // Destroy local managed repository request when the built instance
   // is managed by OpenProject
    void delete_managed_repository() {
-    service = Scm::DeleteManagedRepositoryService.new(self)
-    if ( service.call) {
-      true
-    else
-      errors.add(:base, service.localized_rejected_reason)
-      raise ActiveRecord::Rollback
-    }
+//    service = Scm::DeleteManagedRepositoryService.new(self)
+//    if ( service.call) {
+//      true
+//    else
+//      errors.add(:base, service.localized_rejected_reason)
+//      raise ActiveRecord::Rollback
+//    }
   }
+};
 }
+

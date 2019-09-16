@@ -1,36 +1,40 @@
+#pragma once
+namespace openproj {
 namespace Queries::Filters::Shared::AnyUserNameAttributeFilter {
-   void included(base) {
-    base.include(InstanceMethods)
-    base.extend(ClassMethods)
-  }
+//   void included(base) {
+//    base.include(InstanceMethods)
+//    base.extend(ClassMethods)
+//  }
 
   namespace InstanceMethods {
      void key() {
-      :any_name_attribute
+//      :any_name_attribute
     }
 
-    private:
+//    private:
 
      void sql_concat_name() {
-        <<-SQL
-    LOWER(
-      CONCAT(
-        users.firstname, ' ', users.lastname,
-        ' ',
-        users.lastname, ' ', users.firstname,
-        ' ',
-        users.login,
-        ' ',
-        users.mail
-      )
-    )
-        SQL
-    }
+//        <<-SQL
+//    LOWER(
+//      CONCAT(
+//        users.firstname, ' ', users.lastname,
+//        ' ',
+//        users.lastname, ' ', users.firstname,
+//        ' ',
+//        users.login,
+//        ' ',
+//        users.mail
+//      )
+//    )
+//        SQL
+//    }
   }
 
   namespace ClassMethods {
      void key() {
-      :any_name_attribute
+//      :any_name_attribute
     }
   }
+}
+}
 }

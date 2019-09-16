@@ -1,39 +1,44 @@
+#pragma once
+#include "form_group.h"
 namespace openproj {
-class Type::QueryGroup : public Type::FormGroup {
-  MEMBER_PREFIX = 'query_'.freeze
+namespace TypeN {
+class QueryGroup : public TypeN::FormGroup {
+//  MEMBER_PREFIX = 'query_'.freeze
 
-   void query_attribute?(name) {
-    name.to_s.match?(/#{Type::QueryGroup::MEMBER_PREFIX}(\d+)/)
-  }
+//   void query_attribute?(name) {
+//    name.to_s.match?(/#{TypeN::QueryGroup::MEMBER_PREFIX}(\d+)/)
+//  }
 
-   void query_attribute_id(name) {
-    match = name.to_s.match(/#{Type::QueryGroup::MEMBER_PREFIX}(\d+)/)
+//   void query_attribute_id(name) {
+//    match = name.to_s.match(/#{TypeN::QueryGroup::MEMBER_PREFIX}(\d+)/)
 
-    match ? match[1] : nil
-  }
+//    match ? match[1] : nil
+//  }
 
    void query_attribute_name() {
-    :"query_#{query.id}"
+//    :"query_#{query.id}"
   }
 
    void group_type() {
-    :query
+//    :query
   }
 
-   void ==(other) {
-    other.is_a?(this->class) &&
-      key == other.key &&
-      type == other.type &&
-      query.to_json == other.attributes.to_json
-  }
+//   void ==(other) {
+//    other.is_a?(this->class) &&
+//      key == other.key &&
+//      type == other.type &&
+//      query.to_json == other.attributes.to_json
+//  }
 
-  alias :query :attributes
+//  alias :query :attributes
 
    void members() {
-    [attributes]
+//    [attributes]
   }
 
-   void active_members(_project) {
-    [members]
-  }
+//   void active_members(_project) {
+//    [members]
+//  }
+};
+}
 }

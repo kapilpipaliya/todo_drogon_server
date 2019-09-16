@@ -1,6 +1,11 @@
+#pragma once
+#include "../../models/journal/base_journal.h"
 namespace openproj {
-class Journal::WorkPackageJournal : public Journal::BaseJournal {
-  this->table_name = 'work_package_journals'
+namespace JournalN {
+class WorkPackageJournal : public JournalN::BaseJournal {
+//  this->table_name = 'work_package_journals'
+};
+}
 }
 
-::WorkPackageJournal = Journal::WorkPackageJournal
+//::WorkPackageJournal = JournalN::WorkPackageJournal

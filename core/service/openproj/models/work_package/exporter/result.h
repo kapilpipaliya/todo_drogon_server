@@ -1,6 +1,12 @@
+#pragma once
 namespace openproj {
-class WorkPackage::Exporter::Result
-   void error?() {
-    false
+namespace WorkPackageN {
+namespace Exporter {
+class Result {
+   bool error() {
+    return false;
   }
+};
+}
+}
 }

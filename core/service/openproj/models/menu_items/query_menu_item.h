@@ -1,8 +1,13 @@
+#pragma once
+#include "../menu_item.h"
 namespace openproj {
-class MenuItems::QueryMenuItem : public MenuItem {
+namespace MenuItems {
+class QueryMenuItem : public MenuItem {
   // belongs_to :query, foreign_key: 'navigatable_id'
 
    void unique_name() {
-    "#{name}-#{id}".to_sym
+//    "#{name}-#{id}".to_sym
   }
+};
+}
 }
