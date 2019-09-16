@@ -2,6 +2,7 @@
 #ifndef _JADMINACTOR33333333333_H
 #define _JADMINACTOR33333333333_H
 namespace openproj {
+namespace service {
 class BaseProjectService {
 //public:
 //   BaseProjectService(project) {
@@ -12,5 +13,6 @@ class BaseProjectService {
 
   // attr_accessor :project
 };
+}
 }
 #endif

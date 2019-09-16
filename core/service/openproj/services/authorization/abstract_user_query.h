@@ -1,6 +1,7 @@
 #pragma once
 #include "abstract_query.h"
 namespace openproj {
+namespace service {
 namespace Authorization {
 class AbstractUserQuery : public AbstractQuery {
 //  transformations.register :all,
@@ -45,5 +46,6 @@ class AbstractUserQuery : public AbstractQuery {
 //    RolePermission.arel_table
 //  }
 };
+}
 }
 }

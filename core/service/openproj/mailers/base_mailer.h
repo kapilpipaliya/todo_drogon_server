@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace mailer {
 namespace ActionMailer {
 class Base {};
 }
@@ -101,4 +102,5 @@ class BaseMailer : public ActionMailer::Base {
 //    format.text
 //  }
 };
+}
 }

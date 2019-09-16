@@ -4,6 +4,7 @@
 // Does not change the work package itself.
 
 namespace openproj {
+namespace service {
 class AddWorkPackageNoteService{
 public:
   // include Concerns::Contracted
@@ -28,4 +29,5 @@ public:
 //    }
 //  }
 };
+}
 }

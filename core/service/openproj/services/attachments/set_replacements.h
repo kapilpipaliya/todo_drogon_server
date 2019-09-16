@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 namespace Attachments {
   namespace SetReplacements {
     // extend ActiveSupport::Concern
@@ -22,5 +23,6 @@ namespace Attachments {
 //      }
 //    }
   }
+}
 }
 }

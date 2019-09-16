@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 class AddAttachmentService{
 //  attr_reader :container, :author
 
@@ -44,4 +45,5 @@ class AddAttachmentService{
 //    container.save!(validate: false)
   }
 };
+}
 }

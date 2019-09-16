@@ -1,6 +1,7 @@
 //#include "fileutils"
 
 namespace openproj {
+namespace uploader {
 class LocalFileUploader{// : public CarrierWave::Uploader::Base {
   // include FileUploader
 //  storage :file
@@ -22,4 +23,5 @@ class LocalFileUploader{// : public CarrierWave::Uploader::Base {
 //    OpenProject::Configuration.attachments_storage_path.join(dir)
 //  }
 };
+}
 }

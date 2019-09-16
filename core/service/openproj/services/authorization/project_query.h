@@ -1,6 +1,7 @@
 #pragma once
 #include "abstract_query.h"
 namespace openproj {
+namespace service {
 namespace Authorization {
 class ProjectQuery : public AbstractQuery {
 //  this->model = Project
@@ -197,5 +198,6 @@ class ProjectQuery : public AbstractQuery {
 //    }
 //  }
 };
+}
 }
 }

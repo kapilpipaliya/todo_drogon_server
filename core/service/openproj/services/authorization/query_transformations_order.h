@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 namespace Authorization {
 class QueryTransformationsOrder {
    QueryTransformationsOrder() {
@@ -60,5 +61,6 @@ class QueryTransformationsOrder {
 //  }
 //}
 };
+}
 }
 }

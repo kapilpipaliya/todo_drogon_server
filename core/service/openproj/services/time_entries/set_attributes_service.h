@@ -1,6 +1,7 @@
 #pragma once
 #include "../../services/base_services/set_attributes.h"
 namespace openproj {
+namespace service {
 namespace TimeEntries {
   class SetAttributesService : public BaseServices::SetAttributes {
     private:
@@ -49,5 +50,6 @@ namespace TimeEntries {
 //        (model.work_package && model.work_package_id_changed? && !model.project_id_changed?)
 //    }
   };
+}
 }
 }

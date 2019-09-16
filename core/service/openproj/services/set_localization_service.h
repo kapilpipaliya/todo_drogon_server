@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 class SetLocalizationService{
 public:
 //  attr_reader :user, :http_accept_header
@@ -68,4 +69,5 @@ public:
 //    find_language(language) || find_language(language.split('-').first)
 //  }
 };
+}
 }

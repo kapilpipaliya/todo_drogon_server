@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 namespace Users {
   class UpdateService {
     // include ::HookHelper
@@ -39,5 +40,6 @@ namespace Users {
 //      }
 //    }
   };
+}
 }
 }

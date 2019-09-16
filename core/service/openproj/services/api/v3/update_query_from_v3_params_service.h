@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 namespace API {
   namespace V3 {
     class UpdateQueryFromV3ParamsService {
@@ -26,5 +27,6 @@ namespace API {
 //                    :current_user
     };
   }
+}
 }
 }

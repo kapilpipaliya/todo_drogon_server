@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 class ParamsToQueryService{
   // attr_accessor :user,
 //                :query_class
@@ -104,4 +105,5 @@ class ParamsToQueryService{
 //                       }
 //  }
 };
+}
 }

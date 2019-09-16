@@ -1,6 +1,7 @@
 #pragma once
 #include "user_roles_query.h"
 namespace openproj {
+namespace service {
 namespace Authorization {
 class UserProjectRolesQuery : public UserRolesQuery {
 //  transformations.register :all, :project_where_projection { |statement, user, _|
@@ -30,5 +31,6 @@ class UserProjectRolesQuery : public UserRolesQuery {
 //    statement
 //  }
 };
+}
 }
 }

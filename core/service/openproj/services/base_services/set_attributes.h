@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 namespace BaseServices {
   class SetAttributes {
     // include Concerns::Contracted
@@ -48,5 +49,6 @@ namespace BaseServices {
 //    }
 //  }
 };
+}
 }
 }

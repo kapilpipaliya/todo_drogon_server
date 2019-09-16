@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 namespace Changesets {
   class LogTimeService {
 //     LogTimeService(user:, changeset:) {
@@ -50,5 +51,6 @@ namespace Changesets {
 //      }
 //    }
   };
+}
 }
 }

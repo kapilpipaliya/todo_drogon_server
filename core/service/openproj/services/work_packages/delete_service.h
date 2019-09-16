@@ -1,6 +1,7 @@
 #pragma once
 #include "../../services/base_services/delete.h"
 namespace openproj {
+namespace service {
 namespace WorkPackages{
 class DeleteService : public BaseServices::Delete_ {
 public:
@@ -43,5 +44,6 @@ public:
 //    }
 //  }
 };
+}
 }
 }

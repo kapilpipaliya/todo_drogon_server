@@ -1,6 +1,7 @@
 #pragma once
 #include "../../services/base_services/create.h"
 namespace openproj {
+namespace service {
 namespace Roles{
 class CreateService : public BaseServices::Create {
   // include Roles::NotifyMixin
@@ -35,5 +36,6 @@ class CreateService : public BaseServices::Create {
 //    }
 //  }
 };
+}
 }
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "../../services/base_services/update.h"
 namespace openproj {
+namespace service {
 namespace Projects {
   class UpdateService : public BaseServices::Update {
     private:
@@ -13,5 +14,6 @@ namespace Projects {
 //      !model.saved_changes? && model.custom_values.any?(&:saved_changes?)
     }
   };
+}
 }
 }

@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 namespace WorkPackages {
   namespace Bulk {
     class UpdateService {
@@ -62,5 +63,6 @@ namespace WorkPackages {
 //      }
     };
   }
+}
 }
 }

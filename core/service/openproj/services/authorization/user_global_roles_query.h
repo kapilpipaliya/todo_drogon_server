@@ -1,6 +1,7 @@
 #pragma once
 #include "user_roles_query.h"
 namespace openproj {
+namespace service {
 namespace Authorization{
 class UserGlobalRolesQuery : public UserRolesQuery {
 //  transformations.register roles_member_roles_join,
@@ -21,5 +22,6 @@ class UserGlobalRolesQuery : public UserRolesQuery {
 //             .where(users_table[:id].eq(user.id))
 //  }
 };
+}
 }
 }

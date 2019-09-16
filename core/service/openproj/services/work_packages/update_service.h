@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 namespace WorkPackages{
 class UpdateService {
   // include ::WorkPackages::Shared::UpdateAncestors
@@ -168,5 +169,6 @@ class UpdateService {
 //    model
 //  }
 };
+}
 }
 }

@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 namespace Reports{
 class PriorityReport : public Reports::Report {
    void report_type() {
@@ -22,5 +23,6 @@ class PriorityReport : public Reports::Report {
 //    this->title ||= WorkPackage.human_attribute_name(:priority)
   }
 };
+}
 }
 }

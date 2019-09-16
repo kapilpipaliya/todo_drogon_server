@@ -4,6 +4,7 @@
 #include "../../controllers/concerns/user_invitation.h"
 
 namespace openproj {
+namespace service {
 namespace Users {
   class CreateUserService {
     // include Concerns::Contracted
@@ -71,5 +72,6 @@ namespace Users {
 //      build_result(invited, new_user.errors)
 //    }
   };
+}
 }
 }

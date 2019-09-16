@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 namespace Relations {
 class BaseService {
   // include Concerns::Contracted
@@ -64,5 +65,6 @@ class BaseService {
 //    }
 //  }
 };
+}
 }
 }

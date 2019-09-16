@@ -1,6 +1,7 @@
 #pragma once
 #include "../../services/reports/report.h"
 namespace openproj {
+namespace service {
 namespace Reports{
 class ResponsibleReport : public Reports::Report {
    void report_type() {
@@ -23,5 +24,6 @@ class ResponsibleReport : public Reports::Report {
 //    this->title ||= WorkPackage.human_attribute_name(:responsible)
   }
 };
+}
 }
 }

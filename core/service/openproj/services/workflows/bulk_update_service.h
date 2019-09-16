@@ -1,6 +1,7 @@
 #pragma once
 #include "../../services/base_services/update.h"
 namespace openproj {
+namespace service {
 namespace Workflows {
 class BulkUpdateService : public BaseServices::Update {
 //   BulkUpdateService(role:, type:) {
@@ -78,5 +79,6 @@ class BulkUpdateService : public BaseServices::Update {
 //    options.is_a?(Array) && options.include?(string) && !options.include?('always')
 //  }
 };
+}
 }
 }

@@ -2,6 +2,7 @@
 // rubocop:disable MethodName
 
 namespace openproj {
+namespace service {
 namespace Authorization {
 class QueryTransformationVisitor {//: public Arel::Visitors::Visitor {
   // attr_accessor :transformations,
@@ -93,5 +94,6 @@ class QueryTransformationVisitor {//: public Arel::Visitors::Visitor {
 //    this->applied_transformations ||= []
 //  }
 };
+}
 }
 }

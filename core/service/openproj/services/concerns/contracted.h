@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 namespace Concerns {
 namespace Contracted {
   // extend ActiveSupport::Concern
@@ -48,5 +49,6 @@ namespace Contracted {
 //      }
 //    }
   };
+}
 }
 }

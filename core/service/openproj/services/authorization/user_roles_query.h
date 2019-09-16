@@ -1,6 +1,7 @@
 #pragma once
 #include "abstract_user_query.h"
 namespace openproj {
+namespace service {
 namespace Authorization {
 class UserRolesQuery : public AbstractUserQuery {
 //  this->model = Role
@@ -25,5 +26,6 @@ class UserRolesQuery : public AbstractUserQuery {
 //    roles_table[:id].eq(member_roles_table[:role_id])
   }
 };
+}
 }
 }

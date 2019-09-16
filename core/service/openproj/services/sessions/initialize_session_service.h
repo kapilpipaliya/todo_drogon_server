@@ -2,6 +2,7 @@
 #include "./base_service.h"
 
 namespace openproj {
+namespace service {
 namespace Sessions {
   class InitializeSessionService : public BaseService {
 //    class << self
@@ -30,5 +31,6 @@ namespace Sessions {
 //      }
 //    }
   };
+}
 }
 }

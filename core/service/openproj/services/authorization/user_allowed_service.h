@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 namespace Authorization {
 class UserAllowedService {
   // attr_accessor :user
@@ -105,5 +106,6 @@ class UserAllowedService {
 //      (!context.nil? && context.respond_to?(:to_a))
 //  }
 };
+}
 }
 }

@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace uploader {
 namespace FileUploader {
 //   void included(base) {
 //    base.extend ClassMethods
@@ -70,5 +71,6 @@ namespace FileUploader {
 //      this->cache_dir ||= File.join(Dir.tmpdir, 'op_uploaded_files')
     }
   }
+}
 }
 }

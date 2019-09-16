@@ -1,6 +1,7 @@
 #pragma once
 #include "../../services/base_services/set_attributes.h"
 namespace openproj {
+namespace service {
 namespace WorkPackages{
 class SetAttributesService : public BaseServices::SetAttributes {
   // include Attachments::SetReplacements
@@ -189,5 +190,6 @@ class SetAttributesService : public BaseServices::SetAttributes {
 //    model
 //  }
 };
+}
 }
 }

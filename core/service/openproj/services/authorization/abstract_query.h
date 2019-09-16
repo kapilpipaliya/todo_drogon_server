@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 namespace Authorization {
 class AbstractQuery {
   // class_attribute :model
@@ -51,5 +52,6 @@ class AbstractQuery {
 //    arel.join_sources
 //  }
 };
+}
 }
 }

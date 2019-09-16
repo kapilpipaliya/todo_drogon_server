@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 namespace WorkPackages{
 class RescheduleService {
   // include ::Shared::ServiceContext
@@ -104,5 +105,6 @@ class RescheduleService {
 //    start_result.merge!(related_result)
 //  }
 };
+}
 }
 }

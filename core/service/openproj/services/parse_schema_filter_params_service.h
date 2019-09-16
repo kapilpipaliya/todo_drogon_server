@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 class ParseSchemaFilterParamsService{
   // extend ActiveModel::Naming
   // extend ActiveModel::Translation
@@ -87,4 +88,5 @@ class ParseSchemaFilterParamsService{
 //    }
 //  }
 };
+}
 }

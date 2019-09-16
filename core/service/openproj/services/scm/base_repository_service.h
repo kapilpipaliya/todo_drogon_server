@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 namespace Scm{
 class BaseRepositoryService {
 //   BaseRepositoryService(repository) {
@@ -10,5 +11,6 @@ class BaseRepositoryService {
 
   // attr_accessor :repository
 };
+}
 }
 }

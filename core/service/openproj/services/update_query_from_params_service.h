@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 class UpdateQueryFromParamsService{
 public:
 //   UpdateQueryFromParamsService(query, user) {
@@ -97,4 +98,5 @@ public:
 //                :current_user,
 //                :params
 };
+}
 }

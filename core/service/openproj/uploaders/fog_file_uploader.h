@@ -2,6 +2,7 @@
 //#include "carrierwave/storage/fog"
 
 namespace openproj {
+namespace uploader {
 class FogFileUploader {//: public CarrierWave::Uploader::Base {
   // include FileUploader
 //  storage :fog
@@ -60,4 +61,5 @@ class FogFileUploader {//: public CarrierWave::Uploader::Base {
 //    false
 //  }
 };
+}
 }

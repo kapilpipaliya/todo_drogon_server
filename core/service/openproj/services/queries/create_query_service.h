@@ -2,6 +2,7 @@
 #include "./query_service.h"
 
 namespace openproj {
+namespace service {
 class CreateQueryService : public QueryService {
 
 //   CreateQueryService(**args) {
@@ -17,4 +18,5 @@ class CreateQueryService : public QueryService {
 //    super
 //  }
 };
+}
 }

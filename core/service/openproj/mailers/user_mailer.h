@@ -1,6 +1,7 @@
 #pragma once
 #include "base_mailer.h"
 namespace openproj {
+namespace mailer {
 class UserMailer : public BaseMailer {
 public:
 //   void test_mail(user) {
@@ -351,4 +352,5 @@ class DoNotSendMailsWithoutReceiverInterceptor{
 //    if ( receivers.all?(&:blank?)) { mail.perform_deliveries = false ;}
 //  }
 };
+}
 }

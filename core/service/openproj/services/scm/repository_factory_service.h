@@ -2,6 +2,7 @@
 //
 // Implements a repository factory for building temporary and permanent repositories.
 namespace openproj {
+namespace service {
 namespace Scm{
 class RepositoryFactoryService {
 //  attr_reader :project, :params, :repository
@@ -69,5 +70,6 @@ class RepositoryFactoryService {
 //    nil
 //  }
 };
+}
 }
 }

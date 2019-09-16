@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 //class Authorization{
 //public:
 //   void users(action, project) {
@@ -18,4 +19,5 @@ namespace openproj {
 //    }
 //  }
 //};
+}
 }

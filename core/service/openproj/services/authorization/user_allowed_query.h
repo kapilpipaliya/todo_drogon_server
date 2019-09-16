@@ -1,6 +1,7 @@
 #pragma once
 #include "abstract_user_query.h"
 namespace openproj {
+namespace service {
 namespace Authorization {
 
 class UserAllowedQuery : public AbstractUserQuery {
@@ -92,5 +93,6 @@ class UserAllowedQuery : public AbstractUserQuery {
 //      .or(anonymous_user_condition)
 //  }
 };
+}
 }
 }

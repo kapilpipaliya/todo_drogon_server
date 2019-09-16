@@ -2,6 +2,7 @@
 // project, projects, global, user = nil
 
 namespace openproj {
+namespace service {
 class AuthorizationService{
   // @params
   //   ctrl - controller
@@ -21,4 +22,5 @@ class AuthorizationService{
 //    this->user.allowed_to?(this->permission, this->context, global: this->global)
   }
 };
+}
 }

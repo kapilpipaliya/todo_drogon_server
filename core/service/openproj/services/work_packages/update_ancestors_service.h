@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 namespace WorkPackages{
 class UpdateAncestorsService {
   // attr_accessor :user,
@@ -184,5 +185,6 @@ class UpdateAncestorsService {
 //    %i(id done_ratio derived_estimated_hours estimated_hours status_id)
 //  }
 };
+}
 }
 }

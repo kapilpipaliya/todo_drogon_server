@@ -1,6 +1,7 @@
 #pragma once
 #include "../../services/relations/base_service.h"
 namespace openproj {
+namespace service {
 namespace Relations{
 class CreateService : public Relations::BaseService {
 //   CreateService(user:) {
@@ -14,5 +15,6 @@ class CreateService : public Relations::BaseService {
 //    }
 //  }
 };
+}
 }
 }

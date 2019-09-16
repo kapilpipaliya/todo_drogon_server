@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 namespace WorkPackages {
 class CopyService {
   // include ::Shared::ServiceContext
@@ -63,5 +64,6 @@ class CopyService {
 //    }
 //  }
 };
+}
 }
 }

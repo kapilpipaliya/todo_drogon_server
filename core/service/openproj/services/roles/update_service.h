@@ -1,6 +1,7 @@
 #pragma once
 #include "../../services/base_services/update.h"
 namespace openproj {
+namespace service {
 namespace Roles{
 class UpdateService : public BaseServices::Update {
   // include Roles::NotifyMixin
@@ -11,5 +12,6 @@ class UpdateService : public BaseServices::Update {
 //    notify_changed_roles(:updated, model)
   }
 };
+}
 }
 }

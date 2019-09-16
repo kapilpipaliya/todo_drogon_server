@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 namespace Users {
   class ChangePasswordService {
     // attr_accessor :current_user
@@ -56,5 +57,6 @@ namespace Users {
 //      }
     }
   };
+}
 }
 }

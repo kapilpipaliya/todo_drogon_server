@@ -1,8 +1,9 @@
 #pragma once
 #include "../../services/relations/base_service.h"
 namespace openproj {
+namespace service {
 namespace Relations {
-class UpdateService : public openproj::Relations::BaseService {
+class UpdateService : public openproj::service::Relations::BaseService {
   // attr_accessor :relation
 
   //   UpdateService(user:, relation:) {
@@ -19,3 +20,4 @@ class UpdateService : public openproj::Relations::BaseService {
 };
 }  // namespace Relations
 }  // namespace openproj
+}

@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 namespace Reports{
 class ReportsService {
   // class_attribute :report_types
@@ -34,5 +35,6 @@ class ReportsService {
 //    report_klass&.new(this->project)
 //  }
 };
+}
 }
 }

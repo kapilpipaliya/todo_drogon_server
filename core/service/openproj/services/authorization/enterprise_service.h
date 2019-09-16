@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 namespace Authorization {
 class EnterpriseService {
   // attr_accessor :token
@@ -45,5 +46,6 @@ class EnterpriseService {
 //    ServiceResult.new(success: bool, result: bool)
 //  }
 };
+}
 }
 }

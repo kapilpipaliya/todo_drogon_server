@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 namespace WorkPackages{
 class ScheduleDependency {
 public:
@@ -212,5 +213,6 @@ public:
 //    }
   };
 };
+}
 }
 }

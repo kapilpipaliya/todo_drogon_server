@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 namespace CustomActions {
 class BaseService {
   // include Shared::BlockService
@@ -82,5 +83,6 @@ class BaseService {
 //    action.available_conditions.detect { |a| a.key == key } || CustomActions::Conditions::Inexistent
 //  }
 };
+}
 }
 }

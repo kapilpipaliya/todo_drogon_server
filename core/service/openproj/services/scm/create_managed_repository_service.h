@@ -3,6 +3,7 @@
 //
 // Implements the creation of a local repository.
 namespace openproj {
+namespace service {
 namespace Scm{
 class CreateManagedRepositoryService : public BaseRepositoryService {
   //
@@ -48,5 +49,6 @@ class CreateManagedRepositoryService : public BaseRepositoryService {
 //    this->rejected ||= I18n.t('repositories.errors.not_manageable')
 //  }
 };
+}
 }
 }

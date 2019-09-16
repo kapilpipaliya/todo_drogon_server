@@ -1,6 +1,7 @@
 #pragma once
 #include "../../services/reports/report.h"
 namespace openproj {
+namespace service {
 namespace Reports {
 class SubprojectReport : public Reports::Report {
    void report_type() {
@@ -23,5 +24,6 @@ class SubprojectReport : public Reports::Report {
 //    l(:label_subproject_plural)
   }
 };
+}
 }
 }

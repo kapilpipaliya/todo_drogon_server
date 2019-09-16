@@ -2,6 +2,7 @@
 // Moves/copies an work_package to a new project and type
 
 namespace openproj {
+namespace service {
 namespace WorkPackages{
 class MoveService {
   // attr_accessor :work_package,
@@ -76,5 +77,6 @@ class MoveService {
 //    copied
 //  }
 };
+}
 }
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "base_service.h"
 namespace openproj {
+namespace service {
 namespace CustomActions {
 class UpdateService : public BaseService {
   // attr_accessor :user,
@@ -15,5 +16,6 @@ class UpdateService : public BaseService {
 //    super(attributes: attributes, action: action, &block)
 //  }
 };
+}
 }
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "base_project_service.h"
 namespace openproj {
+namespace service {
 class UpdateProjectsTypesService : public BaseProjectService {
 public:
 //   void call(type_ids) {
@@ -41,4 +42,5 @@ public:
 //    this->types_used_by_work_packages ||= project.types_used_by_work_packages
 //  }
 };
+}
 }

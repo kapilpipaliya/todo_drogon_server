@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 namespace Reports{
 class Report {
 //   Report(project) {
@@ -35,5 +36,6 @@ class Report {
 //    raise NotImplementedError
   }
 };
+}
 }
 }

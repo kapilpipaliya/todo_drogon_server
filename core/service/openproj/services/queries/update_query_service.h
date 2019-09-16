@@ -2,6 +2,7 @@
 #include "./query_service.h"
 
 namespace openproj {
+namespace service {
 class UpdateQueryService : public QueryService {
 
 //   UpdateQueryService(**args) {
@@ -55,4 +56,5 @@ class UpdateQueryService : public QueryService {
 //      errors.add(sym, message)
 //    }
   };
+}
 }

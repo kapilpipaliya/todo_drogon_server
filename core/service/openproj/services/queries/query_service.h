@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 class QueryService {
   // include Concerns::Contracted
 
@@ -23,3 +24,4 @@ class QueryService {
 };
 }
 
+}

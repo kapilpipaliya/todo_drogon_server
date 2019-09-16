@@ -3,6 +3,7 @@
 //
 // Implements the asynchronous deletion of a local repository.
 namespace openproj {
+namespace service {
 namespace Scm {
 class DeleteManagedRepositoryService : public Scm::BaseRepositoryService {
 public:
@@ -54,5 +55,6 @@ public:
 //    this->rejected ||= I18n.t('repositories.errors.managed_delete')
   }
 };
+}
 }
 }

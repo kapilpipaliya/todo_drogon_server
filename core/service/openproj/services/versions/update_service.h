@@ -1,6 +1,7 @@
 #pragma once
 #include "../../services/base_services/update.h"
 namespace openproj {
+namespace service {
 namespace Versions {
   class UpdateService : public BaseServices::Update {
     private:
@@ -35,5 +36,6 @@ namespace Versions {
 //      Version::VERSION_SHARINGS
 //    }
   };
+}
 }
 }

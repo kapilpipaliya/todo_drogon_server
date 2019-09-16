@@ -3,6 +3,7 @@
 //require_dependency 'principal'
 
 namespace openproj {
+namespace service {
 namespace OAuth {
   class PersistApplicationService {
     // include Concerns::Contracted
@@ -31,5 +32,6 @@ namespace OAuth {
 //      application.owner_type = 'User'
 //    }
   };
+}
 }
 }

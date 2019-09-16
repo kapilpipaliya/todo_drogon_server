@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 namespace Shared {
   namespace ServiceContext {
 //     void in_context(send_notifications) {
@@ -20,5 +21,6 @@ namespace Shared {
 //      result
 //    }
   };
+}
 }
 }

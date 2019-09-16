@@ -2,6 +2,7 @@
 //
 // Implements a repository service for building checkout instructions if supported
 namespace openproj {
+namespace service {
 namespace Scm{
 class CheckoutInstructionsService {
 //  attr_reader :repository, :user, :path
@@ -130,5 +131,6 @@ class CheckoutInstructionsService {
 //    }
 //  }
 };
+}
 }
 }

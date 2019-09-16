@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 namespace WorkPackages{
 class SetScheduleService {
   // attr_accessor :user, :work_packages
@@ -128,5 +129,6 @@ class SetScheduleService {
 //    if ( scheduled.due_date) { scheduled.due_date += required_delta ;}
 //  }
 };
+}
 }
 }

@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 namespace BaseServices {
   class Delete_ {
     // include ::Shared::ServiceContext
@@ -35,5 +36,6 @@ namespace BaseServices {
 //      ServiceResult.new(success: result, result: model, errors: errors)
 //    }
   };
+}
 }
 }

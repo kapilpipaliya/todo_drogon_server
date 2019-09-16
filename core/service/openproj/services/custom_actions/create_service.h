@@ -1,6 +1,7 @@
 #pragma once
 #include "base_service.h"
 namespace openproj {
+namespace service {
 namespace CustomActions {
 class CreateService : public BaseService {
 //   CreateService(user:) {
@@ -13,5 +14,6 @@ class CreateService : public BaseService {
 //    super
 //  }
 };
+}
 }
 }

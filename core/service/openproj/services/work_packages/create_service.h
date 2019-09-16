@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 namespace WorkPackages{
 class CreateService {
   // include ::WorkPackages::Shared::UpdateAncestors
@@ -70,5 +71,6 @@ class CreateService {
 //    result
 //  }
 };
+}
 }
 }

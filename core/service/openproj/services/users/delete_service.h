@@ -2,6 +2,7 @@
 //
 // Implements the deletion of a user.
 namespace openproj {
+namespace service {
 namespace Users {
   class DeleteService {
   public:
@@ -58,5 +59,6 @@ namespace Users {
 //      User.current = nil
     }
   };
+}
 }
 }

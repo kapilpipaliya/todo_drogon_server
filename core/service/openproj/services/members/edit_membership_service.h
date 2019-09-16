@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 namespace Members {
   class EditMembershipService {
 //    attr_reader :current_user, :member, :do_save
@@ -73,5 +74,6 @@ namespace Members {
 //      member.attributes = attributes
 //    }
   };
+}
 }
 }

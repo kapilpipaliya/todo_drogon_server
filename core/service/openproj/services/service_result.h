@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 class ServiceResult{
   // attr_accessor :success,
 //                :errors,
@@ -135,4 +136,5 @@ class ServiceResult{
 //    this->dependent_results += other.dependent_results
 //  }
 };
+}
 }

@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 namespace Users {
   class UpdateUserService {
     // include Concerns::Contracted
@@ -27,5 +28,6 @@ namespace Users {
 //      user.attributes = attributes
 //    }
   };
+}
 }
 }

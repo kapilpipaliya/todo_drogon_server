@@ -3,6 +3,7 @@
 // without addressable requirement
 // Accepts options[:allowed_protocols]
 namespace openproj {
+namespace validator {
 class UrlValidator{// : public ActiveModel::EachValidator {
 //   void validate_each(record, attribute, value) {
 //    url = parse(value)
@@ -23,4 +24,5 @@ class UrlValidator{// : public ActiveModel::EachValidator {
 //    options.fetch(:allowed_protocols, %w(http https))
   }
 };
+}
 }

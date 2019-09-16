@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 namespace CustomActions {
 class UpdateWorkPackageService{
 public:
@@ -65,5 +66,6 @@ public:
 //    sym.to_s.chomp('_id') + '_id'
 //  }
 };
+}
 }
 }

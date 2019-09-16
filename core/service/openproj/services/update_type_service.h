@@ -1,6 +1,7 @@
 #pragma once
 #include "base_type_service.h"
 namespace openproj {
+namespace service {
 class UpdateTypeService : public BaseTypeService {
 public:
 //   void call(params) {
@@ -12,4 +13,5 @@ public:
 //    super(params, {})
 //  }
 };
+}
 }

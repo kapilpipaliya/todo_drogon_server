@@ -1,6 +1,7 @@
 #pragma once
 #include "../../services/base_services/update.h"
 namespace openproj {
+namespace service {
 namespace Settings {
 class UpdateService : public BaseServices::Update {
   // attr_accessor :user
@@ -23,5 +24,6 @@ class UpdateService : public BaseServices::Update {
 //    }
 //  }
 };
+}
 }
 }

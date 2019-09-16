@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 class UserSearchService{
 public:
   // attr_accessor :params
@@ -68,4 +69,5 @@ public:
     // .order(sort_clause)
 //  }
 };
+}
 }

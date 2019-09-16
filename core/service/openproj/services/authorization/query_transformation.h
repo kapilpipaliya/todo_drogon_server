@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 namespace Authorization {
 class QueryTransformation{
   // attr_accessor :on, :name, :after, :before, :block
@@ -21,5 +22,6 @@ class QueryTransformation{
 //    block.call(*args)
 //  }
 };
+}
 }
 }

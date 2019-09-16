@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 namespace Authorization {
 class QueryTransformations {
 //   void for?(on) {
@@ -68,5 +69,6 @@ class QueryTransformations {
 //    transformations[transformation_key(on)].sort_by! { |x| desired_order.index x.name }
 //  }
 };
+}
 }
 }

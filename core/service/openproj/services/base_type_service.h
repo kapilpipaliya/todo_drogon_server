@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 class BaseTypeService{
 public:
   // include Shared::BlockService
@@ -138,4 +139,5 @@ public:
 //    type.custom_field_ids = active_cf_ids.uniq
   }
 };
+}
 }

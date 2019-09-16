@@ -1,6 +1,7 @@
 #pragma once
 #include "report.h"
 namespace openproj {
+namespace service {
 namespace Reports{
 class AssigneeReport : public Report {
    void report_type() {
@@ -23,5 +24,6 @@ class AssigneeReport : public Report {
 //    this->title ||= WorkPackage.human_attribute_name(:assigned_to)
   }
 };
+}
 }
 }

@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 namespace BaseServices {
   class Update {
     // include Concerns::Contracted
@@ -65,5 +66,6 @@ namespace BaseServices {
 //      this->class.name.deconstantize
 //    }
   };
+}
 }
 }

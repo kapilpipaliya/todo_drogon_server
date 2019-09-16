@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 namespace API {
 namespace V3 {
 class WorkPackageCollectionFromQueryParamsService {
@@ -21,3 +22,4 @@ class WorkPackageCollectionFromQueryParamsService {
 }  // namespace V3
 }  // namespace API
 }  // namespace openproj
+}

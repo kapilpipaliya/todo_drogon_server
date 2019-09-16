@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace service {
 namespace WorkPackages {
   namespace Shared {
     namespace UpdateAncestors {
@@ -38,5 +39,6 @@ namespace WorkPackages {
 //      }
     };
   }
+}
 }
 }
