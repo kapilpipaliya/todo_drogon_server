@@ -18,7 +18,8 @@ void JUserWebsock::handleNewMessage(
   // std::chrono::seconds(10)
   superactor::system::globalCAF.communicateWithActors()
       ->request(superactor::system::globalCAF.mainActor(), caf::infinite,
-                run_atom::value, superactor::MainActorType::JUser, wsConnPtr,
+                superactor::system::run_atom::value,
+                superactor::system::MainActorType::JUser, wsConnPtr,
                 std::move(message), type)
       .receive(
           [&]() {
@@ -43,8 +44,8 @@ void JUserWebsock::handleNewConnection(
 void JUserWebsock::handleConnectionClosed(
     const drogon::WebSocketConnectionPtr& wsConnPtr) {
   superactor::system::globalCAF.communicateWithActors()->request(
-      superactor::system::globalCAF.mainActor(), caf::infinite, exit_atom::value,
-      wsConnPtr);
+      superactor::system::globalCAF.mainActor(), caf::infinite,
+      superactor::system::exit_atom::value, wsConnPtr);
 }
 }  // namespace juser
 }  // namespace websocket

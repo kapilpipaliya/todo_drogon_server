@@ -16,6 +16,7 @@
 
 // using std::chrono::seconds;
 namespace superactor {
+namespace system {
 MainActor::MainActor(caf::actor_config &cfg) : caf::event_based_actor(cfg) {
   set_error_handler([=]([[maybe_unused]] caf::error &err) {
     SPDLOG_TRACE("Main Actor Error :");
@@ -63,13 +64,15 @@ caf::behavior MainActor::make_behavior() {
         }
         return {};
       },
-      [this](exit_atom, const drogon::WebSocketConnectionPtr &wsConnPtr) {
+      [this](superactor::system::exit_atom,
+             const drogon::WebSocketConnectionPtr &wsConnPtr) {
         auto it = actorMap.find(wsConnPtr);
         if (it == actorMap.end()) {
           // not possible..
         } else {
           caf::actor userActor = it->second;
-          request(userActor, caf::infinite, exit_atom::value);
+          request(userActor, caf::infinite,
+                  superactor::system::exit_atom::value);
           demonitor(it->second);
           actorMap.erase(it);
         }
@@ -141,4 +144,5 @@ void MainActor::passToUser(MainActorType actortype,
       break;
   }
 }
+}  // namespace system
 }  // namespace superactor

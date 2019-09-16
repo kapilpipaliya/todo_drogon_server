@@ -19,7 +19,8 @@ void JAdminWebSocket::handleNewMessage(
   // std::chrono::seconds(10)
   superactor::system::globalCAF.communicateWithActors()
       ->request(superactor::system::globalCAF.mainActor(), caf::infinite,
-                run_atom::value, superactor::MainActorType::JAdmin, wsConnPtr,
+                superactor::system::run_atom::value,
+                superactor::system::MainActorType::JAdmin, wsConnPtr,
                 std::move(message), type)
       .receive(
           [&]() {
@@ -45,7 +46,7 @@ void JAdminWebSocket::handleConnectionClosed(
     const drogon::WebSocketConnectionPtr &wsConnPtr) {
   superactor::system::globalCAF.communicateWithActors()->request(
       superactor::system::globalCAF.mainActor(), caf::infinite,
-      exit_atom::value, wsConnPtr);
+      superactor::system::exit_atom::value, wsConnPtr);
   // LOG_DEBUG << "connection closed!\n" <<wsConnPtr->peerAddr().toIp();
 }
 }  // namespace jadmin

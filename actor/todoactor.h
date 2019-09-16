@@ -8,7 +8,7 @@
 #include "useractorbase.h"
 namespace superactor {
 namespace todoactor {
-class TodoActor : public caf::event_based_actor, public UserActorBase {
+class TodoActor : public caf::event_based_actor, public system::UserActorBase {
  public:
   TodoActor(caf::actor_config& cfg);
 

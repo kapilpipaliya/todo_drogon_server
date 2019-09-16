@@ -8,6 +8,7 @@
 #include "./mainactortype.h"
 #include "caf/all.hpp"
 namespace superactor {
+namespace system {
 class MainActor : public caf::event_based_actor {
  public:
   MainActor(caf::actor_config &cfg);
@@ -23,5 +24,6 @@ class MainActor : public caf::event_based_actor {
                   const drogon::WebSocketMessageType &type);
   std::unordered_map<drogon::WebSocketConnectionPtr, caf::actor> actorMap;
 };
+}  // namespace system
 }  // namespace superactor
 #endif  // MESSAGEHANDLE_H

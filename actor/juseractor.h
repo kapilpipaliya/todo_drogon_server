@@ -6,7 +6,7 @@
 #include "useractorbase.h"
 namespace superactor {
 namespace juseractor {
-class JUserActor : public caf::event_based_actor, public UserActorBase {
+class JUserActor : public caf::event_based_actor, public system::UserActorBase {
  public:
   JUserActor(caf::actor_config& cfg);
 

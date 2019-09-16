@@ -7,7 +7,8 @@
 #include "useractorbase.h"
 namespace superactor {
 namespace musicactor {
-class MAdminActor : public caf::event_based_actor, public UserActorBase {
+class MAdminActor : public caf::event_based_actor,
+                    public system::UserActorBase {
  public:
   MAdminActor(caf::actor_config& cfg);
 

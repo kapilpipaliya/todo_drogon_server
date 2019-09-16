@@ -2,6 +2,7 @@
 #include "./wscontroller/wsfns.h"
 #include "spdlogfix.h"
 namespace superactor {
+namespace system {
 UserActorBase::UserActorBase() = default;
 
 UserActorBase::~UserActorBase() {}
@@ -55,4 +56,5 @@ void UserActorBase::blocking_run(
       break;
   }
 }
+}  // namespace system
 }  // namespace superactor

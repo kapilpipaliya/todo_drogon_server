@@ -15,7 +15,7 @@ caf::behavior TodoListActor::make_behavior() {
         blocking_run(wsConnPtr, std::move(message), type);
         return {};
       },
-      [this](exit_atom) -> caf::result<void> {
+      [this](superactor::system::exit_atom) -> caf::result<void> {
         quit();
         return {};
       }};

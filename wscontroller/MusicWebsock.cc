@@ -18,7 +18,8 @@ void MusicWebsock::handleNewMessage(
   // std::chrono::seconds(10)
   superactor::system::globalCAF.communicateWithActors()
       ->request(superactor::system::globalCAF.mainActor(), caf::infinite,
-                run_atom::value, superactor::MainActorType::MAdmin, wsConnPtr,
+                superactor::system::run_atom::value,
+                superactor::system::MainActorType::MAdmin, wsConnPtr,
                 std::move(message), type)
       .receive(
           [&]() {
@@ -43,8 +44,8 @@ void MusicWebsock::handleNewConnection(
 void MusicWebsock::handleConnectionClosed(
     const drogon::WebSocketConnectionPtr& wsConnPtr) {
   superactor::system::globalCAF.communicateWithActors()->request(
-      superactor::system::globalCAF.mainActor(), caf::infinite, exit_atom::value,
-      wsConnPtr);
+      superactor::system::globalCAF.mainActor(), caf::infinite,
+      superactor::system::exit_atom::value, wsConnPtr);
 }
 }  // namespace music
 }  // namespace websocket

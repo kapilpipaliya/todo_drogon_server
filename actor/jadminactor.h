@@ -6,7 +6,8 @@
 #include "useractorbase.h"
 namespace superactor {
 namespace jadminactor {
-class JAdminActor : public caf::event_based_actor, public UserActorBase {
+class JAdminActor : public caf::event_based_actor,
+                    public system::UserActorBase {
  public:
   JAdminActor(caf::actor_config& cfg);
 

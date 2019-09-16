@@ -6,7 +6,8 @@
 #include "useractorbase.h"
 namespace superactor {
 namespace todoactor {
-class TodoListActor : public caf::event_based_actor, public UserActorBase {
+class TodoListActor : public caf::event_based_actor,
+                      public system::UserActorBase {
  public:
   TodoListActor(caf::actor_config& cfg);
   virtual caf::behavior make_behavior();

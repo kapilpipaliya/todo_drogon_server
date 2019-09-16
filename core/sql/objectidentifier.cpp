@@ -1,5 +1,6 @@
 #include "objectidentifier.h"
 
+namespace sql {
 static std::string duplicate_char(std::string str, char to_replace) {
   size_t pos = 0;
   while ((pos = str.find(to_replace, pos)) != std::string::npos) {
@@ -9,8 +10,6 @@ static std::string duplicate_char(std::string str, char to_replace) {
   }
   return str;
 }
-
-namespace sql {
 
 static escapeQuoting customQuoting = DoubleQuotes;
 
