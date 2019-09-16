@@ -3,7 +3,7 @@
 namespace openproj {
 namespace seeder {
 namespace StandardSeeder {
-  class BasicDataSeeder : public seeder::BasicDataSeeder {
+  class BasicDataSeederFinal : public openproj::seeder::BasicDataSeeder {
   public:
      void data_seeder_classes() {
 //      [

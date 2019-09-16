@@ -89,7 +89,7 @@ class RootSeeder : public Seeder {
     LOG_DEBUG << "*** Seeding basic data for "
                  "#{OpenProject::Configuration['edition']} "
                  "edition";
-    openproj::seeder::StandardSeeder::BasicDataSeeder n;
+    openproj::seeder::StandardSeeder::BasicDataSeederFinal n;
     n.seed();
   }
 };

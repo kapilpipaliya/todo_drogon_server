@@ -1,4 +1,5 @@
 #pragma once
+#include <drogon/drogon.h>
 
 namespace openproj {
 namespace seeder {
@@ -11,11 +12,8 @@ class Seeder {
       LOG_DEBUG << "   *** #{not_applicable_message}";
     }
   }
-
   virtual void seed_data() = 0;
-
   virtual bool applicable() { return true; }
-
   virtual void not_applicable_message() {
     LOG_DEBUG << "Skipping #{this->class.name}";
   }
@@ -39,15 +37,10 @@ class Seeder {
 
     //    data
   }
-
-  void demo_data_for(std::string key) {
-    //    edition_data_for("demo_data.#{key}")
-  }
-
+  void demo_data_for(std::string key) { edition_data_for("demo_data." + key); }
   void project_data_for(std::string project, std::string key) {
-    //    demo_data_for "projects.#{project}.#{key}"
+    demo_data_for("projects." + project + "." + key);
   }
-
   void project_has_data_for(std::string project, std::string key) {
     //    I18n.exists?("seeders.#{OpenProject::Configuration['edition']}.demo_data.projects.#{project}.#{key}")
   }
