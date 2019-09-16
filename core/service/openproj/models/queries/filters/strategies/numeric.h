@@ -11,13 +11,9 @@ namespace Queries::Filters::Strategies {
 
     private:
 
-     void numeric_class() {
-      raise NotImplementedError
-    }
+     virtual void numeric_class()  = 0;
 
-     void error_message() {
-      raise NotImplementedError
-    }
+     virtual void error_message()  = 0;
 
      void validate_values_all_numeric() {
       if ( operator && operator.requires_value? && values.any? { |value| !numeric?(value) }) {

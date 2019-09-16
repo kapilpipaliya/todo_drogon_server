@@ -12,25 +12,17 @@ class CustomActions::Actions::Base
     this->values = Array(values)
   }
 
-   void allowed_values() {
-    raise NotImplementedError
-  }
+   virtual void allowed_values() = 0;
 
-   void type() {
-    raise NotImplementedError
-  }
+   virtual void type() = 0;
 
-   void apply(_work_package) {
-    raise NotImplementedError
-  }
+   virtual void apply(_work_package) = 0;
 
    void human_name() {
     WorkPackage.human_attribute_name(this->class.key)
   }
 
-   void key() {
-    raise NotImplementedError
-  }
+   virtual void key() = 0;
 
    void all() {
     [self]

@@ -44,13 +44,9 @@ namespace BasicData {
 //      }
     }
 
-     void type_names() {
-//      raise NotImplementedError
-    }
+     virtual void type_names()  = 0;
 
-     void type_table() {
-//      raise NotImplementedError
-    }
+     virtual void type_table()  = 0;
 
 //     void type_description(type_name) {
 //      if ( demo_data_for('type_configuration').nil?) { return '' ;}

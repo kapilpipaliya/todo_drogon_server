@@ -11,9 +11,7 @@ namespace Queries::WorkPackages::Filter::FilterOnUndirectedRelationsMixin {
     SQL
   }
 
-   void relation_type() {
-    raise NotImplementedError
-  }
+   virtual void relation_type() = 0;
 
   private:
 

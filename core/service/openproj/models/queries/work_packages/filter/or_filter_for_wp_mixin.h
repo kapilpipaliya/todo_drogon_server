@@ -27,9 +27,7 @@ namespace Queries::WorkPackages::Filter::OrFilterForWpMixin {
     filters.map(&:where).join(' OR ')
   }
 
-   void filter_configurations() {
-    raise NotImplementedError
-  }
+   virtual void filter_configurations() = 0;
 
    void create_instances() {
     filter_configurations.map { |conf|

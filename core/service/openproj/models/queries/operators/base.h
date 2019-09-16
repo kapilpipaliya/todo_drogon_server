@@ -22,9 +22,7 @@ namespace Queries::Operators {
       value_required
     }
 
-     void sql_for_field(_values, _db_table, _db_field) {
-      raise NotImplementedError
-    }
+     virtual void sql_for_field(_values, _db_table, _db_field)  = 0;
 
      void connection() {
       ActiveRecord::Base.connection

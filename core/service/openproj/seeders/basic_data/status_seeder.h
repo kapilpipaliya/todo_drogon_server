@@ -20,9 +20,7 @@ namespace BasicData {
 //      'Skipping statuses - already exists/configured'
     }
 
-     void data() {
-//      raise NotImplementedError
-    }
+     virtual void data()  = 0;
   };
 }
 }

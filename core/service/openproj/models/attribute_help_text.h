@@ -32,21 +32,13 @@ class AttributeHelpText : public ActiveRecord::Base {
     this->caption ||= this->class.available_attributes[attribute_name]
   }
 
-   void attribute_scope() {
-    raise NotImplementedError
-  }
+   virtual void attribute_scope() = 0;
 
-   void type_caption() {
-    raise NotImplementedError
-  }
+   virtual void type_caption() = 0;
 
-   void visible_condition() {
-    raise NotImplementedError
-  }
+   virtual void visible_condition() = 0;
 
-   void available_attributes() {
-    raise NotImplementedError
-  }
+   virtual void available_attributes() = 0;
 }
 
 require_dependency 'attribute_help_text/work_package'

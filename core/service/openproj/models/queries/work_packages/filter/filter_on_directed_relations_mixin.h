@@ -20,9 +20,7 @@ namespace Queries::WorkPackages::Filter::FilterOnDirectedRelationsMixin {
     "#{WorkPackage.table_name}.id #{operator} (#{relations_subselect.to_sql})"
   }
 
-   void relation_type() {
-    raise NotImplementedError
-  }
+   virtual void relation_type() = 0;
 
    void normalized_relation_type() {
     ::Relation.canonical_type relation_type
@@ -30,11 +28,7 @@ namespace Queries::WorkPackages::Filter::FilterOnDirectedRelationsMixin {
 
   private:
 
-   void relation_filter() {
-    raise NotImplementedError
-  }
+   virtual void relation_filter() = 0;
 
-   void relation_select() {
-    raise NotImplementedError
-  }
+   virtual void relation_select() = 0;
 }

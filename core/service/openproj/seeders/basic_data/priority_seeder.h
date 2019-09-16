@@ -20,9 +20,7 @@ namespace BasicData {
 //      'Skipping priorities as there are already some configured'
     }
 
-     void data() {
-//      raise NotImplementedError
-    }
+     virtual void data()  = 0;
   };
 }
 }

@@ -34,11 +34,7 @@ class CustomValue::ARObjectStrategy : public CustomValue::FormatStrategy {
 
   private:
 
-   void ar_class() {
-    raise NotImplementedError
-  }
+   virtual void ar_class() = 0;
 
-   void ar_object(_value) {
-    raise NotImplementedError
-  }
+   virtual void ar_object(_value) = 0;
 }

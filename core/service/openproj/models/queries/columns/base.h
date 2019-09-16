@@ -28,9 +28,7 @@ class Queries::Columns::Base
     sortable_join
   }
 
-   void caption() {
-    raise NotImplementedError
-  }
+   virtual void caption() = 0;
 
    void groupable=(value) {
     this->groupable = name_or_value_or_false(value)

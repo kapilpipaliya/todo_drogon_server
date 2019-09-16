@@ -21,9 +21,7 @@ namespace BasicData {
 //      'Skipping activities as there are already some configured'
     }
 
-     void data() {
-//      raise NotImplementedError
-    }
+     virtual void data()  = 0;
   };
 }
 }

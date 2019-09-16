@@ -21,11 +21,7 @@ class Type::FormGroup
     }
   }
 
-   void members() {
-    raise NotImplementedError
-  }
+   virtual void members() = 0;
 
-   void active_members(_project) {
-    raise NotImplementedError
-  }
+   virtual void active_members(_project) = 0;
 }

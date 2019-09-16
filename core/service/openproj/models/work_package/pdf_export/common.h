@@ -98,7 +98,5 @@ namespace WorkPackage::PdfExport::Common {
     3
   }
 
-   void description_colspan() {
-    raise NotImplementedError, 'to be implemented where included'
-  }
+   void description_colspan() = 0;
 }

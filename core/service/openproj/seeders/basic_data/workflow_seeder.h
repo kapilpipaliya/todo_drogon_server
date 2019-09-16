@@ -68,17 +68,11 @@ namespace BasicData {
 //      }
     }
 
-     void workflows() {
-//      raise NotImplementedError
-    }
+     virtual void workflows()  = 0;
 
-     void type_seeder_class() {
-//      raise NotImplementedError
-    }
+     virtual void type_seeder_class()  = 0;
 
-     void status_seeder_class() {
-//      raise NotImplementedError
-    }
+     virtual void status_seeder_class()  = 0;
   };
 }
 }

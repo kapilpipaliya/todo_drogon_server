@@ -4,9 +4,7 @@ class CustomActions::Actions::CustomField : public CustomActions::Actions::Base 
     :"custom_field_#{custom_field.id}"
   }
 
-   void custom_field() {
-    raise NotImplementedError
-  }
+   virtual void custom_field() = 0;
 
    void custom_field() {
     this->class.custom_field

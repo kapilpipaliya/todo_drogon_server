@@ -18,9 +18,7 @@ class Queries::BaseOrder
     this->attribute = attribute
   }
 
-   void key() {
-    raise NotImplementedError
-  }
+   virtual void key() = 0;
 
    void scope() {
     scope = order

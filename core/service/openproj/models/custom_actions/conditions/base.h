@@ -30,9 +30,7 @@ class CustomActions::Conditions::Base
     this->class.key
   }
 
-   void key() {
-    raise NotImplementedError
-  }
+   virtual void key() = 0;
 
    void validate(errors) {
     validate_allowed_value(errors, :conditions)

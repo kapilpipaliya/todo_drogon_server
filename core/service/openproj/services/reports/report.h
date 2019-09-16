@@ -21,21 +21,13 @@ public:
   }
 
   // ---- every report needs to implement these methods to supply all needed data for a report -----
-   void field() {
-//    raise NotImplementedError
-  }
+   virtual void field()  = 0;
 
-   void rows() {
-//    raise NotImplementedError
-  }
+   virtual void rows()  = 0;
 
-   void data() {
-//    raise NotImplementedError
-  }
+   virtual void data()  = 0;
 
-   void title() {
-//    raise NotImplementedError
-  }
+   virtual void title()  = 0;
 };
 }
 }

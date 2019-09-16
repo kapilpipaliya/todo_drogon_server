@@ -3,9 +3,7 @@ namespace Queries::WorkPackages::Filter::FilterForWpMixin {
     :list
   }
 
-   void allowed_values() {
-    raise NotImplementedError, 'There would be too many candidates'
-  }
+   virtual void allowed_values() = 0;
 
    void value_objects() {
     objects = visible_scope.find(no_templated_values)
@@ -17,9 +15,7 @@ namespace Queries::WorkPackages::Filter::FilterForWpMixin {
     objects
   }
 
-   void allowed_objects() {
-    raise NotImplementedError, 'There would be too many candidates'
-  }
+   virtual void allowed_objects() = 0;
 
    void available?() {
     visible_scope.exists?

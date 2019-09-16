@@ -19,13 +19,9 @@ namespace Queries::WorkPackages::Filter::TextFilterOnJoinMixin {
 
   private:
 
-   void join_table() {
-    raise NotImplementedError
-  }
+   virtual void join_table() = 0;
 
-   void join_condition() {
-    raise NotImplementedError
-  }
+   virtual void join_condition() = 0;
 
    void join_table_alias() {
     "#{this->class.key}_#{join_table}"

@@ -51,9 +51,7 @@ class Queries::WorkPackages::Filter::AttachmentBaseFilter : public Queries::Work
                                           normalization: normalization_type)
   }
 
-   void search_column() {
-    raise NotImplementedError
-  }
+   virtual void search_column() = 0;
 
    void normalization_type() {
     :text

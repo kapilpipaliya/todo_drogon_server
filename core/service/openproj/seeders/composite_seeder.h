@@ -25,9 +25,7 @@ public:
 //    data_seeder_classes.map(&:new)
   }
 
-   void data_seeder_classes() {
-//    raise NotImplementedError, 'has to be implemented by subclasses'
-  }
+   virtual void data_seeder_classes() = 0;
 
    void discovered_seeders() {
 //    discovered_seeder_classes.map(&:new)
@@ -46,9 +44,7 @@ public:
 //      .select { |cl| include_discovered_class? cl }
 //  }
 
-   void namespace_() {
-//    raise NotImplementedError, 'has to be implemented by subclasses'
-  }
+   virtual void namespace_() = 0;
 
   //
   // Accepts plugin seeders, e.g. 'BasicData::Documents'.

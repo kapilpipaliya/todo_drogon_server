@@ -26,9 +26,7 @@ public:
   //
   // Determines whether the given request is a read access
   // Must be implemented by descendents of this policy.
-//   void readonly_request?(_params) {
-//    raise NotImplementedError
-//  }
+//   virtual void readonly_request?(_params)  = 0;
 
   //
   // Returns whether the user has read access permission to the repository

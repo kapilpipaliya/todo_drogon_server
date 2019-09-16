@@ -71,11 +71,7 @@ class UserPassword : public ActiveRecord::Base {
   }
 
   // Require the implementation to provide a secure comparisation
-   void hash_matches?(_plain) {
-    raise NotImplementedError, 'Must be overridden by subclass'
-  }
+   virtual void hash_matches?(_plain) = 0;
 
-   void derive_password!(_input) {
-    raise NotImplementedError, 'Must be overridden by subclass'
-  }
+   virtual void derive_password!(_input) = 0;
 }

@@ -49,13 +49,9 @@ class Queries::Filters::Base
     initial_options.merge(Hash[values])
   }
 
-   void human_name() {
-    raise NotImplementedError
-  }
+   virtual void human_name() = 0;
 
-   void type() {
-    raise NotImplementedError
-  }
+   virtual void type() = 0;
 
    void allowed_values() {
     nil

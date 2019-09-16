@@ -23,9 +23,7 @@ namespace Queries {
 
         private:
 
-         void visibility_checked_sql(_operator, _values, _visible_sql) {
-          raise NotImplementedError
-        }
+         virtual void visibility_checked_sql(_operator, _values, _visible_sql)  = 0;
       }
     }
   }
