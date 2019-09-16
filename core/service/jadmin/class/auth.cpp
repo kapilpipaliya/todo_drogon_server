@@ -1,5 +1,6 @@
 #include "auth.h"
 #include <fmt/format.h>
+#include <boost/algorithm/string/replace.hpp>
 #include <boost/filesystem.hpp>
 #include <utility>
 #include "../../../../wscontroller/wsfns.h"
@@ -8,7 +9,6 @@
 #include "../../../strfns.h"
 #include "session.h"
 #include "spdlogfix.h"
-
 namespace jewel {
 namespace service {
 Auth::Auth(std::shared_ptr<websocket::jewel::JAdminContext> context_)
@@ -321,8 +321,8 @@ nlohmann::json Auth::save_setting_attachment(const nlohmann::json &event,
     std::string strSql =
         "INSERT INTO %1.%2 (name, size, type) VALUES ($1, $2, $3) RETURNING "
         "id";
-    ReplaceAll2(strSql, "%1", temp_image_table.schema());
-    ReplaceAll2(strSql, "%2", temp_image_table.name());
+    boost::replace_all(strSql, "%1", temp_image_table.schema());
+    boost::replace_all(strSql, "%2", temp_image_table.name());
 
     nlohmann::json ret;
     nlohmann::json jresult;

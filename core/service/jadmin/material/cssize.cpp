@@ -1,5 +1,6 @@
 #include "cssize.h"
 
+#include <boost/algorithm/string/replace.hpp>
 #include <utility>
 #include "../../../sql/dba.h"
 #include "../../../strfns.h"
@@ -131,8 +132,8 @@ nlohmann::json CSSize::ins(nlohmann::json event, nlohmann::json args) {
   std::string strSql =
       "INSERT INTO %1.%2 (cs_type_id, shape_id, size_id, weight, currency_id, "
       "rate_on_id, rate) values($1, $2, $3, $4, $5, $6, $7)";
-  ReplaceAll2(strSql, "%1", size_meta_table.schema());
-  ReplaceAll2(strSql, "%2", size_meta_table.name());
+  boost::replace_all(strSql, "%1", size_meta_table.schema());
+  boost::replace_all(strSql, "%2", size_meta_table.name());
 
   try {
     auto clientPtr = drogon::app().getDbClient("sce");
@@ -228,8 +229,8 @@ nlohmann::json CSSize::upd(nlohmann::json event, nlohmann::json args) {
         "update %1.%2 set "
         "(cs_type_id, shape_id, size_id, weight, currency_id, rate_on_id, rate)"
         " = ROW($2, $3, $4, $5, $6, $7, $8) where id=$1";
-    ReplaceAll2(strSql, "%1", size_meta_table.schema());
-    ReplaceAll2(strSql, "%2", size_meta_table.name());
+    boost::replace_all(strSql, "%1", size_meta_table.schema());
+    boost::replace_all(strSql, "%2", size_meta_table.name());
 
     std::string strSqlSizeId =
         "SELECT size_id FROM material.color_stone_size_meta WHERE id = $1;";
@@ -366,4 +367,4 @@ nlohmann::json CSSize::del(nlohmann::json event, nlohmann::json args) {
   }
 }
 }  // namespace service
-}  // namespace jadmin
+}  // namespace jewel

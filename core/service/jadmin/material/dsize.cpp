@@ -1,9 +1,9 @@
 #include "dsize.h"
 
+#include <boost/algorithm/string/replace.hpp>
 #include <utility>
 #include "../../../sql/dba.h"
 #include "../../../strfns.h"
-
 namespace jewel {
 namespace service {
 DSize::DSize(std::shared_ptr<websocket::jewel::JAdminContext> context_)
@@ -142,8 +142,8 @@ nlohmann::json DSize::ins(nlohmann::json event, nlohmann::json args) {
   std::string strSql =
       "INSERT INTO %1.%2 (clarity_id, shape_id, color_id, size_id, weight, "
       "currency_id, rate_on_id, rate) values($1, $2, $3, $4, $5, $6, $7, $8)";
-  ReplaceAll2(strSql, "%1", size_meta_table.schema());
-  ReplaceAll2(strSql, "%2", size_meta_table.name());
+  boost::replace_all(strSql, "%1", size_meta_table.schema());
+  boost::replace_all(strSql, "%2", size_meta_table.name());
 
   auto clientPtr = drogon::app().getDbClient("sce");
   auto transPtr = clientPtr->newTransaction();
@@ -252,8 +252,8 @@ nlohmann::json DSize::upd(nlohmann::json event, nlohmann::json args) {
         "(clarity_id, shape_id, color_id, size_id, weight, currency_id, "
         "rate_on_id, rate)"
         " = ROW($2, $3, $4, $5, $6, $7, $8, $9) where id=$1";
-    ReplaceAll2(strSql, "%1", size_meta_table.schema());
-    ReplaceAll2(strSql, "%2", size_meta_table.name());
+    boost::replace_all(strSql, "%1", size_meta_table.schema());
+    boost::replace_all(strSql, "%2", size_meta_table.name());
 
     std::string strSqlSizeId =
         "SELECT size_id FROM material.diamond_size_meta WHERE id = $1;";
@@ -398,4 +398,4 @@ nlohmann::json DSize::del(nlohmann::json event, nlohmann::json args) {
   }
 }
 }  // namespace service
-}  // namespace jadmin
+}  // namespace jewel

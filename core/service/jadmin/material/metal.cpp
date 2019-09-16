@@ -1,9 +1,9 @@
 #include "metal.h"
 
+#include <boost/algorithm/string/replace.hpp>
 #include <utility>
 #include "../../../sql/dba.h"
 #include "../../../strfns.h"
-
 #define ids2(s, array)                                 \
   std::string array = "{";                             \
   for (auto i : (s)) {                                 \
@@ -85,8 +85,8 @@ nlohmann::json Metal::ins(nlohmann::json event, nlohmann::json args) {
   std::string strSql =
       "INSERT INTO %1.%2 (slug, name, specific_density, price, "
       "melting_point_in_c) values($1, $2, $3, $4, $5)";
-  ReplaceAll2(strSql, "%1", metal_table.schema());
-  ReplaceAll2(strSql, "%2", metal_table.name());
+  boost::replace_all(strSql, "%1", metal_table.schema());
+  boost::replace_all(strSql, "%2", metal_table.name());
 
   auto clientPtr = drogon::app().getDbClient("sce");
   auto transPtr = clientPtr->newTransaction();
@@ -115,8 +115,8 @@ nlohmann::json Metal::upd(nlohmann::json event, nlohmann::json args) {
         "update %1.%2 set "
         "(slug, name, specific_density, price, melting_point_in_c)"
         " = ROW($2, $3, $4, $5, $6) where id=$1";
-    ReplaceAll2(strSql, "%1", metal_table.schema());
-    ReplaceAll2(strSql, "%2", metal_table.name());
+    boost::replace_all(strSql, "%1", metal_table.schema());
+    boost::replace_all(strSql, "%2", metal_table.name());
 
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
@@ -233,4 +233,4 @@ nlohmann::json Metal::upd(nlohmann::json event, nlohmann::json args) {
   return ret;
 }
 }  // namespace service
-}  // namespace jadmin
+}  // namespace jewel

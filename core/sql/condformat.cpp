@@ -1,4 +1,5 @@
 #include "condformat.h"
+#include <boost/algorithm/string/replace.hpp>
 #include <string>
 #include <utility>
 #include "../strfns.h"
@@ -162,7 +163,7 @@ std::string CondFormat::filterToSqlCondition(const std::string& value,
   if (!numeric && !numericp && val != "''" &&
       (column_type == sql::PG_TYPES::TEXT ||
        column_type == sql::PG_TYPES::PSJSON)) {
-    ReplaceAll2(val, "'", "''");
+    boost::replace_all(val, "'", "''");
     val = "'" + val + "'";
   }
 

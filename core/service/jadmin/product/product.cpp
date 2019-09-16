@@ -1,9 +1,9 @@
 #include "product.h"
+#include <boost/algorithm/string/replace.hpp>
 #include <boost/filesystem.hpp>
 #include <utility>
 #include "../../../sql/dba.h"
 #include "../../../strfns.h"
-
 namespace jewel {
 namespace service {
 Product::Product(std::shared_ptr<websocket::jewel::JAdminContext> context_)
@@ -399,37 +399,37 @@ void product_tags_process(
     const sql::ObjectIdentifier& post_tag_table, nlohmann::json& args,
     const std::shared_ptr<drogon::orm::Transaction>& transPtr, long post_id) {
   std::string strSqlTag = "select id, name FROM %1.%2 where name = $1";
-  ReplaceAll2(strSqlTag, "%1", tags_table.schema());
-  ReplaceAll2(strSqlTag, "%2", tags_table.name());
+  boost::replace_all(strSqlTag, "%1", tags_table.schema());
+  boost::replace_all(strSqlTag, "%2", tags_table.name());
 
   std::string strSqlTagInsert =
       "INSERT INTO post.tag (name, slug, description) VALUES ($1, $2, $3)";
-  ReplaceAll2(strSqlTagInsert, "%1", tags_table.schema());
-  ReplaceAll2(strSqlTagInsert, "%2", tags_table.name());
+  boost::replace_all(strSqlTagInsert, "%1", tags_table.schema());
+  boost::replace_all(strSqlTagInsert, "%2", tags_table.name());
 
   // post_tag
   std::string strSqlPostTags =
       "select pt.post_id, pt.tag_id, t.name FROM %1.%2 pt left join %3.%4 t on "
       "t.id = pt.tag_id where post_id = $1";
-  ReplaceAll2(strSqlPostTags, "%1", post_tag_table.schema());
-  ReplaceAll2(strSqlPostTags, "%2", post_tag_table.name());
-  ReplaceAll2(strSqlPostTags, "%3", tags_table.schema());
-  ReplaceAll2(strSqlPostTags, "%4", tags_table.name());
+  boost::replace_all(strSqlPostTags, "%1", post_tag_table.schema());
+  boost::replace_all(strSqlPostTags, "%2", post_tag_table.name());
+  boost::replace_all(strSqlPostTags, "%3", tags_table.schema());
+  boost::replace_all(strSqlPostTags, "%4", tags_table.name());
 
   std::string strSqlPostTagSimpleFind =
       "SELECT * FROM %1.%2 WHERE post_id = $1 and tag_id = $2";
-  ReplaceAll2(strSqlPostTagSimpleFind, "%1", post_tag_table.schema());
-  ReplaceAll2(strSqlPostTagSimpleFind, "%2", post_tag_table.name());
+  boost::replace_all(strSqlPostTagSimpleFind, "%1", post_tag_table.schema());
+  boost::replace_all(strSqlPostTagSimpleFind, "%2", post_tag_table.name());
 
   std::string strSqlPostTagsDel =
       "DELETE FROM %1.%2 WHERE post_id = $1 and tag_id = $2";
-  ReplaceAll2(strSqlPostTagsDel, "%1", post_tag_table.schema());
-  ReplaceAll2(strSqlPostTagsDel, "%2", post_tag_table.name());
+  boost::replace_all(strSqlPostTagsDel, "%1", post_tag_table.schema());
+  boost::replace_all(strSqlPostTagsDel, "%2", post_tag_table.name());
 
   std::string strSqlPostTagsInsert =
       "INSERT INTO %1.%2 (post_id, tag_id) VALUES ($1, $2);";
-  ReplaceAll2(strSqlPostTagsInsert, "%1", post_tag_table.schema());
-  ReplaceAll2(strSqlPostTagsInsert, "%2", post_tag_table.name());
+  boost::replace_all(strSqlPostTagsInsert, "%1", post_tag_table.schema());
+  boost::replace_all(strSqlPostTagsInsert, "%2", post_tag_table.name());
 
   auto inNewTags = args[0]["tags_name"].get<std::string>();
   std::vector<std::string> inNewTagsVector;
@@ -469,23 +469,27 @@ void save_product_categories(
     const std::shared_ptr<drogon::orm::Transaction>& transPtr, long post_id) {
   std::string strSqlPostCategories =
       "select post_id, category_id FROM %1.%2 where post_id = $1";
-  ReplaceAll2(strSqlPostCategories, "%1", post_category_table.schema());
-  ReplaceAll2(strSqlPostCategories, "%2", post_category_table.name());
+  boost::replace_all(strSqlPostCategories, "%1", post_category_table.schema());
+  boost::replace_all(strSqlPostCategories, "%2", post_category_table.name());
 
   std::string strSqlPostCategorySimpleFind =
       "SELECT * FROM %1.%2 WHERE post_id = $1 and category_id = $2";
-  ReplaceAll2(strSqlPostCategorySimpleFind, "%1", post_category_table.schema());
-  ReplaceAll2(strSqlPostCategorySimpleFind, "%2", post_category_table.name());
+  boost::replace_all(strSqlPostCategorySimpleFind, "%1",
+                     post_category_table.schema());
+  boost::replace_all(strSqlPostCategorySimpleFind, "%2",
+                     post_category_table.name());
 
   std::string strSqlPostCategoryDel =
       "DELETE FROM %1.%2 WHERE post_id = $1 and category_id = $2";
-  ReplaceAll2(strSqlPostCategoryDel, "%1", post_category_table.schema());
-  ReplaceAll2(strSqlPostCategoryDel, "%2", post_category_table.name());
+  boost::replace_all(strSqlPostCategoryDel, "%1", post_category_table.schema());
+  boost::replace_all(strSqlPostCategoryDel, "%2", post_category_table.name());
 
   std::string strSqlPostCategoryInsert =
       "INSERT INTO %1.%2 (post_id, category_id) VALUES ($1, $2);";
-  ReplaceAll2(strSqlPostCategoryInsert, "%1", post_category_table.schema());
-  ReplaceAll2(strSqlPostCategoryInsert, "%2", post_category_table.name());
+  boost::replace_all(strSqlPostCategoryInsert, "%1",
+                     post_category_table.schema());
+  boost::replace_all(strSqlPostCategoryInsert, "%2",
+                     post_category_table.name());
 
   std::vector<long> inNewCategories;
   for (const auto& x : args[0]["pc_category_id"])
@@ -523,25 +527,28 @@ void save_product_clarities(
     const std::shared_ptr<drogon::orm::Transaction>& transPtr, long post_id) {
   std::string strSqlPostCategories =
       "SELECT clarity_id FROM %1.%2 where post_id = $1";
-  ReplaceAll2(strSqlPostCategories, "%1", post_clarity_table.schema());
-  ReplaceAll2(strSqlPostCategories, "%2", post_clarity_table.name());
+  boost::replace_all(strSqlPostCategories, "%1", post_clarity_table.schema());
+  boost::replace_all(strSqlPostCategories, "%2", post_clarity_table.name());
 
   std::string strSqlPostCategorySimpleFind =
       "SELECT post_id, clarity_id, pcs, weight, price, ismain FROM %1.%2 WHERE "
       "post_id = $1 and clarity_id = $2";
-  ReplaceAll2(strSqlPostCategorySimpleFind, "%1", post_clarity_table.schema());
-  ReplaceAll2(strSqlPostCategorySimpleFind, "%2", post_clarity_table.name());
+  boost::replace_all(strSqlPostCategorySimpleFind, "%1",
+                     post_clarity_table.schema());
+  boost::replace_all(strSqlPostCategorySimpleFind, "%2",
+                     post_clarity_table.name());
 
   std::string strSqlPostCategoryDel =
       "DELETE FROM %1.%2 WHERE post_id = $1 and clarity_id = $2";
-  ReplaceAll2(strSqlPostCategoryDel, "%1", post_clarity_table.schema());
-  ReplaceAll2(strSqlPostCategoryDel, "%2", post_clarity_table.name());
+  boost::replace_all(strSqlPostCategoryDel, "%1", post_clarity_table.schema());
+  boost::replace_all(strSqlPostCategoryDel, "%2", post_clarity_table.name());
 
   std::string strSqlPostCategoryInsert =
       "INSERT INTO %1.%2 (post_id, clarity_id, pcs, weight, price, ismain) "
       "VALUES ($1, $2, $3, $4, $5, $6);";
-  ReplaceAll2(strSqlPostCategoryInsert, "%1", post_clarity_table.schema());
-  ReplaceAll2(strSqlPostCategoryInsert, "%2", post_clarity_table.name());
+  boost::replace_all(strSqlPostCategoryInsert, "%1",
+                     post_clarity_table.schema());
+  boost::replace_all(strSqlPostCategoryInsert, "%2", post_clarity_table.name());
 
   std::string strSqlPostCategoryUpdateAtt =
       "UPDATE product.post_clarity SET (pcs, weight, price, ismain) = ROW($3, "
@@ -675,24 +682,27 @@ void save_product_purities(
     const std::shared_ptr<drogon::orm::Transaction>& transPtr, long post_id) {
   std::string strSqlPostCategories =
       "SELECT purity_id FROM %1.%2 where post_id = $1";
-  ReplaceAll2(strSqlPostCategories, "%1", post_purity_table.schema());
-  ReplaceAll2(strSqlPostCategories, "%2", post_purity_table.name());
+  boost::replace_all(strSqlPostCategories, "%1", post_purity_table.schema());
+  boost::replace_all(strSqlPostCategories, "%2", post_purity_table.name());
 
   std::string strSqlPostCategorySimpleFind =
       "SELECT purity_id, ismain FROM %1.%2 WHERE post_id = $1 and purity_id = "
       "$2";
-  ReplaceAll2(strSqlPostCategorySimpleFind, "%1", post_purity_table.schema());
-  ReplaceAll2(strSqlPostCategorySimpleFind, "%2", post_purity_table.name());
+  boost::replace_all(strSqlPostCategorySimpleFind, "%1",
+                     post_purity_table.schema());
+  boost::replace_all(strSqlPostCategorySimpleFind, "%2",
+                     post_purity_table.name());
 
   std::string strSqlPostCategoryDel =
       "DELETE FROM %1.%2 WHERE post_id = $1 and purity_id = $2";
-  ReplaceAll2(strSqlPostCategoryDel, "%1", post_purity_table.schema());
-  ReplaceAll2(strSqlPostCategoryDel, "%2", post_purity_table.name());
+  boost::replace_all(strSqlPostCategoryDel, "%1", post_purity_table.schema());
+  boost::replace_all(strSqlPostCategoryDel, "%2", post_purity_table.name());
 
   std::string strSqlPostCategoryInsert =
       "INSERT INTO %1.%2 (post_id, purity_id, ismain) VALUES ($1, $2, $3);";
-  ReplaceAll2(strSqlPostCategoryInsert, "%1", post_purity_table.schema());
-  ReplaceAll2(strSqlPostCategoryInsert, "%2", post_purity_table.name());
+  boost::replace_all(strSqlPostCategoryInsert, "%1",
+                     post_purity_table.schema());
+  boost::replace_all(strSqlPostCategoryInsert, "%2", post_purity_table.name());
 
   auto strSqlPostCategoryUpdateAtt =
       sql::CRUDHelper::upd_("product.post_purity", "ismain", "$3",
@@ -1109,24 +1119,29 @@ void save_product_Attachments(
     const sql::ObjectIdentifier& post_attachment_table, nlohmann::json& args,
     const std::shared_ptr<drogon::orm::Transaction>& transPtr, long post_id) {
   std::string strSqlPostCategories = "SELECT id FROM %1.%2 where post_id = $1";
-  ReplaceAll2(strSqlPostCategories, "%1", post_attachment_table.schema());
-  ReplaceAll2(strSqlPostCategories, "%2", post_attachment_table.name());
+  boost::replace_all(strSqlPostCategories, "%1",
+                     post_attachment_table.schema());
+  boost::replace_all(strSqlPostCategories, "%2", post_attachment_table.name());
 
   std::string strSqlPostCategorySimpleFind =
       "SELECT id, post_id, tone_id, main_image FROM %1.%2 WHERE id = $1";
-  ReplaceAll2(strSqlPostCategorySimpleFind, "%1",
-              post_attachment_table.schema());
-  ReplaceAll2(strSqlPostCategorySimpleFind, "%2", post_attachment_table.name());
+  boost::replace_all(strSqlPostCategorySimpleFind, "%1",
+                     post_attachment_table.schema());
+  boost::replace_all(strSqlPostCategorySimpleFind, "%2",
+                     post_attachment_table.name());
 
   std::string strSqlPostCategoryDel = "DELETE FROM %1.%2 WHERE id = $1";
-  ReplaceAll2(strSqlPostCategoryDel, "%1", post_attachment_table.schema());
-  ReplaceAll2(strSqlPostCategoryDel, "%2", post_attachment_table.name());
+  boost::replace_all(strSqlPostCategoryDel, "%1",
+                     post_attachment_table.schema());
+  boost::replace_all(strSqlPostCategoryDel, "%2", post_attachment_table.name());
 
   std::string strSqlPostCategoryInsert =
       "INSERT INTO %1.%2 (post_id, tone_id, name, size, type, main_image) "
       "VALUES ($1, $2, $3, $4, $5, $6);";
-  ReplaceAll2(strSqlPostCategoryInsert, "%1", post_attachment_table.schema());
-  ReplaceAll2(strSqlPostCategoryInsert, "%2", post_attachment_table.name());
+  boost::replace_all(strSqlPostCategoryInsert, "%1",
+                     post_attachment_table.schema());
+  boost::replace_all(strSqlPostCategoryInsert, "%2",
+                     post_attachment_table.name());
 
   std::string strSqlPostCategoryUpdate =
       "UPDATE product.post_attachment SET (tone_id, main_image) = ROW($2, $3) "
@@ -1236,8 +1251,8 @@ nlohmann::json Product::ins(nlohmann::json event, nlohmann::json args) {
       "status, date, type, visibility)"
       " VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)"
       "RETURNING id";
-  ReplaceAll2(strSqlPost, "%1", post_table.schema());
-  ReplaceAll2(strSqlPost, "%2", post_table.name());
+  boost::replace_all(strSqlPost, "%1", post_table.schema());
+  boost::replace_all(strSqlPost, "%2", post_table.name());
 
   std::string strSqlProduct =
       "INSERT INTO %1.%2 "
@@ -1249,8 +1264,8 @@ nlohmann::json Product::ins(nlohmann::json event, nlohmann::json args) {
       " VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, NULLIF($12, "
       "0::bigint), $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, "
       "$25, $26)";
-  ReplaceAll2(strSqlProduct, "%1", product_table.schema());
-  ReplaceAll2(strSqlProduct, "%2", product_table.name());
+  boost::replace_all(strSqlProduct, "%1", product_table.schema());
+  boost::replace_all(strSqlProduct, "%2", product_table.name());
 
   auto clientPtr = drogon::app().getDbClient("sce");
   auto transPtr = clientPtr->newTransaction();
@@ -1345,8 +1360,8 @@ nlohmann::json Product::upd(nlohmann::json event, nlohmann::json args) {
         "(comment_status, menu_order, excerpt, content, title, name, password, "
         "status, date, type, visibility)"
         " = ROW($2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) where id=$1";
-    ReplaceAll2(strSqlPost, "%1", post_table.schema());
-    ReplaceAll2(strSqlPost, "%2", post_table.name());
+    boost::replace_all(strSqlPost, "%1", post_table.schema());
+    boost::replace_all(strSqlPost, "%2", post_table.name());
 
     std::string strSqlProduct =
         "update %1.%2 set "
@@ -1358,8 +1373,8 @@ nlohmann::json Product::upd(nlohmann::json event, nlohmann::json args) {
         " = ROW($2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, NULLIF($13, "
         "0::bigint), $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, "
         "$25, $26, $27) where id=$1";
-    ReplaceAll2(strSqlProduct, "%1", product_table.schema());
-    ReplaceAll2(strSqlProduct, "%2", product_table.name());
+    boost::replace_all(strSqlProduct, "%1", product_table.schema());
+    boost::replace_all(strSqlProduct, "%2", product_table.name());
 
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
@@ -1594,8 +1609,8 @@ nlohmann::json save_category(const nlohmann::json& event, nlohmann::json args) {
         "update %1.%2 set "
         "(slug, name, description, display_type, parent_id, position)"
         " = ROW($2, $3, $4, $5, NULLIF($6, 0::bigint), $7) where id=$1";
-    ReplaceAll2(strSql, "%1", product_table.schema());
-    ReplaceAll2(strSql, "%2", product_table.name());
+    boost::replace_all(strSql, "%1", product_table.schema());
+    boost::replace_all(strSql, "%2", product_table.name());
 
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
@@ -1621,8 +1636,8 @@ nlohmann::json save_category(const nlohmann::json& event, nlohmann::json args) {
     std::string strSql =
         "INSERT INTO %1.%2 (slug, name, description, display_type, parent_id, "
         "position) values($1, $2, $3, $4, NULLIF($5, 0::bigint), $6)";
-    ReplaceAll2(strSql, "%1", product_table.schema());
-    ReplaceAll2(strSql, "%2", product_table.name());
+    boost::replace_all(strSql, "%1", product_table.schema());
+    boost::replace_all(strSql, "%2", product_table.name());
 
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
@@ -1796,4 +1811,4 @@ select * ,
   }
 }
 }  // namespace service
-}  // namespace jadmin
+}  // namespace jewel

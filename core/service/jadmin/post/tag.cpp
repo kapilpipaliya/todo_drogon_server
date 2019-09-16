@@ -1,9 +1,9 @@
 #include "tag.h"
 
+#include <boost/algorithm/string/replace.hpp>
 #include <utility>
 #include "../../../sql/dba.h"
 #include "../../../strfns.h"
-
 namespace jewel {
 namespace service {
 Tag::Tag(std::shared_ptr<websocket::jewel::JAdminContext> context_)
@@ -70,8 +70,8 @@ nlohmann::json Tag::ins(nlohmann::json event, nlohmann::json args) {
 
   std::string strSql =
       "INSERT INTO %1.%2 (slug, name, description) values($1, $2, $3)";
-  ReplaceAll2(strSql, "%1", product_table.schema());
-  ReplaceAll2(strSql, "%2", product_table.name());
+  boost::replace_all(strSql, "%1", product_table.schema());
+  boost::replace_all(strSql, "%2", product_table.name());
 
   auto clientPtr = drogon::app().getDbClient("sce");
   auto transPtr = clientPtr->newTransaction();
@@ -98,8 +98,8 @@ nlohmann::json Tag::upd(nlohmann::json event, nlohmann::json args) {
         "update %1.%2 set "
         "(slug, name, description)"
         " = ROW($2, $3, $4) where id=$1";
-    ReplaceAll2(strSql, "%1", product_table.schema());
-    ReplaceAll2(strSql, "%2", product_table.name());
+    boost::replace_all(strSql, "%1", product_table.schema());
+    boost::replace_all(strSql, "%2", product_table.name());
 
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
@@ -125,4 +125,4 @@ nlohmann::json Tag::upd(nlohmann::json event, nlohmann::json args) {
   return ret;
 }
 }  // namespace service
-}  // namespace jadmin
+}  // namespace jewel

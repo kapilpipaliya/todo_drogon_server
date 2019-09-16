@@ -1,9 +1,9 @@
 #include "post.h"
 
+#include <boost/algorithm/string/replace.hpp>
 #include <utility>
 #include "../../../sql/dba.h"
 #include "../../../strfns.h"
-
 namespace jewel {
 namespace service {
 Post1::Post1(std::shared_ptr<websocket::jewel::JAdminContext> context_)
@@ -76,8 +76,8 @@ nlohmann::json Post1::ins(nlohmann::json event, nlohmann::json args) {
       "status, date, type, visibility)"
       " VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)"
       "RETURNING id";
-  ReplaceAll2(strSqlPost, "%1", post_table.schema());
-  ReplaceAll2(strSqlPost, "%2", post_table.name());
+  boost::replace_all(strSqlPost, "%1", post_table.schema());
+  boost::replace_all(strSqlPost, "%2", post_table.name());
 
   auto clientPtr = drogon::app().getDbClient("sce");
   auto transPtr = clientPtr->newTransaction();
@@ -115,8 +115,8 @@ nlohmann::json Post1::upd(nlohmann::json event, nlohmann::json args) {
         "(comment_status, menu_order, excerpt, content, title, name, password, "
         "status, date, type, visibility)"
         " = ROW($2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) where id=$1";
-    ReplaceAll2(strSqlPost, "%1", post_table.schema());
-    ReplaceAll2(strSqlPost, "%2", post_table.name());
+    boost::replace_all(strSqlPost, "%1", post_table.schema());
+    boost::replace_all(strSqlPost, "%2", post_table.name());
 
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
@@ -154,4 +154,4 @@ nlohmann::json Post1::upd(nlohmann::json event, nlohmann::json args) {
   return ret;
 }
 }  // namespace service
-}  // namespace jadmin
+}  // namespace jewel

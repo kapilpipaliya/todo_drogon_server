@@ -717,15 +717,15 @@ nlohmann::json Query::count(nlohmann::json event, nlohmann::json args) {
    template <class T>
    static std::string toSuperScript(T number) {
      std::string superScript = std::to_string(number);
-     ReplaceAll2(superScript, "0", "⁰");
-     ReplaceAll2(superScript, "1", "¹");
-     ReplaceAll2(superScript, "2", "²");
-     ReplaceAll2(superScript, "3", "³");
-     ReplaceAll2(superScript, "4", "⁴");
-     ReplaceAll2(superScript, "5", "⁵");
-     ReplaceAll2(superScript, "6", "⁶");
-     ReplaceAll2(superScript, "7", "⁷");
-     ReplaceAll2(superScript, "8", "⁸");
-     ReplaceAll2(superScript, "9", "⁹");
+     boost::replace_all(superScript, "0", "⁰");
+     boost::replace_all(superScript, "1", "¹");
+     boost::replace_all(superScript, "2", "²");
+     boost::replace_all(superScript, "3", "³");
+     boost::replace_all(superScript, "4", "⁴");
+     boost::replace_all(superScript, "5", "⁵");
+     boost::replace_all(superScript, "6", "⁶");
+     boost::replace_all(superScript, "7", "⁷");
+     boost::replace_all(superScript, "8", "⁸");
+     boost::replace_all(superScript, "9", "⁹");
      return superScript;
    }*/
