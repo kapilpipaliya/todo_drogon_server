@@ -4,6 +4,7 @@ namespace openproj {
 namespace service {
 namespace Roles{
 class CreateService : public BaseServices::Create {
+public:
   // include Roles::NotifyMixin
 
   private:

@@ -1,6 +1,7 @@
 #pragma once
 #include "../application_job.h"
 namespace openproj {
+namespace worker {
 namespace Projects {
   class DeleteProjectJob : public ApplicationJob {
   public:
@@ -40,5 +41,6 @@ namespace Projects {
 //      Delayed::Worker.logger
     }
   };
+}
 }
 }

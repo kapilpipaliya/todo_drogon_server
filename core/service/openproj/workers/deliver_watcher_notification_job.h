@@ -1,6 +1,7 @@
 #pragma once
 #include "deliver_notification_job.h"
 namespace openproj {
+namespace worker {
 class DeliverWatcherNotificationJob : public DeliverNotificationJob {
 public:
 //   DeliverWatcherNotificationJob(watcher_id, recipient_id, watcher_setter_id) {
@@ -21,4 +22,5 @@ public:
 //    this->watcher ||= Watcher.find_by(id: this->watcher_id)
   }
 };
+}
 }

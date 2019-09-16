@@ -1,3 +1,5 @@
+namespace openproj {
+namespace helper {
 namespace ReorderLinksHelper {
 //   void reorder_links(name, url, options = {}) {
 //    method = options[:method] || :post
@@ -22,4 +24,6 @@ namespace ReorderLinksHelper {
 //            method: method,
 //            title: label)
 //  }
+}
+}
 }

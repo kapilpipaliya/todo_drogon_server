@@ -1,4 +1,5 @@
 namespace openproj {
+namespace helper {
 namespace TimelogHelper {
   // include ApplicationHelper
 
@@ -231,5 +232,6 @@ namespace TimelogHelper {
 //    }
 //    deny_access unless User.current.allowed_to?(:view_time_entries, this->project, global: true)
   }
+}
 }
 }

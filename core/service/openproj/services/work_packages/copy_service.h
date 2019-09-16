@@ -3,6 +3,7 @@ namespace openproj {
 namespace service {
 namespace WorkPackages {
 class CopyService {
+public:
   // include ::Shared::ServiceContext
   // include ::Concerns::Contracted
 

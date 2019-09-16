@@ -2,6 +2,7 @@
 namespace openproj {
 namespace service {
 class AddAttachmentService{
+public:
 //  attr_reader :container, :author
 
 //   AddAttachmentService(container, author:) {

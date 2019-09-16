@@ -1,4 +1,5 @@
 namespace openproj {
+namespace helper {
 namespace ErrorsHelper {
 //   void render_400(options = {}) {
 //    this->project = nil
@@ -86,5 +87,6 @@ namespace ErrorsHelper {
 //  rescue StandardError
 //    // bad luck
   }
+}
 }
 }

@@ -4,6 +4,7 @@ namespace openproj {
 namespace service {
 namespace Reports {
 class AuthorReport : public Report {
+public:
    void report_type() {
 //    'author'
   }

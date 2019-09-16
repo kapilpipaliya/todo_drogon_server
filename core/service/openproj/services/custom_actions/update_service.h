@@ -4,6 +4,7 @@ namespace openproj {
 namespace service {
 namespace CustomActions {
 class UpdateService : public BaseService {
+public:
   // attr_accessor :user,
 //                :action
 

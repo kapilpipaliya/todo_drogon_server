@@ -3,6 +3,7 @@ namespace openproj {
 namespace service {
 namespace BaseServices {
   class Delete_ {
+  public:
     // include ::Shared::ServiceContext
     // include ::Concerns::Contracted
 

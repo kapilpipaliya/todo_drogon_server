@@ -6,6 +6,7 @@ namespace controller {
 namespace WorkPackages {
 
 class AutoCompletesController : public ApplicationController {
+public:
    void index() {
 //    this->work_packages = work_package_with_id | work_packages_by_subject_or_id
 

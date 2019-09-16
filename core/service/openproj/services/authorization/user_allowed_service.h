@@ -3,6 +3,7 @@ namespace openproj {
 namespace service {
 namespace Authorization {
 class UserAllowedService {
+public:
   // attr_accessor :user
 
 //   UserAllowedService(user, role_cache: User::ProjectRoleCache.new(user)) {

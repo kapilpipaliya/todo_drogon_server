@@ -3,6 +3,7 @@
 namespace openproj {
 namespace mailer {
 class ProjectMailer : public BaseMailer {
+public:
 
 //   void delete_project_completed(project, user:) {
 //    open_project_headers Project: project.identifier,

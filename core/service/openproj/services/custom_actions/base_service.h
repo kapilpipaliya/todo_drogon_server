@@ -3,6 +3,7 @@ namespace openproj {
 namespace service {
 namespace CustomActions {
 class BaseService {
+public:
   // include Shared::BlockService
 
   // attr_accessor :user

@@ -7,6 +7,7 @@
 namespace openproj {
 namespace policy {
 class RedirectPolicy{
+public:
 //  attr_reader :validated_redirect_url, :request
 
 //   RedirectPolicy(requested_url, hostname:, default:, return_escaped: true) {

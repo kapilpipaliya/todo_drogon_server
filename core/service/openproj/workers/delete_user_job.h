@@ -1,6 +1,7 @@
 #pragma once
 #include "application_job.h"
 namespace openproj {
+namespace worker {
 class DeleteUserJob : public ApplicationJob {
 public:
 //   DeleteUserJob(user_id) {
@@ -17,4 +18,5 @@ public:
 //    this->user ||= User.find this->user_id
   }
 };
+}
 }

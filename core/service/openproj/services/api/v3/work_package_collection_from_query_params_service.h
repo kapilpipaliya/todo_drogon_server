@@ -4,6 +4,7 @@ namespace service {
 namespace API {
 namespace V3 {
 class WorkPackageCollectionFromQueryParamsService {
+public:
   //       WorkPackageCollectionFromQueryParamsService(user) {
   //        this->current_user = user
   //      }

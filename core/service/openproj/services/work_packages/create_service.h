@@ -3,6 +3,7 @@ namespace openproj {
 namespace service {
 namespace WorkPackages{
 class CreateService {
+public:
   // include ::WorkPackages::Shared::UpdateAncestors
   // include ::Shared::ServiceContext
 

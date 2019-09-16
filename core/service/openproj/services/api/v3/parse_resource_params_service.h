@@ -4,6 +4,7 @@ namespace service {
 namespace API {
   namespace V3 {
     class ParseResourceParamsService {
+    public:
       // attr_accessor :model,
 //                    :representer,
 //                    :current_user

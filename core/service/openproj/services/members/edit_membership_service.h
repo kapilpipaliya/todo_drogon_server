@@ -3,6 +3,7 @@ namespace openproj {
 namespace service {
 namespace Members {
   class EditMembershipService {
+  public:
 //    attr_reader :current_user, :member, :do_save
 
 //     EditMembershipService(member, save:, current_user:) {

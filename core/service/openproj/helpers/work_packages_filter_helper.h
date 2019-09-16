@@ -1,4 +1,5 @@
 namespace openproj {
+namespace helper {
 namespace WorkPackagesFilterHelper {
   // Links for project overview
 //   void project_work_packages_closed_version_path(version, options = {}) {
@@ -111,5 +112,6 @@ namespace WorkPackagesFilterHelper {
 //      values.to_s
 //    }
 //  }
+}
 }
 }

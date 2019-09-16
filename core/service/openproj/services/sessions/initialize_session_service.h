@@ -5,6 +5,7 @@ namespace openproj {
 namespace service {
 namespace Sessions {
   class InitializeSessionService : public BaseService {
+  public:
 //    class << self
 //      //
 //      // Initializes a new session for the given user.

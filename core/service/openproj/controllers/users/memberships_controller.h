@@ -5,6 +5,7 @@ namespace controller {
 namespace Users {
 
 class MembershipsController : public ApplicationController {
+public:
   // layout 'admin'
 
   // before_action :require_admin

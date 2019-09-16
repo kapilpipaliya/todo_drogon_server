@@ -1,6 +1,7 @@
 //#include "will_paginate"
 
 namespace openproj {
+namespace helper {
 namespace PaginationHelper {
 //   void pagination_links_full(paginator, options = {}) {
 //    return unless paginator.total_entries > 0
@@ -128,6 +129,7 @@ namespace PaginationHelper {
 //  }
 
   class LinkRenderer {//: public ::WillPaginate::ActionView::LinkRenderer {
+  public:
      void to_html() {
 //      pagination.inject('') { |html, item|
 //        html + (item.is_a?(Integer) ? page_number(item) : send(item))
@@ -176,5 +178,6 @@ namespace PaginationHelper {
 //      params: {}
 //    }
 //  }
+}
 }
 }

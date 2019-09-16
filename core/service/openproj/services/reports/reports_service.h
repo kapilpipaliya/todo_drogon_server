@@ -3,6 +3,7 @@ namespace openproj {
 namespace service {
 namespace Reports{
 class ReportsService {
+public:
   // class_attribute :report_types
 
 //   void add_report(report) {

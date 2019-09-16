@@ -1,5 +1,7 @@
 //#include "securerandom"
 
+namespace openproj {
+namespace helper {
 namespace SettingsHelper {
   // include OpenProject::FormTagHelper
 
@@ -158,4 +160,6 @@ namespace SettingsHelper {
 //      }
 //    }.join.html_safe
 //  }
+}
+}
 }

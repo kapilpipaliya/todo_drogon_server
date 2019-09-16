@@ -3,6 +3,7 @@ namespace openproj {
 namespace service {
 namespace Projects {
   class DeleteProjectService {
+  public:
     // attr_accessor :user, :project
     // include Concerns::Contracted
 

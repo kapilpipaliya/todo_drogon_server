@@ -2,6 +2,7 @@
 #include "application_job.h"
 // Enqueues
 namespace openproj {
+namespace worker {
 class EnqueueWorkPackageNotificationJob : public ApplicationJob {
 public:
 //   EnqueueWorkPackageNotificationJob(journal_id, author_id) {
@@ -102,4 +103,5 @@ public:
 //      .or(by_group)
   }
 };
+}
 }

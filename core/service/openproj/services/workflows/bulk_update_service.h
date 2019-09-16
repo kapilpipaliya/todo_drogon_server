@@ -4,6 +4,7 @@ namespace openproj {
 namespace service {
 namespace Workflows {
 class BulkUpdateService : public BaseServices::Update {
+public:
 //   BulkUpdateService(role:, type:) {
 //    this->role = role
 //    this->type = type

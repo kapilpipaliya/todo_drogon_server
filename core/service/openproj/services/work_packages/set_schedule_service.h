@@ -3,6 +3,7 @@ namespace openproj {
 namespace service {
 namespace WorkPackages{
 class SetScheduleService {
+public:
   // attr_accessor :user, :work_packages
 
 //   SetScheduleService(user:, work_package:) {

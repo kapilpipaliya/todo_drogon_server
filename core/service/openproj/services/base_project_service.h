@@ -4,6 +4,7 @@
 namespace openproj {
 namespace service {
 class BaseProjectService {
+public:
 //public:
 //   BaseProjectService(project) {
 //    this->project = project

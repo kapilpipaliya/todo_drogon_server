@@ -4,6 +4,7 @@ namespace openproj {
 namespace service {
 namespace Reports {
 class SubprojectReport : public Reports::Report {
+public:
    void report_type() {
 //    'subproject'
   }

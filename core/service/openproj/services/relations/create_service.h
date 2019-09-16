@@ -4,6 +4,7 @@ namespace openproj {
 namespace service {
 namespace Relations{
 class CreateService : public Relations::BaseService {
+public:
 //   CreateService(user:) {
 //    this->user = user
 //    this->contract_class = Relations::CreateContract

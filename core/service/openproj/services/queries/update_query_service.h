@@ -4,6 +4,7 @@
 namespace openproj {
 namespace service {
 class UpdateQueryService : public QueryService {
+public:
 
 //   UpdateQueryService(**args) {
 //    super(**args)

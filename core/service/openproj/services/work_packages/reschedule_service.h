@@ -3,6 +3,7 @@ namespace openproj {
 namespace service {
 namespace WorkPackages{
 class RescheduleService {
+public:
   // include ::Shared::ServiceContext
 
   // attr_accessor :user,

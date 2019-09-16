@@ -1,3 +1,5 @@
+namespace openproj {
+namespace helper {
 namespace IssuesHelper {
   // include ApplicationHelper
 
@@ -32,4 +34,6 @@ namespace IssuesHelper {
 //    if ( note_journals.empty?) { return t(:text_no_notes) ;}
 //    note_journals.last.notes
 //  }
+}
+}
 }

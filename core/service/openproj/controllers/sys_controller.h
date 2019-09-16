@@ -1,10 +1,12 @@
-#pragma once
+#ifndef _APPLICATION_CON000TROLLER_H
+#define _APPLICATION_CON000TROLLER_H
+
 //#include "open_project/repository_authentication"
 #include "application_controller.h"
 
 namespace openproj {
 namespace controller {
-class SysController : public ActionController::Base {
+class SysController : public openproj::controller::ActionController::Base {
 public:
   // before_action :check_enabled
   // before_action :require_basic_auth, only: [:repo_auth]
@@ -140,3 +142,4 @@ public:
 };
 }
 }
+#endif

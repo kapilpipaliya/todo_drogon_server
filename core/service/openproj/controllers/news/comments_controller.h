@@ -5,6 +5,7 @@ namespace controller {
 namespace News {
 
 class CommentsController : public ApplicationController {
+public:
 //  default_search_scope :news
   // model_object Comment, scope: [News => :commented]
   // before_action :find_object_and_scope

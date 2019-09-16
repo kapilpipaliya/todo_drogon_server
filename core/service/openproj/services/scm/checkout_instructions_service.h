@@ -5,6 +5,7 @@ namespace openproj {
 namespace service {
 namespace Scm{
 class CheckoutInstructionsService {
+public:
 //  attr_reader :repository, :user, :path
 
 //   CheckoutInstructionsService(repository, path: nil, user: User.current) {

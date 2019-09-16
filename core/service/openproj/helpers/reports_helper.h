@@ -1,3 +1,5 @@
+namespace openproj {
+namespace helper {
 namespace ReportsHelper {
   // include WorkPackagesFilterHelper
 
@@ -15,4 +17,6 @@ namespace ReportsHelper {
 //    a = aggregate data, criteria
 //    a.positive? ? link_to(h(a), *args) : '-'
 //  }
+}
+}
 }

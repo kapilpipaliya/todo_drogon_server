@@ -3,6 +3,7 @@ namespace openproj {
 namespace service {
 namespace Users {
   class ChangePasswordService {
+  public:
     // attr_accessor :current_user
     // attr_accessor :session
 

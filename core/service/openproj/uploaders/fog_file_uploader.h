@@ -4,6 +4,7 @@
 namespace openproj {
 namespace uploader {
 class FogFileUploader {//: public CarrierWave::Uploader::Base {
+public:
   // include FileUploader
 //  storage :fog
 

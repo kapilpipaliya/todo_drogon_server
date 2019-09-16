@@ -3,6 +3,7 @@ namespace openproj {
 namespace service {
 namespace Authorization {
 class QueryTransformationsOrder {
+public:
    QueryTransformationsOrder() {
 //    this->array = []
   }

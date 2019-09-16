@@ -1,3 +1,5 @@
+namespace openproj {
+namespace helper {
 namespace CellsHelper {
   //
   // Use this to render cells directly as the view for a controller
@@ -20,4 +22,6 @@ namespace CellsHelper {
 
 //    cell name, model, args
 //  }
+}
+}
 }

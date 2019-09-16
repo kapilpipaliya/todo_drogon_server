@@ -1,3 +1,5 @@
+namespace openproj {
+namespace helper {
 namespace RolesHelper {
 //   void setable_permissions(role) {
 //    // Use the base contract for now as we are only interested in the setable permissions
@@ -22,4 +24,6 @@ namespace RolesHelper {
 //      [module_name, perms_by_module[module_name]]
 //    }
 //  }
+}
+}
 }

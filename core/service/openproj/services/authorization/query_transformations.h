@@ -3,6 +3,7 @@ namespace openproj {
 namespace service {
 namespace Authorization {
 class QueryTransformations {
+public:
 //   void for?(on) {
 //    !!transformations[transformation_key(on)]
 //  }

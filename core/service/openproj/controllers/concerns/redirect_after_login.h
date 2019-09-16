@@ -3,6 +3,7 @@
 // Intended to be used by the AccountController to decide where to
 // send the user when they logged in.
 namespace openproj {
+namespace controller {
 namespace Concerns::RedirectAfterLogin {
 //   void redirect_after_login(user) {
 //    if ( user.first_login) {
@@ -30,5 +31,6 @@ namespace Concerns::RedirectAfterLogin {
 //      redirect_to home_url(first_time_user: true)
 //    }
   }
+}
 }
 }

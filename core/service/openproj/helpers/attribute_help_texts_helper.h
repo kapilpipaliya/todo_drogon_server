@@ -1,3 +1,5 @@
+namespace openproj {
+namespace helper {
 namespace AttributeHelpTextsHelper {
 //   void selectable_attributes(instance) {
 //    available = instance.class.available_attributes
@@ -8,4 +10,6 @@ namespace AttributeHelpTextsHelper {
 //      .map { |key, label| [label, key] }
 //      .sort_by { |label, key| label.downcase }
 //  }
+}
+}
 }

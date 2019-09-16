@@ -3,6 +3,7 @@ namespace openproj {
 namespace service {
 namespace Reports{
 class Report {
+public:
 //   Report(project) {
 //    this->project = project
 //  }

@@ -4,6 +4,7 @@ namespace openproj {
 namespace service {
 namespace Authorization{
 class UserGlobalRolesQuery : public UserRolesQuery {
+public:
 //  transformations.register roles_member_roles_join,
 //                           :builtin_role { |statement, user|
 //    builtin_role = if ( user.logged?) {

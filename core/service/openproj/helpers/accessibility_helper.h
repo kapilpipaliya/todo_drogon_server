@@ -1,4 +1,5 @@
 namespace openproj {
+namespace helper {
 namespace AccessibilityHelper {
 //   void you_are_here_info(condition = true, disabled = nil) {
 //    if ( condition && !disabled) {
@@ -42,5 +43,6 @@ namespace AccessibilityHelper {
 //   void equals_english_locale(key) {
 //    key.is_a?(Symbol) ? (I18n.t(key) == I18n.t(key, locale: :en)) : false
 //  }
+}
 }
 }

@@ -4,6 +4,7 @@ namespace openproj {
 namespace service {
 namespace Reports{
 class AssigneeReport : public Report {
+public:
    void report_type() {
 //    'assigned_to'
   }

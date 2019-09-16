@@ -2,7 +2,8 @@
 #include "application_controller.h"
 namespace openproj {
 namespace controller {
-class CopyProjectsController : public ApplicationController {
+class CopyProjectsController : public openproj::controller::ApplicationController {
+public:
   // before_action :find_project
   // before_action :authorize
 

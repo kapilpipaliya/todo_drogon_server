@@ -10,6 +10,7 @@
 
 //#include "net/http"
 namespace openproj {
+namespace worker {
 namespace Scm {
 class RemoteRepositoryJob : public ApplicationJob {
 public:
@@ -98,5 +99,6 @@ public:
 //    }
   }
 };
+}
 }
 }

@@ -5,6 +5,7 @@ namespace controller {
 namespace WorkPackages {
 
 class ReportsController : public ApplicationController {
+public:
   // menu_item :work_packages
   // before_action :find_project_by_project_id, :authorize
 

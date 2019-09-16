@@ -3,6 +3,7 @@ namespace openproj {
 namespace service {
 namespace Sessions {
   class BaseService {
+  public:
 //    class << self
 
 //      protected:

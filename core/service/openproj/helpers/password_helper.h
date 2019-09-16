@@ -1,3 +1,5 @@
+namespace openproj {
+namespace helper {
 namespace PasswordHelper {
   // include Concerns::PasswordConfirmation
 
@@ -59,4 +61,6 @@ namespace PasswordHelper {
 //    if ( OpenProject::Passwords::Evaluator.min_adhered_rules == 0) { return '' ;}
 //    OpenProject::Passwords::Evaluator.rules_description_locale(password_active_rules)
 //  }
+}
+}
 }

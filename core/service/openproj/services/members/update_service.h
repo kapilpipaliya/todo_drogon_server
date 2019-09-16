@@ -4,6 +4,7 @@ namespace openproj {
 namespace service {
 namespace Members {
 class UpdateService : public BaseServices::Update{
+public:
 
 };
 }

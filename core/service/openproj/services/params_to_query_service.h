@@ -2,6 +2,7 @@
 namespace openproj {
 namespace service {
 class ParamsToQueryService{
+public:
   // attr_accessor :user,
 //                :query_class
 

@@ -1,4 +1,5 @@
 namespace openproj {
+namespace helper {
 namespace HomescreenHelper {
   //
   // Homescreen name
@@ -41,5 +42,6 @@ namespace HomescreenHelper {
    bool show_onboarding_modal() {
 //    return OpenProject::Configuration.onboarding_enabled? && params[:first_time_user]
   }
+}
 }
 }

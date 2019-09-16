@@ -1,4 +1,5 @@
 namespace openproj {
+namespace helper {
 namespace FrontendAssetHelper {
 //  CLI_DEFAULT_PROXY = 'http://localhost:4200'.freeze
 
@@ -50,5 +51,6 @@ namespace FrontendAssetHelper {
 //      frontend_asset_path(path)
 //    }
 //  }
+}
 }
 }

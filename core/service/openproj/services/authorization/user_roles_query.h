@@ -4,6 +4,7 @@ namespace openproj {
 namespace service {
 namespace Authorization {
 class UserRolesQuery : public AbstractUserQuery {
+public:
 //  this->model = Role
 //  this->base_table = users_table
 

@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace controller {
 namespace Concerns {
   namespace AuthenticationStages {
      void stage_success() {
@@ -86,5 +87,6 @@ namespace Concerns {
 //      SecureRandom.hex(16)
 //    }
   }
+}
 }
 }

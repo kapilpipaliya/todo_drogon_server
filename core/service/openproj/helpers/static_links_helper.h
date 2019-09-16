@@ -1,3 +1,5 @@
+namespace openproj {
+namespace helper {
 namespace StaticLinksHelper {
 
   //
@@ -6,4 +8,6 @@ namespace StaticLinksHelper {
 //    item = OpenProject::Static::Links.links.fetch key
 //    link_to t(item[:label]), item[:href], class: 'openproject--static-link', target: '_blank'
 //  }
+}
+}
 }

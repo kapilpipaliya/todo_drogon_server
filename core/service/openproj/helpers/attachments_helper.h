@@ -1,3 +1,5 @@
+namespace openproj {
+namespace helper {
 namespace AttachmentsHelper {
 //   void to_utf8_for_attachments(str) {
 //    forced_str = str.dup
@@ -20,4 +22,6 @@ namespace AttachmentsHelper {
 //                'data-allow-uploading': false,
 //                'data-destroy-immediately': true
 //  }
+}
+}
 }

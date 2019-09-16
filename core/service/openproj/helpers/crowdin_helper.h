@@ -1,4 +1,5 @@
 namespace openproj {
+namespace helper {
 namespace CrowdinHelper {
    void crowdin_in_context_translation() {
 //    return unless OpenProject::Configuration.crowdin_in_context_translations?
@@ -27,5 +28,6 @@ namespace CrowdinHelper {
 //    })
 //    concat javascript_include_tag 'https://cdn.crowdin.com/jipt/jipt.js'
   }
+}
 }
 }

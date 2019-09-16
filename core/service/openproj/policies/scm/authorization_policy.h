@@ -4,6 +4,7 @@ namespace policy {
 namespace Scm {
 
 class AuthoriziationPolicy{
+public:
 //  attr_reader :project, :user
 
 //   AuthoriziationPolicy(project, user) {

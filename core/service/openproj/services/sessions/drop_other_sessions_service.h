@@ -5,6 +5,7 @@ namespace openproj {
 namespace service {
 namespace Sessions {
   class DropOtherSessionsService : public BaseService {
+  public:
 //    class << self
 //      //
 //      // Drop all other sessions for the current user.

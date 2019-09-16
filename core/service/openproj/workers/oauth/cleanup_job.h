@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace worker {
 namespace OAuth {
   class CleanupJob {//: public ::RakeJob {
   public:
@@ -7,5 +8,6 @@ namespace OAuth {
 //      super 'doorkeeper:db:cleanup'
     }
   };
+}
 }
 }

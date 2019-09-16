@@ -3,6 +3,7 @@ namespace openproj {
 namespace service {
 namespace Changesets {
   class LogTimeService {
+  public:
 //     LogTimeService(user:, changeset:) {
 //      this->user = user
 //      this->changeset = changeset

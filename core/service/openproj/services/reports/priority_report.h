@@ -3,6 +3,7 @@ namespace openproj {
 namespace service {
 namespace Reports{
 class PriorityReport : public Reports::Report {
+public:
    void report_type() {
 //    'priority'
   }

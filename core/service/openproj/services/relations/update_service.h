@@ -4,6 +4,7 @@ namespace openproj {
 namespace service {
 namespace Relations {
 class UpdateService : public openproj::service::Relations::BaseService {
+public:
   // attr_accessor :relation
 
   //   UpdateService(user:, relation:) {

@@ -1,3 +1,5 @@
+namespace openproj {
+namespace helper {
 namespace ProjectsHelper {
   // include WorkPackagesFilterHelper
 
@@ -257,4 +259,6 @@ namespace ProjectsHelper {
 //   void sorted_by_lft?() {
 //    this->sort_criteria.first_key == 'lft'
 //  }
+}
+}
 }

@@ -4,6 +4,7 @@ namespace openproj {
 namespace service {
 namespace Authorization {
 class UserProjectRolesQuery : public UserRolesQuery {
+public:
 //  transformations.register :all, :project_where_projection { |statement, user, _|
 //    statement.where(users_table[:id].eq(user.id))
 //  }

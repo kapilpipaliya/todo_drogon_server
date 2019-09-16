@@ -1,3 +1,5 @@
+namespace openproj {
+namespace helper {
 namespace IconsHelper {
   //
   // Create an <i> tag with the given icon class names
@@ -15,4 +17,6 @@ namespace IconsHelper {
 //    content << content_tag(:span, label, class: 'hidden-for-sighted')
 //    content
 //  }
+}
+}
 }

@@ -20,6 +20,7 @@
 // MailUserJob.some_mail "some_param"
 // ```
 namespace openproj {
+namespace worker {
 class MailUserJob : public ApplicationJob {
 public:
 //  attr_reader :mail
@@ -66,4 +67,5 @@ public:
 //    model_name.constantize.find_by(id: id)
 //  }
 };
+}
 }

@@ -2,6 +2,7 @@
 namespace openproj {
 namespace service {
 class ServiceResult{
+public:
   // attr_accessor :success,
 //                :errors,
 //                :result,

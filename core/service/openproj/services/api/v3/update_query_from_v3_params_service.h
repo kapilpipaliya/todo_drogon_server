@@ -4,6 +4,7 @@ namespace service {
 namespace API {
   namespace V3 {
     class UpdateQueryFromV3ParamsService {
+    public:
 //       UpdateQueryFromV3ParamsService(query, user) {
 //        this->query = query
 //        this->current_user = user

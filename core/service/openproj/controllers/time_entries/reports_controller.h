@@ -4,6 +4,7 @@ namespace openproj {
 namespace controller {
 namespace TimeEntries {
 class ReportsController : public ApplicationController {
+public:
   // menu_item :issues
   // before_action :find_optional_project
   // before_action :load_available_criterias

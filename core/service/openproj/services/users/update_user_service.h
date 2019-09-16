@@ -3,6 +3,7 @@ namespace openproj {
 namespace service {
 namespace Users {
   class UpdateUserService {
+  public:
     // include Concerns::Contracted
 
     // attr_accessor :current_user, :user

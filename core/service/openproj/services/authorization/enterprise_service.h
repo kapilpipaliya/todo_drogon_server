@@ -3,6 +3,7 @@ namespace openproj {
 namespace service {
 namespace Authorization {
 class EnterpriseService {
+public:
   // attr_accessor :token
 
 //  GUARDED_ACTIONS = %i(define_custom_style

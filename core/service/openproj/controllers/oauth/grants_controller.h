@@ -5,6 +5,7 @@ namespace openproj {
 namespace controller {
 namespace OAuth {
   class GrantsController : public ApplicationController {
+  public:
     // before_action :require_login
 
     // layout 'my'

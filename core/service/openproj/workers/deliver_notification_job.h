@@ -1,6 +1,7 @@
 #pragma once
 #include "application_job.h"
 namespace openproj {
+namespace worker {
 class DeliverNotificationJob : public ApplicationJob {
 public:
 
@@ -45,4 +46,5 @@ public:
 //    this->sender ||= User.find_by(id: this->sender_id) || DeletedUser.first
   }
 };
+}
 }

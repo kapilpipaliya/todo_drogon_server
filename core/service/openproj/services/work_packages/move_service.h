@@ -5,6 +5,7 @@ namespace openproj {
 namespace service {
 namespace WorkPackages{
 class MoveService {
+public:
   // attr_accessor :work_package,
 //                :user
 

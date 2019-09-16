@@ -1,3 +1,5 @@
+namespace openproj {
+namespace helper {
 namespace TabsHelper {
   // Renders tabs and their content
 //   void render_tabs(tabs) {
@@ -14,4 +16,6 @@ namespace TabsHelper {
 //    tabs = ::OpenProject::Ui::ExtensibleTabs.enabled_tabs(key)
 //    render_tabs(tabs)
 //  }
+}
+}
 }

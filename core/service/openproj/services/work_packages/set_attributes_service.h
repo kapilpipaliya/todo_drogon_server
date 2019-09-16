@@ -4,6 +4,7 @@ namespace openproj {
 namespace service {
 namespace WorkPackages{
 class SetAttributesService : public BaseServices::SetAttributes {
+public:
   // include Attachments::SetReplacements
 
   private:

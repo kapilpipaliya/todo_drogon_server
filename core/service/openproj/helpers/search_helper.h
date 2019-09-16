@@ -1,3 +1,5 @@
+namespace openproj {
+namespace helper {
 namespace SearchHelper {
 //   void highlight_tokens(text, tokens) {
 //    return text unless text && tokens && !tokens.empty?
@@ -97,4 +99,6 @@ namespace SearchHelper {
 //      event.attachments&.map(&attribute_name)&.join(' ')
 //    }
 //  }
+}
+}
 }

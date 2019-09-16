@@ -3,6 +3,7 @@ namespace openproj {
 namespace service {
 namespace WorkPackages{
 class UpdateAncestorsService {
+public:
   // attr_accessor :user,
 //                :work_package
 

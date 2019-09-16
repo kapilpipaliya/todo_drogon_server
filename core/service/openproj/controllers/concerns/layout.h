@@ -1,4 +1,6 @@
 #pragma once
+namespace openproj {
+namespace controller {
 namespace Concerns::Layout {
   // extend ActiveSupport::Concern
 
@@ -21,4 +23,6 @@ namespace Concerns::Layout {
 //      }
 //    }
 //  }
+}
+}
 }

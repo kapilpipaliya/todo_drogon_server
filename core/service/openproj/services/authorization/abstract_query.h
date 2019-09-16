@@ -3,6 +3,7 @@ namespace openproj {
 namespace service {
 namespace Authorization {
 class AbstractQuery {
+public:
   // class_attribute :model
   // class_attribute :base_table
 

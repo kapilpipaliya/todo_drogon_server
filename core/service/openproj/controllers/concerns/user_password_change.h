@@ -3,6 +3,7 @@
 //
 // Intended to be used by the MyController and AccountController for password change flows
 namespace openproj {
+namespace controller {
 namespace Concerns::UserPasswordChange {
   //
   // Process a password change form, used when the user is forced
@@ -86,4 +87,5 @@ namespace Concerns::UserPasswordChange {
 //    flash_hash[:error] = I18n.t(flash_message)
   }
 };
+}
 }

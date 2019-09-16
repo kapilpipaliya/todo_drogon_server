@@ -6,6 +6,7 @@
 // Invoke a rake task while safely loading the tasks only once
 // to ensure they are neither loaded nor executed twice.
 namespace openproj {
+namespace worker {
 class RakeJob : public ApplicationJob {
 public:
 
@@ -51,4 +52,5 @@ public:
 //    !Rake::Task.tasks.empty?
   }
 };
+}
 }

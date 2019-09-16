@@ -1,3 +1,5 @@
+namespace openproj {
+namespace helper {
 namespace WikiHelper {
 //   void wiki_page_options_for_select(pages, parent = nil, level = 0) {
 //    pages = pages.group_by(&:parent) unless pages.is_a?(Hash)
@@ -29,4 +31,6 @@ namespace WikiHelper {
 //   void nl2br(content) {
 //    content.gsub(/(?:\n\r?|\r\n?)/, '<br />').html_safe
 //  }
+}
+}
 }

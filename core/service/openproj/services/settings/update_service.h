@@ -4,6 +4,7 @@ namespace openproj {
 namespace service {
 namespace Settings {
 class UpdateService : public BaseServices::Update {
+public:
   // attr_accessor :user
 
 //   UpdateService(user) {

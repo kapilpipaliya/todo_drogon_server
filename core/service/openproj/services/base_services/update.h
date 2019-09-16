@@ -3,6 +3,7 @@ namespace openproj {
 namespace service {
 namespace BaseServices {
   class Update {
+  public:
     // include Concerns::Contracted
     // include Shared::ServiceContext
 

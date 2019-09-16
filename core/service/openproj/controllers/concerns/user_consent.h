@@ -3,6 +3,7 @@
 // Intended to be used by the AccountController to implement the user consent
 // check.
 namespace openproj {
+namespace controller {
 namespace Concerns::UserConsent {
   // include ::UserConsentHelper
 
@@ -75,5 +76,6 @@ namespace Concerns::UserConsent {
 //    flash[:error] = I18n.t('consent.failure_message')
 //    redirect_to authentication_stage_failure_path :consent
   }
+}
 }
 }

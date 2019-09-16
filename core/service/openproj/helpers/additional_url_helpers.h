@@ -1,3 +1,5 @@
+namespace openproj {
+namespace helper {
 namespace AdditionalUrlHelpers {
   // include AuthenticationStagePathHelper
 
@@ -18,4 +20,6 @@ namespace AdditionalUrlHelpers {
 //    uri.query = URI.encode_www_form query
 //    uri.to_s
 //  }
+}
+}
 }

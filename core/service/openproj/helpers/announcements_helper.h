@@ -1,3 +1,5 @@
+namespace openproj {
+namespace helper {
 namespace AnnouncementsHelper {
 //   void notice_annoucement_active() {
 //    if ( this->announcement.active_and_current?) {
@@ -6,4 +8,6 @@ namespace AnnouncementsHelper {
 //      l(:'announcements.is_inactive')
 //    }
 //  }
+}
+}
 }

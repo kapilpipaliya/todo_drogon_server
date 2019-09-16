@@ -1,3 +1,5 @@
+namespace openproj {
+namespace helper {
 namespace WatchersHelper {
   // Create a link to watch/unwatch object
   //
@@ -30,4 +32,6 @@ namespace WatchersHelper {
 
 
 //  }
+}
+}
 }

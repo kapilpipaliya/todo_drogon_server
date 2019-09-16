@@ -8,6 +8,7 @@
 // creation and deletion of repositories BOTH on the database and filesystem.
 // Until then, a synchronous process is more failsafe.
 namespace openproj {
+namespace worker {
 namespace Scm {
 class DeleteRemoteRepositoryJob : public Scm::RemoteRepositoryJob {
 public:
@@ -15,5 +16,6 @@ public:
 //    send_request(repository_request.merge(action: :delete))
   }
 };
+}
 }
 }

@@ -1,3 +1,5 @@
+namespace openproj {
+namespace helper {
 namespace NoResultsHelper {
   // Helper to render the /common/no_results partial custamizable content.
   // Example usage:
@@ -30,4 +32,6 @@ namespace NoResultsHelper {
 //             action_url:  action_url || ''
 //           }
 //  }
+}
+}
 }

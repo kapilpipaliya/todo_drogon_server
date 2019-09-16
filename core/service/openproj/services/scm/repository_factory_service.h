@@ -5,6 +5,7 @@ namespace openproj {
 namespace service {
 namespace Scm{
 class RepositoryFactoryService {
+public:
 //  attr_reader :project, :params, :repository
 
 //   RepositoryFactoryService(project, params) {

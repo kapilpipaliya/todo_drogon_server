@@ -1,6 +1,7 @@
 #pragma once
 #include "application_job.h"
 namespace openproj {
+namespace worker {
 class ExtractFulltextJob : public ApplicationJob {
 public:
 //   ExtractFulltextJob(attachment_id) {
@@ -70,4 +71,5 @@ public:
 //    remote_file? && this->file
   }
 };
+}
 }

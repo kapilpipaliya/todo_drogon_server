@@ -1,3 +1,5 @@
+namespace openproj {
+namespace helper {
 namespace AugmentingHelper {
 
   //
@@ -14,4 +16,6 @@ namespace AugmentingHelper {
 //      locals: { title: title, initiallyExpanded: !!initiallyExpanded, block: block }
 //    )
 //  }
+}
+}
 }

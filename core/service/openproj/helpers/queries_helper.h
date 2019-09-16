@@ -1,3 +1,5 @@
+namespace openproj {
+namespace helper {
 namespace QueriesHelper {
 //   void retrieve_query() {
 //    this->query = if ( params[:query_id].present?) {
@@ -13,4 +15,6 @@ namespace QueriesHelper {
 
 //    this->query
 //  }
+}
+}
 }

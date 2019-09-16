@@ -3,6 +3,7 @@ namespace openproj {
 namespace service {
 namespace BaseServices {
   class SetAttributes {
+  public:
     // include Concerns::Contracted
 
 //     SetAttributes(user:, model:, contract_class:) {

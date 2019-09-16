@@ -6,6 +6,7 @@ namespace openproj {
 namespace service {
 namespace OAuth {
   class PersistApplicationService {
+  public:
     // include Concerns::Contracted
 
 //    attr_reader :application, :current_user

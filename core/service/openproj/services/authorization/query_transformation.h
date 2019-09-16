@@ -3,6 +3,7 @@ namespace openproj {
 namespace service {
 namespace Authorization {
 class QueryTransformation{
+public:
   // attr_accessor :on, :name, :after, :before, :block
 
 //   QueryTransformation(on,

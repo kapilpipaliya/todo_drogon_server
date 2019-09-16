@@ -1,6 +1,7 @@
 #pragma once
 #include "deliver_notification_job.h"
 namespace openproj {
+namespace worker {
 class DeliverWorkPackageNotificationJob : public DeliverNotificationJob {
 public:
 
@@ -40,4 +41,5 @@ public:
 //    this->work_package ||= raw_journal.journable
   }
 };
+}
 }

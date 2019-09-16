@@ -1,23 +1,30 @@
+#pragma once
+#include "../seeder.h"
+namespace openproj {
+namespace seeder {
 namespace BasicData {
   class ActivitySeeder : public Seeder {
-     void seed_data!() {
-      TimeEntryActivity.transaction {
-        data.each { |attributes|
-          TimeEntryActivity.create(attributes)
-        }
-      }
+  public:
+     void seed_data() {
+//      TimeEntryActivity.transaction {
+//        data.each { |attributes|
+//          TimeEntryActivity.create(attributes)
+//        }
+//      }
     }
 
-     void applicable?() {
-      TimeEntryActivity.all.empty?
+     bool applicable() {
+//      TimeEntryActivity.all.empty?
     }
 
      void not_applicable_message() {
-      'Skipping activities as there are already some configured'
+//      'Skipping activities as there are already some configured'
     }
 
      void data() {
-      raise NotImplementedError
+//      raise NotImplementedError
     }
-  }
+  };
+}
+}
 }

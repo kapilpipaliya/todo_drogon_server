@@ -1,3 +1,5 @@
+namespace openproj {
+namespace helper {
 namespace UsersHelper {
   // include OpenProject::FormTagHelper
 
@@ -102,4 +104,6 @@ namespace UsersHelper {
 //   void user_mail_notification_options(user) {
 //    user.valid_notification_options.map { |o| [l(o.last), o.first] }
 //  }
+}
+}
 }

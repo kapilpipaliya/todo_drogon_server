@@ -1,3 +1,5 @@
+namespace openproj {
+namespace helper {
 namespace TypesHelper {
 //   void icon_for_type(type) {
 //    return unless type
@@ -83,4 +85,6 @@ namespace TypesHelper {
 //      translation: Type.translated_attribute_name(key, represented)
 //    }
 //  }
+}
+}
 }

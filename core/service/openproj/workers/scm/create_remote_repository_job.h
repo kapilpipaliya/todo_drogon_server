@@ -9,6 +9,7 @@
 // creation and deletion of repositories BOTH on the database and filesystem.
 // Until then, a synchronous process is more failsafe.
 namespace openproj {
+namespace worker {
 namespace Scm {
 class CreateRemoteRepositoryJob : public Scm::RemoteRepositoryJob {
 public:
@@ -23,5 +24,6 @@ public:
 //      )
     }
   };
+}
 }
 }

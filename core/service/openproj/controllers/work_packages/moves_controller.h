@@ -5,6 +5,7 @@ namespace controller {
 namespace WorkPackages {
 
 class MovesController : public ApplicationController {
+public:
 //  default_search_scope :work_packages
   // before_action :find_work_packages, :check_project_uniqueness
   // before_action :authorize

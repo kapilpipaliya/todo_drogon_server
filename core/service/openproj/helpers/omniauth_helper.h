@@ -1,4 +1,5 @@
 namespace openproj {
+namespace helper {
 namespace OmniauthHelper {
    bool omniauth_direct_login() {
 //    direct_login_provider.is_a? String
@@ -17,5 +18,6 @@ namespace OmniauthHelper {
    void direct_login_provider() {
 //    OpenProject::Configuration['omniauth_direct_login_provider']
   }
+}
 }
 }

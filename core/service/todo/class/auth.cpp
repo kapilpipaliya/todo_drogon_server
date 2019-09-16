@@ -336,6 +336,54 @@
 #include "core/service/openproj/workers/scm/remote_repository_job.h"
 #include "core/service/openproj/workers/scm/storage_updater_job.h"
 
+#include "core/service/openproj/seeders/admin_user_seeder.h"
+
+#include "core/service/openproj/seeders/basic_data/activity_seeder.h"
+#include "core/service/openproj/seeders/basic_data/builtin_roles_seeder.h"
+#include "core/service/openproj/seeders/basic_data/color_scheme_seeder.h"
+#include "core/service/openproj/seeders/basic_data/color_seeder.h"
+#include "core/service/openproj/seeders/basic_data/priority_seeder.h"
+#include "core/service/openproj/seeders/basic_data/role_seeder.h"
+#include "core/service/openproj/seeders/basic_data/setting_seeder.h"
+#include "core/service/openproj/seeders/basic_data/status_seeder.h"
+#include "core/service/openproj/seeders/basic_data/type_seeder.h"
+#include "core/service/openproj/seeders/basic_data/workflow_seeder.h"
+#include "core/service/openproj/seeders/basic_data_seeder.h"
+#include "core/service/openproj/seeders/composite_seeder.h"
+
+#include "core/service/openproj/seeders/demo_data/attribute_help_text_seeder.h"
+#include "core/service/openproj/seeders/demo_data/custom_field_seeder.h"
+#include "core/service/openproj/seeders/demo_data/global_query_seeder.h"
+#include "core/service/openproj/seeders/demo_data/group_seeder.h"
+#include "core/service/openproj/seeders/demo_data/project_seeder.h"
+#include "core/service/openproj/seeders/demo_data/query_builder.h"
+#include "core/service/openproj/seeders/demo_data/references.h"
+#include "core/service/openproj/seeders/demo_data/version_builder.h"
+#include "core/service/openproj/seeders/demo_data/wiki_seeder.h"
+#include "core/service/openproj/seeders/demo_data/work_package_board_seeder.h"
+#include "core/service/openproj/seeders/demo_data/work_package_seeder.h"
+#include "core/service/openproj/seeders/demo_data_seeder.h"
+
+#include "core/service/openproj/seeders/development_data/custom_fields_seeder.h"
+#include "core/service/openproj/seeders/development_data/projects_seeder.h"
+#include "core/service/openproj/seeders/development_data/users_seeder.h"
+#include "core/service/openproj/seeders/development_data_seeder.h"
+
+#include "core/service/openproj/seeders/random_data/forum_seeder.h"
+#include "core/service/openproj/seeders/random_data/news_seeder.h"
+#include "core/service/openproj/seeders/random_data/wiki_seeder.h"
+#include "core/service/openproj/seeders/random_data/work_package_seeder.h"
+#include "core/service/openproj/seeders/random_data_seeder.h"
+#include "core/service/openproj/seeders/root_seeder.h"
+#include "core/service/openproj/seeders/seeder.h"
+
+#include "core/service/openproj/seeders/standard_seeder/basic_data/activity_seeder.h"
+#include "core/service/openproj/seeders/standard_seeder/basic_data/priority_seeder.h"
+#include "core/service/openproj/seeders/standard_seeder/basic_data/status_seeder.h"
+#include "core/service/openproj/seeders/standard_seeder/basic_data/type_seeder.h"
+#include "core/service/openproj/seeders/standard_seeder/basic_data/workflow_seeder.h"
+#include "core/service/openproj/seeders/standard_seeder/basic_data_seeder.h"
+
 namespace todo {
 namespace service {
 Auth::Auth(std::shared_ptr<websocket::todo::TodoContext> context_)

@@ -1,3 +1,5 @@
+namespace openproj {
+namespace helper {
 namespace RepositoriesHelper {
 //   void settings_repository_tab_path() {
 //    settings_project_path(this->project, tab: 'repository')
@@ -283,4 +285,6 @@ namespace RepositoriesHelper {
 //    "<li class='#{style} icon #{icon_name}'
 //         title='#{changes_tree_change_title(action)}'>#{text}</li>"
 //  }
+}
+}
 }

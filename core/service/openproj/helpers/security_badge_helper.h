@@ -1,3 +1,5 @@
+namespace openproj {
+namespace helper {
 namespace SecurityBadgeHelper {
 //   void security_badge_url(args = {}) {
 //    uri = URI.parse(OpenProject::Configuration[:security_badge_url])
@@ -16,4 +18,6 @@ namespace SecurityBadgeHelper {
 //   void display_security_badge_graphic?() {
 //    OpenProject::Configuration.security_badge_displayed? && Setting.security_badge_displayed?
 //  }
+}
+}
 }

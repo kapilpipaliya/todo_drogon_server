@@ -2,6 +2,7 @@
 namespace openproj {
 namespace service {
 class QueryService {
+public:
   // include Concerns::Contracted
 
 //  attr_reader :user

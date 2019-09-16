@@ -6,6 +6,7 @@ namespace openproj {
 namespace service {
 namespace Scm{
 class CreateManagedRepositoryService : public BaseRepositoryService {
+public:
   //
   // Checks if a given repository may be created and managed locally.
   // Registers an job to create the repository on disk.

@@ -3,6 +3,7 @@
 //
 // Provides an asynchronous job to relocate a managed repository on the local or remote system
 namespace openproj {
+namespace worker {
 namespace Scm {
 
 class RelocateRepositoryJob : public Scm::RemoteRepositoryJob {
@@ -42,5 +43,6 @@ public:
 //                              url: repository.managed_repository_url)
   }
 };
+}
 }
 }

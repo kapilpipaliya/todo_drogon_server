@@ -4,6 +4,7 @@ namespace openproj {
 namespace service {
 namespace Authorization {
 class ProjectQuery : public AbstractQuery {
+public:
 //  this->model = Project
 
 //   void projects_members_join(user) {

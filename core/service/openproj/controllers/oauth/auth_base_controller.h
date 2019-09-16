@@ -9,6 +9,7 @@ namespace OAuth {
   // because it needs to set a specific return URL
   // See config/initializers/doorkeeper.rb
   class AuthBaseController : public ApplicationController {
+  public:
     // skip_before_action :check_if_login_required
     // layout 'only_logo'
   };

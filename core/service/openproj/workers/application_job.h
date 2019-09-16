@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace worker {
 class ApplicationJob {
 public:
   //
@@ -59,4 +60,5 @@ public:
     }
 //  } namespace Setup
 };
+}
 }

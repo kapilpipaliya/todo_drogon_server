@@ -1,4 +1,5 @@
 namespace openproj {
+namespace helper {
 namespace WarningBarHelper {
    bool render_pending_migrations_warning() {
 //    current_user.admin? &&
@@ -12,5 +13,6 @@ namespace WarningBarHelper {
    bool show_warning_bar() {
 //    OpenProject::Configuration.show_warning_bars?
   }
+}
 }
 }

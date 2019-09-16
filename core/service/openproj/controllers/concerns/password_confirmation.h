@@ -3,6 +3,7 @@
 // Acts as a filter for actions that require password confirmation to have
 // passed before it may be accessed.
 namespace openproj {
+namespace controller {
 namespace Concerns::PasswordConfirmation {
    void check_password_confirmation() {
 //    return true unless password_confirmation_required?
@@ -22,5 +23,6 @@ namespace Concerns::PasswordConfirmation {
 //    OpenProject::Configuration.internal_password_confirmation? &&
 //      !User.current.uses_external_authentication?
   }
+}
 }
 }

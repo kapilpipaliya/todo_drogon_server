@@ -1,6 +1,7 @@
 #pragma once
 #include "application_job.h"
 namespace openproj {
+namespace worker {
 class CopyProjectJob : public ApplicationJob {
 public:
   // include OpenProject::LocaleHelper
@@ -124,4 +125,5 @@ public:
 //    Delayed::Worker.logger
   }
 };
+}
 }

@@ -2,6 +2,7 @@
 //
 // Intended to be used by the UsersController to enforce the user limit.
 namespace openproj {
+namespace controller {
 namespace Concerns::UserLimits {
    void enforce_user_limit() {
 //    redirect_to: users_path,
@@ -100,5 +101,6 @@ namespace Concerns::UserLimits {
    bool imminent_user_limit() {
 //    OpenProject::Enterprise.imminent_user_limit?
   }
+}
 }
 }

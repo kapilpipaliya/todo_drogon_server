@@ -4,6 +4,7 @@ namespace service {
 namespace API {
   namespace V3 {
     class ParseQueryParamsService {
+    public:
 //       void call(params) {
 //        parsed_params = {}
 //        skip_empty = []

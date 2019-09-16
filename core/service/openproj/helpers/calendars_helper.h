@@ -1,4 +1,6 @@
 // Provides helper methods for a project's calendar view.
+namespace openproj {
+namespace helper {
 namespace CalendarsHelper {
   // Generates a html link to a calendar of the previous month.
   // @param [Integer] year the current year
@@ -37,4 +39,6 @@ namespace CalendarsHelper {
 
 //    link_to_content_update(name, merged_params, options)
 //  }
+}
+}
 }

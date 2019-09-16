@@ -1,4 +1,5 @@
 namespace openproj {
+namespace helper {
 namespace BrowserHelper {
   //
   // Instead of defining what makes up a modern user,
@@ -34,5 +35,6 @@ namespace BrowserHelper {
 //      if ( browser.platform.windows?) { classes << '-browser-windows' ;}
 //    }
   }
+}
 }
 }

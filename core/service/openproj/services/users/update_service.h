@@ -3,6 +3,7 @@ namespace openproj {
 namespace service {
 namespace Users {
   class UpdateService {
+  public:
     // include ::HookHelper
 
     // attr_accessor :current_user

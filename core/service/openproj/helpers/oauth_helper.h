@@ -1,3 +1,5 @@
+namespace openproj {
+namespace helper {
 namespace OAuthHelper {
   //
   // Output the translated scope names for the given application
@@ -17,4 +19,6 @@ namespace OAuthHelper {
 //    tokens = ::Doorkeeper::AccessToken.active_for(user).includes(:application)
 //    tokens.group_by(&:application)
 //  }
+}
+}
 }

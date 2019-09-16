@@ -1,3 +1,5 @@
+namespace openproj {
+namespace helper {
 namespace AngularHelper {
   //
   // Create a component element tag with the given attributes
@@ -5,4 +7,6 @@ namespace AngularHelper {
 //    options[:class] = options.fetch(:class, '') + ' op-angular-component'
 //    tag(component, options)
 //  }
+}
+}
 }

@@ -4,6 +4,7 @@ namespace service {
 namespace WorkPackages {
   namespace Bulk {
     class UpdateService {
+    public:
       // include ::Shared::ServiceContext
       // include ::HookHelper
 

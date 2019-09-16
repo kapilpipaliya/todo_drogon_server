@@ -4,6 +4,7 @@ namespace openproj {
 namespace service {
 namespace Authorization {
 class AbstractUserQuery : public AbstractQuery {
+public:
 //  transformations.register :all,
 //                           :users_members_join { |statement|
 //    statement

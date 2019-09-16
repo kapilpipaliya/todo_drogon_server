@@ -1,6 +1,7 @@
 #pragma once
 #include "../application_job.h"
 namespace openproj {
+namespace worker {
 namespace Scm {
 class StorageUpdaterJob : public ApplicationJob {
  public:
@@ -36,3 +37,4 @@ class StorageUpdaterJob : public ApplicationJob {
 };
 }  // namespace Scm
 }  // namespace openproj
+}

@@ -2,6 +2,8 @@
 // removed from rails. Please consider removing the occurences in
 // the code rather than adding additional helpers here.
 
+namespace openproj {
+namespace helper {
 namespace RemovedJsHelpersHelper {
   // removed in rails 4.1
 //   void link_to_function(content, function, html_options = {}) {
@@ -18,4 +20,6 @@ namespace RemovedJsHelpersHelper {
 //      "jQuery('#{selector}').click(function() { #{callback_str}; return false; });\n".html_safe
 //    }
 //  }
+}
+}
 }

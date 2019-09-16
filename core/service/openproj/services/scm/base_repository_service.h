@@ -3,6 +3,7 @@ namespace openproj {
 namespace service {
 namespace Scm{
 class BaseRepositoryService {
+public:
 //   BaseRepositoryService(repository) {
 //    this->repository = repository
 //  }

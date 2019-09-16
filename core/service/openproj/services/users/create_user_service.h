@@ -7,6 +7,7 @@ namespace openproj {
 namespace service {
 namespace Users {
   class CreateUserService {
+  public:
     // include Concerns::Contracted
 
 //    attr_reader :current_user

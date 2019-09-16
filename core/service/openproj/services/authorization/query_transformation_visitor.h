@@ -5,6 +5,7 @@ namespace openproj {
 namespace service {
 namespace Authorization {
 class QueryTransformationVisitor {//: public Arel::Visitors::Visitor {
+public:
   // attr_accessor :transformations,
 //                :args
 

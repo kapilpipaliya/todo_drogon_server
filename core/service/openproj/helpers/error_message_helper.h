@@ -1,3 +1,5 @@
+namespace openproj {
+namespace helper {
 namespace ErrorMessageHelper {
 //   void error_messages_for(*params) {
 //    objects, options = extract_objects_from_params(params)
@@ -46,4 +48,6 @@ namespace ErrorMessageHelper {
 //                       object_name:  options[:object].class.model_name.human }
 //    }
 //  }
+}
+}
 }

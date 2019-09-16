@@ -5,6 +5,7 @@ namespace controller {
 namespace WorkPackages {
 
 class CalendarsController : public ApplicationController {
+public:
   // menu_item :calendar
   // before_action :find_optional_project
 

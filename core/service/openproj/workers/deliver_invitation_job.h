@@ -1,6 +1,7 @@
 #pragma once
 #include "application_job.h"
 namespace openproj {
+namespace worker {
 class DeliverInvitationJob : public ApplicationJob {
 //  attr_reader :token_id
 
@@ -20,4 +21,5 @@ class DeliverInvitationJob : public ApplicationJob {
 //    this->token ||= Token::Invitation.find_by(id: this->token_id)
   }
 };
+}
 }

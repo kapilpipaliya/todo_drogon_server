@@ -4,6 +4,7 @@ namespace openproj {
 namespace service {
 namespace Projects {
   class UpdateService : public BaseServices::Update {
+  public:
     private:
 
      void after_save() {

@@ -3,6 +3,7 @@
 namespace openproj {
 namespace uploader {
 class LocalFileUploader{// : public CarrierWave::Uploader::Base {
+public:
   // include FileUploader
 //  storage :file
 

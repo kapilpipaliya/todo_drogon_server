@@ -18,6 +18,8 @@
 // * controller => current Controller instance
 // * hook_caller => object that called the hook
 //
+namespace openproj {
+namespace helper {
 namespace HookHelper {
 //   void call_hook(hook, context = {}) {
 //    if ( is_a?(ActionController::Base)) {
@@ -30,4 +32,6 @@ namespace HookHelper {
 //      Redmine::Hook.call_hook(hook, default_context.merge(context)).join(' ').html_safe
 //    }
 //  }
+}
+}
 }

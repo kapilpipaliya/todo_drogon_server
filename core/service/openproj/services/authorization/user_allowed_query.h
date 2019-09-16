@@ -5,6 +5,7 @@ namespace service {
 namespace Authorization {
 
 class UserAllowedQuery : public AbstractUserQuery {
+public:
 //  this->model = User
 
 //  transformations.register :all,

@@ -4,6 +4,7 @@
 namespace openproj {
 namespace service {
 class AuthorizationService{
+public:
   // @params
   //   ctrl - controller
   //   action - action
