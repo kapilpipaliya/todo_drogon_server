@@ -5,9 +5,11 @@ class Role : public ActiveRecord::Base {
   // extend Pagination::Model
 
   // Built-in roles
-//  NON_BUILTIN = 0
-//  BUILTIN_NON_MEMBER = 1
-//  BUILTIN_ANONYMOUS  = 2
+enum AAA{
+    NON_BUILTIN = 0,
+    BUILTIN_NON_MEMBER = 1,
+    BUILTIN_ANONYMOUS  = 2
+};
 
 //  // scope :builtin, ->(*args) {
 //    if ( args.first == true) { compare = 'not' ;}
@@ -36,17 +38,17 @@ class Role : public ActiveRecord::Base {
 //            length: { maximum: 30 },
 //            uniqueness: { case_sensitive: true }
 
-//   void givable() {
+   void givable() {
 //    where(builtin: NON_BUILTIN)
 //      .where(type: 'Role')
 //      .order(Arel.sql('position'))
-//  }
+  }
 
-//   void permissions() {
+   void permissions() {
 //    // prefer map over pluck as we will probably always load
 //    // the permissions anyway
 //    role_permissions.map(&:permission).map(&:to_sym)
-//  }
+  }
 
 //   void permissions=(perms) {
 //    not_included_yet = (perms.map(&:to_sym) - permissions).reject(&:blank?)
@@ -82,19 +84,19 @@ class Role : public ActiveRecord::Base {
 //    other ? position <=> other.position : -1
 //  }
 
-//   void to_s() {
+   void to_s() {
 //    name
-//  }
+  }
 
   // Return true if ( the role is a builtin role) {
-//   void builtin?() {
+   bool builtin() {
 //    builtin != NON_BUILTIN
-//  }
+  }
 
   // Return true if the role is a project member role
-//   void member?() {
+   bool member() {
 //    !builtin?
-//  }
+  }
 
   // Return true if role is allowed to { the specified action
   // action can be:

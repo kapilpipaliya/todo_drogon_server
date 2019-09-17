@@ -10,6 +10,9 @@ public:
 //        puts " ↳ #{seeder.class.name.demodulize}"
 //        seeder.seed!
 //      }
+       for (auto it : data_seeder_classes()) {
+           it->seed();
+       }
 
 //      if ( discovered_seeders.empty?) { return ;}
 
@@ -25,7 +28,7 @@ public:
 //    data_seeder_classes.map(&:new)
   }
 
-   virtual void data_seeder_classes() = 0;
+   virtual std::vector<std::shared_ptr<openproj::seeder::Seeder>>  data_seeder_classes() = 0;
 
    void discovered_seeders() {
 //    discovered_seeder_classes.map(&:new)
@@ -44,7 +47,7 @@ public:
 //      .select { |cl| include_discovered_class? cl }
 //  }
 
-   virtual void namespace_() = 0;
+   virtual std::string namespace_() = 0;
 
   //
   // Accepts plugin seeders, e.g. 'BasicData::Documents'.

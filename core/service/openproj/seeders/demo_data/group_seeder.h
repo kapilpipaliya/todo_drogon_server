@@ -12,13 +12,13 @@ namespace DemoData {
 //      this->user = User.admin.first
     }
 
-//     void seed_data!() {
+     void seed_data() {
 //      print '    ↳ Creating groups'
 
 //      seed_groups
 
 //      puts
-//    }
+    }
 
 //     void add_projects_to_groups() {
 //      groups = demo_data_for('groups')

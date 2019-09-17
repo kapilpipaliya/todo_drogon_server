@@ -26,7 +26,11 @@ class RootSeeder : public Seeder {
   void do_seed() {
     // ActiveRecord::Base.transaction {
     // Basic data needs be seeded before anything else.
-    seed_basic_data();
+    LOG_DEBUG << "*** Seeding basic data for "
+                 "#{OpenProject::Configuration['edition']} "
+                 "edition";
+    openproj::seeder::StandardSeeder::BasicDataSeederFinal n;
+    n.seed();
 
     LOG_DEBUG << "*** Seeding admin user";
     openproj::seeder::AdminUserSeeder a;
@@ -84,13 +88,6 @@ class RootSeeder : public Seeder {
     //    }
     openproj::seeder::DevelopmentDataSeeder d;
     d.seed();
-  }
-  void seed_basic_data() {
-    LOG_DEBUG << "*** Seeding basic data for "
-                 "#{OpenProject::Configuration['edition']} "
-                 "edition";
-    openproj::seeder::StandardSeeder::BasicDataSeederFinal n;
-    n.seed();
   }
 };
 }  // namespace seeder

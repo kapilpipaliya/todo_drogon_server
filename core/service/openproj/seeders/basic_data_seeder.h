@@ -1,13 +1,14 @@
 #pragma once
 #include "composite_seeder.h"
+#include <string>
 namespace openproj {
 namespace seeder {
 class BasicDataSeeder : public CompositeSeeder {
 public:
-   virtual void data_seeder_classes()  = 0;
+   virtual std::vector<std::shared_ptr<openproj::seeder::Seeder>>   data_seeder_classes()  = 0;
 
-   void namespace_() {
-//    'BasicData'
+   std::string namespace_() {
+    return "BasicData";
   }
 };
 }

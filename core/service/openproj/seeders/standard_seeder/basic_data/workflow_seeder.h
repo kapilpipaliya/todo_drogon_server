@@ -1,10 +1,10 @@
 #pragma once
-#include "../../basic_data_seeder.h"
+#include "../../basic_data/workflow_seeder.h"
 namespace openproj {
 namespace seeder {
 namespace StandardSeeder {
   namespace BasicData {
-    class WorkflowSeeder : public seeder::BasicData::WorkflowSeeder {
+    class WorkflowSeeder : public openproj::seeder::BasicData::WorkflowSeeder {
     public:
        void workflows() {
 //        types = Type.all
