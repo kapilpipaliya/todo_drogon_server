@@ -1,8 +1,10 @@
 #pragma once
 #include "activerecord.h"
+#include "models/Roles.h"
 namespace openproj {
 namespace models {
 class Role : public ActiveRecord::Base {
+public:
   // extend Pagination::Model
 
   // Built-in roles
