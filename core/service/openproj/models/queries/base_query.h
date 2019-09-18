@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Queries {
 class BaseQuery {
 //  class << self {
@@ -117,5 +118,6 @@ class BaseQuery {
 //    nil
   }
 };
+}
 }
 }

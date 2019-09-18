@@ -1,6 +1,7 @@
 #pragma once
 #include "format_strategy.h"
 namespace openproj {
+namespace models {
 namespace CustomValueN {
 class FloatStrategy : public CustomValueN::FormatStrategy {
   // include ActionView::Helpers::NumberHelper
@@ -22,5 +23,6 @@ class FloatStrategy : public CustomValueN::FormatStrategy {
 //    :not_a_number
   }
 };
+}
 }
 }

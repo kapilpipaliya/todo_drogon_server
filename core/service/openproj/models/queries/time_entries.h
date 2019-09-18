@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Queries::TimeEntries {
 //  query = Queries::TimeEntries::TimeEntryQuery
 
@@ -12,4 +13,5 @@ namespace Queries::TimeEntries {
 
 //  Queries::Register.order query, Queries::TimeEntries::Orders::DefaultOrder
 };
+}
 }

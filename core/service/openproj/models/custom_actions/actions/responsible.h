@@ -1,6 +1,7 @@
 #pragma once
 #include "../../custom_actions/actions/base.h"
 namespace openproj {
+namespace models {
 namespace CustomActions {
 namespace Actions {
 class Responsible : public CustomActions::Actions::Base {
@@ -22,6 +23,7 @@ class Responsible : public CustomActions::Actions::Base {
 //    :responsible
   }
 };
+}
 }
 }
 }

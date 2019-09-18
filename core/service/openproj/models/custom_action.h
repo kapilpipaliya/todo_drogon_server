@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class CustomAction : public ActiveRecord::Base {
   // validates :name, length: { maximum: 255, minimum: 1 }
 //  serialize :actions, CustomActions::Actions::Serializer
@@ -119,3 +120,4 @@ class CustomAction : public ActiveRecord::Base {
 //CustomActions::Register.condition(CustomActions::Conditions::Role)
 //CustomActions::Register.condition(CustomActions::Conditions::Type)
 //CustomActions::Register.condition(CustomActions::Conditions::Project)
+}

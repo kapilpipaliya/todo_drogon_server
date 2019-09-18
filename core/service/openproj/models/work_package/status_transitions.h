@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace WorkPackageN::StatusTransitions {
   // Return true if ( the issue is being reopened) {
    bool reopened() {
@@ -24,5 +25,6 @@ namespace WorkPackageN::StatusTransitions {
 //    }
 //    false
   }
+}
 }
 }

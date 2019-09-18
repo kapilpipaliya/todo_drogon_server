@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class Setting : public ActiveRecord::Base {
 //  DATE_FORMATS = [
 //    '%Y-%m-%d',
@@ -307,3 +308,4 @@ class Setting : public ActiveRecord::Base {
 };
 }
 
+}

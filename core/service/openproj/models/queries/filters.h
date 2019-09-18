@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Queries::Filters {
 //  STRATEGIES = {
 //    list: Queries::Filters::Strategies::List,
@@ -20,5 +21,6 @@ namespace Queries::Filters {
   // Wrapper class for invalid filters being created
 //  class InvalidError : public StandardError{};
 //  class MissingError : public StandardError{};
+}
 }
 }

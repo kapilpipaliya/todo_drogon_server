@@ -1,6 +1,7 @@
 #pragma once
 #include "base.h"
 namespace openproj {
+namespace models {
 namespace Token {
   class Base : public ActiveRecord::Base {
 //    this->table_name = 'tokens'
@@ -51,5 +52,6 @@ namespace Token {
 //      }
     }
   };
+}
 }
 }

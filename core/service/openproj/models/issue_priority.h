@@ -1,6 +1,7 @@
 #pragma once
 #include "enumeration.h"
 namespace openproj {
+namespace models {
 class IssuePriority : public Enumeration {
   // has_many :work_packages, foreign_key: 'priority_id'
   // belongs_to :color
@@ -29,3 +30,4 @@ class IssuePriority : public Enumeration {
 };
 }
 
+}

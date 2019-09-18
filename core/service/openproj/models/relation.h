@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class Relation : public ActiveRecord::Base {
   // include Concerns::VirtualAttribute
 
@@ -279,3 +280,4 @@ class Relation : public ActiveRecord::Base {
 };
 }
 
+}

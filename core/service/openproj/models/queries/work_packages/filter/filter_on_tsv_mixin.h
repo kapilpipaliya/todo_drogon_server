@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Queries::WorkPackages::Filter::FilterOnTsvMixin {
    void concatenation() {
 //    case operator
@@ -9,5 +10,6 @@ namespace Queries::WorkPackages::Filter::FilterOnTsvMixin {
 //      :and_not
 //    }
   }
+}
 }
 }

@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 class JournalManager {
 //  class << self {
 //    // attr_accessor :send_notification
@@ -336,3 +337,4 @@ class JournalManager {
 };
 }
 
+}

@@ -1,10 +1,11 @@
 #pragma once
 #include "../../filters/base.h"
 namespace openproj {
+namespace models {
 namespace Queries {
   namespace Relations {
     namespace Filters {
-      class RelationFilter : public openproj::Queries::Filters::Base {
+      class RelationFilter : public openproj::models::Queries::Filters::Base {
 //        this->model = Relation
 
 //         void human_name() {
@@ -19,3 +20,4 @@ namespace Queries {
   }
 }
     }
+}

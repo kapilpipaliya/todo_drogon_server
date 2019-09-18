@@ -1,10 +1,11 @@
 #pragma once
 #include "work_package_filter.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace WorkPackages {
 namespace Filter {
-class PriorityFilter  : openproj::Queries::WorkPackages::Filter::WorkPackageFilter {
+class PriorityFilter  : openproj::models::Queries::WorkPackages::Filter::WorkPackageFilter {
    void allowed_values() {
 //    priorities.map { |s| [s.name, s.id.to_s] }
   }
@@ -42,3 +43,4 @@ class PriorityFilter  : openproj::Queries::WorkPackages::Filter::WorkPackageFilt
 }
 }
 
+}

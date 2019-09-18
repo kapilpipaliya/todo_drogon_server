@@ -2,6 +2,7 @@
 //require_dependency 'token/base'
 #include "base.h"
 namespace openproj {
+namespace models {
 namespace Token {
   class Rss : public Base {
 //    after_initialize {
@@ -14,5 +15,6 @@ namespace Token {
 //      value
     }
   };
+}
 }
 }

@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace CustomActions::Register {
 //  class << self {
 //     void action(action) {
@@ -17,5 +18,6 @@ namespace CustomActions::Register {
     // attr_accessor :actions,
 //                  :conditions
 //  }
+}
 }
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "../exporter/result.h"
 namespace openproj {
+namespace models {
 namespace WorkPackageN {
 namespace Exporter {
 class Success : public WorkPackageN::Exporter::Result {
@@ -16,6 +17,7 @@ class Success : public WorkPackageN::Exporter::Result {
 //    this->mime_type = mime_type
 //  }
 };
+}
 }
 }
 }

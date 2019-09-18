@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class UserPreference : public ActiveRecord::Base {
   // belongs_to :user
 //  serialize :others
@@ -93,3 +94,4 @@ class UserPreference : public ActiveRecord::Base {
 };
 }
 
+}

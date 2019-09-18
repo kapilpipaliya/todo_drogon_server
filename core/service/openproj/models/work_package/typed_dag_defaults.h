@@ -2,6 +2,7 @@
 // Provides aliases to hierarchy_*
 // methods to stay compatible with code written for awesome_nested_set
 namespace openproj {
+namespace models {
 namespace WorkPackageN::TypedDagDefaults {
   // extend ActiveSupport::Concern
 
@@ -33,5 +34,6 @@ namespace WorkPackageN::TypedDagDefaults {
 //      hierarchy_root?
 //    }
 //  }
+}
 }
 }

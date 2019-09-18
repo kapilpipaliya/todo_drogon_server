@@ -1,6 +1,7 @@
 #pragma once
 #include "./base.h"
 namespace openproj {
+namespace models {
 namespace Queries::Filters::Shared {
   namespace CustomFields {
     class Bool : public Base {
@@ -22,5 +23,6 @@ namespace Queries::Filters::Shared {
       }
     };
   }
+}
 }
 }

@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Queries::Operators {
   class Base {
     // class_attribute :label_key,
@@ -42,5 +43,6 @@ namespace Queries::Operators {
 //      CGI.escape(symbol.to_s)
     }
   };
+}
 }
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "base.h"
 namespace openproj {
+namespace models {
 namespace CustomActions {
 namespace Actions {
 class Date : public CustomActions::Actions::Base {
@@ -15,6 +16,7 @@ class Date : public CustomActions::Actions::Base {
 //    work_package.due_date = date_to_apply
 //  }
 };
+}
 }
 }
 }

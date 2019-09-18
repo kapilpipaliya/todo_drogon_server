@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace CustomActions::Actions::Strategies::CustomField {
 //   void apply(work_package) {
 //    if ( work_package.respond_to?(:"#{custom_field.accessor_name}=")) { work_package.send(:"#{custom_field.accessor_name}=", values) ;}
@@ -12,5 +13,6 @@ namespace CustomActions::Actions::Strategies::CustomField {
 //   void multi_value?() {
 //    custom_field.multi_value?
 //  }
+}
 }
 }

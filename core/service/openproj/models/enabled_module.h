@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class EnabledModule : public ActiveRecord::Base {
   // belongs_to :project
 
@@ -42,3 +43,4 @@ class EnabledModule : public ActiveRecord::Base {
 };
 }
 
+}

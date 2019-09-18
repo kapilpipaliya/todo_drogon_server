@@ -1,10 +1,11 @@
 #pragma once
 #include "../../../queries/relations/filters/relation_filter.h"
 namespace openproj {
+namespace models {
 namespace Queries {
   namespace Relations {
     namespace Filters {
-      class FromFilter : public openproj::Queries::Relations::Filters::RelationFilter {
+      class FromFilter : public openproj::models::Queries::Relations::Filters::RelationFilter {
         // include ::Queries::Relations::Filters::VisibilityChecking
 
          void type() {
@@ -25,3 +26,4 @@ namespace Queries {
   }
 }
     }
+}

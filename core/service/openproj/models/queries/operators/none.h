@@ -1,6 +1,7 @@
 #pragma once
 #include "base.h"
 namespace openproj {
+namespace models {
 namespace Queries::Operators {
   class None : public Base {
 //    label 'none'
@@ -11,5 +12,6 @@ namespace Queries::Operators {
 //      "#{db_table}.#{db_field} IS NULL"
 //    }
   };
+}
 }
 }

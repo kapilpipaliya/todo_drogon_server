@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class Role : public ActiveRecord::Base {
   // extend Pagination::Model
 
@@ -173,3 +174,4 @@ enum AAA{
 };
 }
 
+}

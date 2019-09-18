@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Queries::WorkPackages {
   namespace Common {
     namespace ManualSorting {
@@ -27,3 +28,4 @@ namespace Queries::WorkPackages {
 }
 }
 
+}

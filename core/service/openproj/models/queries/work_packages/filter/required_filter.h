@@ -2,10 +2,11 @@
 // Filter for all work packages that are (or are not) required by work packages with the provided values.
 #include "../../../queries/work_packages/filter/work_package_filter.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace WorkPackages {
 namespace Filter {
-class RequiredFilter  : openproj::Queries::WorkPackages::Filter::WorkPackageFilter {
+class RequiredFilter  : openproj::models::Queries::WorkPackages::Filter::WorkPackageFilter {
 
   // include ::Queries::WorkPackages::Filter::FilterOnDirectedRelationsMixin
 
@@ -28,3 +29,4 @@ class RequiredFilter  : openproj::Queries::WorkPackages::Filter::WorkPackageFilt
 }
 }
 
+}

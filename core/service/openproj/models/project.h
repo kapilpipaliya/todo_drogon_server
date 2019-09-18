@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class Project : public ActiveRecord::Base {
   // extend Pagination::Model
   // extend FriendlyId
@@ -779,3 +780,4 @@ class Project : public ActiveRecord::Base {
 };
 }
 
+}

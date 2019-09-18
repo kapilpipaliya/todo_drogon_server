@@ -1,10 +1,11 @@
 #pragma once
 #include "../../../queries/work_packages/filter/work_package_filter.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace WorkPackages {
 namespace Filter {
-class TypeFilter  : openproj::Queries::WorkPackages::Filter::WorkPackageFilter {
+class TypeFilter  : openproj::models::Queries::WorkPackages::Filter::WorkPackageFilter {
    void allowed_values() {
 //    this->allowed_values ||= begin
 //      types.map { |s| [s.name, s.id.to_s] }
@@ -39,6 +40,7 @@ class TypeFilter  : openproj::Queries::WorkPackages::Filter::WorkPackageFilter {
 //    project.nil? ? ::Type.order(Arel.sql('position')) : project.rolled_up_types
   }
 };
+}
 }
 }
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "../mailers/base_mailer.h"
 namespace openproj {
+namespace models {
 class MailHandler : public mailer::ActionMailer::Base {
   // include ActionView::Helpers::SanitizeHelper
   // include Redmine::I18n
@@ -551,3 +552,4 @@ class MailHandler : public mailer::ActionMailer::Base {
 };
 }
 
+}

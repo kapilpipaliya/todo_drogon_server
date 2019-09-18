@@ -1,6 +1,7 @@
 #pragma once
 #include "../activerecord.h"
 namespace openproj {
+namespace models {
 namespace JournalN {
 class BaseJournal : public ActiveRecord::Base {
 //  this->abstract_class = true
@@ -21,5 +22,6 @@ class BaseJournal : public ActiveRecord::Base {
   }
 //  private_class_method :excluded_attributes
 };
+}
 }
 }

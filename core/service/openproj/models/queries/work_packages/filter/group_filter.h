@@ -1,10 +1,11 @@
 #pragma once
 #include "../../../queries/work_packages/filter/work_package_filter.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace WorkPackages {
 namespace Filter {
-class GroupFilter : public openproj::Queries::WorkPackages::Filter::WorkPackageFilter {
+class GroupFilter : public openproj::models::Queries::WorkPackages::Filter::WorkPackageFilter {
 //   void allowed_values() {
 //    all_groups.map { |g| [g.name, g.id.to_s] }
 //  }
@@ -71,6 +72,7 @@ class GroupFilter : public openproj::Queries::WorkPackages::Filter::WorkPackageF
 //    this->all_groups ||= ::Group.all
   }
 };
+}
 }
 }
 }

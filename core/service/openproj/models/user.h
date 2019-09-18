@@ -3,6 +3,7 @@
 //#include "digest/sha1"
 
 namespace openproj {
+namespace models {
 class User : public Principal {
 //  USER_FORMATS_STRUCTURE = {
 //    firstname_lastname:       [:firstname, :lastname],
@@ -828,9 +829,10 @@ class User : public Principal {
 //  }
 };
 }
-
+}
 
 namespace openproj {
+namespace models {
 class AnonymousUser : public User {
 //  validate :validate_unique_anonymous_user, on: :create
 
@@ -859,9 +861,11 @@ class AnonymousUser : public User {
 //   void destroy; false }() {
 };
 }
+}
 
 
 namespace openproj {
+namespace models {
 class DeletedUser : public User {
 //  validate :validate_unique_deleted_user, on: :create
 
@@ -893,5 +897,6 @@ class DeletedUser : public User {
 };
 }
 
+}
 
 //require_dependency "system_user"

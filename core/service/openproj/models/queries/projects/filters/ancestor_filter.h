@@ -1,10 +1,11 @@
 #pragma once
 #include "../../../queries/projects/filters/project_filter.h"
 namespace openproj {
+namespace models {
 namespace Queries {
   namespace Projects {
     namespace Filters {
-      class AncestorFilter : public openproj::Queries::Projects::Filters::ProjectFilter {
+      class AncestorFilter : public openproj::models::Queries::Projects::Filters::ProjectFilter {
          void scope() {
 //          case operator
 //          when '='
@@ -78,5 +79,6 @@ namespace Queries {
       };
     }
   }
+}
 }
 }

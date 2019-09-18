@@ -2,6 +2,7 @@
 #include "application_record.h"
 //
 namespace openproj {
+namespace models {
 class OrderedWorkPackage : public ApplicationRecord {
   // belongs_to :query
   // belongs_to :work_package
@@ -10,3 +11,4 @@ class OrderedWorkPackage : public ApplicationRecord {
 };
 }
 
+}

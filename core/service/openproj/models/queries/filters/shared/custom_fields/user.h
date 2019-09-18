@@ -1,6 +1,7 @@
 #pragma once
 #include "./list_optional.h"
-namespace openproj{
+namespace openproj {
+namespace models {
 namespace Queries::Filters::Shared {
   namespace CustomFields {
     class User : public ListOptional {
@@ -18,3 +19,4 @@ namespace Queries::Filters::Shared {
   }
 }
   }
+}

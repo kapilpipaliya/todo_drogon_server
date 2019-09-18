@@ -1,10 +1,11 @@
 #pragma once
 #include "../../../queries/work_packages/columns/work_package_column.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace WorkPackages {
 namespace Columns {
-class ManualSortingColumn : public openproj::Queries::WorkPackages::Columns::WorkPackageColumn {
+class ManualSortingColumn : public openproj::models::Queries::WorkPackages::Columns::WorkPackageColumn {
   // include ::Queries::WorkPackages::Common::ManualSorting
 
    ManualSortingColumn() {
@@ -17,6 +18,7 @@ class ManualSortingColumn : public openproj::Queries::WorkPackages::Columns::Wor
 //    ordered_work_packages_join(query)
 //  }
 };
+}
 }
 }
 }

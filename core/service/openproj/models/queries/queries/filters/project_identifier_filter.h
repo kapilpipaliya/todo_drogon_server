@@ -1,10 +1,11 @@
 #pragma once
 #include "../../queries/filters/query_filter.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace Queries {
 namespace Filters {
-class ProjectIdentifierFilter : public openproj::Queries::Queries::Filters::QueryFilter {
+class ProjectIdentifierFilter : public openproj::models::Queries::Queries::Filters::QueryFilter {
    void type() {
 //    :list
   }
@@ -25,6 +26,7 @@ class ProjectIdentifierFilter : public openproj::Queries::Queries::Filters::Quer
 //    Project.visible.pluck(:name, :identifier)
   }
 };
+}
 }
 }
 }

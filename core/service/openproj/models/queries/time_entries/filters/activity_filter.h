@@ -1,10 +1,11 @@
 #pragma once
 #include "../../../queries/time_entries/filters/time_entry_filter.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace TimeEntries {
 namespace Filters {
-class ActivityFilter : public openproj::Queries::TimeEntries::Filters::TimeEntryFilter {
+class ActivityFilter : public openproj::models::Queries::TimeEntries::Filters::TimeEntryFilter {
    void allowed_values() {
 //    this->allowed_values ||= begin
 //      // To mask the internal complexity of time entries and to
@@ -53,3 +54,4 @@ class ActivityFilter : public openproj::Queries::TimeEntries::Filters::TimeEntry
 }
 }
 
+}

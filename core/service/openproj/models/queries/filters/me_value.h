@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace Filters {
 class MeValue {
@@ -17,6 +18,7 @@ class MeValue {
 //    User
   }
 };
+}
 }
 }
 }

@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace CustomActions {
 namespace Actions {
 class Serializer {
@@ -26,6 +27,7 @@ class Serializer {
 //    YAML::dump(actions.map { |a| [a.key, a.values.map(&:to_s)] })
 //  }
 };
+}
 }
 }
 }

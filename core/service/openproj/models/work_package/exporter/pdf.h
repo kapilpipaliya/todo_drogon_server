@@ -2,6 +2,7 @@
 
 #include "../exporter/base.h"
 namespace openproj {
+namespace models {
 namespace WorkPackageN {
 namespace Exporter {
 class PDF : public WorkPackageN::Exporter::Base {
@@ -20,6 +21,7 @@ class PDF : public WorkPackageN::Exporter::Base {
 //      .render!
 //  }
 };
+}
 }
 }
 }

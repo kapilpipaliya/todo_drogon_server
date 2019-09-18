@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Queries::WorkPackages::FilterSerializer {
   // extend Queries::AvailableFilters
   // extend Queries::AvailableFilters::ClassMethods
@@ -27,5 +28,6 @@ namespace Queries::WorkPackages::FilterSerializer {
    void registered_filters() {
 //    Queries::Register.filters[Query]
   }
+}
 }
 }

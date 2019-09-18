@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Queries::Filters::Strategies {
   namespace Numeric {
 //     void included(base) {
@@ -29,5 +30,6 @@ namespace Queries::Filters::Strategies {
 //      false
 //    }
   }
+}
 }
 }

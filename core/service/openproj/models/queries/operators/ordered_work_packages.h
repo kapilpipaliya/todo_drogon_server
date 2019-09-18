@@ -1,6 +1,7 @@
 #pragma once
 #include "base.h"
 namespace openproj {
+namespace models {
 namespace Queries::Operators {
   class OrderedWorkPackages : public Base {
 //    label 'open_work_packages'
@@ -11,5 +12,6 @@ namespace Queries::Operators {
 //      "#{OrderedWorkPackage.table_name}.position IS NOT NULL"
 //    }
   };
+}
 }
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "list.h"
 namespace openproj {
+namespace models {
 namespace Queries::Filters::Strategies {
   class BooleanList : public List {
      void validate() {
@@ -29,5 +30,6 @@ namespace Queries::Filters::Strategies {
 //      values.reject(&:blank?).length > 1
     }
   };
+}
 }
 }

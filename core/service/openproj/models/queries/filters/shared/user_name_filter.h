@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Queries::Filters::Shared::UserNameFilter {
 //   void included(base) {
 //    base.include(InstanceMethods)
@@ -58,5 +59,6 @@ namespace Queries::Filters::Shared::UserNameFilter {
 //      :name
     }
   }
+}
 }
 }

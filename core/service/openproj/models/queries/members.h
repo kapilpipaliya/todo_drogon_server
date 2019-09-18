@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Queries::Members {
 //  query = Queries::Members::MemberQuery
 //  filter_ns = Queries::Members::Filters
@@ -16,5 +17,6 @@ namespace Queries::Members {
 //  order_ns = Queries::Members::Orders
 
 //  Queries::Register.order query, order_ns::DefaultOrder
+}
 }
 }

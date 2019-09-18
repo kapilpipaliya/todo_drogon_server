@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace CustomActions::ValuesToInteger {
 //   void values=(values) {
 //    super(Array(values).map { |v| to_integer_or_nil(v) }.uniq)
@@ -16,4 +17,5 @@ namespace CustomActions::ValuesToInteger {
 //  }
 }
 
+}
 }

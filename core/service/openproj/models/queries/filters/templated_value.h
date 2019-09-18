@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace Filters {
 class TemplatedValue {
@@ -28,3 +29,4 @@ class TemplatedValue {
 }
 }
 
+}

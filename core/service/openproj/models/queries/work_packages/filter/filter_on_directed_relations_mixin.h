@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Queries::WorkPackages::Filter::FilterOnDirectedRelationsMixin {
   // include ::Queries::WorkPackages::Filter::FilterForWpMixin
 
@@ -33,5 +34,6 @@ namespace Queries::WorkPackages::Filter::FilterOnDirectedRelationsMixin {
 //   virtual void relation_filter() = 0;
 
 //   virtual void relation_select() = 0;
+}
 }
 }

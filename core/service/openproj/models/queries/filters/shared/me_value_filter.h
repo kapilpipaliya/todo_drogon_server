@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Queries::Filters::Shared::MeValueFilter {
   //
   // Return the values object with the me value
@@ -37,5 +38,6 @@ namespace Queries::Filters::Shared::MeValueFilter {
    void me_value_key() {
 //    ::Queries::Filters::MeValue::KEY
   }
+}
 }
 }

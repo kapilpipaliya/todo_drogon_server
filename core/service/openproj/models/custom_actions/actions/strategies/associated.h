@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace CustomActions::Actions::Strategies::Associated {
   // include CustomActions::ValidateAllowedValue
   // include CustomActions::ValuesToInteger
@@ -34,4 +35,5 @@ namespace CustomActions::Actions::Strategies::Associated {
 //    super
 //  }
 };
+}
 }

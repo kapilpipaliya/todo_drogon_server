@@ -1,6 +1,7 @@
 #pragma once
 #include "base.h"
 namespace openproj {
+namespace models {
 namespace Queries::Operators {
   class In : public Base {
 //    label 'in'
@@ -12,5 +13,6 @@ namespace Queries::Operators {
 //      relative_date_range_clause(db_table, db_field, values.first.to_i, values.first.to_i)
 //    }
   };
+}
 }
 }

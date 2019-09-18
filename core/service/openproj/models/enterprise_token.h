@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class EnterpriseToken : public ActiveRecord::Base {
 //  class << self {
 //     void current() {
@@ -75,3 +76,4 @@ class EnterpriseToken : public ActiveRecord::Base {
 };
 }
 
+}

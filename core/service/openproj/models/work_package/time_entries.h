@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace WorkPackageN::TimeEntries {
   // extend ActiveSupport::Concern
 
@@ -52,5 +53,6 @@ namespace WorkPackageN::TimeEntries {
 //      }
 //    }
   }
+}
 }
 }

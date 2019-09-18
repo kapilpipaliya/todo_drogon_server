@@ -1,10 +1,11 @@
 #pragma once
 #include "../../../queries/projects/filters/project_filter.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace Projects {
 namespace Filters {
-class ActiveOrArchivedFilter : public openproj::Queries::Projects::Filters::ProjectFilter {
+class ActiveOrArchivedFilter : public openproj::models::Queries::Projects::Filters::ProjectFilter {
    void type() {
 //    :list_all
   }
@@ -29,3 +30,4 @@ class ActiveOrArchivedFilter : public openproj::Queries::Projects::Filters::Proj
 }
 }
 
+}

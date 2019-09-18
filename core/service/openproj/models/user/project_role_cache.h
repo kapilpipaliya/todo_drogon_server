@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace UserN {
 class ProjectRoleCache {
   // attr_accessor :user
@@ -32,5 +33,6 @@ class ProjectRoleCache {
 //    this->all_givable_roles ||= Role.givable.to_a
   }
 };
+}
 }
 }

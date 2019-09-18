@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace CustomActions::Actions::Strategies::Date {
 //   void values=(values) {
 //    super(Array(values).map { |v| to_date_or_nil(v) }.uniq)
@@ -36,5 +37,6 @@ namespace CustomActions::Actions::Strategies::Date {
 //  rescue TypeError, ArgumentError
 //    nil
 //  }
+}
 }
 }

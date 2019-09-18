@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Queries::Projects::Filters::CustomFieldContext {
 //  class << self {
 //     void custom_field_class() {
@@ -24,5 +25,6 @@ namespace Queries::Projects::Filters::CustomFieldContext {
 //         AND #{cv_db_table}.custom_field_id=#{custom_field.id}"
 //    }
 //  }
+}
 }
 }

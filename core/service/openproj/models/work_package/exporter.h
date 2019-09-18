@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace WorkPackageN::Exporter {
 //   void for_list(type) {
 //    this->for_list[type]
@@ -33,5 +34,6 @@ namespace WorkPackageN::Exporter {
 //  register_for_list(:pdf, WorkPackageN::Exporter::PDF)
 
 //  register_for_single(:pdf, WorkPackageN::Exporter::PDF)
+}
 }
 }

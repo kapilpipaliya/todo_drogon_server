@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Queries {
   namespace Relations {
     namespace Filters {
@@ -29,5 +30,6 @@ namespace Queries {
       }
     }
   }
+}
 }
 }

@@ -1,10 +1,11 @@
 #pragma once
 #include "../../../queries/projects/filters/project_filter.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace Projects {
 namespace Filters {
-class ParentFilter : public openproj::Queries::Projects::Filters::ProjectFilter {
+class ParentFilter : public openproj::models::Queries::Projects::Filters::ProjectFilter {
    void type() {
 //    :list_optional
   }
@@ -18,6 +19,7 @@ class ParentFilter : public openproj::Queries::Projects::Filters::ProjectFilter 
 //      ::Project.visible.pluck(:id).map { |id| [id, id.to_s] }
     }
   };
+}
 }
 }
 }

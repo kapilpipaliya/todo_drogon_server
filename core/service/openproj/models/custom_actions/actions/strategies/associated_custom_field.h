@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace CustomActions::Actions::Strategies::AssociatedCustomField {
   // include CustomActions::Actions::Strategies::Associated
   // include CustomActions::Actions::Strategies::CustomField
@@ -9,5 +10,6 @@ namespace CustomActions::Actions::Strategies::AssociatedCustomField {
 //      .possible_values_options
 //      .map { |label, value| [value.empty? ? nil : value.to_i, label] }
   }
+}
 }
 }

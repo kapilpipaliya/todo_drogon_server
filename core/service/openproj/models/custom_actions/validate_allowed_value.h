@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace CustomActions::ValidateAllowedValue {
 //  private:
 
@@ -13,5 +14,6 @@ namespace CustomActions::ValidateAllowedValue {
 //                 error_symbol: :inclusion
 //    }
 //  }
+}
 }
 }

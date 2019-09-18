@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace WorkPackageN::Validations {
   // extend ActiveSupport::Concern
 
@@ -25,5 +26,6 @@ namespace WorkPackageN::Validations {
 //               :fixed_version)
 //    }
 //  }
+}
 }
 }

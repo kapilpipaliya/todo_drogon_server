@@ -14,6 +14,7 @@
 // See the comments on the methods to get additional information.              #
 //#############################################################################
 namespace openproj {
+namespace models {
 namespace Activity {
 class BaseActivityProvider {
   // include Redmine::Acts::ActivityProvider
@@ -126,5 +127,6 @@ class BaseActivityProvider {
 //    this->url_helpers ||= OpenProject::StaticRouting::StaticUrlHelpers.new
 //  }
 };
+}
 }
 }

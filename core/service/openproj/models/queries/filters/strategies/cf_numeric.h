@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Queries::Filters::Strategies {
   namespace CfNumeric {
 //    private:
@@ -14,5 +15,6 @@ namespace Queries::Filters::Strategies {
 //      super_value
     }
   }
+}
 }
 }

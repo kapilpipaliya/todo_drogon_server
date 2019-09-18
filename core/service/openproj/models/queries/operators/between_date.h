@@ -1,6 +1,7 @@
 #pragma once
 #include "base.h"
 namespace openproj {
+namespace models {
 namespace Queries::Operators {
   class BetweenDate : public Base {
 //    label 'between'
@@ -14,5 +15,6 @@ namespace Queries::Operators {
 //      date_range_clause(db_table, db_field, lower_boundary, upper_boundary)
 //    }
   };
+}
 }
 }

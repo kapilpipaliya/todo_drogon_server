@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Queries::WorkPackages::Filter::TextFilterOnJoinMixin {
    void where() {
 //    case operator
@@ -28,5 +29,6 @@ namespace Queries::WorkPackages::Filter::TextFilterOnJoinMixin {
    void join_table_alias() {
 //    "#{this->class.key}_#{join_table}"
   }
+}
 }
 }

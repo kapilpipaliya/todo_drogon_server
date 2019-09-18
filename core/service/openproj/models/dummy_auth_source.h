@@ -1,6 +1,7 @@
 #pragma once
 #include "auth_source.h"
 namespace openproj {
+namespace models {
 class DummyAuthSource : public AuthSource {
    void test_connection() {
     // the dummy connection is always available
@@ -63,3 +64,4 @@ class DummyAuthSource : public AuthSource {
 };
 }
 
+}

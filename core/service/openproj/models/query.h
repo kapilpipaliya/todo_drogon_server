@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class Query : public ActiveRecord::Base {
   // include Timelines
   // include Highlighting
@@ -431,3 +432,4 @@ class Query : public ActiveRecord::Base {
 };
 }
 
+}

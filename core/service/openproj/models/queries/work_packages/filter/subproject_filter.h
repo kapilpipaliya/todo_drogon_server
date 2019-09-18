@@ -1,10 +1,11 @@
 #pragma once
 #include "../../../queries/work_packages/filter/work_package_filter.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace WorkPackages {
 namespace Filter {
-class SubprojectFilter  : openproj::Queries::WorkPackages::Filter::WorkPackageFilter {
+class SubprojectFilter  : openproj::models::Queries::WorkPackages::Filter::WorkPackageFilter {
 //   void allowed_values() {
 //    this->allowed_values ||= begin
 //      visible_subproject_array.map { |id, name| [name, id.to_s] }
@@ -87,6 +88,7 @@ class SubprojectFilter  : openproj::Queries::WorkPackages::Filter::WorkPackageFi
 //    }
   }
 };
+}
 }
 }
 }

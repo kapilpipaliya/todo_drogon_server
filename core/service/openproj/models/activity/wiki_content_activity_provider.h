@@ -1,6 +1,7 @@
 #pragma once
 #include "base_activity_provider.h"
 namespace openproj {
+namespace models {
 namespace Activity {
 class WikiContentActivityProvider : public Activity::BaseActivityProvider {
 //  acts_as_activity_provider type: 'wiki_edits',
@@ -54,5 +55,6 @@ class WikiContentActivityProvider : public Activity::BaseActivityProvider {
 //    [event['project_id'], event['wiki_title'], { version: event['version'] }]
 //  }
 };
+}
 }
 }

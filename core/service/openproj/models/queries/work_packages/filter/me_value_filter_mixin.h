@@ -2,6 +2,7 @@
 //
 // Mixin to a filter or strategy
 namespace openproj {
+namespace models {
 namespace Queries::WorkPackages::Filter::MeValueFilterMixin {
   // include Queries::Filters::Shared::MeValueFilter
   //
@@ -28,5 +29,6 @@ namespace Queries::WorkPackages::Filter::MeValueFilterMixin {
 
 //    sanitized_values
   }
+}
 }
 }

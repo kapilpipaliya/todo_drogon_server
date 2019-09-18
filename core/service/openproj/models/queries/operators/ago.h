@@ -1,6 +1,7 @@
 #pragma once
 #include "base.h"
 namespace openproj {
+namespace models {
 namespace Queries::Operators {
   class Ago : public Base {
 //    label 'ago'
@@ -15,5 +16,6 @@ namespace Queries::Operators {
 //                                 - values.first.to_i)
 //    }
   };
+}
 }
 }

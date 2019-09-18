@@ -1,5 +1,6 @@
 #pragma once
-namespace openproj{
+namespace openproj {
+namespace models {
 namespace Mixins {
   namespace ChangedBySystem {
     // extend ActiveSupport::Concern
@@ -34,5 +35,6 @@ namespace Mixins {
 //      changed.select { |c| !prior_changes[c] || prior_changes[c].last != changes[c].last }
 //    }
   }
+}
 }
 }

@@ -2,6 +2,7 @@
 //require_dependency 'token/base'
 #include "base.h"
 namespace openproj {
+namespace models {
 namespace Token {
   class Invitation : public Base {
     // include ExpirableToken
@@ -20,5 +21,6 @@ namespace Token {
     // implicitly.
      void delete_expired_tokens() {}
   };
+}
 }
 }

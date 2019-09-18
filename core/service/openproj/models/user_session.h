@@ -2,6 +2,7 @@
 //require "active_support/core_ext/module/attribute_accessors"
 //#include "ac
 namespace openproj {
+namespace models {
 class UserSession {//: public ActiveRecord::SessionStore::Session {
   // belongs_to :user
 
@@ -28,3 +29,4 @@ class UserSession {//: public ActiveRecord::SessionStore::Session {
 };
 }
 
+}

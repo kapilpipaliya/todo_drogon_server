@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Queries::WorkPackages::Filter::FilterForWpMixin {
 //   void type() {
 //    :list
@@ -72,5 +73,6 @@ namespace Queries::WorkPackages::Filter::FilterForWpMixin {
 //   void has_templated_value?() {
 //    (values & templated_value_keys).any?
 //  }
+}
 }
 }

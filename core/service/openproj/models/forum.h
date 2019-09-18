@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class Forum : public ActiveRecord::Base {
   // belongs_to :project
   // has_many :topics, -> {
@@ -41,3 +42,4 @@ class Forum : public ActiveRecord::Base {
 };
 }
 
+}

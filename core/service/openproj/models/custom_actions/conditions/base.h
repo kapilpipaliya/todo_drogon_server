@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace CustomActions {
 namespace Conditions {
 class Base {
@@ -97,6 +98,7 @@ class Base {
 //  }
 //  private_class_method :association_ids
 };
+}
 }
 }
 }

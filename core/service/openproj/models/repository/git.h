@@ -2,6 +2,7 @@
 //#include "open_project/scm/adapters/git"
 #include "../repository.h"
 namespace openproj {
+namespace models {
 namespace RepositoryN{
 class Git : public Repository {
   // validates_presence_of :url
@@ -167,3 +168,4 @@ class Git : public Repository {
 }
 }
 
+}

@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class Watcher : public ActiveRecord::Base {
   // belongs_to :watchable, polymorphic: true
   // belongs_to :user
@@ -124,4 +125,5 @@ class Watcher : public ActiveRecord::Base {
 //    }
 //  }
 };
+}
 }

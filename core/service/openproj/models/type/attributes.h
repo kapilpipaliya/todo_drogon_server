@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace TypeN::Attributes {
   // extend ActiveSupport::Concern
 
@@ -165,4 +166,5 @@ namespace TypeN::Attributes {
 //      .include? attribute
 //  }
 };
+}
 }

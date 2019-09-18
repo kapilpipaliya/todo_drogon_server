@@ -1,6 +1,7 @@
 #pragma once
 
 namespace openproj {
+namespace models {
 namespace Queries::Filters::Shared::GroupFilter {
 //   void included(base) {
 //    base.include(InstanceMethods)
@@ -56,4 +57,5 @@ namespace Queries::Filters::Shared::GroupFilter {
 //      :group
     }
   }
+}
 }

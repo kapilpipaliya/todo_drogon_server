@@ -1,6 +1,7 @@
 #pragma once
 #include "format_strategy.h"
 namespace openproj {
+namespace models {
 namespace CustomValueN {
 class BoolStrategy : public CustomValueN::FormatStrategy {
 //   void value_present?() {
@@ -47,5 +48,6 @@ class BoolStrategy : public CustomValueN::FormatStrategy {
 //    !val.nil? && val != ''
 //  }
 };
+}
 }
 }

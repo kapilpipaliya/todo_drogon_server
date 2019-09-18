@@ -1,10 +1,11 @@
 #pragma once
 #include "../../../queries/members/filters/member_filter.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace Members {
 namespace Filters {
-class PrincipalFilter : public openproj::Queries::Members::Filters::MemberFilter {
+class PrincipalFilter : public openproj::models::Queries::Members::Filters::MemberFilter {
   // include Queries::Filters::Shared::MeValueFilter
 
    void allowed_values() {
@@ -43,6 +44,7 @@ class PrincipalFilter : public openproj::Queries::Members::Filters::MemberFilter
 //    :principal_id
   }
 };
+}
 }
 }
 }

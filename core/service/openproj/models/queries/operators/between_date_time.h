@@ -1,6 +1,7 @@
 #pragma once
 #include "base.h"
 namespace openproj {
+namespace models {
 namespace Queries::Operators {
   class BetweenDateTime : public Base {
 //    label 'between'
@@ -17,5 +18,6 @@ namespace Queries::Operators {
 //                            upper_boundary)
 //    }
   };
+}
 }
 }

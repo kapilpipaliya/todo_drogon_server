@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class ApplicationRecord : public ActiveRecord::Base {
 //  this->abstract_class = true
 
@@ -31,4 +32,5 @@ class ApplicationRecord : public ActiveRecord::Base {
 //      &.first // max column
 //  }
 };
+}
 }

@@ -1,5 +1,6 @@
 #pragma once
-namespace openproj{
+namespace openproj {
+namespace models {
 namespace Mixins {
   namespace UniqueFinder {
 //     void prepended(model_class) {
@@ -45,5 +46,6 @@ namespace Mixins {
 //      }
     }
   }
+}
 }
 }

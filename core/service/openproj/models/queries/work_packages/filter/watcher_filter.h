@@ -1,10 +1,11 @@
 #pragma once
 #include "../../../queries/work_packages/filter/principal_base_filter.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace WorkPackages {
 namespace Filter {
-class WatcherFilter  : openproj::Queries::WorkPackages::Filter::PrincipalBaseFilter {
+class WatcherFilter  : openproj::models::Queries::WorkPackages::Filter::PrincipalBaseFilter {
 //   void allowed_values() {
 //    this->allowed_values ||= begin
 //      // populate the watcher list with the same user list as other user filters
@@ -102,6 +103,7 @@ class WatcherFilter  : openproj::Queries::WorkPackages::Filter::PrincipalBaseFil
 //      .select("#{Project.table_name}.id")
   }
 };
+}
 }
 }
 }

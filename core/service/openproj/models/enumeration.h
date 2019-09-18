@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class Enumeration : public ActiveRecord::Base {
 //  default_scope { order("#{Enumeration.table_name}.position ASC") }
 
@@ -158,3 +159,4 @@ class Enumeration : public ActiveRecord::Base {
 //%w(time_entry_activity issue_priority).each { |enum_subclass|
 //  require_dependency enum_subclass
 //}
+}

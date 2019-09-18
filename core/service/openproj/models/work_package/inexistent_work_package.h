@@ -1,6 +1,7 @@
 #pragma once
 #include "../work_package.h"
 namespace openproj {
+namespace models {
 namespace WorkPackageN {
 class InexistentWorkPackage : public WorkPackage {
 //  _validators.clear
@@ -9,5 +10,6 @@ class InexistentWorkPackage : public WorkPackage {
 //    errors.add :base, :does_not_exist
 //  }
 };
+}
 }
 }

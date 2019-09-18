@@ -1,6 +1,7 @@
 #pragma once
 #include "base.h"
 namespace openproj {
+namespace models {
 namespace Queries::Operators {
   class NotEquals : public Base {
 //    label 'not_equals'
@@ -23,5 +24,6 @@ namespace Queries::Operators {
 //      sql
 //    }
   };
+}
 }
 }

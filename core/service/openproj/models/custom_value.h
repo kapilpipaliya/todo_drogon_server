@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class CustomValue : public ActiveRecord::Base {
   // belongs_to :custom_field
   // belongs_to :customized, polymorphic: true
@@ -78,3 +79,4 @@ class CustomValue : public ActiveRecord::Base {
 };
 }
 
+}

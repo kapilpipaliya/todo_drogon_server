@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class MemberRole : public ActiveRecord::Base {
   // belongs_to :member
   // belongs_to :role
@@ -78,4 +79,5 @@ class MemberRole : public ActiveRecord::Base {
   }
 }
 ;
+}
 }

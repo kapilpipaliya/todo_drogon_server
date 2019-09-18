@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace UserN {
   namespace StatusOptions {
 //    module_function
@@ -41,5 +42,6 @@ namespace UserN {
 //      }
     }
   }
+}
 }
 }

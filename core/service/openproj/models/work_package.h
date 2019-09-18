@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class WorkPackage : public ActiveRecord::Base {
   // include WorkPackageN::Validations
   // include WorkPackageN::SchedulingRules
@@ -764,4 +765,5 @@ class WorkPackage : public ActiveRecord::Base {
 //    related.select(&:present?)
   }
 };
+}
 }

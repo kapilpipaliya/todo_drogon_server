@@ -3,6 +3,7 @@
 //require_dependency 'query/sums'
 
 namespace openproj {
+namespace models {
 namespace QueryN {
 class Results {
   // include ::QueryN::Grouping
@@ -193,5 +194,6 @@ class Results {
 //    list.flatten.compact.uniq.map(&:to_sym)
 //  }
 };
+}
 }
 }

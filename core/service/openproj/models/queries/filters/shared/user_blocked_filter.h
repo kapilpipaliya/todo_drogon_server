@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Queries::Filters::Shared::UserBlockedFilter {
 //   void included(base) {
 //    base.include(InstanceMethods)
@@ -25,5 +26,6 @@ namespace Queries::Filters::Shared::UserBlockedFilter {
 //      :blocked
     }
   }
+}
 }
 }

@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace WorkPackageN::AskBeforeDestruction {
   // extend ActiveSupport::Concern
 
@@ -68,5 +69,6 @@ namespace WorkPackageN::AskBeforeDestruction {
 //      ret
 //    }
   }
+}
 }
 }

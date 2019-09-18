@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class News : public ActiveRecord::Base {
   // belongs_to :project
   // belongs_to :author, class_name: 'User', foreign_key: 'author_id'
@@ -90,3 +91,4 @@ class News : public ActiveRecord::Base {
 };
 }
 
+}

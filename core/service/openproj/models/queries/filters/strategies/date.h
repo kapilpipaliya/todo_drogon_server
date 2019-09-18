@@ -1,8 +1,9 @@
 #pragma once
 #include "../../../queries/filters/strategies/integer.h"
 namespace openproj {
+namespace models {
 namespace Queries::Filters::Strategies {
-  class Date : public openproj::Queries::Filters::Strategies::Integer {
+  class Date : public openproj::models::Queries::Filters::Strategies::Integer {
 //    this->supported_operators = ['<t+', '>t+', 't+', 't', 'w', '>t-', '<t-', 't-', '=d', '<>d']
 //    this->default_operator = 't'
 
@@ -29,5 +30,6 @@ namespace Queries::Filters::Strategies {
 //      false
 //    }
   };
+}
 }
 }

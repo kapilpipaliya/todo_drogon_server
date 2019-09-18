@@ -1,8 +1,9 @@
 #pragma once
 #include "base_order.h"
 namespace openproj {
+namespace models {
 namespace Queries {
-class NotExistingOrder : public openproj::Queries::BaseOrder {
+class NotExistingOrder : public openproj::models::Queries::BaseOrder {
 //  validate :always_false
 
    void key() {
@@ -15,5 +16,6 @@ class NotExistingOrder : public openproj::Queries::BaseOrder {
 //    errors.add :base, I18n.t(:'activerecord.errors.messages.does_not_exist')
   }
 };
+}
 }
 }

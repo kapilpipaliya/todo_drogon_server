@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Queries::Operators {
 //  operators = [
 //    Queries::Operators::GreaterOrEqual,
@@ -37,5 +38,6 @@ namespace Queries::Operators {
 //  ]
 
 //  OPERATORS = Hash[*(operators.map { |o| [o.symbol.to_s, o] }).flatten].freeze
+}
 }
 }

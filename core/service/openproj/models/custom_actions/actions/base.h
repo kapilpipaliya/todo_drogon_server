@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace CustomActions {
 namespace Actions {
 class Base {
@@ -76,6 +77,7 @@ class Base {
 //    }
 //  }
 };
+}
 }
 }
 }

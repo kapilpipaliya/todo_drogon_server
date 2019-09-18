@@ -1,10 +1,11 @@
 #pragma once
 #include "project_filter.h"
 namespace openproj {
+namespace models {
 namespace Queries {
   namespace Projects {
     namespace Filters {
-      class TypeFilter : public openproj::Queries::Projects::Filters::ProjectFilter {
+      class TypeFilter : public openproj::models::Queries::Projects::Filters::ProjectFilter {
          void allowed_values() {
 //          this->allowed_values ||= Type.pluck(:name, :id)
         }
@@ -37,5 +38,6 @@ namespace Queries {
       };
     }
   }
+}
 }
 }

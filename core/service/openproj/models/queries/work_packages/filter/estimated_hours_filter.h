@@ -1,11 +1,12 @@
 #pragma once
 #include "../../../queries/work_packages/filter/work_package_filter.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace WorkPackages {
 namespace Filter {
 class EstimatedHoursFilter  :
-  openproj::Queries::WorkPackages::Filter::WorkPackageFilter {
+  openproj::models::Queries::WorkPackages::Filter::WorkPackageFilter {
    void type() {
 //    :integer
   }
@@ -15,3 +16,4 @@ class EstimatedHoursFilter  :
 }
 }
 
+}

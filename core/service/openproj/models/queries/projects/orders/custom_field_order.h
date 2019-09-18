@@ -1,10 +1,11 @@
 #pragma once
 #include "../../base_order.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace Projects {
 namespace Orders {
-class CustomFieldOrder : public openproj::Queries::BaseOrder {
+class CustomFieldOrder : public openproj::models::Queries::BaseOrder {
 //  this->model = Project.all
 
   // validates :custom_field, presence: { message: I18n.t(:'activerecord.errors.messages.does_not_exist') }
@@ -40,3 +41,4 @@ class CustomFieldOrder : public openproj::Queries::BaseOrder {
 }
 }
 
+}

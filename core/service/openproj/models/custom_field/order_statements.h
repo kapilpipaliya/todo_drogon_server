@@ -1,5 +1,6 @@
 #pragma once
-namespace openproj{
+namespace openproj {
+namespace models {
 namespace CustomFieldN::OrderStatements {
   // Returns a ORDER BY clause that can used to sort customized
   // objects by their value of the custom field.
@@ -129,5 +130,6 @@ namespace CustomFieldN::OrderStatements {
 //     LIMIT 1)
 //    SQL
 //  }
+}
 }
 }

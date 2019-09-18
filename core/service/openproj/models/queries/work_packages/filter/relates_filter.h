@@ -2,10 +2,11 @@
 // Filter for all work packages that are (or are not) predecessor of the provided values
 #include "../../../queries/work_packages/filter/work_package_filter.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace WorkPackages {
 namespace Filter {
-class RelatesFilter  : openproj::Queries::WorkPackages::Filter::WorkPackageFilter {
+class RelatesFilter  : openproj::models::Queries::WorkPackages::Filter::WorkPackageFilter {
   // include ::Queries::WorkPackages::Filter::FilterOnUndirectedRelationsMixin
 
    void relation_type() {
@@ -17,3 +18,4 @@ class RelatesFilter  : openproj::Queries::WorkPackages::Filter::WorkPackageFilte
 }
 }
 
+}

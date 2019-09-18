@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Queries {
 class BaseOrder {
   // include ActiveModel::Validations
@@ -50,5 +51,6 @@ class BaseOrder {
 //    }
   }
 };
+}
 }
 }

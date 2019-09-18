@@ -1,6 +1,7 @@
 #pragma once
 #include "list_optional.h"
 namespace openproj {
+namespace models {
 namespace Queries::Filters::Strategies {
   class CfListOptional : public ListOptional {
     private:
@@ -13,5 +14,6 @@ namespace Queries::Filters::Strategies {
 //      super_value
     }
   };
+}
 }
 }

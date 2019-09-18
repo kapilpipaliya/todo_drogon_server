@@ -9,6 +9,7 @@
 
 // The ActiveRecord model representing journals.
 namespace openproj {
+namespace models {
 class LegacyJournal : public ActiveRecord::Base {
   // include Comparable
   // include ::JournalFormatter
@@ -122,3 +123,4 @@ class LegacyJournal : public ActiveRecord::Base {
 };
 }
 
+}

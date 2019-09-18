@@ -2,10 +2,11 @@
 #include "role_filter.h"
 // This filters for the type of role (project or global)
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace Roles {
 namespace Filters {
-class UnitFilter : public openproj::Queries::Roles::Filters::RoleFilter {
+class UnitFilter : public openproj::models::Queries::Roles::Filters::RoleFilter {
    void type() {
 //    :list
   }
@@ -40,3 +41,4 @@ class UnitFilter : public openproj::Queries::Roles::Filters::RoleFilter {
 }
 }
 
+}

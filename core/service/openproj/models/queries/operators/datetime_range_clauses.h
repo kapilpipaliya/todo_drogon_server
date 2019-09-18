@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Queries::Operators {
   namespace DatetimeRangeClauses {
 //     void datetime_range_clause(table, field, from, to) {
@@ -13,5 +14,6 @@ namespace Queries::Operators {
 //      s.join(' AND ')
 //    }
   }
+}
 }
 }

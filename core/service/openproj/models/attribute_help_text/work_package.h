@@ -1,8 +1,9 @@
 #pragma once
 #include "../attribute_help_text.h"
 namespace openproj {
+namespace models {
 namespace AttributeHelpTextN {
-class WorkPackage : public openproj::AttributeHelpText {
+class WorkPackage : public openproj::models::AttributeHelpText {
    void available_attributes() {
 //    attributes = ::Type.translated_work_package_form_attributes
 
@@ -37,5 +38,6 @@ class WorkPackage : public openproj::AttributeHelpText {
 //      .or(where.not("attribute_name LIKE 'custom_field_%'"))
 //  }
 };
+}
 }
 }

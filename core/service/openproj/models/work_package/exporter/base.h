@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace WorkPackageN {
 namespace Exporter {
 class Base {
@@ -52,6 +53,7 @@ class Base {
 //                       .per_page(Setting.work_packages_export_limit.to_i)
 //  }
 };
+}
 }
 }
 }

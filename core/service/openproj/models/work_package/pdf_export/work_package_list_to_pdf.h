@@ -1,6 +1,7 @@
 #pragma once
 #include "../exporter/base.h"
 namespace openproj {
+namespace models {
 namespace WorkPackageN {
 namespace PdfExport {
 class WorkPackageListToPdf : public WorkPackageN::Exporter::Base {
@@ -180,6 +181,7 @@ class WorkPackageListToPdf : public WorkPackageN::Exporter::Base {
 //                  padding: cell_padding
 //  }
 };
+}
 }
 }
 }

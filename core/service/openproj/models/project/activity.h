@@ -1,7 +1,8 @@
 #pragma once
 //require Rails.root.join('config/constants/project_activity')
 
-namespace openproj{
+namespace openproj {
+namespace models {
 namespace ProjectN::Activity {
 //   void included(base) {
 //    base.send :extend, Scopes
@@ -79,5 +80,6 @@ namespace ProjectN::Activity {
 //      SQL
 //    }
   }
+}
 }
 }

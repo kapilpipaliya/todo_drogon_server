@@ -1,6 +1,7 @@
 #pragma once
 #include "format_strategy.h"
 namespace openproj {
+namespace models {
 namespace CustomValueN {
 class DateStrategy : public CustomValueN::FormatStrategy {
   // include Redmine::I18n
@@ -28,5 +29,6 @@ class DateStrategy : public CustomValueN::FormatStrategy {
 //    }
   }
 };
+}
 }
 }

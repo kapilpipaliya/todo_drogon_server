@@ -1,6 +1,7 @@
 #pragma once
 #include "base.h"
 namespace openproj {
+namespace models {
 namespace CustomActions {
 namespace Actions {
 class DueDate : public CustomActions::Actions::Base {
@@ -14,3 +15,4 @@ class DueDate : public CustomActions::Actions::Base {
 }
 }
 
+}

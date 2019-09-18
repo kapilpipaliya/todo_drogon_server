@@ -3,6 +3,7 @@
 //
 // Password hashing method using bcrypt
 namespace openproj {
+namespace models {
 namespace UserPasswordN {
 class Bcrypt : public UserPassword {
 //  protected:
@@ -17,5 +18,6 @@ class Bcrypt : public UserPassword {
 //    BCrypt::Password.create(input)
 //  }
 };
+}
 }
 }

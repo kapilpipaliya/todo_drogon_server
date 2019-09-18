@@ -1,10 +1,11 @@
 #pragma once
 #include "../../../queries/work_packages/filter/work_package_filter.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace WorkPackages {
 namespace Filter {
-class DatesIntervalFilter : public openproj::Queries::WorkPackages::Filter::WorkPackageFilter {
+class DatesIntervalFilter : public openproj::models::Queries::WorkPackages::Filter::WorkPackageFilter {
   // include Queries::Operators::DateRangeClauses
 
    void type() {
@@ -35,3 +36,4 @@ class DatesIntervalFilter : public openproj::Queries::WorkPackages::Filter::Work
 }
 }
 
+}

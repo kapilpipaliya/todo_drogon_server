@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Queries::Filters::Strategies {
   namespace Validations {
 //    private:
@@ -22,6 +23,7 @@ namespace Queries::Filters::Strategies {
 //      false
 //    }
 //  }
+}
 }
 }
 }

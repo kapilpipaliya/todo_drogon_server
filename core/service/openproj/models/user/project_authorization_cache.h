@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace UserN {
 class ProjectAuthorizationCache {
   // attr_accessor :user
@@ -40,5 +41,6 @@ class ProjectAuthorizationCache {
 //    this->projects_by_actions ||= {}
   }
 };
+}
 }
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "../../custom_actions/actions/base.h"
 namespace openproj {
+namespace models {
 namespace CustomActions {
 namespace Actions {
 class Priority : public CustomActions::Actions::Base {
@@ -21,6 +22,7 @@ class Priority : public CustomActions::Actions::Base {
 //    :priority
   }
 };
+}
 }
 }
 }

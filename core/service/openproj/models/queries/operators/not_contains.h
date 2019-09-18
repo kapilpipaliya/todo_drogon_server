@@ -1,6 +1,7 @@
 #pragma once
 #include "base.h"
 namespace openproj {
+namespace models {
 namespace Queries::Operators {
   class NotContains : public Base {
 //    label 'not_contains'
@@ -11,5 +12,6 @@ namespace Queries::Operators {
 //        "'%#{connection.quote_string(values.first.to_s.downcase)}%'"
 //    }
   };
+}
 }
 }

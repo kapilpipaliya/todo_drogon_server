@@ -1,10 +1,11 @@
 #pragma once
 #include "../../../queries/work_packages/filter/attachment_base_filter.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace WorkPackages {
 namespace Filter {
-class AttachmentContentFilter : public openproj::Queries::WorkPackages::Filter::AttachmentBaseFilter {
+class AttachmentContentFilter : public openproj::models::Queries::WorkPackages::Filter::AttachmentBaseFilter {
    void key() {
 //    :attachment_content
   }
@@ -26,3 +27,4 @@ class AttachmentContentFilter : public openproj::Queries::WorkPackages::Filter::
 }
 }
 
+}

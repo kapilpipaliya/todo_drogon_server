@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Queries::Filters::Strategies {
   class BaseStrategy {
     // attr_accessor :filter
@@ -42,5 +43,6 @@ namespace Queries::Filters::Strategies {
 //      ::Queries::Operators::OPERATORS
 //    }
   };
+}
 }
 }

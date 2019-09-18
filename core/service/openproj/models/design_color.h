@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class DesignColor : public ActiveRecord::Base {
 //  after_commit -> {
 //    // CustomStyle.current.updated_at determins the cache key for inline_css
@@ -66,3 +67,4 @@ class DesignColor : public ActiveRecord::Base {
 };
 }
 
+}

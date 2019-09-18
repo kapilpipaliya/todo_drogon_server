@@ -1,6 +1,7 @@
 #pragma once
 #include "form_group.h"
 namespace openproj {
+namespace models {
 namespace TypeN {
 class QueryGroup : public TypeN::FormGroup {
 //  MEMBER_PREFIX = 'query_'.freeze
@@ -40,5 +41,6 @@ class QueryGroup : public TypeN::FormGroup {
 //    [members]
 //  }
 };
+}
 }
 }

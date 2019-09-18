@@ -1,6 +1,7 @@
 #pragma once
 #include "../activity/base_activity_provider.h"
 namespace openproj {
+namespace models {
 namespace Activity {
 class WorkPackageActivityProvider : public Activity::BaseActivityProvider {
 //  acts_as_activity_provider type: 'work_packages',
@@ -59,5 +60,6 @@ class WorkPackageActivityProvider : public Activity::BaseActivityProvider {
 //    (version > 1) ? "note-#{version - 1}" : ''
 //  }
 };
+}
 }
 }

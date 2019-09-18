@@ -1,10 +1,11 @@
 #pragma once
 #include "../../../queries/work_packages/columns/work_package_column.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace WorkPackages {
 namespace Columns {
-class CustomFieldColumn : public openproj::Queries::WorkPackages::Columns::WorkPackageColumn {
+class CustomFieldColumn : public openproj::models::Queries::WorkPackages::Columns::WorkPackageColumn {
 //   CustomFieldColumn(custom_field) {
 //    super
 
@@ -73,6 +74,7 @@ class CustomFieldColumn : public openproj::Queries::WorkPackages::Columns::WorkP
 //      .map { |cf| new(cf) }
 //  }
 };
+}
 }
 }
 }

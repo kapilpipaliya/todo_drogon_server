@@ -1,6 +1,7 @@
 #pragma once
 //
 namespace openproj {
+namespace models {
 namespace QueryN::Timelines {
   // extend ActiveSupport::Concern
 
@@ -18,5 +19,6 @@ namespace QueryN::Timelines {
 //      errors.add :timeline_labels, :invalid unless valid_keys
 //    }
 //  }
+}
 }
 }

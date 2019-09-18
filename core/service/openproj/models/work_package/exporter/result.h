@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace WorkPackageN {
 namespace Exporter {
 class Result {
@@ -7,6 +8,7 @@ class Result {
     return false;
   }
 };
+}
 }
 }
 }

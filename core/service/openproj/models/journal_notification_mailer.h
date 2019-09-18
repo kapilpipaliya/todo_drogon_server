@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 class JournalNotificationMailer {
 //  class << self {
 //     void distinguish_journals(journal, send_notification) {
@@ -71,3 +72,4 @@ class JournalNotificationMailer {
 };
 }
 
+}

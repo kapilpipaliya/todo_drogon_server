@@ -1,6 +1,7 @@
 #pragma once
 #include "base_journal.h"
 namespace openproj {
+namespace models {
 namespace JournalN {
 class CustomizableJournal : public JournalN::BaseJournal {
 //  this->table_name = 'customizable_journals'
@@ -11,3 +12,4 @@ class CustomizableJournal : public JournalN::BaseJournal {
 }
 
 //::CustomizableJournal = JournalN::CustomizableJournal
+}

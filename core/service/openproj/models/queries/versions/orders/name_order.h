@@ -1,10 +1,11 @@
 #pragma once
 #include "../../../queries/base_order.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace Versions {
 namespace Orders {
-class NameOrder : public openproj::Queries::BaseOrder {
+class NameOrder : public openproj::models::Queries::BaseOrder {
 //  this->model = Version
 
    void key() {
@@ -23,6 +24,7 @@ class NameOrder : public openproj::Queries::BaseOrder {
 //    ordered
   }
 };
+}
 }
 }
 }

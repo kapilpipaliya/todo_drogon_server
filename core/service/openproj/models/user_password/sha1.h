@@ -5,6 +5,7 @@
 // This is only included for testing hashed passwords and will raise when trying
 // to save new passwords with that strategy.
 namespace openproj {
+namespace models {
 namespace UserPasswordN {
 class SHA1 : public UserPassword {
 //  protected:
@@ -43,5 +44,6 @@ class SHA1 : public UserPassword {
 //    Digest::SHA1.hexdigest(input)
 //  }
 };
+}
 }
 }

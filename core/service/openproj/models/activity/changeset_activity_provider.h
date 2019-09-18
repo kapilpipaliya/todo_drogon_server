@@ -1,6 +1,7 @@
 #pragma once
 #include "base_activity_provider.h"
 namespace openproj {
+namespace models {
 namespace Activity {
 class ChangesetActivityProvider : public Activity::BaseActivityProvider {
 //  acts_as_activity_provider type: 'changesets',
@@ -95,5 +96,6 @@ class ChangesetActivityProvider : public Activity::BaseActivityProvider {
 //    { project_id: event['project_id'], rev: event['revision'] }
 //  }
 };
+}
 }
 }

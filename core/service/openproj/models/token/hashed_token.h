@@ -2,6 +2,7 @@
 //require_dependency 'token/base'
 #include "base.h"
 namespace openproj {
+namespace models {
 namespace Token {
   class HashedToken : public Base {
     // Allow access to the plain value during initial access / creation of the token
@@ -45,5 +46,6 @@ namespace Token {
 //      }
 //    }
   };
+}
 }
 }

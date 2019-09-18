@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace WorkPackageN::Journalized {
   // extend ActiveSupport::Concern
 
@@ -69,5 +70,6 @@ namespace WorkPackageN::Journalized {
 //    register_on_journal_formatter :datetime, :start_date, :due_date
 //    register_on_journal_formatter :plaintext, :subject
 //  }
+}
 }
 }

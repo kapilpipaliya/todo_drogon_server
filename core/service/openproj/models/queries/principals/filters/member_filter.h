@@ -1,10 +1,11 @@
 #pragma once
 #include "../../../queries/principals/filters/principal_filter.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace Principals {
 namespace Filters {
-class MemberFilter : public openproj::Queries::Principals::Filters::PrincipalFilter {
+class MemberFilter : public openproj::models::Queries::Principals::Filters::PrincipalFilter {
    void allowed_values() {
 //    Project.active.all.map { |project|
 //      [project.name, project.id]
@@ -34,6 +35,7 @@ class MemberFilter : public openproj::Queries::Principals::Filters::PrincipalFil
 //    }
   }
 };
+}
 }
 }
 }

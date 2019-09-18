@@ -1,6 +1,7 @@
 #pragma once
 #include "base.h"
 namespace openproj {
+namespace models {
 namespace CustomActions {
 namespace Actions {
 class CustomField : public CustomActions::Actions::Base {
@@ -70,6 +71,7 @@ class CustomField : public CustomActions::Actions::Base {
 
 //  private_class_method :strategy
 };
+}
 }
 }
 }

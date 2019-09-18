@@ -1,6 +1,7 @@
 #pragma once
 //
 namespace openproj {
+namespace models {
 namespace QueryN::Highlighting {
   // extend ActiveSupport::Concern
 
@@ -105,4 +106,5 @@ namespace QueryN::Highlighting {
 //      }
 //    }
   }
+}
 }

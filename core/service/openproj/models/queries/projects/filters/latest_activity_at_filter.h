@@ -1,10 +1,11 @@
 #pragma once
 #include "../../../queries/projects/filters/project_filter.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace Projects {
 namespace Filters {
-class LatestActivityAtFilter : public openproj::Queries::Projects::Filters::ProjectFilter {
+class LatestActivityAtFilter : public openproj::models::Queries::Projects::Filters::ProjectFilter {
 //  this->model = Project.with_latest_activity
 
    void type() {
@@ -36,3 +37,4 @@ class LatestActivityAtFilter : public openproj::Queries::Projects::Filters::Proj
 }
 }
 
+}

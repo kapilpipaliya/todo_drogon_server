@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class Repository : public ActiveRecord::Base {
   // include Redmine::Ciphering
   // include OpenProject::Scm::ManageableRepository
@@ -429,3 +430,4 @@ class Repository : public ActiveRecord::Base {
 };
 }
 
+}

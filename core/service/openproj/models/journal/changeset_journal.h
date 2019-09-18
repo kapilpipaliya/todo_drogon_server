@@ -1,10 +1,12 @@
 #pragma once
 #include "base_journal.h"
 namespace openproj {
+namespace models {
 namespace JournalN {
 class ChangesetJournal : public JournalN::BaseJournal {
 //  this->table_name = 'changeset_journals'
 };
+}
 }
 }
 

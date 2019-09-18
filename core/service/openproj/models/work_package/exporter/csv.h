@@ -1,6 +1,7 @@
 #pragma once
 #include "../exporter/base.h"
 namespace openproj {
+namespace models {
 namespace WorkPackageN {
 namespace Exporter {
 class CSV : public WorkPackageN::Exporter::Base {
@@ -109,6 +110,7 @@ class CSV : public WorkPackageN::Exporter::Base {
 //      .join('; ')
 //  }
 };
+}
 }
 }
 }

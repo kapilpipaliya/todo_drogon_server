@@ -1,6 +1,7 @@
 #pragma once
 #include "base.h"
 namespace openproj {
+namespace models {
 namespace Queries::Operators {
   class ClosedWorkPackages : public Base {
 //    label 'closed_work_packages'
@@ -11,5 +12,6 @@ namespace Queries::Operators {
 //      "#{Status.table_name}.is_closed=#{connection.quoted_true}"
 //    }
   };
+}
 }
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "../menu_item.h"
 namespace openproj {
+namespace models {
 namespace MenuItems {
 class QueryMenuItem : public MenuItem {
   // belongs_to :query, foreign_key: 'navigatable_id'
@@ -9,5 +10,6 @@ class QueryMenuItem : public MenuItem {
 //    "#{name}-#{id}".to_sym
   }
 };
+}
 }
 }

@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 class WatcherNotificationMailer {
 //  class << self {
 //     void handle_watcher(watcher, watcher_setter) {
@@ -47,3 +48,4 @@ class WatcherNotificationMailer {
 };
 }
 
+}

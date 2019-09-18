@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class AttributeHelpText : public ActiveRecord::Base {
    void available_types() {
 //    subclasses.map { |child| child.name.demodulize }
@@ -45,4 +46,5 @@ class AttributeHelpText : public ActiveRecord::Base {
 }
 
 
+}
 //require_dependency 'attribute_help_text/work_package'

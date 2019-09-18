@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace WorkPackageN::Ancestors {
   // extend ActiveSupport::Concern
 
@@ -57,5 +58,6 @@ namespace WorkPackageN::Ancestors {
 //        .order(Arel.sql('relations.hierarchy DESC'))
     }
   };
+}
 }
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class Workflow : public ActiveRecord::Base {
   // belongs_to :role
   // belongs_to :old_status, class_name: 'Status', foreign_key: 'old_status_id'
@@ -111,4 +112,5 @@ class Workflow : public ActiveRecord::Base {
 //    }
 //  }
 };
+}
 }

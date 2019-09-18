@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace CustomActions::Actions::Strategies::Boolean {
   // include CustomActions::ValidateAllowedValue
 
@@ -18,5 +19,6 @@ namespace CustomActions::Actions::Strategies::Boolean {
 //    validate_allowed_value(errors, :actions)
 //    super
 //  }
+}
 }
 }

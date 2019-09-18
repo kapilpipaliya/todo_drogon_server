@@ -2,6 +2,7 @@
 
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class Type : public ActiveRecord::Base {
   // extend Pagination::Model
 
@@ -108,3 +109,4 @@ class Type : public ActiveRecord::Base {
 };
 }
 
+}

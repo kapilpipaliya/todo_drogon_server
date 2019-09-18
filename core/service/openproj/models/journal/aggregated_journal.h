@@ -12,6 +12,7 @@
 //  * in case an older row had notes, take the notes from the older row, since they shall not
 //    be dropped
 namespace openproj {
+namespace models {
 namespace JournalN {
 class AggregatedJournal {
 //  class << self {
@@ -393,5 +394,6 @@ class AggregatedJournal {
 
 //  attr_reader :journal
 };
+}
 }
 }

@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Queries::Projects {
 //  register = ::Queries::Register
 //  filters = ::Queries::Projects::Filters
@@ -21,5 +22,6 @@ namespace Queries::Projects {
 //  register.order query, orders::LatestActivityAtOrder
 //  register.order query, orders::RequiredDiskSpaceOrder
 //  register.order query, orders::CustomFieldOrder
+}
 }
 }

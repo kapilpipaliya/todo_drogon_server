@@ -4,6 +4,7 @@
 //#include "queries/operators"
 
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace Filters {
 class Base {
@@ -176,4 +177,5 @@ class Base {
 }
 }
 
+}
 #endif

@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Queries::WorkPackages {
 //  filters_module = Queries::WorkPackages::Filter
 //  register = Queries::Register
@@ -55,5 +56,6 @@ namespace Queries::WorkPackages {
 //  register.column Query, columns_module::CustomFieldColumn
 //  register.column Query, columns_module::RelationToTypeColumn
 //  register.column Query, columns_module::RelationOfTypeColumn
+}
 }
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "format_strategy.h"
 namespace openproj {
+namespace models {
 namespace CustomValueN {
 class StringStrategy : public CustomValueN::FormatStrategy {
    void typed_value() {
@@ -9,5 +10,6 @@ class StringStrategy : public CustomValueN::FormatStrategy {
 
    void validate_type_of_value() {}
 };
+}
 }
 }

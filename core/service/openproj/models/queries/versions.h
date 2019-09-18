@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Queries::Versions {
 //  register = ::Queries::Register
 //  filters = ::Queries::Versions::Filters
@@ -9,5 +10,6 @@ namespace Queries::Versions {
 //  register.filter query, filters::SharingFilter
 
 //  register.order query, orders::NameOrder
+}
 }
 }

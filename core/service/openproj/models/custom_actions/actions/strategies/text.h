@@ -1,5 +1,6 @@
 #pragma once
-namespace openproj{
+namespace openproj {
+namespace models {
 namespace CustomActions::Actions::Strategies::Text {
   // include CustomActions::Actions::Strategies::ValuesToString
 
@@ -7,4 +8,5 @@ namespace CustomActions::Actions::Strategies::Text {
 //    :text_property
   }
 };
+}
 }

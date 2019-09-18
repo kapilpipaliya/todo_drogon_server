@@ -1,6 +1,7 @@
 #pragma once
 #include "base.h"
 namespace openproj {
+namespace models {
 namespace Queries::Operators {
   class LessOrEqual : public Base {
 //    label 'less_or_equal'
@@ -10,5 +11,6 @@ namespace Queries::Operators {
 //      "#{db_table}.#{db_field} <= #{values.first.to_f}"
 //    }
   };
+}
 }
 }

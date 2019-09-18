@@ -1,10 +1,11 @@
 #pragma once
 #include "../../../queries/work_packages/filter/work_package_filter.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace WorkPackages {
 namespace Filter {
-class DoneRatioFilter : public openproj::Queries::WorkPackages::Filter::WorkPackageFilter {
+class DoneRatioFilter : public openproj::models::Queries::WorkPackages::Filter::WorkPackageFilter {
    void type() {
 //    :integer
   }
@@ -14,3 +15,4 @@ class DoneRatioFilter : public openproj::Queries::WorkPackages::Filter::WorkPack
 }
 }
 
+}

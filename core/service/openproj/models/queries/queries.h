@@ -3,7 +3,8 @@
 // e.g get all queries that belong to a specific project or
 // all projects that are global
 
-namespace openproj{
+namespace openproj {
+namespace models {
 namespace Queries::Queries {
 //  filters_ns = Queries::Queries::Filters
 //  query_ns = Queries::Queries::QueryQuery
@@ -14,5 +15,6 @@ namespace Queries::Queries {
 //  register.filter query_ns, filters_ns::HiddenFilter
 //  register.filter query_ns, filters_ns::UpdatedAtFilter
 //  register.filter query_ns, filters_ns::IdFilter
+}
 }
 }

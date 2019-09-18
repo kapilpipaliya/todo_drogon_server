@@ -1,6 +1,7 @@
 #pragma once
 #include "base_strategy.h"
 namespace openproj {
+namespace models {
 namespace Queries::Filters::Strategies {
   class EmptyValue : public BaseStrategy {
      void validate() {
@@ -11,5 +12,6 @@ namespace Queries::Filters::Strategies {
 //      }
     }
   };
+}
 }
 }

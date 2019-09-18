@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 //class Setting {
 
   //
@@ -14,4 +15,5 @@ namespace openproj {
 //    }
 //  }
 //};
+}
 }

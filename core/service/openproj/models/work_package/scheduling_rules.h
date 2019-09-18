@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace WorkPackageN::SchedulingRules {
   // extend ActiveSupport::Concern
 
@@ -67,5 +68,6 @@ namespace WorkPackageN::SchedulingRules {
    void own_follows_relations() {
 //    Relation.where(from_id: this->id).follows
   }
+}
 }
 }

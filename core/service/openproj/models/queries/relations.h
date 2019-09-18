@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Queries {
   namespace Relations {
 //    register = ::Queries::Register
@@ -15,4 +16,5 @@ namespace Queries {
 //    register.order query, ::Queries::Relations::Orders::DefaultOrder
   }
 };
+}
 }

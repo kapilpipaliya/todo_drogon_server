@@ -1,9 +1,10 @@
 #pragma once
 #include "../base_query.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace TimeEntries {
-class TimeEntryQuery : public openproj::Queries::BaseQuery {
+class TimeEntryQuery : public openproj::models::Queries::BaseQuery {
    void model() {
 //    TimeEntry
   }
@@ -16,3 +17,4 @@ class TimeEntryQuery : public openproj::Queries::BaseQuery {
 }
 }
 
+}

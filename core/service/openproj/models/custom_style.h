@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class CustomStyle : public ActiveRecord::Base {
 //  mount_uploader :logo, OpenProject::Configuration.file_uploader
 //  mount_uploader :favicon, OpenProject::Configuration.file_uploader
@@ -35,3 +36,4 @@ class CustomStyle : public ActiveRecord::Base {
 };
 }
 
+}

@@ -1,6 +1,7 @@
 #pragma once
 #include "base_activity_provider.h"
 namespace openproj {
+namespace models {
 namespace Activity {
 class MessageActivityProvider : public Activity::BaseActivityProvider {
 //  acts_as_activity_provider type: 'messages',
@@ -63,5 +64,6 @@ class MessageActivityProvider : public Activity::BaseActivityProvider {
 //    }
 //  }
 };
+}
 }
 }

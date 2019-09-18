@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace CustomActions {
 namespace Conditions {
 class Project : public CustomActions::Conditions::Base {
@@ -16,6 +17,7 @@ class Project : public CustomActions::Conditions::Base {
 //      .map { |u| [u.id, u.name] }
   }
 };
+}
 }
 }
 }

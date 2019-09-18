@@ -1,10 +1,11 @@
 #pragma once
 #include "../../../queries/work_packages/columns/relation_column.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace WorkPackages {
 namespace Columns {
-class RelationToTypeColumn : public openproj::Queries::WorkPackages::Columns::RelationColumn {
+class RelationToTypeColumn : public openproj::models::Queries::WorkPackages::Columns::RelationColumn {
 //   RelationToTypeColumn(type) {
 //    super
 
@@ -31,6 +32,7 @@ class RelationToTypeColumn : public openproj::Queries::WorkPackages::Columns::Re
 //    }.map { |type| new(type) }
 //  }
 };
+}
 }
 }
 }

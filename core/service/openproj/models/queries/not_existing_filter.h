@@ -1,8 +1,9 @@
 #pragma once
 #include "filters/base.h"
 namespace openproj {
+namespace models {
 namespace Queries {
-class NotExistingFilter : public openproj::Queries::Filters::Base {
+class NotExistingFilter : public openproj::models::Queries::Filters::Base {
 //   void available?() {
 //    false
 //  }
@@ -53,5 +54,6 @@ class NotExistingFilter : public openproj::Queries::Filters::Base {
 //    nil
   }
 };
+}
 }
 }

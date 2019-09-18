@@ -1,6 +1,7 @@
 #pragma once
 #include "base.h"
 namespace openproj {
+namespace models {
 namespace Queries::Operators {
   class BooleanNotEquals : public Base {
 //    label 'not_equals'
@@ -18,5 +19,6 @@ namespace Queries::Operators {
 //      }
 //    }
   };
+}
 }
 }

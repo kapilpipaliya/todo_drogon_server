@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class Message : public ActiveRecord::Base {
   // include OpenProject::JournalN::AttachmentHelper
 
@@ -133,3 +134,4 @@ class Message : public ActiveRecord::Base {
 };
 }
 
+}

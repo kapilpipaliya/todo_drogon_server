@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Concerns {
   namespace VirtualAttribute {
     // extend ActiveSupport::Concern
@@ -78,6 +79,7 @@ namespace Concerns {
 //      }
 //    }
 //  }
+}
 }
 }
 }

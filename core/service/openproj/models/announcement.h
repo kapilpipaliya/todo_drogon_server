@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class Announcement : public ActiveRecord::Base {
   // scope :active,  -> { where(active: true) }
   // scope :current, -> { where('show_until >= ?', Date.today) }
@@ -27,4 +28,5 @@ class Announcement : public ActiveRecord::Base {
 //                        active: false
   }
 };
+}
 }

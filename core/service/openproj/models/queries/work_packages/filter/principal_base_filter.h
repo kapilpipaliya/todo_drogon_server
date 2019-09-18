@@ -1,10 +1,11 @@
 #pragma once
 #include "work_package_filter.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace WorkPackages {
 namespace Filter {
-class PrincipalBaseFilter  : openproj::Queries::WorkPackages::Filter::WorkPackageFilter {
+class PrincipalBaseFilter  : openproj::models::Queries::WorkPackages::Filter::WorkPackageFilter {
   // include MeValueFilterMixin
 
    void allowed_values() {
@@ -41,6 +42,7 @@ class PrincipalBaseFilter  : openproj::Queries::WorkPackages::Filter::WorkPackag
 //    this->principal_loader ||= ::Queries::WorkPackages::Filter::PrincipalLoader.new(project)
   }
 };
+}
 }
 }
 }

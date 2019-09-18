@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class Change : public ActiveRecord::Base {
   // belongs_to :changeset
 
@@ -29,3 +30,4 @@ class Change : public ActiveRecord::Base {
 };
 }
 
+}

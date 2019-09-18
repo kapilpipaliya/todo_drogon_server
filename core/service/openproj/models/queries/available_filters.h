@@ -1,7 +1,8 @@
 #pragma once
 //require_dependency 'queries/filters'
 
-namespace openproj{
+namespace openproj {
+namespace models {
 namespace Queries::AvailableFilters {
 //   void included(base) {
 //    base.extend(ClassMethods)
@@ -95,6 +96,7 @@ namespace Queries::AvailableFilters {
 //   void registered_filters() {
 //    this->class.registered_filters
 //  }
+}
 }
 }
 }

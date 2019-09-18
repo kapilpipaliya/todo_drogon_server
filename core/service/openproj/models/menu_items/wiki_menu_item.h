@@ -1,6 +1,7 @@
 #pragma once
 #include "../menu_item.h"
 namespace openproj {
+namespace models {
 namespace MenuItems {
 class WikiMenuItem : public MenuItem {
   // belongs_to :wiki, foreign_key: 'navigatable_id'
@@ -47,5 +48,6 @@ class WikiMenuItem : public MenuItem {
 //    "entry-item-#{identifier}".to_sym
 //  }
 };
+}
 }
 }

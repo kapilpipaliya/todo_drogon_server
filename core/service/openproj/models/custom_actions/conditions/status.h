@@ -1,6 +1,7 @@
 #pragma once
 #include "base.h"
 namespace openproj {
+namespace models {
 namespace CustomActions {
 namespace Conditions {
 class Status : public CustomActions::Conditions::Base {
@@ -17,6 +18,7 @@ class Status : public CustomActions::Conditions::Base {
 //      .map { |u| [u.id, u.name] }
   }
 };
+}
 }
 }
 }

@@ -1,10 +1,11 @@
 #pragma once
 #include "../../../queries/relations/filters/relation_filter.h"
 namespace openproj {
+namespace models {
 namespace Queries {
   namespace Relations {
     namespace Filters {
-      class TypeFilter : public openproj::Queries::Relations::Filters::RelationFilter {
+      class TypeFilter : public openproj::models::Queries::Relations::Filters::RelationFilter {
          void allowed_values() {
 //          ::Relation::TYPES.map { |_, value|
 //            [I18n.t(value[:name]), value[:sym]]
@@ -31,5 +32,6 @@ namespace Queries {
       };
     }
   }
+}
 }
 }

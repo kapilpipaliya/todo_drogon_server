@@ -1,6 +1,7 @@
 #pragma once
 #include "base.h"
 namespace openproj {
+namespace models {
 namespace CustomActions {
 namespace Conditions {
 class Type : public CustomActions::Conditions::Base {
@@ -20,3 +21,4 @@ class Type : public CustomActions::Conditions::Base {
 }
 }
 
+}

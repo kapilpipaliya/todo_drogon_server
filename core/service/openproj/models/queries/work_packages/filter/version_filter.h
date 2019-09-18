@@ -1,10 +1,11 @@
 #pragma once
 #include "../../../queries/work_packages/filter/work_package_filter.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace WorkPackages {
 namespace Filter {
-class VersionFilter  : openproj::Queries::WorkPackages::Filter::WorkPackageFilter {
+class VersionFilter  : openproj::models::Queries::WorkPackages::Filter::WorkPackageFilter {
 
    void allowed_values() {
 //    this->allowed_values ||= begin
@@ -44,6 +45,7 @@ class VersionFilter  : openproj::Queries::WorkPackages::Filter::WorkPackageFilte
 //    }
   }
 };
+}
 }
 }
 }

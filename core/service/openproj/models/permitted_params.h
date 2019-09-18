@@ -2,6 +2,7 @@
 //#include "permitted_params/allowed_settings"
 
 namespace openproj {
+namespace models {
 class PermittedParams {
   // This class intends to provide a method for all params hashes coming from the
   // client and that are used for mass assignment.
@@ -626,3 +627,4 @@ class PermittedParams {
 };
 }
 
+}

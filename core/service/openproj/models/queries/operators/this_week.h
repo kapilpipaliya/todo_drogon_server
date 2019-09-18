@@ -1,6 +1,7 @@
 #pragma once
 #include "base.h"
 namespace openproj {
+namespace models {
 namespace Queries::Operators {
   class ThisWeek : public Base {
 //    label 'this_week'
@@ -28,5 +29,6 @@ namespace Queries::Operators {
 //      }
 //    }
   };
+}
 }
 }

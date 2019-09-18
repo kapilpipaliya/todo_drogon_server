@@ -3,6 +3,7 @@
 //#include "open_project/scm/adapters/subversion"
 
 namespace openproj {
+namespace models {
 namespace RepositoryN {
 class Subversion : public Repository {
   // validates_presence_of :url
@@ -114,5 +115,6 @@ class Subversion : public Repository {
 //    this->relative_url ||= url.gsub(Regexp.new("^#{Regexp.escape(root_url || scm.root_url)}", Regexp::IGNORECASE), '')
   }
 };
+}
 }
 }

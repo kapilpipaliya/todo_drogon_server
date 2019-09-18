@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class CustomField : public ActiveRecord::Base {
   // include CustomField::OrderStatements
 
@@ -287,3 +288,4 @@ class CustomField : public ActiveRecord::Base {
 };
 }
 
+}

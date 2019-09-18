@@ -1,5 +1,6 @@
 #pragma once
-namespace openproj{
+namespace openproj {
+namespace models {
 namespace CustomActions::Actions::Strategies::ValuesToString {
 //   void values=(values) {
 //    super(Array(values).map { |v| to_string_or_nil(v) }.uniq)
@@ -14,5 +15,6 @@ namespace CustomActions::Actions::Strategies::ValuesToString {
 //  rescue TypeError, ArgumentError
 //    nil
 //  }
+}
 }
 }

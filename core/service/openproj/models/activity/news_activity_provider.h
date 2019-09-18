@@ -1,6 +1,7 @@
 #pragma once
 #include "base_activity_provider.h"
 namespace openproj {
+namespace models {
 namespace Activity {
 class NewsActivityProvider : public Activity::BaseActivityProvider {
 //  acts_as_activity_provider type: 'news',
@@ -40,5 +41,6 @@ class NewsActivityProvider : public Activity::BaseActivityProvider {
 //    event['journable_id']
 //  }
 };
+}
 }
 }

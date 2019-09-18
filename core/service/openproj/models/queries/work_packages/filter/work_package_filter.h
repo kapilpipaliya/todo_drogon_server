@@ -2,10 +2,11 @@
 
 #include "../../../queries/filters/base.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace WorkPackages {
 namespace Filter {
-class WorkPackageFilter : public openproj::Queries::Filters::Base {
+class WorkPackageFilter : public openproj::models::Queries::Filters::Base {
   // include ::Queries::Filters::Serializable
 
 //  this->model = WorkPackage
@@ -35,3 +36,4 @@ class WorkPackageFilter : public openproj::Queries::Filters::Base {
 }
 }
 
+}

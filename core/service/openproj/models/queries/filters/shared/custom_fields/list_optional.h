@@ -1,7 +1,8 @@
 #pragma once
 #include "./base.h"
 
-namespace openproj{
+namespace openproj {
+namespace models {
 namespace Queries::Filters::Shared {
   namespace CustomFields {
     class ListOptional : public Base {
@@ -33,3 +34,4 @@ namespace Queries::Filters::Shared {
   }
 }
   }
+}

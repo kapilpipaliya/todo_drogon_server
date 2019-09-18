@@ -1,6 +1,7 @@
 #pragma once
 #include "base_strategy.h"
 namespace openproj {
+namespace models {
 namespace Queries::Filters::Strategies {
   class Relation : public BaseStrategy {
     // delegate :allowed_values_subset,
@@ -31,5 +32,6 @@ namespace Queries::Filters::Strategies {
 //      values.reject(&:blank?).length > 1
     }
   };
+}
 }
 }

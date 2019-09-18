@@ -1,5 +1,6 @@
 #pragma once
-namespace openproj{
+namespace openproj {
+namespace models {
 namespace ProjectN::Storage {
 //   void included(base) {
 //    base.send :extend, StorageMethods
@@ -84,5 +85,6 @@ namespace ProjectN::Storage {
 //      SQL
     }
   }
+}
 }
 }

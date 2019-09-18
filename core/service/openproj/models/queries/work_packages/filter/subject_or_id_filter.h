@@ -1,10 +1,11 @@
 #pragma once
 #include "../../../queries/work_packages/filter/work_package_filter.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace WorkPackages {
 namespace Filter {
-class SubjectOrIdFilter  : openproj::Queries::WorkPackages::Filter::WorkPackageFilter {
+class SubjectOrIdFilter  : openproj::models::Queries::WorkPackages::Filter::WorkPackageFilter {
   // include Queries::WorkPackages::Filter::OrFilterForWpMixin
 
 //  CONTAINS_OPERATOR = '~'.freeze
@@ -43,6 +44,7 @@ class SubjectOrIdFilter  : openproj::Queries::WorkPackages::Filter::WorkPackageF
 //    FILTERS
   }
 };
+}
 }
 }
 }

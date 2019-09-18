@@ -1,6 +1,7 @@
 #pragma once
 #include "format_strategy.h"
-namespace openproj{
+namespace openproj {
+namespace models {
 namespace  CustomValueN {
 class
   FormattableStrategy : CustomValueN::FormatStrategy {
@@ -15,5 +16,6 @@ class
 
    void validate_type_of_value() {}
 };
+}
 }
 }

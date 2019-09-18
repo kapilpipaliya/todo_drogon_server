@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Queries::Filters::Shared::CustomFieldFilter {
 //   void included(base) {
 //    base.extend(ClassMethods)
@@ -77,5 +78,6 @@ namespace Queries::Filters::Shared::CustomFieldFilter {
 //      }
 //    }
   }
+}
 }
 }

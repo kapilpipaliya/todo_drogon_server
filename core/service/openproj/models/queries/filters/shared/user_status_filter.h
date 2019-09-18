@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Queries::Filters::Shared::UserStatusFilter {
 //   void included(base) {
 //    base.include(InstanceMethods)
@@ -36,5 +37,6 @@ namespace Queries::Filters::Shared::UserStatusFilter {
 //      :status
     }
   }
+}
 }
 }

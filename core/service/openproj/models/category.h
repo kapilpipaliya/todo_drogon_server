@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class Category : public ActiveRecord::Base {
   // belongs_to :project
   // belongs_to :assigned_to, class_name: 'Principal', foreign_key: 'assigned_to_id'
@@ -36,3 +37,4 @@ class Category : public ActiveRecord::Base {
 };
 }
 
+}

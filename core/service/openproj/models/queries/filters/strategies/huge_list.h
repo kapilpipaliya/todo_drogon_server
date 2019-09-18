@@ -1,6 +1,7 @@
 #pragma once
 #include "list.h"
 namespace openproj {
+namespace models {
 namespace Queries::Filters::Strategies {
   class HugeList : public List {
     // delegate :allowed_values_subset,
@@ -19,5 +20,6 @@ namespace Queries::Filters::Strategies {
 //      filter.values = allowed_values_subset
     }
   };
+}
 }
 }

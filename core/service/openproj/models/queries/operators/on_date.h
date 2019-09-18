@@ -1,6 +1,7 @@
 #pragma once
 #include "base.h"
 namespace openproj {
+namespace models {
 namespace Queries::Operators {
   class OnDate : public Base {
 //    label 'on'
@@ -15,5 +16,6 @@ namespace Queries::Operators {
 //                        Date.parse(values.first))
 //    }
   };
+}
 }
 }

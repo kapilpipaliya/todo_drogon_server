@@ -3,6 +3,7 @@
 //#include "diff"
 
 namespace openproj {
+namespace models {
 class WikiPage : public ActiveRecord::Base {
   // belongs_to :wiki, touch: true
   // has_one :project, through: :wiki
@@ -232,8 +233,10 @@ class WikiPage : public ActiveRecord::Base {
   }
 };
 }
+}
 
 //namespace openproj {
+//namespace models {
 //class WikiDiff : public Redmine::Helpers::Diff {
 //  attr_reader :content_to, :content_from
 
@@ -246,6 +249,7 @@ class WikiPage : public ActiveRecord::Base {
 //}
 
 //namespace openproj {
+//namespace models {
 //class WikiAnnotate {
 //  attr_reader :lines, :content
 

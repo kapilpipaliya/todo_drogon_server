@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class Journal : public ActiveRecord::Base {
 //  this->table_name = 'journals'
 
@@ -128,3 +129,4 @@ class Journal : public ActiveRecord::Base {
 };
 }
 
+}

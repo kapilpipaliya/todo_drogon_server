@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 //class Setting {
 //  namespace Callbacks {
     // register a callback for a setting named #name
@@ -27,4 +28,5 @@ namespace openproj {
 //      OpenProject::Notifications
 //    }
 //  };
+}
 }

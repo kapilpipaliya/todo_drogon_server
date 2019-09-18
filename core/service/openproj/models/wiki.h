@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class Wiki : public ActiveRecord::Base {
   // belongs_to :project
   // has_many :pages, -> {
@@ -93,4 +94,5 @@ class Wiki : public ActiveRecord::Base {
 //    page
 //  }
 };
+}
 }

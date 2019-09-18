@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Queries::Operators {
   namespace DateRangeClauses {
     // Returns a SQL clause for a date or datetime field for a relative range from
@@ -31,5 +32,6 @@ namespace Queries::Operators {
 //      connection.quoted_date(value.to_time(:utc).end_of_day)
 //    }
   }
+}
 }
 }

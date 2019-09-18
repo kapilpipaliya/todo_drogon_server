@@ -2,10 +2,11 @@
 #include "../../../queries/roles/filters/role_filter.h"
 // This does filter for whether a role can be assigned to a member.
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace Roles {
 namespace Filters {
-class GrantableFilter : public openproj::Queries::Roles::Filters::RoleFilter {
+class GrantableFilter : public openproj::models::Queries::Roles::Filters::RoleFilter {
    void type() {
 //    :list
   }
@@ -29,6 +30,7 @@ class GrantableFilter : public openproj::Queries::Roles::Filters::RoleFilter {
 //     [I18n.t(:general_text_no), OpenProject::Database::DB_VALUE_FALSE]]
   }
 };
+}
 }
 }
 }

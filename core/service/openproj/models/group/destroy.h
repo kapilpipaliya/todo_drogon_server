@@ -1,5 +1,6 @@
 #pragma once
-namespace openproj{
+namespace openproj {
+namespace models {
 namespace GroupN::Destroy {
   //
   // Instead of firing of separate queries for each and every Member and MemberRole
@@ -104,5 +105,6 @@ namespace GroupN::Destroy {
 //      super // destroy the actual, now empty group
 //    }
   }
+}
 }
 }

@@ -2,10 +2,11 @@
 #include "../../base_order.h"
 
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace TimeEntries {
 namespace Orders {
-class DefaultOrder : public openproj::Queries::BaseOrder {
+class DefaultOrder : public openproj::models::Queries::BaseOrder {
 //  this->model = TimeEntry
 
    void key() {
@@ -17,3 +18,4 @@ class DefaultOrder : public openproj::Queries::BaseOrder {
 }
 }
 
+}

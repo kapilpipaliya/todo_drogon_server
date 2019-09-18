@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Queries::AvailableOrders {
 //   void order_for(key) {
 //    (find_registered_order(key) || Queries::NotExistingOrder).new(key)
@@ -17,4 +18,5 @@ namespace Queries::AvailableOrders {
 //    Queries::Register.orders[this->class]
   }
 };
+}
 }

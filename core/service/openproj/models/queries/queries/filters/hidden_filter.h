@@ -1,10 +1,11 @@
 #pragma once
 #include "query_filter.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace Queries {
 namespace Filters {
-class HiddenFilter : public openproj::Queries::Queries::Filters::QueryFilter {
+class HiddenFilter : public openproj::models::Queries::Queries::Filters::QueryFilter {
    void key() {
 //    :hidden
   }
@@ -29,3 +30,4 @@ class HiddenFilter : public openproj::Queries::Queries::Filters::QueryFilter {
 }
 }
 
+}

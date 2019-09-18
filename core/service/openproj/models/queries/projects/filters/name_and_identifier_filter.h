@@ -1,10 +1,11 @@
 #pragma once
 #include "../../../queries/projects/filters/project_filter.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace Projects {
 namespace Filters {
-class NameAndIdentifierFilter : public openproj::Queries::Projects::Filters::ProjectFilter {
+class NameAndIdentifierFilter : public openproj::models::Queries::Projects::Filters::ProjectFilter {
    void type() {
 //    :string
   }
@@ -67,6 +68,7 @@ class NameAndIdentifierFilter : public openproj::Queries::Projects::Filters::Pro
 //    conditions
 //  }
 };
+}
 }
 }
 }

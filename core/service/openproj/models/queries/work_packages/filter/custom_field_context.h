@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Queries::WorkPackages::Filter::CustomFieldContext {
 //  class << self {
 //     void custom_field_class() {
@@ -45,5 +46,6 @@ namespace Queries::WorkPackages::Filter::CustomFieldContext {
 //      joins
 //    }
 //  }
+}
 }
 }

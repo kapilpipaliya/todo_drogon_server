@@ -1,6 +1,7 @@
 #pragma once
 #include "base.h"
 namespace openproj {
+namespace models {
 namespace Queries::Operators {
   class Contains : public Base {
 //    label 'contains'
@@ -16,5 +17,6 @@ namespace Queries::Operators {
 //        "'%#{like_query}%'"
 //    }
   };
+}
 }
 }

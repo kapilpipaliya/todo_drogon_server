@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Queries::Register {
 //  class << self {
 //     void filter(query, filter) {
@@ -30,5 +31,6 @@ namespace Queries::Register {
 //                  :orders,
 //                  :columns
 //  }
+}
 }
 }

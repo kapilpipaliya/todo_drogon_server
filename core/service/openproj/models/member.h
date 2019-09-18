@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class Member : public ActiveRecord::Base {
   // extend DeprecatedAlias
 
@@ -233,3 +234,4 @@ class Member : public ActiveRecord::Base {
 };
 }
 
+}

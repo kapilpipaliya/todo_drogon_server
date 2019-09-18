@@ -1,11 +1,12 @@
 #pragma once
 #include "../../../queries/work_packages/filter/work_package_filter.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace WorkPackages {
 namespace Filter {
 class CategoryFilter  :
-  openproj::Queries::WorkPackages::Filter::WorkPackageFilter {
+  openproj::models::Queries::WorkPackages::Filter::WorkPackageFilter {
    void allowed_values() {
 //    all_project_categories.map { |s| [s.name, s.id.to_s] }
   }
@@ -44,3 +45,4 @@ class CategoryFilter  :
 }
 }
 
+}

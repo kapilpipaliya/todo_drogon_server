@@ -1,10 +1,11 @@
 #pragma once
 #include "../../base_order.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace Users {
 namespace Orders {
-class GroupOrder : public openproj::Queries::BaseOrder {
+class GroupOrder : public openproj::models::Queries::BaseOrder {
 //  this->model = User
 
    void key() {
@@ -30,3 +31,4 @@ class GroupOrder : public openproj::Queries::BaseOrder {
 }
 }
 
+}

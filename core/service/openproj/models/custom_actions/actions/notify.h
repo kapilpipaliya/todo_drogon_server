@@ -1,6 +1,7 @@
 #pragma once
 #include "base.h"
 namespace openproj {
+namespace models {
 namespace CustomActions {
 namespace Actions {
 class Notify : public CustomActions::Actions::Base {
@@ -42,6 +43,7 @@ class Notify : public CustomActions::Actions::Base {
 //      .order_by_name
   }
 };
+}
 }
 }
 }

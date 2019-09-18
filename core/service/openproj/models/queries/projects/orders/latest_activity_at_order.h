@@ -1,10 +1,11 @@
 #pragma once
 #include "../../../queries/base_order.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace Projects {
 namespace Orders {
-class LatestActivityAtOrder : public openproj::Queries::BaseOrder {
+class LatestActivityAtOrder : public openproj::models::Queries::BaseOrder {
 //  this->model = Project
 
    void key() {
@@ -19,6 +20,7 @@ class LatestActivityAtOrder : public openproj::Queries::BaseOrder {
 //    }
   }
 };
+}
 }
 }
 }

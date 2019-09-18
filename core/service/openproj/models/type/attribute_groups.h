@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace TypeN::AttributeGroups {
   // extend ActiveSupport::Concern
 
@@ -218,3 +219,4 @@ namespace TypeN::AttributeGroups {
 };
 }
 
+}

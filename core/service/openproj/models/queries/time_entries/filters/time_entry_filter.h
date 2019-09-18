@@ -1,10 +1,11 @@
 #pragma once
 #include "../../../queries/filters/base.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace TimeEntries {
 namespace Filters {
-class TimeEntryFilter : public openproj::Queries::Filters::Base {
+class TimeEntryFilter : public openproj::models::Queries::Filters::Base {
 //  this->model = TimeEntry
 
    void human_name() {
@@ -16,3 +17,4 @@ class TimeEntryFilter : public openproj::Queries::Filters::Base {
 }
 }
 
+}

@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace TypeN {
 class FormGroup {
   // attr_accessor :key,
@@ -27,5 +28,6 @@ class FormGroup {
 
 //   virtual void active_members(_project) = 0;
 };
+}
 }
 }

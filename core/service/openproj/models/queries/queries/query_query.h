@@ -1,9 +1,10 @@
 #pragma once
 #include "../base_query.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace Queries {
-class QueryQuery : public openproj::Queries::BaseQuery {
+class QueryQuery : public openproj::models::Queries::BaseQuery {
    void model() {
 //    Query
   }
@@ -12,6 +13,7 @@ class QueryQuery : public openproj::Queries::BaseQuery {
 //    Query.visible(to: user)
   }
 };
+}
 }
 }
 }

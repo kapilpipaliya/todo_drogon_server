@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class Status : public ActiveRecord::Base {
   // extend Pagination::Model
 
@@ -113,3 +114,4 @@ class Status : public ActiveRecord::Base {
 };
 }
 
+}

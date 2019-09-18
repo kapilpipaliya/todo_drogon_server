@@ -1,10 +1,11 @@
 #pragma once
 #include "../../../queries/members/filters/member_filter.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace Members {
 namespace Filters {
-class GroupFilter : public openproj::Queries::Members::Filters::MemberFilter {
+class GroupFilter : public openproj::models::Queries::Members::Filters::MemberFilter {
   // include Queries::Filters::Shared::GroupFilter
 
    void joins() {
@@ -17,6 +18,7 @@ class GroupFilter : public openproj::Queries::Members::Filters::MemberFilter {
 //    scope
   }
 };
+}
 }
 }
 }

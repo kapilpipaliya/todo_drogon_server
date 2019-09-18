@@ -1,6 +1,7 @@
 #pragma once
 #include "ar_object_strategy.h"
 namespace openproj {
+namespace models {
 namespace CustomValueN {
 class ListStrategy : public CustomValueN::ARObjectStrategy {
    void validate_type_of_value() {
@@ -29,5 +30,6 @@ class ListStrategy : public CustomValueN::ARObjectStrategy {
 //    }
 //  }
 };
+}
 }
 }

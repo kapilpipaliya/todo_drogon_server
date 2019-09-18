@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace WorkPackageN::PdfExport::Attachments {
 
   //
@@ -33,5 +34,6 @@ namespace WorkPackageN::PdfExport::Attachments {
 //   void pdf_embeddable?(attachment) {
 //    %w[image/jpeg image/png].include?(attachment.content_type)
 //  }
+}
 }
 }

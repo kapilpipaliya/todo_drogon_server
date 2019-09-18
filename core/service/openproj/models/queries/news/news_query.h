@@ -1,9 +1,10 @@
 #pragma once
 #include "../../queries/base_query.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace News {
-class NewsQuery : public openproj::Queries::BaseQuery {
+class NewsQuery : public openproj::models::Queries::BaseQuery {
    void model() {
 //    News
   }
@@ -12,6 +13,7 @@ class NewsQuery : public openproj::Queries::BaseQuery {
 //    News.visible(User.current)
   }
 };
+}
 }
 }
 }

@@ -1,5 +1,6 @@
 #pragma once
-namespace openproj{
+namespace openproj {
+namespace models {
 namespace CustomActions::Actions::Strategies::ValidateInRange {
    void minimum() {
 //    nil
@@ -42,5 +43,6 @@ namespace CustomActions::Actions::Strategies::ValidateInRange {
 //                 error_symbol: :greater_than_or_equal_to
 //    }
 //  }
+}
 }
 }

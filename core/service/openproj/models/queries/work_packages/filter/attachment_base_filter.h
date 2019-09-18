@@ -1,10 +1,11 @@
 #pragma once
 #include "../../../queries/work_packages/filter/work_package_filter.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace WorkPackages {
 namespace Filter {
-class AttachmentBaseFilter : public openproj::Queries::WorkPackages::Filter::WorkPackageFilter {
+class AttachmentBaseFilter : public openproj::models::Queries::WorkPackages::Filter::WorkPackageFilter {
   // include Queries::WorkPackages::Filter::FilterOnTsvMixin
   // include Queries::WorkPackages::Filter::TextFilterOnJoinMixin
 
@@ -67,3 +68,4 @@ class AttachmentBaseFilter : public openproj::Queries::WorkPackages::Filter::Wor
 }
 }
 
+}

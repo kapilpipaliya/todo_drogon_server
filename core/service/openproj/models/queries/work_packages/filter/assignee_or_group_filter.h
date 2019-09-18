@@ -1,11 +1,12 @@
 #pragma once
 #include "../../../queries/work_packages/filter/principal_base_filter.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace WorkPackages {
 namespace Filter {
 class AssigneeOrGroupFilter  :
-  openproj::Queries::WorkPackages::Filter::PrincipalBaseFilter {
+  openproj::models::Queries::WorkPackages::Filter::PrincipalBaseFilter {
    void allowed_values() {
 //    this->allowed_values ||= begin
 //      values = principal_loader.user_values
@@ -67,3 +68,4 @@ class AssigneeOrGroupFilter  :
 }
 }
 
+}

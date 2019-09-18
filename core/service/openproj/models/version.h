@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class Version : public ActiveRecord::Base {
   // include VersionN::ProjectSharing
 
@@ -217,3 +218,4 @@ class Version : public ActiveRecord::Base {
 };
 }
 
+}

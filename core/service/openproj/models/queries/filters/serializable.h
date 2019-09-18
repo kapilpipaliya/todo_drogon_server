@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Queries {
   namespace Filters {
     namespace Serializable {
@@ -49,4 +50,5 @@ namespace Queries {
       }
     }
   }
+}
 }

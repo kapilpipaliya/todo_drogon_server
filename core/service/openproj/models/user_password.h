@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class UserPassword : public ActiveRecord::Base {
   // belongs_to :user, inverse_of: :passwords
 
@@ -79,3 +80,4 @@ class UserPassword : public ActiveRecord::Base {
 };
 }
 
+}

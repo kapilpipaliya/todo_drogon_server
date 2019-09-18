@@ -1,10 +1,11 @@
 #pragma once
 #include "../../../queries/principals/filters/principal_filter.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace Principals {
 namespace Filters {
-class TypeFilter : public openproj::Queries::Principals::Filters::PrincipalFilter {
+class TypeFilter : public openproj::models::Queries::Principals::Filters::PrincipalFilter {
    void allowed_values() {
 //    [[Group.to_s, Group.to_s],
 //     [User.to_s, User.to_s]]
@@ -31,3 +32,4 @@ class TypeFilter : public openproj::Queries::Principals::Filters::PrincipalFilte
 }
 }
 
+}

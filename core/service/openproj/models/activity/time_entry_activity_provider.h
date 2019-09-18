@@ -1,6 +1,7 @@
 #pragma once
 #include "base_activity_provider.h"
 namespace openproj {
+namespace models {
 namespace Activity {
 class TimeEntryActivityProvider : public Activity::BaseActivityProvider {
 //  acts_as_activity_provider type: 'time_entries',
@@ -65,5 +66,6 @@ class TimeEntryActivityProvider : public Activity::BaseActivityProvider {
 //    }
 //  }
 };
+}
 }
 }

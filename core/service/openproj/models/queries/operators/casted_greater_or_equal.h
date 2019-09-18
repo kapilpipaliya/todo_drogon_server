@@ -1,6 +1,7 @@
 #pragma once
 #include "base.h"
 namespace openproj {
+namespace models {
 namespace Queries::Operators {
   class CastedGreaterOrEqual : public Base {
 //    label 'greater_or_equal'
@@ -12,5 +13,6 @@ namespace Queries::Operators {
 //    }
 //  }
 };
+}
 }
 }

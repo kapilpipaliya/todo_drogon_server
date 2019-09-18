@@ -1,10 +1,11 @@
 #pragma once
 #include "../../../queries/work_packages/columns/work_package_column.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace WorkPackages {
 namespace Columns {
-class PropertyColumn : public openproj::Queries::WorkPackages::Columns::WorkPackageColumn {
+class PropertyColumn : public openproj::models::Queries::WorkPackages::Columns::WorkPackageColumn {
 //   void caption() {
 //    WorkPackage.human_attribute_name(name)
 //  }
@@ -130,3 +131,4 @@ class PropertyColumn : public openproj::Queries::WorkPackages::Columns::WorkPack
 }
 }
 
+}

@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace WorkPackageN::CustomActions {
   // extend ActiveSupport::Concern
 
@@ -12,5 +13,6 @@ namespace WorkPackageN::CustomActions {
 //      }
 //    }
 //  }
+}
 }
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "base.h"
 namespace openproj {
+namespace models {
 namespace CustomActions {
 namespace Conditions {
 class Role : public CustomActions::Conditions::Base {
@@ -59,6 +60,7 @@ class Role : public CustomActions::Conditions::Base {
 //      .map { |u| [u.id, u.name] }
 //  }
 };
+}
 }
 }
 }

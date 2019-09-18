@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace QueryN::Sums {
   // include ActionView::Helpers::NumberHelper
 
@@ -116,5 +117,6 @@ namespace QueryN::Sums {
 //   void column_group_sums() {
 //    query.group_by_column && query.columns.map { |column| grouped_sums(column) }
 //  }
+}
 }
 }

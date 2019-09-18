@@ -1,6 +1,7 @@
 #pragma once
 #include "base.h"
 namespace openproj {
+namespace models {
 namespace CustomActions {
 namespace Actions {
 class AssignedTo : public CustomActions::Actions::Base {
@@ -79,6 +80,7 @@ class AssignedTo : public CustomActions::Actions::Base {
 //    }
   }
 };
+}
 }
 }
 }

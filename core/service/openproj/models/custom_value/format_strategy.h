@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace CustomValueN {
 class FormatStrategy {
 //  attr_reader :custom_value
@@ -44,5 +45,6 @@ class FormatStrategy {
 
   // attr_accessor :memoized_typed_value
 };
+}
 }
 }

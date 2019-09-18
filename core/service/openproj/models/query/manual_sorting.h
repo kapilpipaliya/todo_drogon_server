@@ -1,6 +1,7 @@
 #pragma once
 //
 namespace openproj {
+namespace models {
 namespace QueryN::ManualSorting {
   // extend ActiveSupport::Concern
 
@@ -20,4 +21,5 @@ namespace QueryN::ManualSorting {
 //    // delegate :manual_sorting_column, to: :class
 //  }
 };
+}
 }

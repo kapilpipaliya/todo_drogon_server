@@ -1,10 +1,11 @@
 #pragma once
 #include "../../../queries/columns/base.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace WorkPackages {
 namespace Columns {
-class WorkPackageColumn : public openproj::Queries::Columns::Base {
+class WorkPackageColumn : public openproj::models::Queries::Columns::Base {
   // attr_accessor :highlightable
 //  alias_method :highlightable?, :highlightable
 
@@ -27,6 +28,7 @@ class WorkPackageColumn : public openproj::Queries::Columns::Base {
 //    }
 //  }
 };
+}
 }
 }
 }

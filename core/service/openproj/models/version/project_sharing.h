@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace VersionN::ProjectSharing {
   // Returns all projects the version is available in
    void projects() {
@@ -127,5 +128,6 @@ namespace VersionN::ProjectSharing {
 //    projects_table[:lft].gt(sharing_table[:lft])
 //      .and(projects_table[:rgt].lt(sharing_table[:rgt]))
 //  }
+}
 }
 }

@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace WorkPackageN::Parent {
 //   void prepended(base) {
 //    if (: :saved_change_to_parent_id?) { base.after_save :update_parent_relation, ;}
@@ -131,5 +132,6 @@ namespace WorkPackageN::Parent {
 //      this->parent_object = WorkPackage.find(this->parent_id)
 //    }
   }
+}
 }
 }

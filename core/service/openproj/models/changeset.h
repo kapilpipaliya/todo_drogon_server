@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class Changeset : public ActiveRecord::Base {
   // belongs_to :repository
   // belongs_to :user
@@ -286,3 +287,4 @@ class Changeset : public ActiveRecord::Base {
 };
 }
 
+}

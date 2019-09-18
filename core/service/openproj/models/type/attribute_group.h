@@ -1,6 +1,7 @@
 #pragma once
 #include "form_group.h"
 namespace openproj {
+namespace models {
 namespace TypeN {
 class AttributeGroup : public TypeN::FormGroup {
    void members() {
@@ -30,5 +31,6 @@ class AttributeGroup : public TypeN::FormGroup {
 //    }
 //  }
 };
+}
 }
 }

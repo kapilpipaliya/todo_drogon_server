@@ -1,9 +1,10 @@
 #pragma once
 #include "../../base.h"
 namespace openproj {
+namespace models {
 namespace Queries::Filters::Shared {
   namespace CustomFields {
-    class Base : public openproj::Queries::Filters::Base {
+    class Base : public openproj::models::Queries::Filters::Base {
       // include Queries::Filters::Serializable
 
 //      attr_reader :custom_field
@@ -121,5 +122,6 @@ namespace Queries::Filters::Shared {
 //      }
     };
   }
+}
 }
 }

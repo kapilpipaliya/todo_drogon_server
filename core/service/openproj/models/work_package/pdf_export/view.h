@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace WorkPackageN {
 namespace PdfExport {
 class View {
@@ -77,6 +78,7 @@ class View {
 //    document.font
 //  }
 };
+}
 }
 }
 }

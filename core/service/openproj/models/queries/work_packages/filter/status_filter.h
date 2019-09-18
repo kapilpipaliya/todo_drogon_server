@@ -1,10 +1,11 @@
 #pragma once
 #include "../../../queries/work_packages/filter/work_package_filter.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace WorkPackages {
 namespace Filter {
-class StatusFilter : public openproj::Queries::WorkPackages::Filter::WorkPackageFilter {
+class StatusFilter : public openproj::models::Queries::WorkPackages::Filter::WorkPackageFilter {
    void allowed_values() {
 //    all_statuses.map { |s| [s.name, s.id.to_s] }
   }
@@ -66,6 +67,7 @@ class StatusFilter : public openproj::Queries::WorkPackages::Filter::WorkPackage
 //    }
   }
 };
+}
 }
 }
 }

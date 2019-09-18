@@ -4,6 +4,7 @@
 //
 #include "user.h"
 namespace openproj {
+namespace models {
 class SystemUser : public User {
 //  validate :validate_unique_system_user, on: :create
 
@@ -54,3 +55,4 @@ class SystemUser : public User {
 };
 }
 
+}

@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace WorkPackageN {
 class SpentTime {
   // attr_accessor :user,
@@ -102,5 +103,6 @@ class SpentTime {
 //    this->time_entries_table ||= TimeEntry.arel_table
 //  }
 };
+}
 }
 }

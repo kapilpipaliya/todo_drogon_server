@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class Comment : public ActiveRecord::Base {
   // belongs_to :commented, polymorphic: true, counter_cache: true
   // belongs_to :author, class_name: 'User', foreign_key: 'author_id'
@@ -32,3 +33,4 @@ class Comment : public ActiveRecord::Base {
 };
 }
 
+}

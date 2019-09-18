@@ -3,11 +3,12 @@
 // Filter for all work packages that are (or are not) duplicating work packages with the provided values.
 
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace WorkPackages {
 namespace Filter {
 class DuplicatesFilter  :
-  openproj::Queries::WorkPackages::Filter::WorkPackageFilter {
+  openproj::models::Queries::WorkPackages::Filter::WorkPackageFilter {
 
   // include ::Queries::WorkPackages::Filter::FilterOnDirectedRelationsMixin
 
@@ -30,3 +31,4 @@ class DuplicatesFilter  :
 }
 }
 
+}

@@ -1,6 +1,7 @@
 #pragma once
 #include "principal.h"
 namespace openproj {
+namespace models {
 class Group : public Principal {
 //  has_and_belongs_to_many :users,
 //                          join_table:   "#{table_name_prefix}group_users#{table_name_suffix}",
@@ -106,3 +107,4 @@ class Group : public Principal {
 };
 }
 
+}

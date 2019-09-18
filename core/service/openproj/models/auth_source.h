@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class AuthSource : public ActiveRecord::Base {
   // include Redmine::Ciphering
 
@@ -79,3 +80,4 @@ class AuthSource : public ActiveRecord::Base {
 };
 }
 
+}

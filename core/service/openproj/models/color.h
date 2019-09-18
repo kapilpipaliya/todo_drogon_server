@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class Color : public ActiveRecord::Base {
 //  this->table_name = 'colors'
 
@@ -87,3 +88,4 @@ class Color : public ActiveRecord::Base {
 };
 }
 
+}

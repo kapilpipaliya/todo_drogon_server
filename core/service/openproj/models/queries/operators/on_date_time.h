@@ -1,6 +1,7 @@
 #pragma once
 #include "base.h"
 namespace openproj {
+namespace models {
 namespace Queries::Operators {
   class OnDateTime : public Base {
 //    label 'on'
@@ -20,5 +21,6 @@ namespace Queries::Operators {
 //                            upper_boundary)
 //    }
   };
+}
 }
 }

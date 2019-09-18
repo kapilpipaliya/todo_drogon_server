@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Queries::WorkPackages::Filter::OrFilterForWpMixin {
   // extend ActiveSupport::Concern
 
@@ -58,5 +59,6 @@ namespace Queries::WorkPackages::Filter::OrFilterForWpMixin {
 //      errors.add(:values, :invalid)
 //    }
 //  }
+}
 }
 }

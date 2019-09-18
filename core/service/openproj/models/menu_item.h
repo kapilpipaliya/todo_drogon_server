@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 namespace openproj {
+namespace models {
 class MenuItem : public ActiveRecord::Base {
   // belongs_to :parent, class_name: 'MenuItem'
   // has_many :children, -> {
@@ -41,3 +42,4 @@ class MenuItem : public ActiveRecord::Base {
 };
 }
 
+}

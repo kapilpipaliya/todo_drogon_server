@@ -1,6 +1,7 @@
 #pragma once
 #include "base_strategy.h"
 namespace openproj {
+namespace models {
 namespace Queries::Filters::Strategies {
   class List : public BaseStrategy {
     // delegate :allowed_values,
@@ -27,5 +28,6 @@ namespace Queries::Filters::Strategies {
 //      (values.reject(&:blank?) & (allowed_values.map(&:last).map(&:to_s) + ['-1'])) != values.reject(&:blank?)
 //    }
   };
+}
 }
 }

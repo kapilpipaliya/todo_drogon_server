@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace PermittedParamsN {
   namespace AllowedSettings {
     class Restriction {
@@ -65,6 +66,7 @@ namespace PermittedParamsN {
 //    init!
 
   };
+}
 }
 }
 }

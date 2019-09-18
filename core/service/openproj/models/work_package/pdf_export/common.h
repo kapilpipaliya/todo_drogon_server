@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace WorkPackageN::PdfExport::Common {
   // include Redmine::I18n
   // include ActionView::Helpers::TextHelper
@@ -101,5 +102,6 @@ namespace WorkPackageN::PdfExport::Common {
 //  }
 
 //   void description_colspan() = 0;
+}
 }
 }

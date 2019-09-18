@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Queries::WorkPackages::Filter::FilterOnUndirectedRelationsMixin {
   // include ::Queries::WorkPackages::Filter::FilterForWpMixin
 
@@ -40,5 +41,6 @@ namespace Queries::WorkPackages::Filter::FilterOnUndirectedRelationsMixin {
 //      .where(from_id: values)
 //      .select(:to_id)
   }
+}
 }
 }

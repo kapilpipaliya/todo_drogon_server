@@ -1,10 +1,11 @@
 #pragma once
 #include "../../../queries/principals/filters/principal_filter.h"
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace Principals {
 namespace Filters {
-class IdFilter : public openproj::Queries::Principals::Filters::PrincipalFilter {
+class IdFilter : public openproj::models::Queries::Principals::Filters::PrincipalFilter {
    void allowed_values() {
 //    [["me", "me"]] // Not the whole truth but performes better than checking all IDs
   }
@@ -40,3 +41,4 @@ class IdFilter : public openproj::Queries::Principals::Filters::PrincipalFilter 
 }
 }
 
+}

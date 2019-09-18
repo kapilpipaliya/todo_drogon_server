@@ -1,6 +1,7 @@
 #pragma once
 #include "base.h"
 namespace openproj {
+namespace models {
 namespace CustomActions {
 namespace Actions {
 class EstimatedHours : public CustomActions::Actions::Base {
@@ -18,6 +19,7 @@ class EstimatedHours : public CustomActions::Actions::Base {
 //    0
   }
 };
+}
 }
 }
 }

@@ -1,5 +1,6 @@
 #pragma once
-namespace openproj{
+namespace openproj {
+namespace models {
 namespace ProjectN::Copy {
 //   void included(base) {
 //    base.send :include, CopyModel
@@ -318,6 +319,7 @@ namespace ProjectN::Copy {
 //      }
 //    }
 //  }
+}
 }
 }
 }

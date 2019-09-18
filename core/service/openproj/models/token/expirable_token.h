@@ -1,5 +1,6 @@
 #pragma once
 namespace openproj {
+namespace models {
 namespace Token {
   namespace ExpirableToken {
     // extend ActiveSupport::Concern
@@ -45,5 +46,6 @@ namespace Token {
       }
     }
   }
+}
 }
 }

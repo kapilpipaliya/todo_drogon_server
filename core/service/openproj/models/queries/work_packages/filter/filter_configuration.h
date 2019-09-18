@@ -1,6 +1,7 @@
 #pragma once
 
 namespace openproj {
+namespace models {
 namespace Queries {
 namespace WorkPackages {
 namespace Filter {
@@ -18,3 +19,4 @@ class FilterConfiguration {
 }
 }
 
+}
