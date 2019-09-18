@@ -11,6 +11,7 @@ int main() {
   // Display a message using current system locale
   std::cout << boost::locale::translate("Hello World") << std::endl;
 
+  LOG_DEBUG << "HI";
   // drogon::app().addListener("0.0.0.0",8300);
   drogon::app().loadConfigFile("./config.json").run();
   return 0;

@@ -8,6 +8,7 @@
 #include <QtCore/QDebug>
 #include <QtWebSockets/QWebSocket>
 #include "once.h"
+#include <drogon/drogon.h>
 
 namespace wstest {
 short int SslEchoClient::PING_INTERVAL = 5000;
@@ -176,13 +177,13 @@ void SslEchoClient::onTextMessageReceived(QString message) {
         message.erase(0);
         dispatch(event, message);
       } else {
-        qDebug() << "result event must be array: "
-                 << QString::fromStdString(et.dump());
+        LOG_DEBUG << "result event must be array: "
+                 << et.dump();
       }
     }
   } else {
-    qDebug() << "result must be array: "
-             << QString::fromStdString(_message.dump());
+    LOG_DEBUG << "result must be array: "
+             << _message.dump();
   }
 }
 

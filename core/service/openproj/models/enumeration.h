@@ -33,11 +33,11 @@ class Enumeration : public ActiveRecord::Base {
 //    super
 //  }
 
-//   void colored?() {
-//    false
-//  }
+   bool colored() {
+    return false;
+  }
 
-//   void default() {
+   void default_() {
 //    // Creates a fake default scope so Enumeration.default will check
 //    // it's type.  STI subclasses will automatically add their own
 //    // types to the finder.
@@ -47,7 +47,7 @@ class Enumeration : public ActiveRecord::Base {
 //      // STI classes are
 //      where(is_default: true).first
 //    }
-//  }
+  }
 
 //  // Destroys enumerations in a single transaction
 //  // It ensures, that the transactions can be safely transferred to each
@@ -61,22 +61,22 @@ class Enumeration : public ActiveRecord::Base {
 //  }
 
 //  // Overloaded on concrete classes
-//   void option_name() {
+   void option_name() {
 //    nil
-//  }
+  }
 
-//   void became_default_value?() {
+   bool became_default_value() {
 //    is_default? && is_default_changed?
-//  }
+  }
 
-//   void unmark_old_default_value() {
+   void unmark_old_default_value() {
 //    Enumeration.where(type: type).update_all(is_default: false)
-//  }
+  }
 
-//  // Overloaded on concrete classes
-//   void objects_count() {
-//    0
-//  }
+  // Overloaded on concrete classes
+   int objects_count() {
+    return 0;
+  }
 
 //   void in_use?() {
 //    objects_count != 0
@@ -148,9 +148,9 @@ class Enumeration : public ActiveRecord::Base {
 
   private:
 
-//   void check_integrity() {
+   void check_integrity() {
 //    if ( in_use?) { raise "Can't delete enumeration" ;}
-//  }
+  }
 };
 }
 

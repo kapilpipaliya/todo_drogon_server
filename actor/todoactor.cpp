@@ -33,6 +33,8 @@ nlohmann::json TodoActor::handleTextMessage(
     return handleService<todo::service::User>(contx, in);
   } else if (evt == "ui") {
     return handleService<todo::service::UI>(contx, in);
+  } else if (evt == "seed") {
+      return handleService<todo::service::Seed>(contx, in);
   } else {
     return nlohmann::json::array();
   }

@@ -54,7 +54,7 @@ find_package(PostgreSQL REQUIRED)
 
 #find_package(Boost REQUIRED COMPONENTS chrono filesystem date_time program_options iostreams)
 set(BOOST_ROOT "$ENV{HOME}/k/cpp_stuff/vcpkg/installed/x64-linux")
-find_package(Boost 1.71.0 REQUIRED COMPONENTS filesystem locale)
+find_package(Boost REQUIRED COMPONENTS filesystem locale) #1.71.0
 set (Boost_ARCHITECTURE "-x64")
 # find_package(Boost REQUIRED COMPONENTS filesystem date_time system timer)
 #find_package(cppzmq REQUIRED)
