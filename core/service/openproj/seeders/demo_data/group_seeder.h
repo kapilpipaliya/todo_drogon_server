@@ -15,12 +15,12 @@ namespace DemoData {
      void seed_data() {
 //      print '    ↳ Creating groups'
 
-//      seed_groups
+      seed_groups();
 
 //      puts
     }
 
-//     void add_projects_to_groups() {
+     void add_projects_to_groups() {
 //      groups = demo_data_for('groups')
 //      if ( groups.present?) {
 //        groups.each { |group_attr|
@@ -39,11 +39,11 @@ namespace DemoData {
 //          }
 //        }
 //      }
-//    }
+    }
 
     private:
 
-//     void seed_groups() {
+     void seed_groups() {
 //      groups = demo_data_for('groups')
 //      if ( groups.present?) {
 //        groups.each { |group_attr|
@@ -51,7 +51,10 @@ namespace DemoData {
 //          create_group group_attr[:name]
 //        }
 //      }
-//    }
+
+
+
+    }
 
 //     void create_group(name) {
 //      Group.create lastname: name

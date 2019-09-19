@@ -1,8 +1,15 @@
 #pragma once
 #include "activerecord.h"
+#include <yaml-cpp/yaml.h>
 namespace openproj {
 namespace models {
 class Setting : public ActiveRecord::Base {
+public:
+    YAML::Node available_settings;
+    Setting(){
+        //available_settings = YAML::load(File.open(Rails.root.join('config/settings.yml')))
+        available_settings = YAML::LoadFile("config/settings.yml");
+    }
 //  DATE_FORMATS = [
 //    '%Y-%m-%d',
 //    '%d/%m/%Y',

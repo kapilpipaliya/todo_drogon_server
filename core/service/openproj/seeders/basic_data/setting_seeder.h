@@ -1,10 +1,36 @@
 #pragma once
 #include "../seeder.h"
+#include <drogon/drogon.h>
+#include <vector>
+#include "models/Settings.h"
+#include <yaml-cpp/yaml.h>
+#include "../../models/setting.h"
+#include <algorithm>
+#include "models/Roles.h"
+#include <string>
+
 namespace openproj {
 namespace seeder {
 namespace BasicData {
   class SettingSeeder : public Seeder {
+      std::map<std::string, std::string> data_;
   public:
+      SettingSeeder(){
+          openproj::models::Setting s;
+          for (auto it : s.available_settings) {
+              //data_.push_back({it.first.as<std::string>(), it.second["default"].as<std::string>()});
+              data_[it.first.as<std::string>()] = it.second["default"].as<std::string>();
+          }
+            auto clientPtr = drogon::app().getDbClient("sce");
+            drogon::orm::Mapper<drogon_model::openproject4::Roles> mapper(clientPtr);
+          auto r = mapper.findBy(
+              Criteria(drogon_model::openproject4::Roles::Cols::_builtin,
+                       CompareOperator::EQ, "Project admin"));
+          auto role_id = *r.at(0).getId();
+          if (!r.empty()) {
+              update_unless_present("Project admin", std::to_string(role_id));
+          }
+      }
      void seed_data() {
 //      Setting.transaction {
 //        settings_not_in_db.each { |setting_name|
@@ -13,6 +39,13 @@ namespace BasicData {
 //          Setting[setting_name.to_sym] = datum
 //        }
 //      }
+
+         auto clientPtr = drogon::app().getDbClient("sce");
+         drogon::orm::Mapper<drogon_model::openproject4::Settings> mapper(clientPtr);
+         for (auto &it : settings_not_in_db()) {
+             auto data = data_[it];
+         }
+
     }
 
      bool applicable() {
@@ -23,7 +56,7 @@ namespace BasicData {
 //      'Skipping settings as all settings already exist in the db'
     }
 
-     void data() {
+     std::map<std::string, std::string>  data() {
 //      this->settings ||= begin
 //        settings = Setting.available_settings.each_with_object({}) { |(k, v), hash|
 //          hash[k] = v['default'] || ''
@@ -43,23 +76,47 @@ namespace BasicData {
 
 //        settings
 //      }
+
+    // moved to constructor
+         return data_;
     }
 
     private:
 
-//     void update_unless_present(settings, key) {
+     void update_unless_present(std::string key, std::string value) {
 //      if ( !settings_in_db.include?(key)) {
 //        value = yield
 //        settings[key] = value unless value.nil?
 //      }
-//    }
-
-     void settings_in_db() {
-//      this->settings_in_db ||= Setting.all.pluck(:name)
+         if(std::find(settings_in_db().begin(), settings_in_db().end(), key) != settings_in_db().end()){
+             if(!value.empty()){
+                 data_[key] = value;
+             }
+         }
     }
 
-     void settings_not_in_db() {
-//      data.keys - settings_in_db
+     std::vector<std::string> settings_in_db() {
+//      this->settings_in_db ||= Setting.all.pluck(:name)
+         auto clientPtr = drogon::app().getDbClient("sce");
+         drogon::orm::Mapper<drogon_model::openproject4::Settings> mapper(clientPtr);
+         auto r = mapper.findAll();
+         std::vector<std::string> a;
+         for (auto it : r) {
+             a.push_back(*it.getName().get());
+         }
+         return a;
+    }
+
+     std::vector<std::string> settings_not_in_db() {
+//      data().keys - settings_in_db();
+         std::vector<std::string> result;
+         auto indb = settings_in_db();
+         for (auto &it2 : indb) {
+             if(!data_.contains(it2)){
+                 result.push_back(it2);
+             }
+         }
+         return result;
     }
   };
 }

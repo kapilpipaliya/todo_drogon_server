@@ -1,17 +1,38 @@
 #pragma once
 #include "seeder.h"
+#include <drogon/drogon.h>
+#include <vector>
+#include "models/Users.h"
+
 namespace openproj {
 namespace seeder {
 class AdminUserSeeder : public Seeder {
 public:
    void seed_data() {
-//    user = new_admin
+//    user = new_admin()
 //    unless user.save! validate: false
 //      puts 'Seeding admin failed:'
 //      user.errors.full_messages.each { |msg|
 //        puts "  #{msg}"
 //      }
 //    }
+       auto clientPtr = drogon::app().getDbClient("sce");
+
+     drogon::orm::Mapper<drogon_model::openproject4::Users> mapper(clientPtr);
+     drogon_model::openproject4::Users user;
+     user.setAdmin(true);
+     user.setLogin("admin");
+//     user.set
+     user.setFirstname("OpenProject");
+     user.setLastname("Admin");
+     user.setMail("admin@example.net");
+     user.setAdmin(true);
+     user.setLanguage("en");
+     user.setMailNotification("only_my_events");
+     user.setType("User");
+//     user.setStatus(1);
+     user.setForcePasswordChange(false);
+     mapper.insert(user);
   }
 
    bool applicable() {

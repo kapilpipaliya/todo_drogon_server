@@ -1,11 +1,26 @@
 #pragma once
 #include "../seeder.h"
+#include <drogon/drogon.h>
+#include "models/Colors.h"
+#include "models/Roles.h"
+#include "models/Workflows.h"
 namespace openproj {
 namespace seeder {
 namespace BasicData {
   class WorkflowSeeder : public Seeder {
   public:
+      struct row {
+       int type_id;
+        std::vector<int> status_ids;
+      };
+      std::vector<row> data_;
+
      void seed_data() {
+
+//       auto clientPtr = drogon::app().getDbClient("sce");
+//       drogon::orm::Mapper<drogon_model::openproject4::Colors> mapper(clientPtr);
+//       auto colors = mapper.findAll();
+
 //      colors = Color.all
 //      colors = colors.map { |c| { c.name => c.id } }.reduce({}, :merge)
 
@@ -66,13 +81,49 @@ namespace BasicData {
 //          }
 //        }
 //      }
+       // as above function some part is not written as its not needed
+       type_seed();
+       status_seed();
+       auto clientPtr = drogon::app().getDbClient("sce");
+       drogon::orm::Mapper<drogon_model::openproject4::Roles> mapper(clientPtr);
+       auto member = mapper.findBy(
+           Criteria(drogon_model::openproject4::Roles::Cols::_name,
+                    CompareOperator::EQ, "Member"));
+       auto manager = mapper.findBy(
+             Criteria(drogon_model::openproject4::Roles::Cols::_name,
+                      CompareOperator::EQ, "Project admin"));
+
+       for (auto &it : workflows()) {
+           for (auto &oldst : it.status_ids) {
+               for (auto &newst : it.status_ids) {
+                   drogon::orm::Mapper<drogon_model::openproject4::Workflows> mapper_workflow(clientPtr);
+                   drogon_model::openproject4::Workflows workflow;
+                   workflow.setTypeId(it.type_id);
+                   workflow.setRoleId(*manager.at(0).getId().get());
+                   workflow.setOldStatusId(oldst);
+                   workflow.setNewStatusId(newst);
+                   mapper_workflow.insert(workflow);
+
+                   drogon_model::openproject4::Workflows workflow2;
+                   workflow2.setTypeId(it.type_id);
+                   workflow2.setRoleId(*member.at(0).getId().get());
+                   workflow2.setOldStatusId(oldst);
+                   workflow2.setNewStatusId(newst);
+                   mapper_workflow.insert(workflow2);
+               }
+           }
+       }
+
     }
 
-     virtual void workflows()  = 0;
+     virtual  std::vector<row> workflows()  = 0;
 
-     virtual void type_seeder_class()  = 0;
+//     virtual void type_seeder_class()  = 0;
 
-     virtual void status_seeder_class()  = 0;
+//     virtual void status_seeder_class()  = 0;
+
+     virtual void type_seed() = 0;
+     virtual void status_seed() = 0;
   };
 }
 }

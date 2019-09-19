@@ -10,7 +10,7 @@ namespace DemoData {
      void seed_data() {
 //      print '    ↳ Creating attribute help texts'
 
-//      seed_attribute_help_texts
+      seed_attribute_help_texts();
 
 //      puts
     }

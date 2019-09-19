@@ -1,28 +1,32 @@
 #pragma once
 #include "../../basic_data/status_seeder.h"
+#include <vector>
+#include <string>
+
+#include <map>
 namespace openproj {
 namespace seeder {
 namespace StandardSeeder {
   namespace BasicData {
     class StatusSeeder : public seeder::BasicData::StatusSeeder {
     public:
-       void data() {
+       std::vector<row> data() {
 //        color_names = [
-//          'teal-1', // new
-//          'indigo-1', // in specification
-//          'teal-3', // specified
-//          'red-6', // confirmed
-//          'yellow-2', // tbs
-//          'lime-2', // scheduled
-//          'cyan-3', // in progress
-//          'cyan-3', // in development
-//          'teal-6', // developed
-//          'teal-7', // in testing
-//          'teal-9', // tested
-//          'red-9', // test_failed
-//          'gray-3', // closed
-//          'orange-3', // on hold
-//          'red-3', // rejected
+//          "teal-1", // new
+//          "indigo-1", // in specification
+//          "teal-3", // specified
+//          "red-6", // confirmed
+//          "yellow-2", // tbs
+//          "lime-2", // scheduled
+//          "cyan-3", // in progress
+//          "cyan-3", // in development
+//          "teal-6", // developed
+//          "teal-7", // in testing
+//          "teal-9", // tested
+//          "red-9", // test_failed
+//          "gray-3", // closed
+//          "orange-3", // on hold
+//          "red-3", // rejected
 //        ]
 
 //        // When selecting for an array of values, implicit order is applied
@@ -46,7 +50,43 @@ namespace StandardSeeder {
 //          { name: I18n.t(:default_status_on_hold),          color_id: colors[13], is_closed: false, is_default: false, position: 14 },
 //          { name: I18n.t(:default_status_rejected),         color_id: colors[14], is_closed: true,  is_default: false, position: 15 }
 //        ]
-      }
+           std::vector<std::string> color_names{
+                 "teal-1", // new
+                 "indigo-1", // in specification
+                 "teal-3", // specified
+                 "red-6", // confirmed
+                 "yellow-2", // tbs
+                 "lime-2", // scheduled
+                 "cyan-3", // in progress
+                 "cyan-3", // in development
+                 "teal-6", // developed
+                 "teal-7", // in testing
+                 "teal-9", // tested
+                 "red-9", // test_failed
+                 "gray-3", // closed
+                 "orange-3", // on hold
+                 "red-3" // rejected
+           };
+           //todo: doing batch search is good too here for color_id;
+           data_.insert(data_.end(), {
+
+                         { "New",              color_names[0], false, true,  1  },
+                         { "default_status_in_specification", color_names[1], false, false, 2  },
+                         { "In specification",        color_names[2], false, false, 3  },
+                         { "Confirmed",        color_names[3], false, false, 4  },
+                         { "To be scheduled",  color_names[4], false, false, 5  },
+                         { "Scheduled",        color_names[5], false, false, 6  },
+                         { "In progress",      color_names[6], false, false, 7  },
+                         { "Developed",        color_names[8], false, false, 9  },
+                         { "In testing",       color_names[9], false, false, 10 },
+                         { "Tested",           color_names[10], false, false, 11 },
+                         { "Test failed",      color_names[11], false, false, 12 },
+                         { "Closed",           color_names[12], true,  false, 13 },
+                         { "On hold",          color_names[13], false, false, 14 },
+                         { "Rejected",         color_names[14], true,  false, 15 }
+               });
+           return data_;
+           }
     };
   }
 }

@@ -6,7 +6,7 @@ namespace StandardSeeder {
   namespace BasicData {
     class PrioritySeeder : public seeder::BasicData::PrioritySeeder {
     public:
-       void data() {
+        std::vector<row>  data() {
 //        color_names = [
 //          'lime-0', // low
 //          'green-1', // normal
@@ -25,6 +25,23 @@ namespace StandardSeeder {
 //          { name: I18n.t(:default_priority_high),      color_id: colors[2], position: 3, is_default: false },
 //          { name: I18n.t(:default_priority_immediate), color_id: colors[3], position: 4, is_default: false }
 //        ]
+
+
+
+            std::vector<std::string> color_names{
+              "lime-0", // low
+              "green-1", // normal
+              "yellow-2", // high
+              "red-3", // immediate
+            };
+            //todo: doing batch search is good too here for color_id;
+            data_.insert(data_.end(), {
+                          { "Low",              color_names[0], 1, false },
+                          { "Normal", color_names[1], 2, true},
+                          { "High",        color_names[2], 3, false  },
+                          { "Immediate",        color_names[3], 4, false  },
+                });
+            return data_;
       }
     };
   }

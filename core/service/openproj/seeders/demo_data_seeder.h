@@ -12,9 +12,11 @@ class DemoDataSeeder : public CompositeSeeder {
    std::vector<std::shared_ptr<seeder::Seeder>> data;
 
  public:
+   // This 3 is empty
    std::shared_ptr<Seeder> group_seed = std::make_shared<openproj::seeder::DemoData::GroupSeeder>();
    std::shared_ptr<Seeder> attrib_seed = std::make_shared<openproj::seeder::DemoData::AttributeHelpTextSeeder>();
    std::shared_ptr<Seeder> global_seed = std::make_shared<openproj::seeder::DemoData::GlobalQuerySeeder>();
+
    std::shared_ptr<Seeder> project_seed = std::make_shared<openproj::seeder::DemoData::ProjectSeeder>();
 
  std::vector<std::shared_ptr<openproj::seeder::Seeder>>  data_seeder_classes() override {

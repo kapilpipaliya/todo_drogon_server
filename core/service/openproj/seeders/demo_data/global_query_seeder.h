@@ -10,18 +10,18 @@ namespace DemoData {
      void seed_data() {
 //      print '    ↳ Creating global queries'
 
-//      seed_global_queries
+      seed_global_queries();
 
 //      puts
     }
 
     private:
 
-//     void seed_global_queries() {
+     void seed_global_queries() {
 //      Array(demo_data_for('global_queries')).each { |config|
 //        DemoData::QueryBuilder.new(config, nil).create!
 //      }
-//    }
+    }
   };
 }
 }
