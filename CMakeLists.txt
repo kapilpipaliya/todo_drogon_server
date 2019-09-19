@@ -66,6 +66,8 @@ find_package(OpenSSL REQUIRED)
 find_package(fmt REQUIRED)
 find_package(yaml-cpp CONFIG REQUIRED)
 
+find_package(jsoncpp CONFIG REQUIRED)
+#target_link_libraries(main PRIVATE jsoncpp_lib)
 #find_package(Poco REQUIRED COMPONENTS Foundation JSON Util XML Zip)
 #find_package(TBB REQUIRED) # Intel(R) Threading Building Blocks (Intel TBB)
 #find_package(Angelscript REQUIRED)
@@ -131,6 +133,7 @@ target_link_libraries(jdragon
   Boost::filesystem
   fmt::fmt
   Boost::locale
+  jsoncpp_lib
   yaml-cpp
   # absl::strings
   # clang_flags

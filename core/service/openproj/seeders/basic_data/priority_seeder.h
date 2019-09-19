@@ -25,12 +25,12 @@ namespace BasicData {
 
        auto clientPtr = drogon::app().getDbClient("sce");
        for (auto &it : data()) {
-         drogon::orm::Mapper<drogon_model::openproject4::Enumerations> mapper(clientPtr);
-         drogon::orm::Mapper<drogon_model::openproject4::Colors> mapper_color(clientPtr);
+         drogon::orm::Mapper<drogon_model::openproject6::Enumerations> mapper(clientPtr);
+         drogon::orm::Mapper<drogon_model::openproject6::Colors> mapper_color(clientPtr);
          auto r = mapper_color.findBy(
-              Criteria(drogon_model::openproject4::Colors::Cols::_name, CompareOperator::EQ, it.color_name));
+              Criteria(drogon_model::openproject6::Colors::Cols::_name, CompareOperator::EQ, it.color_name));
 
-         drogon_model::openproject4::Enumerations enumeration;
+         drogon_model::openproject6::Enumerations enumeration;
          enumeration.setName(it.name);
          enumeration.setColorId(*r.at(0).getId());
          enumeration.setPosition(it.position);

@@ -10,7 +10,7 @@
 #include <string>
 
 using namespace drogon;
-using namespace drogon_model::openproject4;
+using namespace drogon_model::openproject6;
 
 const std::string OauthAccessTokens::Cols::_id = "id";
 const std::string OauthAccessTokens::Cols::_resource_owner_id = "resource_owner_id";
@@ -43,8 +43,10 @@ const std::string &OauthAccessTokens::getColumnName(size_t index) noexcept(false
     assert(index < _metaData.size());
     return _metaData[index]._colName;
 }
-OauthAccessTokens::OauthAccessTokens(const Row &r) noexcept
+OauthAccessTokens::OauthAccessTokens(const Row &r, const ssize_t indexOffset) noexcept
 {
+    if(indexOffset < 0)
+    {
         if(!r["id"].isNull())
         {
             _id=std::make_shared<int64_t>(r["id"].as<int64_t>());
@@ -115,7 +117,425 @@ OauthAccessTokens::OauthAccessTokens(const Row &r) noexcept
         {
             _previousRefreshToken=std::make_shared<std::string>(r["previous_refresh_token"].as<std::string>());
         }
+    }
+    else
+    {
+        size_t offset = (size_t)indexOffset;
+        if(offset + 10 > r.size())
+        {
+            LOG_FATAL << "Invalid SQL result for this model";
+            return;
+        }
+        size_t index;
+        index = offset + 0;
+        if(!r[index].isNull())
+        {
+            _id=std::make_shared<int64_t>(r[index].as<int64_t>());
+        }
+        index = offset + 1;
+        if(!r[index].isNull())
+        {
+            _resourceOwnerId=std::make_shared<int64_t>(r[index].as<int64_t>());
+        }
+        index = offset + 2;
+        if(!r[index].isNull())
+        {
+            _applicationId=std::make_shared<int64_t>(r[index].as<int64_t>());
+        }
+        index = offset + 3;
+        if(!r[index].isNull())
+        {
+            _token=std::make_shared<std::string>(r[index].as<std::string>());
+        }
+        index = offset + 4;
+        if(!r[index].isNull())
+        {
+            _refreshToken=std::make_shared<std::string>(r[index].as<std::string>());
+        }
+        index = offset + 5;
+        if(!r[index].isNull())
+        {
+            _expiresIn=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 6;
+        if(!r[index].isNull())
+        {
+            auto timeStr = r[index].as<std::string>();
+            struct tm stm;
+            memset(&stm,0,sizeof(stm));
+            auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+            size_t t = timelocal(&stm);
+            size_t decimalNum = 0;
+            if(*p=='.')
+            {
+                std::string decimals(p+1,&timeStr[timeStr.length()]);
+                while(decimals.length()<6)
+                {
+                    decimals += "0";
+                }
+                decimalNum = (size_t)atol(decimals.c_str());
+            }
+            _revokedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+        }
+        index = offset + 7;
+        if(!r[index].isNull())
+        {
+            auto timeStr = r[index].as<std::string>();
+            struct tm stm;
+            memset(&stm,0,sizeof(stm));
+            auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+            size_t t = timelocal(&stm);
+            size_t decimalNum = 0;
+            if(*p=='.')
+            {
+                std::string decimals(p+1,&timeStr[timeStr.length()]);
+                while(decimals.length()<6)
+                {
+                    decimals += "0";
+                }
+                decimalNum = (size_t)atol(decimals.c_str());
+            }
+            _createdAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+        }
+        index = offset + 8;
+        if(!r[index].isNull())
+        {
+            _scopes=std::make_shared<std::string>(r[index].as<std::string>());
+        }
+        index = offset + 9;
+        if(!r[index].isNull())
+        {
+            _previousRefreshToken=std::make_shared<std::string>(r[index].as<std::string>());
+        }
+    }
+
 }
+
+OauthAccessTokens::OauthAccessTokens(const Json::Value &pJson, const std::vector<std::string> &pMasqueradingVector) noexcept(false)
+{
+    if(pMasqueradingVector.size() != 10)
+    {
+        LOG_ERROR << "Bad masquerading vector";
+        return;
+    }
+    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
+    {
+        _id=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[0]].asInt64());
+    }
+    if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
+    {
+        _resourceOwnerId=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[1]].asInt64());
+    }
+    if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
+    {
+        _applicationId=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[2]].asInt64());
+    }
+    if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
+    {
+        _token=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+    }
+    if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
+    {
+        _refreshToken=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+    }
+    if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
+    {
+        _expiresIn=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[5]].asInt64());
+    }
+    if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
+    {
+        auto timeStr = pJson[pMasqueradingVector[6]].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+        size_t t = timelocal(&stm);
+        size_t decimalNum = 0;
+        if(*p=='.')
+        {
+            std::string decimals(p+1,&timeStr[timeStr.length()]);
+            while(decimals.length()<6)
+            {
+                decimals += "0";
+            }
+            decimalNum = (size_t)atol(decimals.c_str());
+        }
+        _revokedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+    }
+    if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
+    {
+        auto timeStr = pJson[pMasqueradingVector[7]].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+        size_t t = timelocal(&stm);
+        size_t decimalNum = 0;
+        if(*p=='.')
+        {
+            std::string decimals(p+1,&timeStr[timeStr.length()]);
+            while(decimals.length()<6)
+            {
+                decimals += "0";
+            }
+            decimalNum = (size_t)atol(decimals.c_str());
+        }
+        _createdAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+    }
+    if(!pMasqueradingVector[8].empty() && pJson.isMember(pMasqueradingVector[8]))
+    {
+        _scopes=std::make_shared<std::string>(pJson[pMasqueradingVector[8]].asString());
+    }
+    if(!pMasqueradingVector[9].empty() && pJson.isMember(pMasqueradingVector[9]))
+    {
+        _previousRefreshToken=std::make_shared<std::string>(pJson[pMasqueradingVector[9]].asString());
+    }
+}
+
+OauthAccessTokens::OauthAccessTokens(const Json::Value &pJson) noexcept(false)
+{
+    if(pJson.isMember("id"))
+    {
+        _id=std::make_shared<int64_t>((int64_t)pJson["id"].asInt64());
+    }
+    if(pJson.isMember("resource_owner_id"))
+    {
+        _resourceOwnerId=std::make_shared<int64_t>((int64_t)pJson["resource_owner_id"].asInt64());
+    }
+    if(pJson.isMember("application_id"))
+    {
+        _applicationId=std::make_shared<int64_t>((int64_t)pJson["application_id"].asInt64());
+    }
+    if(pJson.isMember("token"))
+    {
+        _token=std::make_shared<std::string>(pJson["token"].asString());
+    }
+    if(pJson.isMember("refresh_token"))
+    {
+        _refreshToken=std::make_shared<std::string>(pJson["refresh_token"].asString());
+    }
+    if(pJson.isMember("expires_in"))
+    {
+        _expiresIn=std::make_shared<int32_t>((int32_t)pJson["expires_in"].asInt64());
+    }
+    if(pJson.isMember("revoked_at"))
+    {
+        auto timeStr = pJson["revoked_at"].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+        size_t t = timelocal(&stm);
+        size_t decimalNum = 0;
+        if(*p=='.')
+        {
+            std::string decimals(p+1,&timeStr[timeStr.length()]);
+            while(decimals.length()<6)
+            {
+                decimals += "0";
+            }
+            decimalNum = (size_t)atol(decimals.c_str());
+        }
+        _revokedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+    }
+    if(pJson.isMember("created_at"))
+    {
+        auto timeStr = pJson["created_at"].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+        size_t t = timelocal(&stm);
+        size_t decimalNum = 0;
+        if(*p=='.')
+        {
+            std::string decimals(p+1,&timeStr[timeStr.length()]);
+            while(decimals.length()<6)
+            {
+                decimals += "0";
+            }
+            decimalNum = (size_t)atol(decimals.c_str());
+        }
+        _createdAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+    }
+    if(pJson.isMember("scopes"))
+    {
+        _scopes=std::make_shared<std::string>(pJson["scopes"].asString());
+    }
+    if(pJson.isMember("previous_refresh_token"))
+    {
+        _previousRefreshToken=std::make_shared<std::string>(pJson["previous_refresh_token"].asString());
+    }
+}
+
+void OauthAccessTokens::updateByMasqueradedJson(const Json::Value &pJson,
+                                            const std::vector<std::string> &pMasqueradingVector) noexcept(false)
+{
+    if(pMasqueradingVector.size() != 10)
+    {
+        LOG_ERROR << "Bad masquerading vector";
+        return;
+    }
+    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
+    {
+        _id=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[0]].asInt64());
+    }
+    if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
+    {
+        _dirtyFlag[1] = true;
+        _resourceOwnerId=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[1]].asInt64());
+    }
+    if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
+    {
+        _dirtyFlag[2] = true;
+        _applicationId=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[2]].asInt64());
+    }
+    if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
+    {
+        _dirtyFlag[3] = true;
+        _token=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+    }
+    if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
+    {
+        _dirtyFlag[4] = true;
+        _refreshToken=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+    }
+    if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
+    {
+        _dirtyFlag[5] = true;
+        _expiresIn=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[5]].asInt64());
+    }
+    if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
+    {
+        _dirtyFlag[6] = true;
+        auto timeStr = pJson[pMasqueradingVector[6]].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+        size_t t = timelocal(&stm);
+        size_t decimalNum = 0;
+        if(*p=='.')
+        {
+            std::string decimals(p+1,&timeStr[timeStr.length()]);
+            while(decimals.length()<6)
+            {
+                decimals += "0";
+            }
+            decimalNum = (size_t)atol(decimals.c_str());
+        }
+        _revokedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+    }
+    if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
+    {
+        _dirtyFlag[7] = true;
+        auto timeStr = pJson[pMasqueradingVector[7]].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+        size_t t = timelocal(&stm);
+        size_t decimalNum = 0;
+        if(*p=='.')
+        {
+            std::string decimals(p+1,&timeStr[timeStr.length()]);
+            while(decimals.length()<6)
+            {
+                decimals += "0";
+            }
+            decimalNum = (size_t)atol(decimals.c_str());
+        }
+        _createdAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+    }
+    if(!pMasqueradingVector[8].empty() && pJson.isMember(pMasqueradingVector[8]))
+    {
+        _dirtyFlag[8] = true;
+        _scopes=std::make_shared<std::string>(pJson[pMasqueradingVector[8]].asString());
+    }
+    if(!pMasqueradingVector[9].empty() && pJson.isMember(pMasqueradingVector[9]))
+    {
+        _dirtyFlag[9] = true;
+        _previousRefreshToken=std::make_shared<std::string>(pJson[pMasqueradingVector[9]].asString());
+    }
+}
+                                                                    
+void OauthAccessTokens::updateByJson(const Json::Value &pJson) noexcept(false)
+{
+    if(pJson.isMember("id"))
+    {
+        _id=std::make_shared<int64_t>((int64_t)pJson["id"].asInt64());
+    }
+    if(pJson.isMember("resource_owner_id"))
+    {
+        _dirtyFlag[1] = true;
+        _resourceOwnerId=std::make_shared<int64_t>((int64_t)pJson["resource_owner_id"].asInt64());
+    }
+    if(pJson.isMember("application_id"))
+    {
+        _dirtyFlag[2] = true;
+        _applicationId=std::make_shared<int64_t>((int64_t)pJson["application_id"].asInt64());
+    }
+    if(pJson.isMember("token"))
+    {
+        _dirtyFlag[3] = true;
+        _token=std::make_shared<std::string>(pJson["token"].asString());
+    }
+    if(pJson.isMember("refresh_token"))
+    {
+        _dirtyFlag[4] = true;
+        _refreshToken=std::make_shared<std::string>(pJson["refresh_token"].asString());
+    }
+    if(pJson.isMember("expires_in"))
+    {
+        _dirtyFlag[5] = true;
+        _expiresIn=std::make_shared<int32_t>((int32_t)pJson["expires_in"].asInt64());
+    }
+    if(pJson.isMember("revoked_at"))
+    {
+        _dirtyFlag[6] = true;
+        auto timeStr = pJson["revoked_at"].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+        size_t t = timelocal(&stm);
+        size_t decimalNum = 0;
+        if(*p=='.')
+        {
+            std::string decimals(p+1,&timeStr[timeStr.length()]);
+            while(decimals.length()<6)
+            {
+                decimals += "0";
+            }
+            decimalNum = (size_t)atol(decimals.c_str());
+        }
+        _revokedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+    }
+    if(pJson.isMember("created_at"))
+    {
+        _dirtyFlag[7] = true;
+        auto timeStr = pJson["created_at"].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+        size_t t = timelocal(&stm);
+        size_t decimalNum = 0;
+        if(*p=='.')
+        {
+            std::string decimals(p+1,&timeStr[timeStr.length()]);
+            while(decimals.length()<6)
+            {
+                decimals += "0";
+            }
+            decimalNum = (size_t)atol(decimals.c_str());
+        }
+        _createdAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+    }
+    if(pJson.isMember("scopes"))
+    {
+        _dirtyFlag[8] = true;
+        _scopes=std::make_shared<std::string>(pJson["scopes"].asString());
+    }
+    if(pJson.isMember("previous_refresh_token"))
+    {
+        _dirtyFlag[9] = true;
+        _previousRefreshToken=std::make_shared<std::string>(pJson["previous_refresh_token"].asString());
+    }
+}
+
 const int64_t &OauthAccessTokens::getValueOfId() const noexcept
 {
     const static int64_t defaultValue = int64_t();
@@ -610,4 +1030,608 @@ Json::Value OauthAccessTokens::toJson() const
         ret["previous_refresh_token"]=Json::Value();
     }
     return ret;
+}
+
+Json::Value OauthAccessTokens::toMasqueradedJson(
+    const std::vector<std::string> &pMasqueradingVector) const
+{
+    Json::Value ret;
+    if(pMasqueradingVector.size() == 10)
+    {
+        if(!pMasqueradingVector[0].empty())
+        {
+            if(getId())
+            {
+                ret[pMasqueradingVector[0]]=(Json::Int64)getValueOfId();
+            }
+            else
+            {
+                ret[pMasqueradingVector[0]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[1].empty())
+        {
+            if(getResourceOwnerId())
+            {
+                ret[pMasqueradingVector[1]]=(Json::Int64)getValueOfResourceOwnerId();
+            }
+            else
+            {
+                ret[pMasqueradingVector[1]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[2].empty())
+        {
+            if(getApplicationId())
+            {
+                ret[pMasqueradingVector[2]]=(Json::Int64)getValueOfApplicationId();
+            }
+            else
+            {
+                ret[pMasqueradingVector[2]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[3].empty())
+        {
+            if(getToken())
+            {
+                ret[pMasqueradingVector[3]]=getValueOfToken();
+            }
+            else
+            {
+                ret[pMasqueradingVector[3]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[4].empty())
+        {
+            if(getRefreshToken())
+            {
+                ret[pMasqueradingVector[4]]=getValueOfRefreshToken();
+            }
+            else
+            {
+                ret[pMasqueradingVector[4]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[5].empty())
+        {
+            if(getExpiresIn())
+            {
+                ret[pMasqueradingVector[5]]=getValueOfExpiresIn();
+            }
+            else
+            {
+                ret[pMasqueradingVector[5]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[6].empty())
+        {
+            if(getRevokedAt())
+            {
+                ret[pMasqueradingVector[6]]=getRevokedAt()->toDbStringLocal();
+            }
+            else
+            {
+                ret[pMasqueradingVector[6]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[7].empty())
+        {
+            if(getCreatedAt())
+            {
+                ret[pMasqueradingVector[7]]=getCreatedAt()->toDbStringLocal();
+            }
+            else
+            {
+                ret[pMasqueradingVector[7]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[8].empty())
+        {
+            if(getScopes())
+            {
+                ret[pMasqueradingVector[8]]=getValueOfScopes();
+            }
+            else
+            {
+                ret[pMasqueradingVector[8]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[9].empty())
+        {
+            if(getPreviousRefreshToken())
+            {
+                ret[pMasqueradingVector[9]]=getValueOfPreviousRefreshToken();
+            }
+            else
+            {
+                ret[pMasqueradingVector[9]]=Json::Value();
+            }
+        }
+        return ret;
+    }
+    LOG_ERROR << "Masquerade failed";
+    if(getId())
+    {
+        ret["id"]=(Json::Int64)getValueOfId();
+    }
+    else
+    {
+        ret["id"]=Json::Value();
+    }
+    if(getResourceOwnerId())
+    {
+        ret["resource_owner_id"]=(Json::Int64)getValueOfResourceOwnerId();
+    }
+    else
+    {
+        ret["resource_owner_id"]=Json::Value();
+    }
+    if(getApplicationId())
+    {
+        ret["application_id"]=(Json::Int64)getValueOfApplicationId();
+    }
+    else
+    {
+        ret["application_id"]=Json::Value();
+    }
+    if(getToken())
+    {
+        ret["token"]=getValueOfToken();
+    }
+    else
+    {
+        ret["token"]=Json::Value();
+    }
+    if(getRefreshToken())
+    {
+        ret["refresh_token"]=getValueOfRefreshToken();
+    }
+    else
+    {
+        ret["refresh_token"]=Json::Value();
+    }
+    if(getExpiresIn())
+    {
+        ret["expires_in"]=getValueOfExpiresIn();
+    }
+    else
+    {
+        ret["expires_in"]=Json::Value();
+    }
+    if(getRevokedAt())
+    {
+        ret["revoked_at"]=getRevokedAt()->toDbStringLocal();
+    }
+    else
+    {
+        ret["revoked_at"]=Json::Value();
+    }
+    if(getCreatedAt())
+    {
+        ret["created_at"]=getCreatedAt()->toDbStringLocal();
+    }
+    else
+    {
+        ret["created_at"]=Json::Value();
+    }
+    if(getScopes())
+    {
+        ret["scopes"]=getValueOfScopes();
+    }
+    else
+    {
+        ret["scopes"]=Json::Value();
+    }
+    if(getPreviousRefreshToken())
+    {
+        ret["previous_refresh_token"]=getValueOfPreviousRefreshToken();
+    }
+    else
+    {
+        ret["previous_refresh_token"]=Json::Value();
+    }
+    return ret;
+}
+
+bool OauthAccessTokens::validateJsonForCreation(const Json::Value &pJson, std::string &err)
+{
+    if(pJson.isMember("id"))
+    {
+        if(!validJsonOfField(0, "id", pJson["id"], err, true))
+            return false;
+    }
+    if(pJson.isMember("resource_owner_id"))
+    {
+        if(!validJsonOfField(1, "resource_owner_id", pJson["resource_owner_id"], err, true))
+            return false;
+    }
+    if(pJson.isMember("application_id"))
+    {
+        if(!validJsonOfField(2, "application_id", pJson["application_id"], err, true))
+            return false;
+    }
+    if(pJson.isMember("token"))
+    {
+        if(!validJsonOfField(3, "token", pJson["token"], err, true))
+            return false;
+    }
+    else
+    {
+        err="The token column cannot be null";
+        return false;
+    }
+    if(pJson.isMember("refresh_token"))
+    {
+        if(!validJsonOfField(4, "refresh_token", pJson["refresh_token"], err, true))
+            return false;
+    }
+    if(pJson.isMember("expires_in"))
+    {
+        if(!validJsonOfField(5, "expires_in", pJson["expires_in"], err, true))
+            return false;
+    }
+    if(pJson.isMember("revoked_at"))
+    {
+        if(!validJsonOfField(6, "revoked_at", pJson["revoked_at"], err, true))
+            return false;
+    }
+    if(pJson.isMember("created_at"))
+    {
+        if(!validJsonOfField(7, "created_at", pJson["created_at"], err, true))
+            return false;
+    }
+    else
+    {
+        err="The created_at column cannot be null";
+        return false;
+    }
+    if(pJson.isMember("scopes"))
+    {
+        if(!validJsonOfField(8, "scopes", pJson["scopes"], err, true))
+            return false;
+    }
+    if(pJson.isMember("previous_refresh_token"))
+    {
+        if(!validJsonOfField(9, "previous_refresh_token", pJson["previous_refresh_token"], err, true))
+            return false;
+    }
+    return true;
+}
+bool OauthAccessTokens::validateMasqueradedJsonForCreation(const Json::Value &pJson,
+                                                           const std::vector<std::string> &pMasqueradingVector,
+                                                           std::string &err)
+{
+    if(pMasqueradingVector.size() != 10)
+    {
+        err = "Bad masquerading vector";
+        return false;
+    }
+    if(!pMasqueradingVector[0].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[0]))
+        {
+            if(!validJsonOfField(0, pMasqueradingVector[0], pJson[pMasqueradingVector[0]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[1].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[1]))
+        {
+            if(!validJsonOfField(1, pMasqueradingVector[1], pJson[pMasqueradingVector[1]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[2].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[2]))
+        {
+            if(!validJsonOfField(2, pMasqueradingVector[2], pJson[pMasqueradingVector[2]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[3].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[3]))
+        {
+            if(!validJsonOfField(3, pMasqueradingVector[3], pJson[pMasqueradingVector[3]], err, true))
+                return false;
+        }
+        else
+        {
+            err="The " + pMasqueradingVector[3] + " column cannot be null";
+            return false;
+        }
+    }
+    if(!pMasqueradingVector[4].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[4]))
+        {
+            if(!validJsonOfField(4, pMasqueradingVector[4], pJson[pMasqueradingVector[4]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[5].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[5]))
+        {
+            if(!validJsonOfField(5, pMasqueradingVector[5], pJson[pMasqueradingVector[5]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[6].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[6]))
+        {
+            if(!validJsonOfField(6, pMasqueradingVector[6], pJson[pMasqueradingVector[6]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[7].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[7]))
+        {
+            if(!validJsonOfField(7, pMasqueradingVector[7], pJson[pMasqueradingVector[7]], err, true))
+                return false;
+        }
+        else
+        {
+            err="The " + pMasqueradingVector[7] + " column cannot be null";
+            return false;
+        }
+    }
+    if(!pMasqueradingVector[8].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[8]))
+        {
+            if(!validJsonOfField(8, pMasqueradingVector[8], pJson[pMasqueradingVector[8]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[9].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[9]))
+        {
+            if(!validJsonOfField(9, pMasqueradingVector[9], pJson[pMasqueradingVector[9]], err, true))
+                return false;
+        }
+    }
+    return true;
+}
+bool OauthAccessTokens::validateJsonForUpdate(const Json::Value &pJson, std::string &err)
+{
+    if(pJson.isMember("id"))
+    {
+        if(!validJsonOfField(0, "id", pJson["id"], err, false))
+            return false;
+    }
+    else
+    {
+        err = "The value of primary key must be set in the json object for update";
+        return false;
+    }
+    if(pJson.isMember("resource_owner_id"))
+    {
+        if(!validJsonOfField(1, "resource_owner_id", pJson["resource_owner_id"], err, false))
+            return false;
+    }
+    if(pJson.isMember("application_id"))
+    {
+        if(!validJsonOfField(2, "application_id", pJson["application_id"], err, false))
+            return false;
+    }
+    if(pJson.isMember("token"))
+    {
+        if(!validJsonOfField(3, "token", pJson["token"], err, false))
+            return false;
+    }
+    if(pJson.isMember("refresh_token"))
+    {
+        if(!validJsonOfField(4, "refresh_token", pJson["refresh_token"], err, false))
+            return false;
+    }
+    if(pJson.isMember("expires_in"))
+    {
+        if(!validJsonOfField(5, "expires_in", pJson["expires_in"], err, false))
+            return false;
+    }
+    if(pJson.isMember("revoked_at"))
+    {
+        if(!validJsonOfField(6, "revoked_at", pJson["revoked_at"], err, false))
+            return false;
+    }
+    if(pJson.isMember("created_at"))
+    {
+        if(!validJsonOfField(7, "created_at", pJson["created_at"], err, false))
+            return false;
+    }
+    if(pJson.isMember("scopes"))
+    {
+        if(!validJsonOfField(8, "scopes", pJson["scopes"], err, false))
+            return false;
+    }
+    if(pJson.isMember("previous_refresh_token"))
+    {
+        if(!validJsonOfField(9, "previous_refresh_token", pJson["previous_refresh_token"], err, false))
+            return false;
+    }
+    return true;
+}
+bool OauthAccessTokens::validateMasqueradedJsonForUpdate(const Json::Value &pJson,
+                                                         const std::vector<std::string> &pMasqueradingVector,
+                                                         std::string &err)
+{
+    if(pMasqueradingVector.size() != 10)
+    {
+        err = "Bad masquerading vector";
+        return false;
+    }
+    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
+    {
+        if(!validJsonOfField(0, pMasqueradingVector[0], pJson[pMasqueradingVector[0]], err, false))
+            return false;
+    }
+    else
+    {
+        err = "The value of primary key must be set in the json object for update";
+        return false;
+    }
+    if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
+    {
+        if(!validJsonOfField(1, pMasqueradingVector[1], pJson[pMasqueradingVector[1]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
+    {
+        if(!validJsonOfField(2, pMasqueradingVector[2], pJson[pMasqueradingVector[2]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
+    {
+        if(!validJsonOfField(3, pMasqueradingVector[3], pJson[pMasqueradingVector[3]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
+    {
+        if(!validJsonOfField(4, pMasqueradingVector[4], pJson[pMasqueradingVector[4]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
+    {
+        if(!validJsonOfField(5, pMasqueradingVector[5], pJson[pMasqueradingVector[5]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
+    {
+        if(!validJsonOfField(6, pMasqueradingVector[6], pJson[pMasqueradingVector[6]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
+    {
+        if(!validJsonOfField(7, pMasqueradingVector[7], pJson[pMasqueradingVector[7]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[8].empty() && pJson.isMember(pMasqueradingVector[8]))
+    {
+        if(!validJsonOfField(8, pMasqueradingVector[8], pJson[pMasqueradingVector[8]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[9].empty() && pJson.isMember(pMasqueradingVector[9]))
+    {
+        if(!validJsonOfField(9, pMasqueradingVector[9], pJson[pMasqueradingVector[9]], err, false))
+            return false;
+    }
+    return true;
+}
+bool OauthAccessTokens::validJsonOfField(size_t index,
+                                         const std::string &fieldName,
+                                         const Json::Value &pJson, 
+                                         std::string &err, 
+                                         bool isForCreation)
+{
+    switch(index)
+    {
+        case 0:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(isForCreation)
+            {
+                err="The automatic primary key cannot be set";
+                return false;
+            }        
+            if(!pJson.isInt64())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 1:
+            if(!pJson.isInt64())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 2:
+            if(!pJson.isInt64())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 3:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 4:
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 5:
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 6:
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 7:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 8:
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 9:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+     
+        default:
+            err="Internal error in the server";
+            return false;
+            break;
+    }
+    return true;
 }

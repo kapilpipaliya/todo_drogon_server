@@ -10,7 +10,7 @@
 #include <string>
 
 using namespace drogon;
-using namespace drogon_model::openproject4;
+using namespace drogon_model::openproject6;
 
 const std::string Attachments::Cols::_id = "id";
 const std::string Attachments::Cols::_container_id = "container_id";
@@ -57,8 +57,10 @@ const std::string &Attachments::getColumnName(size_t index) noexcept(false)
     assert(index < _metaData.size());
     return _metaData[index]._colName;
 }
-Attachments::Attachments(const Row &r) noexcept
+Attachments::Attachments(const Row &r, const ssize_t indexOffset) noexcept
 {
+    if(indexOffset < 0)
+    {
         if(!r["id"].isNull())
         {
             _id=std::make_shared<int32_t>(r["id"].as<int32_t>());
@@ -157,7 +159,586 @@ Attachments::Attachments(const Row &r) noexcept
             }
             _updatedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
         }
+    }
+    else
+    {
+        size_t offset = (size_t)indexOffset;
+        if(offset + 17 > r.size())
+        {
+            LOG_FATAL << "Invalid SQL result for this model";
+            return;
+        }
+        size_t index;
+        index = offset + 0;
+        if(!r[index].isNull())
+        {
+            _id=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 1;
+        if(!r[index].isNull())
+        {
+            _containerId=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 2;
+        if(!r[index].isNull())
+        {
+            _containerType=std::make_shared<std::string>(r[index].as<std::string>());
+        }
+        index = offset + 3;
+        if(!r[index].isNull())
+        {
+            _filename=std::make_shared<std::string>(r[index].as<std::string>());
+        }
+        index = offset + 4;
+        if(!r[index].isNull())
+        {
+            _diskFilename=std::make_shared<std::string>(r[index].as<std::string>());
+        }
+        index = offset + 5;
+        if(!r[index].isNull())
+        {
+            _filesize=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 6;
+        if(!r[index].isNull())
+        {
+            _contentType=std::make_shared<std::string>(r[index].as<std::string>());
+        }
+        index = offset + 7;
+        if(!r[index].isNull())
+        {
+            _digest=std::make_shared<std::string>(r[index].as<std::string>());
+        }
+        index = offset + 8;
+        if(!r[index].isNull())
+        {
+            _downloads=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 9;
+        if(!r[index].isNull())
+        {
+            _authorId=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 10;
+        if(!r[index].isNull())
+        {
+            auto timeStr = r[index].as<std::string>();
+            struct tm stm;
+            memset(&stm,0,sizeof(stm));
+            auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+            size_t t = timelocal(&stm);
+            size_t decimalNum = 0;
+            if(*p=='.')
+            {
+                std::string decimals(p+1,&timeStr[timeStr.length()]);
+                while(decimals.length()<6)
+                {
+                    decimals += "0";
+                }
+                decimalNum = (size_t)atol(decimals.c_str());
+            }
+            _createdAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+        }
+        index = offset + 11;
+        if(!r[index].isNull())
+        {
+            _description=std::make_shared<std::string>(r[index].as<std::string>());
+        }
+        index = offset + 12;
+        if(!r[index].isNull())
+        {
+            _file=std::make_shared<std::string>(r[index].as<std::string>());
+        }
+        index = offset + 13;
+        if(!r[index].isNull())
+        {
+            _fulltext=std::make_shared<std::string>(r[index].as<std::string>());
+        }
+        index = offset + 14;
+        if(!r[index].isNull())
+        {
+            _fulltextTsv=std::make_shared<std::string>(r[index].as<std::string>());
+        }
+        index = offset + 15;
+        if(!r[index].isNull())
+        {
+            _fileTsv=std::make_shared<std::string>(r[index].as<std::string>());
+        }
+        index = offset + 16;
+        if(!r[index].isNull())
+        {
+            auto timeStr = r[index].as<std::string>();
+            struct tm stm;
+            memset(&stm,0,sizeof(stm));
+            auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+            size_t t = timelocal(&stm);
+            size_t decimalNum = 0;
+            if(*p=='.')
+            {
+                std::string decimals(p+1,&timeStr[timeStr.length()]);
+                while(decimals.length()<6)
+                {
+                    decimals += "0";
+                }
+                decimalNum = (size_t)atol(decimals.c_str());
+            }
+            _updatedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+        }
+    }
+
 }
+
+Attachments::Attachments(const Json::Value &pJson, const std::vector<std::string> &pMasqueradingVector) noexcept(false)
+{
+    if(pMasqueradingVector.size() != 17)
+    {
+        LOG_ERROR << "Bad masquerading vector";
+        return;
+    }
+    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
+    {
+        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+    }
+    if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
+    {
+        _containerId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+    }
+    if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
+    {
+        _containerType=std::make_shared<std::string>(pJson[pMasqueradingVector[2]].asString());
+    }
+    if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
+    {
+        _filename=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+    }
+    if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
+    {
+        _diskFilename=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+    }
+    if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
+    {
+        _filesize=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[5]].asInt64());
+    }
+    if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
+    {
+        _contentType=std::make_shared<std::string>(pJson[pMasqueradingVector[6]].asString());
+    }
+    if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
+    {
+        _digest=std::make_shared<std::string>(pJson[pMasqueradingVector[7]].asString());
+    }
+    if(!pMasqueradingVector[8].empty() && pJson.isMember(pMasqueradingVector[8]))
+    {
+        _downloads=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[8]].asInt64());
+    }
+    if(!pMasqueradingVector[9].empty() && pJson.isMember(pMasqueradingVector[9]))
+    {
+        _authorId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[9]].asInt64());
+    }
+    if(!pMasqueradingVector[10].empty() && pJson.isMember(pMasqueradingVector[10]))
+    {
+        auto timeStr = pJson[pMasqueradingVector[10]].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+        size_t t = timelocal(&stm);
+        size_t decimalNum = 0;
+        if(*p=='.')
+        {
+            std::string decimals(p+1,&timeStr[timeStr.length()]);
+            while(decimals.length()<6)
+            {
+                decimals += "0";
+            }
+            decimalNum = (size_t)atol(decimals.c_str());
+        }
+        _createdAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+    }
+    if(!pMasqueradingVector[11].empty() && pJson.isMember(pMasqueradingVector[11]))
+    {
+        _description=std::make_shared<std::string>(pJson[pMasqueradingVector[11]].asString());
+    }
+    if(!pMasqueradingVector[12].empty() && pJson.isMember(pMasqueradingVector[12]))
+    {
+        _file=std::make_shared<std::string>(pJson[pMasqueradingVector[12]].asString());
+    }
+    if(!pMasqueradingVector[13].empty() && pJson.isMember(pMasqueradingVector[13]))
+    {
+        _fulltext=std::make_shared<std::string>(pJson[pMasqueradingVector[13]].asString());
+    }
+    if(!pMasqueradingVector[14].empty() && pJson.isMember(pMasqueradingVector[14]))
+    {
+        _fulltextTsv=std::make_shared<std::string>(pJson[pMasqueradingVector[14]].asString());
+    }
+    if(!pMasqueradingVector[15].empty() && pJson.isMember(pMasqueradingVector[15]))
+    {
+        _fileTsv=std::make_shared<std::string>(pJson[pMasqueradingVector[15]].asString());
+    }
+    if(!pMasqueradingVector[16].empty() && pJson.isMember(pMasqueradingVector[16]))
+    {
+        auto timeStr = pJson[pMasqueradingVector[16]].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+        size_t t = timelocal(&stm);
+        size_t decimalNum = 0;
+        if(*p=='.')
+        {
+            std::string decimals(p+1,&timeStr[timeStr.length()]);
+            while(decimals.length()<6)
+            {
+                decimals += "0";
+            }
+            decimalNum = (size_t)atol(decimals.c_str());
+        }
+        _updatedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+    }
+}
+
+Attachments::Attachments(const Json::Value &pJson) noexcept(false)
+{
+    if(pJson.isMember("id"))
+    {
+        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+    }
+    if(pJson.isMember("container_id"))
+    {
+        _containerId=std::make_shared<int32_t>((int32_t)pJson["container_id"].asInt64());
+    }
+    if(pJson.isMember("container_type"))
+    {
+        _containerType=std::make_shared<std::string>(pJson["container_type"].asString());
+    }
+    if(pJson.isMember("filename"))
+    {
+        _filename=std::make_shared<std::string>(pJson["filename"].asString());
+    }
+    if(pJson.isMember("disk_filename"))
+    {
+        _diskFilename=std::make_shared<std::string>(pJson["disk_filename"].asString());
+    }
+    if(pJson.isMember("filesize"))
+    {
+        _filesize=std::make_shared<int32_t>((int32_t)pJson["filesize"].asInt64());
+    }
+    if(pJson.isMember("content_type"))
+    {
+        _contentType=std::make_shared<std::string>(pJson["content_type"].asString());
+    }
+    if(pJson.isMember("digest"))
+    {
+        _digest=std::make_shared<std::string>(pJson["digest"].asString());
+    }
+    if(pJson.isMember("downloads"))
+    {
+        _downloads=std::make_shared<int32_t>((int32_t)pJson["downloads"].asInt64());
+    }
+    if(pJson.isMember("author_id"))
+    {
+        _authorId=std::make_shared<int32_t>((int32_t)pJson["author_id"].asInt64());
+    }
+    if(pJson.isMember("created_at"))
+    {
+        auto timeStr = pJson["created_at"].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+        size_t t = timelocal(&stm);
+        size_t decimalNum = 0;
+        if(*p=='.')
+        {
+            std::string decimals(p+1,&timeStr[timeStr.length()]);
+            while(decimals.length()<6)
+            {
+                decimals += "0";
+            }
+            decimalNum = (size_t)atol(decimals.c_str());
+        }
+        _createdAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+    }
+    if(pJson.isMember("description"))
+    {
+        _description=std::make_shared<std::string>(pJson["description"].asString());
+    }
+    if(pJson.isMember("file"))
+    {
+        _file=std::make_shared<std::string>(pJson["file"].asString());
+    }
+    if(pJson.isMember("fulltext"))
+    {
+        _fulltext=std::make_shared<std::string>(pJson["fulltext"].asString());
+    }
+    if(pJson.isMember("fulltext_tsv"))
+    {
+        _fulltextTsv=std::make_shared<std::string>(pJson["fulltext_tsv"].asString());
+    }
+    if(pJson.isMember("file_tsv"))
+    {
+        _fileTsv=std::make_shared<std::string>(pJson["file_tsv"].asString());
+    }
+    if(pJson.isMember("updated_at"))
+    {
+        auto timeStr = pJson["updated_at"].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+        size_t t = timelocal(&stm);
+        size_t decimalNum = 0;
+        if(*p=='.')
+        {
+            std::string decimals(p+1,&timeStr[timeStr.length()]);
+            while(decimals.length()<6)
+            {
+                decimals += "0";
+            }
+            decimalNum = (size_t)atol(decimals.c_str());
+        }
+        _updatedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+    }
+}
+
+void Attachments::updateByMasqueradedJson(const Json::Value &pJson,
+                                            const std::vector<std::string> &pMasqueradingVector) noexcept(false)
+{
+    if(pMasqueradingVector.size() != 17)
+    {
+        LOG_ERROR << "Bad masquerading vector";
+        return;
+    }
+    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
+    {
+        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+    }
+    if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
+    {
+        _dirtyFlag[1] = true;
+        _containerId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+    }
+    if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
+    {
+        _dirtyFlag[2] = true;
+        _containerType=std::make_shared<std::string>(pJson[pMasqueradingVector[2]].asString());
+    }
+    if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
+    {
+        _dirtyFlag[3] = true;
+        _filename=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+    }
+    if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
+    {
+        _dirtyFlag[4] = true;
+        _diskFilename=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+    }
+    if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
+    {
+        _dirtyFlag[5] = true;
+        _filesize=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[5]].asInt64());
+    }
+    if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
+    {
+        _dirtyFlag[6] = true;
+        _contentType=std::make_shared<std::string>(pJson[pMasqueradingVector[6]].asString());
+    }
+    if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
+    {
+        _dirtyFlag[7] = true;
+        _digest=std::make_shared<std::string>(pJson[pMasqueradingVector[7]].asString());
+    }
+    if(!pMasqueradingVector[8].empty() && pJson.isMember(pMasqueradingVector[8]))
+    {
+        _dirtyFlag[8] = true;
+        _downloads=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[8]].asInt64());
+    }
+    if(!pMasqueradingVector[9].empty() && pJson.isMember(pMasqueradingVector[9]))
+    {
+        _dirtyFlag[9] = true;
+        _authorId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[9]].asInt64());
+    }
+    if(!pMasqueradingVector[10].empty() && pJson.isMember(pMasqueradingVector[10]))
+    {
+        _dirtyFlag[10] = true;
+        auto timeStr = pJson[pMasqueradingVector[10]].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+        size_t t = timelocal(&stm);
+        size_t decimalNum = 0;
+        if(*p=='.')
+        {
+            std::string decimals(p+1,&timeStr[timeStr.length()]);
+            while(decimals.length()<6)
+            {
+                decimals += "0";
+            }
+            decimalNum = (size_t)atol(decimals.c_str());
+        }
+        _createdAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+    }
+    if(!pMasqueradingVector[11].empty() && pJson.isMember(pMasqueradingVector[11]))
+    {
+        _dirtyFlag[11] = true;
+        _description=std::make_shared<std::string>(pJson[pMasqueradingVector[11]].asString());
+    }
+    if(!pMasqueradingVector[12].empty() && pJson.isMember(pMasqueradingVector[12]))
+    {
+        _dirtyFlag[12] = true;
+        _file=std::make_shared<std::string>(pJson[pMasqueradingVector[12]].asString());
+    }
+    if(!pMasqueradingVector[13].empty() && pJson.isMember(pMasqueradingVector[13]))
+    {
+        _dirtyFlag[13] = true;
+        _fulltext=std::make_shared<std::string>(pJson[pMasqueradingVector[13]].asString());
+    }
+    if(!pMasqueradingVector[14].empty() && pJson.isMember(pMasqueradingVector[14]))
+    {
+        _dirtyFlag[14] = true;
+        _fulltextTsv=std::make_shared<std::string>(pJson[pMasqueradingVector[14]].asString());
+    }
+    if(!pMasqueradingVector[15].empty() && pJson.isMember(pMasqueradingVector[15]))
+    {
+        _dirtyFlag[15] = true;
+        _fileTsv=std::make_shared<std::string>(pJson[pMasqueradingVector[15]].asString());
+    }
+    if(!pMasqueradingVector[16].empty() && pJson.isMember(pMasqueradingVector[16]))
+    {
+        _dirtyFlag[16] = true;
+        auto timeStr = pJson[pMasqueradingVector[16]].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+        size_t t = timelocal(&stm);
+        size_t decimalNum = 0;
+        if(*p=='.')
+        {
+            std::string decimals(p+1,&timeStr[timeStr.length()]);
+            while(decimals.length()<6)
+            {
+                decimals += "0";
+            }
+            decimalNum = (size_t)atol(decimals.c_str());
+        }
+        _updatedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+    }
+}
+                                                                    
+void Attachments::updateByJson(const Json::Value &pJson) noexcept(false)
+{
+    if(pJson.isMember("id"))
+    {
+        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+    }
+    if(pJson.isMember("container_id"))
+    {
+        _dirtyFlag[1] = true;
+        _containerId=std::make_shared<int32_t>((int32_t)pJson["container_id"].asInt64());
+    }
+    if(pJson.isMember("container_type"))
+    {
+        _dirtyFlag[2] = true;
+        _containerType=std::make_shared<std::string>(pJson["container_type"].asString());
+    }
+    if(pJson.isMember("filename"))
+    {
+        _dirtyFlag[3] = true;
+        _filename=std::make_shared<std::string>(pJson["filename"].asString());
+    }
+    if(pJson.isMember("disk_filename"))
+    {
+        _dirtyFlag[4] = true;
+        _diskFilename=std::make_shared<std::string>(pJson["disk_filename"].asString());
+    }
+    if(pJson.isMember("filesize"))
+    {
+        _dirtyFlag[5] = true;
+        _filesize=std::make_shared<int32_t>((int32_t)pJson["filesize"].asInt64());
+    }
+    if(pJson.isMember("content_type"))
+    {
+        _dirtyFlag[6] = true;
+        _contentType=std::make_shared<std::string>(pJson["content_type"].asString());
+    }
+    if(pJson.isMember("digest"))
+    {
+        _dirtyFlag[7] = true;
+        _digest=std::make_shared<std::string>(pJson["digest"].asString());
+    }
+    if(pJson.isMember("downloads"))
+    {
+        _dirtyFlag[8] = true;
+        _downloads=std::make_shared<int32_t>((int32_t)pJson["downloads"].asInt64());
+    }
+    if(pJson.isMember("author_id"))
+    {
+        _dirtyFlag[9] = true;
+        _authorId=std::make_shared<int32_t>((int32_t)pJson["author_id"].asInt64());
+    }
+    if(pJson.isMember("created_at"))
+    {
+        _dirtyFlag[10] = true;
+        auto timeStr = pJson["created_at"].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+        size_t t = timelocal(&stm);
+        size_t decimalNum = 0;
+        if(*p=='.')
+        {
+            std::string decimals(p+1,&timeStr[timeStr.length()]);
+            while(decimals.length()<6)
+            {
+                decimals += "0";
+            }
+            decimalNum = (size_t)atol(decimals.c_str());
+        }
+        _createdAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+    }
+    if(pJson.isMember("description"))
+    {
+        _dirtyFlag[11] = true;
+        _description=std::make_shared<std::string>(pJson["description"].asString());
+    }
+    if(pJson.isMember("file"))
+    {
+        _dirtyFlag[12] = true;
+        _file=std::make_shared<std::string>(pJson["file"].asString());
+    }
+    if(pJson.isMember("fulltext"))
+    {
+        _dirtyFlag[13] = true;
+        _fulltext=std::make_shared<std::string>(pJson["fulltext"].asString());
+    }
+    if(pJson.isMember("fulltext_tsv"))
+    {
+        _dirtyFlag[14] = true;
+        _fulltextTsv=std::make_shared<std::string>(pJson["fulltext_tsv"].asString());
+    }
+    if(pJson.isMember("file_tsv"))
+    {
+        _dirtyFlag[15] = true;
+        _fileTsv=std::make_shared<std::string>(pJson["file_tsv"].asString());
+    }
+    if(pJson.isMember("updated_at"))
+    {
+        _dirtyFlag[16] = true;
+        auto timeStr = pJson["updated_at"].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+        size_t t = timelocal(&stm);
+        size_t decimalNum = 0;
+        if(*p=='.')
+        {
+            std::string decimals(p+1,&timeStr[timeStr.length()]);
+            while(decimals.length()<6)
+            {
+                decimals += "0";
+            }
+            decimalNum = (size_t)atol(decimals.c_str());
+        }
+        _updatedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+    }
+}
+
 const int32_t &Attachments::getValueOfId() const noexcept
 {
     const static int32_t defaultValue = int32_t();
@@ -1004,4 +1585,964 @@ Json::Value Attachments::toJson() const
         ret["updated_at"]=Json::Value();
     }
     return ret;
+}
+
+Json::Value Attachments::toMasqueradedJson(
+    const std::vector<std::string> &pMasqueradingVector) const
+{
+    Json::Value ret;
+    if(pMasqueradingVector.size() == 17)
+    {
+        if(!pMasqueradingVector[0].empty())
+        {
+            if(getId())
+            {
+                ret[pMasqueradingVector[0]]=getValueOfId();
+            }
+            else
+            {
+                ret[pMasqueradingVector[0]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[1].empty())
+        {
+            if(getContainerId())
+            {
+                ret[pMasqueradingVector[1]]=getValueOfContainerId();
+            }
+            else
+            {
+                ret[pMasqueradingVector[1]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[2].empty())
+        {
+            if(getContainerType())
+            {
+                ret[pMasqueradingVector[2]]=getValueOfContainerType();
+            }
+            else
+            {
+                ret[pMasqueradingVector[2]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[3].empty())
+        {
+            if(getFilename())
+            {
+                ret[pMasqueradingVector[3]]=getValueOfFilename();
+            }
+            else
+            {
+                ret[pMasqueradingVector[3]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[4].empty())
+        {
+            if(getDiskFilename())
+            {
+                ret[pMasqueradingVector[4]]=getValueOfDiskFilename();
+            }
+            else
+            {
+                ret[pMasqueradingVector[4]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[5].empty())
+        {
+            if(getFilesize())
+            {
+                ret[pMasqueradingVector[5]]=getValueOfFilesize();
+            }
+            else
+            {
+                ret[pMasqueradingVector[5]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[6].empty())
+        {
+            if(getContentType())
+            {
+                ret[pMasqueradingVector[6]]=getValueOfContentType();
+            }
+            else
+            {
+                ret[pMasqueradingVector[6]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[7].empty())
+        {
+            if(getDigest())
+            {
+                ret[pMasqueradingVector[7]]=getValueOfDigest();
+            }
+            else
+            {
+                ret[pMasqueradingVector[7]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[8].empty())
+        {
+            if(getDownloads())
+            {
+                ret[pMasqueradingVector[8]]=getValueOfDownloads();
+            }
+            else
+            {
+                ret[pMasqueradingVector[8]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[9].empty())
+        {
+            if(getAuthorId())
+            {
+                ret[pMasqueradingVector[9]]=getValueOfAuthorId();
+            }
+            else
+            {
+                ret[pMasqueradingVector[9]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[10].empty())
+        {
+            if(getCreatedAt())
+            {
+                ret[pMasqueradingVector[10]]=getCreatedAt()->toDbStringLocal();
+            }
+            else
+            {
+                ret[pMasqueradingVector[10]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[11].empty())
+        {
+            if(getDescription())
+            {
+                ret[pMasqueradingVector[11]]=getValueOfDescription();
+            }
+            else
+            {
+                ret[pMasqueradingVector[11]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[12].empty())
+        {
+            if(getFile())
+            {
+                ret[pMasqueradingVector[12]]=getValueOfFile();
+            }
+            else
+            {
+                ret[pMasqueradingVector[12]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[13].empty())
+        {
+            if(getFulltext())
+            {
+                ret[pMasqueradingVector[13]]=getValueOfFulltext();
+            }
+            else
+            {
+                ret[pMasqueradingVector[13]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[14].empty())
+        {
+            if(getFulltextTsv())
+            {
+                ret[pMasqueradingVector[14]]=getValueOfFulltextTsv();
+            }
+            else
+            {
+                ret[pMasqueradingVector[14]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[15].empty())
+        {
+            if(getFileTsv())
+            {
+                ret[pMasqueradingVector[15]]=getValueOfFileTsv();
+            }
+            else
+            {
+                ret[pMasqueradingVector[15]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[16].empty())
+        {
+            if(getUpdatedAt())
+            {
+                ret[pMasqueradingVector[16]]=getUpdatedAt()->toDbStringLocal();
+            }
+            else
+            {
+                ret[pMasqueradingVector[16]]=Json::Value();
+            }
+        }
+        return ret;
+    }
+    LOG_ERROR << "Masquerade failed";
+    if(getId())
+    {
+        ret["id"]=getValueOfId();
+    }
+    else
+    {
+        ret["id"]=Json::Value();
+    }
+    if(getContainerId())
+    {
+        ret["container_id"]=getValueOfContainerId();
+    }
+    else
+    {
+        ret["container_id"]=Json::Value();
+    }
+    if(getContainerType())
+    {
+        ret["container_type"]=getValueOfContainerType();
+    }
+    else
+    {
+        ret["container_type"]=Json::Value();
+    }
+    if(getFilename())
+    {
+        ret["filename"]=getValueOfFilename();
+    }
+    else
+    {
+        ret["filename"]=Json::Value();
+    }
+    if(getDiskFilename())
+    {
+        ret["disk_filename"]=getValueOfDiskFilename();
+    }
+    else
+    {
+        ret["disk_filename"]=Json::Value();
+    }
+    if(getFilesize())
+    {
+        ret["filesize"]=getValueOfFilesize();
+    }
+    else
+    {
+        ret["filesize"]=Json::Value();
+    }
+    if(getContentType())
+    {
+        ret["content_type"]=getValueOfContentType();
+    }
+    else
+    {
+        ret["content_type"]=Json::Value();
+    }
+    if(getDigest())
+    {
+        ret["digest"]=getValueOfDigest();
+    }
+    else
+    {
+        ret["digest"]=Json::Value();
+    }
+    if(getDownloads())
+    {
+        ret["downloads"]=getValueOfDownloads();
+    }
+    else
+    {
+        ret["downloads"]=Json::Value();
+    }
+    if(getAuthorId())
+    {
+        ret["author_id"]=getValueOfAuthorId();
+    }
+    else
+    {
+        ret["author_id"]=Json::Value();
+    }
+    if(getCreatedAt())
+    {
+        ret["created_at"]=getCreatedAt()->toDbStringLocal();
+    }
+    else
+    {
+        ret["created_at"]=Json::Value();
+    }
+    if(getDescription())
+    {
+        ret["description"]=getValueOfDescription();
+    }
+    else
+    {
+        ret["description"]=Json::Value();
+    }
+    if(getFile())
+    {
+        ret["file"]=getValueOfFile();
+    }
+    else
+    {
+        ret["file"]=Json::Value();
+    }
+    if(getFulltext())
+    {
+        ret["fulltext"]=getValueOfFulltext();
+    }
+    else
+    {
+        ret["fulltext"]=Json::Value();
+    }
+    if(getFulltextTsv())
+    {
+        ret["fulltext_tsv"]=getValueOfFulltextTsv();
+    }
+    else
+    {
+        ret["fulltext_tsv"]=Json::Value();
+    }
+    if(getFileTsv())
+    {
+        ret["file_tsv"]=getValueOfFileTsv();
+    }
+    else
+    {
+        ret["file_tsv"]=Json::Value();
+    }
+    if(getUpdatedAt())
+    {
+        ret["updated_at"]=getUpdatedAt()->toDbStringLocal();
+    }
+    else
+    {
+        ret["updated_at"]=Json::Value();
+    }
+    return ret;
+}
+
+bool Attachments::validateJsonForCreation(const Json::Value &pJson, std::string &err)
+{
+    if(pJson.isMember("id"))
+    {
+        if(!validJsonOfField(0, "id", pJson["id"], err, true))
+            return false;
+    }
+    if(pJson.isMember("container_id"))
+    {
+        if(!validJsonOfField(1, "container_id", pJson["container_id"], err, true))
+            return false;
+    }
+    if(pJson.isMember("container_type"))
+    {
+        if(!validJsonOfField(2, "container_type", pJson["container_type"], err, true))
+            return false;
+    }
+    if(pJson.isMember("filename"))
+    {
+        if(!validJsonOfField(3, "filename", pJson["filename"], err, true))
+            return false;
+    }
+    if(pJson.isMember("disk_filename"))
+    {
+        if(!validJsonOfField(4, "disk_filename", pJson["disk_filename"], err, true))
+            return false;
+    }
+    if(pJson.isMember("filesize"))
+    {
+        if(!validJsonOfField(5, "filesize", pJson["filesize"], err, true))
+            return false;
+    }
+    if(pJson.isMember("content_type"))
+    {
+        if(!validJsonOfField(6, "content_type", pJson["content_type"], err, true))
+            return false;
+    }
+    if(pJson.isMember("digest"))
+    {
+        if(!validJsonOfField(7, "digest", pJson["digest"], err, true))
+            return false;
+    }
+    if(pJson.isMember("downloads"))
+    {
+        if(!validJsonOfField(8, "downloads", pJson["downloads"], err, true))
+            return false;
+    }
+    if(pJson.isMember("author_id"))
+    {
+        if(!validJsonOfField(9, "author_id", pJson["author_id"], err, true))
+            return false;
+    }
+    if(pJson.isMember("created_at"))
+    {
+        if(!validJsonOfField(10, "created_at", pJson["created_at"], err, true))
+            return false;
+    }
+    if(pJson.isMember("description"))
+    {
+        if(!validJsonOfField(11, "description", pJson["description"], err, true))
+            return false;
+    }
+    if(pJson.isMember("file"))
+    {
+        if(!validJsonOfField(12, "file", pJson["file"], err, true))
+            return false;
+    }
+    if(pJson.isMember("fulltext"))
+    {
+        if(!validJsonOfField(13, "fulltext", pJson["fulltext"], err, true))
+            return false;
+    }
+    if(pJson.isMember("fulltext_tsv"))
+    {
+        if(!validJsonOfField(14, "fulltext_tsv", pJson["fulltext_tsv"], err, true))
+            return false;
+    }
+    if(pJson.isMember("file_tsv"))
+    {
+        if(!validJsonOfField(15, "file_tsv", pJson["file_tsv"], err, true))
+            return false;
+    }
+    if(pJson.isMember("updated_at"))
+    {
+        if(!validJsonOfField(16, "updated_at", pJson["updated_at"], err, true))
+            return false;
+    }
+    return true;
+}
+bool Attachments::validateMasqueradedJsonForCreation(const Json::Value &pJson,
+                                                     const std::vector<std::string> &pMasqueradingVector,
+                                                     std::string &err)
+{
+    if(pMasqueradingVector.size() != 17)
+    {
+        err = "Bad masquerading vector";
+        return false;
+    }
+    if(!pMasqueradingVector[0].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[0]))
+        {
+            if(!validJsonOfField(0, pMasqueradingVector[0], pJson[pMasqueradingVector[0]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[1].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[1]))
+        {
+            if(!validJsonOfField(1, pMasqueradingVector[1], pJson[pMasqueradingVector[1]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[2].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[2]))
+        {
+            if(!validJsonOfField(2, pMasqueradingVector[2], pJson[pMasqueradingVector[2]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[3].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[3]))
+        {
+            if(!validJsonOfField(3, pMasqueradingVector[3], pJson[pMasqueradingVector[3]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[4].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[4]))
+        {
+            if(!validJsonOfField(4, pMasqueradingVector[4], pJson[pMasqueradingVector[4]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[5].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[5]))
+        {
+            if(!validJsonOfField(5, pMasqueradingVector[5], pJson[pMasqueradingVector[5]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[6].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[6]))
+        {
+            if(!validJsonOfField(6, pMasqueradingVector[6], pJson[pMasqueradingVector[6]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[7].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[7]))
+        {
+            if(!validJsonOfField(7, pMasqueradingVector[7], pJson[pMasqueradingVector[7]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[8].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[8]))
+        {
+            if(!validJsonOfField(8, pMasqueradingVector[8], pJson[pMasqueradingVector[8]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[9].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[9]))
+        {
+            if(!validJsonOfField(9, pMasqueradingVector[9], pJson[pMasqueradingVector[9]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[10].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[10]))
+        {
+            if(!validJsonOfField(10, pMasqueradingVector[10], pJson[pMasqueradingVector[10]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[11].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[11]))
+        {
+            if(!validJsonOfField(11, pMasqueradingVector[11], pJson[pMasqueradingVector[11]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[12].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[12]))
+        {
+            if(!validJsonOfField(12, pMasqueradingVector[12], pJson[pMasqueradingVector[12]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[13].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[13]))
+        {
+            if(!validJsonOfField(13, pMasqueradingVector[13], pJson[pMasqueradingVector[13]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[14].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[14]))
+        {
+            if(!validJsonOfField(14, pMasqueradingVector[14], pJson[pMasqueradingVector[14]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[15].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[15]))
+        {
+            if(!validJsonOfField(15, pMasqueradingVector[15], pJson[pMasqueradingVector[15]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[16].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[16]))
+        {
+            if(!validJsonOfField(16, pMasqueradingVector[16], pJson[pMasqueradingVector[16]], err, true))
+                return false;
+        }
+    }
+    return true;
+}
+bool Attachments::validateJsonForUpdate(const Json::Value &pJson, std::string &err)
+{
+    if(pJson.isMember("id"))
+    {
+        if(!validJsonOfField(0, "id", pJson["id"], err, false))
+            return false;
+    }
+    else
+    {
+        err = "The value of primary key must be set in the json object for update";
+        return false;
+    }
+    if(pJson.isMember("container_id"))
+    {
+        if(!validJsonOfField(1, "container_id", pJson["container_id"], err, false))
+            return false;
+    }
+    if(pJson.isMember("container_type"))
+    {
+        if(!validJsonOfField(2, "container_type", pJson["container_type"], err, false))
+            return false;
+    }
+    if(pJson.isMember("filename"))
+    {
+        if(!validJsonOfField(3, "filename", pJson["filename"], err, false))
+            return false;
+    }
+    if(pJson.isMember("disk_filename"))
+    {
+        if(!validJsonOfField(4, "disk_filename", pJson["disk_filename"], err, false))
+            return false;
+    }
+    if(pJson.isMember("filesize"))
+    {
+        if(!validJsonOfField(5, "filesize", pJson["filesize"], err, false))
+            return false;
+    }
+    if(pJson.isMember("content_type"))
+    {
+        if(!validJsonOfField(6, "content_type", pJson["content_type"], err, false))
+            return false;
+    }
+    if(pJson.isMember("digest"))
+    {
+        if(!validJsonOfField(7, "digest", pJson["digest"], err, false))
+            return false;
+    }
+    if(pJson.isMember("downloads"))
+    {
+        if(!validJsonOfField(8, "downloads", pJson["downloads"], err, false))
+            return false;
+    }
+    if(pJson.isMember("author_id"))
+    {
+        if(!validJsonOfField(9, "author_id", pJson["author_id"], err, false))
+            return false;
+    }
+    if(pJson.isMember("created_at"))
+    {
+        if(!validJsonOfField(10, "created_at", pJson["created_at"], err, false))
+            return false;
+    }
+    if(pJson.isMember("description"))
+    {
+        if(!validJsonOfField(11, "description", pJson["description"], err, false))
+            return false;
+    }
+    if(pJson.isMember("file"))
+    {
+        if(!validJsonOfField(12, "file", pJson["file"], err, false))
+            return false;
+    }
+    if(pJson.isMember("fulltext"))
+    {
+        if(!validJsonOfField(13, "fulltext", pJson["fulltext"], err, false))
+            return false;
+    }
+    if(pJson.isMember("fulltext_tsv"))
+    {
+        if(!validJsonOfField(14, "fulltext_tsv", pJson["fulltext_tsv"], err, false))
+            return false;
+    }
+    if(pJson.isMember("file_tsv"))
+    {
+        if(!validJsonOfField(15, "file_tsv", pJson["file_tsv"], err, false))
+            return false;
+    }
+    if(pJson.isMember("updated_at"))
+    {
+        if(!validJsonOfField(16, "updated_at", pJson["updated_at"], err, false))
+            return false;
+    }
+    return true;
+}
+bool Attachments::validateMasqueradedJsonForUpdate(const Json::Value &pJson,
+                                                   const std::vector<std::string> &pMasqueradingVector,
+                                                   std::string &err)
+{
+    if(pMasqueradingVector.size() != 17)
+    {
+        err = "Bad masquerading vector";
+        return false;
+    }
+    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
+    {
+        if(!validJsonOfField(0, pMasqueradingVector[0], pJson[pMasqueradingVector[0]], err, false))
+            return false;
+    }
+    else
+    {
+        err = "The value of primary key must be set in the json object for update";
+        return false;
+    }
+    if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
+    {
+        if(!validJsonOfField(1, pMasqueradingVector[1], pJson[pMasqueradingVector[1]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
+    {
+        if(!validJsonOfField(2, pMasqueradingVector[2], pJson[pMasqueradingVector[2]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
+    {
+        if(!validJsonOfField(3, pMasqueradingVector[3], pJson[pMasqueradingVector[3]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
+    {
+        if(!validJsonOfField(4, pMasqueradingVector[4], pJson[pMasqueradingVector[4]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
+    {
+        if(!validJsonOfField(5, pMasqueradingVector[5], pJson[pMasqueradingVector[5]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
+    {
+        if(!validJsonOfField(6, pMasqueradingVector[6], pJson[pMasqueradingVector[6]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
+    {
+        if(!validJsonOfField(7, pMasqueradingVector[7], pJson[pMasqueradingVector[7]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[8].empty() && pJson.isMember(pMasqueradingVector[8]))
+    {
+        if(!validJsonOfField(8, pMasqueradingVector[8], pJson[pMasqueradingVector[8]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[9].empty() && pJson.isMember(pMasqueradingVector[9]))
+    {
+        if(!validJsonOfField(9, pMasqueradingVector[9], pJson[pMasqueradingVector[9]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[10].empty() && pJson.isMember(pMasqueradingVector[10]))
+    {
+        if(!validJsonOfField(10, pMasqueradingVector[10], pJson[pMasqueradingVector[10]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[11].empty() && pJson.isMember(pMasqueradingVector[11]))
+    {
+        if(!validJsonOfField(11, pMasqueradingVector[11], pJson[pMasqueradingVector[11]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[12].empty() && pJson.isMember(pMasqueradingVector[12]))
+    {
+        if(!validJsonOfField(12, pMasqueradingVector[12], pJson[pMasqueradingVector[12]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[13].empty() && pJson.isMember(pMasqueradingVector[13]))
+    {
+        if(!validJsonOfField(13, pMasqueradingVector[13], pJson[pMasqueradingVector[13]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[14].empty() && pJson.isMember(pMasqueradingVector[14]))
+    {
+        if(!validJsonOfField(14, pMasqueradingVector[14], pJson[pMasqueradingVector[14]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[15].empty() && pJson.isMember(pMasqueradingVector[15]))
+    {
+        if(!validJsonOfField(15, pMasqueradingVector[15], pJson[pMasqueradingVector[15]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[16].empty() && pJson.isMember(pMasqueradingVector[16]))
+    {
+        if(!validJsonOfField(16, pMasqueradingVector[16], pJson[pMasqueradingVector[16]], err, false))
+            return false;
+    }
+    return true;
+}
+bool Attachments::validJsonOfField(size_t index,
+                                   const std::string &fieldName,
+                                   const Json::Value &pJson, 
+                                   std::string &err, 
+                                   bool isForCreation)
+{
+    switch(index)
+    {
+        case 0:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(isForCreation)
+            {
+                err="The automatic primary key cannot be set";
+                return false;
+            }        
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 1:
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 2:
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            // asString().length() creates a string object, is there any better way to validate the length?
+            if(pJson.isString() && pJson.asString().length() > 30)
+            {
+                err="String length exceeds limit for the " +
+                    fieldName +
+                    "field (the maximum value is 30 )";
+                return false;               
+            }
+
+            break;
+        case 3:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 4:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 5:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 6:
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 7:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            // asString().length() creates a string object, is there any better way to validate the length?
+            if(pJson.isString() && pJson.asString().length() > 40)
+            {
+                err="String length exceeds limit for the " +
+                    fieldName +
+                    "field (the maximum value is 40 )";
+                return false;               
+            }
+
+            break;
+        case 8:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 9:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 10:
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 11:
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 12:
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 13:
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 14:
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 15:
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 16:
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+     
+        default:
+            err="Internal error in the server";
+            return false;
+            break;
+    }
+    return true;
 }

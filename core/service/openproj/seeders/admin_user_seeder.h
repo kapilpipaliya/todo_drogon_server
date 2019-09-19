@@ -18,8 +18,8 @@ public:
 //    }
        auto clientPtr = drogon::app().getDbClient("sce");
 
-     drogon::orm::Mapper<drogon_model::openproject4::Users> mapper(clientPtr);
-     drogon_model::openproject4::Users user;
+     drogon::orm::Mapper<drogon_model::openproject6::Users> mapper(clientPtr);
+     drogon_model::openproject6::Users user;
      user.setAdmin(true);
      user.setLogin("admin");
 //     user.set

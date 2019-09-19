@@ -10,7 +10,7 @@
 #include <string>
 
 using namespace drogon;
-using namespace drogon_model::openproject4;
+using namespace drogon_model::openproject6;
 
 const std::string WebhooksWebhooks::Cols::_id = "id";
 const std::string WebhooksWebhooks::Cols::_name = "name";
@@ -41,8 +41,10 @@ const std::string &WebhooksWebhooks::getColumnName(size_t index) noexcept(false)
     assert(index < _metaData.size());
     return _metaData[index]._colName;
 }
-WebhooksWebhooks::WebhooksWebhooks(const Row &r) noexcept
+WebhooksWebhooks::WebhooksWebhooks(const Row &r, const ssize_t indexOffset) noexcept
 {
+    if(indexOffset < 0)
+    {
         if(!r["id"].isNull())
         {
             _id=std::make_shared<int32_t>(r["id"].as<int32_t>());
@@ -109,7 +111,402 @@ WebhooksWebhooks::WebhooksWebhooks(const Row &r) noexcept
             }
             _updatedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
         }
+    }
+    else
+    {
+        size_t offset = (size_t)indexOffset;
+        if(offset + 9 > r.size())
+        {
+            LOG_FATAL << "Invalid SQL result for this model";
+            return;
+        }
+        size_t index;
+        index = offset + 0;
+        if(!r[index].isNull())
+        {
+            _id=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 1;
+        if(!r[index].isNull())
+        {
+            _name=std::make_shared<std::string>(r[index].as<std::string>());
+        }
+        index = offset + 2;
+        if(!r[index].isNull())
+        {
+            _url=std::make_shared<std::string>(r[index].as<std::string>());
+        }
+        index = offset + 3;
+        if(!r[index].isNull())
+        {
+            _description=std::make_shared<std::string>(r[index].as<std::string>());
+        }
+        index = offset + 4;
+        if(!r[index].isNull())
+        {
+            _secret=std::make_shared<std::string>(r[index].as<std::string>());
+        }
+        index = offset + 5;
+        if(!r[index].isNull())
+        {
+            _enabled=std::make_shared<bool>(r[index].as<bool>());
+        }
+        index = offset + 6;
+        if(!r[index].isNull())
+        {
+            _allProjects=std::make_shared<bool>(r[index].as<bool>());
+        }
+        index = offset + 7;
+        if(!r[index].isNull())
+        {
+            auto timeStr = r[index].as<std::string>();
+            struct tm stm;
+            memset(&stm,0,sizeof(stm));
+            auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+            size_t t = timelocal(&stm);
+            size_t decimalNum = 0;
+            if(*p=='.')
+            {
+                std::string decimals(p+1,&timeStr[timeStr.length()]);
+                while(decimals.length()<6)
+                {
+                    decimals += "0";
+                }
+                decimalNum = (size_t)atol(decimals.c_str());
+            }
+            _createdAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+        }
+        index = offset + 8;
+        if(!r[index].isNull())
+        {
+            auto timeStr = r[index].as<std::string>();
+            struct tm stm;
+            memset(&stm,0,sizeof(stm));
+            auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+            size_t t = timelocal(&stm);
+            size_t decimalNum = 0;
+            if(*p=='.')
+            {
+                std::string decimals(p+1,&timeStr[timeStr.length()]);
+                while(decimals.length()<6)
+                {
+                    decimals += "0";
+                }
+                decimalNum = (size_t)atol(decimals.c_str());
+            }
+            _updatedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+        }
+    }
+
 }
+
+WebhooksWebhooks::WebhooksWebhooks(const Json::Value &pJson, const std::vector<std::string> &pMasqueradingVector) noexcept(false)
+{
+    if(pMasqueradingVector.size() != 9)
+    {
+        LOG_ERROR << "Bad masquerading vector";
+        return;
+    }
+    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
+    {
+        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+    }
+    if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
+    {
+        _name=std::make_shared<std::string>(pJson[pMasqueradingVector[1]].asString());
+    }
+    if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
+    {
+        _url=std::make_shared<std::string>(pJson[pMasqueradingVector[2]].asString());
+    }
+    if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
+    {
+        _description=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+    }
+    if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
+    {
+        _secret=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+    }
+    if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
+    {
+        _enabled=std::make_shared<bool>(pJson[pMasqueradingVector[5]].asBool());
+    }
+    if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
+    {
+        _allProjects=std::make_shared<bool>(pJson[pMasqueradingVector[6]].asBool());
+    }
+    if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
+    {
+        auto timeStr = pJson[pMasqueradingVector[7]].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+        size_t t = timelocal(&stm);
+        size_t decimalNum = 0;
+        if(*p=='.')
+        {
+            std::string decimals(p+1,&timeStr[timeStr.length()]);
+            while(decimals.length()<6)
+            {
+                decimals += "0";
+            }
+            decimalNum = (size_t)atol(decimals.c_str());
+        }
+        _createdAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+    }
+    if(!pMasqueradingVector[8].empty() && pJson.isMember(pMasqueradingVector[8]))
+    {
+        auto timeStr = pJson[pMasqueradingVector[8]].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+        size_t t = timelocal(&stm);
+        size_t decimalNum = 0;
+        if(*p=='.')
+        {
+            std::string decimals(p+1,&timeStr[timeStr.length()]);
+            while(decimals.length()<6)
+            {
+                decimals += "0";
+            }
+            decimalNum = (size_t)atol(decimals.c_str());
+        }
+        _updatedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+    }
+}
+
+WebhooksWebhooks::WebhooksWebhooks(const Json::Value &pJson) noexcept(false)
+{
+    if(pJson.isMember("id"))
+    {
+        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+    }
+    if(pJson.isMember("name"))
+    {
+        _name=std::make_shared<std::string>(pJson["name"].asString());
+    }
+    if(pJson.isMember("url"))
+    {
+        _url=std::make_shared<std::string>(pJson["url"].asString());
+    }
+    if(pJson.isMember("description"))
+    {
+        _description=std::make_shared<std::string>(pJson["description"].asString());
+    }
+    if(pJson.isMember("secret"))
+    {
+        _secret=std::make_shared<std::string>(pJson["secret"].asString());
+    }
+    if(pJson.isMember("enabled"))
+    {
+        _enabled=std::make_shared<bool>(pJson["enabled"].asBool());
+    }
+    if(pJson.isMember("all_projects"))
+    {
+        _allProjects=std::make_shared<bool>(pJson["all_projects"].asBool());
+    }
+    if(pJson.isMember("created_at"))
+    {
+        auto timeStr = pJson["created_at"].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+        size_t t = timelocal(&stm);
+        size_t decimalNum = 0;
+        if(*p=='.')
+        {
+            std::string decimals(p+1,&timeStr[timeStr.length()]);
+            while(decimals.length()<6)
+            {
+                decimals += "0";
+            }
+            decimalNum = (size_t)atol(decimals.c_str());
+        }
+        _createdAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+    }
+    if(pJson.isMember("updated_at"))
+    {
+        auto timeStr = pJson["updated_at"].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+        size_t t = timelocal(&stm);
+        size_t decimalNum = 0;
+        if(*p=='.')
+        {
+            std::string decimals(p+1,&timeStr[timeStr.length()]);
+            while(decimals.length()<6)
+            {
+                decimals += "0";
+            }
+            decimalNum = (size_t)atol(decimals.c_str());
+        }
+        _updatedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+    }
+}
+
+void WebhooksWebhooks::updateByMasqueradedJson(const Json::Value &pJson,
+                                            const std::vector<std::string> &pMasqueradingVector) noexcept(false)
+{
+    if(pMasqueradingVector.size() != 9)
+    {
+        LOG_ERROR << "Bad masquerading vector";
+        return;
+    }
+    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
+    {
+        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+    }
+    if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
+    {
+        _dirtyFlag[1] = true;
+        _name=std::make_shared<std::string>(pJson[pMasqueradingVector[1]].asString());
+    }
+    if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
+    {
+        _dirtyFlag[2] = true;
+        _url=std::make_shared<std::string>(pJson[pMasqueradingVector[2]].asString());
+    }
+    if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
+    {
+        _dirtyFlag[3] = true;
+        _description=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+    }
+    if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
+    {
+        _dirtyFlag[4] = true;
+        _secret=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+    }
+    if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
+    {
+        _dirtyFlag[5] = true;
+        _enabled=std::make_shared<bool>(pJson[pMasqueradingVector[5]].asBool());
+    }
+    if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
+    {
+        _dirtyFlag[6] = true;
+        _allProjects=std::make_shared<bool>(pJson[pMasqueradingVector[6]].asBool());
+    }
+    if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
+    {
+        _dirtyFlag[7] = true;
+        auto timeStr = pJson[pMasqueradingVector[7]].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+        size_t t = timelocal(&stm);
+        size_t decimalNum = 0;
+        if(*p=='.')
+        {
+            std::string decimals(p+1,&timeStr[timeStr.length()]);
+            while(decimals.length()<6)
+            {
+                decimals += "0";
+            }
+            decimalNum = (size_t)atol(decimals.c_str());
+        }
+        _createdAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+    }
+    if(!pMasqueradingVector[8].empty() && pJson.isMember(pMasqueradingVector[8]))
+    {
+        _dirtyFlag[8] = true;
+        auto timeStr = pJson[pMasqueradingVector[8]].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+        size_t t = timelocal(&stm);
+        size_t decimalNum = 0;
+        if(*p=='.')
+        {
+            std::string decimals(p+1,&timeStr[timeStr.length()]);
+            while(decimals.length()<6)
+            {
+                decimals += "0";
+            }
+            decimalNum = (size_t)atol(decimals.c_str());
+        }
+        _updatedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+    }
+}
+                                                                    
+void WebhooksWebhooks::updateByJson(const Json::Value &pJson) noexcept(false)
+{
+    if(pJson.isMember("id"))
+    {
+        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+    }
+    if(pJson.isMember("name"))
+    {
+        _dirtyFlag[1] = true;
+        _name=std::make_shared<std::string>(pJson["name"].asString());
+    }
+    if(pJson.isMember("url"))
+    {
+        _dirtyFlag[2] = true;
+        _url=std::make_shared<std::string>(pJson["url"].asString());
+    }
+    if(pJson.isMember("description"))
+    {
+        _dirtyFlag[3] = true;
+        _description=std::make_shared<std::string>(pJson["description"].asString());
+    }
+    if(pJson.isMember("secret"))
+    {
+        _dirtyFlag[4] = true;
+        _secret=std::make_shared<std::string>(pJson["secret"].asString());
+    }
+    if(pJson.isMember("enabled"))
+    {
+        _dirtyFlag[5] = true;
+        _enabled=std::make_shared<bool>(pJson["enabled"].asBool());
+    }
+    if(pJson.isMember("all_projects"))
+    {
+        _dirtyFlag[6] = true;
+        _allProjects=std::make_shared<bool>(pJson["all_projects"].asBool());
+    }
+    if(pJson.isMember("created_at"))
+    {
+        _dirtyFlag[7] = true;
+        auto timeStr = pJson["created_at"].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+        size_t t = timelocal(&stm);
+        size_t decimalNum = 0;
+        if(*p=='.')
+        {
+            std::string decimals(p+1,&timeStr[timeStr.length()]);
+            while(decimals.length()<6)
+            {
+                decimals += "0";
+            }
+            decimalNum = (size_t)atol(decimals.c_str());
+        }
+        _createdAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+    }
+    if(pJson.isMember("updated_at"))
+    {
+        _dirtyFlag[8] = true;
+        auto timeStr = pJson["updated_at"].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+        size_t t = timelocal(&stm);
+        size_t decimalNum = 0;
+        if(*p=='.')
+        {
+            std::string decimals(p+1,&timeStr[timeStr.length()]);
+            while(decimals.length()<6)
+            {
+                decimals += "0";
+            }
+            decimalNum = (size_t)atol(decimals.c_str());
+        }
+        _updatedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+    }
+}
+
 const int32_t &WebhooksWebhooks::getValueOfId() const noexcept
 {
     const static int32_t defaultValue = int32_t();
@@ -558,4 +955,599 @@ Json::Value WebhooksWebhooks::toJson() const
         ret["updated_at"]=Json::Value();
     }
     return ret;
+}
+
+Json::Value WebhooksWebhooks::toMasqueradedJson(
+    const std::vector<std::string> &pMasqueradingVector) const
+{
+    Json::Value ret;
+    if(pMasqueradingVector.size() == 9)
+    {
+        if(!pMasqueradingVector[0].empty())
+        {
+            if(getId())
+            {
+                ret[pMasqueradingVector[0]]=getValueOfId();
+            }
+            else
+            {
+                ret[pMasqueradingVector[0]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[1].empty())
+        {
+            if(getName())
+            {
+                ret[pMasqueradingVector[1]]=getValueOfName();
+            }
+            else
+            {
+                ret[pMasqueradingVector[1]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[2].empty())
+        {
+            if(getUrl())
+            {
+                ret[pMasqueradingVector[2]]=getValueOfUrl();
+            }
+            else
+            {
+                ret[pMasqueradingVector[2]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[3].empty())
+        {
+            if(getDescription())
+            {
+                ret[pMasqueradingVector[3]]=getValueOfDescription();
+            }
+            else
+            {
+                ret[pMasqueradingVector[3]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[4].empty())
+        {
+            if(getSecret())
+            {
+                ret[pMasqueradingVector[4]]=getValueOfSecret();
+            }
+            else
+            {
+                ret[pMasqueradingVector[4]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[5].empty())
+        {
+            if(getEnabled())
+            {
+                ret[pMasqueradingVector[5]]=getValueOfEnabled();
+            }
+            else
+            {
+                ret[pMasqueradingVector[5]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[6].empty())
+        {
+            if(getAllProjects())
+            {
+                ret[pMasqueradingVector[6]]=getValueOfAllProjects();
+            }
+            else
+            {
+                ret[pMasqueradingVector[6]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[7].empty())
+        {
+            if(getCreatedAt())
+            {
+                ret[pMasqueradingVector[7]]=getCreatedAt()->toDbStringLocal();
+            }
+            else
+            {
+                ret[pMasqueradingVector[7]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[8].empty())
+        {
+            if(getUpdatedAt())
+            {
+                ret[pMasqueradingVector[8]]=getUpdatedAt()->toDbStringLocal();
+            }
+            else
+            {
+                ret[pMasqueradingVector[8]]=Json::Value();
+            }
+        }
+        return ret;
+    }
+    LOG_ERROR << "Masquerade failed";
+    if(getId())
+    {
+        ret["id"]=getValueOfId();
+    }
+    else
+    {
+        ret["id"]=Json::Value();
+    }
+    if(getName())
+    {
+        ret["name"]=getValueOfName();
+    }
+    else
+    {
+        ret["name"]=Json::Value();
+    }
+    if(getUrl())
+    {
+        ret["url"]=getValueOfUrl();
+    }
+    else
+    {
+        ret["url"]=Json::Value();
+    }
+    if(getDescription())
+    {
+        ret["description"]=getValueOfDescription();
+    }
+    else
+    {
+        ret["description"]=Json::Value();
+    }
+    if(getSecret())
+    {
+        ret["secret"]=getValueOfSecret();
+    }
+    else
+    {
+        ret["secret"]=Json::Value();
+    }
+    if(getEnabled())
+    {
+        ret["enabled"]=getValueOfEnabled();
+    }
+    else
+    {
+        ret["enabled"]=Json::Value();
+    }
+    if(getAllProjects())
+    {
+        ret["all_projects"]=getValueOfAllProjects();
+    }
+    else
+    {
+        ret["all_projects"]=Json::Value();
+    }
+    if(getCreatedAt())
+    {
+        ret["created_at"]=getCreatedAt()->toDbStringLocal();
+    }
+    else
+    {
+        ret["created_at"]=Json::Value();
+    }
+    if(getUpdatedAt())
+    {
+        ret["updated_at"]=getUpdatedAt()->toDbStringLocal();
+    }
+    else
+    {
+        ret["updated_at"]=Json::Value();
+    }
+    return ret;
+}
+
+bool WebhooksWebhooks::validateJsonForCreation(const Json::Value &pJson, std::string &err)
+{
+    if(pJson.isMember("id"))
+    {
+        if(!validJsonOfField(0, "id", pJson["id"], err, true))
+            return false;
+    }
+    if(pJson.isMember("name"))
+    {
+        if(!validJsonOfField(1, "name", pJson["name"], err, true))
+            return false;
+    }
+    if(pJson.isMember("url"))
+    {
+        if(!validJsonOfField(2, "url", pJson["url"], err, true))
+            return false;
+    }
+    if(pJson.isMember("description"))
+    {
+        if(!validJsonOfField(3, "description", pJson["description"], err, true))
+            return false;
+    }
+    else
+    {
+        err="The description column cannot be null";
+        return false;
+    }
+    if(pJson.isMember("secret"))
+    {
+        if(!validJsonOfField(4, "secret", pJson["secret"], err, true))
+            return false;
+    }
+    if(pJson.isMember("enabled"))
+    {
+        if(!validJsonOfField(5, "enabled", pJson["enabled"], err, true))
+            return false;
+    }
+    else
+    {
+        err="The enabled column cannot be null";
+        return false;
+    }
+    if(pJson.isMember("all_projects"))
+    {
+        if(!validJsonOfField(6, "all_projects", pJson["all_projects"], err, true))
+            return false;
+    }
+    else
+    {
+        err="The all_projects column cannot be null";
+        return false;
+    }
+    if(pJson.isMember("created_at"))
+    {
+        if(!validJsonOfField(7, "created_at", pJson["created_at"], err, true))
+            return false;
+    }
+    else
+    {
+        err="The created_at column cannot be null";
+        return false;
+    }
+    if(pJson.isMember("updated_at"))
+    {
+        if(!validJsonOfField(8, "updated_at", pJson["updated_at"], err, true))
+            return false;
+    }
+    else
+    {
+        err="The updated_at column cannot be null";
+        return false;
+    }
+    return true;
+}
+bool WebhooksWebhooks::validateMasqueradedJsonForCreation(const Json::Value &pJson,
+                                                          const std::vector<std::string> &pMasqueradingVector,
+                                                          std::string &err)
+{
+    if(pMasqueradingVector.size() != 9)
+    {
+        err = "Bad masquerading vector";
+        return false;
+    }
+    if(!pMasqueradingVector[0].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[0]))
+        {
+            if(!validJsonOfField(0, pMasqueradingVector[0], pJson[pMasqueradingVector[0]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[1].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[1]))
+        {
+            if(!validJsonOfField(1, pMasqueradingVector[1], pJson[pMasqueradingVector[1]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[2].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[2]))
+        {
+            if(!validJsonOfField(2, pMasqueradingVector[2], pJson[pMasqueradingVector[2]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[3].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[3]))
+        {
+            if(!validJsonOfField(3, pMasqueradingVector[3], pJson[pMasqueradingVector[3]], err, true))
+                return false;
+        }
+        else
+        {
+            err="The " + pMasqueradingVector[3] + " column cannot be null";
+            return false;
+        }
+    }
+    if(!pMasqueradingVector[4].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[4]))
+        {
+            if(!validJsonOfField(4, pMasqueradingVector[4], pJson[pMasqueradingVector[4]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[5].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[5]))
+        {
+            if(!validJsonOfField(5, pMasqueradingVector[5], pJson[pMasqueradingVector[5]], err, true))
+                return false;
+        }
+        else
+        {
+            err="The " + pMasqueradingVector[5] + " column cannot be null";
+            return false;
+        }
+    }
+    if(!pMasqueradingVector[6].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[6]))
+        {
+            if(!validJsonOfField(6, pMasqueradingVector[6], pJson[pMasqueradingVector[6]], err, true))
+                return false;
+        }
+        else
+        {
+            err="The " + pMasqueradingVector[6] + " column cannot be null";
+            return false;
+        }
+    }
+    if(!pMasqueradingVector[7].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[7]))
+        {
+            if(!validJsonOfField(7, pMasqueradingVector[7], pJson[pMasqueradingVector[7]], err, true))
+                return false;
+        }
+        else
+        {
+            err="The " + pMasqueradingVector[7] + " column cannot be null";
+            return false;
+        }
+    }
+    if(!pMasqueradingVector[8].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[8]))
+        {
+            if(!validJsonOfField(8, pMasqueradingVector[8], pJson[pMasqueradingVector[8]], err, true))
+                return false;
+        }
+        else
+        {
+            err="The " + pMasqueradingVector[8] + " column cannot be null";
+            return false;
+        }
+    }
+    return true;
+}
+bool WebhooksWebhooks::validateJsonForUpdate(const Json::Value &pJson, std::string &err)
+{
+    if(pJson.isMember("id"))
+    {
+        if(!validJsonOfField(0, "id", pJson["id"], err, false))
+            return false;
+    }
+    else
+    {
+        err = "The value of primary key must be set in the json object for update";
+        return false;
+    }
+    if(pJson.isMember("name"))
+    {
+        if(!validJsonOfField(1, "name", pJson["name"], err, false))
+            return false;
+    }
+    if(pJson.isMember("url"))
+    {
+        if(!validJsonOfField(2, "url", pJson["url"], err, false))
+            return false;
+    }
+    if(pJson.isMember("description"))
+    {
+        if(!validJsonOfField(3, "description", pJson["description"], err, false))
+            return false;
+    }
+    if(pJson.isMember("secret"))
+    {
+        if(!validJsonOfField(4, "secret", pJson["secret"], err, false))
+            return false;
+    }
+    if(pJson.isMember("enabled"))
+    {
+        if(!validJsonOfField(5, "enabled", pJson["enabled"], err, false))
+            return false;
+    }
+    if(pJson.isMember("all_projects"))
+    {
+        if(!validJsonOfField(6, "all_projects", pJson["all_projects"], err, false))
+            return false;
+    }
+    if(pJson.isMember("created_at"))
+    {
+        if(!validJsonOfField(7, "created_at", pJson["created_at"], err, false))
+            return false;
+    }
+    if(pJson.isMember("updated_at"))
+    {
+        if(!validJsonOfField(8, "updated_at", pJson["updated_at"], err, false))
+            return false;
+    }
+    return true;
+}
+bool WebhooksWebhooks::validateMasqueradedJsonForUpdate(const Json::Value &pJson,
+                                                        const std::vector<std::string> &pMasqueradingVector,
+                                                        std::string &err)
+{
+    if(pMasqueradingVector.size() != 9)
+    {
+        err = "Bad masquerading vector";
+        return false;
+    }
+    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
+    {
+        if(!validJsonOfField(0, pMasqueradingVector[0], pJson[pMasqueradingVector[0]], err, false))
+            return false;
+    }
+    else
+    {
+        err = "The value of primary key must be set in the json object for update";
+        return false;
+    }
+    if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
+    {
+        if(!validJsonOfField(1, pMasqueradingVector[1], pJson[pMasqueradingVector[1]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
+    {
+        if(!validJsonOfField(2, pMasqueradingVector[2], pJson[pMasqueradingVector[2]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
+    {
+        if(!validJsonOfField(3, pMasqueradingVector[3], pJson[pMasqueradingVector[3]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
+    {
+        if(!validJsonOfField(4, pMasqueradingVector[4], pJson[pMasqueradingVector[4]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
+    {
+        if(!validJsonOfField(5, pMasqueradingVector[5], pJson[pMasqueradingVector[5]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
+    {
+        if(!validJsonOfField(6, pMasqueradingVector[6], pJson[pMasqueradingVector[6]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
+    {
+        if(!validJsonOfField(7, pMasqueradingVector[7], pJson[pMasqueradingVector[7]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[8].empty() && pJson.isMember(pMasqueradingVector[8]))
+    {
+        if(!validJsonOfField(8, pMasqueradingVector[8], pJson[pMasqueradingVector[8]], err, false))
+            return false;
+    }
+    return true;
+}
+bool WebhooksWebhooks::validJsonOfField(size_t index,
+                                        const std::string &fieldName,
+                                        const Json::Value &pJson, 
+                                        std::string &err, 
+                                        bool isForCreation)
+{
+    switch(index)
+    {
+        case 0:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(isForCreation)
+            {
+                err="The automatic primary key cannot be set";
+                return false;
+            }        
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 1:
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 2:
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 3:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 4:
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 5:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isBool())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 6:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isBool())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 7:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 8:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+     
+        default:
+            err="Internal error in the server";
+            return false;
+            break;
+    }
+    return true;
 }

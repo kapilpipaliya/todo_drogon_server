@@ -10,7 +10,7 @@
 #include <string>
 
 using namespace drogon;
-using namespace drogon_model::openproject4;
+using namespace drogon_model::openproject6;
 
 const std::string WorkPackageJournals::Cols::_id = "id";
 const std::string WorkPackageJournals::Cols::_journal_id = "journal_id";
@@ -67,8 +67,10 @@ const std::string &WorkPackageJournals::getColumnName(size_t index) noexcept(fal
     assert(index < _metaData.size());
     return _metaData[index]._colName;
 }
-WorkPackageJournals::WorkPackageJournals(const Row &r) noexcept
+WorkPackageJournals::WorkPackageJournals(const Row &r, const ssize_t indexOffset) noexcept
 {
+    if(indexOffset < 0)
+    {
         if(!r["id"].isNull())
         {
             _id=std::make_shared<int32_t>(r["id"].as<int32_t>());
@@ -167,7 +169,601 @@ WorkPackageJournals::WorkPackageJournals(const Row &r) noexcept
         {
             _derivedEstimatedHours=std::make_shared<double>(r["derived_estimated_hours"].as<double>());
         }
+    }
+    else
+    {
+        size_t offset = (size_t)indexOffset;
+        if(offset + 22 > r.size())
+        {
+            LOG_FATAL << "Invalid SQL result for this model";
+            return;
+        }
+        size_t index;
+        index = offset + 0;
+        if(!r[index].isNull())
+        {
+            _id=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 1;
+        if(!r[index].isNull())
+        {
+            _journalId=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 2;
+        if(!r[index].isNull())
+        {
+            _typeId=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 3;
+        if(!r[index].isNull())
+        {
+            _projectId=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 4;
+        if(!r[index].isNull())
+        {
+            _subject=std::make_shared<std::string>(r[index].as<std::string>());
+        }
+        index = offset + 5;
+        if(!r[index].isNull())
+        {
+            _description=std::make_shared<std::string>(r[index].as<std::string>());
+        }
+        index = offset + 6;
+        if(!r[index].isNull())
+        {
+            auto daysStr = r[index].as<std::string>();
+            struct tm stm;
+            memset(&stm,0,sizeof(stm));
+            strptime(daysStr.c_str(),"%Y-%m-%d",&stm);
+            long t = timelocal(&stm);
+            _dueDate=std::make_shared<::trantor::Date>(t*1000000);
+        }
+        index = offset + 7;
+        if(!r[index].isNull())
+        {
+            _categoryId=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 8;
+        if(!r[index].isNull())
+        {
+            _statusId=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 9;
+        if(!r[index].isNull())
+        {
+            _assignedToId=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 10;
+        if(!r[index].isNull())
+        {
+            _priorityId=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 11;
+        if(!r[index].isNull())
+        {
+            _fixedVersionId=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 12;
+        if(!r[index].isNull())
+        {
+            _authorId=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 13;
+        if(!r[index].isNull())
+        {
+            _doneRatio=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 14;
+        if(!r[index].isNull())
+        {
+            _estimatedHours=std::make_shared<double>(r[index].as<double>());
+        }
+        index = offset + 15;
+        if(!r[index].isNull())
+        {
+            auto daysStr = r[index].as<std::string>();
+            struct tm stm;
+            memset(&stm,0,sizeof(stm));
+            strptime(daysStr.c_str(),"%Y-%m-%d",&stm);
+            long t = timelocal(&stm);
+            _startDate=std::make_shared<::trantor::Date>(t*1000000);
+        }
+        index = offset + 16;
+        if(!r[index].isNull())
+        {
+            _parentId=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 17;
+        if(!r[index].isNull())
+        {
+            _responsibleId=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 18;
+        if(!r[index].isNull())
+        {
+            _costObjectId=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 19;
+        if(!r[index].isNull())
+        {
+            _storyPoints=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 20;
+        if(!r[index].isNull())
+        {
+            _remainingHours=std::make_shared<double>(r[index].as<double>());
+        }
+        index = offset + 21;
+        if(!r[index].isNull())
+        {
+            _derivedEstimatedHours=std::make_shared<double>(r[index].as<double>());
+        }
+    }
+
 }
+
+WorkPackageJournals::WorkPackageJournals(const Json::Value &pJson, const std::vector<std::string> &pMasqueradingVector) noexcept(false)
+{
+    if(pMasqueradingVector.size() != 22)
+    {
+        LOG_ERROR << "Bad masquerading vector";
+        return;
+    }
+    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
+    {
+        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+    }
+    if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
+    {
+        _journalId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+    }
+    if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
+    {
+        _typeId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+    }
+    if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
+    {
+        _projectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+    }
+    if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
+    {
+        _subject=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+    }
+    if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
+    {
+        _description=std::make_shared<std::string>(pJson[pMasqueradingVector[5]].asString());
+    }
+    if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
+    {
+        auto daysStr = pJson[pMasqueradingVector[6]].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        strptime(daysStr.c_str(),"%Y-%m-%d",&stm);
+        long t = timelocal(&stm);
+        _dueDate=std::make_shared<::trantor::Date>(t*1000000);
+    }
+    if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
+    {
+        _categoryId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[7]].asInt64());
+    }
+    if(!pMasqueradingVector[8].empty() && pJson.isMember(pMasqueradingVector[8]))
+    {
+        _statusId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[8]].asInt64());
+    }
+    if(!pMasqueradingVector[9].empty() && pJson.isMember(pMasqueradingVector[9]))
+    {
+        _assignedToId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[9]].asInt64());
+    }
+    if(!pMasqueradingVector[10].empty() && pJson.isMember(pMasqueradingVector[10]))
+    {
+        _priorityId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[10]].asInt64());
+    }
+    if(!pMasqueradingVector[11].empty() && pJson.isMember(pMasqueradingVector[11]))
+    {
+        _fixedVersionId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[11]].asInt64());
+    }
+    if(!pMasqueradingVector[12].empty() && pJson.isMember(pMasqueradingVector[12]))
+    {
+        _authorId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[12]].asInt64());
+    }
+    if(!pMasqueradingVector[13].empty() && pJson.isMember(pMasqueradingVector[13]))
+    {
+        _doneRatio=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[13]].asInt64());
+    }
+    if(!pMasqueradingVector[14].empty() && pJson.isMember(pMasqueradingVector[14]))
+    {
+        _estimatedHours=std::make_shared<double>(pJson[pMasqueradingVector[14]].asDouble());
+    }
+    if(!pMasqueradingVector[15].empty() && pJson.isMember(pMasqueradingVector[15]))
+    {
+        auto daysStr = pJson[pMasqueradingVector[15]].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        strptime(daysStr.c_str(),"%Y-%m-%d",&stm);
+        long t = timelocal(&stm);
+        _startDate=std::make_shared<::trantor::Date>(t*1000000);
+    }
+    if(!pMasqueradingVector[16].empty() && pJson.isMember(pMasqueradingVector[16]))
+    {
+        _parentId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[16]].asInt64());
+    }
+    if(!pMasqueradingVector[17].empty() && pJson.isMember(pMasqueradingVector[17]))
+    {
+        _responsibleId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[17]].asInt64());
+    }
+    if(!pMasqueradingVector[18].empty() && pJson.isMember(pMasqueradingVector[18]))
+    {
+        _costObjectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[18]].asInt64());
+    }
+    if(!pMasqueradingVector[19].empty() && pJson.isMember(pMasqueradingVector[19]))
+    {
+        _storyPoints=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[19]].asInt64());
+    }
+    if(!pMasqueradingVector[20].empty() && pJson.isMember(pMasqueradingVector[20]))
+    {
+        _remainingHours=std::make_shared<double>(pJson[pMasqueradingVector[20]].asDouble());
+    }
+    if(!pMasqueradingVector[21].empty() && pJson.isMember(pMasqueradingVector[21]))
+    {
+        _derivedEstimatedHours=std::make_shared<double>(pJson[pMasqueradingVector[21]].asDouble());
+    }
+}
+
+WorkPackageJournals::WorkPackageJournals(const Json::Value &pJson) noexcept(false)
+{
+    if(pJson.isMember("id"))
+    {
+        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+    }
+    if(pJson.isMember("journal_id"))
+    {
+        _journalId=std::make_shared<int32_t>((int32_t)pJson["journal_id"].asInt64());
+    }
+    if(pJson.isMember("type_id"))
+    {
+        _typeId=std::make_shared<int32_t>((int32_t)pJson["type_id"].asInt64());
+    }
+    if(pJson.isMember("project_id"))
+    {
+        _projectId=std::make_shared<int32_t>((int32_t)pJson["project_id"].asInt64());
+    }
+    if(pJson.isMember("subject"))
+    {
+        _subject=std::make_shared<std::string>(pJson["subject"].asString());
+    }
+    if(pJson.isMember("description"))
+    {
+        _description=std::make_shared<std::string>(pJson["description"].asString());
+    }
+    if(pJson.isMember("due_date"))
+    {
+        auto daysStr = pJson["due_date"].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        strptime(daysStr.c_str(),"%Y-%m-%d",&stm);
+        long t = timelocal(&stm);
+        _dueDate=std::make_shared<::trantor::Date>(t*1000000);
+    }
+    if(pJson.isMember("category_id"))
+    {
+        _categoryId=std::make_shared<int32_t>((int32_t)pJson["category_id"].asInt64());
+    }
+    if(pJson.isMember("status_id"))
+    {
+        _statusId=std::make_shared<int32_t>((int32_t)pJson["status_id"].asInt64());
+    }
+    if(pJson.isMember("assigned_to_id"))
+    {
+        _assignedToId=std::make_shared<int32_t>((int32_t)pJson["assigned_to_id"].asInt64());
+    }
+    if(pJson.isMember("priority_id"))
+    {
+        _priorityId=std::make_shared<int32_t>((int32_t)pJson["priority_id"].asInt64());
+    }
+    if(pJson.isMember("fixed_version_id"))
+    {
+        _fixedVersionId=std::make_shared<int32_t>((int32_t)pJson["fixed_version_id"].asInt64());
+    }
+    if(pJson.isMember("author_id"))
+    {
+        _authorId=std::make_shared<int32_t>((int32_t)pJson["author_id"].asInt64());
+    }
+    if(pJson.isMember("done_ratio"))
+    {
+        _doneRatio=std::make_shared<int32_t>((int32_t)pJson["done_ratio"].asInt64());
+    }
+    if(pJson.isMember("estimated_hours"))
+    {
+        _estimatedHours=std::make_shared<double>(pJson["estimated_hours"].asDouble());
+    }
+    if(pJson.isMember("start_date"))
+    {
+        auto daysStr = pJson["start_date"].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        strptime(daysStr.c_str(),"%Y-%m-%d",&stm);
+        long t = timelocal(&stm);
+        _startDate=std::make_shared<::trantor::Date>(t*1000000);
+    }
+    if(pJson.isMember("parent_id"))
+    {
+        _parentId=std::make_shared<int32_t>((int32_t)pJson["parent_id"].asInt64());
+    }
+    if(pJson.isMember("responsible_id"))
+    {
+        _responsibleId=std::make_shared<int32_t>((int32_t)pJson["responsible_id"].asInt64());
+    }
+    if(pJson.isMember("cost_object_id"))
+    {
+        _costObjectId=std::make_shared<int32_t>((int32_t)pJson["cost_object_id"].asInt64());
+    }
+    if(pJson.isMember("story_points"))
+    {
+        _storyPoints=std::make_shared<int32_t>((int32_t)pJson["story_points"].asInt64());
+    }
+    if(pJson.isMember("remaining_hours"))
+    {
+        _remainingHours=std::make_shared<double>(pJson["remaining_hours"].asDouble());
+    }
+    if(pJson.isMember("derived_estimated_hours"))
+    {
+        _derivedEstimatedHours=std::make_shared<double>(pJson["derived_estimated_hours"].asDouble());
+    }
+}
+
+void WorkPackageJournals::updateByMasqueradedJson(const Json::Value &pJson,
+                                            const std::vector<std::string> &pMasqueradingVector) noexcept(false)
+{
+    if(pMasqueradingVector.size() != 22)
+    {
+        LOG_ERROR << "Bad masquerading vector";
+        return;
+    }
+    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
+    {
+        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+    }
+    if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
+    {
+        _dirtyFlag[1] = true;
+        _journalId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+    }
+    if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
+    {
+        _dirtyFlag[2] = true;
+        _typeId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+    }
+    if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
+    {
+        _dirtyFlag[3] = true;
+        _projectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+    }
+    if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
+    {
+        _dirtyFlag[4] = true;
+        _subject=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+    }
+    if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
+    {
+        _dirtyFlag[5] = true;
+        _description=std::make_shared<std::string>(pJson[pMasqueradingVector[5]].asString());
+    }
+    if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
+    {
+        _dirtyFlag[6] = true;
+        auto daysStr = pJson[pMasqueradingVector[6]].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        strptime(daysStr.c_str(),"%Y-%m-%d",&stm);
+        long t = timelocal(&stm);
+        _dueDate=std::make_shared<::trantor::Date>(t*1000000);
+    }
+    if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
+    {
+        _dirtyFlag[7] = true;
+        _categoryId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[7]].asInt64());
+    }
+    if(!pMasqueradingVector[8].empty() && pJson.isMember(pMasqueradingVector[8]))
+    {
+        _dirtyFlag[8] = true;
+        _statusId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[8]].asInt64());
+    }
+    if(!pMasqueradingVector[9].empty() && pJson.isMember(pMasqueradingVector[9]))
+    {
+        _dirtyFlag[9] = true;
+        _assignedToId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[9]].asInt64());
+    }
+    if(!pMasqueradingVector[10].empty() && pJson.isMember(pMasqueradingVector[10]))
+    {
+        _dirtyFlag[10] = true;
+        _priorityId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[10]].asInt64());
+    }
+    if(!pMasqueradingVector[11].empty() && pJson.isMember(pMasqueradingVector[11]))
+    {
+        _dirtyFlag[11] = true;
+        _fixedVersionId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[11]].asInt64());
+    }
+    if(!pMasqueradingVector[12].empty() && pJson.isMember(pMasqueradingVector[12]))
+    {
+        _dirtyFlag[12] = true;
+        _authorId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[12]].asInt64());
+    }
+    if(!pMasqueradingVector[13].empty() && pJson.isMember(pMasqueradingVector[13]))
+    {
+        _dirtyFlag[13] = true;
+        _doneRatio=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[13]].asInt64());
+    }
+    if(!pMasqueradingVector[14].empty() && pJson.isMember(pMasqueradingVector[14]))
+    {
+        _dirtyFlag[14] = true;
+        _estimatedHours=std::make_shared<double>(pJson[pMasqueradingVector[14]].asDouble());
+    }
+    if(!pMasqueradingVector[15].empty() && pJson.isMember(pMasqueradingVector[15]))
+    {
+        _dirtyFlag[15] = true;
+        auto daysStr = pJson[pMasqueradingVector[15]].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        strptime(daysStr.c_str(),"%Y-%m-%d",&stm);
+        long t = timelocal(&stm);
+        _startDate=std::make_shared<::trantor::Date>(t*1000000);
+    }
+    if(!pMasqueradingVector[16].empty() && pJson.isMember(pMasqueradingVector[16]))
+    {
+        _dirtyFlag[16] = true;
+        _parentId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[16]].asInt64());
+    }
+    if(!pMasqueradingVector[17].empty() && pJson.isMember(pMasqueradingVector[17]))
+    {
+        _dirtyFlag[17] = true;
+        _responsibleId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[17]].asInt64());
+    }
+    if(!pMasqueradingVector[18].empty() && pJson.isMember(pMasqueradingVector[18]))
+    {
+        _dirtyFlag[18] = true;
+        _costObjectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[18]].asInt64());
+    }
+    if(!pMasqueradingVector[19].empty() && pJson.isMember(pMasqueradingVector[19]))
+    {
+        _dirtyFlag[19] = true;
+        _storyPoints=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[19]].asInt64());
+    }
+    if(!pMasqueradingVector[20].empty() && pJson.isMember(pMasqueradingVector[20]))
+    {
+        _dirtyFlag[20] = true;
+        _remainingHours=std::make_shared<double>(pJson[pMasqueradingVector[20]].asDouble());
+    }
+    if(!pMasqueradingVector[21].empty() && pJson.isMember(pMasqueradingVector[21]))
+    {
+        _dirtyFlag[21] = true;
+        _derivedEstimatedHours=std::make_shared<double>(pJson[pMasqueradingVector[21]].asDouble());
+    }
+}
+                                                                    
+void WorkPackageJournals::updateByJson(const Json::Value &pJson) noexcept(false)
+{
+    if(pJson.isMember("id"))
+    {
+        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+    }
+    if(pJson.isMember("journal_id"))
+    {
+        _dirtyFlag[1] = true;
+        _journalId=std::make_shared<int32_t>((int32_t)pJson["journal_id"].asInt64());
+    }
+    if(pJson.isMember("type_id"))
+    {
+        _dirtyFlag[2] = true;
+        _typeId=std::make_shared<int32_t>((int32_t)pJson["type_id"].asInt64());
+    }
+    if(pJson.isMember("project_id"))
+    {
+        _dirtyFlag[3] = true;
+        _projectId=std::make_shared<int32_t>((int32_t)pJson["project_id"].asInt64());
+    }
+    if(pJson.isMember("subject"))
+    {
+        _dirtyFlag[4] = true;
+        _subject=std::make_shared<std::string>(pJson["subject"].asString());
+    }
+    if(pJson.isMember("description"))
+    {
+        _dirtyFlag[5] = true;
+        _description=std::make_shared<std::string>(pJson["description"].asString());
+    }
+    if(pJson.isMember("due_date"))
+    {
+        _dirtyFlag[6] = true;
+        auto daysStr = pJson["due_date"].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        strptime(daysStr.c_str(),"%Y-%m-%d",&stm);
+        long t = timelocal(&stm);
+        _dueDate=std::make_shared<::trantor::Date>(t*1000000);
+    }
+    if(pJson.isMember("category_id"))
+    {
+        _dirtyFlag[7] = true;
+        _categoryId=std::make_shared<int32_t>((int32_t)pJson["category_id"].asInt64());
+    }
+    if(pJson.isMember("status_id"))
+    {
+        _dirtyFlag[8] = true;
+        _statusId=std::make_shared<int32_t>((int32_t)pJson["status_id"].asInt64());
+    }
+    if(pJson.isMember("assigned_to_id"))
+    {
+        _dirtyFlag[9] = true;
+        _assignedToId=std::make_shared<int32_t>((int32_t)pJson["assigned_to_id"].asInt64());
+    }
+    if(pJson.isMember("priority_id"))
+    {
+        _dirtyFlag[10] = true;
+        _priorityId=std::make_shared<int32_t>((int32_t)pJson["priority_id"].asInt64());
+    }
+    if(pJson.isMember("fixed_version_id"))
+    {
+        _dirtyFlag[11] = true;
+        _fixedVersionId=std::make_shared<int32_t>((int32_t)pJson["fixed_version_id"].asInt64());
+    }
+    if(pJson.isMember("author_id"))
+    {
+        _dirtyFlag[12] = true;
+        _authorId=std::make_shared<int32_t>((int32_t)pJson["author_id"].asInt64());
+    }
+    if(pJson.isMember("done_ratio"))
+    {
+        _dirtyFlag[13] = true;
+        _doneRatio=std::make_shared<int32_t>((int32_t)pJson["done_ratio"].asInt64());
+    }
+    if(pJson.isMember("estimated_hours"))
+    {
+        _dirtyFlag[14] = true;
+        _estimatedHours=std::make_shared<double>(pJson["estimated_hours"].asDouble());
+    }
+    if(pJson.isMember("start_date"))
+    {
+        _dirtyFlag[15] = true;
+        auto daysStr = pJson["start_date"].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        strptime(daysStr.c_str(),"%Y-%m-%d",&stm);
+        long t = timelocal(&stm);
+        _startDate=std::make_shared<::trantor::Date>(t*1000000);
+    }
+    if(pJson.isMember("parent_id"))
+    {
+        _dirtyFlag[16] = true;
+        _parentId=std::make_shared<int32_t>((int32_t)pJson["parent_id"].asInt64());
+    }
+    if(pJson.isMember("responsible_id"))
+    {
+        _dirtyFlag[17] = true;
+        _responsibleId=std::make_shared<int32_t>((int32_t)pJson["responsible_id"].asInt64());
+    }
+    if(pJson.isMember("cost_object_id"))
+    {
+        _dirtyFlag[18] = true;
+        _costObjectId=std::make_shared<int32_t>((int32_t)pJson["cost_object_id"].asInt64());
+    }
+    if(pJson.isMember("story_points"))
+    {
+        _dirtyFlag[19] = true;
+        _storyPoints=std::make_shared<int32_t>((int32_t)pJson["story_points"].asInt64());
+    }
+    if(pJson.isMember("remaining_hours"))
+    {
+        _dirtyFlag[20] = true;
+        _remainingHours=std::make_shared<double>(pJson["remaining_hours"].asDouble());
+    }
+    if(pJson.isMember("derived_estimated_hours"))
+    {
+        _dirtyFlag[21] = true;
+        _derivedEstimatedHours=std::make_shared<double>(pJson["derived_estimated_hours"].asDouble());
+    }
+}
+
 const int32_t &WorkPackageJournals::getValueOfId() const noexcept
 {
     const static int32_t defaultValue = int32_t();
@@ -1204,4 +1800,1211 @@ Json::Value WorkPackageJournals::toJson() const
         ret["derived_estimated_hours"]=Json::Value();
     }
     return ret;
+}
+
+Json::Value WorkPackageJournals::toMasqueradedJson(
+    const std::vector<std::string> &pMasqueradingVector) const
+{
+    Json::Value ret;
+    if(pMasqueradingVector.size() == 22)
+    {
+        if(!pMasqueradingVector[0].empty())
+        {
+            if(getId())
+            {
+                ret[pMasqueradingVector[0]]=getValueOfId();
+            }
+            else
+            {
+                ret[pMasqueradingVector[0]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[1].empty())
+        {
+            if(getJournalId())
+            {
+                ret[pMasqueradingVector[1]]=getValueOfJournalId();
+            }
+            else
+            {
+                ret[pMasqueradingVector[1]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[2].empty())
+        {
+            if(getTypeId())
+            {
+                ret[pMasqueradingVector[2]]=getValueOfTypeId();
+            }
+            else
+            {
+                ret[pMasqueradingVector[2]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[3].empty())
+        {
+            if(getProjectId())
+            {
+                ret[pMasqueradingVector[3]]=getValueOfProjectId();
+            }
+            else
+            {
+                ret[pMasqueradingVector[3]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[4].empty())
+        {
+            if(getSubject())
+            {
+                ret[pMasqueradingVector[4]]=getValueOfSubject();
+            }
+            else
+            {
+                ret[pMasqueradingVector[4]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[5].empty())
+        {
+            if(getDescription())
+            {
+                ret[pMasqueradingVector[5]]=getValueOfDescription();
+            }
+            else
+            {
+                ret[pMasqueradingVector[5]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[6].empty())
+        {
+            if(getDueDate())
+            {
+                ret[pMasqueradingVector[6]]=getDueDate()->toDbStringLocal();
+            }
+            else
+            {
+                ret[pMasqueradingVector[6]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[7].empty())
+        {
+            if(getCategoryId())
+            {
+                ret[pMasqueradingVector[7]]=getValueOfCategoryId();
+            }
+            else
+            {
+                ret[pMasqueradingVector[7]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[8].empty())
+        {
+            if(getStatusId())
+            {
+                ret[pMasqueradingVector[8]]=getValueOfStatusId();
+            }
+            else
+            {
+                ret[pMasqueradingVector[8]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[9].empty())
+        {
+            if(getAssignedToId())
+            {
+                ret[pMasqueradingVector[9]]=getValueOfAssignedToId();
+            }
+            else
+            {
+                ret[pMasqueradingVector[9]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[10].empty())
+        {
+            if(getPriorityId())
+            {
+                ret[pMasqueradingVector[10]]=getValueOfPriorityId();
+            }
+            else
+            {
+                ret[pMasqueradingVector[10]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[11].empty())
+        {
+            if(getFixedVersionId())
+            {
+                ret[pMasqueradingVector[11]]=getValueOfFixedVersionId();
+            }
+            else
+            {
+                ret[pMasqueradingVector[11]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[12].empty())
+        {
+            if(getAuthorId())
+            {
+                ret[pMasqueradingVector[12]]=getValueOfAuthorId();
+            }
+            else
+            {
+                ret[pMasqueradingVector[12]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[13].empty())
+        {
+            if(getDoneRatio())
+            {
+                ret[pMasqueradingVector[13]]=getValueOfDoneRatio();
+            }
+            else
+            {
+                ret[pMasqueradingVector[13]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[14].empty())
+        {
+            if(getEstimatedHours())
+            {
+                ret[pMasqueradingVector[14]]=getValueOfEstimatedHours();
+            }
+            else
+            {
+                ret[pMasqueradingVector[14]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[15].empty())
+        {
+            if(getStartDate())
+            {
+                ret[pMasqueradingVector[15]]=getStartDate()->toDbStringLocal();
+            }
+            else
+            {
+                ret[pMasqueradingVector[15]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[16].empty())
+        {
+            if(getParentId())
+            {
+                ret[pMasqueradingVector[16]]=getValueOfParentId();
+            }
+            else
+            {
+                ret[pMasqueradingVector[16]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[17].empty())
+        {
+            if(getResponsibleId())
+            {
+                ret[pMasqueradingVector[17]]=getValueOfResponsibleId();
+            }
+            else
+            {
+                ret[pMasqueradingVector[17]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[18].empty())
+        {
+            if(getCostObjectId())
+            {
+                ret[pMasqueradingVector[18]]=getValueOfCostObjectId();
+            }
+            else
+            {
+                ret[pMasqueradingVector[18]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[19].empty())
+        {
+            if(getStoryPoints())
+            {
+                ret[pMasqueradingVector[19]]=getValueOfStoryPoints();
+            }
+            else
+            {
+                ret[pMasqueradingVector[19]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[20].empty())
+        {
+            if(getRemainingHours())
+            {
+                ret[pMasqueradingVector[20]]=getValueOfRemainingHours();
+            }
+            else
+            {
+                ret[pMasqueradingVector[20]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[21].empty())
+        {
+            if(getDerivedEstimatedHours())
+            {
+                ret[pMasqueradingVector[21]]=getValueOfDerivedEstimatedHours();
+            }
+            else
+            {
+                ret[pMasqueradingVector[21]]=Json::Value();
+            }
+        }
+        return ret;
+    }
+    LOG_ERROR << "Masquerade failed";
+    if(getId())
+    {
+        ret["id"]=getValueOfId();
+    }
+    else
+    {
+        ret["id"]=Json::Value();
+    }
+    if(getJournalId())
+    {
+        ret["journal_id"]=getValueOfJournalId();
+    }
+    else
+    {
+        ret["journal_id"]=Json::Value();
+    }
+    if(getTypeId())
+    {
+        ret["type_id"]=getValueOfTypeId();
+    }
+    else
+    {
+        ret["type_id"]=Json::Value();
+    }
+    if(getProjectId())
+    {
+        ret["project_id"]=getValueOfProjectId();
+    }
+    else
+    {
+        ret["project_id"]=Json::Value();
+    }
+    if(getSubject())
+    {
+        ret["subject"]=getValueOfSubject();
+    }
+    else
+    {
+        ret["subject"]=Json::Value();
+    }
+    if(getDescription())
+    {
+        ret["description"]=getValueOfDescription();
+    }
+    else
+    {
+        ret["description"]=Json::Value();
+    }
+    if(getDueDate())
+    {
+        ret["due_date"]=getDueDate()->toDbStringLocal();
+    }
+    else
+    {
+        ret["due_date"]=Json::Value();
+    }
+    if(getCategoryId())
+    {
+        ret["category_id"]=getValueOfCategoryId();
+    }
+    else
+    {
+        ret["category_id"]=Json::Value();
+    }
+    if(getStatusId())
+    {
+        ret["status_id"]=getValueOfStatusId();
+    }
+    else
+    {
+        ret["status_id"]=Json::Value();
+    }
+    if(getAssignedToId())
+    {
+        ret["assigned_to_id"]=getValueOfAssignedToId();
+    }
+    else
+    {
+        ret["assigned_to_id"]=Json::Value();
+    }
+    if(getPriorityId())
+    {
+        ret["priority_id"]=getValueOfPriorityId();
+    }
+    else
+    {
+        ret["priority_id"]=Json::Value();
+    }
+    if(getFixedVersionId())
+    {
+        ret["fixed_version_id"]=getValueOfFixedVersionId();
+    }
+    else
+    {
+        ret["fixed_version_id"]=Json::Value();
+    }
+    if(getAuthorId())
+    {
+        ret["author_id"]=getValueOfAuthorId();
+    }
+    else
+    {
+        ret["author_id"]=Json::Value();
+    }
+    if(getDoneRatio())
+    {
+        ret["done_ratio"]=getValueOfDoneRatio();
+    }
+    else
+    {
+        ret["done_ratio"]=Json::Value();
+    }
+    if(getEstimatedHours())
+    {
+        ret["estimated_hours"]=getValueOfEstimatedHours();
+    }
+    else
+    {
+        ret["estimated_hours"]=Json::Value();
+    }
+    if(getStartDate())
+    {
+        ret["start_date"]=getStartDate()->toDbStringLocal();
+    }
+    else
+    {
+        ret["start_date"]=Json::Value();
+    }
+    if(getParentId())
+    {
+        ret["parent_id"]=getValueOfParentId();
+    }
+    else
+    {
+        ret["parent_id"]=Json::Value();
+    }
+    if(getResponsibleId())
+    {
+        ret["responsible_id"]=getValueOfResponsibleId();
+    }
+    else
+    {
+        ret["responsible_id"]=Json::Value();
+    }
+    if(getCostObjectId())
+    {
+        ret["cost_object_id"]=getValueOfCostObjectId();
+    }
+    else
+    {
+        ret["cost_object_id"]=Json::Value();
+    }
+    if(getStoryPoints())
+    {
+        ret["story_points"]=getValueOfStoryPoints();
+    }
+    else
+    {
+        ret["story_points"]=Json::Value();
+    }
+    if(getRemainingHours())
+    {
+        ret["remaining_hours"]=getValueOfRemainingHours();
+    }
+    else
+    {
+        ret["remaining_hours"]=Json::Value();
+    }
+    if(getDerivedEstimatedHours())
+    {
+        ret["derived_estimated_hours"]=getValueOfDerivedEstimatedHours();
+    }
+    else
+    {
+        ret["derived_estimated_hours"]=Json::Value();
+    }
+    return ret;
+}
+
+bool WorkPackageJournals::validateJsonForCreation(const Json::Value &pJson, std::string &err)
+{
+    if(pJson.isMember("id"))
+    {
+        if(!validJsonOfField(0, "id", pJson["id"], err, true))
+            return false;
+    }
+    if(pJson.isMember("journal_id"))
+    {
+        if(!validJsonOfField(1, "journal_id", pJson["journal_id"], err, true))
+            return false;
+    }
+    else
+    {
+        err="The journal_id column cannot be null";
+        return false;
+    }
+    if(pJson.isMember("type_id"))
+    {
+        if(!validJsonOfField(2, "type_id", pJson["type_id"], err, true))
+            return false;
+    }
+    if(pJson.isMember("project_id"))
+    {
+        if(!validJsonOfField(3, "project_id", pJson["project_id"], err, true))
+            return false;
+    }
+    if(pJson.isMember("subject"))
+    {
+        if(!validJsonOfField(4, "subject", pJson["subject"], err, true))
+            return false;
+    }
+    if(pJson.isMember("description"))
+    {
+        if(!validJsonOfField(5, "description", pJson["description"], err, true))
+            return false;
+    }
+    if(pJson.isMember("due_date"))
+    {
+        if(!validJsonOfField(6, "due_date", pJson["due_date"], err, true))
+            return false;
+    }
+    if(pJson.isMember("category_id"))
+    {
+        if(!validJsonOfField(7, "category_id", pJson["category_id"], err, true))
+            return false;
+    }
+    if(pJson.isMember("status_id"))
+    {
+        if(!validJsonOfField(8, "status_id", pJson["status_id"], err, true))
+            return false;
+    }
+    if(pJson.isMember("assigned_to_id"))
+    {
+        if(!validJsonOfField(9, "assigned_to_id", pJson["assigned_to_id"], err, true))
+            return false;
+    }
+    if(pJson.isMember("priority_id"))
+    {
+        if(!validJsonOfField(10, "priority_id", pJson["priority_id"], err, true))
+            return false;
+    }
+    if(pJson.isMember("fixed_version_id"))
+    {
+        if(!validJsonOfField(11, "fixed_version_id", pJson["fixed_version_id"], err, true))
+            return false;
+    }
+    if(pJson.isMember("author_id"))
+    {
+        if(!validJsonOfField(12, "author_id", pJson["author_id"], err, true))
+            return false;
+    }
+    if(pJson.isMember("done_ratio"))
+    {
+        if(!validJsonOfField(13, "done_ratio", pJson["done_ratio"], err, true))
+            return false;
+    }
+    if(pJson.isMember("estimated_hours"))
+    {
+        if(!validJsonOfField(14, "estimated_hours", pJson["estimated_hours"], err, true))
+            return false;
+    }
+    if(pJson.isMember("start_date"))
+    {
+        if(!validJsonOfField(15, "start_date", pJson["start_date"], err, true))
+            return false;
+    }
+    if(pJson.isMember("parent_id"))
+    {
+        if(!validJsonOfField(16, "parent_id", pJson["parent_id"], err, true))
+            return false;
+    }
+    if(pJson.isMember("responsible_id"))
+    {
+        if(!validJsonOfField(17, "responsible_id", pJson["responsible_id"], err, true))
+            return false;
+    }
+    if(pJson.isMember("cost_object_id"))
+    {
+        if(!validJsonOfField(18, "cost_object_id", pJson["cost_object_id"], err, true))
+            return false;
+    }
+    if(pJson.isMember("story_points"))
+    {
+        if(!validJsonOfField(19, "story_points", pJson["story_points"], err, true))
+            return false;
+    }
+    if(pJson.isMember("remaining_hours"))
+    {
+        if(!validJsonOfField(20, "remaining_hours", pJson["remaining_hours"], err, true))
+            return false;
+    }
+    if(pJson.isMember("derived_estimated_hours"))
+    {
+        if(!validJsonOfField(21, "derived_estimated_hours", pJson["derived_estimated_hours"], err, true))
+            return false;
+    }
+    return true;
+}
+bool WorkPackageJournals::validateMasqueradedJsonForCreation(const Json::Value &pJson,
+                                                             const std::vector<std::string> &pMasqueradingVector,
+                                                             std::string &err)
+{
+    if(pMasqueradingVector.size() != 22)
+    {
+        err = "Bad masquerading vector";
+        return false;
+    }
+    if(!pMasqueradingVector[0].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[0]))
+        {
+            if(!validJsonOfField(0, pMasqueradingVector[0], pJson[pMasqueradingVector[0]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[1].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[1]))
+        {
+            if(!validJsonOfField(1, pMasqueradingVector[1], pJson[pMasqueradingVector[1]], err, true))
+                return false;
+        }
+        else
+        {
+            err="The " + pMasqueradingVector[1] + " column cannot be null";
+            return false;
+        }
+    }
+    if(!pMasqueradingVector[2].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[2]))
+        {
+            if(!validJsonOfField(2, pMasqueradingVector[2], pJson[pMasqueradingVector[2]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[3].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[3]))
+        {
+            if(!validJsonOfField(3, pMasqueradingVector[3], pJson[pMasqueradingVector[3]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[4].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[4]))
+        {
+            if(!validJsonOfField(4, pMasqueradingVector[4], pJson[pMasqueradingVector[4]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[5].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[5]))
+        {
+            if(!validJsonOfField(5, pMasqueradingVector[5], pJson[pMasqueradingVector[5]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[6].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[6]))
+        {
+            if(!validJsonOfField(6, pMasqueradingVector[6], pJson[pMasqueradingVector[6]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[7].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[7]))
+        {
+            if(!validJsonOfField(7, pMasqueradingVector[7], pJson[pMasqueradingVector[7]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[8].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[8]))
+        {
+            if(!validJsonOfField(8, pMasqueradingVector[8], pJson[pMasqueradingVector[8]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[9].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[9]))
+        {
+            if(!validJsonOfField(9, pMasqueradingVector[9], pJson[pMasqueradingVector[9]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[10].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[10]))
+        {
+            if(!validJsonOfField(10, pMasqueradingVector[10], pJson[pMasqueradingVector[10]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[11].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[11]))
+        {
+            if(!validJsonOfField(11, pMasqueradingVector[11], pJson[pMasqueradingVector[11]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[12].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[12]))
+        {
+            if(!validJsonOfField(12, pMasqueradingVector[12], pJson[pMasqueradingVector[12]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[13].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[13]))
+        {
+            if(!validJsonOfField(13, pMasqueradingVector[13], pJson[pMasqueradingVector[13]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[14].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[14]))
+        {
+            if(!validJsonOfField(14, pMasqueradingVector[14], pJson[pMasqueradingVector[14]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[15].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[15]))
+        {
+            if(!validJsonOfField(15, pMasqueradingVector[15], pJson[pMasqueradingVector[15]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[16].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[16]))
+        {
+            if(!validJsonOfField(16, pMasqueradingVector[16], pJson[pMasqueradingVector[16]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[17].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[17]))
+        {
+            if(!validJsonOfField(17, pMasqueradingVector[17], pJson[pMasqueradingVector[17]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[18].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[18]))
+        {
+            if(!validJsonOfField(18, pMasqueradingVector[18], pJson[pMasqueradingVector[18]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[19].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[19]))
+        {
+            if(!validJsonOfField(19, pMasqueradingVector[19], pJson[pMasqueradingVector[19]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[20].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[20]))
+        {
+            if(!validJsonOfField(20, pMasqueradingVector[20], pJson[pMasqueradingVector[20]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[21].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[21]))
+        {
+            if(!validJsonOfField(21, pMasqueradingVector[21], pJson[pMasqueradingVector[21]], err, true))
+                return false;
+        }
+    }
+    return true;
+}
+bool WorkPackageJournals::validateJsonForUpdate(const Json::Value &pJson, std::string &err)
+{
+    if(pJson.isMember("id"))
+    {
+        if(!validJsonOfField(0, "id", pJson["id"], err, false))
+            return false;
+    }
+    else
+    {
+        err = "The value of primary key must be set in the json object for update";
+        return false;
+    }
+    if(pJson.isMember("journal_id"))
+    {
+        if(!validJsonOfField(1, "journal_id", pJson["journal_id"], err, false))
+            return false;
+    }
+    if(pJson.isMember("type_id"))
+    {
+        if(!validJsonOfField(2, "type_id", pJson["type_id"], err, false))
+            return false;
+    }
+    if(pJson.isMember("project_id"))
+    {
+        if(!validJsonOfField(3, "project_id", pJson["project_id"], err, false))
+            return false;
+    }
+    if(pJson.isMember("subject"))
+    {
+        if(!validJsonOfField(4, "subject", pJson["subject"], err, false))
+            return false;
+    }
+    if(pJson.isMember("description"))
+    {
+        if(!validJsonOfField(5, "description", pJson["description"], err, false))
+            return false;
+    }
+    if(pJson.isMember("due_date"))
+    {
+        if(!validJsonOfField(6, "due_date", pJson["due_date"], err, false))
+            return false;
+    }
+    if(pJson.isMember("category_id"))
+    {
+        if(!validJsonOfField(7, "category_id", pJson["category_id"], err, false))
+            return false;
+    }
+    if(pJson.isMember("status_id"))
+    {
+        if(!validJsonOfField(8, "status_id", pJson["status_id"], err, false))
+            return false;
+    }
+    if(pJson.isMember("assigned_to_id"))
+    {
+        if(!validJsonOfField(9, "assigned_to_id", pJson["assigned_to_id"], err, false))
+            return false;
+    }
+    if(pJson.isMember("priority_id"))
+    {
+        if(!validJsonOfField(10, "priority_id", pJson["priority_id"], err, false))
+            return false;
+    }
+    if(pJson.isMember("fixed_version_id"))
+    {
+        if(!validJsonOfField(11, "fixed_version_id", pJson["fixed_version_id"], err, false))
+            return false;
+    }
+    if(pJson.isMember("author_id"))
+    {
+        if(!validJsonOfField(12, "author_id", pJson["author_id"], err, false))
+            return false;
+    }
+    if(pJson.isMember("done_ratio"))
+    {
+        if(!validJsonOfField(13, "done_ratio", pJson["done_ratio"], err, false))
+            return false;
+    }
+    if(pJson.isMember("estimated_hours"))
+    {
+        if(!validJsonOfField(14, "estimated_hours", pJson["estimated_hours"], err, false))
+            return false;
+    }
+    if(pJson.isMember("start_date"))
+    {
+        if(!validJsonOfField(15, "start_date", pJson["start_date"], err, false))
+            return false;
+    }
+    if(pJson.isMember("parent_id"))
+    {
+        if(!validJsonOfField(16, "parent_id", pJson["parent_id"], err, false))
+            return false;
+    }
+    if(pJson.isMember("responsible_id"))
+    {
+        if(!validJsonOfField(17, "responsible_id", pJson["responsible_id"], err, false))
+            return false;
+    }
+    if(pJson.isMember("cost_object_id"))
+    {
+        if(!validJsonOfField(18, "cost_object_id", pJson["cost_object_id"], err, false))
+            return false;
+    }
+    if(pJson.isMember("story_points"))
+    {
+        if(!validJsonOfField(19, "story_points", pJson["story_points"], err, false))
+            return false;
+    }
+    if(pJson.isMember("remaining_hours"))
+    {
+        if(!validJsonOfField(20, "remaining_hours", pJson["remaining_hours"], err, false))
+            return false;
+    }
+    if(pJson.isMember("derived_estimated_hours"))
+    {
+        if(!validJsonOfField(21, "derived_estimated_hours", pJson["derived_estimated_hours"], err, false))
+            return false;
+    }
+    return true;
+}
+bool WorkPackageJournals::validateMasqueradedJsonForUpdate(const Json::Value &pJson,
+                                                           const std::vector<std::string> &pMasqueradingVector,
+                                                           std::string &err)
+{
+    if(pMasqueradingVector.size() != 22)
+    {
+        err = "Bad masquerading vector";
+        return false;
+    }
+    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
+    {
+        if(!validJsonOfField(0, pMasqueradingVector[0], pJson[pMasqueradingVector[0]], err, false))
+            return false;
+    }
+    else
+    {
+        err = "The value of primary key must be set in the json object for update";
+        return false;
+    }
+    if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
+    {
+        if(!validJsonOfField(1, pMasqueradingVector[1], pJson[pMasqueradingVector[1]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
+    {
+        if(!validJsonOfField(2, pMasqueradingVector[2], pJson[pMasqueradingVector[2]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
+    {
+        if(!validJsonOfField(3, pMasqueradingVector[3], pJson[pMasqueradingVector[3]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
+    {
+        if(!validJsonOfField(4, pMasqueradingVector[4], pJson[pMasqueradingVector[4]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
+    {
+        if(!validJsonOfField(5, pMasqueradingVector[5], pJson[pMasqueradingVector[5]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
+    {
+        if(!validJsonOfField(6, pMasqueradingVector[6], pJson[pMasqueradingVector[6]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
+    {
+        if(!validJsonOfField(7, pMasqueradingVector[7], pJson[pMasqueradingVector[7]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[8].empty() && pJson.isMember(pMasqueradingVector[8]))
+    {
+        if(!validJsonOfField(8, pMasqueradingVector[8], pJson[pMasqueradingVector[8]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[9].empty() && pJson.isMember(pMasqueradingVector[9]))
+    {
+        if(!validJsonOfField(9, pMasqueradingVector[9], pJson[pMasqueradingVector[9]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[10].empty() && pJson.isMember(pMasqueradingVector[10]))
+    {
+        if(!validJsonOfField(10, pMasqueradingVector[10], pJson[pMasqueradingVector[10]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[11].empty() && pJson.isMember(pMasqueradingVector[11]))
+    {
+        if(!validJsonOfField(11, pMasqueradingVector[11], pJson[pMasqueradingVector[11]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[12].empty() && pJson.isMember(pMasqueradingVector[12]))
+    {
+        if(!validJsonOfField(12, pMasqueradingVector[12], pJson[pMasqueradingVector[12]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[13].empty() && pJson.isMember(pMasqueradingVector[13]))
+    {
+        if(!validJsonOfField(13, pMasqueradingVector[13], pJson[pMasqueradingVector[13]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[14].empty() && pJson.isMember(pMasqueradingVector[14]))
+    {
+        if(!validJsonOfField(14, pMasqueradingVector[14], pJson[pMasqueradingVector[14]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[15].empty() && pJson.isMember(pMasqueradingVector[15]))
+    {
+        if(!validJsonOfField(15, pMasqueradingVector[15], pJson[pMasqueradingVector[15]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[16].empty() && pJson.isMember(pMasqueradingVector[16]))
+    {
+        if(!validJsonOfField(16, pMasqueradingVector[16], pJson[pMasqueradingVector[16]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[17].empty() && pJson.isMember(pMasqueradingVector[17]))
+    {
+        if(!validJsonOfField(17, pMasqueradingVector[17], pJson[pMasqueradingVector[17]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[18].empty() && pJson.isMember(pMasqueradingVector[18]))
+    {
+        if(!validJsonOfField(18, pMasqueradingVector[18], pJson[pMasqueradingVector[18]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[19].empty() && pJson.isMember(pMasqueradingVector[19]))
+    {
+        if(!validJsonOfField(19, pMasqueradingVector[19], pJson[pMasqueradingVector[19]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[20].empty() && pJson.isMember(pMasqueradingVector[20]))
+    {
+        if(!validJsonOfField(20, pMasqueradingVector[20], pJson[pMasqueradingVector[20]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[21].empty() && pJson.isMember(pMasqueradingVector[21]))
+    {
+        if(!validJsonOfField(21, pMasqueradingVector[21], pJson[pMasqueradingVector[21]], err, false))
+            return false;
+    }
+    return true;
+}
+bool WorkPackageJournals::validJsonOfField(size_t index,
+                                           const std::string &fieldName,
+                                           const Json::Value &pJson, 
+                                           std::string &err, 
+                                           bool isForCreation)
+{
+    switch(index)
+    {
+        case 0:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(isForCreation)
+            {
+                err="The automatic primary key cannot be set";
+                return false;
+            }        
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 1:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 2:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 3:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 4:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 5:
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 6:
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 7:
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 8:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 9:
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 10:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 11:
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 12:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 13:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 14:
+            if(!pJson.isNumeric())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 15:
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 16:
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 17:
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 18:
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 19:
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 20:
+            if(!pJson.isNumeric())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 21:
+            if(!pJson.isNumeric())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+     
+        default:
+            err="Internal error in the server";
+            return false;
+            break;
+    }
+    return true;
 }

@@ -18,7 +18,7 @@ namespace BasicData {
      void seed_data() {
 
 //       auto clientPtr = drogon::app().getDbClient("sce");
-//       drogon::orm::Mapper<drogon_model::openproject4::Colors> mapper(clientPtr);
+//       drogon::orm::Mapper<drogon_model::openproject6::Colors> mapper(clientPtr);
 //       auto colors = mapper.findAll();
 
 //      colors = Color.all
@@ -85,26 +85,26 @@ namespace BasicData {
        type_seed();
        status_seed();
        auto clientPtr = drogon::app().getDbClient("sce");
-       drogon::orm::Mapper<drogon_model::openproject4::Roles> mapper(clientPtr);
+       drogon::orm::Mapper<drogon_model::openproject6::Roles> mapper(clientPtr);
        auto member = mapper.findBy(
-           Criteria(drogon_model::openproject4::Roles::Cols::_name,
+           Criteria(drogon_model::openproject6::Roles::Cols::_name,
                     CompareOperator::EQ, "Member"));
        auto manager = mapper.findBy(
-             Criteria(drogon_model::openproject4::Roles::Cols::_name,
+             Criteria(drogon_model::openproject6::Roles::Cols::_name,
                       CompareOperator::EQ, "Project admin"));
 
        for (auto &it : workflows()) {
            for (auto &oldst : it.status_ids) {
                for (auto &newst : it.status_ids) {
-                   drogon::orm::Mapper<drogon_model::openproject4::Workflows> mapper_workflow(clientPtr);
-                   drogon_model::openproject4::Workflows workflow;
+                   drogon::orm::Mapper<drogon_model::openproject6::Workflows> mapper_workflow(clientPtr);
+                   drogon_model::openproject6::Workflows workflow;
                    workflow.setTypeId(it.type_id);
                    workflow.setRoleId(*manager.at(0).getId().get());
                    workflow.setOldStatusId(oldst);
                    workflow.setNewStatusId(newst);
                    mapper_workflow.insert(workflow);
 
-                   drogon_model::openproject4::Workflows workflow2;
+                   drogon_model::openproject6::Workflows workflow2;
                    workflow2.setTypeId(it.type_id);
                    workflow2.setRoleId(*member.at(0).getId().get());
                    workflow2.setOldStatusId(oldst);

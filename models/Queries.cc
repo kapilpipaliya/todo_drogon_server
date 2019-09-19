@@ -10,7 +10,7 @@
 #include <string>
 
 using namespace drogon;
-using namespace drogon_model::openproject4;
+using namespace drogon_model::openproject6;
 
 const std::string Queries::Cols::_id = "id";
 const std::string Queries::Cols::_project_id = "project_id";
@@ -63,8 +63,10 @@ const std::string &Queries::getColumnName(size_t index) noexcept(false)
     assert(index < _metaData.size());
     return _metaData[index]._colName;
 }
-Queries::Queries(const Row &r) noexcept
+Queries::Queries(const Row &r, const ssize_t indexOffset) noexcept
 {
+    if(indexOffset < 0)
+    {
         if(!r["id"].isNull())
         {
             _id=std::make_shared<int32_t>(r["id"].as<int32_t>());
@@ -175,7 +177,655 @@ Queries::Queries(const Row &r) noexcept
         {
             _displayRepresentation=std::make_shared<std::string>(r["display_representation"].as<std::string>());
         }
+    }
+    else
+    {
+        size_t offset = (size_t)indexOffset;
+        if(offset + 20 > r.size())
+        {
+            LOG_FATAL << "Invalid SQL result for this model";
+            return;
+        }
+        size_t index;
+        index = offset + 0;
+        if(!r[index].isNull())
+        {
+            _id=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 1;
+        if(!r[index].isNull())
+        {
+            _projectId=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 2;
+        if(!r[index].isNull())
+        {
+            _name=std::make_shared<std::string>(r[index].as<std::string>());
+        }
+        index = offset + 3;
+        if(!r[index].isNull())
+        {
+            _filters=std::make_shared<std::string>(r[index].as<std::string>());
+        }
+        index = offset + 4;
+        if(!r[index].isNull())
+        {
+            _userId=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 5;
+        if(!r[index].isNull())
+        {
+            _isPublic=std::make_shared<bool>(r[index].as<bool>());
+        }
+        index = offset + 6;
+        if(!r[index].isNull())
+        {
+            _columnNames=std::make_shared<std::string>(r[index].as<std::string>());
+        }
+        index = offset + 7;
+        if(!r[index].isNull())
+        {
+            _sortCriteria=std::make_shared<std::string>(r[index].as<std::string>());
+        }
+        index = offset + 8;
+        if(!r[index].isNull())
+        {
+            _groupBy=std::make_shared<std::string>(r[index].as<std::string>());
+        }
+        index = offset + 9;
+        if(!r[index].isNull())
+        {
+            _displaySums=std::make_shared<bool>(r[index].as<bool>());
+        }
+        index = offset + 10;
+        if(!r[index].isNull())
+        {
+            _timelineVisible=std::make_shared<bool>(r[index].as<bool>());
+        }
+        index = offset + 11;
+        if(!r[index].isNull())
+        {
+            _showHierarchies=std::make_shared<bool>(r[index].as<bool>());
+        }
+        index = offset + 12;
+        if(!r[index].isNull())
+        {
+            _timelineZoomLevel=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 13;
+        if(!r[index].isNull())
+        {
+            _timelineLabels=std::make_shared<std::string>(r[index].as<std::string>());
+        }
+        index = offset + 14;
+        if(!r[index].isNull())
+        {
+            _highlightingMode=std::make_shared<std::string>(r[index].as<std::string>());
+        }
+        index = offset + 15;
+        if(!r[index].isNull())
+        {
+            _highlightedAttributes=std::make_shared<std::string>(r[index].as<std::string>());
+        }
+        index = offset + 16;
+        if(!r[index].isNull())
+        {
+            _hidden=std::make_shared<bool>(r[index].as<bool>());
+        }
+        index = offset + 17;
+        if(!r[index].isNull())
+        {
+            auto timeStr = r[index].as<std::string>();
+            struct tm stm;
+            memset(&stm,0,sizeof(stm));
+            auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+            size_t t = timelocal(&stm);
+            size_t decimalNum = 0;
+            if(*p=='.')
+            {
+                std::string decimals(p+1,&timeStr[timeStr.length()]);
+                while(decimals.length()<6)
+                {
+                    decimals += "0";
+                }
+                decimalNum = (size_t)atol(decimals.c_str());
+            }
+            _createdAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+        }
+        index = offset + 18;
+        if(!r[index].isNull())
+        {
+            auto timeStr = r[index].as<std::string>();
+            struct tm stm;
+            memset(&stm,0,sizeof(stm));
+            auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+            size_t t = timelocal(&stm);
+            size_t decimalNum = 0;
+            if(*p=='.')
+            {
+                std::string decimals(p+1,&timeStr[timeStr.length()]);
+                while(decimals.length()<6)
+                {
+                    decimals += "0";
+                }
+                decimalNum = (size_t)atol(decimals.c_str());
+            }
+            _updatedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+        }
+        index = offset + 19;
+        if(!r[index].isNull())
+        {
+            _displayRepresentation=std::make_shared<std::string>(r[index].as<std::string>());
+        }
+    }
+
 }
+
+Queries::Queries(const Json::Value &pJson, const std::vector<std::string> &pMasqueradingVector) noexcept(false)
+{
+    if(pMasqueradingVector.size() != 20)
+    {
+        LOG_ERROR << "Bad masquerading vector";
+        return;
+    }
+    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
+    {
+        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+    }
+    if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
+    {
+        _projectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+    }
+    if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
+    {
+        _name=std::make_shared<std::string>(pJson[pMasqueradingVector[2]].asString());
+    }
+    if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
+    {
+        _filters=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+    }
+    if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
+    {
+        _userId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[4]].asInt64());
+    }
+    if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
+    {
+        _isPublic=std::make_shared<bool>(pJson[pMasqueradingVector[5]].asBool());
+    }
+    if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
+    {
+        _columnNames=std::make_shared<std::string>(pJson[pMasqueradingVector[6]].asString());
+    }
+    if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
+    {
+        _sortCriteria=std::make_shared<std::string>(pJson[pMasqueradingVector[7]].asString());
+    }
+    if(!pMasqueradingVector[8].empty() && pJson.isMember(pMasqueradingVector[8]))
+    {
+        _groupBy=std::make_shared<std::string>(pJson[pMasqueradingVector[8]].asString());
+    }
+    if(!pMasqueradingVector[9].empty() && pJson.isMember(pMasqueradingVector[9]))
+    {
+        _displaySums=std::make_shared<bool>(pJson[pMasqueradingVector[9]].asBool());
+    }
+    if(!pMasqueradingVector[10].empty() && pJson.isMember(pMasqueradingVector[10]))
+    {
+        _timelineVisible=std::make_shared<bool>(pJson[pMasqueradingVector[10]].asBool());
+    }
+    if(!pMasqueradingVector[11].empty() && pJson.isMember(pMasqueradingVector[11]))
+    {
+        _showHierarchies=std::make_shared<bool>(pJson[pMasqueradingVector[11]].asBool());
+    }
+    if(!pMasqueradingVector[12].empty() && pJson.isMember(pMasqueradingVector[12]))
+    {
+        _timelineZoomLevel=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[12]].asInt64());
+    }
+    if(!pMasqueradingVector[13].empty() && pJson.isMember(pMasqueradingVector[13]))
+    {
+        _timelineLabels=std::make_shared<std::string>(pJson[pMasqueradingVector[13]].asString());
+    }
+    if(!pMasqueradingVector[14].empty() && pJson.isMember(pMasqueradingVector[14]))
+    {
+        _highlightingMode=std::make_shared<std::string>(pJson[pMasqueradingVector[14]].asString());
+    }
+    if(!pMasqueradingVector[15].empty() && pJson.isMember(pMasqueradingVector[15]))
+    {
+        _highlightedAttributes=std::make_shared<std::string>(pJson[pMasqueradingVector[15]].asString());
+    }
+    if(!pMasqueradingVector[16].empty() && pJson.isMember(pMasqueradingVector[16]))
+    {
+        _hidden=std::make_shared<bool>(pJson[pMasqueradingVector[16]].asBool());
+    }
+    if(!pMasqueradingVector[17].empty() && pJson.isMember(pMasqueradingVector[17]))
+    {
+        auto timeStr = pJson[pMasqueradingVector[17]].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+        size_t t = timelocal(&stm);
+        size_t decimalNum = 0;
+        if(*p=='.')
+        {
+            std::string decimals(p+1,&timeStr[timeStr.length()]);
+            while(decimals.length()<6)
+            {
+                decimals += "0";
+            }
+            decimalNum = (size_t)atol(decimals.c_str());
+        }
+        _createdAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+    }
+    if(!pMasqueradingVector[18].empty() && pJson.isMember(pMasqueradingVector[18]))
+    {
+        auto timeStr = pJson[pMasqueradingVector[18]].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+        size_t t = timelocal(&stm);
+        size_t decimalNum = 0;
+        if(*p=='.')
+        {
+            std::string decimals(p+1,&timeStr[timeStr.length()]);
+            while(decimals.length()<6)
+            {
+                decimals += "0";
+            }
+            decimalNum = (size_t)atol(decimals.c_str());
+        }
+        _updatedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+    }
+    if(!pMasqueradingVector[19].empty() && pJson.isMember(pMasqueradingVector[19]))
+    {
+        _displayRepresentation=std::make_shared<std::string>(pJson[pMasqueradingVector[19]].asString());
+    }
+}
+
+Queries::Queries(const Json::Value &pJson) noexcept(false)
+{
+    if(pJson.isMember("id"))
+    {
+        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+    }
+    if(pJson.isMember("project_id"))
+    {
+        _projectId=std::make_shared<int32_t>((int32_t)pJson["project_id"].asInt64());
+    }
+    if(pJson.isMember("name"))
+    {
+        _name=std::make_shared<std::string>(pJson["name"].asString());
+    }
+    if(pJson.isMember("filters"))
+    {
+        _filters=std::make_shared<std::string>(pJson["filters"].asString());
+    }
+    if(pJson.isMember("user_id"))
+    {
+        _userId=std::make_shared<int32_t>((int32_t)pJson["user_id"].asInt64());
+    }
+    if(pJson.isMember("is_public"))
+    {
+        _isPublic=std::make_shared<bool>(pJson["is_public"].asBool());
+    }
+    if(pJson.isMember("column_names"))
+    {
+        _columnNames=std::make_shared<std::string>(pJson["column_names"].asString());
+    }
+    if(pJson.isMember("sort_criteria"))
+    {
+        _sortCriteria=std::make_shared<std::string>(pJson["sort_criteria"].asString());
+    }
+    if(pJson.isMember("group_by"))
+    {
+        _groupBy=std::make_shared<std::string>(pJson["group_by"].asString());
+    }
+    if(pJson.isMember("display_sums"))
+    {
+        _displaySums=std::make_shared<bool>(pJson["display_sums"].asBool());
+    }
+    if(pJson.isMember("timeline_visible"))
+    {
+        _timelineVisible=std::make_shared<bool>(pJson["timeline_visible"].asBool());
+    }
+    if(pJson.isMember("show_hierarchies"))
+    {
+        _showHierarchies=std::make_shared<bool>(pJson["show_hierarchies"].asBool());
+    }
+    if(pJson.isMember("timeline_zoom_level"))
+    {
+        _timelineZoomLevel=std::make_shared<int32_t>((int32_t)pJson["timeline_zoom_level"].asInt64());
+    }
+    if(pJson.isMember("timeline_labels"))
+    {
+        _timelineLabels=std::make_shared<std::string>(pJson["timeline_labels"].asString());
+    }
+    if(pJson.isMember("highlighting_mode"))
+    {
+        _highlightingMode=std::make_shared<std::string>(pJson["highlighting_mode"].asString());
+    }
+    if(pJson.isMember("highlighted_attributes"))
+    {
+        _highlightedAttributes=std::make_shared<std::string>(pJson["highlighted_attributes"].asString());
+    }
+    if(pJson.isMember("hidden"))
+    {
+        _hidden=std::make_shared<bool>(pJson["hidden"].asBool());
+    }
+    if(pJson.isMember("created_at"))
+    {
+        auto timeStr = pJson["created_at"].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+        size_t t = timelocal(&stm);
+        size_t decimalNum = 0;
+        if(*p=='.')
+        {
+            std::string decimals(p+1,&timeStr[timeStr.length()]);
+            while(decimals.length()<6)
+            {
+                decimals += "0";
+            }
+            decimalNum = (size_t)atol(decimals.c_str());
+        }
+        _createdAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+    }
+    if(pJson.isMember("updated_at"))
+    {
+        auto timeStr = pJson["updated_at"].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+        size_t t = timelocal(&stm);
+        size_t decimalNum = 0;
+        if(*p=='.')
+        {
+            std::string decimals(p+1,&timeStr[timeStr.length()]);
+            while(decimals.length()<6)
+            {
+                decimals += "0";
+            }
+            decimalNum = (size_t)atol(decimals.c_str());
+        }
+        _updatedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+    }
+    if(pJson.isMember("display_representation"))
+    {
+        _displayRepresentation=std::make_shared<std::string>(pJson["display_representation"].asString());
+    }
+}
+
+void Queries::updateByMasqueradedJson(const Json::Value &pJson,
+                                            const std::vector<std::string> &pMasqueradingVector) noexcept(false)
+{
+    if(pMasqueradingVector.size() != 20)
+    {
+        LOG_ERROR << "Bad masquerading vector";
+        return;
+    }
+    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
+    {
+        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+    }
+    if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
+    {
+        _dirtyFlag[1] = true;
+        _projectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+    }
+    if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
+    {
+        _dirtyFlag[2] = true;
+        _name=std::make_shared<std::string>(pJson[pMasqueradingVector[2]].asString());
+    }
+    if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
+    {
+        _dirtyFlag[3] = true;
+        _filters=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+    }
+    if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
+    {
+        _dirtyFlag[4] = true;
+        _userId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[4]].asInt64());
+    }
+    if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
+    {
+        _dirtyFlag[5] = true;
+        _isPublic=std::make_shared<bool>(pJson[pMasqueradingVector[5]].asBool());
+    }
+    if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
+    {
+        _dirtyFlag[6] = true;
+        _columnNames=std::make_shared<std::string>(pJson[pMasqueradingVector[6]].asString());
+    }
+    if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
+    {
+        _dirtyFlag[7] = true;
+        _sortCriteria=std::make_shared<std::string>(pJson[pMasqueradingVector[7]].asString());
+    }
+    if(!pMasqueradingVector[8].empty() && pJson.isMember(pMasqueradingVector[8]))
+    {
+        _dirtyFlag[8] = true;
+        _groupBy=std::make_shared<std::string>(pJson[pMasqueradingVector[8]].asString());
+    }
+    if(!pMasqueradingVector[9].empty() && pJson.isMember(pMasqueradingVector[9]))
+    {
+        _dirtyFlag[9] = true;
+        _displaySums=std::make_shared<bool>(pJson[pMasqueradingVector[9]].asBool());
+    }
+    if(!pMasqueradingVector[10].empty() && pJson.isMember(pMasqueradingVector[10]))
+    {
+        _dirtyFlag[10] = true;
+        _timelineVisible=std::make_shared<bool>(pJson[pMasqueradingVector[10]].asBool());
+    }
+    if(!pMasqueradingVector[11].empty() && pJson.isMember(pMasqueradingVector[11]))
+    {
+        _dirtyFlag[11] = true;
+        _showHierarchies=std::make_shared<bool>(pJson[pMasqueradingVector[11]].asBool());
+    }
+    if(!pMasqueradingVector[12].empty() && pJson.isMember(pMasqueradingVector[12]))
+    {
+        _dirtyFlag[12] = true;
+        _timelineZoomLevel=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[12]].asInt64());
+    }
+    if(!pMasqueradingVector[13].empty() && pJson.isMember(pMasqueradingVector[13]))
+    {
+        _dirtyFlag[13] = true;
+        _timelineLabels=std::make_shared<std::string>(pJson[pMasqueradingVector[13]].asString());
+    }
+    if(!pMasqueradingVector[14].empty() && pJson.isMember(pMasqueradingVector[14]))
+    {
+        _dirtyFlag[14] = true;
+        _highlightingMode=std::make_shared<std::string>(pJson[pMasqueradingVector[14]].asString());
+    }
+    if(!pMasqueradingVector[15].empty() && pJson.isMember(pMasqueradingVector[15]))
+    {
+        _dirtyFlag[15] = true;
+        _highlightedAttributes=std::make_shared<std::string>(pJson[pMasqueradingVector[15]].asString());
+    }
+    if(!pMasqueradingVector[16].empty() && pJson.isMember(pMasqueradingVector[16]))
+    {
+        _dirtyFlag[16] = true;
+        _hidden=std::make_shared<bool>(pJson[pMasqueradingVector[16]].asBool());
+    }
+    if(!pMasqueradingVector[17].empty() && pJson.isMember(pMasqueradingVector[17]))
+    {
+        _dirtyFlag[17] = true;
+        auto timeStr = pJson[pMasqueradingVector[17]].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+        size_t t = timelocal(&stm);
+        size_t decimalNum = 0;
+        if(*p=='.')
+        {
+            std::string decimals(p+1,&timeStr[timeStr.length()]);
+            while(decimals.length()<6)
+            {
+                decimals += "0";
+            }
+            decimalNum = (size_t)atol(decimals.c_str());
+        }
+        _createdAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+    }
+    if(!pMasqueradingVector[18].empty() && pJson.isMember(pMasqueradingVector[18]))
+    {
+        _dirtyFlag[18] = true;
+        auto timeStr = pJson[pMasqueradingVector[18]].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+        size_t t = timelocal(&stm);
+        size_t decimalNum = 0;
+        if(*p=='.')
+        {
+            std::string decimals(p+1,&timeStr[timeStr.length()]);
+            while(decimals.length()<6)
+            {
+                decimals += "0";
+            }
+            decimalNum = (size_t)atol(decimals.c_str());
+        }
+        _updatedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+    }
+    if(!pMasqueradingVector[19].empty() && pJson.isMember(pMasqueradingVector[19]))
+    {
+        _dirtyFlag[19] = true;
+        _displayRepresentation=std::make_shared<std::string>(pJson[pMasqueradingVector[19]].asString());
+    }
+}
+                                                                    
+void Queries::updateByJson(const Json::Value &pJson) noexcept(false)
+{
+    if(pJson.isMember("id"))
+    {
+        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+    }
+    if(pJson.isMember("project_id"))
+    {
+        _dirtyFlag[1] = true;
+        _projectId=std::make_shared<int32_t>((int32_t)pJson["project_id"].asInt64());
+    }
+    if(pJson.isMember("name"))
+    {
+        _dirtyFlag[2] = true;
+        _name=std::make_shared<std::string>(pJson["name"].asString());
+    }
+    if(pJson.isMember("filters"))
+    {
+        _dirtyFlag[3] = true;
+        _filters=std::make_shared<std::string>(pJson["filters"].asString());
+    }
+    if(pJson.isMember("user_id"))
+    {
+        _dirtyFlag[4] = true;
+        _userId=std::make_shared<int32_t>((int32_t)pJson["user_id"].asInt64());
+    }
+    if(pJson.isMember("is_public"))
+    {
+        _dirtyFlag[5] = true;
+        _isPublic=std::make_shared<bool>(pJson["is_public"].asBool());
+    }
+    if(pJson.isMember("column_names"))
+    {
+        _dirtyFlag[6] = true;
+        _columnNames=std::make_shared<std::string>(pJson["column_names"].asString());
+    }
+    if(pJson.isMember("sort_criteria"))
+    {
+        _dirtyFlag[7] = true;
+        _sortCriteria=std::make_shared<std::string>(pJson["sort_criteria"].asString());
+    }
+    if(pJson.isMember("group_by"))
+    {
+        _dirtyFlag[8] = true;
+        _groupBy=std::make_shared<std::string>(pJson["group_by"].asString());
+    }
+    if(pJson.isMember("display_sums"))
+    {
+        _dirtyFlag[9] = true;
+        _displaySums=std::make_shared<bool>(pJson["display_sums"].asBool());
+    }
+    if(pJson.isMember("timeline_visible"))
+    {
+        _dirtyFlag[10] = true;
+        _timelineVisible=std::make_shared<bool>(pJson["timeline_visible"].asBool());
+    }
+    if(pJson.isMember("show_hierarchies"))
+    {
+        _dirtyFlag[11] = true;
+        _showHierarchies=std::make_shared<bool>(pJson["show_hierarchies"].asBool());
+    }
+    if(pJson.isMember("timeline_zoom_level"))
+    {
+        _dirtyFlag[12] = true;
+        _timelineZoomLevel=std::make_shared<int32_t>((int32_t)pJson["timeline_zoom_level"].asInt64());
+    }
+    if(pJson.isMember("timeline_labels"))
+    {
+        _dirtyFlag[13] = true;
+        _timelineLabels=std::make_shared<std::string>(pJson["timeline_labels"].asString());
+    }
+    if(pJson.isMember("highlighting_mode"))
+    {
+        _dirtyFlag[14] = true;
+        _highlightingMode=std::make_shared<std::string>(pJson["highlighting_mode"].asString());
+    }
+    if(pJson.isMember("highlighted_attributes"))
+    {
+        _dirtyFlag[15] = true;
+        _highlightedAttributes=std::make_shared<std::string>(pJson["highlighted_attributes"].asString());
+    }
+    if(pJson.isMember("hidden"))
+    {
+        _dirtyFlag[16] = true;
+        _hidden=std::make_shared<bool>(pJson["hidden"].asBool());
+    }
+    if(pJson.isMember("created_at"))
+    {
+        _dirtyFlag[17] = true;
+        auto timeStr = pJson["created_at"].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+        size_t t = timelocal(&stm);
+        size_t decimalNum = 0;
+        if(*p=='.')
+        {
+            std::string decimals(p+1,&timeStr[timeStr.length()]);
+            while(decimals.length()<6)
+            {
+                decimals += "0";
+            }
+            decimalNum = (size_t)atol(decimals.c_str());
+        }
+        _createdAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+    }
+    if(pJson.isMember("updated_at"))
+    {
+        _dirtyFlag[18] = true;
+        auto timeStr = pJson["updated_at"].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+        size_t t = timelocal(&stm);
+        size_t decimalNum = 0;
+        if(*p=='.')
+        {
+            std::string decimals(p+1,&timeStr[timeStr.length()]);
+            while(decimals.length()<6)
+            {
+                decimals += "0";
+            }
+            decimalNum = (size_t)atol(decimals.c_str());
+        }
+        _updatedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+    }
+    if(pJson.isMember("display_representation"))
+    {
+        _dirtyFlag[19] = true;
+        _displayRepresentation=std::make_shared<std::string>(pJson["display_representation"].asString());
+    }
+}
+
 const int32_t &Queries::getValueOfId() const noexcept
 {
     const static int32_t defaultValue = int32_t();
@@ -1155,4 +1805,1083 @@ Json::Value Queries::toJson() const
         ret["display_representation"]=Json::Value();
     }
     return ret;
+}
+
+Json::Value Queries::toMasqueradedJson(
+    const std::vector<std::string> &pMasqueradingVector) const
+{
+    Json::Value ret;
+    if(pMasqueradingVector.size() == 20)
+    {
+        if(!pMasqueradingVector[0].empty())
+        {
+            if(getId())
+            {
+                ret[pMasqueradingVector[0]]=getValueOfId();
+            }
+            else
+            {
+                ret[pMasqueradingVector[0]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[1].empty())
+        {
+            if(getProjectId())
+            {
+                ret[pMasqueradingVector[1]]=getValueOfProjectId();
+            }
+            else
+            {
+                ret[pMasqueradingVector[1]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[2].empty())
+        {
+            if(getName())
+            {
+                ret[pMasqueradingVector[2]]=getValueOfName();
+            }
+            else
+            {
+                ret[pMasqueradingVector[2]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[3].empty())
+        {
+            if(getFilters())
+            {
+                ret[pMasqueradingVector[3]]=getValueOfFilters();
+            }
+            else
+            {
+                ret[pMasqueradingVector[3]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[4].empty())
+        {
+            if(getUserId())
+            {
+                ret[pMasqueradingVector[4]]=getValueOfUserId();
+            }
+            else
+            {
+                ret[pMasqueradingVector[4]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[5].empty())
+        {
+            if(getIsPublic())
+            {
+                ret[pMasqueradingVector[5]]=getValueOfIsPublic();
+            }
+            else
+            {
+                ret[pMasqueradingVector[5]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[6].empty())
+        {
+            if(getColumnNames())
+            {
+                ret[pMasqueradingVector[6]]=getValueOfColumnNames();
+            }
+            else
+            {
+                ret[pMasqueradingVector[6]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[7].empty())
+        {
+            if(getSortCriteria())
+            {
+                ret[pMasqueradingVector[7]]=getValueOfSortCriteria();
+            }
+            else
+            {
+                ret[pMasqueradingVector[7]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[8].empty())
+        {
+            if(getGroupBy())
+            {
+                ret[pMasqueradingVector[8]]=getValueOfGroupBy();
+            }
+            else
+            {
+                ret[pMasqueradingVector[8]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[9].empty())
+        {
+            if(getDisplaySums())
+            {
+                ret[pMasqueradingVector[9]]=getValueOfDisplaySums();
+            }
+            else
+            {
+                ret[pMasqueradingVector[9]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[10].empty())
+        {
+            if(getTimelineVisible())
+            {
+                ret[pMasqueradingVector[10]]=getValueOfTimelineVisible();
+            }
+            else
+            {
+                ret[pMasqueradingVector[10]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[11].empty())
+        {
+            if(getShowHierarchies())
+            {
+                ret[pMasqueradingVector[11]]=getValueOfShowHierarchies();
+            }
+            else
+            {
+                ret[pMasqueradingVector[11]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[12].empty())
+        {
+            if(getTimelineZoomLevel())
+            {
+                ret[pMasqueradingVector[12]]=getValueOfTimelineZoomLevel();
+            }
+            else
+            {
+                ret[pMasqueradingVector[12]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[13].empty())
+        {
+            if(getTimelineLabels())
+            {
+                ret[pMasqueradingVector[13]]=getValueOfTimelineLabels();
+            }
+            else
+            {
+                ret[pMasqueradingVector[13]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[14].empty())
+        {
+            if(getHighlightingMode())
+            {
+                ret[pMasqueradingVector[14]]=getValueOfHighlightingMode();
+            }
+            else
+            {
+                ret[pMasqueradingVector[14]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[15].empty())
+        {
+            if(getHighlightedAttributes())
+            {
+                ret[pMasqueradingVector[15]]=getValueOfHighlightedAttributes();
+            }
+            else
+            {
+                ret[pMasqueradingVector[15]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[16].empty())
+        {
+            if(getHidden())
+            {
+                ret[pMasqueradingVector[16]]=getValueOfHidden();
+            }
+            else
+            {
+                ret[pMasqueradingVector[16]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[17].empty())
+        {
+            if(getCreatedAt())
+            {
+                ret[pMasqueradingVector[17]]=getCreatedAt()->toDbStringLocal();
+            }
+            else
+            {
+                ret[pMasqueradingVector[17]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[18].empty())
+        {
+            if(getUpdatedAt())
+            {
+                ret[pMasqueradingVector[18]]=getUpdatedAt()->toDbStringLocal();
+            }
+            else
+            {
+                ret[pMasqueradingVector[18]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[19].empty())
+        {
+            if(getDisplayRepresentation())
+            {
+                ret[pMasqueradingVector[19]]=getValueOfDisplayRepresentation();
+            }
+            else
+            {
+                ret[pMasqueradingVector[19]]=Json::Value();
+            }
+        }
+        return ret;
+    }
+    LOG_ERROR << "Masquerade failed";
+    if(getId())
+    {
+        ret["id"]=getValueOfId();
+    }
+    else
+    {
+        ret["id"]=Json::Value();
+    }
+    if(getProjectId())
+    {
+        ret["project_id"]=getValueOfProjectId();
+    }
+    else
+    {
+        ret["project_id"]=Json::Value();
+    }
+    if(getName())
+    {
+        ret["name"]=getValueOfName();
+    }
+    else
+    {
+        ret["name"]=Json::Value();
+    }
+    if(getFilters())
+    {
+        ret["filters"]=getValueOfFilters();
+    }
+    else
+    {
+        ret["filters"]=Json::Value();
+    }
+    if(getUserId())
+    {
+        ret["user_id"]=getValueOfUserId();
+    }
+    else
+    {
+        ret["user_id"]=Json::Value();
+    }
+    if(getIsPublic())
+    {
+        ret["is_public"]=getValueOfIsPublic();
+    }
+    else
+    {
+        ret["is_public"]=Json::Value();
+    }
+    if(getColumnNames())
+    {
+        ret["column_names"]=getValueOfColumnNames();
+    }
+    else
+    {
+        ret["column_names"]=Json::Value();
+    }
+    if(getSortCriteria())
+    {
+        ret["sort_criteria"]=getValueOfSortCriteria();
+    }
+    else
+    {
+        ret["sort_criteria"]=Json::Value();
+    }
+    if(getGroupBy())
+    {
+        ret["group_by"]=getValueOfGroupBy();
+    }
+    else
+    {
+        ret["group_by"]=Json::Value();
+    }
+    if(getDisplaySums())
+    {
+        ret["display_sums"]=getValueOfDisplaySums();
+    }
+    else
+    {
+        ret["display_sums"]=Json::Value();
+    }
+    if(getTimelineVisible())
+    {
+        ret["timeline_visible"]=getValueOfTimelineVisible();
+    }
+    else
+    {
+        ret["timeline_visible"]=Json::Value();
+    }
+    if(getShowHierarchies())
+    {
+        ret["show_hierarchies"]=getValueOfShowHierarchies();
+    }
+    else
+    {
+        ret["show_hierarchies"]=Json::Value();
+    }
+    if(getTimelineZoomLevel())
+    {
+        ret["timeline_zoom_level"]=getValueOfTimelineZoomLevel();
+    }
+    else
+    {
+        ret["timeline_zoom_level"]=Json::Value();
+    }
+    if(getTimelineLabels())
+    {
+        ret["timeline_labels"]=getValueOfTimelineLabels();
+    }
+    else
+    {
+        ret["timeline_labels"]=Json::Value();
+    }
+    if(getHighlightingMode())
+    {
+        ret["highlighting_mode"]=getValueOfHighlightingMode();
+    }
+    else
+    {
+        ret["highlighting_mode"]=Json::Value();
+    }
+    if(getHighlightedAttributes())
+    {
+        ret["highlighted_attributes"]=getValueOfHighlightedAttributes();
+    }
+    else
+    {
+        ret["highlighted_attributes"]=Json::Value();
+    }
+    if(getHidden())
+    {
+        ret["hidden"]=getValueOfHidden();
+    }
+    else
+    {
+        ret["hidden"]=Json::Value();
+    }
+    if(getCreatedAt())
+    {
+        ret["created_at"]=getCreatedAt()->toDbStringLocal();
+    }
+    else
+    {
+        ret["created_at"]=Json::Value();
+    }
+    if(getUpdatedAt())
+    {
+        ret["updated_at"]=getUpdatedAt()->toDbStringLocal();
+    }
+    else
+    {
+        ret["updated_at"]=Json::Value();
+    }
+    if(getDisplayRepresentation())
+    {
+        ret["display_representation"]=getValueOfDisplayRepresentation();
+    }
+    else
+    {
+        ret["display_representation"]=Json::Value();
+    }
+    return ret;
+}
+
+bool Queries::validateJsonForCreation(const Json::Value &pJson, std::string &err)
+{
+    if(pJson.isMember("id"))
+    {
+        if(!validJsonOfField(0, "id", pJson["id"], err, true))
+            return false;
+    }
+    if(pJson.isMember("project_id"))
+    {
+        if(!validJsonOfField(1, "project_id", pJson["project_id"], err, true))
+            return false;
+    }
+    if(pJson.isMember("name"))
+    {
+        if(!validJsonOfField(2, "name", pJson["name"], err, true))
+            return false;
+    }
+    if(pJson.isMember("filters"))
+    {
+        if(!validJsonOfField(3, "filters", pJson["filters"], err, true))
+            return false;
+    }
+    if(pJson.isMember("user_id"))
+    {
+        if(!validJsonOfField(4, "user_id", pJson["user_id"], err, true))
+            return false;
+    }
+    if(pJson.isMember("is_public"))
+    {
+        if(!validJsonOfField(5, "is_public", pJson["is_public"], err, true))
+            return false;
+    }
+    if(pJson.isMember("column_names"))
+    {
+        if(!validJsonOfField(6, "column_names", pJson["column_names"], err, true))
+            return false;
+    }
+    if(pJson.isMember("sort_criteria"))
+    {
+        if(!validJsonOfField(7, "sort_criteria", pJson["sort_criteria"], err, true))
+            return false;
+    }
+    if(pJson.isMember("group_by"))
+    {
+        if(!validJsonOfField(8, "group_by", pJson["group_by"], err, true))
+            return false;
+    }
+    if(pJson.isMember("display_sums"))
+    {
+        if(!validJsonOfField(9, "display_sums", pJson["display_sums"], err, true))
+            return false;
+    }
+    if(pJson.isMember("timeline_visible"))
+    {
+        if(!validJsonOfField(10, "timeline_visible", pJson["timeline_visible"], err, true))
+            return false;
+    }
+    if(pJson.isMember("show_hierarchies"))
+    {
+        if(!validJsonOfField(11, "show_hierarchies", pJson["show_hierarchies"], err, true))
+            return false;
+    }
+    if(pJson.isMember("timeline_zoom_level"))
+    {
+        if(!validJsonOfField(12, "timeline_zoom_level", pJson["timeline_zoom_level"], err, true))
+            return false;
+    }
+    if(pJson.isMember("timeline_labels"))
+    {
+        if(!validJsonOfField(13, "timeline_labels", pJson["timeline_labels"], err, true))
+            return false;
+    }
+    if(pJson.isMember("highlighting_mode"))
+    {
+        if(!validJsonOfField(14, "highlighting_mode", pJson["highlighting_mode"], err, true))
+            return false;
+    }
+    if(pJson.isMember("highlighted_attributes"))
+    {
+        if(!validJsonOfField(15, "highlighted_attributes", pJson["highlighted_attributes"], err, true))
+            return false;
+    }
+    if(pJson.isMember("hidden"))
+    {
+        if(!validJsonOfField(16, "hidden", pJson["hidden"], err, true))
+            return false;
+    }
+    if(pJson.isMember("created_at"))
+    {
+        if(!validJsonOfField(17, "created_at", pJson["created_at"], err, true))
+            return false;
+    }
+    if(pJson.isMember("updated_at"))
+    {
+        if(!validJsonOfField(18, "updated_at", pJson["updated_at"], err, true))
+            return false;
+    }
+    if(pJson.isMember("display_representation"))
+    {
+        if(!validJsonOfField(19, "display_representation", pJson["display_representation"], err, true))
+            return false;
+    }
+    return true;
+}
+bool Queries::validateMasqueradedJsonForCreation(const Json::Value &pJson,
+                                                 const std::vector<std::string> &pMasqueradingVector,
+                                                 std::string &err)
+{
+    if(pMasqueradingVector.size() != 20)
+    {
+        err = "Bad masquerading vector";
+        return false;
+    }
+    if(!pMasqueradingVector[0].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[0]))
+        {
+            if(!validJsonOfField(0, pMasqueradingVector[0], pJson[pMasqueradingVector[0]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[1].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[1]))
+        {
+            if(!validJsonOfField(1, pMasqueradingVector[1], pJson[pMasqueradingVector[1]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[2].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[2]))
+        {
+            if(!validJsonOfField(2, pMasqueradingVector[2], pJson[pMasqueradingVector[2]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[3].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[3]))
+        {
+            if(!validJsonOfField(3, pMasqueradingVector[3], pJson[pMasqueradingVector[3]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[4].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[4]))
+        {
+            if(!validJsonOfField(4, pMasqueradingVector[4], pJson[pMasqueradingVector[4]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[5].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[5]))
+        {
+            if(!validJsonOfField(5, pMasqueradingVector[5], pJson[pMasqueradingVector[5]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[6].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[6]))
+        {
+            if(!validJsonOfField(6, pMasqueradingVector[6], pJson[pMasqueradingVector[6]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[7].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[7]))
+        {
+            if(!validJsonOfField(7, pMasqueradingVector[7], pJson[pMasqueradingVector[7]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[8].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[8]))
+        {
+            if(!validJsonOfField(8, pMasqueradingVector[8], pJson[pMasqueradingVector[8]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[9].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[9]))
+        {
+            if(!validJsonOfField(9, pMasqueradingVector[9], pJson[pMasqueradingVector[9]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[10].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[10]))
+        {
+            if(!validJsonOfField(10, pMasqueradingVector[10], pJson[pMasqueradingVector[10]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[11].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[11]))
+        {
+            if(!validJsonOfField(11, pMasqueradingVector[11], pJson[pMasqueradingVector[11]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[12].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[12]))
+        {
+            if(!validJsonOfField(12, pMasqueradingVector[12], pJson[pMasqueradingVector[12]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[13].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[13]))
+        {
+            if(!validJsonOfField(13, pMasqueradingVector[13], pJson[pMasqueradingVector[13]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[14].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[14]))
+        {
+            if(!validJsonOfField(14, pMasqueradingVector[14], pJson[pMasqueradingVector[14]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[15].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[15]))
+        {
+            if(!validJsonOfField(15, pMasqueradingVector[15], pJson[pMasqueradingVector[15]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[16].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[16]))
+        {
+            if(!validJsonOfField(16, pMasqueradingVector[16], pJson[pMasqueradingVector[16]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[17].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[17]))
+        {
+            if(!validJsonOfField(17, pMasqueradingVector[17], pJson[pMasqueradingVector[17]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[18].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[18]))
+        {
+            if(!validJsonOfField(18, pMasqueradingVector[18], pJson[pMasqueradingVector[18]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[19].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[19]))
+        {
+            if(!validJsonOfField(19, pMasqueradingVector[19], pJson[pMasqueradingVector[19]], err, true))
+                return false;
+        }
+    }
+    return true;
+}
+bool Queries::validateJsonForUpdate(const Json::Value &pJson, std::string &err)
+{
+    if(pJson.isMember("id"))
+    {
+        if(!validJsonOfField(0, "id", pJson["id"], err, false))
+            return false;
+    }
+    else
+    {
+        err = "The value of primary key must be set in the json object for update";
+        return false;
+    }
+    if(pJson.isMember("project_id"))
+    {
+        if(!validJsonOfField(1, "project_id", pJson["project_id"], err, false))
+            return false;
+    }
+    if(pJson.isMember("name"))
+    {
+        if(!validJsonOfField(2, "name", pJson["name"], err, false))
+            return false;
+    }
+    if(pJson.isMember("filters"))
+    {
+        if(!validJsonOfField(3, "filters", pJson["filters"], err, false))
+            return false;
+    }
+    if(pJson.isMember("user_id"))
+    {
+        if(!validJsonOfField(4, "user_id", pJson["user_id"], err, false))
+            return false;
+    }
+    if(pJson.isMember("is_public"))
+    {
+        if(!validJsonOfField(5, "is_public", pJson["is_public"], err, false))
+            return false;
+    }
+    if(pJson.isMember("column_names"))
+    {
+        if(!validJsonOfField(6, "column_names", pJson["column_names"], err, false))
+            return false;
+    }
+    if(pJson.isMember("sort_criteria"))
+    {
+        if(!validJsonOfField(7, "sort_criteria", pJson["sort_criteria"], err, false))
+            return false;
+    }
+    if(pJson.isMember("group_by"))
+    {
+        if(!validJsonOfField(8, "group_by", pJson["group_by"], err, false))
+            return false;
+    }
+    if(pJson.isMember("display_sums"))
+    {
+        if(!validJsonOfField(9, "display_sums", pJson["display_sums"], err, false))
+            return false;
+    }
+    if(pJson.isMember("timeline_visible"))
+    {
+        if(!validJsonOfField(10, "timeline_visible", pJson["timeline_visible"], err, false))
+            return false;
+    }
+    if(pJson.isMember("show_hierarchies"))
+    {
+        if(!validJsonOfField(11, "show_hierarchies", pJson["show_hierarchies"], err, false))
+            return false;
+    }
+    if(pJson.isMember("timeline_zoom_level"))
+    {
+        if(!validJsonOfField(12, "timeline_zoom_level", pJson["timeline_zoom_level"], err, false))
+            return false;
+    }
+    if(pJson.isMember("timeline_labels"))
+    {
+        if(!validJsonOfField(13, "timeline_labels", pJson["timeline_labels"], err, false))
+            return false;
+    }
+    if(pJson.isMember("highlighting_mode"))
+    {
+        if(!validJsonOfField(14, "highlighting_mode", pJson["highlighting_mode"], err, false))
+            return false;
+    }
+    if(pJson.isMember("highlighted_attributes"))
+    {
+        if(!validJsonOfField(15, "highlighted_attributes", pJson["highlighted_attributes"], err, false))
+            return false;
+    }
+    if(pJson.isMember("hidden"))
+    {
+        if(!validJsonOfField(16, "hidden", pJson["hidden"], err, false))
+            return false;
+    }
+    if(pJson.isMember("created_at"))
+    {
+        if(!validJsonOfField(17, "created_at", pJson["created_at"], err, false))
+            return false;
+    }
+    if(pJson.isMember("updated_at"))
+    {
+        if(!validJsonOfField(18, "updated_at", pJson["updated_at"], err, false))
+            return false;
+    }
+    if(pJson.isMember("display_representation"))
+    {
+        if(!validJsonOfField(19, "display_representation", pJson["display_representation"], err, false))
+            return false;
+    }
+    return true;
+}
+bool Queries::validateMasqueradedJsonForUpdate(const Json::Value &pJson,
+                                               const std::vector<std::string> &pMasqueradingVector,
+                                               std::string &err)
+{
+    if(pMasqueradingVector.size() != 20)
+    {
+        err = "Bad masquerading vector";
+        return false;
+    }
+    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
+    {
+        if(!validJsonOfField(0, pMasqueradingVector[0], pJson[pMasqueradingVector[0]], err, false))
+            return false;
+    }
+    else
+    {
+        err = "The value of primary key must be set in the json object for update";
+        return false;
+    }
+    if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
+    {
+        if(!validJsonOfField(1, pMasqueradingVector[1], pJson[pMasqueradingVector[1]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
+    {
+        if(!validJsonOfField(2, pMasqueradingVector[2], pJson[pMasqueradingVector[2]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
+    {
+        if(!validJsonOfField(3, pMasqueradingVector[3], pJson[pMasqueradingVector[3]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
+    {
+        if(!validJsonOfField(4, pMasqueradingVector[4], pJson[pMasqueradingVector[4]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
+    {
+        if(!validJsonOfField(5, pMasqueradingVector[5], pJson[pMasqueradingVector[5]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
+    {
+        if(!validJsonOfField(6, pMasqueradingVector[6], pJson[pMasqueradingVector[6]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
+    {
+        if(!validJsonOfField(7, pMasqueradingVector[7], pJson[pMasqueradingVector[7]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[8].empty() && pJson.isMember(pMasqueradingVector[8]))
+    {
+        if(!validJsonOfField(8, pMasqueradingVector[8], pJson[pMasqueradingVector[8]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[9].empty() && pJson.isMember(pMasqueradingVector[9]))
+    {
+        if(!validJsonOfField(9, pMasqueradingVector[9], pJson[pMasqueradingVector[9]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[10].empty() && pJson.isMember(pMasqueradingVector[10]))
+    {
+        if(!validJsonOfField(10, pMasqueradingVector[10], pJson[pMasqueradingVector[10]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[11].empty() && pJson.isMember(pMasqueradingVector[11]))
+    {
+        if(!validJsonOfField(11, pMasqueradingVector[11], pJson[pMasqueradingVector[11]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[12].empty() && pJson.isMember(pMasqueradingVector[12]))
+    {
+        if(!validJsonOfField(12, pMasqueradingVector[12], pJson[pMasqueradingVector[12]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[13].empty() && pJson.isMember(pMasqueradingVector[13]))
+    {
+        if(!validJsonOfField(13, pMasqueradingVector[13], pJson[pMasqueradingVector[13]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[14].empty() && pJson.isMember(pMasqueradingVector[14]))
+    {
+        if(!validJsonOfField(14, pMasqueradingVector[14], pJson[pMasqueradingVector[14]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[15].empty() && pJson.isMember(pMasqueradingVector[15]))
+    {
+        if(!validJsonOfField(15, pMasqueradingVector[15], pJson[pMasqueradingVector[15]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[16].empty() && pJson.isMember(pMasqueradingVector[16]))
+    {
+        if(!validJsonOfField(16, pMasqueradingVector[16], pJson[pMasqueradingVector[16]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[17].empty() && pJson.isMember(pMasqueradingVector[17]))
+    {
+        if(!validJsonOfField(17, pMasqueradingVector[17], pJson[pMasqueradingVector[17]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[18].empty() && pJson.isMember(pMasqueradingVector[18]))
+    {
+        if(!validJsonOfField(18, pMasqueradingVector[18], pJson[pMasqueradingVector[18]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[19].empty() && pJson.isMember(pMasqueradingVector[19]))
+    {
+        if(!validJsonOfField(19, pMasqueradingVector[19], pJson[pMasqueradingVector[19]], err, false))
+            return false;
+    }
+    return true;
+}
+bool Queries::validJsonOfField(size_t index,
+                               const std::string &fieldName,
+                               const Json::Value &pJson, 
+                               std::string &err, 
+                               bool isForCreation)
+{
+    switch(index)
+    {
+        case 0:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(isForCreation)
+            {
+                err="The automatic primary key cannot be set";
+                return false;
+            }        
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 1:
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 2:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 3:
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 4:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 5:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isBool())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 6:
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 7:
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 8:
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 9:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isBool())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 10:
+            if(!pJson.isBool())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 11:
+            if(!pJson.isBool())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 12:
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 13:
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 14:
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 15:
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 16:
+            if(!pJson.isBool())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 17:
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 18:
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 19:
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+     
+        default:
+            err="Internal error in the server";
+            return false;
+            break;
+    }
+    return true;
 }

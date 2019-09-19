@@ -10,7 +10,7 @@
 #include <string>
 
 using namespace drogon;
-using namespace drogon_model::openproject4;
+using namespace drogon_model::openproject6;
 
 const std::string CostTypes::Cols::_id = "id";
 const std::string CostTypes::Cols::_name = "name";
@@ -35,8 +35,10 @@ const std::string &CostTypes::getColumnName(size_t index) noexcept(false)
     assert(index < _metaData.size());
     return _metaData[index]._colName;
 }
-CostTypes::CostTypes(const Row &r) noexcept
+CostTypes::CostTypes(const Row &r, const ssize_t indexOffset) noexcept
 {
+    if(indexOffset < 0)
+    {
         if(!r["id"].isNull())
         {
             _id=std::make_shared<int32_t>(r["id"].as<int32_t>());
@@ -76,7 +78,258 @@ CostTypes::CostTypes(const Row &r) noexcept
             }
             _deletedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
         }
+    }
+    else
+    {
+        size_t offset = (size_t)indexOffset;
+        if(offset + 6 > r.size())
+        {
+            LOG_FATAL << "Invalid SQL result for this model";
+            return;
+        }
+        size_t index;
+        index = offset + 0;
+        if(!r[index].isNull())
+        {
+            _id=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 1;
+        if(!r[index].isNull())
+        {
+            _name=std::make_shared<std::string>(r[index].as<std::string>());
+        }
+        index = offset + 2;
+        if(!r[index].isNull())
+        {
+            _unit=std::make_shared<std::string>(r[index].as<std::string>());
+        }
+        index = offset + 3;
+        if(!r[index].isNull())
+        {
+            _unitPlural=std::make_shared<std::string>(r[index].as<std::string>());
+        }
+        index = offset + 4;
+        if(!r[index].isNull())
+        {
+            _default=std::make_shared<bool>(r[index].as<bool>());
+        }
+        index = offset + 5;
+        if(!r[index].isNull())
+        {
+            auto timeStr = r[index].as<std::string>();
+            struct tm stm;
+            memset(&stm,0,sizeof(stm));
+            auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+            size_t t = timelocal(&stm);
+            size_t decimalNum = 0;
+            if(*p=='.')
+            {
+                std::string decimals(p+1,&timeStr[timeStr.length()]);
+                while(decimals.length()<6)
+                {
+                    decimals += "0";
+                }
+                decimalNum = (size_t)atol(decimals.c_str());
+            }
+            _deletedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+        }
+    }
+
 }
+
+CostTypes::CostTypes(const Json::Value &pJson, const std::vector<std::string> &pMasqueradingVector) noexcept(false)
+{
+    if(pMasqueradingVector.size() != 6)
+    {
+        LOG_ERROR << "Bad masquerading vector";
+        return;
+    }
+    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
+    {
+        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+    }
+    if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
+    {
+        _name=std::make_shared<std::string>(pJson[pMasqueradingVector[1]].asString());
+    }
+    if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
+    {
+        _unit=std::make_shared<std::string>(pJson[pMasqueradingVector[2]].asString());
+    }
+    if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
+    {
+        _unitPlural=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+    }
+    if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
+    {
+        _default=std::make_shared<bool>(pJson[pMasqueradingVector[4]].asBool());
+    }
+    if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
+    {
+        auto timeStr = pJson[pMasqueradingVector[5]].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+        size_t t = timelocal(&stm);
+        size_t decimalNum = 0;
+        if(*p=='.')
+        {
+            std::string decimals(p+1,&timeStr[timeStr.length()]);
+            while(decimals.length()<6)
+            {
+                decimals += "0";
+            }
+            decimalNum = (size_t)atol(decimals.c_str());
+        }
+        _deletedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+    }
+}
+
+CostTypes::CostTypes(const Json::Value &pJson) noexcept(false)
+{
+    if(pJson.isMember("id"))
+    {
+        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+    }
+    if(pJson.isMember("name"))
+    {
+        _name=std::make_shared<std::string>(pJson["name"].asString());
+    }
+    if(pJson.isMember("unit"))
+    {
+        _unit=std::make_shared<std::string>(pJson["unit"].asString());
+    }
+    if(pJson.isMember("unit_plural"))
+    {
+        _unitPlural=std::make_shared<std::string>(pJson["unit_plural"].asString());
+    }
+    if(pJson.isMember("default"))
+    {
+        _default=std::make_shared<bool>(pJson["default"].asBool());
+    }
+    if(pJson.isMember("deleted_at"))
+    {
+        auto timeStr = pJson["deleted_at"].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+        size_t t = timelocal(&stm);
+        size_t decimalNum = 0;
+        if(*p=='.')
+        {
+            std::string decimals(p+1,&timeStr[timeStr.length()]);
+            while(decimals.length()<6)
+            {
+                decimals += "0";
+            }
+            decimalNum = (size_t)atol(decimals.c_str());
+        }
+        _deletedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+    }
+}
+
+void CostTypes::updateByMasqueradedJson(const Json::Value &pJson,
+                                            const std::vector<std::string> &pMasqueradingVector) noexcept(false)
+{
+    if(pMasqueradingVector.size() != 6)
+    {
+        LOG_ERROR << "Bad masquerading vector";
+        return;
+    }
+    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
+    {
+        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+    }
+    if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
+    {
+        _dirtyFlag[1] = true;
+        _name=std::make_shared<std::string>(pJson[pMasqueradingVector[1]].asString());
+    }
+    if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
+    {
+        _dirtyFlag[2] = true;
+        _unit=std::make_shared<std::string>(pJson[pMasqueradingVector[2]].asString());
+    }
+    if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
+    {
+        _dirtyFlag[3] = true;
+        _unitPlural=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+    }
+    if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
+    {
+        _dirtyFlag[4] = true;
+        _default=std::make_shared<bool>(pJson[pMasqueradingVector[4]].asBool());
+    }
+    if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
+    {
+        _dirtyFlag[5] = true;
+        auto timeStr = pJson[pMasqueradingVector[5]].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+        size_t t = timelocal(&stm);
+        size_t decimalNum = 0;
+        if(*p=='.')
+        {
+            std::string decimals(p+1,&timeStr[timeStr.length()]);
+            while(decimals.length()<6)
+            {
+                decimals += "0";
+            }
+            decimalNum = (size_t)atol(decimals.c_str());
+        }
+        _deletedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+    }
+}
+                                                                    
+void CostTypes::updateByJson(const Json::Value &pJson) noexcept(false)
+{
+    if(pJson.isMember("id"))
+    {
+        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+    }
+    if(pJson.isMember("name"))
+    {
+        _dirtyFlag[1] = true;
+        _name=std::make_shared<std::string>(pJson["name"].asString());
+    }
+    if(pJson.isMember("unit"))
+    {
+        _dirtyFlag[2] = true;
+        _unit=std::make_shared<std::string>(pJson["unit"].asString());
+    }
+    if(pJson.isMember("unit_plural"))
+    {
+        _dirtyFlag[3] = true;
+        _unitPlural=std::make_shared<std::string>(pJson["unit_plural"].asString());
+    }
+    if(pJson.isMember("default"))
+    {
+        _dirtyFlag[4] = true;
+        _default=std::make_shared<bool>(pJson["default"].asBool());
+    }
+    if(pJson.isMember("deleted_at"))
+    {
+        _dirtyFlag[5] = true;
+        auto timeStr = pJson["deleted_at"].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+        size_t t = timelocal(&stm);
+        size_t decimalNum = 0;
+        if(*p=='.')
+        {
+            std::string decimals(p+1,&timeStr[timeStr.length()]);
+            while(decimals.length()<6)
+            {
+                decimals += "0";
+            }
+            decimalNum = (size_t)atol(decimals.c_str());
+        }
+        _deletedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
+    }
+}
+
 const int32_t &CostTypes::getValueOfId() const noexcept
 {
     const static int32_t defaultValue = int32_t();
@@ -382,4 +635,427 @@ Json::Value CostTypes::toJson() const
         ret["deleted_at"]=Json::Value();
     }
     return ret;
+}
+
+Json::Value CostTypes::toMasqueradedJson(
+    const std::vector<std::string> &pMasqueradingVector) const
+{
+    Json::Value ret;
+    if(pMasqueradingVector.size() == 6)
+    {
+        if(!pMasqueradingVector[0].empty())
+        {
+            if(getId())
+            {
+                ret[pMasqueradingVector[0]]=getValueOfId();
+            }
+            else
+            {
+                ret[pMasqueradingVector[0]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[1].empty())
+        {
+            if(getName())
+            {
+                ret[pMasqueradingVector[1]]=getValueOfName();
+            }
+            else
+            {
+                ret[pMasqueradingVector[1]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[2].empty())
+        {
+            if(getUnit())
+            {
+                ret[pMasqueradingVector[2]]=getValueOfUnit();
+            }
+            else
+            {
+                ret[pMasqueradingVector[2]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[3].empty())
+        {
+            if(getUnitPlural())
+            {
+                ret[pMasqueradingVector[3]]=getValueOfUnitPlural();
+            }
+            else
+            {
+                ret[pMasqueradingVector[3]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[4].empty())
+        {
+            if(getDefault())
+            {
+                ret[pMasqueradingVector[4]]=getValueOfDefault();
+            }
+            else
+            {
+                ret[pMasqueradingVector[4]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[5].empty())
+        {
+            if(getDeletedAt())
+            {
+                ret[pMasqueradingVector[5]]=getDeletedAt()->toDbStringLocal();
+            }
+            else
+            {
+                ret[pMasqueradingVector[5]]=Json::Value();
+            }
+        }
+        return ret;
+    }
+    LOG_ERROR << "Masquerade failed";
+    if(getId())
+    {
+        ret["id"]=getValueOfId();
+    }
+    else
+    {
+        ret["id"]=Json::Value();
+    }
+    if(getName())
+    {
+        ret["name"]=getValueOfName();
+    }
+    else
+    {
+        ret["name"]=Json::Value();
+    }
+    if(getUnit())
+    {
+        ret["unit"]=getValueOfUnit();
+    }
+    else
+    {
+        ret["unit"]=Json::Value();
+    }
+    if(getUnitPlural())
+    {
+        ret["unit_plural"]=getValueOfUnitPlural();
+    }
+    else
+    {
+        ret["unit_plural"]=Json::Value();
+    }
+    if(getDefault())
+    {
+        ret["default"]=getValueOfDefault();
+    }
+    else
+    {
+        ret["default"]=Json::Value();
+    }
+    if(getDeletedAt())
+    {
+        ret["deleted_at"]=getDeletedAt()->toDbStringLocal();
+    }
+    else
+    {
+        ret["deleted_at"]=Json::Value();
+    }
+    return ret;
+}
+
+bool CostTypes::validateJsonForCreation(const Json::Value &pJson, std::string &err)
+{
+    if(pJson.isMember("id"))
+    {
+        if(!validJsonOfField(0, "id", pJson["id"], err, true))
+            return false;
+    }
+    if(pJson.isMember("name"))
+    {
+        if(!validJsonOfField(1, "name", pJson["name"], err, true))
+            return false;
+    }
+    else
+    {
+        err="The name column cannot be null";
+        return false;
+    }
+    if(pJson.isMember("unit"))
+    {
+        if(!validJsonOfField(2, "unit", pJson["unit"], err, true))
+            return false;
+    }
+    else
+    {
+        err="The unit column cannot be null";
+        return false;
+    }
+    if(pJson.isMember("unit_plural"))
+    {
+        if(!validJsonOfField(3, "unit_plural", pJson["unit_plural"], err, true))
+            return false;
+    }
+    else
+    {
+        err="The unit_plural column cannot be null";
+        return false;
+    }
+    if(pJson.isMember("default"))
+    {
+        if(!validJsonOfField(4, "default", pJson["default"], err, true))
+            return false;
+    }
+    if(pJson.isMember("deleted_at"))
+    {
+        if(!validJsonOfField(5, "deleted_at", pJson["deleted_at"], err, true))
+            return false;
+    }
+    return true;
+}
+bool CostTypes::validateMasqueradedJsonForCreation(const Json::Value &pJson,
+                                                   const std::vector<std::string> &pMasqueradingVector,
+                                                   std::string &err)
+{
+    if(pMasqueradingVector.size() != 6)
+    {
+        err = "Bad masquerading vector";
+        return false;
+    }
+    if(!pMasqueradingVector[0].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[0]))
+        {
+            if(!validJsonOfField(0, pMasqueradingVector[0], pJson[pMasqueradingVector[0]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[1].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[1]))
+        {
+            if(!validJsonOfField(1, pMasqueradingVector[1], pJson[pMasqueradingVector[1]], err, true))
+                return false;
+        }
+        else
+        {
+            err="The " + pMasqueradingVector[1] + " column cannot be null";
+            return false;
+        }
+    }
+    if(!pMasqueradingVector[2].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[2]))
+        {
+            if(!validJsonOfField(2, pMasqueradingVector[2], pJson[pMasqueradingVector[2]], err, true))
+                return false;
+        }
+        else
+        {
+            err="The " + pMasqueradingVector[2] + " column cannot be null";
+            return false;
+        }
+    }
+    if(!pMasqueradingVector[3].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[3]))
+        {
+            if(!validJsonOfField(3, pMasqueradingVector[3], pJson[pMasqueradingVector[3]], err, true))
+                return false;
+        }
+        else
+        {
+            err="The " + pMasqueradingVector[3] + " column cannot be null";
+            return false;
+        }
+    }
+    if(!pMasqueradingVector[4].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[4]))
+        {
+            if(!validJsonOfField(4, pMasqueradingVector[4], pJson[pMasqueradingVector[4]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[5].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[5]))
+        {
+            if(!validJsonOfField(5, pMasqueradingVector[5], pJson[pMasqueradingVector[5]], err, true))
+                return false;
+        }
+    }
+    return true;
+}
+bool CostTypes::validateJsonForUpdate(const Json::Value &pJson, std::string &err)
+{
+    if(pJson.isMember("id"))
+    {
+        if(!validJsonOfField(0, "id", pJson["id"], err, false))
+            return false;
+    }
+    else
+    {
+        err = "The value of primary key must be set in the json object for update";
+        return false;
+    }
+    if(pJson.isMember("name"))
+    {
+        if(!validJsonOfField(1, "name", pJson["name"], err, false))
+            return false;
+    }
+    if(pJson.isMember("unit"))
+    {
+        if(!validJsonOfField(2, "unit", pJson["unit"], err, false))
+            return false;
+    }
+    if(pJson.isMember("unit_plural"))
+    {
+        if(!validJsonOfField(3, "unit_plural", pJson["unit_plural"], err, false))
+            return false;
+    }
+    if(pJson.isMember("default"))
+    {
+        if(!validJsonOfField(4, "default", pJson["default"], err, false))
+            return false;
+    }
+    if(pJson.isMember("deleted_at"))
+    {
+        if(!validJsonOfField(5, "deleted_at", pJson["deleted_at"], err, false))
+            return false;
+    }
+    return true;
+}
+bool CostTypes::validateMasqueradedJsonForUpdate(const Json::Value &pJson,
+                                                 const std::vector<std::string> &pMasqueradingVector,
+                                                 std::string &err)
+{
+    if(pMasqueradingVector.size() != 6)
+    {
+        err = "Bad masquerading vector";
+        return false;
+    }
+    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
+    {
+        if(!validJsonOfField(0, pMasqueradingVector[0], pJson[pMasqueradingVector[0]], err, false))
+            return false;
+    }
+    else
+    {
+        err = "The value of primary key must be set in the json object for update";
+        return false;
+    }
+    if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
+    {
+        if(!validJsonOfField(1, pMasqueradingVector[1], pJson[pMasqueradingVector[1]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
+    {
+        if(!validJsonOfField(2, pMasqueradingVector[2], pJson[pMasqueradingVector[2]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
+    {
+        if(!validJsonOfField(3, pMasqueradingVector[3], pJson[pMasqueradingVector[3]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
+    {
+        if(!validJsonOfField(4, pMasqueradingVector[4], pJson[pMasqueradingVector[4]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
+    {
+        if(!validJsonOfField(5, pMasqueradingVector[5], pJson[pMasqueradingVector[5]], err, false))
+            return false;
+    }
+    return true;
+}
+bool CostTypes::validJsonOfField(size_t index,
+                                 const std::string &fieldName,
+                                 const Json::Value &pJson, 
+                                 std::string &err, 
+                                 bool isForCreation)
+{
+    switch(index)
+    {
+        case 0:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(isForCreation)
+            {
+                err="The automatic primary key cannot be set";
+                return false;
+            }        
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 1:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 2:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 3:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 4:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isBool())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 5:
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+     
+        default:
+            err="Internal error in the server";
+            return false;
+            break;
+    }
+    return true;
 }

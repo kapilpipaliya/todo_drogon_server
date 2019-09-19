@@ -24,7 +24,7 @@ using namespace drogon::orm;
 
 namespace drogon_model
 {
-namespace openproject4 
+namespace openproject6 
 {
 class JournalVersions
 {
@@ -43,9 +43,49 @@ class JournalVersions
     const static std::string primaryKeyName;
     typedef int64_t PrimaryKeyType;
     const PrimaryKeyType &getPrimaryKey() const;
-    explicit JournalVersions(const Row &r) noexcept;
+
+    /**
+     * @brief constructor
+     * @param r One row of records in the SQL query result.
+     * @param indexOffset Set the offset to -1 to access all columns by column names, 
+     * otherwise access all columns by offsets.
+     * @note If the SQL is not a style of 'select * from table_name ...' (select all 
+     * columns by an asterisk), please set the offset to -1.
+     */
+    explicit JournalVersions(const Row &r, const ssize_t indexOffset = 0) noexcept;
+
+    /**
+     * @brief constructor
+     * @param pJson The json object to construct a new instance.
+     */
+    explicit JournalVersions(const Json::Value &pJson) noexcept(false);
+
+    /**
+     * @brief constructor
+     * @param pJson The json object to construct a new instance.
+     * @param pMasqueradingVector The aliases of table columns.
+     */
+    JournalVersions(const Json::Value &pJson, const std::vector<std::string> &pMasqueradingVector) noexcept(false);
+
     JournalVersions() = default;
     
+    void updateByJson(const Json::Value &pJson) noexcept(false);
+    void updateByMasqueradedJson(const Json::Value &pJson,
+                                 const std::vector<std::string> &pMasqueradingVector) noexcept(false);
+    bool validateJsonForCreation(const Json::Value &pJson, std::string &err);
+    bool validateMasqueradedJsonForCreation(const Json::Value &,
+                                            const std::vector<std::string> &pMasqueradingVector,
+                                            std::string &err);
+    bool validateJsonForUpdate(const Json::Value &pJson, std::string &err);
+    bool validateMasqueradedJsonForUpdate(const Json::Value &,
+                                          const std::vector<std::string> &pMasqueradingVector,
+                                          std::string &err);
+    bool validJsonOfField(size_t index,
+                          const std::string &fieldName,
+                          const Json::Value &pJson, 
+                          std::string &err, 
+                          bool isForCreation);
+
     /**  For column id  */
     ///Get the value of the column id, returns the default value if the column is null
     const int64_t &getValueOfId() const noexcept;
@@ -82,6 +122,7 @@ class JournalVersions
     static const std::string &getColumnName(size_t index) noexcept(false);
 
     Json::Value toJson() const;
+    Json::Value toMasqueradedJson(const std::vector<std::string> &pMasqueradingVector) const;
 
   private:
     friend Mapper<JournalVersions>;
@@ -107,6 +148,25 @@ class JournalVersions
     };
     static const std::vector<MetaData> _metaData;
     bool _dirtyFlag[4]={ false };
+
+  public:
+    static const std::string &sqlForFindingByPrimaryKey()
+    {
+        static const std::string sql="select * from " + tableName + " where id = $1";
+        return sql;                   
+    }
+
+    static const std::string &sqlForDeletingByPrimaryKey()
+    {
+        static const std::string sql="delete from " + tableName + " where id = $1";
+        return sql;                   
+    }
+
+    static const std::string &sqlForInserting()
+    {
+        static const std::string sql="insert into " + tableName + " (journable_type,journable_id,version) values ($1,$2,$3) returning *";
+        return sql;   
+    }
 };
-} // namespace openproject4
+} // namespace openproject6
 } // namespace drogon_model

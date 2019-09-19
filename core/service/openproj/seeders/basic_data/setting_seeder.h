@@ -26,18 +26,18 @@ class SettingSeeder : public Seeder {
           it.second["default"].as<std::string>();
     }
     auto clientPtr = drogon::app().getDbClient("sce");
-    drogon::orm::Mapper<drogon_model::openproject4::Roles> mapper(clientPtr);
+    drogon::orm::Mapper<drogon_model::openproject6::Roles> mapper(clientPtr);
     auto r = mapper.findBy(
-        Criteria(drogon_model::openproject4::Roles::Cols::_name,
+        Criteria(drogon_model::openproject6::Roles::Cols::_name,
                  CompareOperator::EQ, "Project admin"));
     auto role_id = *r.at(0).getId();
     if (!r.empty()) {
       update_unless_present("new_project_user_role_id", std::to_string(role_id));
     }
 
-    drogon::orm::Mapper<drogon_model::openproject4::Statuses> mapper_status(clientPtr);
+    drogon::orm::Mapper<drogon_model::openproject6::Statuses> mapper_status(clientPtr);
     auto status = mapper_status.findBy(
-          Criteria(drogon_model::openproject4::Statuses::Cols::_name,
+          Criteria(drogon_model::openproject6::Statuses::Cols::_name,
                    CompareOperator::EQ, "Closed"));
     auto status_id = *status.at(0).getId();
     if (!r.empty()) {
@@ -54,7 +54,7 @@ class SettingSeeder : public Seeder {
     //      }
 
     auto clientPtr = drogon::app().getDbClient("sce");
-    drogon::orm::Mapper<drogon_model::openproject4::Settings> mapper(clientPtr);
+    drogon::orm::Mapper<drogon_model::openproject6::Settings> mapper(clientPtr);
     for (auto &it : settings_not_in_db()) {
       auto data = data_[it];
     }
@@ -112,7 +112,7 @@ class SettingSeeder : public Seeder {
   std::vector<std::string> settings_in_db() {
     //      this->settings_in_db ||= Setting.all.pluck(:name)
     auto clientPtr = drogon::app().getDbClient("sce");
-    drogon::orm::Mapper<drogon_model::openproject4::Settings> mapper(clientPtr);
+    drogon::orm::Mapper<drogon_model::openproject6::Settings> mapper(clientPtr);
     auto r = mapper.findAll();
     std::vector<std::string> a;
     for (auto it : r) {

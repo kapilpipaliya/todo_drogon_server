@@ -27,15 +27,15 @@ class BuiltinRolesSeeder : public Seeder {
     //      }
     auto clientPtr = drogon::app().getDbClient("sce");
     for (auto &it : data()) {
-      drogon::orm::Mapper<drogon_model::openproject4::Roles> mapper(clientPtr);
+      drogon::orm::Mapper<drogon_model::openproject6::Roles> mapper(clientPtr);
       auto r = mapper.findBy(
-          Criteria(drogon_model::openproject4::Roles::Cols::_builtin,
+          Criteria(drogon_model::openproject6::Roles::Cols::_builtin,
                    CompareOperator::EQ, it.role));
       if (!r.empty()) {
         LOG_DEBUG << "   *** Skipping built in role " << it.name
                   << " - already exists";
       } else {
-        drogon_model::openproject4::Roles roles;
+        drogon_model::openproject6::Roles roles;
         roles.setName(it.name);
         roles.setPosition(it.position);
         roles.setBuiltin(it.role);

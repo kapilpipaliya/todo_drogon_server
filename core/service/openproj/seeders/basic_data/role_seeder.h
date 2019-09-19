@@ -32,9 +32,9 @@ class RoleSeeder : public Seeder {
 
     auto clientPtr = drogon::app().getDbClient("sce");
     for (auto &it : roles()) {
-      drogon::orm::Mapper<drogon_model::openproject4::Roles> mapper(clientPtr);
+      drogon::orm::Mapper<drogon_model::openproject6::Roles> mapper(clientPtr);
 
-      drogon_model::openproject4::Roles roles;
+      drogon_model::openproject6::Roles roles;
       roles.setName(it.name);
       roles.setBuiltin(0);
       roles.setPosition(it.position);
@@ -43,9 +43,9 @@ class RoleSeeder : public Seeder {
       auto id = roles.getId();
 
       for (auto it_ : it.role_permissions) {
-        drogon::orm::Mapper<drogon_model::openproject4::RolePermissions>
+        drogon::orm::Mapper<drogon_model::openproject6::RolePermissions>
             mapper_role_perm(clientPtr);
-        drogon_model::openproject4::RolePermissions role_permission;
+        drogon_model::openproject6::RolePermissions role_permission;
         role_permission.setPermission(it_);
         role_permission.setRoleId(*id);
         mapper_role_perm.insert(role_permission);

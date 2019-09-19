@@ -24,7 +24,7 @@ using namespace drogon::orm;
 
 namespace drogon_model
 {
-namespace openproject4 
+namespace openproject6 
 {
 class SchemaMigrations
 {
@@ -40,9 +40,49 @@ class SchemaMigrations
     const static std::string primaryKeyName;
     typedef std::string PrimaryKeyType;
     const PrimaryKeyType &getPrimaryKey() const;
-    explicit SchemaMigrations(const Row &r) noexcept;
+
+    /**
+     * @brief constructor
+     * @param r One row of records in the SQL query result.
+     * @param indexOffset Set the offset to -1 to access all columns by column names, 
+     * otherwise access all columns by offsets.
+     * @note If the SQL is not a style of 'select * from table_name ...' (select all 
+     * columns by an asterisk), please set the offset to -1.
+     */
+    explicit SchemaMigrations(const Row &r, const ssize_t indexOffset = 0) noexcept;
+
+    /**
+     * @brief constructor
+     * @param pJson The json object to construct a new instance.
+     */
+    explicit SchemaMigrations(const Json::Value &pJson) noexcept(false);
+
+    /**
+     * @brief constructor
+     * @param pJson The json object to construct a new instance.
+     * @param pMasqueradingVector The aliases of table columns.
+     */
+    SchemaMigrations(const Json::Value &pJson, const std::vector<std::string> &pMasqueradingVector) noexcept(false);
+
     SchemaMigrations() = default;
     
+    void updateByJson(const Json::Value &pJson) noexcept(false);
+    void updateByMasqueradedJson(const Json::Value &pJson,
+                                 const std::vector<std::string> &pMasqueradingVector) noexcept(false);
+    bool validateJsonForCreation(const Json::Value &pJson, std::string &err);
+    bool validateMasqueradedJsonForCreation(const Json::Value &,
+                                            const std::vector<std::string> &pMasqueradingVector,
+                                            std::string &err);
+    bool validateJsonForUpdate(const Json::Value &pJson, std::string &err);
+    bool validateMasqueradedJsonForUpdate(const Json::Value &,
+                                          const std::vector<std::string> &pMasqueradingVector,
+                                          std::string &err);
+    bool validJsonOfField(size_t index,
+                          const std::string &fieldName,
+                          const Json::Value &pJson, 
+                          std::string &err, 
+                          bool isForCreation);
+
     /**  For column version  */
     ///Get the value of the column version, returns the default value if the column is null
     const std::string &getValueOfVersion() const noexcept;
@@ -57,6 +97,7 @@ class SchemaMigrations
     static const std::string &getColumnName(size_t index) noexcept(false);
 
     Json::Value toJson() const;
+    Json::Value toMasqueradedJson(const std::vector<std::string> &pMasqueradingVector) const;
 
   private:
     friend Mapper<SchemaMigrations>;
@@ -79,6 +120,25 @@ class SchemaMigrations
     };
     static const std::vector<MetaData> _metaData;
     bool _dirtyFlag[1]={ false };
+
+  public:
+    static const std::string &sqlForFindingByPrimaryKey()
+    {
+        static const std::string sql="select * from " + tableName + " where version = $1";
+        return sql;                   
+    }
+
+    static const std::string &sqlForDeletingByPrimaryKey()
+    {
+        static const std::string sql="delete from " + tableName + " where version = $1";
+        return sql;                   
+    }
+
+    static const std::string &sqlForInserting()
+    {
+        static const std::string sql="insert into " + tableName + " (version) values ($1) returning *";
+        return sql;   
+    }
 };
-} // namespace openproject4
+} // namespace openproject6
 } // namespace drogon_model

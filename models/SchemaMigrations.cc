@@ -10,7 +10,7 @@
 #include <string>
 
 using namespace drogon;
-using namespace drogon_model::openproject4;
+using namespace drogon_model::openproject6;
 
 const std::string SchemaMigrations::Cols::_version = "version";
 const std::string SchemaMigrations::primaryKeyName = "version";
@@ -25,13 +25,76 @@ const std::string &SchemaMigrations::getColumnName(size_t index) noexcept(false)
     assert(index < _metaData.size());
     return _metaData[index]._colName;
 }
-SchemaMigrations::SchemaMigrations(const Row &r) noexcept
+SchemaMigrations::SchemaMigrations(const Row &r, const ssize_t indexOffset) noexcept
 {
+    if(indexOffset < 0)
+    {
         if(!r["version"].isNull())
         {
             _version=std::make_shared<std::string>(r["version"].as<std::string>());
         }
+    }
+    else
+    {
+        size_t offset = (size_t)indexOffset;
+        if(offset + 1 > r.size())
+        {
+            LOG_FATAL << "Invalid SQL result for this model";
+            return;
+        }
+        size_t index;
+        index = offset + 0;
+        if(!r[index].isNull())
+        {
+            _version=std::make_shared<std::string>(r[index].as<std::string>());
+        }
+    }
+
 }
+
+SchemaMigrations::SchemaMigrations(const Json::Value &pJson, const std::vector<std::string> &pMasqueradingVector) noexcept(false)
+{
+    if(pMasqueradingVector.size() != 1)
+    {
+        LOG_ERROR << "Bad masquerading vector";
+        return;
+    }
+    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
+    {
+        _version=std::make_shared<std::string>(pJson[pMasqueradingVector[0]].asString());
+    }
+}
+
+SchemaMigrations::SchemaMigrations(const Json::Value &pJson) noexcept(false)
+{
+    if(pJson.isMember("version"))
+    {
+        _version=std::make_shared<std::string>(pJson["version"].asString());
+    }
+}
+
+void SchemaMigrations::updateByMasqueradedJson(const Json::Value &pJson,
+                                            const std::vector<std::string> &pMasqueradingVector) noexcept(false)
+{
+    if(pMasqueradingVector.size() != 1)
+    {
+        LOG_ERROR << "Bad masquerading vector";
+        return;
+    }
+    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
+    {
+        _version=std::make_shared<std::string>(pJson[pMasqueradingVector[0]].asString());
+    }
+}
+                                                                    
+void SchemaMigrations::updateByJson(const Json::Value &pJson) noexcept(false)
+{
+    if(pJson.isMember("version"))
+    {
+        _version=std::make_shared<std::string>(pJson["version"].asString());
+    }
+}
+
 const std::string &SchemaMigrations::getValueOfVersion() const noexcept
 {
     const static std::string defaultValue = std::string();
@@ -123,4 +186,137 @@ Json::Value SchemaMigrations::toJson() const
         ret["version"]=Json::Value();
     }
     return ret;
+}
+
+Json::Value SchemaMigrations::toMasqueradedJson(
+    const std::vector<std::string> &pMasqueradingVector) const
+{
+    Json::Value ret;
+    if(pMasqueradingVector.size() == 1)
+    {
+        if(!pMasqueradingVector[0].empty())
+        {
+            if(getVersion())
+            {
+                ret[pMasqueradingVector[0]]=getValueOfVersion();
+            }
+            else
+            {
+                ret[pMasqueradingVector[0]]=Json::Value();
+            }
+        }
+        return ret;
+    }
+    LOG_ERROR << "Masquerade failed";
+    if(getVersion())
+    {
+        ret["version"]=getValueOfVersion();
+    }
+    else
+    {
+        ret["version"]=Json::Value();
+    }
+    return ret;
+}
+
+bool SchemaMigrations::validateJsonForCreation(const Json::Value &pJson, std::string &err)
+{
+    if(pJson.isMember("version"))
+    {
+        if(!validJsonOfField(0, "version", pJson["version"], err, true))
+            return false;
+    }
+    else
+    {
+        err="The version column cannot be null";
+        return false;
+    }
+    return true;
+}
+bool SchemaMigrations::validateMasqueradedJsonForCreation(const Json::Value &pJson,
+                                                          const std::vector<std::string> &pMasqueradingVector,
+                                                          std::string &err)
+{
+    if(pMasqueradingVector.size() != 1)
+    {
+        err = "Bad masquerading vector";
+        return false;
+    }
+    if(!pMasqueradingVector[0].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[0]))
+        {
+            if(!validJsonOfField(0, pMasqueradingVector[0], pJson[pMasqueradingVector[0]], err, true))
+                return false;
+        }
+        else
+        {
+            err="The " + pMasqueradingVector[0] + " column cannot be null";
+            return false;
+        }
+    }
+    return true;
+}
+bool SchemaMigrations::validateJsonForUpdate(const Json::Value &pJson, std::string &err)
+{
+    if(pJson.isMember("version"))
+    {
+        if(!validJsonOfField(0, "version", pJson["version"], err, false))
+            return false;
+    }
+    else
+    {
+        err = "The value of primary key must be set in the json object for update";
+        return false;
+    }
+    return true;
+}
+bool SchemaMigrations::validateMasqueradedJsonForUpdate(const Json::Value &pJson,
+                                                        const std::vector<std::string> &pMasqueradingVector,
+                                                        std::string &err)
+{
+    if(pMasqueradingVector.size() != 1)
+    {
+        err = "Bad masquerading vector";
+        return false;
+    }
+    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
+    {
+        if(!validJsonOfField(0, pMasqueradingVector[0], pJson[pMasqueradingVector[0]], err, false))
+            return false;
+    }
+    else
+    {
+        err = "The value of primary key must be set in the json object for update";
+        return false;
+    }
+    return true;
+}
+bool SchemaMigrations::validJsonOfField(size_t index,
+                                        const std::string &fieldName,
+                                        const Json::Value &pJson, 
+                                        std::string &err, 
+                                        bool isForCreation)
+{
+    switch(index)
+    {
+        case 0:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+     
+        default:
+            err="Internal error in the server";
+            return false;
+            break;
+    }
+    return true;
 }

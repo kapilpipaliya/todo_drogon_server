@@ -10,7 +10,7 @@
 #include <string>
 
 using namespace drogon;
-using namespace drogon_model::openproject4;
+using namespace drogon_model::openproject6;
 
 const std::string GridWidgets::Cols::_id = "id";
 const std::string GridWidgets::Cols::_start_row = "start_row";
@@ -39,8 +39,10 @@ const std::string &GridWidgets::getColumnName(size_t index) noexcept(false)
     assert(index < _metaData.size());
     return _metaData[index]._colName;
 }
-GridWidgets::GridWidgets(const Row &r) noexcept
+GridWidgets::GridWidgets(const Row &r, const ssize_t indexOffset) noexcept
 {
+    if(indexOffset < 0)
+    {
         if(!r["id"].isNull())
         {
             _id=std::make_shared<int64_t>(r["id"].as<int64_t>());
@@ -73,7 +75,229 @@ GridWidgets::GridWidgets(const Row &r) noexcept
         {
             _gridId=std::make_shared<int64_t>(r["grid_id"].as<int64_t>());
         }
+    }
+    else
+    {
+        size_t offset = (size_t)indexOffset;
+        if(offset + 8 > r.size())
+        {
+            LOG_FATAL << "Invalid SQL result for this model";
+            return;
+        }
+        size_t index;
+        index = offset + 0;
+        if(!r[index].isNull())
+        {
+            _id=std::make_shared<int64_t>(r[index].as<int64_t>());
+        }
+        index = offset + 1;
+        if(!r[index].isNull())
+        {
+            _startRow=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 2;
+        if(!r[index].isNull())
+        {
+            _endRow=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 3;
+        if(!r[index].isNull())
+        {
+            _startColumn=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 4;
+        if(!r[index].isNull())
+        {
+            _endColumn=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 5;
+        if(!r[index].isNull())
+        {
+            _identifier=std::make_shared<std::string>(r[index].as<std::string>());
+        }
+        index = offset + 6;
+        if(!r[index].isNull())
+        {
+            _options=std::make_shared<std::string>(r[index].as<std::string>());
+        }
+        index = offset + 7;
+        if(!r[index].isNull())
+        {
+            _gridId=std::make_shared<int64_t>(r[index].as<int64_t>());
+        }
+    }
+
 }
+
+GridWidgets::GridWidgets(const Json::Value &pJson, const std::vector<std::string> &pMasqueradingVector) noexcept(false)
+{
+    if(pMasqueradingVector.size() != 8)
+    {
+        LOG_ERROR << "Bad masquerading vector";
+        return;
+    }
+    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
+    {
+        _id=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[0]].asInt64());
+    }
+    if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
+    {
+        _startRow=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+    }
+    if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
+    {
+        _endRow=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+    }
+    if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
+    {
+        _startColumn=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+    }
+    if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
+    {
+        _endColumn=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[4]].asInt64());
+    }
+    if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
+    {
+        _identifier=std::make_shared<std::string>(pJson[pMasqueradingVector[5]].asString());
+    }
+    if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
+    {
+        _options=std::make_shared<std::string>(pJson[pMasqueradingVector[6]].asString());
+    }
+    if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
+    {
+        _gridId=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[7]].asInt64());
+    }
+}
+
+GridWidgets::GridWidgets(const Json::Value &pJson) noexcept(false)
+{
+    if(pJson.isMember("id"))
+    {
+        _id=std::make_shared<int64_t>((int64_t)pJson["id"].asInt64());
+    }
+    if(pJson.isMember("start_row"))
+    {
+        _startRow=std::make_shared<int32_t>((int32_t)pJson["start_row"].asInt64());
+    }
+    if(pJson.isMember("end_row"))
+    {
+        _endRow=std::make_shared<int32_t>((int32_t)pJson["end_row"].asInt64());
+    }
+    if(pJson.isMember("start_column"))
+    {
+        _startColumn=std::make_shared<int32_t>((int32_t)pJson["start_column"].asInt64());
+    }
+    if(pJson.isMember("end_column"))
+    {
+        _endColumn=std::make_shared<int32_t>((int32_t)pJson["end_column"].asInt64());
+    }
+    if(pJson.isMember("identifier"))
+    {
+        _identifier=std::make_shared<std::string>(pJson["identifier"].asString());
+    }
+    if(pJson.isMember("options"))
+    {
+        _options=std::make_shared<std::string>(pJson["options"].asString());
+    }
+    if(pJson.isMember("grid_id"))
+    {
+        _gridId=std::make_shared<int64_t>((int64_t)pJson["grid_id"].asInt64());
+    }
+}
+
+void GridWidgets::updateByMasqueradedJson(const Json::Value &pJson,
+                                            const std::vector<std::string> &pMasqueradingVector) noexcept(false)
+{
+    if(pMasqueradingVector.size() != 8)
+    {
+        LOG_ERROR << "Bad masquerading vector";
+        return;
+    }
+    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
+    {
+        _id=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[0]].asInt64());
+    }
+    if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
+    {
+        _dirtyFlag[1] = true;
+        _startRow=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+    }
+    if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
+    {
+        _dirtyFlag[2] = true;
+        _endRow=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+    }
+    if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
+    {
+        _dirtyFlag[3] = true;
+        _startColumn=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+    }
+    if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
+    {
+        _dirtyFlag[4] = true;
+        _endColumn=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[4]].asInt64());
+    }
+    if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
+    {
+        _dirtyFlag[5] = true;
+        _identifier=std::make_shared<std::string>(pJson[pMasqueradingVector[5]].asString());
+    }
+    if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
+    {
+        _dirtyFlag[6] = true;
+        _options=std::make_shared<std::string>(pJson[pMasqueradingVector[6]].asString());
+    }
+    if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
+    {
+        _dirtyFlag[7] = true;
+        _gridId=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[7]].asInt64());
+    }
+}
+                                                                    
+void GridWidgets::updateByJson(const Json::Value &pJson) noexcept(false)
+{
+    if(pJson.isMember("id"))
+    {
+        _id=std::make_shared<int64_t>((int64_t)pJson["id"].asInt64());
+    }
+    if(pJson.isMember("start_row"))
+    {
+        _dirtyFlag[1] = true;
+        _startRow=std::make_shared<int32_t>((int32_t)pJson["start_row"].asInt64());
+    }
+    if(pJson.isMember("end_row"))
+    {
+        _dirtyFlag[2] = true;
+        _endRow=std::make_shared<int32_t>((int32_t)pJson["end_row"].asInt64());
+    }
+    if(pJson.isMember("start_column"))
+    {
+        _dirtyFlag[3] = true;
+        _startColumn=std::make_shared<int32_t>((int32_t)pJson["start_column"].asInt64());
+    }
+    if(pJson.isMember("end_column"))
+    {
+        _dirtyFlag[4] = true;
+        _endColumn=std::make_shared<int32_t>((int32_t)pJson["end_column"].asInt64());
+    }
+    if(pJson.isMember("identifier"))
+    {
+        _dirtyFlag[5] = true;
+        _identifier=std::make_shared<std::string>(pJson["identifier"].asString());
+    }
+    if(pJson.isMember("options"))
+    {
+        _dirtyFlag[6] = true;
+        _options=std::make_shared<std::string>(pJson["options"].asString());
+    }
+    if(pJson.isMember("grid_id"))
+    {
+        _dirtyFlag[7] = true;
+        _gridId=std::make_shared<int64_t>((int64_t)pJson["grid_id"].asInt64());
+    }
+}
+
 const int64_t &GridWidgets::getValueOfId() const noexcept
 {
     const static int64_t defaultValue = int64_t();
@@ -466,4 +690,535 @@ Json::Value GridWidgets::toJson() const
         ret["grid_id"]=Json::Value();
     }
     return ret;
+}
+
+Json::Value GridWidgets::toMasqueradedJson(
+    const std::vector<std::string> &pMasqueradingVector) const
+{
+    Json::Value ret;
+    if(pMasqueradingVector.size() == 8)
+    {
+        if(!pMasqueradingVector[0].empty())
+        {
+            if(getId())
+            {
+                ret[pMasqueradingVector[0]]=(Json::Int64)getValueOfId();
+            }
+            else
+            {
+                ret[pMasqueradingVector[0]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[1].empty())
+        {
+            if(getStartRow())
+            {
+                ret[pMasqueradingVector[1]]=getValueOfStartRow();
+            }
+            else
+            {
+                ret[pMasqueradingVector[1]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[2].empty())
+        {
+            if(getEndRow())
+            {
+                ret[pMasqueradingVector[2]]=getValueOfEndRow();
+            }
+            else
+            {
+                ret[pMasqueradingVector[2]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[3].empty())
+        {
+            if(getStartColumn())
+            {
+                ret[pMasqueradingVector[3]]=getValueOfStartColumn();
+            }
+            else
+            {
+                ret[pMasqueradingVector[3]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[4].empty())
+        {
+            if(getEndColumn())
+            {
+                ret[pMasqueradingVector[4]]=getValueOfEndColumn();
+            }
+            else
+            {
+                ret[pMasqueradingVector[4]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[5].empty())
+        {
+            if(getIdentifier())
+            {
+                ret[pMasqueradingVector[5]]=getValueOfIdentifier();
+            }
+            else
+            {
+                ret[pMasqueradingVector[5]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[6].empty())
+        {
+            if(getOptions())
+            {
+                ret[pMasqueradingVector[6]]=getValueOfOptions();
+            }
+            else
+            {
+                ret[pMasqueradingVector[6]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[7].empty())
+        {
+            if(getGridId())
+            {
+                ret[pMasqueradingVector[7]]=(Json::Int64)getValueOfGridId();
+            }
+            else
+            {
+                ret[pMasqueradingVector[7]]=Json::Value();
+            }
+        }
+        return ret;
+    }
+    LOG_ERROR << "Masquerade failed";
+    if(getId())
+    {
+        ret["id"]=(Json::Int64)getValueOfId();
+    }
+    else
+    {
+        ret["id"]=Json::Value();
+    }
+    if(getStartRow())
+    {
+        ret["start_row"]=getValueOfStartRow();
+    }
+    else
+    {
+        ret["start_row"]=Json::Value();
+    }
+    if(getEndRow())
+    {
+        ret["end_row"]=getValueOfEndRow();
+    }
+    else
+    {
+        ret["end_row"]=Json::Value();
+    }
+    if(getStartColumn())
+    {
+        ret["start_column"]=getValueOfStartColumn();
+    }
+    else
+    {
+        ret["start_column"]=Json::Value();
+    }
+    if(getEndColumn())
+    {
+        ret["end_column"]=getValueOfEndColumn();
+    }
+    else
+    {
+        ret["end_column"]=Json::Value();
+    }
+    if(getIdentifier())
+    {
+        ret["identifier"]=getValueOfIdentifier();
+    }
+    else
+    {
+        ret["identifier"]=Json::Value();
+    }
+    if(getOptions())
+    {
+        ret["options"]=getValueOfOptions();
+    }
+    else
+    {
+        ret["options"]=Json::Value();
+    }
+    if(getGridId())
+    {
+        ret["grid_id"]=(Json::Int64)getValueOfGridId();
+    }
+    else
+    {
+        ret["grid_id"]=Json::Value();
+    }
+    return ret;
+}
+
+bool GridWidgets::validateJsonForCreation(const Json::Value &pJson, std::string &err)
+{
+    if(pJson.isMember("id"))
+    {
+        if(!validJsonOfField(0, "id", pJson["id"], err, true))
+            return false;
+    }
+    if(pJson.isMember("start_row"))
+    {
+        if(!validJsonOfField(1, "start_row", pJson["start_row"], err, true))
+            return false;
+    }
+    else
+    {
+        err="The start_row column cannot be null";
+        return false;
+    }
+    if(pJson.isMember("end_row"))
+    {
+        if(!validJsonOfField(2, "end_row", pJson["end_row"], err, true))
+            return false;
+    }
+    else
+    {
+        err="The end_row column cannot be null";
+        return false;
+    }
+    if(pJson.isMember("start_column"))
+    {
+        if(!validJsonOfField(3, "start_column", pJson["start_column"], err, true))
+            return false;
+    }
+    else
+    {
+        err="The start_column column cannot be null";
+        return false;
+    }
+    if(pJson.isMember("end_column"))
+    {
+        if(!validJsonOfField(4, "end_column", pJson["end_column"], err, true))
+            return false;
+    }
+    else
+    {
+        err="The end_column column cannot be null";
+        return false;
+    }
+    if(pJson.isMember("identifier"))
+    {
+        if(!validJsonOfField(5, "identifier", pJson["identifier"], err, true))
+            return false;
+    }
+    if(pJson.isMember("options"))
+    {
+        if(!validJsonOfField(6, "options", pJson["options"], err, true))
+            return false;
+    }
+    if(pJson.isMember("grid_id"))
+    {
+        if(!validJsonOfField(7, "grid_id", pJson["grid_id"], err, true))
+            return false;
+    }
+    return true;
+}
+bool GridWidgets::validateMasqueradedJsonForCreation(const Json::Value &pJson,
+                                                     const std::vector<std::string> &pMasqueradingVector,
+                                                     std::string &err)
+{
+    if(pMasqueradingVector.size() != 8)
+    {
+        err = "Bad masquerading vector";
+        return false;
+    }
+    if(!pMasqueradingVector[0].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[0]))
+        {
+            if(!validJsonOfField(0, pMasqueradingVector[0], pJson[pMasqueradingVector[0]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[1].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[1]))
+        {
+            if(!validJsonOfField(1, pMasqueradingVector[1], pJson[pMasqueradingVector[1]], err, true))
+                return false;
+        }
+        else
+        {
+            err="The " + pMasqueradingVector[1] + " column cannot be null";
+            return false;
+        }
+    }
+    if(!pMasqueradingVector[2].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[2]))
+        {
+            if(!validJsonOfField(2, pMasqueradingVector[2], pJson[pMasqueradingVector[2]], err, true))
+                return false;
+        }
+        else
+        {
+            err="The " + pMasqueradingVector[2] + " column cannot be null";
+            return false;
+        }
+    }
+    if(!pMasqueradingVector[3].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[3]))
+        {
+            if(!validJsonOfField(3, pMasqueradingVector[3], pJson[pMasqueradingVector[3]], err, true))
+                return false;
+        }
+        else
+        {
+            err="The " + pMasqueradingVector[3] + " column cannot be null";
+            return false;
+        }
+    }
+    if(!pMasqueradingVector[4].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[4]))
+        {
+            if(!validJsonOfField(4, pMasqueradingVector[4], pJson[pMasqueradingVector[4]], err, true))
+                return false;
+        }
+        else
+        {
+            err="The " + pMasqueradingVector[4] + " column cannot be null";
+            return false;
+        }
+    }
+    if(!pMasqueradingVector[5].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[5]))
+        {
+            if(!validJsonOfField(5, pMasqueradingVector[5], pJson[pMasqueradingVector[5]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[6].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[6]))
+        {
+            if(!validJsonOfField(6, pMasqueradingVector[6], pJson[pMasqueradingVector[6]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[7].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[7]))
+        {
+            if(!validJsonOfField(7, pMasqueradingVector[7], pJson[pMasqueradingVector[7]], err, true))
+                return false;
+        }
+    }
+    return true;
+}
+bool GridWidgets::validateJsonForUpdate(const Json::Value &pJson, std::string &err)
+{
+    if(pJson.isMember("id"))
+    {
+        if(!validJsonOfField(0, "id", pJson["id"], err, false))
+            return false;
+    }
+    else
+    {
+        err = "The value of primary key must be set in the json object for update";
+        return false;
+    }
+    if(pJson.isMember("start_row"))
+    {
+        if(!validJsonOfField(1, "start_row", pJson["start_row"], err, false))
+            return false;
+    }
+    if(pJson.isMember("end_row"))
+    {
+        if(!validJsonOfField(2, "end_row", pJson["end_row"], err, false))
+            return false;
+    }
+    if(pJson.isMember("start_column"))
+    {
+        if(!validJsonOfField(3, "start_column", pJson["start_column"], err, false))
+            return false;
+    }
+    if(pJson.isMember("end_column"))
+    {
+        if(!validJsonOfField(4, "end_column", pJson["end_column"], err, false))
+            return false;
+    }
+    if(pJson.isMember("identifier"))
+    {
+        if(!validJsonOfField(5, "identifier", pJson["identifier"], err, false))
+            return false;
+    }
+    if(pJson.isMember("options"))
+    {
+        if(!validJsonOfField(6, "options", pJson["options"], err, false))
+            return false;
+    }
+    if(pJson.isMember("grid_id"))
+    {
+        if(!validJsonOfField(7, "grid_id", pJson["grid_id"], err, false))
+            return false;
+    }
+    return true;
+}
+bool GridWidgets::validateMasqueradedJsonForUpdate(const Json::Value &pJson,
+                                                   const std::vector<std::string> &pMasqueradingVector,
+                                                   std::string &err)
+{
+    if(pMasqueradingVector.size() != 8)
+    {
+        err = "Bad masquerading vector";
+        return false;
+    }
+    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
+    {
+        if(!validJsonOfField(0, pMasqueradingVector[0], pJson[pMasqueradingVector[0]], err, false))
+            return false;
+    }
+    else
+    {
+        err = "The value of primary key must be set in the json object for update";
+        return false;
+    }
+    if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
+    {
+        if(!validJsonOfField(1, pMasqueradingVector[1], pJson[pMasqueradingVector[1]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
+    {
+        if(!validJsonOfField(2, pMasqueradingVector[2], pJson[pMasqueradingVector[2]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
+    {
+        if(!validJsonOfField(3, pMasqueradingVector[3], pJson[pMasqueradingVector[3]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
+    {
+        if(!validJsonOfField(4, pMasqueradingVector[4], pJson[pMasqueradingVector[4]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
+    {
+        if(!validJsonOfField(5, pMasqueradingVector[5], pJson[pMasqueradingVector[5]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
+    {
+        if(!validJsonOfField(6, pMasqueradingVector[6], pJson[pMasqueradingVector[6]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
+    {
+        if(!validJsonOfField(7, pMasqueradingVector[7], pJson[pMasqueradingVector[7]], err, false))
+            return false;
+    }
+    return true;
+}
+bool GridWidgets::validJsonOfField(size_t index,
+                                   const std::string &fieldName,
+                                   const Json::Value &pJson, 
+                                   std::string &err, 
+                                   bool isForCreation)
+{
+    switch(index)
+    {
+        case 0:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(isForCreation)
+            {
+                err="The automatic primary key cannot be set";
+                return false;
+            }        
+            if(!pJson.isInt64())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 1:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 2:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 3:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 4:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 5:
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 6:
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 7:
+            if(!pJson.isInt64())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+     
+        default:
+            err="Internal error in the server";
+            return false;
+            break;
+    }
+    return true;
 }

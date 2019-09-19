@@ -23,8 +23,8 @@ class ColorSeeder : public Seeder {
 
     auto clientPtr = drogon::app().getDbClient("sce");
     for (auto &it : data()) {
-      drogon::orm::Mapper<drogon_model::openproject4::Colors> mapper(clientPtr);
-      drogon_model::openproject4::Colors color;
+      drogon::orm::Mapper<drogon_model::openproject6::Colors> mapper(clientPtr);
+      drogon_model::openproject6::Colors color;
       color.setName(it.name);
       color.setHexcode(it.hexcode);
       mapper.insert(color);

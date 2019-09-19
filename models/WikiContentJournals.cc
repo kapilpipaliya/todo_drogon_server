@@ -10,7 +10,7 @@
 #include <string>
 
 using namespace drogon;
-using namespace drogon_model::openproject4;
+using namespace drogon_model::openproject6;
 
 const std::string WikiContentJournals::Cols::_id = "id";
 const std::string WikiContentJournals::Cols::_journal_id = "journal_id";
@@ -33,8 +33,10 @@ const std::string &WikiContentJournals::getColumnName(size_t index) noexcept(fal
     assert(index < _metaData.size());
     return _metaData[index]._colName;
 }
-WikiContentJournals::WikiContentJournals(const Row &r) noexcept
+WikiContentJournals::WikiContentJournals(const Row &r, const ssize_t indexOffset) noexcept
 {
+    if(indexOffset < 0)
+    {
         if(!r["id"].isNull())
         {
             _id=std::make_shared<int32_t>(r["id"].as<int32_t>());
@@ -55,7 +57,160 @@ WikiContentJournals::WikiContentJournals(const Row &r) noexcept
         {
             _text=std::make_shared<std::string>(r["text"].as<std::string>());
         }
+    }
+    else
+    {
+        size_t offset = (size_t)indexOffset;
+        if(offset + 5 > r.size())
+        {
+            LOG_FATAL << "Invalid SQL result for this model";
+            return;
+        }
+        size_t index;
+        index = offset + 0;
+        if(!r[index].isNull())
+        {
+            _id=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 1;
+        if(!r[index].isNull())
+        {
+            _journalId=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 2;
+        if(!r[index].isNull())
+        {
+            _pageId=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 3;
+        if(!r[index].isNull())
+        {
+            _authorId=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 4;
+        if(!r[index].isNull())
+        {
+            _text=std::make_shared<std::string>(r[index].as<std::string>());
+        }
+    }
+
 }
+
+WikiContentJournals::WikiContentJournals(const Json::Value &pJson, const std::vector<std::string> &pMasqueradingVector) noexcept(false)
+{
+    if(pMasqueradingVector.size() != 5)
+    {
+        LOG_ERROR << "Bad masquerading vector";
+        return;
+    }
+    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
+    {
+        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+    }
+    if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
+    {
+        _journalId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+    }
+    if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
+    {
+        _pageId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+    }
+    if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
+    {
+        _authorId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+    }
+    if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
+    {
+        _text=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+    }
+}
+
+WikiContentJournals::WikiContentJournals(const Json::Value &pJson) noexcept(false)
+{
+    if(pJson.isMember("id"))
+    {
+        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+    }
+    if(pJson.isMember("journal_id"))
+    {
+        _journalId=std::make_shared<int32_t>((int32_t)pJson["journal_id"].asInt64());
+    }
+    if(pJson.isMember("page_id"))
+    {
+        _pageId=std::make_shared<int32_t>((int32_t)pJson["page_id"].asInt64());
+    }
+    if(pJson.isMember("author_id"))
+    {
+        _authorId=std::make_shared<int32_t>((int32_t)pJson["author_id"].asInt64());
+    }
+    if(pJson.isMember("text"))
+    {
+        _text=std::make_shared<std::string>(pJson["text"].asString());
+    }
+}
+
+void WikiContentJournals::updateByMasqueradedJson(const Json::Value &pJson,
+                                            const std::vector<std::string> &pMasqueradingVector) noexcept(false)
+{
+    if(pMasqueradingVector.size() != 5)
+    {
+        LOG_ERROR << "Bad masquerading vector";
+        return;
+    }
+    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
+    {
+        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+    }
+    if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
+    {
+        _dirtyFlag[1] = true;
+        _journalId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+    }
+    if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
+    {
+        _dirtyFlag[2] = true;
+        _pageId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+    }
+    if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
+    {
+        _dirtyFlag[3] = true;
+        _authorId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+    }
+    if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
+    {
+        _dirtyFlag[4] = true;
+        _text=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+    }
+}
+                                                                    
+void WikiContentJournals::updateByJson(const Json::Value &pJson) noexcept(false)
+{
+    if(pJson.isMember("id"))
+    {
+        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+    }
+    if(pJson.isMember("journal_id"))
+    {
+        _dirtyFlag[1] = true;
+        _journalId=std::make_shared<int32_t>((int32_t)pJson["journal_id"].asInt64());
+    }
+    if(pJson.isMember("page_id"))
+    {
+        _dirtyFlag[2] = true;
+        _pageId=std::make_shared<int32_t>((int32_t)pJson["page_id"].asInt64());
+    }
+    if(pJson.isMember("author_id"))
+    {
+        _dirtyFlag[3] = true;
+        _authorId=std::make_shared<int32_t>((int32_t)pJson["author_id"].asInt64());
+    }
+    if(pJson.isMember("text"))
+    {
+        _dirtyFlag[4] = true;
+        _text=std::make_shared<std::string>(pJson["text"].asString());
+    }
+}
+
 const int32_t &WikiContentJournals::getValueOfId() const noexcept
 {
     const static int32_t defaultValue = int32_t();
@@ -305,4 +460,358 @@ Json::Value WikiContentJournals::toJson() const
         ret["text"]=Json::Value();
     }
     return ret;
+}
+
+Json::Value WikiContentJournals::toMasqueradedJson(
+    const std::vector<std::string> &pMasqueradingVector) const
+{
+    Json::Value ret;
+    if(pMasqueradingVector.size() == 5)
+    {
+        if(!pMasqueradingVector[0].empty())
+        {
+            if(getId())
+            {
+                ret[pMasqueradingVector[0]]=getValueOfId();
+            }
+            else
+            {
+                ret[pMasqueradingVector[0]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[1].empty())
+        {
+            if(getJournalId())
+            {
+                ret[pMasqueradingVector[1]]=getValueOfJournalId();
+            }
+            else
+            {
+                ret[pMasqueradingVector[1]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[2].empty())
+        {
+            if(getPageId())
+            {
+                ret[pMasqueradingVector[2]]=getValueOfPageId();
+            }
+            else
+            {
+                ret[pMasqueradingVector[2]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[3].empty())
+        {
+            if(getAuthorId())
+            {
+                ret[pMasqueradingVector[3]]=getValueOfAuthorId();
+            }
+            else
+            {
+                ret[pMasqueradingVector[3]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[4].empty())
+        {
+            if(getText())
+            {
+                ret[pMasqueradingVector[4]]=getValueOfText();
+            }
+            else
+            {
+                ret[pMasqueradingVector[4]]=Json::Value();
+            }
+        }
+        return ret;
+    }
+    LOG_ERROR << "Masquerade failed";
+    if(getId())
+    {
+        ret["id"]=getValueOfId();
+    }
+    else
+    {
+        ret["id"]=Json::Value();
+    }
+    if(getJournalId())
+    {
+        ret["journal_id"]=getValueOfJournalId();
+    }
+    else
+    {
+        ret["journal_id"]=Json::Value();
+    }
+    if(getPageId())
+    {
+        ret["page_id"]=getValueOfPageId();
+    }
+    else
+    {
+        ret["page_id"]=Json::Value();
+    }
+    if(getAuthorId())
+    {
+        ret["author_id"]=getValueOfAuthorId();
+    }
+    else
+    {
+        ret["author_id"]=Json::Value();
+    }
+    if(getText())
+    {
+        ret["text"]=getValueOfText();
+    }
+    else
+    {
+        ret["text"]=Json::Value();
+    }
+    return ret;
+}
+
+bool WikiContentJournals::validateJsonForCreation(const Json::Value &pJson, std::string &err)
+{
+    if(pJson.isMember("id"))
+    {
+        if(!validJsonOfField(0, "id", pJson["id"], err, true))
+            return false;
+    }
+    if(pJson.isMember("journal_id"))
+    {
+        if(!validJsonOfField(1, "journal_id", pJson["journal_id"], err, true))
+            return false;
+    }
+    else
+    {
+        err="The journal_id column cannot be null";
+        return false;
+    }
+    if(pJson.isMember("page_id"))
+    {
+        if(!validJsonOfField(2, "page_id", pJson["page_id"], err, true))
+            return false;
+    }
+    else
+    {
+        err="The page_id column cannot be null";
+        return false;
+    }
+    if(pJson.isMember("author_id"))
+    {
+        if(!validJsonOfField(3, "author_id", pJson["author_id"], err, true))
+            return false;
+    }
+    if(pJson.isMember("text"))
+    {
+        if(!validJsonOfField(4, "text", pJson["text"], err, true))
+            return false;
+    }
+    return true;
+}
+bool WikiContentJournals::validateMasqueradedJsonForCreation(const Json::Value &pJson,
+                                                             const std::vector<std::string> &pMasqueradingVector,
+                                                             std::string &err)
+{
+    if(pMasqueradingVector.size() != 5)
+    {
+        err = "Bad masquerading vector";
+        return false;
+    }
+    if(!pMasqueradingVector[0].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[0]))
+        {
+            if(!validJsonOfField(0, pMasqueradingVector[0], pJson[pMasqueradingVector[0]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[1].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[1]))
+        {
+            if(!validJsonOfField(1, pMasqueradingVector[1], pJson[pMasqueradingVector[1]], err, true))
+                return false;
+        }
+        else
+        {
+            err="The " + pMasqueradingVector[1] + " column cannot be null";
+            return false;
+        }
+    }
+    if(!pMasqueradingVector[2].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[2]))
+        {
+            if(!validJsonOfField(2, pMasqueradingVector[2], pJson[pMasqueradingVector[2]], err, true))
+                return false;
+        }
+        else
+        {
+            err="The " + pMasqueradingVector[2] + " column cannot be null";
+            return false;
+        }
+    }
+    if(!pMasqueradingVector[3].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[3]))
+        {
+            if(!validJsonOfField(3, pMasqueradingVector[3], pJson[pMasqueradingVector[3]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[4].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[4]))
+        {
+            if(!validJsonOfField(4, pMasqueradingVector[4], pJson[pMasqueradingVector[4]], err, true))
+                return false;
+        }
+    }
+    return true;
+}
+bool WikiContentJournals::validateJsonForUpdate(const Json::Value &pJson, std::string &err)
+{
+    if(pJson.isMember("id"))
+    {
+        if(!validJsonOfField(0, "id", pJson["id"], err, false))
+            return false;
+    }
+    else
+    {
+        err = "The value of primary key must be set in the json object for update";
+        return false;
+    }
+    if(pJson.isMember("journal_id"))
+    {
+        if(!validJsonOfField(1, "journal_id", pJson["journal_id"], err, false))
+            return false;
+    }
+    if(pJson.isMember("page_id"))
+    {
+        if(!validJsonOfField(2, "page_id", pJson["page_id"], err, false))
+            return false;
+    }
+    if(pJson.isMember("author_id"))
+    {
+        if(!validJsonOfField(3, "author_id", pJson["author_id"], err, false))
+            return false;
+    }
+    if(pJson.isMember("text"))
+    {
+        if(!validJsonOfField(4, "text", pJson["text"], err, false))
+            return false;
+    }
+    return true;
+}
+bool WikiContentJournals::validateMasqueradedJsonForUpdate(const Json::Value &pJson,
+                                                           const std::vector<std::string> &pMasqueradingVector,
+                                                           std::string &err)
+{
+    if(pMasqueradingVector.size() != 5)
+    {
+        err = "Bad masquerading vector";
+        return false;
+    }
+    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
+    {
+        if(!validJsonOfField(0, pMasqueradingVector[0], pJson[pMasqueradingVector[0]], err, false))
+            return false;
+    }
+    else
+    {
+        err = "The value of primary key must be set in the json object for update";
+        return false;
+    }
+    if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
+    {
+        if(!validJsonOfField(1, pMasqueradingVector[1], pJson[pMasqueradingVector[1]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
+    {
+        if(!validJsonOfField(2, pMasqueradingVector[2], pJson[pMasqueradingVector[2]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
+    {
+        if(!validJsonOfField(3, pMasqueradingVector[3], pJson[pMasqueradingVector[3]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
+    {
+        if(!validJsonOfField(4, pMasqueradingVector[4], pJson[pMasqueradingVector[4]], err, false))
+            return false;
+    }
+    return true;
+}
+bool WikiContentJournals::validJsonOfField(size_t index,
+                                           const std::string &fieldName,
+                                           const Json::Value &pJson, 
+                                           std::string &err, 
+                                           bool isForCreation)
+{
+    switch(index)
+    {
+        case 0:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(isForCreation)
+            {
+                err="The automatic primary key cannot be set";
+                return false;
+            }        
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 1:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 2:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 3:
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 4:
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+     
+        default:
+            err="Internal error in the server";
+            return false;
+            break;
+    }
+    return true;
 }

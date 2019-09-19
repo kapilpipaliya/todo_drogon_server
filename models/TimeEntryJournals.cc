@@ -10,7 +10,7 @@
 #include <string>
 
 using namespace drogon;
-using namespace drogon_model::openproject4;
+using namespace drogon_model::openproject6;
 
 const std::string TimeEntryJournals::Cols::_id = "id";
 const std::string TimeEntryJournals::Cols::_journal_id = "journal_id";
@@ -53,8 +53,10 @@ const std::string &TimeEntryJournals::getColumnName(size_t index) noexcept(false
     assert(index < _metaData.size());
     return _metaData[index]._colName;
 }
-TimeEntryJournals::TimeEntryJournals(const Row &r) noexcept
+TimeEntryJournals::TimeEntryJournals(const Row &r, const ssize_t indexOffset) noexcept
 {
+    if(indexOffset < 0)
+    {
         if(!r["id"].isNull())
         {
             _id=std::make_shared<int32_t>(r["id"].as<int32_t>());
@@ -120,7 +122,415 @@ TimeEntryJournals::TimeEntryJournals(const Row &r) noexcept
         {
             _rateId=std::make_shared<int32_t>(r["rate_id"].as<int32_t>());
         }
+    }
+    else
+    {
+        size_t offset = (size_t)indexOffset;
+        if(offset + 15 > r.size())
+        {
+            LOG_FATAL << "Invalid SQL result for this model";
+            return;
+        }
+        size_t index;
+        index = offset + 0;
+        if(!r[index].isNull())
+        {
+            _id=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 1;
+        if(!r[index].isNull())
+        {
+            _journalId=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 2;
+        if(!r[index].isNull())
+        {
+            _projectId=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 3;
+        if(!r[index].isNull())
+        {
+            _userId=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 4;
+        if(!r[index].isNull())
+        {
+            _workPackageId=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 5;
+        if(!r[index].isNull())
+        {
+            _hours=std::make_shared<double>(r[index].as<double>());
+        }
+        index = offset + 6;
+        if(!r[index].isNull())
+        {
+            _comments=std::make_shared<std::string>(r[index].as<std::string>());
+        }
+        index = offset + 7;
+        if(!r[index].isNull())
+        {
+            _activityId=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 8;
+        if(!r[index].isNull())
+        {
+            auto daysStr = r[index].as<std::string>();
+            struct tm stm;
+            memset(&stm,0,sizeof(stm));
+            strptime(daysStr.c_str(),"%Y-%m-%d",&stm);
+            long t = timelocal(&stm);
+            _spentOn=std::make_shared<::trantor::Date>(t*1000000);
+        }
+        index = offset + 9;
+        if(!r[index].isNull())
+        {
+            _tyear=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 10;
+        if(!r[index].isNull())
+        {
+            _tmonth=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 11;
+        if(!r[index].isNull())
+        {
+            _tweek=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+        index = offset + 12;
+        if(!r[index].isNull())
+        {
+            _overriddenCosts=std::make_shared<int64_t>(r[index].as<int64_t>());
+        }
+        index = offset + 13;
+        if(!r[index].isNull())
+        {
+            _costs=std::make_shared<int64_t>(r[index].as<int64_t>());
+        }
+        index = offset + 14;
+        if(!r[index].isNull())
+        {
+            _rateId=std::make_shared<int32_t>(r[index].as<int32_t>());
+        }
+    }
+
 }
+
+TimeEntryJournals::TimeEntryJournals(const Json::Value &pJson, const std::vector<std::string> &pMasqueradingVector) noexcept(false)
+{
+    if(pMasqueradingVector.size() != 15)
+    {
+        LOG_ERROR << "Bad masquerading vector";
+        return;
+    }
+    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
+    {
+        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+    }
+    if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
+    {
+        _journalId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+    }
+    if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
+    {
+        _projectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+    }
+    if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
+    {
+        _userId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+    }
+    if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
+    {
+        _workPackageId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[4]].asInt64());
+    }
+    if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
+    {
+        _hours=std::make_shared<double>(pJson[pMasqueradingVector[5]].asDouble());
+    }
+    if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
+    {
+        _comments=std::make_shared<std::string>(pJson[pMasqueradingVector[6]].asString());
+    }
+    if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
+    {
+        _activityId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[7]].asInt64());
+    }
+    if(!pMasqueradingVector[8].empty() && pJson.isMember(pMasqueradingVector[8]))
+    {
+        auto daysStr = pJson[pMasqueradingVector[8]].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        strptime(daysStr.c_str(),"%Y-%m-%d",&stm);
+        long t = timelocal(&stm);
+        _spentOn=std::make_shared<::trantor::Date>(t*1000000);
+    }
+    if(!pMasqueradingVector[9].empty() && pJson.isMember(pMasqueradingVector[9]))
+    {
+        _tyear=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[9]].asInt64());
+    }
+    if(!pMasqueradingVector[10].empty() && pJson.isMember(pMasqueradingVector[10]))
+    {
+        _tmonth=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[10]].asInt64());
+    }
+    if(!pMasqueradingVector[11].empty() && pJson.isMember(pMasqueradingVector[11]))
+    {
+        _tweek=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[11]].asInt64());
+    }
+    if(!pMasqueradingVector[12].empty() && pJson.isMember(pMasqueradingVector[12]))
+    {
+        _overriddenCosts=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[12]].asInt64());
+    }
+    if(!pMasqueradingVector[13].empty() && pJson.isMember(pMasqueradingVector[13]))
+    {
+        _costs=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[13]].asInt64());
+    }
+    if(!pMasqueradingVector[14].empty() && pJson.isMember(pMasqueradingVector[14]))
+    {
+        _rateId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[14]].asInt64());
+    }
+}
+
+TimeEntryJournals::TimeEntryJournals(const Json::Value &pJson) noexcept(false)
+{
+    if(pJson.isMember("id"))
+    {
+        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+    }
+    if(pJson.isMember("journal_id"))
+    {
+        _journalId=std::make_shared<int32_t>((int32_t)pJson["journal_id"].asInt64());
+    }
+    if(pJson.isMember("project_id"))
+    {
+        _projectId=std::make_shared<int32_t>((int32_t)pJson["project_id"].asInt64());
+    }
+    if(pJson.isMember("user_id"))
+    {
+        _userId=std::make_shared<int32_t>((int32_t)pJson["user_id"].asInt64());
+    }
+    if(pJson.isMember("work_package_id"))
+    {
+        _workPackageId=std::make_shared<int32_t>((int32_t)pJson["work_package_id"].asInt64());
+    }
+    if(pJson.isMember("hours"))
+    {
+        _hours=std::make_shared<double>(pJson["hours"].asDouble());
+    }
+    if(pJson.isMember("comments"))
+    {
+        _comments=std::make_shared<std::string>(pJson["comments"].asString());
+    }
+    if(pJson.isMember("activity_id"))
+    {
+        _activityId=std::make_shared<int32_t>((int32_t)pJson["activity_id"].asInt64());
+    }
+    if(pJson.isMember("spent_on"))
+    {
+        auto daysStr = pJson["spent_on"].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        strptime(daysStr.c_str(),"%Y-%m-%d",&stm);
+        long t = timelocal(&stm);
+        _spentOn=std::make_shared<::trantor::Date>(t*1000000);
+    }
+    if(pJson.isMember("tyear"))
+    {
+        _tyear=std::make_shared<int32_t>((int32_t)pJson["tyear"].asInt64());
+    }
+    if(pJson.isMember("tmonth"))
+    {
+        _tmonth=std::make_shared<int32_t>((int32_t)pJson["tmonth"].asInt64());
+    }
+    if(pJson.isMember("tweek"))
+    {
+        _tweek=std::make_shared<int32_t>((int32_t)pJson["tweek"].asInt64());
+    }
+    if(pJson.isMember("overridden_costs"))
+    {
+        _overriddenCosts=std::make_shared<int64_t>((int64_t)pJson["overridden_costs"].asInt64());
+    }
+    if(pJson.isMember("costs"))
+    {
+        _costs=std::make_shared<int64_t>((int64_t)pJson["costs"].asInt64());
+    }
+    if(pJson.isMember("rate_id"))
+    {
+        _rateId=std::make_shared<int32_t>((int32_t)pJson["rate_id"].asInt64());
+    }
+}
+
+void TimeEntryJournals::updateByMasqueradedJson(const Json::Value &pJson,
+                                            const std::vector<std::string> &pMasqueradingVector) noexcept(false)
+{
+    if(pMasqueradingVector.size() != 15)
+    {
+        LOG_ERROR << "Bad masquerading vector";
+        return;
+    }
+    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
+    {
+        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+    }
+    if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
+    {
+        _dirtyFlag[1] = true;
+        _journalId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+    }
+    if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
+    {
+        _dirtyFlag[2] = true;
+        _projectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+    }
+    if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
+    {
+        _dirtyFlag[3] = true;
+        _userId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+    }
+    if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
+    {
+        _dirtyFlag[4] = true;
+        _workPackageId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[4]].asInt64());
+    }
+    if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
+    {
+        _dirtyFlag[5] = true;
+        _hours=std::make_shared<double>(pJson[pMasqueradingVector[5]].asDouble());
+    }
+    if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
+    {
+        _dirtyFlag[6] = true;
+        _comments=std::make_shared<std::string>(pJson[pMasqueradingVector[6]].asString());
+    }
+    if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
+    {
+        _dirtyFlag[7] = true;
+        _activityId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[7]].asInt64());
+    }
+    if(!pMasqueradingVector[8].empty() && pJson.isMember(pMasqueradingVector[8]))
+    {
+        _dirtyFlag[8] = true;
+        auto daysStr = pJson[pMasqueradingVector[8]].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        strptime(daysStr.c_str(),"%Y-%m-%d",&stm);
+        long t = timelocal(&stm);
+        _spentOn=std::make_shared<::trantor::Date>(t*1000000);
+    }
+    if(!pMasqueradingVector[9].empty() && pJson.isMember(pMasqueradingVector[9]))
+    {
+        _dirtyFlag[9] = true;
+        _tyear=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[9]].asInt64());
+    }
+    if(!pMasqueradingVector[10].empty() && pJson.isMember(pMasqueradingVector[10]))
+    {
+        _dirtyFlag[10] = true;
+        _tmonth=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[10]].asInt64());
+    }
+    if(!pMasqueradingVector[11].empty() && pJson.isMember(pMasqueradingVector[11]))
+    {
+        _dirtyFlag[11] = true;
+        _tweek=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[11]].asInt64());
+    }
+    if(!pMasqueradingVector[12].empty() && pJson.isMember(pMasqueradingVector[12]))
+    {
+        _dirtyFlag[12] = true;
+        _overriddenCosts=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[12]].asInt64());
+    }
+    if(!pMasqueradingVector[13].empty() && pJson.isMember(pMasqueradingVector[13]))
+    {
+        _dirtyFlag[13] = true;
+        _costs=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[13]].asInt64());
+    }
+    if(!pMasqueradingVector[14].empty() && pJson.isMember(pMasqueradingVector[14]))
+    {
+        _dirtyFlag[14] = true;
+        _rateId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[14]].asInt64());
+    }
+}
+                                                                    
+void TimeEntryJournals::updateByJson(const Json::Value &pJson) noexcept(false)
+{
+    if(pJson.isMember("id"))
+    {
+        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+    }
+    if(pJson.isMember("journal_id"))
+    {
+        _dirtyFlag[1] = true;
+        _journalId=std::make_shared<int32_t>((int32_t)pJson["journal_id"].asInt64());
+    }
+    if(pJson.isMember("project_id"))
+    {
+        _dirtyFlag[2] = true;
+        _projectId=std::make_shared<int32_t>((int32_t)pJson["project_id"].asInt64());
+    }
+    if(pJson.isMember("user_id"))
+    {
+        _dirtyFlag[3] = true;
+        _userId=std::make_shared<int32_t>((int32_t)pJson["user_id"].asInt64());
+    }
+    if(pJson.isMember("work_package_id"))
+    {
+        _dirtyFlag[4] = true;
+        _workPackageId=std::make_shared<int32_t>((int32_t)pJson["work_package_id"].asInt64());
+    }
+    if(pJson.isMember("hours"))
+    {
+        _dirtyFlag[5] = true;
+        _hours=std::make_shared<double>(pJson["hours"].asDouble());
+    }
+    if(pJson.isMember("comments"))
+    {
+        _dirtyFlag[6] = true;
+        _comments=std::make_shared<std::string>(pJson["comments"].asString());
+    }
+    if(pJson.isMember("activity_id"))
+    {
+        _dirtyFlag[7] = true;
+        _activityId=std::make_shared<int32_t>((int32_t)pJson["activity_id"].asInt64());
+    }
+    if(pJson.isMember("spent_on"))
+    {
+        _dirtyFlag[8] = true;
+        auto daysStr = pJson["spent_on"].asString();
+        struct tm stm;
+        memset(&stm,0,sizeof(stm));
+        strptime(daysStr.c_str(),"%Y-%m-%d",&stm);
+        long t = timelocal(&stm);
+        _spentOn=std::make_shared<::trantor::Date>(t*1000000);
+    }
+    if(pJson.isMember("tyear"))
+    {
+        _dirtyFlag[9] = true;
+        _tyear=std::make_shared<int32_t>((int32_t)pJson["tyear"].asInt64());
+    }
+    if(pJson.isMember("tmonth"))
+    {
+        _dirtyFlag[10] = true;
+        _tmonth=std::make_shared<int32_t>((int32_t)pJson["tmonth"].asInt64());
+    }
+    if(pJson.isMember("tweek"))
+    {
+        _dirtyFlag[11] = true;
+        _tweek=std::make_shared<int32_t>((int32_t)pJson["tweek"].asInt64());
+    }
+    if(pJson.isMember("overridden_costs"))
+    {
+        _dirtyFlag[12] = true;
+        _overriddenCosts=std::make_shared<int64_t>((int64_t)pJson["overridden_costs"].asInt64());
+    }
+    if(pJson.isMember("costs"))
+    {
+        _dirtyFlag[13] = true;
+        _costs=std::make_shared<int64_t>((int64_t)pJson["costs"].asInt64());
+    }
+    if(pJson.isMember("rate_id"))
+    {
+        _dirtyFlag[14] = true;
+        _rateId=std::make_shared<int32_t>((int32_t)pJson["rate_id"].asInt64());
+    }
+}
+
 const int32_t &TimeEntryJournals::getValueOfId() const noexcept
 {
     const static int32_t defaultValue = int32_t();
@@ -830,4 +1240,953 @@ Json::Value TimeEntryJournals::toJson() const
         ret["rate_id"]=Json::Value();
     }
     return ret;
+}
+
+Json::Value TimeEntryJournals::toMasqueradedJson(
+    const std::vector<std::string> &pMasqueradingVector) const
+{
+    Json::Value ret;
+    if(pMasqueradingVector.size() == 15)
+    {
+        if(!pMasqueradingVector[0].empty())
+        {
+            if(getId())
+            {
+                ret[pMasqueradingVector[0]]=getValueOfId();
+            }
+            else
+            {
+                ret[pMasqueradingVector[0]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[1].empty())
+        {
+            if(getJournalId())
+            {
+                ret[pMasqueradingVector[1]]=getValueOfJournalId();
+            }
+            else
+            {
+                ret[pMasqueradingVector[1]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[2].empty())
+        {
+            if(getProjectId())
+            {
+                ret[pMasqueradingVector[2]]=getValueOfProjectId();
+            }
+            else
+            {
+                ret[pMasqueradingVector[2]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[3].empty())
+        {
+            if(getUserId())
+            {
+                ret[pMasqueradingVector[3]]=getValueOfUserId();
+            }
+            else
+            {
+                ret[pMasqueradingVector[3]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[4].empty())
+        {
+            if(getWorkPackageId())
+            {
+                ret[pMasqueradingVector[4]]=getValueOfWorkPackageId();
+            }
+            else
+            {
+                ret[pMasqueradingVector[4]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[5].empty())
+        {
+            if(getHours())
+            {
+                ret[pMasqueradingVector[5]]=getValueOfHours();
+            }
+            else
+            {
+                ret[pMasqueradingVector[5]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[6].empty())
+        {
+            if(getComments())
+            {
+                ret[pMasqueradingVector[6]]=getValueOfComments();
+            }
+            else
+            {
+                ret[pMasqueradingVector[6]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[7].empty())
+        {
+            if(getActivityId())
+            {
+                ret[pMasqueradingVector[7]]=getValueOfActivityId();
+            }
+            else
+            {
+                ret[pMasqueradingVector[7]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[8].empty())
+        {
+            if(getSpentOn())
+            {
+                ret[pMasqueradingVector[8]]=getSpentOn()->toDbStringLocal();
+            }
+            else
+            {
+                ret[pMasqueradingVector[8]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[9].empty())
+        {
+            if(getTyear())
+            {
+                ret[pMasqueradingVector[9]]=getValueOfTyear();
+            }
+            else
+            {
+                ret[pMasqueradingVector[9]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[10].empty())
+        {
+            if(getTmonth())
+            {
+                ret[pMasqueradingVector[10]]=getValueOfTmonth();
+            }
+            else
+            {
+                ret[pMasqueradingVector[10]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[11].empty())
+        {
+            if(getTweek())
+            {
+                ret[pMasqueradingVector[11]]=getValueOfTweek();
+            }
+            else
+            {
+                ret[pMasqueradingVector[11]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[12].empty())
+        {
+            if(getOverriddenCosts())
+            {
+                ret[pMasqueradingVector[12]]=(Json::Int64)getValueOfOverriddenCosts();
+            }
+            else
+            {
+                ret[pMasqueradingVector[12]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[13].empty())
+        {
+            if(getCosts())
+            {
+                ret[pMasqueradingVector[13]]=(Json::Int64)getValueOfCosts();
+            }
+            else
+            {
+                ret[pMasqueradingVector[13]]=Json::Value();
+            }
+        }
+        if(!pMasqueradingVector[14].empty())
+        {
+            if(getRateId())
+            {
+                ret[pMasqueradingVector[14]]=getValueOfRateId();
+            }
+            else
+            {
+                ret[pMasqueradingVector[14]]=Json::Value();
+            }
+        }
+        return ret;
+    }
+    LOG_ERROR << "Masquerade failed";
+    if(getId())
+    {
+        ret["id"]=getValueOfId();
+    }
+    else
+    {
+        ret["id"]=Json::Value();
+    }
+    if(getJournalId())
+    {
+        ret["journal_id"]=getValueOfJournalId();
+    }
+    else
+    {
+        ret["journal_id"]=Json::Value();
+    }
+    if(getProjectId())
+    {
+        ret["project_id"]=getValueOfProjectId();
+    }
+    else
+    {
+        ret["project_id"]=Json::Value();
+    }
+    if(getUserId())
+    {
+        ret["user_id"]=getValueOfUserId();
+    }
+    else
+    {
+        ret["user_id"]=Json::Value();
+    }
+    if(getWorkPackageId())
+    {
+        ret["work_package_id"]=getValueOfWorkPackageId();
+    }
+    else
+    {
+        ret["work_package_id"]=Json::Value();
+    }
+    if(getHours())
+    {
+        ret["hours"]=getValueOfHours();
+    }
+    else
+    {
+        ret["hours"]=Json::Value();
+    }
+    if(getComments())
+    {
+        ret["comments"]=getValueOfComments();
+    }
+    else
+    {
+        ret["comments"]=Json::Value();
+    }
+    if(getActivityId())
+    {
+        ret["activity_id"]=getValueOfActivityId();
+    }
+    else
+    {
+        ret["activity_id"]=Json::Value();
+    }
+    if(getSpentOn())
+    {
+        ret["spent_on"]=getSpentOn()->toDbStringLocal();
+    }
+    else
+    {
+        ret["spent_on"]=Json::Value();
+    }
+    if(getTyear())
+    {
+        ret["tyear"]=getValueOfTyear();
+    }
+    else
+    {
+        ret["tyear"]=Json::Value();
+    }
+    if(getTmonth())
+    {
+        ret["tmonth"]=getValueOfTmonth();
+    }
+    else
+    {
+        ret["tmonth"]=Json::Value();
+    }
+    if(getTweek())
+    {
+        ret["tweek"]=getValueOfTweek();
+    }
+    else
+    {
+        ret["tweek"]=Json::Value();
+    }
+    if(getOverriddenCosts())
+    {
+        ret["overridden_costs"]=(Json::Int64)getValueOfOverriddenCosts();
+    }
+    else
+    {
+        ret["overridden_costs"]=Json::Value();
+    }
+    if(getCosts())
+    {
+        ret["costs"]=(Json::Int64)getValueOfCosts();
+    }
+    else
+    {
+        ret["costs"]=Json::Value();
+    }
+    if(getRateId())
+    {
+        ret["rate_id"]=getValueOfRateId();
+    }
+    else
+    {
+        ret["rate_id"]=Json::Value();
+    }
+    return ret;
+}
+
+bool TimeEntryJournals::validateJsonForCreation(const Json::Value &pJson, std::string &err)
+{
+    if(pJson.isMember("id"))
+    {
+        if(!validJsonOfField(0, "id", pJson["id"], err, true))
+            return false;
+    }
+    if(pJson.isMember("journal_id"))
+    {
+        if(!validJsonOfField(1, "journal_id", pJson["journal_id"], err, true))
+            return false;
+    }
+    else
+    {
+        err="The journal_id column cannot be null";
+        return false;
+    }
+    if(pJson.isMember("project_id"))
+    {
+        if(!validJsonOfField(2, "project_id", pJson["project_id"], err, true))
+            return false;
+    }
+    else
+    {
+        err="The project_id column cannot be null";
+        return false;
+    }
+    if(pJson.isMember("user_id"))
+    {
+        if(!validJsonOfField(3, "user_id", pJson["user_id"], err, true))
+            return false;
+    }
+    else
+    {
+        err="The user_id column cannot be null";
+        return false;
+    }
+    if(pJson.isMember("work_package_id"))
+    {
+        if(!validJsonOfField(4, "work_package_id", pJson["work_package_id"], err, true))
+            return false;
+    }
+    if(pJson.isMember("hours"))
+    {
+        if(!validJsonOfField(5, "hours", pJson["hours"], err, true))
+            return false;
+    }
+    else
+    {
+        err="The hours column cannot be null";
+        return false;
+    }
+    if(pJson.isMember("comments"))
+    {
+        if(!validJsonOfField(6, "comments", pJson["comments"], err, true))
+            return false;
+    }
+    if(pJson.isMember("activity_id"))
+    {
+        if(!validJsonOfField(7, "activity_id", pJson["activity_id"], err, true))
+            return false;
+    }
+    else
+    {
+        err="The activity_id column cannot be null";
+        return false;
+    }
+    if(pJson.isMember("spent_on"))
+    {
+        if(!validJsonOfField(8, "spent_on", pJson["spent_on"], err, true))
+            return false;
+    }
+    else
+    {
+        err="The spent_on column cannot be null";
+        return false;
+    }
+    if(pJson.isMember("tyear"))
+    {
+        if(!validJsonOfField(9, "tyear", pJson["tyear"], err, true))
+            return false;
+    }
+    else
+    {
+        err="The tyear column cannot be null";
+        return false;
+    }
+    if(pJson.isMember("tmonth"))
+    {
+        if(!validJsonOfField(10, "tmonth", pJson["tmonth"], err, true))
+            return false;
+    }
+    else
+    {
+        err="The tmonth column cannot be null";
+        return false;
+    }
+    if(pJson.isMember("tweek"))
+    {
+        if(!validJsonOfField(11, "tweek", pJson["tweek"], err, true))
+            return false;
+    }
+    else
+    {
+        err="The tweek column cannot be null";
+        return false;
+    }
+    if(pJson.isMember("overridden_costs"))
+    {
+        if(!validJsonOfField(12, "overridden_costs", pJson["overridden_costs"], err, true))
+            return false;
+    }
+    if(pJson.isMember("costs"))
+    {
+        if(!validJsonOfField(13, "costs", pJson["costs"], err, true))
+            return false;
+    }
+    if(pJson.isMember("rate_id"))
+    {
+        if(!validJsonOfField(14, "rate_id", pJson["rate_id"], err, true))
+            return false;
+    }
+    return true;
+}
+bool TimeEntryJournals::validateMasqueradedJsonForCreation(const Json::Value &pJson,
+                                                           const std::vector<std::string> &pMasqueradingVector,
+                                                           std::string &err)
+{
+    if(pMasqueradingVector.size() != 15)
+    {
+        err = "Bad masquerading vector";
+        return false;
+    }
+    if(!pMasqueradingVector[0].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[0]))
+        {
+            if(!validJsonOfField(0, pMasqueradingVector[0], pJson[pMasqueradingVector[0]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[1].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[1]))
+        {
+            if(!validJsonOfField(1, pMasqueradingVector[1], pJson[pMasqueradingVector[1]], err, true))
+                return false;
+        }
+        else
+        {
+            err="The " + pMasqueradingVector[1] + " column cannot be null";
+            return false;
+        }
+    }
+    if(!pMasqueradingVector[2].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[2]))
+        {
+            if(!validJsonOfField(2, pMasqueradingVector[2], pJson[pMasqueradingVector[2]], err, true))
+                return false;
+        }
+        else
+        {
+            err="The " + pMasqueradingVector[2] + " column cannot be null";
+            return false;
+        }
+    }
+    if(!pMasqueradingVector[3].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[3]))
+        {
+            if(!validJsonOfField(3, pMasqueradingVector[3], pJson[pMasqueradingVector[3]], err, true))
+                return false;
+        }
+        else
+        {
+            err="The " + pMasqueradingVector[3] + " column cannot be null";
+            return false;
+        }
+    }
+    if(!pMasqueradingVector[4].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[4]))
+        {
+            if(!validJsonOfField(4, pMasqueradingVector[4], pJson[pMasqueradingVector[4]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[5].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[5]))
+        {
+            if(!validJsonOfField(5, pMasqueradingVector[5], pJson[pMasqueradingVector[5]], err, true))
+                return false;
+        }
+        else
+        {
+            err="The " + pMasqueradingVector[5] + " column cannot be null";
+            return false;
+        }
+    }
+    if(!pMasqueradingVector[6].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[6]))
+        {
+            if(!validJsonOfField(6, pMasqueradingVector[6], pJson[pMasqueradingVector[6]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[7].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[7]))
+        {
+            if(!validJsonOfField(7, pMasqueradingVector[7], pJson[pMasqueradingVector[7]], err, true))
+                return false;
+        }
+        else
+        {
+            err="The " + pMasqueradingVector[7] + " column cannot be null";
+            return false;
+        }
+    }
+    if(!pMasqueradingVector[8].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[8]))
+        {
+            if(!validJsonOfField(8, pMasqueradingVector[8], pJson[pMasqueradingVector[8]], err, true))
+                return false;
+        }
+        else
+        {
+            err="The " + pMasqueradingVector[8] + " column cannot be null";
+            return false;
+        }
+    }
+    if(!pMasqueradingVector[9].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[9]))
+        {
+            if(!validJsonOfField(9, pMasqueradingVector[9], pJson[pMasqueradingVector[9]], err, true))
+                return false;
+        }
+        else
+        {
+            err="The " + pMasqueradingVector[9] + " column cannot be null";
+            return false;
+        }
+    }
+    if(!pMasqueradingVector[10].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[10]))
+        {
+            if(!validJsonOfField(10, pMasqueradingVector[10], pJson[pMasqueradingVector[10]], err, true))
+                return false;
+        }
+        else
+        {
+            err="The " + pMasqueradingVector[10] + " column cannot be null";
+            return false;
+        }
+    }
+    if(!pMasqueradingVector[11].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[11]))
+        {
+            if(!validJsonOfField(11, pMasqueradingVector[11], pJson[pMasqueradingVector[11]], err, true))
+                return false;
+        }
+        else
+        {
+            err="The " + pMasqueradingVector[11] + " column cannot be null";
+            return false;
+        }
+    }
+    if(!pMasqueradingVector[12].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[12]))
+        {
+            if(!validJsonOfField(12, pMasqueradingVector[12], pJson[pMasqueradingVector[12]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[13].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[13]))
+        {
+            if(!validJsonOfField(13, pMasqueradingVector[13], pJson[pMasqueradingVector[13]], err, true))
+                return false;
+        }
+    }
+    if(!pMasqueradingVector[14].empty())
+    {
+        if(pJson.isMember(pMasqueradingVector[14]))
+        {
+            if(!validJsonOfField(14, pMasqueradingVector[14], pJson[pMasqueradingVector[14]], err, true))
+                return false;
+        }
+    }
+    return true;
+}
+bool TimeEntryJournals::validateJsonForUpdate(const Json::Value &pJson, std::string &err)
+{
+    if(pJson.isMember("id"))
+    {
+        if(!validJsonOfField(0, "id", pJson["id"], err, false))
+            return false;
+    }
+    else
+    {
+        err = "The value of primary key must be set in the json object for update";
+        return false;
+    }
+    if(pJson.isMember("journal_id"))
+    {
+        if(!validJsonOfField(1, "journal_id", pJson["journal_id"], err, false))
+            return false;
+    }
+    if(pJson.isMember("project_id"))
+    {
+        if(!validJsonOfField(2, "project_id", pJson["project_id"], err, false))
+            return false;
+    }
+    if(pJson.isMember("user_id"))
+    {
+        if(!validJsonOfField(3, "user_id", pJson["user_id"], err, false))
+            return false;
+    }
+    if(pJson.isMember("work_package_id"))
+    {
+        if(!validJsonOfField(4, "work_package_id", pJson["work_package_id"], err, false))
+            return false;
+    }
+    if(pJson.isMember("hours"))
+    {
+        if(!validJsonOfField(5, "hours", pJson["hours"], err, false))
+            return false;
+    }
+    if(pJson.isMember("comments"))
+    {
+        if(!validJsonOfField(6, "comments", pJson["comments"], err, false))
+            return false;
+    }
+    if(pJson.isMember("activity_id"))
+    {
+        if(!validJsonOfField(7, "activity_id", pJson["activity_id"], err, false))
+            return false;
+    }
+    if(pJson.isMember("spent_on"))
+    {
+        if(!validJsonOfField(8, "spent_on", pJson["spent_on"], err, false))
+            return false;
+    }
+    if(pJson.isMember("tyear"))
+    {
+        if(!validJsonOfField(9, "tyear", pJson["tyear"], err, false))
+            return false;
+    }
+    if(pJson.isMember("tmonth"))
+    {
+        if(!validJsonOfField(10, "tmonth", pJson["tmonth"], err, false))
+            return false;
+    }
+    if(pJson.isMember("tweek"))
+    {
+        if(!validJsonOfField(11, "tweek", pJson["tweek"], err, false))
+            return false;
+    }
+    if(pJson.isMember("overridden_costs"))
+    {
+        if(!validJsonOfField(12, "overridden_costs", pJson["overridden_costs"], err, false))
+            return false;
+    }
+    if(pJson.isMember("costs"))
+    {
+        if(!validJsonOfField(13, "costs", pJson["costs"], err, false))
+            return false;
+    }
+    if(pJson.isMember("rate_id"))
+    {
+        if(!validJsonOfField(14, "rate_id", pJson["rate_id"], err, false))
+            return false;
+    }
+    return true;
+}
+bool TimeEntryJournals::validateMasqueradedJsonForUpdate(const Json::Value &pJson,
+                                                         const std::vector<std::string> &pMasqueradingVector,
+                                                         std::string &err)
+{
+    if(pMasqueradingVector.size() != 15)
+    {
+        err = "Bad masquerading vector";
+        return false;
+    }
+    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
+    {
+        if(!validJsonOfField(0, pMasqueradingVector[0], pJson[pMasqueradingVector[0]], err, false))
+            return false;
+    }
+    else
+    {
+        err = "The value of primary key must be set in the json object for update";
+        return false;
+    }
+    if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
+    {
+        if(!validJsonOfField(1, pMasqueradingVector[1], pJson[pMasqueradingVector[1]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
+    {
+        if(!validJsonOfField(2, pMasqueradingVector[2], pJson[pMasqueradingVector[2]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
+    {
+        if(!validJsonOfField(3, pMasqueradingVector[3], pJson[pMasqueradingVector[3]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
+    {
+        if(!validJsonOfField(4, pMasqueradingVector[4], pJson[pMasqueradingVector[4]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
+    {
+        if(!validJsonOfField(5, pMasqueradingVector[5], pJson[pMasqueradingVector[5]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
+    {
+        if(!validJsonOfField(6, pMasqueradingVector[6], pJson[pMasqueradingVector[6]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
+    {
+        if(!validJsonOfField(7, pMasqueradingVector[7], pJson[pMasqueradingVector[7]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[8].empty() && pJson.isMember(pMasqueradingVector[8]))
+    {
+        if(!validJsonOfField(8, pMasqueradingVector[8], pJson[pMasqueradingVector[8]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[9].empty() && pJson.isMember(pMasqueradingVector[9]))
+    {
+        if(!validJsonOfField(9, pMasqueradingVector[9], pJson[pMasqueradingVector[9]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[10].empty() && pJson.isMember(pMasqueradingVector[10]))
+    {
+        if(!validJsonOfField(10, pMasqueradingVector[10], pJson[pMasqueradingVector[10]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[11].empty() && pJson.isMember(pMasqueradingVector[11]))
+    {
+        if(!validJsonOfField(11, pMasqueradingVector[11], pJson[pMasqueradingVector[11]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[12].empty() && pJson.isMember(pMasqueradingVector[12]))
+    {
+        if(!validJsonOfField(12, pMasqueradingVector[12], pJson[pMasqueradingVector[12]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[13].empty() && pJson.isMember(pMasqueradingVector[13]))
+    {
+        if(!validJsonOfField(13, pMasqueradingVector[13], pJson[pMasqueradingVector[13]], err, false))
+            return false;
+    }
+    if(!pMasqueradingVector[14].empty() && pJson.isMember(pMasqueradingVector[14]))
+    {
+        if(!validJsonOfField(14, pMasqueradingVector[14], pJson[pMasqueradingVector[14]], err, false))
+            return false;
+    }
+    return true;
+}
+bool TimeEntryJournals::validJsonOfField(size_t index,
+                                         const std::string &fieldName,
+                                         const Json::Value &pJson, 
+                                         std::string &err, 
+                                         bool isForCreation)
+{
+    switch(index)
+    {
+        case 0:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(isForCreation)
+            {
+                err="The automatic primary key cannot be set";
+                return false;
+            }        
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 1:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 2:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 3:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 4:
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 5:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isNumeric())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 6:
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 7:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 8:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isString() && !pJson.isNull())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;                
+            }
+            break;
+        case 9:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 10:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 11:
+            if(pJson.isNull())
+            {
+                err="The " + fieldName + " column cannot be null";
+                return false;
+            }
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 12:
+            if(!pJson.isInt64())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 13:
+            if(!pJson.isInt64())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+        case 14:
+            if(!pJson.isInt())
+            {
+                err="Type error in the "+fieldName+"field";
+                return false;
+            }
+            break;
+     
+        default:
+            err="Internal error in the server";
+            return false;
+            break;
+    }
+    return true;
 }

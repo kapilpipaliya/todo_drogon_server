@@ -23,9 +23,9 @@ class ActivitySeeder : public Seeder {
 
     auto clientPtr = drogon::app().getDbClient("sce");
     for (auto &it : data2()) {
-      drogon::orm::Mapper<drogon_model::openproject4::Enumerations> mapper(clientPtr);
+      drogon::orm::Mapper<drogon_model::openproject6::Enumerations> mapper(clientPtr);
 
-      drogon_model::openproject4::Enumerations enumeration;
+      drogon_model::openproject6::Enumerations enumeration;
       enumeration.setName(it.name);
       enumeration.setPosition(it.position);
       enumeration.setType("TimeEntryActivity");

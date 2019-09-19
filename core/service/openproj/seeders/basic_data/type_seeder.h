@@ -31,15 +31,15 @@ namespace BasicData {
          for (auto &it : data()) {
                        std::cout << "color: " << it.color_name;
                        fflush(stdout);
-           drogon::orm::Mapper<drogon_model::openproject4::Types> mapper(clientPtr);
+           drogon::orm::Mapper<drogon_model::openproject6::Types> mapper(clientPtr);
 
-           drogon::orm::Mapper<drogon_model::openproject4::Colors> mapper_color(clientPtr);
+           drogon::orm::Mapper<drogon_model::openproject6::Colors> mapper_color(clientPtr);
            auto r = mapper_color.findBy(
-                Criteria(drogon_model::openproject4::Colors::Cols::_name, CompareOperator::EQ, it.color_name));
+                Criteria(drogon_model::openproject6::Colors::Cols::_name, CompareOperator::EQ, it.color_name));
            if(r.size() == 0) {
              std::cout << "Not found color: " << it.color_name;
            } else {
-             drogon_model::openproject4::Types type;
+             drogon_model::openproject6::Types type;
              type.setName(it.name);
              type.setPosition(it.position);
              type.setIsDefault(it.is_default);
@@ -86,7 +86,7 @@ namespace BasicData {
 //      }
 
 //        auto clientPtr = drogon::app().getDbClient("sce");
-//        drogon::orm::Mapper<drogon_model::openproject4::Colors> mapper(clientPtr);
+//        drogon::orm::Mapper<drogon_model::openproject6::Colors> mapper(clientPtr);
 //        auto colors = mapper.findAll();
 
         for (auto &it : type_table()) {
