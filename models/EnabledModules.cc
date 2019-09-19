@@ -29,10 +29,8 @@ const std::string &EnabledModules::getColumnName(size_t index) noexcept(false)
     assert(index < _metaData.size());
     return _metaData[index]._colName;
 }
-EnabledModules::EnabledModules(const Row &r, const ssize_t indexOffset) noexcept
+EnabledModules::EnabledModules(const Row &r) noexcept
 {
-    if(indexOffset < 0)
-    {
         if(!r["id"].isNull())
         {
             _id=std::make_shared<int32_t>(r["id"].as<int32_t>());
@@ -45,114 +43,7 @@ EnabledModules::EnabledModules(const Row &r, const ssize_t indexOffset) noexcept
         {
             _name=std::make_shared<std::string>(r["name"].as<std::string>());
         }
-    }
-    else
-    {
-        size_t offset = (size_t)indexOffset;
-        if(offset + 3 > r.size())
-        {
-            LOG_FATAL << "Invalid SQL result for this model";
-            return;
-        }
-        size_t index;
-        index = offset + 0;
-        if(!r[index].isNull())
-        {
-            _id=std::make_shared<int32_t>(r[index].as<int32_t>());
-        }
-        index = offset + 1;
-        if(!r[index].isNull())
-        {
-            _projectId=std::make_shared<int32_t>(r[index].as<int32_t>());
-        }
-        index = offset + 2;
-        if(!r[index].isNull())
-        {
-            _name=std::make_shared<std::string>(r[index].as<std::string>());
-        }
-    }
-
 }
-
-EnabledModules::EnabledModules(const Json::Value &pJson, const std::vector<std::string> &pMasqueradingVector) noexcept(false)
-{
-    if(pMasqueradingVector.size() != 3)
-    {
-        LOG_ERROR << "Bad masquerading vector";
-        return;
-    }
-    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
-    {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
-    }
-    if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
-    {
-        _projectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
-    }
-    if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
-    {
-        _name=std::make_shared<std::string>(pJson[pMasqueradingVector[2]].asString());
-    }
-}
-
-EnabledModules::EnabledModules(const Json::Value &pJson) noexcept(false)
-{
-    if(pJson.isMember("id"))
-    {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
-    }
-    if(pJson.isMember("project_id"))
-    {
-        _projectId=std::make_shared<int32_t>((int32_t)pJson["project_id"].asInt64());
-    }
-    if(pJson.isMember("name"))
-    {
-        _name=std::make_shared<std::string>(pJson["name"].asString());
-    }
-}
-
-void EnabledModules::updateByMasqueradedJson(const Json::Value &pJson, 
-                                                                                                     const std::vector<std::string> &pMasqueradingVector) noexcept(false)
-{
-    if(pMasqueradingVector.size() != 3)
-    {
-        LOG_ERROR << "Bad masquerading vector";
-        return;
-    }
-    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
-    {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
-    }
-    if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
-    {
-        _dirtyFlag[1] = true;
-        _projectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
-    }
-    if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
-    {
-        _dirtyFlag[2] = true;
-        _name=std::make_shared<std::string>(pJson[pMasqueradingVector[2]].asString());
-    }
-}
-                                                                    
-void EnabledModules::updateByJson(const Json::Value &pJson) noexcept(false)
-{
-    if(pJson.isMember("id"))
-    {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
-    }
-    if(pJson.isMember("project_id"))
-    {
-        _dirtyFlag[1] = true;
-        _projectId=std::make_shared<int32_t>((int32_t)pJson["project_id"].asInt64());
-    }
-    if(pJson.isMember("name"))
-    {
-        _dirtyFlag[2] = true;
-        _name=std::make_shared<std::string>(pJson["name"].asString());
-    }
-}
-
 const int32_t &EnabledModules::getValueOfId() const noexcept
 {
     const static int32_t defaultValue = int32_t();
@@ -285,75 +176,6 @@ void EnabledModules::updateArgs(drogon::orm::internal::SqlBinder &binder) const
 Json::Value EnabledModules::toJson() const
 {
     Json::Value ret;
-    if(getId())
-    {
-        ret["id"]=getValueOfId();
-    }
-    else
-    {
-        ret["id"]=Json::Value();
-    }
-    if(getProjectId())
-    {
-        ret["project_id"]=getValueOfProjectId();
-    }
-    else
-    {
-        ret["project_id"]=Json::Value();
-    }
-    if(getName())
-    {
-        ret["name"]=getValueOfName();
-    }
-    else
-    {
-        ret["name"]=Json::Value();
-    }
-    return ret;
-}
-
-Json::Value EnabledModules::toMasqueradedJson(
-    const std::vector<std::string> &pMasqueradingVector) const
-{
-    Json::Value ret;
-    if(pMasqueradingVector.size() == 3)
-    {
-        if(!pMasqueradingVector[0].empty())
-        {
-            if(getId())
-            {
-                ret[pMasqueradingVector[0]]=getValueOfId();
-            }
-            else
-            {
-                ret[pMasqueradingVector[0]]=Json::Value();
-            }
-        }
-        if(!pMasqueradingVector[1].empty())
-        {
-            if(getProjectId())
-            {
-                ret[pMasqueradingVector[1]]=getValueOfProjectId();
-            }
-            else
-            {
-                ret[pMasqueradingVector[1]]=Json::Value();
-            }
-        }
-        if(!pMasqueradingVector[2].empty())
-        {
-            if(getName())
-            {
-                ret[pMasqueradingVector[2]]=getValueOfName();
-            }
-            else
-            {
-                ret[pMasqueradingVector[2]]=Json::Value();
-            }
-        }
-        return ret;
-    }
-    LOG_ERROR << "Masquerade failed";
     if(getId())
     {
         ret["id"]=getValueOfId();

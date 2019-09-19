@@ -27,10 +27,8 @@ const std::string &ChangesetsWorkPackages::getColumnName(size_t index) noexcept(
     assert(index < _metaData.size());
     return _metaData[index]._colName;
 }
-ChangesetsWorkPackages::ChangesetsWorkPackages(const Row &r, const ssize_t indexOffset) noexcept
+ChangesetsWorkPackages::ChangesetsWorkPackages(const Row &r) noexcept
 {
-    if(indexOffset < 0)
-    {
         if(!r["changeset_id"].isNull())
         {
             _changesetId=std::make_shared<int32_t>(r["changeset_id"].as<int32_t>());
@@ -39,93 +37,7 @@ ChangesetsWorkPackages::ChangesetsWorkPackages(const Row &r, const ssize_t index
         {
             _workPackageId=std::make_shared<int32_t>(r["work_package_id"].as<int32_t>());
         }
-    }
-    else
-    {
-        size_t offset = (size_t)indexOffset;
-        if(offset + 2 > r.size())
-        {
-            LOG_FATAL << "Invalid SQL result for this model";
-            return;
-        }
-        size_t index;
-        index = offset + 0;
-        if(!r[index].isNull())
-        {
-            _changesetId=std::make_shared<int32_t>(r[index].as<int32_t>());
-        }
-        index = offset + 1;
-        if(!r[index].isNull())
-        {
-            _workPackageId=std::make_shared<int32_t>(r[index].as<int32_t>());
-        }
-    }
-
 }
-
-ChangesetsWorkPackages::ChangesetsWorkPackages(const Json::Value &pJson, const std::vector<std::string> &pMasqueradingVector) noexcept(false)
-{
-    if(pMasqueradingVector.size() != 2)
-    {
-        LOG_ERROR << "Bad masquerading vector";
-        return;
-    }
-    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
-    {
-        _changesetId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
-    }
-    if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
-    {
-        _workPackageId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
-    }
-}
-
-ChangesetsWorkPackages::ChangesetsWorkPackages(const Json::Value &pJson) noexcept(false)
-{
-    if(pJson.isMember("changeset_id"))
-    {
-        _changesetId=std::make_shared<int32_t>((int32_t)pJson["changeset_id"].asInt64());
-    }
-    if(pJson.isMember("work_package_id"))
-    {
-        _workPackageId=std::make_shared<int32_t>((int32_t)pJson["work_package_id"].asInt64());
-    }
-}
-
-void ChangesetsWorkPackages::updateByMasqueradedJson(const Json::Value &pJson, 
-                                                                                                     const std::vector<std::string> &pMasqueradingVector) noexcept(false)
-{
-    if(pMasqueradingVector.size() != 2)
-    {
-        LOG_ERROR << "Bad masquerading vector";
-        return;
-    }
-    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
-    {
-        _dirtyFlag[0] = true;
-        _changesetId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
-    }
-    if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
-    {
-        _dirtyFlag[1] = true;
-        _workPackageId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
-    }
-}
-                                                                    
-void ChangesetsWorkPackages::updateByJson(const Json::Value &pJson) noexcept(false)
-{
-    if(pJson.isMember("changeset_id"))
-    {
-        _dirtyFlag[0] = true;
-        _changesetId=std::make_shared<int32_t>((int32_t)pJson["changeset_id"].asInt64());
-    }
-    if(pJson.isMember("work_package_id"))
-    {
-        _dirtyFlag[1] = true;
-        _workPackageId=std::make_shared<int32_t>((int32_t)pJson["work_package_id"].asInt64());
-    }
-}
-
 const int32_t &ChangesetsWorkPackages::getValueOfChangesetId() const noexcept
 {
     const static int32_t defaultValue = int32_t();
@@ -236,56 +148,6 @@ void ChangesetsWorkPackages::updateArgs(drogon::orm::internal::SqlBinder &binder
 Json::Value ChangesetsWorkPackages::toJson() const
 {
     Json::Value ret;
-    if(getChangesetId())
-    {
-        ret["changeset_id"]=getValueOfChangesetId();
-    }
-    else
-    {
-        ret["changeset_id"]=Json::Value();
-    }
-    if(getWorkPackageId())
-    {
-        ret["work_package_id"]=getValueOfWorkPackageId();
-    }
-    else
-    {
-        ret["work_package_id"]=Json::Value();
-    }
-    return ret;
-}
-
-Json::Value ChangesetsWorkPackages::toMasqueradedJson(
-    const std::vector<std::string> &pMasqueradingVector) const
-{
-    Json::Value ret;
-    if(pMasqueradingVector.size() == 2)
-    {
-        if(!pMasqueradingVector[0].empty())
-        {
-            if(getChangesetId())
-            {
-                ret[pMasqueradingVector[0]]=getValueOfChangesetId();
-            }
-            else
-            {
-                ret[pMasqueradingVector[0]]=Json::Value();
-            }
-        }
-        if(!pMasqueradingVector[1].empty())
-        {
-            if(getWorkPackageId())
-            {
-                ret[pMasqueradingVector[1]]=getValueOfWorkPackageId();
-            }
-            else
-            {
-                ret[pMasqueradingVector[1]]=Json::Value();
-            }
-        }
-        return ret;
-    }
-    LOG_ERROR << "Masquerade failed";
     if(getChangesetId())
     {
         ret["changeset_id"]=getValueOfChangesetId();

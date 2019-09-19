@@ -27,10 +27,8 @@ const std::string &CustomFieldsTypes::getColumnName(size_t index) noexcept(false
     assert(index < _metaData.size());
     return _metaData[index]._colName;
 }
-CustomFieldsTypes::CustomFieldsTypes(const Row &r, const ssize_t indexOffset) noexcept
+CustomFieldsTypes::CustomFieldsTypes(const Row &r) noexcept
 {
-    if(indexOffset < 0)
-    {
         if(!r["custom_field_id"].isNull())
         {
             _customFieldId=std::make_shared<int32_t>(r["custom_field_id"].as<int32_t>());
@@ -39,93 +37,7 @@ CustomFieldsTypes::CustomFieldsTypes(const Row &r, const ssize_t indexOffset) no
         {
             _typeId=std::make_shared<int32_t>(r["type_id"].as<int32_t>());
         }
-    }
-    else
-    {
-        size_t offset = (size_t)indexOffset;
-        if(offset + 2 > r.size())
-        {
-            LOG_FATAL << "Invalid SQL result for this model";
-            return;
-        }
-        size_t index;
-        index = offset + 0;
-        if(!r[index].isNull())
-        {
-            _customFieldId=std::make_shared<int32_t>(r[index].as<int32_t>());
-        }
-        index = offset + 1;
-        if(!r[index].isNull())
-        {
-            _typeId=std::make_shared<int32_t>(r[index].as<int32_t>());
-        }
-    }
-
 }
-
-CustomFieldsTypes::CustomFieldsTypes(const Json::Value &pJson, const std::vector<std::string> &pMasqueradingVector) noexcept(false)
-{
-    if(pMasqueradingVector.size() != 2)
-    {
-        LOG_ERROR << "Bad masquerading vector";
-        return;
-    }
-    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
-    {
-        _customFieldId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
-    }
-    if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
-    {
-        _typeId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
-    }
-}
-
-CustomFieldsTypes::CustomFieldsTypes(const Json::Value &pJson) noexcept(false)
-{
-    if(pJson.isMember("custom_field_id"))
-    {
-        _customFieldId=std::make_shared<int32_t>((int32_t)pJson["custom_field_id"].asInt64());
-    }
-    if(pJson.isMember("type_id"))
-    {
-        _typeId=std::make_shared<int32_t>((int32_t)pJson["type_id"].asInt64());
-    }
-}
-
-void CustomFieldsTypes::updateByMasqueradedJson(const Json::Value &pJson, 
-                                                                                                     const std::vector<std::string> &pMasqueradingVector) noexcept(false)
-{
-    if(pMasqueradingVector.size() != 2)
-    {
-        LOG_ERROR << "Bad masquerading vector";
-        return;
-    }
-    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
-    {
-        _dirtyFlag[0] = true;
-        _customFieldId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
-    }
-    if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
-    {
-        _dirtyFlag[1] = true;
-        _typeId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
-    }
-}
-                                                                    
-void CustomFieldsTypes::updateByJson(const Json::Value &pJson) noexcept(false)
-{
-    if(pJson.isMember("custom_field_id"))
-    {
-        _dirtyFlag[0] = true;
-        _customFieldId=std::make_shared<int32_t>((int32_t)pJson["custom_field_id"].asInt64());
-    }
-    if(pJson.isMember("type_id"))
-    {
-        _dirtyFlag[1] = true;
-        _typeId=std::make_shared<int32_t>((int32_t)pJson["type_id"].asInt64());
-    }
-}
-
 const int32_t &CustomFieldsTypes::getValueOfCustomFieldId() const noexcept
 {
     const static int32_t defaultValue = int32_t();
@@ -236,56 +148,6 @@ void CustomFieldsTypes::updateArgs(drogon::orm::internal::SqlBinder &binder) con
 Json::Value CustomFieldsTypes::toJson() const
 {
     Json::Value ret;
-    if(getCustomFieldId())
-    {
-        ret["custom_field_id"]=getValueOfCustomFieldId();
-    }
-    else
-    {
-        ret["custom_field_id"]=Json::Value();
-    }
-    if(getTypeId())
-    {
-        ret["type_id"]=getValueOfTypeId();
-    }
-    else
-    {
-        ret["type_id"]=Json::Value();
-    }
-    return ret;
-}
-
-Json::Value CustomFieldsTypes::toMasqueradedJson(
-    const std::vector<std::string> &pMasqueradingVector) const
-{
-    Json::Value ret;
-    if(pMasqueradingVector.size() == 2)
-    {
-        if(!pMasqueradingVector[0].empty())
-        {
-            if(getCustomFieldId())
-            {
-                ret[pMasqueradingVector[0]]=getValueOfCustomFieldId();
-            }
-            else
-            {
-                ret[pMasqueradingVector[0]]=Json::Value();
-            }
-        }
-        if(!pMasqueradingVector[1].empty())
-        {
-            if(getTypeId())
-            {
-                ret[pMasqueradingVector[1]]=getValueOfTypeId();
-            }
-            else
-            {
-                ret[pMasqueradingVector[1]]=Json::Value();
-            }
-        }
-        return ret;
-    }
-    LOG_ERROR << "Masquerade failed";
     if(getCustomFieldId())
     {
         ret["custom_field_id"]=getValueOfCustomFieldId();

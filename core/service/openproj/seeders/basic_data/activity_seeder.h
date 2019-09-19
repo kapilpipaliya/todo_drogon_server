@@ -2,7 +2,7 @@
 #include <drogon/drogon.h>
 #include "../seeder.h"
 //#include "../../models/time_entry_activity.h"
-//#include "models/tim
+#include "models/Enumerations.h"
 
 namespace openproj {
 namespace seeder {
@@ -20,28 +20,21 @@ class ActivitySeeder : public Seeder {
     //          TimeEntryActivity.create(attributes)
     //        }
     //      }
-//    auto clientPtr = drogon::app().getDbClient("sce");
-//    for (auto &it : data2()) {
-//      drogon::orm::Mapper<drogon_model::openproject4::Roles> mapper(clientPtr);
 
-//      drogon_model::openproject4::Roles roles;
-//      roles.setName(it.name);
-//      roles.setBuiltin(0);
-//      roles.setPosition(it.position);
-//      roles.setType("Role");
-//      mapper.insert(roles);
-//      auto id = roles.getId();
+    auto clientPtr = drogon::app().getDbClient("sce");
+    for (auto &it : data2()) {
+      drogon::orm::Mapper<drogon_model::openproject4::Enumerations> mapper(clientPtr);
 
-//      for (auto it_ : it.role_permissions) {
-//        drogon::orm::Mapper<drogon_model::openproject4::RolePermissions>
-//            mapper_role_perm(clientPtr);
-//        drogon_model::openproject4::RolePermissions role_permission;
-//        role_permission.setPermission(it_);
-//        role_permission.setRoleId(*id);
-//        mapper_role_perm.insert(role_permission);
-//      }
-//      fflush(stdout);
-//    }
+      drogon_model::openproject4::Enumerations enumeration;
+      enumeration.setName(it.name);
+      enumeration.setPosition(it.position);
+      enumeration.setType("TimeEntryActivity");
+      enumeration.setIsDefault(false); //This is default
+      enumeration.setActive(true); //this is default
+      //enumeration.setCreatedAt()
+      mapper.insert(enumeration);
+      fflush(stdout);
+    }
   }
 
   bool applicable() {

@@ -9,7 +9,7 @@
 #include "wscontroller/wsfns.h"
 #include "core/service/openproj/seeders/basic_data/builtin_roles_seeder.h"
 #include "core/service/openproj/seeders/basic_data/role_seeder.h"
-
+#include "core/service/openproj/seeders/root_seeder.h"
 
 namespace todo {
 namespace service {
@@ -31,6 +31,10 @@ nlohmann::json Seed::handleEvent(nlohmann::json event, unsigned long next,
     openproj::seeder::BasicData::RoleSeeder a;
     a.seed();
     return {websocket::WsFns::successJsonObject(event, true, "Done")};
+  } else if (event_cmp == "seedall") {
+      openproj::seeder::RootSeeder a;
+      a.seed();
+      return {websocket::WsFns::successJsonObject(event, true, "Done")};
   } else {
     return nullptr;
   }

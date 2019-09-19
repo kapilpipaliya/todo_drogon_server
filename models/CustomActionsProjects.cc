@@ -29,10 +29,8 @@ const std::string &CustomActionsProjects::getColumnName(size_t index) noexcept(f
     assert(index < _metaData.size());
     return _metaData[index]._colName;
 }
-CustomActionsProjects::CustomActionsProjects(const Row &r, const ssize_t indexOffset) noexcept
+CustomActionsProjects::CustomActionsProjects(const Row &r) noexcept
 {
-    if(indexOffset < 0)
-    {
         if(!r["id"].isNull())
         {
             _id=std::make_shared<int32_t>(r["id"].as<int32_t>());
@@ -45,114 +43,7 @@ CustomActionsProjects::CustomActionsProjects(const Row &r, const ssize_t indexOf
         {
             _customActionId=std::make_shared<int64_t>(r["custom_action_id"].as<int64_t>());
         }
-    }
-    else
-    {
-        size_t offset = (size_t)indexOffset;
-        if(offset + 3 > r.size())
-        {
-            LOG_FATAL << "Invalid SQL result for this model";
-            return;
-        }
-        size_t index;
-        index = offset + 0;
-        if(!r[index].isNull())
-        {
-            _id=std::make_shared<int32_t>(r[index].as<int32_t>());
-        }
-        index = offset + 1;
-        if(!r[index].isNull())
-        {
-            _projectId=std::make_shared<int64_t>(r[index].as<int64_t>());
-        }
-        index = offset + 2;
-        if(!r[index].isNull())
-        {
-            _customActionId=std::make_shared<int64_t>(r[index].as<int64_t>());
-        }
-    }
-
 }
-
-CustomActionsProjects::CustomActionsProjects(const Json::Value &pJson, const std::vector<std::string> &pMasqueradingVector) noexcept(false)
-{
-    if(pMasqueradingVector.size() != 3)
-    {
-        LOG_ERROR << "Bad masquerading vector";
-        return;
-    }
-    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
-    {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
-    }
-    if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
-    {
-        _projectId=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[1]].asInt64());
-    }
-    if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
-    {
-        _customActionId=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[2]].asInt64());
-    }
-}
-
-CustomActionsProjects::CustomActionsProjects(const Json::Value &pJson) noexcept(false)
-{
-    if(pJson.isMember("id"))
-    {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
-    }
-    if(pJson.isMember("project_id"))
-    {
-        _projectId=std::make_shared<int64_t>((int64_t)pJson["project_id"].asInt64());
-    }
-    if(pJson.isMember("custom_action_id"))
-    {
-        _customActionId=std::make_shared<int64_t>((int64_t)pJson["custom_action_id"].asInt64());
-    }
-}
-
-void CustomActionsProjects::updateByMasqueradedJson(const Json::Value &pJson, 
-                                                                                                     const std::vector<std::string> &pMasqueradingVector) noexcept(false)
-{
-    if(pMasqueradingVector.size() != 3)
-    {
-        LOG_ERROR << "Bad masquerading vector";
-        return;
-    }
-    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
-    {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
-    }
-    if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
-    {
-        _dirtyFlag[1] = true;
-        _projectId=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[1]].asInt64());
-    }
-    if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
-    {
-        _dirtyFlag[2] = true;
-        _customActionId=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[2]].asInt64());
-    }
-}
-                                                                    
-void CustomActionsProjects::updateByJson(const Json::Value &pJson) noexcept(false)
-{
-    if(pJson.isMember("id"))
-    {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
-    }
-    if(pJson.isMember("project_id"))
-    {
-        _dirtyFlag[1] = true;
-        _projectId=std::make_shared<int64_t>((int64_t)pJson["project_id"].asInt64());
-    }
-    if(pJson.isMember("custom_action_id"))
-    {
-        _dirtyFlag[2] = true;
-        _customActionId=std::make_shared<int64_t>((int64_t)pJson["custom_action_id"].asInt64());
-    }
-}
-
 const int32_t &CustomActionsProjects::getValueOfId() const noexcept
 {
     const static int32_t defaultValue = int32_t();
@@ -280,75 +171,6 @@ void CustomActionsProjects::updateArgs(drogon::orm::internal::SqlBinder &binder)
 Json::Value CustomActionsProjects::toJson() const
 {
     Json::Value ret;
-    if(getId())
-    {
-        ret["id"]=getValueOfId();
-    }
-    else
-    {
-        ret["id"]=Json::Value();
-    }
-    if(getProjectId())
-    {
-        ret["project_id"]=(Json::Int64)getValueOfProjectId();
-    }
-    else
-    {
-        ret["project_id"]=Json::Value();
-    }
-    if(getCustomActionId())
-    {
-        ret["custom_action_id"]=(Json::Int64)getValueOfCustomActionId();
-    }
-    else
-    {
-        ret["custom_action_id"]=Json::Value();
-    }
-    return ret;
-}
-
-Json::Value CustomActionsProjects::toMasqueradedJson(
-    const std::vector<std::string> &pMasqueradingVector) const
-{
-    Json::Value ret;
-    if(pMasqueradingVector.size() == 3)
-    {
-        if(!pMasqueradingVector[0].empty())
-        {
-            if(getId())
-            {
-                ret[pMasqueradingVector[0]]=getValueOfId();
-            }
-            else
-            {
-                ret[pMasqueradingVector[0]]=Json::Value();
-            }
-        }
-        if(!pMasqueradingVector[1].empty())
-        {
-            if(getProjectId())
-            {
-                ret[pMasqueradingVector[1]]=(Json::Int64)getValueOfProjectId();
-            }
-            else
-            {
-                ret[pMasqueradingVector[1]]=Json::Value();
-            }
-        }
-        if(!pMasqueradingVector[2].empty())
-        {
-            if(getCustomActionId())
-            {
-                ret[pMasqueradingVector[2]]=(Json::Int64)getValueOfCustomActionId();
-            }
-            else
-            {
-                ret[pMasqueradingVector[2]]=Json::Value();
-            }
-        }
-        return ret;
-    }
-    LOG_ERROR << "Masquerade failed";
     if(getId())
     {
         ret["id"]=getValueOfId();

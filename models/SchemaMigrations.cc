@@ -25,76 +25,13 @@ const std::string &SchemaMigrations::getColumnName(size_t index) noexcept(false)
     assert(index < _metaData.size());
     return _metaData[index]._colName;
 }
-SchemaMigrations::SchemaMigrations(const Row &r, const ssize_t indexOffset) noexcept
+SchemaMigrations::SchemaMigrations(const Row &r) noexcept
 {
-    if(indexOffset < 0)
-    {
         if(!r["version"].isNull())
         {
             _version=std::make_shared<std::string>(r["version"].as<std::string>());
         }
-    }
-    else
-    {
-        size_t offset = (size_t)indexOffset;
-        if(offset + 1 > r.size())
-        {
-            LOG_FATAL << "Invalid SQL result for this model";
-            return;
-        }
-        size_t index;
-        index = offset + 0;
-        if(!r[index].isNull())
-        {
-            _version=std::make_shared<std::string>(r[index].as<std::string>());
-        }
-    }
-
 }
-
-SchemaMigrations::SchemaMigrations(const Json::Value &pJson, const std::vector<std::string> &pMasqueradingVector) noexcept(false)
-{
-    if(pMasqueradingVector.size() != 1)
-    {
-        LOG_ERROR << "Bad masquerading vector";
-        return;
-    }
-    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
-    {
-        _version=std::make_shared<std::string>(pJson[pMasqueradingVector[0]].asString());
-    }
-}
-
-SchemaMigrations::SchemaMigrations(const Json::Value &pJson) noexcept(false)
-{
-    if(pJson.isMember("version"))
-    {
-        _version=std::make_shared<std::string>(pJson["version"].asString());
-    }
-}
-
-void SchemaMigrations::updateByMasqueradedJson(const Json::Value &pJson, 
-                                                                                                     const std::vector<std::string> &pMasqueradingVector) noexcept(false)
-{
-    if(pMasqueradingVector.size() != 1)
-    {
-        LOG_ERROR << "Bad masquerading vector";
-        return;
-    }
-    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
-    {
-        _version=std::make_shared<std::string>(pJson[pMasqueradingVector[0]].asString());
-    }
-}
-                                                                    
-void SchemaMigrations::updateByJson(const Json::Value &pJson) noexcept(false)
-{
-    if(pJson.isMember("version"))
-    {
-        _version=std::make_shared<std::string>(pJson["version"].asString());
-    }
-}
-
 const std::string &SchemaMigrations::getValueOfVersion() const noexcept
 {
     const static std::string defaultValue = std::string();
@@ -177,37 +114,6 @@ void SchemaMigrations::updateArgs(drogon::orm::internal::SqlBinder &binder) cons
 Json::Value SchemaMigrations::toJson() const
 {
     Json::Value ret;
-    if(getVersion())
-    {
-        ret["version"]=getValueOfVersion();
-    }
-    else
-    {
-        ret["version"]=Json::Value();
-    }
-    return ret;
-}
-
-Json::Value SchemaMigrations::toMasqueradedJson(
-    const std::vector<std::string> &pMasqueradingVector) const
-{
-    Json::Value ret;
-    if(pMasqueradingVector.size() == 1)
-    {
-        if(!pMasqueradingVector[0].empty())
-        {
-            if(getVersion())
-            {
-                ret[pMasqueradingVector[0]]=getValueOfVersion();
-            }
-            else
-            {
-                ret[pMasqueradingVector[0]]=Json::Value();
-            }
-        }
-        return ret;
-    }
-    LOG_ERROR << "Masquerade failed";
     if(getVersion())
     {
         ret["version"]=getValueOfVersion();

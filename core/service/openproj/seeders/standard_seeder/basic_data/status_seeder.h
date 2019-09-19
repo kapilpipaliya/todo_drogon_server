@@ -71,8 +71,8 @@ namespace StandardSeeder {
            data_.insert(data_.end(), {
 
                          { "New",              color_names[0], false, true,  1  },
-                         { "default_status_in_specification", color_names[1], false, false, 2  },
-                         { "In specification",        color_names[2], false, false, 3  },
+                         { "In specification", color_names[1], false, false, 2  },
+                         { "Specified",        color_names[2], false, false, 3  },
                          { "Confirmed",        color_names[3], false, false, 4  },
                          { "To be scheduled",  color_names[4], false, false, 5  },
                          { "Scheduled",        color_names[5], false, false, 6  },

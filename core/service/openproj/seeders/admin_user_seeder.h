@@ -30,7 +30,7 @@ public:
      user.setLanguage("en");
      user.setMailNotification("only_my_events");
      user.setType("User");
-//     user.setStatus(1);
+     user.setStatus(1); // this is default
      user.setForcePasswordChange(false);
      mapper.insert(user);
   }

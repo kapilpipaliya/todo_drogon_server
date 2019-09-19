@@ -40,35 +40,9 @@ class GroupUsers
     const static bool hasPrimaryKey;
     const static std::string primaryKeyName;
     typedef void PrimaryKeyType;
-
-    /**
-     * @brief constructor
-     * @param r One row of records in the SQL query result.
-     * @param indexOffset Set the offset to -1 to access all columns by column names, 
-     * otherwise access all columns by offsets.
-     * @note If the SQL is not a style of 'select * from table_name ...' (select all 
-     * columns by an asterisk), please set the offset to -1.
-     */
-    explicit GroupUsers(const Row &r, const ssize_t indexOffset = 0) noexcept;
-
-    /**
-     * @brief constructor
-     * @param pJson The json object to construct a new instance.
-     */
-    explicit GroupUsers(const Json::Value &pJson) noexcept(false);
-
-    /**
-     * @brief constructor
-     * @param pJson The json object to construct a new instance.
-     * @param pMasqueradingVector The aliases of table columns.
-     */
-     GroupUsers(const Json::Value &pJson, const std::vector<std::string> &pMasqueradingVector) noexcept(false);
-
+    explicit GroupUsers(const Row &r) noexcept;
     GroupUsers() = default;
     
-    void updateByJson(const Json::Value &pJson) noexcept(false);
-    void updateByMasqueradedJson(const Json::Value &pJson, 
-                                                                          const std::vector<std::string> &pMasqueradingVector) noexcept(false);
     /**  For column group_id  */
     ///Get the value of the column group_id, returns the default value if the column is null
     const int32_t &getValueOfGroupId() const noexcept;
@@ -90,7 +64,6 @@ class GroupUsers
     static const std::string &getColumnName(size_t index) noexcept(false);
 
     Json::Value toJson() const;
-    Json::Value toMasqueradedJson(const std::vector<std::string> &pMasqueradingVector) const;
 
   private:
     friend Mapper<GroupUsers>;

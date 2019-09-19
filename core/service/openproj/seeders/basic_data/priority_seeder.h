@@ -36,6 +36,7 @@ namespace BasicData {
          enumeration.setPosition(it.position);
          enumeration.setIsDefault(it.is_default);
          enumeration.setType("IssuePriority");
+         enumeration.setActive(false); //this is default
          mapper.insert(enumeration);
        }
     }

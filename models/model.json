@@ -122,7 +122,7 @@
         "work_packages",
         "workflows"],
     "restful_api_controllers": {
-        "enabled": false,
+        "enabled": true,
         // resource_uri: The URI to access the resource, the default value
         // is '/*' in which the asterisk represents the table name.
         // If this option is set to a empty string, the URI is composed of the namespaces and the class name.

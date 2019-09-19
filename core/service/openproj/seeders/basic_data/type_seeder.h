@@ -14,7 +14,7 @@ namespace BasicData {
       std::string name;
       int position;
       bool is_default;
-      long color_id;
+      std::string color_name;
       bool is_in_roadmap;
       bool is_milestone;
       std::string description;
@@ -26,19 +26,32 @@ namespace BasicData {
 //          Type.create!(attributes)
 //        }
 //      }
+       std::cout << "data size: " << data_.size();
          auto clientPtr = drogon::app().getDbClient("sce");
          for (auto &it : data()) {
+                       std::cout << "color: " << it.color_name;
+                       fflush(stdout);
            drogon::orm::Mapper<drogon_model::openproject4::Types> mapper(clientPtr);
 
-           drogon_model::openproject4::Types type;
-           type.setName(it.name);
-           type.setPosition(it.position);
-           type.setIsDefault(it.is_default);
-           type.setColorId(it.color_id);
-           type.setIsInRoadmap(it.is_in_roadmap);
-           type.setIsMilestone(it.is_milestone);
-           type.setDescription(it.description);
-           mapper.insert(type);
+           drogon::orm::Mapper<drogon_model::openproject4::Colors> mapper_color(clientPtr);
+           auto r = mapper_color.findBy(
+                Criteria(drogon_model::openproject4::Colors::Cols::_name, CompareOperator::EQ, it.color_name));
+           if(r.size() == 0) {
+             std::cout << "Not found color: " << it.color_name;
+           } else {
+             drogon_model::openproject4::Types type;
+             type.setName(it.name);
+             type.setPosition(it.position);
+             type.setIsDefault(it.is_default);
+             type.setColorId(*r.at(0).getId());
+             type.setIsInRoadmap(it.is_in_roadmap);
+             type.setIsMilestone(it.is_milestone);
+             type.setDescription(it.description);
+             type.setIsDefault(false); // default is false
+             type.setIsStandard(false); // default is false
+             mapper.insert(type);
+           }
+
          }
     }
 
@@ -72,9 +85,9 @@ namespace BasicData {
 //        }
 //      }
 
-        auto clientPtr = drogon::app().getDbClient("sce");
-        drogon::orm::Mapper<drogon_model::openproject4::Colors> mapper(clientPtr);
-        auto colors = mapper.findAll();
+//        auto clientPtr = drogon::app().getDbClient("sce");
+//        drogon::orm::Mapper<drogon_model::openproject4::Colors> mapper(clientPtr);
+//        auto colors = mapper.findAll();
 
         for (auto &it : type_table()) {
             auto position = std::get<0>(it.second);
@@ -83,18 +96,16 @@ namespace BasicData {
             auto is_in_roadmap = std::get<3>(it.second);
             auto is_milestone = std::get<4>(it.second);
             auto description = std::get<5>(it.second);
-            auto r = mapper.findBy(
-                 Criteria(drogon_model::openproject4::Colors::Cols::_name, CompareOperator::EQ, color_name));
             data_.push_back({
-                                description, position, is_default,*r.at(0).getId(), is_in_roadmap, is_milestone, description
+                                description, position, is_default,color_name, is_in_roadmap, is_milestone, description
                             });
-            return data_;
         }
+        return data_;
     }
 
      virtual std::vector<std::string> type_names()  = 0;
 
-     virtual std::map<std::string, std::tuple<int, bool, std::string, bool, bool, std::string> >type_table()  = 0;
+     virtual std::vector<std::pair<std::string,  std::tuple<int, bool, std::string, bool, bool, std::string> > >type_table()  = 0;
 
 //     void type_description(type_name) {
 //      if ( demo_data_for('type_configuration').nil?) { return '' ;}

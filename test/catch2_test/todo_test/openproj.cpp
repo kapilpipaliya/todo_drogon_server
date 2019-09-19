@@ -77,32 +77,39 @@ TEST_CASE("seed2", "[WSTest]") {
     QCoreApplication a(i, argv);
     auto w2 =
           wstest::SslEchoClient(QUrl(QStringLiteral("wss://localhost:8401/todo")));
-    nlohmann::json event1 = nlohmann::json::array({"seed", "seed1", 0});
-    nlohmann::json event2 = nlohmann::json::array({"seed", "seed2", 0});
+//    nlohmann::json event1 = nlohmann::json::array({"seed", "seed1", 0});
+//    nlohmann::json event2 = nlohmann::json::array({"seed", "seed2", 0});
+    nlohmann::json event3 = nlohmann::json::array({"seed", "seedall", 0});
 
     nlohmann::json payload = nlohmann::json::array({
-      {event1,
-       nlohmann::json::object({{"user", "sadmin"}, {"pass", "123456"}})},
-      {event2, nlohmann::json::array({{}})}
+//      {event1, nlohmann::json::object({})},
+//      {event2, nlohmann::json::array({{}})},
+      {event3, nlohmann::json::array({{}})}
     });
     LOG_DEBUG << payload.dump();
-    bool r0 = false, r2 = false;
-    auto b = w2.bindOnce(event1, [&r0](nlohmann::json r) {
-          REQUIRE(r[0]["ok"] == true);
-    r0 = true;
-    });
-    auto b2 = w2.bindOnce(event2, [&r2](nlohmann::json r) {
-    REQUIRE(r[r2]["ok"] == true);
-    r2 = true;
+    bool r0 = false, r2 = false, r3 = false;
+//    auto b = w2.bindOnce(event1, [&r0](nlohmann::json r) {
+//          REQUIRE(r[0]["ok"] == true);
+//    r0 = true;
+//    });
+//    auto b2 = w2.bindOnce(event2, [&r2](nlohmann::json r) {
+//    REQUIRE(r[0]["ok"] == true);
+//    r2 = true;
+//    });
+    auto b3 = w2.bindOnce(event3, [&r3](nlohmann::json r) {
+            REQUIRE(r[0]["ok"] == true);
+    r3 = true;
     });
     w2.sendMessage(QString::fromStdString(payload.dump()));
-    REQUIRE(b);
-    REQUIRE(b2);
+//    REQUIRE(b);
+//    REQUIRE(b2);
+        REQUIRE(b3);
     QTimer *timer = new QTimer();
     QObject::connect(timer, SIGNAL(timeout()), &a, SLOT(quit()));
     timer->start(500);
     a.exec();
-    REQUIRE(r0);
-    REQUIRE(r2);
+//    REQUIRE(r0);
+//    REQUIRE(r2);
+    REQUIRE(r3);
 }
 

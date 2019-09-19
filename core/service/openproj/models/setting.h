@@ -1,6 +1,7 @@
 #pragma once
 #include "activerecord.h"
 #include <yaml-cpp/yaml.h>
+#include "iostream"
 namespace openproj {
 namespace models {
 class Setting : public ActiveRecord::Base {
@@ -8,7 +9,12 @@ public:
     YAML::Node available_settings;
     Setting(){
         //available_settings = YAML::load(File.open(Rails.root.join('config/settings.yml')))
+      try {
         available_settings = YAML::LoadFile("config/settings.yml");
+      } catch (const std::exception &e) {
+        std::cout << "cant open yaml file", e.what();
+        fflush(stdout);
+      }
     }
 //  DATE_FORMATS = [
 //    '%Y-%m-%d',

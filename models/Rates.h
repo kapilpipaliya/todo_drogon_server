@@ -46,35 +46,9 @@ class Rates
     const static std::string primaryKeyName;
     typedef int32_t PrimaryKeyType;
     const PrimaryKeyType &getPrimaryKey() const;
-
-    /**
-     * @brief constructor
-     * @param r One row of records in the SQL query result.
-     * @param indexOffset Set the offset to -1 to access all columns by column names, 
-     * otherwise access all columns by offsets.
-     * @note If the SQL is not a style of 'select * from table_name ...' (select all 
-     * columns by an asterisk), please set the offset to -1.
-     */
-    explicit Rates(const Row &r, const ssize_t indexOffset = 0) noexcept;
-
-    /**
-     * @brief constructor
-     * @param pJson The json object to construct a new instance.
-     */
-    explicit Rates(const Json::Value &pJson) noexcept(false);
-
-    /**
-     * @brief constructor
-     * @param pJson The json object to construct a new instance.
-     * @param pMasqueradingVector The aliases of table columns.
-     */
-     Rates(const Json::Value &pJson, const std::vector<std::string> &pMasqueradingVector) noexcept(false);
-
+    explicit Rates(const Row &r) noexcept;
     Rates() = default;
     
-    void updateByJson(const Json::Value &pJson) noexcept(false);
-    void updateByMasqueradedJson(const Json::Value &pJson, 
-                                                                          const std::vector<std::string> &pMasqueradingVector) noexcept(false);
     /**  For column id  */
     ///Get the value of the column id, returns the default value if the column is null
     const int32_t &getValueOfId() const noexcept;
@@ -135,7 +109,6 @@ class Rates
     static const std::string &getColumnName(size_t index) noexcept(false);
 
     Json::Value toJson() const;
-    Json::Value toMasqueradedJson(const std::vector<std::string> &pMasqueradingVector) const;
 
   private:
     friend Mapper<Rates>;

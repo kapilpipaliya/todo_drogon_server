@@ -29,10 +29,8 @@ const std::string &WebhooksEvents::getColumnName(size_t index) noexcept(false)
     assert(index < _metaData.size());
     return _metaData[index]._colName;
 }
-WebhooksEvents::WebhooksEvents(const Row &r, const ssize_t indexOffset) noexcept
+WebhooksEvents::WebhooksEvents(const Row &r) noexcept
 {
-    if(indexOffset < 0)
-    {
         if(!r["id"].isNull())
         {
             _id=std::make_shared<int32_t>(r["id"].as<int32_t>());
@@ -45,114 +43,7 @@ WebhooksEvents::WebhooksEvents(const Row &r, const ssize_t indexOffset) noexcept
         {
             _webhooksWebhookId=std::make_shared<int32_t>(r["webhooks_webhook_id"].as<int32_t>());
         }
-    }
-    else
-    {
-        size_t offset = (size_t)indexOffset;
-        if(offset + 3 > r.size())
-        {
-            LOG_FATAL << "Invalid SQL result for this model";
-            return;
-        }
-        size_t index;
-        index = offset + 0;
-        if(!r[index].isNull())
-        {
-            _id=std::make_shared<int32_t>(r[index].as<int32_t>());
-        }
-        index = offset + 1;
-        if(!r[index].isNull())
-        {
-            _name=std::make_shared<std::string>(r[index].as<std::string>());
-        }
-        index = offset + 2;
-        if(!r[index].isNull())
-        {
-            _webhooksWebhookId=std::make_shared<int32_t>(r[index].as<int32_t>());
-        }
-    }
-
 }
-
-WebhooksEvents::WebhooksEvents(const Json::Value &pJson, const std::vector<std::string> &pMasqueradingVector) noexcept(false)
-{
-    if(pMasqueradingVector.size() != 3)
-    {
-        LOG_ERROR << "Bad masquerading vector";
-        return;
-    }
-    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
-    {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
-    }
-    if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
-    {
-        _name=std::make_shared<std::string>(pJson[pMasqueradingVector[1]].asString());
-    }
-    if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
-    {
-        _webhooksWebhookId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
-    }
-}
-
-WebhooksEvents::WebhooksEvents(const Json::Value &pJson) noexcept(false)
-{
-    if(pJson.isMember("id"))
-    {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
-    }
-    if(pJson.isMember("name"))
-    {
-        _name=std::make_shared<std::string>(pJson["name"].asString());
-    }
-    if(pJson.isMember("webhooks_webhook_id"))
-    {
-        _webhooksWebhookId=std::make_shared<int32_t>((int32_t)pJson["webhooks_webhook_id"].asInt64());
-    }
-}
-
-void WebhooksEvents::updateByMasqueradedJson(const Json::Value &pJson, 
-                                                                                                     const std::vector<std::string> &pMasqueradingVector) noexcept(false)
-{
-    if(pMasqueradingVector.size() != 3)
-    {
-        LOG_ERROR << "Bad masquerading vector";
-        return;
-    }
-    if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
-    {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
-    }
-    if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
-    {
-        _dirtyFlag[1] = true;
-        _name=std::make_shared<std::string>(pJson[pMasqueradingVector[1]].asString());
-    }
-    if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
-    {
-        _dirtyFlag[2] = true;
-        _webhooksWebhookId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
-    }
-}
-                                                                    
-void WebhooksEvents::updateByJson(const Json::Value &pJson) noexcept(false)
-{
-    if(pJson.isMember("id"))
-    {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
-    }
-    if(pJson.isMember("name"))
-    {
-        _dirtyFlag[1] = true;
-        _name=std::make_shared<std::string>(pJson["name"].asString());
-    }
-    if(pJson.isMember("webhooks_webhook_id"))
-    {
-        _dirtyFlag[2] = true;
-        _webhooksWebhookId=std::make_shared<int32_t>((int32_t)pJson["webhooks_webhook_id"].asInt64());
-    }
-}
-
 const int32_t &WebhooksEvents::getValueOfId() const noexcept
 {
     const static int32_t defaultValue = int32_t();
@@ -285,75 +176,6 @@ void WebhooksEvents::updateArgs(drogon::orm::internal::SqlBinder &binder) const
 Json::Value WebhooksEvents::toJson() const
 {
     Json::Value ret;
-    if(getId())
-    {
-        ret["id"]=getValueOfId();
-    }
-    else
-    {
-        ret["id"]=Json::Value();
-    }
-    if(getName())
-    {
-        ret["name"]=getValueOfName();
-    }
-    else
-    {
-        ret["name"]=Json::Value();
-    }
-    if(getWebhooksWebhookId())
-    {
-        ret["webhooks_webhook_id"]=getValueOfWebhooksWebhookId();
-    }
-    else
-    {
-        ret["webhooks_webhook_id"]=Json::Value();
-    }
-    return ret;
-}
-
-Json::Value WebhooksEvents::toMasqueradedJson(
-    const std::vector<std::string> &pMasqueradingVector) const
-{
-    Json::Value ret;
-    if(pMasqueradingVector.size() == 3)
-    {
-        if(!pMasqueradingVector[0].empty())
-        {
-            if(getId())
-            {
-                ret[pMasqueradingVector[0]]=getValueOfId();
-            }
-            else
-            {
-                ret[pMasqueradingVector[0]]=Json::Value();
-            }
-        }
-        if(!pMasqueradingVector[1].empty())
-        {
-            if(getName())
-            {
-                ret[pMasqueradingVector[1]]=getValueOfName();
-            }
-            else
-            {
-                ret[pMasqueradingVector[1]]=Json::Value();
-            }
-        }
-        if(!pMasqueradingVector[2].empty())
-        {
-            if(getWebhooksWebhookId())
-            {
-                ret[pMasqueradingVector[2]]=getValueOfWebhooksWebhookId();
-            }
-            else
-            {
-                ret[pMasqueradingVector[2]]=Json::Value();
-            }
-        }
-        return ret;
-    }
-    LOG_ERROR << "Masquerade failed";
     if(getId())
     {
         ret["id"]=getValueOfId();
