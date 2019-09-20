@@ -23,15 +23,17 @@ class ActivitySeeder : public Seeder {
 
     auto clientPtr = drogon::app().getDbClient("sce");
     for (auto &it : data2()) {
-      drogon::orm::Mapper<drogon_model::openproject6::Enumerations> mapper(clientPtr);
+      drogon::orm::Mapper<drogon_model::openproject6::Enumerations> mapper(
+          clientPtr);
 
       drogon_model::openproject6::Enumerations enumeration;
       enumeration.setName(it.name);
       enumeration.setPosition(it.position);
       enumeration.setType("TimeEntryActivity");
-      enumeration.setIsDefault(false); //This is default
-      enumeration.setActive(true); //this is default
-      //enumeration.setCreatedAt()
+      enumeration.setIsDefault(it.is_default);
+      enumeration.setActive(true);  // this is default
+      enumeration.setCreatedAt(trantor::Date::now());
+      enumeration.setUpdatedAt(trantor::Date::now());
       mapper.insert(enumeration);
       fflush(stdout);
     }

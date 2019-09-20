@@ -14,33 +14,50 @@ namespace openproj {
 namespace seeder {
 namespace BasicData {
 class SettingSeeder : public Seeder {
-  std::map<std::string, std::string> data_;
+  std::vector<std::pair<std::string, std::string>> data_;
 
  public:
   SettingSeeder() {
     openproj::models::Setting s;
     for (auto it : s.available_settings) {
-      // data_.push_back({it.first.as<std::string>(),
-      // it.second["default"].as<std::string>()});
-      data_[it.first.as<std::string>()] =
-          it.second["default"].as<std::string>();
+      if (it.second.Type() == YAML::NodeType::Map) {
+        auto node = it.second["default"];
+        YAML::Emitter out;
+        out << node;
+        data_.push_back({it.first.as<std::string>(), out.c_str()});
+        //        switch (node.Type()) {
+        //          case YAML::NodeType::Map:
+        //          case YAML::NodeType::Sequence:
+        //            break;
+        //          case YAML::NodeType::Null:
+        //          case YAML::NodeType::Undefined:
+        //            data_.push_back({it.first.as<std::string>(), ""});
+        //            break;
+        //          case YAML::NodeType::Scalar:
+        //            data_.push_back(
+        //                {it.first.as<std::string>(), node.as<std::string>()});
+        //            break;
+        //        }
+      }
     }
     auto clientPtr = drogon::app().getDbClient("sce");
     drogon::orm::Mapper<drogon_model::openproject6::Roles> mapper(clientPtr);
-    auto r = mapper.findBy(
-        Criteria(drogon_model::openproject6::Roles::Cols::_name,
-                 CompareOperator::EQ, "Project admin"));
-    auto role_id = *r.at(0).getId();
-    if (!r.empty()) {
-      update_unless_present("new_project_user_role_id", std::to_string(role_id));
+    auto role =
+        mapper.findBy(Criteria(drogon_model::openproject6::Roles::Cols::_name,
+                               CompareOperator::EQ, "Project admin"));
+    if (!role.empty()) {
+      auto role_id = *role.at(0).getId();
+      update_unless_present("new_project_user_role_id",
+                            std::to_string(role_id));
     }
 
-    drogon::orm::Mapper<drogon_model::openproject6::Statuses> mapper_status(clientPtr);
+    drogon::orm::Mapper<drogon_model::openproject6::Statuses> mapper_status(
+        clientPtr);
     auto status = mapper_status.findBy(
-          Criteria(drogon_model::openproject6::Statuses::Cols::_name,
-                   CompareOperator::EQ, "Closed"));
-    auto status_id = *status.at(0).getId();
-    if (!r.empty()) {
+        Criteria(drogon_model::openproject6::Statuses::Cols::_name,
+                 CompareOperator::EQ, "Closed"));
+    if (status.size() > 0) {
+      auto status_id = *status.at(0).getId();
       update_unless_present("commit_fix_status_id", std::to_string(status_id));
     }
   }
@@ -55,9 +72,21 @@ class SettingSeeder : public Seeder {
 
     auto clientPtr = drogon::app().getDbClient("sce");
     drogon::orm::Mapper<drogon_model::openproject6::Settings> mapper(clientPtr);
-    for (auto &it : settings_not_in_db()) {
-      auto data = data_[it];
+    for (auto it : settings_not_in_db()) {
+      // auto data = data_[it];
+      // on setting.h reimplemented []= operator
+      // std::cout << it.first << ": " << it.second << std::endl;
+
+      auto clientPtr = drogon::app().getDbClient("sce");
+      drogon::orm::Mapper<drogon_model::openproject6::Settings> mapper(
+          clientPtr);
+      drogon_model::openproject6::Settings setting;
+      setting.setName(it.first);
+      setting.setValue(it.second);
+      setting.setUpdatedOn(trantor::Date::now());
+      mapper.insert(setting);
     }
+    fflush(stdout);
   }
 
   bool applicable() {
@@ -68,7 +97,7 @@ class SettingSeeder : public Seeder {
     //      'Skipping settings as all settings already exist in the db'
   }
 
-  std::map<std::string, std::string> data() {
+  std::vector<std::pair<std::string, std::string>> data() {
     //      this->settings ||= begin
     //        settings = Setting.available_settings.each_with_object({}) { |(k,
     //        v), hash|
@@ -101,10 +130,18 @@ class SettingSeeder : public Seeder {
     //        value = yield
     //        settings[key] = value unless value.nil?
     //      }
-    if (std::find(settings_in_db().begin(), settings_in_db().end(), key) !=
-        settings_in_db().end()) {
+    auto indb = settings_in_db();
+    if (std::find(indb.begin(), indb.end(), key) != indb.end()) {
       if (!value.empty()) {
-        data_[key] = value;
+        auto find = std::find_if(data_.begin(), data_.end(),
+                                 [key](std::pair<std::string, std::string> &p) {
+                                   return p.first == key;
+                                 });
+        if (find == data_.end()) {
+          data_.push_back({key, value});
+        } else {
+          find->second = value;
+        }
       }
     }
   }
@@ -121,12 +158,15 @@ class SettingSeeder : public Seeder {
     return a;
   }
 
-  std::vector<std::string> settings_not_in_db() {
+  std::vector<std::pair<std::string, std::string>> settings_not_in_db() {
     //      data().keys - settings_in_db();
-    std::vector<std::string> result;
+    std::vector<std::pair<std::string, std::string>> result;
     auto indb = settings_in_db();
-    for (auto &it2 : indb) {
-      if (!data_.contains(it2)) {
+    for (auto &it2 : data_) {
+      auto find =
+          std::find_if(indb.begin(), indb.end(),
+                       [&it2](std::string &p) { return p == it2.first; });
+      if (find == indb.end()) {
         result.push_back(it2);
       }
     }

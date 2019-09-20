@@ -10,6 +10,8 @@
 #include "core/service/openproj/seeders/basic_data/builtin_roles_seeder.h"
 #include "core/service/openproj/seeders/basic_data/role_seeder.h"
 #include "core/service/openproj/seeders/root_seeder.h"
+#include "core/service/openproj/seeders/standard_seeder/basic_data/workflow_seeder.h"
+#include "core/service/openproj/seeders/standard_seeder/basic_data/type_seeder.h"
 
 namespace todo {
 namespace service {
@@ -31,6 +33,18 @@ nlohmann::json Seed::handleEvent(nlohmann::json event, unsigned long next,
     openproj::seeder::BasicData::RoleSeeder a;
     a.seed();
     return {websocket::WsFns::successJsonObject(event, true, "Done")};
+  } else if (event_cmp == "seed3") {
+      openproj::seeder::BasicData::SettingSeeder a;
+      a.seed();
+      return {websocket::WsFns::successJsonObject(event, true, "Done")};
+  } else if (event_cmp == "seed4") {
+      openproj::seeder::StandardSeeder::BasicData::WorkflowSeeder a;
+      a.seed();
+      return {websocket::WsFns::successJsonObject(event, true, "Done")};
+  } else if (event_cmp == "seed5") {
+      openproj::seeder::StandardSeeder::BasicData::TypeSeeder a;
+      a.seed();
+      return {websocket::WsFns::successJsonObject(event, true, "Done")};
   } else if (event_cmp == "seedall") {
       openproj::seeder::RootSeeder a;
       a.seed();

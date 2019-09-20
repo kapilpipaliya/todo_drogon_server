@@ -32,6 +32,7 @@ public:
      user.setType("User");
      user.setStatus(1); // this is default
      user.setForcePasswordChange(false);
+     user.setFirstLogin(true); //this is default
      mapper.insert(user);
   }
 

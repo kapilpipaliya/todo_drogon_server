@@ -28,6 +28,8 @@ class ColorSchemeSeeder : public Seeder {
       drogon_model::openproject6::Colors color;
       color.setName(it.name);
       color.setHexcode(it.hexcode);
+      color.setCreatedAt(trantor::Date::now());
+      color.setUpdatedAt(trantor::Date::now());
       mapper.insert(color);
     }
   }

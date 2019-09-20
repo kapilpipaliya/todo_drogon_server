@@ -47,8 +47,10 @@ namespace BasicData {
              type.setIsInRoadmap(it.is_in_roadmap);
              type.setIsMilestone(it.is_milestone);
              type.setDescription(it.description);
-             type.setIsDefault(false); // default is false
+             type.setIsDefault(true); // default is false
              type.setIsStandard(false); // default is false
+             type.setCreatedAt(trantor::Date::now());
+             type.setUpdatedAt(trantor::Date::now());
              mapper.insert(type);
            }
 

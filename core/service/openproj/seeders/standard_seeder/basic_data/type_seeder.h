@@ -36,7 +36,7 @@ namespace StandardSeeder {
                   {"bug",        {7, true, "Red",         true,  false, "Bug"}}
       };
        return a;
-    };
+    }
   };
 }
 }

@@ -8,13 +8,11 @@ class Setting : public ActiveRecord::Base {
 public:
     YAML::Node available_settings;
     Setting(){
-        //available_settings = YAML::load(File.open(Rails.root.join('config/settings.yml')))
-      try {
-        available_settings = YAML::LoadFile("config/settings.yml");
-      } catch (const std::exception &e) {
-        std::cout << "cant open yaml file", e.what();
-        fflush(stdout);
-      }
+        try {
+            available_settings = YAML::LoadFile("./config/settings.yml");
+        } catch (YAML::BadFile &e) {
+            std::cout << e.what();
+        }
     }
 //  DATE_FORMATS = [
 //    '%Y-%m-%d',

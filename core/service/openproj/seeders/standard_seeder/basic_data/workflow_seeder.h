@@ -87,6 +87,7 @@ namespace StandardSeeder {
                              {*type_user_story.at(0).getId().get(), {new_, in_specification, specified, in_progress, developed, in_testing, tested, test_failed, on_hold, rejected, closed}},
                              {*type_bug.at(0).getId().get(), {new_, confirmed, in_progress, developed, in_testing, tested, test_failed, on_hold, rejected, closed}}
       });
+            return data_;
 }
 //       void type_seeder_class() {
 //        ::StandardSeeder::BasicData::TypeSeeder

@@ -37,6 +37,8 @@ namespace BasicData {
          enumeration.setIsDefault(it.is_default);
          enumeration.setType("IssuePriority");
          enumeration.setActive(false); //this is default
+         enumeration.setCreatedAt(trantor::Date::now());
+         enumeration.setUpdatedAt(trantor::Date::now());
          mapper.insert(enumeration);
        }
     }

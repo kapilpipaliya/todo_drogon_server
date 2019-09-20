@@ -93,15 +93,18 @@ namespace BasicData {
              Criteria(drogon_model::openproject6::Roles::Cols::_name,
                       CompareOperator::EQ, "Project admin"));
 
-       for (auto &it : workflows()) {
-           for (auto &oldst : it.status_ids) {
-               for (auto &newst : it.status_ids) {
+       auto d = workflows();
+       for (auto it : d) {
+           for (auto oldst : it.status_ids) {
+               for (auto newst : it.status_ids) {
                    drogon::orm::Mapper<drogon_model::openproject6::Workflows> mapper_workflow(clientPtr);
                    drogon_model::openproject6::Workflows workflow;
                    workflow.setTypeId(it.type_id);
                    workflow.setRoleId(*manager.at(0).getId().get());
                    workflow.setOldStatusId(oldst);
                    workflow.setNewStatusId(newst);
+                   workflow.setAssignee(false); // this is defaut value;
+                   workflow.setAuthor(false); // this is default value;
                    mapper_workflow.insert(workflow);
 
                    drogon_model::openproject6::Workflows workflow2;
@@ -109,7 +112,10 @@ namespace BasicData {
                    workflow2.setRoleId(*member.at(0).getId().get());
                    workflow2.setOldStatusId(oldst);
                    workflow2.setNewStatusId(newst);
+                   workflow2.setAssignee(false); // this is defaut value;
+                   workflow2.setAuthor(false); // this is default value;
                    mapper_workflow.insert(workflow2);
+
                }
            }
        }

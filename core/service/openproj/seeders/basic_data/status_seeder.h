@@ -39,6 +39,9 @@ namespace BasicData {
            status.setIsClosed(it.is_closed);
            status.setIsDefault(it.is_default);
            status.setPosition(it.position);
+           status.setIsReadonly(false); // this is default
+           status.setCreatedAt(trantor::Date::now());
+           status.setUpdatedAt(trantor::Date::now());
            mapper.insert(status);
          }
 

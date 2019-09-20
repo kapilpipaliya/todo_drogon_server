@@ -34,6 +34,8 @@ class RootSeeder : public Seeder {
 
     LOG_DEBUG << "*** Seeding admin user";
     openproj::seeder::AdminUserSeeder a;
+    //UserPassword::Bcrypt Create (0.9ms)  INSERT INTO "user_passwords" ("user_id", "hashed_password", "created_at", "updated_at", "type") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["user_id", 2], ["hashed_password", "$2a$12$FDuVT81rIi8Ip4lEAhCyqe8GS1RbRDEfK2L9zzn36belEgoyt7yyK"], ["created_at", "2019-09-19 20:55:47.415914"], ["updated_at", "2019-09-19 20:55:47.415914"], ["type", "UserPassword::Bcrypt"]]
+    //D, [2019-09-20T02:25:47.675273 #19304] DEBUG -- :   ↳ app/models/user.rb:163:in `update_password'
     a.seed();
 
     LOG_DEBUG << "*** Seeding demo data";
