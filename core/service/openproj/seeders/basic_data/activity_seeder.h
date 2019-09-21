@@ -40,6 +40,7 @@ class ActivitySeeder : public Seeder {
 
   bool applicable() {
     //      TimeEntryActivity.all.empty?
+    return true;
   }
 
   void not_applicable_message() {

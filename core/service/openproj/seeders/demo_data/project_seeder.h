@@ -88,6 +88,7 @@ class ProjectSeeder : public Seeder {
 
   bool is_applicable() {
     //      Project.count.zero?
+    return true;
   }
 
   void project_data_seeders(long project_id, std::string key) {

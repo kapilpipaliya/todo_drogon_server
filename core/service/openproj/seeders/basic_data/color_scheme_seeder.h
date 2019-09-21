@@ -36,6 +36,7 @@ class ColorSchemeSeeder : public Seeder {
 
   bool applicable() {
     //      Color.where(name: %w(grape-0 grape-1)).empty?
+    return true;
   }
 
   void not_applicable_message() {

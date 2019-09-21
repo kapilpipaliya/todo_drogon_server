@@ -35,6 +35,7 @@ class ColorSeeder : public Seeder {
 
   bool applicable() {
     //      Color.all.empty?
+    return true;
   }
 
   void not_applicable_message() {

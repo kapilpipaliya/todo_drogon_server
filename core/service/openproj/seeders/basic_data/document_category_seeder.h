@@ -21,12 +21,11 @@ class DocumentCategorySeeder : public Seeder {
       drogon::orm::Mapper<drogon_model::openproject6::Enumerations> mapper(
           clientPtr);
 
-
       drogon_model::openproject6::Enumerations enumeration;
       enumeration.setName(it.name);
       enumeration.setType("DocumentCategory");
-      enumeration.setActive(false);  // this is default
-      enumeration.setIsDefault(false); // this is default
+      enumeration.setActive(false);     // this is default
+      enumeration.setIsDefault(false);  // this is default
       enumeration.setCreatedAt(trantor::Date::now());
       enumeration.setUpdatedAt(trantor::Date::now());
       mapper.insert(enumeration);
@@ -35,6 +34,7 @@ class DocumentCategorySeeder : public Seeder {
 
   bool applicable() {
     //      Status.all.any?
+    return true;
   }
 
   void not_applicable_message() {

@@ -92,6 +92,7 @@ class RoleSeeder : public Seeder {
   }
   bool applicable() {
     //      Role.where(builtin: false).empty?
+    return true;
   }
   void not_applicable_message() {
     //      'Skipping roles as there are already some configured'

@@ -52,6 +52,7 @@ class CustomFieldSeeder : public Seeder {
 
   bool applicable() {
     //      not WorkPackageCustomField.any?
+    return true;
   }
 };
 }  // namespace DemoData

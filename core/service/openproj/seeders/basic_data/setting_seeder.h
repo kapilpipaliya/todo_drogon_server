@@ -90,6 +90,7 @@ class SettingSeeder : public Seeder {
 
   bool applicable() {
     //      !settings_not_in_db.empty?
+    return true;
   }
 
   void not_applicable_message() {

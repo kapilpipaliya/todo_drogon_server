@@ -60,6 +60,7 @@ class TypeSeeder : public Seeder {
 
   bool applicable() {
     //      Type.all.any?
+    return true;
   }
 
   void not_applicable_message() {
