@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <drogon/HttpController.h>
+
 #include "CustomValues.h"
 using namespace drogon;
 

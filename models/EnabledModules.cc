@@ -83,15 +83,27 @@ EnabledModules::EnabledModules(const Json::Value &pJson, const std::vector<std::
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        _dirtyFlag[0] = true;
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
-        _projectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        _dirtyFlag[1] = true;
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _projectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
-        _name=std::make_shared<std::string>(pJson[pMasqueradingVector[2]].asString());
+        _dirtyFlag[2] = true;
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _name=std::make_shared<std::string>(pJson[pMasqueradingVector[2]].asString());
+        }
     }
 }
 
@@ -99,15 +111,27 @@ EnabledModules::EnabledModules(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        _dirtyFlag[0]=true;
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("project_id"))
     {
-        _projectId=std::make_shared<int32_t>((int32_t)pJson["project_id"].asInt64());
+        _dirtyFlag[1]=true;
+        if(!pJson["project_id"].isNull())
+        {
+            _projectId=std::make_shared<int32_t>((int32_t)pJson["project_id"].asInt64());
+        }
     }
     if(pJson.isMember("name"))
     {
-        _name=std::make_shared<std::string>(pJson["name"].asString());
+        _dirtyFlag[2]=true;
+        if(!pJson["name"].isNull())
+        {
+            _name=std::make_shared<std::string>(pJson["name"].asString());
+        }
     }
 }
 
@@ -121,17 +145,26 @@ void EnabledModules::updateByMasqueradedJson(const Json::Value &pJson,
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
         _dirtyFlag[1] = true;
-        _projectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _projectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
         _dirtyFlag[2] = true;
-        _name=std::make_shared<std::string>(pJson[pMasqueradingVector[2]].asString());
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _name=std::make_shared<std::string>(pJson[pMasqueradingVector[2]].asString());
+        }
     }
 }
                                                                     
@@ -139,17 +172,26 @@ void EnabledModules::updateByJson(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("project_id"))
     {
         _dirtyFlag[1] = true;
-        _projectId=std::make_shared<int32_t>((int32_t)pJson["project_id"].asInt64());
+        if(!pJson["project_id"].isNull())
+        {
+            _projectId=std::make_shared<int32_t>((int32_t)pJson["project_id"].asInt64());
+        }
     }
     if(pJson.isMember("name"))
     {
         _dirtyFlag[2] = true;
-        _name=std::make_shared<std::string>(pJson["name"].asString());
+        if(!pJson["name"].isNull())
+        {
+            _name=std::make_shared<std::string>(pJson["name"].asString());
+        }
     }
 }
 
@@ -226,21 +268,27 @@ const std::vector<std::string> &EnabledModules::insertColumns() noexcept
 
 void EnabledModules::outputArgs(drogon::orm::internal::SqlBinder &binder) const
 {
-    if(getProjectId())
+    if(_dirtyFlag[1])
     {
-        binder << getValueOfProjectId();
+        if(getProjectId())
+        {
+            binder << getValueOfProjectId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[2])
     {
-        binder << nullptr;
-    }
-    if(getName())
-    {
-        binder << getValueOfName();
-    }
-    else
-    {
-        binder << nullptr;
+        if(getName())
+        {
+            binder << getValueOfName();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
 }
 

@@ -138,35 +138,67 @@ GridWidgets::GridWidgets(const Json::Value &pJson, const std::vector<std::string
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[0]].asInt64());
+        _dirtyFlag[0] = true;
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
-        _startRow=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        _dirtyFlag[1] = true;
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _startRow=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
-        _endRow=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        _dirtyFlag[2] = true;
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _endRow=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
-        _startColumn=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        _dirtyFlag[3] = true;
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _startColumn=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        }
     }
     if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
     {
-        _endColumn=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[4]].asInt64());
+        _dirtyFlag[4] = true;
+        if(!pJson[pMasqueradingVector[4]].isNull())
+        {
+            _endColumn=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[4]].asInt64());
+        }
     }
     if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
     {
-        _identifier=std::make_shared<std::string>(pJson[pMasqueradingVector[5]].asString());
+        _dirtyFlag[5] = true;
+        if(!pJson[pMasqueradingVector[5]].isNull())
+        {
+            _identifier=std::make_shared<std::string>(pJson[pMasqueradingVector[5]].asString());
+        }
     }
     if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
     {
-        _options=std::make_shared<std::string>(pJson[pMasqueradingVector[6]].asString());
+        _dirtyFlag[6] = true;
+        if(!pJson[pMasqueradingVector[6]].isNull())
+        {
+            _options=std::make_shared<std::string>(pJson[pMasqueradingVector[6]].asString());
+        }
     }
     if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
     {
-        _gridId=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[7]].asInt64());
+        _dirtyFlag[7] = true;
+        if(!pJson[pMasqueradingVector[7]].isNull())
+        {
+            _gridId=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[7]].asInt64());
+        }
     }
 }
 
@@ -174,35 +206,67 @@ GridWidgets::GridWidgets(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int64_t>((int64_t)pJson["id"].asInt64());
+        _dirtyFlag[0]=true;
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int64_t>((int64_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("start_row"))
     {
-        _startRow=std::make_shared<int32_t>((int32_t)pJson["start_row"].asInt64());
+        _dirtyFlag[1]=true;
+        if(!pJson["start_row"].isNull())
+        {
+            _startRow=std::make_shared<int32_t>((int32_t)pJson["start_row"].asInt64());
+        }
     }
     if(pJson.isMember("end_row"))
     {
-        _endRow=std::make_shared<int32_t>((int32_t)pJson["end_row"].asInt64());
+        _dirtyFlag[2]=true;
+        if(!pJson["end_row"].isNull())
+        {
+            _endRow=std::make_shared<int32_t>((int32_t)pJson["end_row"].asInt64());
+        }
     }
     if(pJson.isMember("start_column"))
     {
-        _startColumn=std::make_shared<int32_t>((int32_t)pJson["start_column"].asInt64());
+        _dirtyFlag[3]=true;
+        if(!pJson["start_column"].isNull())
+        {
+            _startColumn=std::make_shared<int32_t>((int32_t)pJson["start_column"].asInt64());
+        }
     }
     if(pJson.isMember("end_column"))
     {
-        _endColumn=std::make_shared<int32_t>((int32_t)pJson["end_column"].asInt64());
+        _dirtyFlag[4]=true;
+        if(!pJson["end_column"].isNull())
+        {
+            _endColumn=std::make_shared<int32_t>((int32_t)pJson["end_column"].asInt64());
+        }
     }
     if(pJson.isMember("identifier"))
     {
-        _identifier=std::make_shared<std::string>(pJson["identifier"].asString());
+        _dirtyFlag[5]=true;
+        if(!pJson["identifier"].isNull())
+        {
+            _identifier=std::make_shared<std::string>(pJson["identifier"].asString());
+        }
     }
     if(pJson.isMember("options"))
     {
-        _options=std::make_shared<std::string>(pJson["options"].asString());
+        _dirtyFlag[6]=true;
+        if(!pJson["options"].isNull())
+        {
+            _options=std::make_shared<std::string>(pJson["options"].asString());
+        }
     }
     if(pJson.isMember("grid_id"))
     {
-        _gridId=std::make_shared<int64_t>((int64_t)pJson["grid_id"].asInt64());
+        _dirtyFlag[7]=true;
+        if(!pJson["grid_id"].isNull())
+        {
+            _gridId=std::make_shared<int64_t>((int64_t)pJson["grid_id"].asInt64());
+        }
     }
 }
 
@@ -216,42 +280,66 @@ void GridWidgets::updateByMasqueradedJson(const Json::Value &pJson,
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[0]].asInt64());
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
         _dirtyFlag[1] = true;
-        _startRow=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _startRow=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
         _dirtyFlag[2] = true;
-        _endRow=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _endRow=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
         _dirtyFlag[3] = true;
-        _startColumn=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _startColumn=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        }
     }
     if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
     {
         _dirtyFlag[4] = true;
-        _endColumn=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[4]].asInt64());
+        if(!pJson[pMasqueradingVector[4]].isNull())
+        {
+            _endColumn=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[4]].asInt64());
+        }
     }
     if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
     {
         _dirtyFlag[5] = true;
-        _identifier=std::make_shared<std::string>(pJson[pMasqueradingVector[5]].asString());
+        if(!pJson[pMasqueradingVector[5]].isNull())
+        {
+            _identifier=std::make_shared<std::string>(pJson[pMasqueradingVector[5]].asString());
+        }
     }
     if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
     {
         _dirtyFlag[6] = true;
-        _options=std::make_shared<std::string>(pJson[pMasqueradingVector[6]].asString());
+        if(!pJson[pMasqueradingVector[6]].isNull())
+        {
+            _options=std::make_shared<std::string>(pJson[pMasqueradingVector[6]].asString());
+        }
     }
     if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
     {
         _dirtyFlag[7] = true;
-        _gridId=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[7]].asInt64());
+        if(!pJson[pMasqueradingVector[7]].isNull())
+        {
+            _gridId=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[7]].asInt64());
+        }
     }
 }
                                                                     
@@ -259,42 +347,66 @@ void GridWidgets::updateByJson(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int64_t>((int64_t)pJson["id"].asInt64());
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int64_t>((int64_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("start_row"))
     {
         _dirtyFlag[1] = true;
-        _startRow=std::make_shared<int32_t>((int32_t)pJson["start_row"].asInt64());
+        if(!pJson["start_row"].isNull())
+        {
+            _startRow=std::make_shared<int32_t>((int32_t)pJson["start_row"].asInt64());
+        }
     }
     if(pJson.isMember("end_row"))
     {
         _dirtyFlag[2] = true;
-        _endRow=std::make_shared<int32_t>((int32_t)pJson["end_row"].asInt64());
+        if(!pJson["end_row"].isNull())
+        {
+            _endRow=std::make_shared<int32_t>((int32_t)pJson["end_row"].asInt64());
+        }
     }
     if(pJson.isMember("start_column"))
     {
         _dirtyFlag[3] = true;
-        _startColumn=std::make_shared<int32_t>((int32_t)pJson["start_column"].asInt64());
+        if(!pJson["start_column"].isNull())
+        {
+            _startColumn=std::make_shared<int32_t>((int32_t)pJson["start_column"].asInt64());
+        }
     }
     if(pJson.isMember("end_column"))
     {
         _dirtyFlag[4] = true;
-        _endColumn=std::make_shared<int32_t>((int32_t)pJson["end_column"].asInt64());
+        if(!pJson["end_column"].isNull())
+        {
+            _endColumn=std::make_shared<int32_t>((int32_t)pJson["end_column"].asInt64());
+        }
     }
     if(pJson.isMember("identifier"))
     {
         _dirtyFlag[5] = true;
-        _identifier=std::make_shared<std::string>(pJson["identifier"].asString());
+        if(!pJson["identifier"].isNull())
+        {
+            _identifier=std::make_shared<std::string>(pJson["identifier"].asString());
+        }
     }
     if(pJson.isMember("options"))
     {
         _dirtyFlag[6] = true;
-        _options=std::make_shared<std::string>(pJson["options"].asString());
+        if(!pJson["options"].isNull())
+        {
+            _options=std::make_shared<std::string>(pJson["options"].asString());
+        }
     }
     if(pJson.isMember("grid_id"))
     {
         _dirtyFlag[7] = true;
-        _gridId=std::make_shared<int64_t>((int64_t)pJson["grid_id"].asInt64());
+        if(!pJson["grid_id"].isNull())
+        {
+            _gridId=std::make_shared<int64_t>((int64_t)pJson["grid_id"].asInt64());
+        }
     }
 }
 
@@ -471,61 +583,82 @@ const std::vector<std::string> &GridWidgets::insertColumns() noexcept
 
 void GridWidgets::outputArgs(drogon::orm::internal::SqlBinder &binder) const
 {
-    if(getStartRow())
+    if(_dirtyFlag[1])
     {
-        binder << getValueOfStartRow();
+        if(getStartRow())
+        {
+            binder << getValueOfStartRow();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[2])
     {
-        binder << nullptr;
+        if(getEndRow())
+        {
+            binder << getValueOfEndRow();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getEndRow())
+    if(_dirtyFlag[3])
     {
-        binder << getValueOfEndRow();
+        if(getStartColumn())
+        {
+            binder << getValueOfStartColumn();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[4])
     {
-        binder << nullptr;
+        if(getEndColumn())
+        {
+            binder << getValueOfEndColumn();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getStartColumn())
+    if(_dirtyFlag[5])
     {
-        binder << getValueOfStartColumn();
+        if(getIdentifier())
+        {
+            binder << getValueOfIdentifier();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[6])
     {
-        binder << nullptr;
+        if(getOptions())
+        {
+            binder << getValueOfOptions();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getEndColumn())
+    if(_dirtyFlag[7])
     {
-        binder << getValueOfEndColumn();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getIdentifier())
-    {
-        binder << getValueOfIdentifier();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getOptions())
-    {
-        binder << getValueOfOptions();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getGridId())
-    {
-        binder << getValueOfGridId();
-    }
-    else
-    {
-        binder << nullptr;
+        if(getGridId())
+        {
+            binder << getValueOfGridId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
 }
 

@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <drogon/HttpController.h>
+
 #include "PrincipalRoles.h"
 using namespace drogon;
 

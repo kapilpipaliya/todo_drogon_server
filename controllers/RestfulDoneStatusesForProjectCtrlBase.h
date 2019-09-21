@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <drogon/HttpController.h>
+
 #include "DoneStatusesForProject.h"
 using namespace drogon;
 

@@ -5,11 +5,8 @@
  *  Users should implement business logic in the derived class.
  */
 
-#include "RestfulUserPreferencesCtrl.h"
+#include "RestfulUserPreferencesCtrlBase.h"
 #include <string>
-
-
-
 
 void RestfulUserPreferencesCtrlBase::getOne(const HttpRequestPtr &req,
                                             std::function<void(const HttpResponsePtr &)> &&callback,

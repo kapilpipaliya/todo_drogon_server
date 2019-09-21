@@ -138,35 +138,67 @@ NewsJournals::NewsJournals(const Json::Value &pJson, const std::vector<std::stri
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        _dirtyFlag[0] = true;
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
-        _journalId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        _dirtyFlag[1] = true;
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _journalId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
-        _projectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        _dirtyFlag[2] = true;
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _projectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
-        _title=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+        _dirtyFlag[3] = true;
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _title=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+        }
     }
     if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
     {
-        _summary=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        _dirtyFlag[4] = true;
+        if(!pJson[pMasqueradingVector[4]].isNull())
+        {
+            _summary=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        }
     }
     if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
     {
-        _description=std::make_shared<std::string>(pJson[pMasqueradingVector[5]].asString());
+        _dirtyFlag[5] = true;
+        if(!pJson[pMasqueradingVector[5]].isNull())
+        {
+            _description=std::make_shared<std::string>(pJson[pMasqueradingVector[5]].asString());
+        }
     }
     if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
     {
-        _authorId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[6]].asInt64());
+        _dirtyFlag[6] = true;
+        if(!pJson[pMasqueradingVector[6]].isNull())
+        {
+            _authorId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[6]].asInt64());
+        }
     }
     if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
     {
-        _commentsCount=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[7]].asInt64());
+        _dirtyFlag[7] = true;
+        if(!pJson[pMasqueradingVector[7]].isNull())
+        {
+            _commentsCount=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[7]].asInt64());
+        }
     }
 }
 
@@ -174,35 +206,67 @@ NewsJournals::NewsJournals(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        _dirtyFlag[0]=true;
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("journal_id"))
     {
-        _journalId=std::make_shared<int32_t>((int32_t)pJson["journal_id"].asInt64());
+        _dirtyFlag[1]=true;
+        if(!pJson["journal_id"].isNull())
+        {
+            _journalId=std::make_shared<int32_t>((int32_t)pJson["journal_id"].asInt64());
+        }
     }
     if(pJson.isMember("project_id"))
     {
-        _projectId=std::make_shared<int32_t>((int32_t)pJson["project_id"].asInt64());
+        _dirtyFlag[2]=true;
+        if(!pJson["project_id"].isNull())
+        {
+            _projectId=std::make_shared<int32_t>((int32_t)pJson["project_id"].asInt64());
+        }
     }
     if(pJson.isMember("title"))
     {
-        _title=std::make_shared<std::string>(pJson["title"].asString());
+        _dirtyFlag[3]=true;
+        if(!pJson["title"].isNull())
+        {
+            _title=std::make_shared<std::string>(pJson["title"].asString());
+        }
     }
     if(pJson.isMember("summary"))
     {
-        _summary=std::make_shared<std::string>(pJson["summary"].asString());
+        _dirtyFlag[4]=true;
+        if(!pJson["summary"].isNull())
+        {
+            _summary=std::make_shared<std::string>(pJson["summary"].asString());
+        }
     }
     if(pJson.isMember("description"))
     {
-        _description=std::make_shared<std::string>(pJson["description"].asString());
+        _dirtyFlag[5]=true;
+        if(!pJson["description"].isNull())
+        {
+            _description=std::make_shared<std::string>(pJson["description"].asString());
+        }
     }
     if(pJson.isMember("author_id"))
     {
-        _authorId=std::make_shared<int32_t>((int32_t)pJson["author_id"].asInt64());
+        _dirtyFlag[6]=true;
+        if(!pJson["author_id"].isNull())
+        {
+            _authorId=std::make_shared<int32_t>((int32_t)pJson["author_id"].asInt64());
+        }
     }
     if(pJson.isMember("comments_count"))
     {
-        _commentsCount=std::make_shared<int32_t>((int32_t)pJson["comments_count"].asInt64());
+        _dirtyFlag[7]=true;
+        if(!pJson["comments_count"].isNull())
+        {
+            _commentsCount=std::make_shared<int32_t>((int32_t)pJson["comments_count"].asInt64());
+        }
     }
 }
 
@@ -216,42 +280,66 @@ void NewsJournals::updateByMasqueradedJson(const Json::Value &pJson,
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
         _dirtyFlag[1] = true;
-        _journalId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _journalId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
         _dirtyFlag[2] = true;
-        _projectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _projectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
         _dirtyFlag[3] = true;
-        _title=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _title=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+        }
     }
     if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
     {
         _dirtyFlag[4] = true;
-        _summary=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        if(!pJson[pMasqueradingVector[4]].isNull())
+        {
+            _summary=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        }
     }
     if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
     {
         _dirtyFlag[5] = true;
-        _description=std::make_shared<std::string>(pJson[pMasqueradingVector[5]].asString());
+        if(!pJson[pMasqueradingVector[5]].isNull())
+        {
+            _description=std::make_shared<std::string>(pJson[pMasqueradingVector[5]].asString());
+        }
     }
     if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
     {
         _dirtyFlag[6] = true;
-        _authorId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[6]].asInt64());
+        if(!pJson[pMasqueradingVector[6]].isNull())
+        {
+            _authorId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[6]].asInt64());
+        }
     }
     if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
     {
         _dirtyFlag[7] = true;
-        _commentsCount=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[7]].asInt64());
+        if(!pJson[pMasqueradingVector[7]].isNull())
+        {
+            _commentsCount=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[7]].asInt64());
+        }
     }
 }
                                                                     
@@ -259,42 +347,66 @@ void NewsJournals::updateByJson(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("journal_id"))
     {
         _dirtyFlag[1] = true;
-        _journalId=std::make_shared<int32_t>((int32_t)pJson["journal_id"].asInt64());
+        if(!pJson["journal_id"].isNull())
+        {
+            _journalId=std::make_shared<int32_t>((int32_t)pJson["journal_id"].asInt64());
+        }
     }
     if(pJson.isMember("project_id"))
     {
         _dirtyFlag[2] = true;
-        _projectId=std::make_shared<int32_t>((int32_t)pJson["project_id"].asInt64());
+        if(!pJson["project_id"].isNull())
+        {
+            _projectId=std::make_shared<int32_t>((int32_t)pJson["project_id"].asInt64());
+        }
     }
     if(pJson.isMember("title"))
     {
         _dirtyFlag[3] = true;
-        _title=std::make_shared<std::string>(pJson["title"].asString());
+        if(!pJson["title"].isNull())
+        {
+            _title=std::make_shared<std::string>(pJson["title"].asString());
+        }
     }
     if(pJson.isMember("summary"))
     {
         _dirtyFlag[4] = true;
-        _summary=std::make_shared<std::string>(pJson["summary"].asString());
+        if(!pJson["summary"].isNull())
+        {
+            _summary=std::make_shared<std::string>(pJson["summary"].asString());
+        }
     }
     if(pJson.isMember("description"))
     {
         _dirtyFlag[5] = true;
-        _description=std::make_shared<std::string>(pJson["description"].asString());
+        if(!pJson["description"].isNull())
+        {
+            _description=std::make_shared<std::string>(pJson["description"].asString());
+        }
     }
     if(pJson.isMember("author_id"))
     {
         _dirtyFlag[6] = true;
-        _authorId=std::make_shared<int32_t>((int32_t)pJson["author_id"].asInt64());
+        if(!pJson["author_id"].isNull())
+        {
+            _authorId=std::make_shared<int32_t>((int32_t)pJson["author_id"].asInt64());
+        }
     }
     if(pJson.isMember("comments_count"))
     {
         _dirtyFlag[7] = true;
-        _commentsCount=std::make_shared<int32_t>((int32_t)pJson["comments_count"].asInt64());
+        if(!pJson["comments_count"].isNull())
+        {
+            _commentsCount=std::make_shared<int32_t>((int32_t)pJson["comments_count"].asInt64());
+        }
     }
 }
 
@@ -476,61 +588,82 @@ const std::vector<std::string> &NewsJournals::insertColumns() noexcept
 
 void NewsJournals::outputArgs(drogon::orm::internal::SqlBinder &binder) const
 {
-    if(getJournalId())
+    if(_dirtyFlag[1])
     {
-        binder << getValueOfJournalId();
+        if(getJournalId())
+        {
+            binder << getValueOfJournalId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[2])
     {
-        binder << nullptr;
+        if(getProjectId())
+        {
+            binder << getValueOfProjectId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getProjectId())
+    if(_dirtyFlag[3])
     {
-        binder << getValueOfProjectId();
+        if(getTitle())
+        {
+            binder << getValueOfTitle();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[4])
     {
-        binder << nullptr;
+        if(getSummary())
+        {
+            binder << getValueOfSummary();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getTitle())
+    if(_dirtyFlag[5])
     {
-        binder << getValueOfTitle();
+        if(getDescription())
+        {
+            binder << getValueOfDescription();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[6])
     {
-        binder << nullptr;
+        if(getAuthorId())
+        {
+            binder << getValueOfAuthorId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getSummary())
+    if(_dirtyFlag[7])
     {
-        binder << getValueOfSummary();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getDescription())
-    {
-        binder << getValueOfDescription();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getAuthorId())
-    {
-        binder << getValueOfAuthorId();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getCommentsCount())
-    {
-        binder << getValueOfCommentsCount();
-    }
-    else
-    {
-        binder << nullptr;
+        if(getCommentsCount())
+        {
+            binder << getValueOfCommentsCount();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
 }
 

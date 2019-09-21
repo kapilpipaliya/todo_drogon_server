@@ -83,15 +83,27 @@ WebhooksEvents::WebhooksEvents(const Json::Value &pJson, const std::vector<std::
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        _dirtyFlag[0] = true;
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
-        _name=std::make_shared<std::string>(pJson[pMasqueradingVector[1]].asString());
+        _dirtyFlag[1] = true;
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _name=std::make_shared<std::string>(pJson[pMasqueradingVector[1]].asString());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
-        _webhooksWebhookId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        _dirtyFlag[2] = true;
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _webhooksWebhookId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        }
     }
 }
 
@@ -99,15 +111,27 @@ WebhooksEvents::WebhooksEvents(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        _dirtyFlag[0]=true;
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("name"))
     {
-        _name=std::make_shared<std::string>(pJson["name"].asString());
+        _dirtyFlag[1]=true;
+        if(!pJson["name"].isNull())
+        {
+            _name=std::make_shared<std::string>(pJson["name"].asString());
+        }
     }
     if(pJson.isMember("webhooks_webhook_id"))
     {
-        _webhooksWebhookId=std::make_shared<int32_t>((int32_t)pJson["webhooks_webhook_id"].asInt64());
+        _dirtyFlag[2]=true;
+        if(!pJson["webhooks_webhook_id"].isNull())
+        {
+            _webhooksWebhookId=std::make_shared<int32_t>((int32_t)pJson["webhooks_webhook_id"].asInt64());
+        }
     }
 }
 
@@ -121,17 +145,26 @@ void WebhooksEvents::updateByMasqueradedJson(const Json::Value &pJson,
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
         _dirtyFlag[1] = true;
-        _name=std::make_shared<std::string>(pJson[pMasqueradingVector[1]].asString());
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _name=std::make_shared<std::string>(pJson[pMasqueradingVector[1]].asString());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
         _dirtyFlag[2] = true;
-        _webhooksWebhookId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _webhooksWebhookId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        }
     }
 }
                                                                     
@@ -139,17 +172,26 @@ void WebhooksEvents::updateByJson(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("name"))
     {
         _dirtyFlag[1] = true;
-        _name=std::make_shared<std::string>(pJson["name"].asString());
+        if(!pJson["name"].isNull())
+        {
+            _name=std::make_shared<std::string>(pJson["name"].asString());
+        }
     }
     if(pJson.isMember("webhooks_webhook_id"))
     {
         _dirtyFlag[2] = true;
-        _webhooksWebhookId=std::make_shared<int32_t>((int32_t)pJson["webhooks_webhook_id"].asInt64());
+        if(!pJson["webhooks_webhook_id"].isNull())
+        {
+            _webhooksWebhookId=std::make_shared<int32_t>((int32_t)pJson["webhooks_webhook_id"].asInt64());
+        }
     }
 }
 
@@ -226,21 +268,27 @@ const std::vector<std::string> &WebhooksEvents::insertColumns() noexcept
 
 void WebhooksEvents::outputArgs(drogon::orm::internal::SqlBinder &binder) const
 {
-    if(getName())
+    if(_dirtyFlag[1])
     {
-        binder << getValueOfName();
+        if(getName())
+        {
+            binder << getValueOfName();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[2])
     {
-        binder << nullptr;
-    }
-    if(getWebhooksWebhookId())
-    {
-        binder << getValueOfWebhooksWebhookId();
-    }
-    else
-    {
-        binder << nullptr;
+        if(getWebhooksWebhookId())
+        {
+            binder << getValueOfWebhooksWebhookId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
 }
 

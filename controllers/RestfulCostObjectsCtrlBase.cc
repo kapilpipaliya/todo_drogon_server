@@ -5,11 +5,8 @@
  *  Users should implement business logic in the derived class.
  */
 
-#include "RestfulCostObjectsCtrl.h"
+#include "RestfulCostObjectsCtrlBase.h"
 #include <string>
-
-
-
 
 void RestfulCostObjectsCtrlBase::getOne(const HttpRequestPtr &req,
                                         std::function<void(const HttpResponsePtr &)> &&callback,

@@ -5,11 +5,8 @@
  *  Users should implement business logic in the derived class.
  */
 
-#include "RestfulAnnouncementsCtrl.h"
+#include "RestfulAnnouncementsCtrlBase.h"
 #include <string>
-
-
-
 
 void RestfulAnnouncementsCtrlBase::getOne(const HttpRequestPtr &req,
                                           std::function<void(const HttpResponsePtr &)> &&callback,

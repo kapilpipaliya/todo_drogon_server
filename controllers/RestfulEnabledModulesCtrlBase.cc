@@ -5,11 +5,8 @@
  *  Users should implement business logic in the derived class.
  */
 
-#include "RestfulEnabledModulesCtrl.h"
+#include "RestfulEnabledModulesCtrlBase.h"
 #include <string>
-
-
-
 
 void RestfulEnabledModulesCtrlBase::getOne(const HttpRequestPtr &req,
                                            std::function<void(const HttpResponsePtr &)> &&callback,

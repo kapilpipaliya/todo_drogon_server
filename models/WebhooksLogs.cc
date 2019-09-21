@@ -231,77 +231,121 @@ WebhooksLogs::WebhooksLogs(const Json::Value &pJson, const std::vector<std::stri
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        _dirtyFlag[0] = true;
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
-        _webhooksWebhookId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        _dirtyFlag[1] = true;
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _webhooksWebhookId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
-        _eventName=std::make_shared<std::string>(pJson[pMasqueradingVector[2]].asString());
+        _dirtyFlag[2] = true;
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _eventName=std::make_shared<std::string>(pJson[pMasqueradingVector[2]].asString());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
-        _url=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+        _dirtyFlag[3] = true;
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _url=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+        }
     }
     if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
     {
-        _requestHeaders=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        _dirtyFlag[4] = true;
+        if(!pJson[pMasqueradingVector[4]].isNull())
+        {
+            _requestHeaders=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        }
     }
     if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
     {
-        _requestBody=std::make_shared<std::string>(pJson[pMasqueradingVector[5]].asString());
+        _dirtyFlag[5] = true;
+        if(!pJson[pMasqueradingVector[5]].isNull())
+        {
+            _requestBody=std::make_shared<std::string>(pJson[pMasqueradingVector[5]].asString());
+        }
     }
     if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
     {
-        _responseCode=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[6]].asInt64());
+        _dirtyFlag[6] = true;
+        if(!pJson[pMasqueradingVector[6]].isNull())
+        {
+            _responseCode=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[6]].asInt64());
+        }
     }
     if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
     {
-        _responseHeaders=std::make_shared<std::string>(pJson[pMasqueradingVector[7]].asString());
+        _dirtyFlag[7] = true;
+        if(!pJson[pMasqueradingVector[7]].isNull())
+        {
+            _responseHeaders=std::make_shared<std::string>(pJson[pMasqueradingVector[7]].asString());
+        }
     }
     if(!pMasqueradingVector[8].empty() && pJson.isMember(pMasqueradingVector[8]))
     {
-        _responseBody=std::make_shared<std::string>(pJson[pMasqueradingVector[8]].asString());
+        _dirtyFlag[8] = true;
+        if(!pJson[pMasqueradingVector[8]].isNull())
+        {
+            _responseBody=std::make_shared<std::string>(pJson[pMasqueradingVector[8]].asString());
+        }
     }
     if(!pMasqueradingVector[9].empty() && pJson.isMember(pMasqueradingVector[9]))
     {
-        auto timeStr = pJson[pMasqueradingVector[9]].asString();
-        struct tm stm;
-        memset(&stm,0,sizeof(stm));
-        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
-        size_t t = timelocal(&stm);
-        size_t decimalNum = 0;
-        if(*p=='.')
+        _dirtyFlag[9] = true;
+        if(!pJson[pMasqueradingVector[9]].isNull())
         {
-            std::string decimals(p+1,&timeStr[timeStr.length()]);
-            while(decimals.length()<6)
+            auto timeStr = pJson[pMasqueradingVector[9]].asString();
+            struct tm stm;
+            memset(&stm,0,sizeof(stm));
+            auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+            size_t t = timelocal(&stm);
+            size_t decimalNum = 0;
+            if(*p=='.')
             {
-                decimals += "0";
+                std::string decimals(p+1,&timeStr[timeStr.length()]);
+                while(decimals.length()<6)
+                {
+                    decimals += "0";
+                }
+                decimalNum = (size_t)atol(decimals.c_str());
             }
-            decimalNum = (size_t)atol(decimals.c_str());
+            _createdAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
         }
-        _createdAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
     }
     if(!pMasqueradingVector[10].empty() && pJson.isMember(pMasqueradingVector[10]))
     {
-        auto timeStr = pJson[pMasqueradingVector[10]].asString();
-        struct tm stm;
-        memset(&stm,0,sizeof(stm));
-        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
-        size_t t = timelocal(&stm);
-        size_t decimalNum = 0;
-        if(*p=='.')
+        _dirtyFlag[10] = true;
+        if(!pJson[pMasqueradingVector[10]].isNull())
         {
-            std::string decimals(p+1,&timeStr[timeStr.length()]);
-            while(decimals.length()<6)
+            auto timeStr = pJson[pMasqueradingVector[10]].asString();
+            struct tm stm;
+            memset(&stm,0,sizeof(stm));
+            auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+            size_t t = timelocal(&stm);
+            size_t decimalNum = 0;
+            if(*p=='.')
             {
-                decimals += "0";
+                std::string decimals(p+1,&timeStr[timeStr.length()]);
+                while(decimals.length()<6)
+                {
+                    decimals += "0";
+                }
+                decimalNum = (size_t)atol(decimals.c_str());
             }
-            decimalNum = (size_t)atol(decimals.c_str());
+            _updatedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
         }
-        _updatedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
     }
 }
 
@@ -309,77 +353,121 @@ WebhooksLogs::WebhooksLogs(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        _dirtyFlag[0]=true;
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("webhooks_webhook_id"))
     {
-        _webhooksWebhookId=std::make_shared<int32_t>((int32_t)pJson["webhooks_webhook_id"].asInt64());
+        _dirtyFlag[1]=true;
+        if(!pJson["webhooks_webhook_id"].isNull())
+        {
+            _webhooksWebhookId=std::make_shared<int32_t>((int32_t)pJson["webhooks_webhook_id"].asInt64());
+        }
     }
     if(pJson.isMember("event_name"))
     {
-        _eventName=std::make_shared<std::string>(pJson["event_name"].asString());
+        _dirtyFlag[2]=true;
+        if(!pJson["event_name"].isNull())
+        {
+            _eventName=std::make_shared<std::string>(pJson["event_name"].asString());
+        }
     }
     if(pJson.isMember("url"))
     {
-        _url=std::make_shared<std::string>(pJson["url"].asString());
+        _dirtyFlag[3]=true;
+        if(!pJson["url"].isNull())
+        {
+            _url=std::make_shared<std::string>(pJson["url"].asString());
+        }
     }
     if(pJson.isMember("request_headers"))
     {
-        _requestHeaders=std::make_shared<std::string>(pJson["request_headers"].asString());
+        _dirtyFlag[4]=true;
+        if(!pJson["request_headers"].isNull())
+        {
+            _requestHeaders=std::make_shared<std::string>(pJson["request_headers"].asString());
+        }
     }
     if(pJson.isMember("request_body"))
     {
-        _requestBody=std::make_shared<std::string>(pJson["request_body"].asString());
+        _dirtyFlag[5]=true;
+        if(!pJson["request_body"].isNull())
+        {
+            _requestBody=std::make_shared<std::string>(pJson["request_body"].asString());
+        }
     }
     if(pJson.isMember("response_code"))
     {
-        _responseCode=std::make_shared<int32_t>((int32_t)pJson["response_code"].asInt64());
+        _dirtyFlag[6]=true;
+        if(!pJson["response_code"].isNull())
+        {
+            _responseCode=std::make_shared<int32_t>((int32_t)pJson["response_code"].asInt64());
+        }
     }
     if(pJson.isMember("response_headers"))
     {
-        _responseHeaders=std::make_shared<std::string>(pJson["response_headers"].asString());
+        _dirtyFlag[7]=true;
+        if(!pJson["response_headers"].isNull())
+        {
+            _responseHeaders=std::make_shared<std::string>(pJson["response_headers"].asString());
+        }
     }
     if(pJson.isMember("response_body"))
     {
-        _responseBody=std::make_shared<std::string>(pJson["response_body"].asString());
+        _dirtyFlag[8]=true;
+        if(!pJson["response_body"].isNull())
+        {
+            _responseBody=std::make_shared<std::string>(pJson["response_body"].asString());
+        }
     }
     if(pJson.isMember("created_at"))
     {
-        auto timeStr = pJson["created_at"].asString();
-        struct tm stm;
-        memset(&stm,0,sizeof(stm));
-        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
-        size_t t = timelocal(&stm);
-        size_t decimalNum = 0;
-        if(*p=='.')
+        _dirtyFlag[9]=true;
+        if(!pJson["created_at"].isNull())
         {
-            std::string decimals(p+1,&timeStr[timeStr.length()]);
-            while(decimals.length()<6)
+            auto timeStr = pJson["created_at"].asString();
+            struct tm stm;
+            memset(&stm,0,sizeof(stm));
+            auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+            size_t t = timelocal(&stm);
+            size_t decimalNum = 0;
+            if(*p=='.')
             {
-                decimals += "0";
+                std::string decimals(p+1,&timeStr[timeStr.length()]);
+                while(decimals.length()<6)
+                {
+                    decimals += "0";
+                }
+                decimalNum = (size_t)atol(decimals.c_str());
             }
-            decimalNum = (size_t)atol(decimals.c_str());
+            _createdAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
         }
-        _createdAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
     }
     if(pJson.isMember("updated_at"))
     {
-        auto timeStr = pJson["updated_at"].asString();
-        struct tm stm;
-        memset(&stm,0,sizeof(stm));
-        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
-        size_t t = timelocal(&stm);
-        size_t decimalNum = 0;
-        if(*p=='.')
+        _dirtyFlag[10]=true;
+        if(!pJson["updated_at"].isNull())
         {
-            std::string decimals(p+1,&timeStr[timeStr.length()]);
-            while(decimals.length()<6)
+            auto timeStr = pJson["updated_at"].asString();
+            struct tm stm;
+            memset(&stm,0,sizeof(stm));
+            auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+            size_t t = timelocal(&stm);
+            size_t decimalNum = 0;
+            if(*p=='.')
             {
-                decimals += "0";
+                std::string decimals(p+1,&timeStr[timeStr.length()]);
+                while(decimals.length()<6)
+                {
+                    decimals += "0";
+                }
+                decimalNum = (size_t)atol(decimals.c_str());
             }
-            decimalNum = (size_t)atol(decimals.c_str());
+            _updatedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
         }
-        _updatedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
     }
 }
 
@@ -393,87 +481,120 @@ void WebhooksLogs::updateByMasqueradedJson(const Json::Value &pJson,
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
         _dirtyFlag[1] = true;
-        _webhooksWebhookId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _webhooksWebhookId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
         _dirtyFlag[2] = true;
-        _eventName=std::make_shared<std::string>(pJson[pMasqueradingVector[2]].asString());
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _eventName=std::make_shared<std::string>(pJson[pMasqueradingVector[2]].asString());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
         _dirtyFlag[3] = true;
-        _url=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _url=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+        }
     }
     if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
     {
         _dirtyFlag[4] = true;
-        _requestHeaders=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        if(!pJson[pMasqueradingVector[4]].isNull())
+        {
+            _requestHeaders=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        }
     }
     if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
     {
         _dirtyFlag[5] = true;
-        _requestBody=std::make_shared<std::string>(pJson[pMasqueradingVector[5]].asString());
+        if(!pJson[pMasqueradingVector[5]].isNull())
+        {
+            _requestBody=std::make_shared<std::string>(pJson[pMasqueradingVector[5]].asString());
+        }
     }
     if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
     {
         _dirtyFlag[6] = true;
-        _responseCode=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[6]].asInt64());
+        if(!pJson[pMasqueradingVector[6]].isNull())
+        {
+            _responseCode=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[6]].asInt64());
+        }
     }
     if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
     {
         _dirtyFlag[7] = true;
-        _responseHeaders=std::make_shared<std::string>(pJson[pMasqueradingVector[7]].asString());
+        if(!pJson[pMasqueradingVector[7]].isNull())
+        {
+            _responseHeaders=std::make_shared<std::string>(pJson[pMasqueradingVector[7]].asString());
+        }
     }
     if(!pMasqueradingVector[8].empty() && pJson.isMember(pMasqueradingVector[8]))
     {
         _dirtyFlag[8] = true;
-        _responseBody=std::make_shared<std::string>(pJson[pMasqueradingVector[8]].asString());
+        if(!pJson[pMasqueradingVector[8]].isNull())
+        {
+            _responseBody=std::make_shared<std::string>(pJson[pMasqueradingVector[8]].asString());
+        }
     }
     if(!pMasqueradingVector[9].empty() && pJson.isMember(pMasqueradingVector[9]))
     {
         _dirtyFlag[9] = true;
-        auto timeStr = pJson[pMasqueradingVector[9]].asString();
-        struct tm stm;
-        memset(&stm,0,sizeof(stm));
-        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
-        size_t t = timelocal(&stm);
-        size_t decimalNum = 0;
-        if(*p=='.')
+        if(!pJson[pMasqueradingVector[9]].isNull())
         {
-            std::string decimals(p+1,&timeStr[timeStr.length()]);
-            while(decimals.length()<6)
+            auto timeStr = pJson[pMasqueradingVector[9]].asString();
+            struct tm stm;
+            memset(&stm,0,sizeof(stm));
+            auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+            size_t t = timelocal(&stm);
+            size_t decimalNum = 0;
+            if(*p=='.')
             {
-                decimals += "0";
+                std::string decimals(p+1,&timeStr[timeStr.length()]);
+                while(decimals.length()<6)
+                {
+                    decimals += "0";
+                }
+                decimalNum = (size_t)atol(decimals.c_str());
             }
-            decimalNum = (size_t)atol(decimals.c_str());
+            _createdAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
         }
-        _createdAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
     }
     if(!pMasqueradingVector[10].empty() && pJson.isMember(pMasqueradingVector[10]))
     {
         _dirtyFlag[10] = true;
-        auto timeStr = pJson[pMasqueradingVector[10]].asString();
-        struct tm stm;
-        memset(&stm,0,sizeof(stm));
-        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
-        size_t t = timelocal(&stm);
-        size_t decimalNum = 0;
-        if(*p=='.')
+        if(!pJson[pMasqueradingVector[10]].isNull())
         {
-            std::string decimals(p+1,&timeStr[timeStr.length()]);
-            while(decimals.length()<6)
+            auto timeStr = pJson[pMasqueradingVector[10]].asString();
+            struct tm stm;
+            memset(&stm,0,sizeof(stm));
+            auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+            size_t t = timelocal(&stm);
+            size_t decimalNum = 0;
+            if(*p=='.')
             {
-                decimals += "0";
+                std::string decimals(p+1,&timeStr[timeStr.length()]);
+                while(decimals.length()<6)
+                {
+                    decimals += "0";
+                }
+                decimalNum = (size_t)atol(decimals.c_str());
             }
-            decimalNum = (size_t)atol(decimals.c_str());
+            _updatedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
         }
-        _updatedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
     }
 }
                                                                     
@@ -481,87 +602,120 @@ void WebhooksLogs::updateByJson(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("webhooks_webhook_id"))
     {
         _dirtyFlag[1] = true;
-        _webhooksWebhookId=std::make_shared<int32_t>((int32_t)pJson["webhooks_webhook_id"].asInt64());
+        if(!pJson["webhooks_webhook_id"].isNull())
+        {
+            _webhooksWebhookId=std::make_shared<int32_t>((int32_t)pJson["webhooks_webhook_id"].asInt64());
+        }
     }
     if(pJson.isMember("event_name"))
     {
         _dirtyFlag[2] = true;
-        _eventName=std::make_shared<std::string>(pJson["event_name"].asString());
+        if(!pJson["event_name"].isNull())
+        {
+            _eventName=std::make_shared<std::string>(pJson["event_name"].asString());
+        }
     }
     if(pJson.isMember("url"))
     {
         _dirtyFlag[3] = true;
-        _url=std::make_shared<std::string>(pJson["url"].asString());
+        if(!pJson["url"].isNull())
+        {
+            _url=std::make_shared<std::string>(pJson["url"].asString());
+        }
     }
     if(pJson.isMember("request_headers"))
     {
         _dirtyFlag[4] = true;
-        _requestHeaders=std::make_shared<std::string>(pJson["request_headers"].asString());
+        if(!pJson["request_headers"].isNull())
+        {
+            _requestHeaders=std::make_shared<std::string>(pJson["request_headers"].asString());
+        }
     }
     if(pJson.isMember("request_body"))
     {
         _dirtyFlag[5] = true;
-        _requestBody=std::make_shared<std::string>(pJson["request_body"].asString());
+        if(!pJson["request_body"].isNull())
+        {
+            _requestBody=std::make_shared<std::string>(pJson["request_body"].asString());
+        }
     }
     if(pJson.isMember("response_code"))
     {
         _dirtyFlag[6] = true;
-        _responseCode=std::make_shared<int32_t>((int32_t)pJson["response_code"].asInt64());
+        if(!pJson["response_code"].isNull())
+        {
+            _responseCode=std::make_shared<int32_t>((int32_t)pJson["response_code"].asInt64());
+        }
     }
     if(pJson.isMember("response_headers"))
     {
         _dirtyFlag[7] = true;
-        _responseHeaders=std::make_shared<std::string>(pJson["response_headers"].asString());
+        if(!pJson["response_headers"].isNull())
+        {
+            _responseHeaders=std::make_shared<std::string>(pJson["response_headers"].asString());
+        }
     }
     if(pJson.isMember("response_body"))
     {
         _dirtyFlag[8] = true;
-        _responseBody=std::make_shared<std::string>(pJson["response_body"].asString());
+        if(!pJson["response_body"].isNull())
+        {
+            _responseBody=std::make_shared<std::string>(pJson["response_body"].asString());
+        }
     }
     if(pJson.isMember("created_at"))
     {
         _dirtyFlag[9] = true;
-        auto timeStr = pJson["created_at"].asString();
-        struct tm stm;
-        memset(&stm,0,sizeof(stm));
-        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
-        size_t t = timelocal(&stm);
-        size_t decimalNum = 0;
-        if(*p=='.')
+        if(!pJson["created_at"].isNull())
         {
-            std::string decimals(p+1,&timeStr[timeStr.length()]);
-            while(decimals.length()<6)
+            auto timeStr = pJson["created_at"].asString();
+            struct tm stm;
+            memset(&stm,0,sizeof(stm));
+            auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+            size_t t = timelocal(&stm);
+            size_t decimalNum = 0;
+            if(*p=='.')
             {
-                decimals += "0";
+                std::string decimals(p+1,&timeStr[timeStr.length()]);
+                while(decimals.length()<6)
+                {
+                    decimals += "0";
+                }
+                decimalNum = (size_t)atol(decimals.c_str());
             }
-            decimalNum = (size_t)atol(decimals.c_str());
+            _createdAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
         }
-        _createdAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
     }
     if(pJson.isMember("updated_at"))
     {
         _dirtyFlag[10] = true;
-        auto timeStr = pJson["updated_at"].asString();
-        struct tm stm;
-        memset(&stm,0,sizeof(stm));
-        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
-        size_t t = timelocal(&stm);
-        size_t decimalNum = 0;
-        if(*p=='.')
+        if(!pJson["updated_at"].isNull())
         {
-            std::string decimals(p+1,&timeStr[timeStr.length()]);
-            while(decimals.length()<6)
+            auto timeStr = pJson["updated_at"].asString();
+            struct tm stm;
+            memset(&stm,0,sizeof(stm));
+            auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+            size_t t = timelocal(&stm);
+            size_t decimalNum = 0;
+            if(*p=='.')
             {
-                decimals += "0";
+                std::string decimals(p+1,&timeStr[timeStr.length()]);
+                while(decimals.length()<6)
+                {
+                    decimals += "0";
+                }
+                decimalNum = (size_t)atol(decimals.c_str());
             }
-            decimalNum = (size_t)atol(decimals.c_str());
+            _updatedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
         }
-        _updatedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
     }
 }
 
@@ -815,85 +969,115 @@ const std::vector<std::string> &WebhooksLogs::insertColumns() noexcept
 
 void WebhooksLogs::outputArgs(drogon::orm::internal::SqlBinder &binder) const
 {
-    if(getWebhooksWebhookId())
+    if(_dirtyFlag[1])
     {
-        binder << getValueOfWebhooksWebhookId();
+        if(getWebhooksWebhookId())
+        {
+            binder << getValueOfWebhooksWebhookId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[2])
     {
-        binder << nullptr;
+        if(getEventName())
+        {
+            binder << getValueOfEventName();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getEventName())
+    if(_dirtyFlag[3])
     {
-        binder << getValueOfEventName();
+        if(getUrl())
+        {
+            binder << getValueOfUrl();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[4])
     {
-        binder << nullptr;
+        if(getRequestHeaders())
+        {
+            binder << getValueOfRequestHeaders();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getUrl())
+    if(_dirtyFlag[5])
     {
-        binder << getValueOfUrl();
+        if(getRequestBody())
+        {
+            binder << getValueOfRequestBody();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[6])
     {
-        binder << nullptr;
+        if(getResponseCode())
+        {
+            binder << getValueOfResponseCode();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getRequestHeaders())
+    if(_dirtyFlag[7])
     {
-        binder << getValueOfRequestHeaders();
+        if(getResponseHeaders())
+        {
+            binder << getValueOfResponseHeaders();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[8])
     {
-        binder << nullptr;
+        if(getResponseBody())
+        {
+            binder << getValueOfResponseBody();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getRequestBody())
+    if(_dirtyFlag[9])
     {
-        binder << getValueOfRequestBody();
+        if(getCreatedAt())
+        {
+            binder << getValueOfCreatedAt();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[10])
     {
-        binder << nullptr;
-    }
-    if(getResponseCode())
-    {
-        binder << getValueOfResponseCode();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getResponseHeaders())
-    {
-        binder << getValueOfResponseHeaders();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getResponseBody())
-    {
-        binder << getValueOfResponseBody();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getCreatedAt())
-    {
-        binder << getValueOfCreatedAt();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getUpdatedAt())
-    {
-        binder << getValueOfUpdatedAt();
-    }
-    else
-    {
-        binder << nullptr;
+        if(getUpdatedAt())
+        {
+            binder << getValueOfUpdatedAt();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
 }
 

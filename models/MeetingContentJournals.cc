@@ -116,27 +116,51 @@ MeetingContentJournals::MeetingContentJournals(const Json::Value &pJson, const s
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        _dirtyFlag[0] = true;
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
-        _journalId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        _dirtyFlag[1] = true;
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _journalId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
-        _meetingId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        _dirtyFlag[2] = true;
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _meetingId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
-        _authorId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        _dirtyFlag[3] = true;
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _authorId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        }
     }
     if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
     {
-        _text=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        _dirtyFlag[4] = true;
+        if(!pJson[pMasqueradingVector[4]].isNull())
+        {
+            _text=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        }
     }
     if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
     {
-        _locked=std::make_shared<bool>(pJson[pMasqueradingVector[5]].asBool());
+        _dirtyFlag[5] = true;
+        if(!pJson[pMasqueradingVector[5]].isNull())
+        {
+            _locked=std::make_shared<bool>(pJson[pMasqueradingVector[5]].asBool());
+        }
     }
 }
 
@@ -144,27 +168,51 @@ MeetingContentJournals::MeetingContentJournals(const Json::Value &pJson) noexcep
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        _dirtyFlag[0]=true;
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("journal_id"))
     {
-        _journalId=std::make_shared<int32_t>((int32_t)pJson["journal_id"].asInt64());
+        _dirtyFlag[1]=true;
+        if(!pJson["journal_id"].isNull())
+        {
+            _journalId=std::make_shared<int32_t>((int32_t)pJson["journal_id"].asInt64());
+        }
     }
     if(pJson.isMember("meeting_id"))
     {
-        _meetingId=std::make_shared<int32_t>((int32_t)pJson["meeting_id"].asInt64());
+        _dirtyFlag[2]=true;
+        if(!pJson["meeting_id"].isNull())
+        {
+            _meetingId=std::make_shared<int32_t>((int32_t)pJson["meeting_id"].asInt64());
+        }
     }
     if(pJson.isMember("author_id"))
     {
-        _authorId=std::make_shared<int32_t>((int32_t)pJson["author_id"].asInt64());
+        _dirtyFlag[3]=true;
+        if(!pJson["author_id"].isNull())
+        {
+            _authorId=std::make_shared<int32_t>((int32_t)pJson["author_id"].asInt64());
+        }
     }
     if(pJson.isMember("text"))
     {
-        _text=std::make_shared<std::string>(pJson["text"].asString());
+        _dirtyFlag[4]=true;
+        if(!pJson["text"].isNull())
+        {
+            _text=std::make_shared<std::string>(pJson["text"].asString());
+        }
     }
     if(pJson.isMember("locked"))
     {
-        _locked=std::make_shared<bool>(pJson["locked"].asBool());
+        _dirtyFlag[5]=true;
+        if(!pJson["locked"].isNull())
+        {
+            _locked=std::make_shared<bool>(pJson["locked"].asBool());
+        }
     }
 }
 
@@ -178,32 +226,50 @@ void MeetingContentJournals::updateByMasqueradedJson(const Json::Value &pJson,
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
         _dirtyFlag[1] = true;
-        _journalId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _journalId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
         _dirtyFlag[2] = true;
-        _meetingId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _meetingId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
         _dirtyFlag[3] = true;
-        _authorId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _authorId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        }
     }
     if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
     {
         _dirtyFlag[4] = true;
-        _text=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        if(!pJson[pMasqueradingVector[4]].isNull())
+        {
+            _text=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        }
     }
     if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
     {
         _dirtyFlag[5] = true;
-        _locked=std::make_shared<bool>(pJson[pMasqueradingVector[5]].asBool());
+        if(!pJson[pMasqueradingVector[5]].isNull())
+        {
+            _locked=std::make_shared<bool>(pJson[pMasqueradingVector[5]].asBool());
+        }
     }
 }
                                                                     
@@ -211,32 +277,50 @@ void MeetingContentJournals::updateByJson(const Json::Value &pJson) noexcept(fal
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("journal_id"))
     {
         _dirtyFlag[1] = true;
-        _journalId=std::make_shared<int32_t>((int32_t)pJson["journal_id"].asInt64());
+        if(!pJson["journal_id"].isNull())
+        {
+            _journalId=std::make_shared<int32_t>((int32_t)pJson["journal_id"].asInt64());
+        }
     }
     if(pJson.isMember("meeting_id"))
     {
         _dirtyFlag[2] = true;
-        _meetingId=std::make_shared<int32_t>((int32_t)pJson["meeting_id"].asInt64());
+        if(!pJson["meeting_id"].isNull())
+        {
+            _meetingId=std::make_shared<int32_t>((int32_t)pJson["meeting_id"].asInt64());
+        }
     }
     if(pJson.isMember("author_id"))
     {
         _dirtyFlag[3] = true;
-        _authorId=std::make_shared<int32_t>((int32_t)pJson["author_id"].asInt64());
+        if(!pJson["author_id"].isNull())
+        {
+            _authorId=std::make_shared<int32_t>((int32_t)pJson["author_id"].asInt64());
+        }
     }
     if(pJson.isMember("text"))
     {
         _dirtyFlag[4] = true;
-        _text=std::make_shared<std::string>(pJson["text"].asString());
+        if(!pJson["text"].isNull())
+        {
+            _text=std::make_shared<std::string>(pJson["text"].asString());
+        }
     }
     if(pJson.isMember("locked"))
     {
         _dirtyFlag[5] = true;
-        _locked=std::make_shared<bool>(pJson["locked"].asBool());
+        if(!pJson["locked"].isNull())
+        {
+            _locked=std::make_shared<bool>(pJson["locked"].asBool());
+        }
     }
 }
 
@@ -370,45 +454,60 @@ const std::vector<std::string> &MeetingContentJournals::insertColumns() noexcept
 
 void MeetingContentJournals::outputArgs(drogon::orm::internal::SqlBinder &binder) const
 {
-    if(getJournalId())
+    if(_dirtyFlag[1])
     {
-        binder << getValueOfJournalId();
+        if(getJournalId())
+        {
+            binder << getValueOfJournalId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[2])
     {
-        binder << nullptr;
+        if(getMeetingId())
+        {
+            binder << getValueOfMeetingId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getMeetingId())
+    if(_dirtyFlag[3])
     {
-        binder << getValueOfMeetingId();
+        if(getAuthorId())
+        {
+            binder << getValueOfAuthorId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[4])
     {
-        binder << nullptr;
+        if(getText())
+        {
+            binder << getValueOfText();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getAuthorId())
+    if(_dirtyFlag[5])
     {
-        binder << getValueOfAuthorId();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getText())
-    {
-        binder << getValueOfText();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getLocked())
-    {
-        binder << getValueOfLocked();
-    }
-    else
-    {
-        binder << nullptr;
+        if(getLocked())
+        {
+            binder << getValueOfLocked();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
 }
 

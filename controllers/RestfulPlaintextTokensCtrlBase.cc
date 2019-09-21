@@ -5,11 +5,8 @@
  *  Users should implement business logic in the derived class.
  */
 
-#include "RestfulPlaintextTokensCtrl.h"
+#include "RestfulPlaintextTokensCtrlBase.h"
 #include <string>
-
-
-
 
 void RestfulPlaintextTokensCtrlBase::getOne(const HttpRequestPtr &req,
                                             std::function<void(const HttpResponsePtr &)> &&callback,

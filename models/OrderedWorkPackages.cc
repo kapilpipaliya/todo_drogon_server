@@ -94,19 +94,35 @@ OrderedWorkPackages::OrderedWorkPackages(const Json::Value &pJson, const std::ve
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[0]].asInt64());
+        _dirtyFlag[0] = true;
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
-        _position=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        _dirtyFlag[1] = true;
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _position=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
-        _queryId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        _dirtyFlag[2] = true;
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _queryId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
-        _workPackageId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        _dirtyFlag[3] = true;
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _workPackageId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        }
     }
 }
 
@@ -114,19 +130,35 @@ OrderedWorkPackages::OrderedWorkPackages(const Json::Value &pJson) noexcept(fals
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int64_t>((int64_t)pJson["id"].asInt64());
+        _dirtyFlag[0]=true;
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int64_t>((int64_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("position"))
     {
-        _position=std::make_shared<int32_t>((int32_t)pJson["position"].asInt64());
+        _dirtyFlag[1]=true;
+        if(!pJson["position"].isNull())
+        {
+            _position=std::make_shared<int32_t>((int32_t)pJson["position"].asInt64());
+        }
     }
     if(pJson.isMember("query_id"))
     {
-        _queryId=std::make_shared<int32_t>((int32_t)pJson["query_id"].asInt64());
+        _dirtyFlag[2]=true;
+        if(!pJson["query_id"].isNull())
+        {
+            _queryId=std::make_shared<int32_t>((int32_t)pJson["query_id"].asInt64());
+        }
     }
     if(pJson.isMember("work_package_id"))
     {
-        _workPackageId=std::make_shared<int32_t>((int32_t)pJson["work_package_id"].asInt64());
+        _dirtyFlag[3]=true;
+        if(!pJson["work_package_id"].isNull())
+        {
+            _workPackageId=std::make_shared<int32_t>((int32_t)pJson["work_package_id"].asInt64());
+        }
     }
 }
 
@@ -140,22 +172,34 @@ void OrderedWorkPackages::updateByMasqueradedJson(const Json::Value &pJson,
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[0]].asInt64());
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
         _dirtyFlag[1] = true;
-        _position=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _position=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
         _dirtyFlag[2] = true;
-        _queryId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _queryId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
         _dirtyFlag[3] = true;
-        _workPackageId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _workPackageId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        }
     }
 }
                                                                     
@@ -163,22 +207,34 @@ void OrderedWorkPackages::updateByJson(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int64_t>((int64_t)pJson["id"].asInt64());
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int64_t>((int64_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("position"))
     {
         _dirtyFlag[1] = true;
-        _position=std::make_shared<int32_t>((int32_t)pJson["position"].asInt64());
+        if(!pJson["position"].isNull())
+        {
+            _position=std::make_shared<int32_t>((int32_t)pJson["position"].asInt64());
+        }
     }
     if(pJson.isMember("query_id"))
     {
         _dirtyFlag[2] = true;
-        _queryId=std::make_shared<int32_t>((int32_t)pJson["query_id"].asInt64());
+        if(!pJson["query_id"].isNull())
+        {
+            _queryId=std::make_shared<int32_t>((int32_t)pJson["query_id"].asInt64());
+        }
     }
     if(pJson.isMember("work_package_id"))
     {
         _dirtyFlag[3] = true;
-        _workPackageId=std::make_shared<int32_t>((int32_t)pJson["work_package_id"].asInt64());
+        if(!pJson["work_package_id"].isNull())
+        {
+            _workPackageId=std::make_shared<int32_t>((int32_t)pJson["work_package_id"].asInt64());
+        }
     }
 }
 
@@ -269,29 +325,38 @@ const std::vector<std::string> &OrderedWorkPackages::insertColumns() noexcept
 
 void OrderedWorkPackages::outputArgs(drogon::orm::internal::SqlBinder &binder) const
 {
-    if(getPosition())
+    if(_dirtyFlag[1])
     {
-        binder << getValueOfPosition();
+        if(getPosition())
+        {
+            binder << getValueOfPosition();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[2])
     {
-        binder << nullptr;
+        if(getQueryId())
+        {
+            binder << getValueOfQueryId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getQueryId())
+    if(_dirtyFlag[3])
     {
-        binder << getValueOfQueryId();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getWorkPackageId())
-    {
-        binder << getValueOfWorkPackageId();
-    }
-    else
-    {
-        binder << nullptr;
+        if(getWorkPackageId())
+        {
+            binder << getValueOfWorkPackageId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
 }
 

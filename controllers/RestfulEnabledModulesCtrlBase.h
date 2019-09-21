@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <drogon/HttpController.h>
+
 #include "EnabledModules.h"
 using namespace drogon;
 

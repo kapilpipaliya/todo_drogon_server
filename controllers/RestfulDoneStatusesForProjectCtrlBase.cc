@@ -5,11 +5,8 @@
  *  Users should implement business logic in the derived class.
  */
 
-#include "RestfulDoneStatusesForProjectCtrl.h"
+#include "RestfulDoneStatusesForProjectCtrlBase.h"
 #include <string>
-
-
-
 
 
 void RestfulDoneStatusesForProjectCtrlBase::get(const HttpRequestPtr &req,

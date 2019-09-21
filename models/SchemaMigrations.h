@@ -12,6 +12,7 @@
 #include <drogon/orm/SqlBinder.h>
 #include <drogon/orm/Mapper.h>
 #include <trantor/utils/Date.h>
+#include <trantor/utils/Logger.h>
 #include <json/json.h>
 #include <string>
 #include <memory>
@@ -133,10 +134,45 @@ class SchemaMigrations
         static const std::string sql="delete from " + tableName + " where version = $1";
         return sql;                   
     }
-
-    static const std::string &sqlForInserting()
+    std::string sqlForInserting(bool &needSelection) const
     {
-        static const std::string sql="insert into " + tableName + " (version) values ($1) returning *";
+        std::string sql="insert into " + tableName + " (";
+        size_t parametersCount = 0;
+        needSelection = false;
+        if(_dirtyFlag[0])
+        {
+            sql += "version,";
+            ++parametersCount;
+        }
+        if(parametersCount > 0)
+        {
+            sql[sql.length()-1]=')';
+            sql += " values (";
+        }
+        else
+            sql += ") values (";
+        
+        int placeholder=1;
+        char placeholderStr[64];
+        size_t n=0;
+        if(_dirtyFlag[0])
+        {
+            n = sprintf(placeholderStr,"$%d,",placeholder++);
+            sql.append(placeholderStr, n);
+        } 
+        if(parametersCount > 0)
+        {
+            sql.resize(sql.length() - 1);
+        }
+        if(needSelection)
+        {
+            sql.append(") returning *");
+        }
+        else
+        {
+            sql.append(1, ')');
+        }
+        LOG_TRACE << sql;
         return sql;   
     }
 };

@@ -5,11 +5,8 @@
  *  Users should implement business logic in the derived class.
  */
 
-#include "RestfulWikisCtrl.h"
+#include "RestfulWikisCtrlBase.h"
 #include <string>
-
-
-
 
 void RestfulWikisCtrlBase::getOne(const HttpRequestPtr &req,
                                   std::function<void(const HttpResponsePtr &)> &&callback,

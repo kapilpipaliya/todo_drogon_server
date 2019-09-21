@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <drogon/HttpController.h>
+
 #include "EnterpriseTokens.h"
 using namespace drogon;
 

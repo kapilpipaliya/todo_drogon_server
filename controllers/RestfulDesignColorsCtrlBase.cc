@@ -5,11 +5,8 @@
  *  Users should implement business logic in the derived class.
  */
 
-#include "RestfulDesignColorsCtrl.h"
+#include "RestfulDesignColorsCtrlBase.h"
 #include <string>
-
-
-
 
 void RestfulDesignColorsCtrlBase::getOne(const HttpRequestPtr &req,
                                          std::function<void(const HttpResponsePtr &)> &&callback,

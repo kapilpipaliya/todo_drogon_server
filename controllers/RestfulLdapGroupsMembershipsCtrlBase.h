@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <drogon/HttpController.h>
+
 #include "LdapGroupsMemberships.h"
 using namespace drogon;
 

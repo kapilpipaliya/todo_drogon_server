@@ -12,6 +12,7 @@
 #include <drogon/orm/SqlBinder.h>
 #include <drogon/orm/Mapper.h>
 #include <trantor/utils/Date.h>
+#include <trantor/utils/Logger.h>
 #include <json/json.h>
 #include <string>
 #include <memory>
@@ -233,10 +234,154 @@ class Projects
         static const std::string sql="delete from " + tableName + " where id = $1";
         return sql;                   
     }
-
-    static const std::string &sqlForInserting()
+    std::string sqlForInserting(bool &needSelection) const
     {
-        static const std::string sql="insert into " + tableName + " (name,description,is_public,parent_id,created_on,updated_on,identifier,status,lft,rgt) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) returning *";
+        std::string sql="insert into " + tableName + " (";
+        size_t parametersCount = 0;
+        needSelection = false;
+            sql += "id,";
+            ++parametersCount;
+        sql += "name,";
+        ++parametersCount;
+        if(!_dirtyFlag[1])
+        {
+            needSelection=true;
+        }
+        if(_dirtyFlag[2])
+        {
+            sql += "description,";
+            ++parametersCount;
+        }
+        sql += "is_public,";
+        ++parametersCount;
+        if(!_dirtyFlag[3])
+        {
+            needSelection=true;
+        }
+        if(_dirtyFlag[4])
+        {
+            sql += "parent_id,";
+            ++parametersCount;
+        }
+        if(_dirtyFlag[5])
+        {
+            sql += "created_on,";
+            ++parametersCount;
+        }
+        if(_dirtyFlag[6])
+        {
+            sql += "updated_on,";
+            ++parametersCount;
+        }
+        if(_dirtyFlag[7])
+        {
+            sql += "identifier,";
+            ++parametersCount;
+        }
+        sql += "status,";
+        ++parametersCount;
+        if(!_dirtyFlag[8])
+        {
+            needSelection=true;
+        }
+        if(_dirtyFlag[9])
+        {
+            sql += "lft,";
+            ++parametersCount;
+        }
+        if(_dirtyFlag[10])
+        {
+            sql += "rgt,";
+            ++parametersCount;
+        }
+        needSelection=true;
+        if(parametersCount > 0)
+        {
+            sql[sql.length()-1]=')';
+            sql += " values (";
+        }
+        else
+            sql += ") values (";
+        
+        int placeholder=1;
+        char placeholderStr[64];
+        size_t n=0;
+        sql +="default,";
+        if(_dirtyFlag[1])
+        {
+            n = sprintf(placeholderStr,"$%d,",placeholder++);
+            sql.append(placeholderStr, n);
+        } 
+        else
+        {
+            sql +="default,";
+        }
+        if(_dirtyFlag[2])
+        {
+            n = sprintf(placeholderStr,"$%d,",placeholder++);
+            sql.append(placeholderStr, n);
+        } 
+        if(_dirtyFlag[3])
+        {
+            n = sprintf(placeholderStr,"$%d,",placeholder++);
+            sql.append(placeholderStr, n);
+        } 
+        else
+        {
+            sql +="default,";
+        }
+        if(_dirtyFlag[4])
+        {
+            n = sprintf(placeholderStr,"$%d,",placeholder++);
+            sql.append(placeholderStr, n);
+        } 
+        if(_dirtyFlag[5])
+        {
+            n = sprintf(placeholderStr,"$%d,",placeholder++);
+            sql.append(placeholderStr, n);
+        } 
+        if(_dirtyFlag[6])
+        {
+            n = sprintf(placeholderStr,"$%d,",placeholder++);
+            sql.append(placeholderStr, n);
+        } 
+        if(_dirtyFlag[7])
+        {
+            n = sprintf(placeholderStr,"$%d,",placeholder++);
+            sql.append(placeholderStr, n);
+        } 
+        if(_dirtyFlag[8])
+        {
+            n = sprintf(placeholderStr,"$%d,",placeholder++);
+            sql.append(placeholderStr, n);
+        } 
+        else
+        {
+            sql +="default,";
+        }
+        if(_dirtyFlag[9])
+        {
+            n = sprintf(placeholderStr,"$%d,",placeholder++);
+            sql.append(placeholderStr, n);
+        } 
+        if(_dirtyFlag[10])
+        {
+            n = sprintf(placeholderStr,"$%d,",placeholder++);
+            sql.append(placeholderStr, n);
+        } 
+        if(parametersCount > 0)
+        {
+            sql.resize(sql.length() - 1);
+        }
+        if(needSelection)
+        {
+            sql.append(") returning *");
+        }
+        else
+        {
+            sql.append(1, ')');
+        }
+        LOG_TRACE << sql;
         return sql;   
     }
 };

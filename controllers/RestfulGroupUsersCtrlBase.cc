@@ -5,11 +5,8 @@
  *  Users should implement business logic in the derived class.
  */
 
-#include "RestfulGroupUsersCtrl.h"
+#include "RestfulGroupUsersCtrlBase.h"
 #include <string>
-
-
-
 
 
 void RestfulGroupUsersCtrlBase::get(const HttpRequestPtr &req,

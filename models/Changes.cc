@@ -138,35 +138,67 @@ Changes::Changes(const Json::Value &pJson, const std::vector<std::string> &pMasq
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        _dirtyFlag[0] = true;
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
-        _changesetId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        _dirtyFlag[1] = true;
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _changesetId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
-        _action=std::make_shared<std::string>(pJson[pMasqueradingVector[2]].asString());
+        _dirtyFlag[2] = true;
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _action=std::make_shared<std::string>(pJson[pMasqueradingVector[2]].asString());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
-        _path=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+        _dirtyFlag[3] = true;
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _path=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+        }
     }
     if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
     {
-        _fromPath=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        _dirtyFlag[4] = true;
+        if(!pJson[pMasqueradingVector[4]].isNull())
+        {
+            _fromPath=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        }
     }
     if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
     {
-        _fromRevision=std::make_shared<std::string>(pJson[pMasqueradingVector[5]].asString());
+        _dirtyFlag[5] = true;
+        if(!pJson[pMasqueradingVector[5]].isNull())
+        {
+            _fromRevision=std::make_shared<std::string>(pJson[pMasqueradingVector[5]].asString());
+        }
     }
     if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
     {
-        _revision=std::make_shared<std::string>(pJson[pMasqueradingVector[6]].asString());
+        _dirtyFlag[6] = true;
+        if(!pJson[pMasqueradingVector[6]].isNull())
+        {
+            _revision=std::make_shared<std::string>(pJson[pMasqueradingVector[6]].asString());
+        }
     }
     if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
     {
-        _branch=std::make_shared<std::string>(pJson[pMasqueradingVector[7]].asString());
+        _dirtyFlag[7] = true;
+        if(!pJson[pMasqueradingVector[7]].isNull())
+        {
+            _branch=std::make_shared<std::string>(pJson[pMasqueradingVector[7]].asString());
+        }
     }
 }
 
@@ -174,35 +206,67 @@ Changes::Changes(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        _dirtyFlag[0]=true;
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("changeset_id"))
     {
-        _changesetId=std::make_shared<int32_t>((int32_t)pJson["changeset_id"].asInt64());
+        _dirtyFlag[1]=true;
+        if(!pJson["changeset_id"].isNull())
+        {
+            _changesetId=std::make_shared<int32_t>((int32_t)pJson["changeset_id"].asInt64());
+        }
     }
     if(pJson.isMember("action"))
     {
-        _action=std::make_shared<std::string>(pJson["action"].asString());
+        _dirtyFlag[2]=true;
+        if(!pJson["action"].isNull())
+        {
+            _action=std::make_shared<std::string>(pJson["action"].asString());
+        }
     }
     if(pJson.isMember("path"))
     {
-        _path=std::make_shared<std::string>(pJson["path"].asString());
+        _dirtyFlag[3]=true;
+        if(!pJson["path"].isNull())
+        {
+            _path=std::make_shared<std::string>(pJson["path"].asString());
+        }
     }
     if(pJson.isMember("from_path"))
     {
-        _fromPath=std::make_shared<std::string>(pJson["from_path"].asString());
+        _dirtyFlag[4]=true;
+        if(!pJson["from_path"].isNull())
+        {
+            _fromPath=std::make_shared<std::string>(pJson["from_path"].asString());
+        }
     }
     if(pJson.isMember("from_revision"))
     {
-        _fromRevision=std::make_shared<std::string>(pJson["from_revision"].asString());
+        _dirtyFlag[5]=true;
+        if(!pJson["from_revision"].isNull())
+        {
+            _fromRevision=std::make_shared<std::string>(pJson["from_revision"].asString());
+        }
     }
     if(pJson.isMember("revision"))
     {
-        _revision=std::make_shared<std::string>(pJson["revision"].asString());
+        _dirtyFlag[6]=true;
+        if(!pJson["revision"].isNull())
+        {
+            _revision=std::make_shared<std::string>(pJson["revision"].asString());
+        }
     }
     if(pJson.isMember("branch"))
     {
-        _branch=std::make_shared<std::string>(pJson["branch"].asString());
+        _dirtyFlag[7]=true;
+        if(!pJson["branch"].isNull())
+        {
+            _branch=std::make_shared<std::string>(pJson["branch"].asString());
+        }
     }
 }
 
@@ -216,42 +280,66 @@ void Changes::updateByMasqueradedJson(const Json::Value &pJson,
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
         _dirtyFlag[1] = true;
-        _changesetId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _changesetId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
         _dirtyFlag[2] = true;
-        _action=std::make_shared<std::string>(pJson[pMasqueradingVector[2]].asString());
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _action=std::make_shared<std::string>(pJson[pMasqueradingVector[2]].asString());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
         _dirtyFlag[3] = true;
-        _path=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _path=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+        }
     }
     if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
     {
         _dirtyFlag[4] = true;
-        _fromPath=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        if(!pJson[pMasqueradingVector[4]].isNull())
+        {
+            _fromPath=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        }
     }
     if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
     {
         _dirtyFlag[5] = true;
-        _fromRevision=std::make_shared<std::string>(pJson[pMasqueradingVector[5]].asString());
+        if(!pJson[pMasqueradingVector[5]].isNull())
+        {
+            _fromRevision=std::make_shared<std::string>(pJson[pMasqueradingVector[5]].asString());
+        }
     }
     if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
     {
         _dirtyFlag[6] = true;
-        _revision=std::make_shared<std::string>(pJson[pMasqueradingVector[6]].asString());
+        if(!pJson[pMasqueradingVector[6]].isNull())
+        {
+            _revision=std::make_shared<std::string>(pJson[pMasqueradingVector[6]].asString());
+        }
     }
     if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
     {
         _dirtyFlag[7] = true;
-        _branch=std::make_shared<std::string>(pJson[pMasqueradingVector[7]].asString());
+        if(!pJson[pMasqueradingVector[7]].isNull())
+        {
+            _branch=std::make_shared<std::string>(pJson[pMasqueradingVector[7]].asString());
+        }
     }
 }
                                                                     
@@ -259,42 +347,66 @@ void Changes::updateByJson(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("changeset_id"))
     {
         _dirtyFlag[1] = true;
-        _changesetId=std::make_shared<int32_t>((int32_t)pJson["changeset_id"].asInt64());
+        if(!pJson["changeset_id"].isNull())
+        {
+            _changesetId=std::make_shared<int32_t>((int32_t)pJson["changeset_id"].asInt64());
+        }
     }
     if(pJson.isMember("action"))
     {
         _dirtyFlag[2] = true;
-        _action=std::make_shared<std::string>(pJson["action"].asString());
+        if(!pJson["action"].isNull())
+        {
+            _action=std::make_shared<std::string>(pJson["action"].asString());
+        }
     }
     if(pJson.isMember("path"))
     {
         _dirtyFlag[3] = true;
-        _path=std::make_shared<std::string>(pJson["path"].asString());
+        if(!pJson["path"].isNull())
+        {
+            _path=std::make_shared<std::string>(pJson["path"].asString());
+        }
     }
     if(pJson.isMember("from_path"))
     {
         _dirtyFlag[4] = true;
-        _fromPath=std::make_shared<std::string>(pJson["from_path"].asString());
+        if(!pJson["from_path"].isNull())
+        {
+            _fromPath=std::make_shared<std::string>(pJson["from_path"].asString());
+        }
     }
     if(pJson.isMember("from_revision"))
     {
         _dirtyFlag[5] = true;
-        _fromRevision=std::make_shared<std::string>(pJson["from_revision"].asString());
+        if(!pJson["from_revision"].isNull())
+        {
+            _fromRevision=std::make_shared<std::string>(pJson["from_revision"].asString());
+        }
     }
     if(pJson.isMember("revision"))
     {
         _dirtyFlag[6] = true;
-        _revision=std::make_shared<std::string>(pJson["revision"].asString());
+        if(!pJson["revision"].isNull())
+        {
+            _revision=std::make_shared<std::string>(pJson["revision"].asString());
+        }
     }
     if(pJson.isMember("branch"))
     {
         _dirtyFlag[7] = true;
-        _branch=std::make_shared<std::string>(pJson["branch"].asString());
+        if(!pJson["branch"].isNull())
+        {
+            _branch=std::make_shared<std::string>(pJson["branch"].asString());
+        }
     }
 }
 
@@ -491,61 +603,82 @@ const std::vector<std::string> &Changes::insertColumns() noexcept
 
 void Changes::outputArgs(drogon::orm::internal::SqlBinder &binder) const
 {
-    if(getChangesetId())
+    if(_dirtyFlag[1])
     {
-        binder << getValueOfChangesetId();
+        if(getChangesetId())
+        {
+            binder << getValueOfChangesetId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[2])
     {
-        binder << nullptr;
+        if(getAction())
+        {
+            binder << getValueOfAction();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getAction())
+    if(_dirtyFlag[3])
     {
-        binder << getValueOfAction();
+        if(getPath())
+        {
+            binder << getValueOfPath();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[4])
     {
-        binder << nullptr;
+        if(getFromPath())
+        {
+            binder << getValueOfFromPath();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getPath())
+    if(_dirtyFlag[5])
     {
-        binder << getValueOfPath();
+        if(getFromRevision())
+        {
+            binder << getValueOfFromRevision();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[6])
     {
-        binder << nullptr;
+        if(getRevision())
+        {
+            binder << getValueOfRevision();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getFromPath())
+    if(_dirtyFlag[7])
     {
-        binder << getValueOfFromPath();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getFromRevision())
-    {
-        binder << getValueOfFromRevision();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getRevision())
-    {
-        binder << getValueOfRevision();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getBranch())
-    {
-        binder << getValueOfBranch();
-    }
-    else
-    {
-        binder << nullptr;
+        if(getBranch())
+        {
+            binder << getValueOfBranch();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
 }
 

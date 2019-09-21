@@ -5,11 +5,8 @@
  *  Users should implement business logic in the derived class.
  */
 
-#include "RestfulOauthAccessTokensCtrl.h"
+#include "RestfulOauthAccessTokensCtrlBase.h"
 #include <string>
-
-
-
 
 void RestfulOauthAccessTokensCtrlBase::getOne(const HttpRequestPtr &req,
                                               std::function<void(const HttpResponsePtr &)> &&callback,

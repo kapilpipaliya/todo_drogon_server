@@ -127,31 +127,59 @@ MenuItems::MenuItems(const Json::Value &pJson, const std::vector<std::string> &p
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        _dirtyFlag[0] = true;
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
-        _name=std::make_shared<std::string>(pJson[pMasqueradingVector[1]].asString());
+        _dirtyFlag[1] = true;
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _name=std::make_shared<std::string>(pJson[pMasqueradingVector[1]].asString());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
-        _title=std::make_shared<std::string>(pJson[pMasqueradingVector[2]].asString());
+        _dirtyFlag[2] = true;
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _title=std::make_shared<std::string>(pJson[pMasqueradingVector[2]].asString());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
-        _parentId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        _dirtyFlag[3] = true;
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _parentId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        }
     }
     if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
     {
-        _options=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        _dirtyFlag[4] = true;
+        if(!pJson[pMasqueradingVector[4]].isNull())
+        {
+            _options=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        }
     }
     if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
     {
-        _navigatableId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[5]].asInt64());
+        _dirtyFlag[5] = true;
+        if(!pJson[pMasqueradingVector[5]].isNull())
+        {
+            _navigatableId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[5]].asInt64());
+        }
     }
     if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
     {
-        _type=std::make_shared<std::string>(pJson[pMasqueradingVector[6]].asString());
+        _dirtyFlag[6] = true;
+        if(!pJson[pMasqueradingVector[6]].isNull())
+        {
+            _type=std::make_shared<std::string>(pJson[pMasqueradingVector[6]].asString());
+        }
     }
 }
 
@@ -159,31 +187,59 @@ MenuItems::MenuItems(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        _dirtyFlag[0]=true;
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("name"))
     {
-        _name=std::make_shared<std::string>(pJson["name"].asString());
+        _dirtyFlag[1]=true;
+        if(!pJson["name"].isNull())
+        {
+            _name=std::make_shared<std::string>(pJson["name"].asString());
+        }
     }
     if(pJson.isMember("title"))
     {
-        _title=std::make_shared<std::string>(pJson["title"].asString());
+        _dirtyFlag[2]=true;
+        if(!pJson["title"].isNull())
+        {
+            _title=std::make_shared<std::string>(pJson["title"].asString());
+        }
     }
     if(pJson.isMember("parent_id"))
     {
-        _parentId=std::make_shared<int32_t>((int32_t)pJson["parent_id"].asInt64());
+        _dirtyFlag[3]=true;
+        if(!pJson["parent_id"].isNull())
+        {
+            _parentId=std::make_shared<int32_t>((int32_t)pJson["parent_id"].asInt64());
+        }
     }
     if(pJson.isMember("options"))
     {
-        _options=std::make_shared<std::string>(pJson["options"].asString());
+        _dirtyFlag[4]=true;
+        if(!pJson["options"].isNull())
+        {
+            _options=std::make_shared<std::string>(pJson["options"].asString());
+        }
     }
     if(pJson.isMember("navigatable_id"))
     {
-        _navigatableId=std::make_shared<int32_t>((int32_t)pJson["navigatable_id"].asInt64());
+        _dirtyFlag[5]=true;
+        if(!pJson["navigatable_id"].isNull())
+        {
+            _navigatableId=std::make_shared<int32_t>((int32_t)pJson["navigatable_id"].asInt64());
+        }
     }
     if(pJson.isMember("type"))
     {
-        _type=std::make_shared<std::string>(pJson["type"].asString());
+        _dirtyFlag[6]=true;
+        if(!pJson["type"].isNull())
+        {
+            _type=std::make_shared<std::string>(pJson["type"].asString());
+        }
     }
 }
 
@@ -197,37 +253,58 @@ void MenuItems::updateByMasqueradedJson(const Json::Value &pJson,
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
         _dirtyFlag[1] = true;
-        _name=std::make_shared<std::string>(pJson[pMasqueradingVector[1]].asString());
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _name=std::make_shared<std::string>(pJson[pMasqueradingVector[1]].asString());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
         _dirtyFlag[2] = true;
-        _title=std::make_shared<std::string>(pJson[pMasqueradingVector[2]].asString());
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _title=std::make_shared<std::string>(pJson[pMasqueradingVector[2]].asString());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
         _dirtyFlag[3] = true;
-        _parentId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _parentId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        }
     }
     if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
     {
         _dirtyFlag[4] = true;
-        _options=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        if(!pJson[pMasqueradingVector[4]].isNull())
+        {
+            _options=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        }
     }
     if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
     {
         _dirtyFlag[5] = true;
-        _navigatableId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[5]].asInt64());
+        if(!pJson[pMasqueradingVector[5]].isNull())
+        {
+            _navigatableId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[5]].asInt64());
+        }
     }
     if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
     {
         _dirtyFlag[6] = true;
-        _type=std::make_shared<std::string>(pJson[pMasqueradingVector[6]].asString());
+        if(!pJson[pMasqueradingVector[6]].isNull())
+        {
+            _type=std::make_shared<std::string>(pJson[pMasqueradingVector[6]].asString());
+        }
     }
 }
                                                                     
@@ -235,37 +312,58 @@ void MenuItems::updateByJson(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("name"))
     {
         _dirtyFlag[1] = true;
-        _name=std::make_shared<std::string>(pJson["name"].asString());
+        if(!pJson["name"].isNull())
+        {
+            _name=std::make_shared<std::string>(pJson["name"].asString());
+        }
     }
     if(pJson.isMember("title"))
     {
         _dirtyFlag[2] = true;
-        _title=std::make_shared<std::string>(pJson["title"].asString());
+        if(!pJson["title"].isNull())
+        {
+            _title=std::make_shared<std::string>(pJson["title"].asString());
+        }
     }
     if(pJson.isMember("parent_id"))
     {
         _dirtyFlag[3] = true;
-        _parentId=std::make_shared<int32_t>((int32_t)pJson["parent_id"].asInt64());
+        if(!pJson["parent_id"].isNull())
+        {
+            _parentId=std::make_shared<int32_t>((int32_t)pJson["parent_id"].asInt64());
+        }
     }
     if(pJson.isMember("options"))
     {
         _dirtyFlag[4] = true;
-        _options=std::make_shared<std::string>(pJson["options"].asString());
+        if(!pJson["options"].isNull())
+        {
+            _options=std::make_shared<std::string>(pJson["options"].asString());
+        }
     }
     if(pJson.isMember("navigatable_id"))
     {
         _dirtyFlag[5] = true;
-        _navigatableId=std::make_shared<int32_t>((int32_t)pJson["navigatable_id"].asInt64());
+        if(!pJson["navigatable_id"].isNull())
+        {
+            _navigatableId=std::make_shared<int32_t>((int32_t)pJson["navigatable_id"].asInt64());
+        }
     }
     if(pJson.isMember("type"))
     {
         _dirtyFlag[6] = true;
-        _type=std::make_shared<std::string>(pJson["type"].asString());
+        if(!pJson["type"].isNull())
+        {
+            _type=std::make_shared<std::string>(pJson["type"].asString());
+        }
     }
 }
 
@@ -433,53 +531,71 @@ const std::vector<std::string> &MenuItems::insertColumns() noexcept
 
 void MenuItems::outputArgs(drogon::orm::internal::SqlBinder &binder) const
 {
-    if(getName())
+    if(_dirtyFlag[1])
     {
-        binder << getValueOfName();
+        if(getName())
+        {
+            binder << getValueOfName();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[2])
     {
-        binder << nullptr;
+        if(getTitle())
+        {
+            binder << getValueOfTitle();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getTitle())
+    if(_dirtyFlag[3])
     {
-        binder << getValueOfTitle();
+        if(getParentId())
+        {
+            binder << getValueOfParentId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[4])
     {
-        binder << nullptr;
+        if(getOptions())
+        {
+            binder << getValueOfOptions();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getParentId())
+    if(_dirtyFlag[5])
     {
-        binder << getValueOfParentId();
+        if(getNavigatableId())
+        {
+            binder << getValueOfNavigatableId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[6])
     {
-        binder << nullptr;
-    }
-    if(getOptions())
-    {
-        binder << getValueOfOptions();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getNavigatableId())
-    {
-        binder << getValueOfNavigatableId();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getType())
-    {
-        binder << getValueOfType();
-    }
-    else
-    {
-        binder << nullptr;
+        if(getType())
+        {
+            binder << getValueOfType();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
 }
 

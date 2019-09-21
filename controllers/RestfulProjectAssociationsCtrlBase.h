@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <drogon/HttpController.h>
+
 #include "ProjectAssociations.h"
 using namespace drogon;
 

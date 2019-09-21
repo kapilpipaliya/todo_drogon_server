@@ -5,11 +5,8 @@
  *  Users should implement business logic in the derived class.
  */
 
-#include "RestfulOrderedWorkPackagesCtrl.h"
+#include "RestfulOrderedWorkPackagesCtrlBase.h"
 #include <string>
-
-
-
 
 void RestfulOrderedWorkPackagesCtrlBase::getOne(const HttpRequestPtr &req,
                                                 std::function<void(const HttpResponsePtr &)> &&callback,

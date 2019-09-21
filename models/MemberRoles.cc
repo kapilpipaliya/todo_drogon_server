@@ -94,19 +94,35 @@ MemberRoles::MemberRoles(const Json::Value &pJson, const std::vector<std::string
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        _dirtyFlag[0] = true;
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
-        _memberId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        _dirtyFlag[1] = true;
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _memberId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
-        _roleId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        _dirtyFlag[2] = true;
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _roleId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
-        _inheritedFrom=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        _dirtyFlag[3] = true;
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _inheritedFrom=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        }
     }
 }
 
@@ -114,19 +130,35 @@ MemberRoles::MemberRoles(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        _dirtyFlag[0]=true;
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("member_id"))
     {
-        _memberId=std::make_shared<int32_t>((int32_t)pJson["member_id"].asInt64());
+        _dirtyFlag[1]=true;
+        if(!pJson["member_id"].isNull())
+        {
+            _memberId=std::make_shared<int32_t>((int32_t)pJson["member_id"].asInt64());
+        }
     }
     if(pJson.isMember("role_id"))
     {
-        _roleId=std::make_shared<int32_t>((int32_t)pJson["role_id"].asInt64());
+        _dirtyFlag[2]=true;
+        if(!pJson["role_id"].isNull())
+        {
+            _roleId=std::make_shared<int32_t>((int32_t)pJson["role_id"].asInt64());
+        }
     }
     if(pJson.isMember("inherited_from"))
     {
-        _inheritedFrom=std::make_shared<int32_t>((int32_t)pJson["inherited_from"].asInt64());
+        _dirtyFlag[3]=true;
+        if(!pJson["inherited_from"].isNull())
+        {
+            _inheritedFrom=std::make_shared<int32_t>((int32_t)pJson["inherited_from"].asInt64());
+        }
     }
 }
 
@@ -140,22 +172,34 @@ void MemberRoles::updateByMasqueradedJson(const Json::Value &pJson,
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
         _dirtyFlag[1] = true;
-        _memberId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _memberId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
         _dirtyFlag[2] = true;
-        _roleId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _roleId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
         _dirtyFlag[3] = true;
-        _inheritedFrom=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _inheritedFrom=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        }
     }
 }
                                                                     
@@ -163,22 +207,34 @@ void MemberRoles::updateByJson(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("member_id"))
     {
         _dirtyFlag[1] = true;
-        _memberId=std::make_shared<int32_t>((int32_t)pJson["member_id"].asInt64());
+        if(!pJson["member_id"].isNull())
+        {
+            _memberId=std::make_shared<int32_t>((int32_t)pJson["member_id"].asInt64());
+        }
     }
     if(pJson.isMember("role_id"))
     {
         _dirtyFlag[2] = true;
-        _roleId=std::make_shared<int32_t>((int32_t)pJson["role_id"].asInt64());
+        if(!pJson["role_id"].isNull())
+        {
+            _roleId=std::make_shared<int32_t>((int32_t)pJson["role_id"].asInt64());
+        }
     }
     if(pJson.isMember("inherited_from"))
     {
         _dirtyFlag[3] = true;
-        _inheritedFrom=std::make_shared<int32_t>((int32_t)pJson["inherited_from"].asInt64());
+        if(!pJson["inherited_from"].isNull())
+        {
+            _inheritedFrom=std::make_shared<int32_t>((int32_t)pJson["inherited_from"].asInt64());
+        }
     }
 }
 
@@ -269,29 +325,38 @@ const std::vector<std::string> &MemberRoles::insertColumns() noexcept
 
 void MemberRoles::outputArgs(drogon::orm::internal::SqlBinder &binder) const
 {
-    if(getMemberId())
+    if(_dirtyFlag[1])
     {
-        binder << getValueOfMemberId();
+        if(getMemberId())
+        {
+            binder << getValueOfMemberId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[2])
     {
-        binder << nullptr;
+        if(getRoleId())
+        {
+            binder << getValueOfRoleId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getRoleId())
+    if(_dirtyFlag[3])
     {
-        binder << getValueOfRoleId();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getInheritedFrom())
-    {
-        binder << getValueOfInheritedFrom();
-    }
-    else
-    {
-        binder << nullptr;
+        if(getInheritedFrom())
+        {
+            binder << getValueOfInheritedFrom();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
 }
 

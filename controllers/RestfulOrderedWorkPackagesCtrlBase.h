@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <drogon/HttpController.h>
+
 #include "OrderedWorkPackages.h"
 using namespace drogon;
 

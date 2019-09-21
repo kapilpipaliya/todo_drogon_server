@@ -5,11 +5,8 @@
  *  Users should implement business logic in the derived class.
  */
 
-#include "RestfulMaterialBudgetItemsCtrl.h"
+#include "RestfulMaterialBudgetItemsCtrlBase.h"
 #include <string>
-
-
-
 
 void RestfulMaterialBudgetItemsCtrlBase::getOne(const HttpRequestPtr &req,
                                                 std::function<void(const HttpResponsePtr &)> &&callback,

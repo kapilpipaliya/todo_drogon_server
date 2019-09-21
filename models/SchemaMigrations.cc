@@ -61,7 +61,11 @@ SchemaMigrations::SchemaMigrations(const Json::Value &pJson, const std::vector<s
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _version=std::make_shared<std::string>(pJson[pMasqueradingVector[0]].asString());
+        _dirtyFlag[0] = true;
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _version=std::make_shared<std::string>(pJson[pMasqueradingVector[0]].asString());
+        }
     }
 }
 
@@ -69,7 +73,11 @@ SchemaMigrations::SchemaMigrations(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("version"))
     {
-        _version=std::make_shared<std::string>(pJson["version"].asString());
+        _dirtyFlag[0]=true;
+        if(!pJson["version"].isNull())
+        {
+            _version=std::make_shared<std::string>(pJson["version"].asString());
+        }
     }
 }
 
@@ -83,7 +91,10 @@ void SchemaMigrations::updateByMasqueradedJson(const Json::Value &pJson,
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _version=std::make_shared<std::string>(pJson[pMasqueradingVector[0]].asString());
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _version=std::make_shared<std::string>(pJson[pMasqueradingVector[0]].asString());
+        }
     }
 }
                                                                     
@@ -91,7 +102,10 @@ void SchemaMigrations::updateByJson(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("version"))
     {
-        _version=std::make_shared<std::string>(pJson["version"].asString());
+        if(!pJson["version"].isNull())
+        {
+            _version=std::make_shared<std::string>(pJson["version"].asString());
+        }
     }
 }
 
@@ -137,13 +151,16 @@ const std::vector<std::string> &SchemaMigrations::insertColumns() noexcept
 
 void SchemaMigrations::outputArgs(drogon::orm::internal::SqlBinder &binder) const
 {
-    if(getVersion())
+    if(_dirtyFlag[0])
     {
-        binder << getValueOfVersion();
-    }
-    else
-    {
-        binder << nullptr;
+        if(getVersion())
+        {
+            binder << getValueOfVersion();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
 }
 

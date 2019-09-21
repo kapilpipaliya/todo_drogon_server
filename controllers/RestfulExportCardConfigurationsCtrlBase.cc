@@ -5,11 +5,8 @@
  *  Users should implement business logic in the derived class.
  */
 
-#include "RestfulExportCardConfigurationsCtrl.h"
+#include "RestfulExportCardConfigurationsCtrlBase.h"
 #include <string>
-
-
-
 
 void RestfulExportCardConfigurationsCtrlBase::getOne(const HttpRequestPtr &req,
                                                      std::function<void(const HttpResponsePtr &)> &&callback,

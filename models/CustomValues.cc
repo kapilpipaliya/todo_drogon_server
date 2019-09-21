@@ -105,23 +105,43 @@ CustomValues::CustomValues(const Json::Value &pJson, const std::vector<std::stri
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        _dirtyFlag[0] = true;
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
-        _customizedType=std::make_shared<std::string>(pJson[pMasqueradingVector[1]].asString());
+        _dirtyFlag[1] = true;
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _customizedType=std::make_shared<std::string>(pJson[pMasqueradingVector[1]].asString());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
-        _customizedId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        _dirtyFlag[2] = true;
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _customizedId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
-        _customFieldId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        _dirtyFlag[3] = true;
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _customFieldId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        }
     }
     if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
     {
-        _value=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        _dirtyFlag[4] = true;
+        if(!pJson[pMasqueradingVector[4]].isNull())
+        {
+            _value=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        }
     }
 }
 
@@ -129,23 +149,43 @@ CustomValues::CustomValues(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        _dirtyFlag[0]=true;
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("customized_type"))
     {
-        _customizedType=std::make_shared<std::string>(pJson["customized_type"].asString());
+        _dirtyFlag[1]=true;
+        if(!pJson["customized_type"].isNull())
+        {
+            _customizedType=std::make_shared<std::string>(pJson["customized_type"].asString());
+        }
     }
     if(pJson.isMember("customized_id"))
     {
-        _customizedId=std::make_shared<int32_t>((int32_t)pJson["customized_id"].asInt64());
+        _dirtyFlag[2]=true;
+        if(!pJson["customized_id"].isNull())
+        {
+            _customizedId=std::make_shared<int32_t>((int32_t)pJson["customized_id"].asInt64());
+        }
     }
     if(pJson.isMember("custom_field_id"))
     {
-        _customFieldId=std::make_shared<int32_t>((int32_t)pJson["custom_field_id"].asInt64());
+        _dirtyFlag[3]=true;
+        if(!pJson["custom_field_id"].isNull())
+        {
+            _customFieldId=std::make_shared<int32_t>((int32_t)pJson["custom_field_id"].asInt64());
+        }
     }
     if(pJson.isMember("value"))
     {
-        _value=std::make_shared<std::string>(pJson["value"].asString());
+        _dirtyFlag[4]=true;
+        if(!pJson["value"].isNull())
+        {
+            _value=std::make_shared<std::string>(pJson["value"].asString());
+        }
     }
 }
 
@@ -159,27 +199,42 @@ void CustomValues::updateByMasqueradedJson(const Json::Value &pJson,
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
         _dirtyFlag[1] = true;
-        _customizedType=std::make_shared<std::string>(pJson[pMasqueradingVector[1]].asString());
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _customizedType=std::make_shared<std::string>(pJson[pMasqueradingVector[1]].asString());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
         _dirtyFlag[2] = true;
-        _customizedId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _customizedId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
         _dirtyFlag[3] = true;
-        _customFieldId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _customFieldId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        }
     }
     if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
     {
         _dirtyFlag[4] = true;
-        _value=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        if(!pJson[pMasqueradingVector[4]].isNull())
+        {
+            _value=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        }
     }
 }
                                                                     
@@ -187,27 +242,42 @@ void CustomValues::updateByJson(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("customized_type"))
     {
         _dirtyFlag[1] = true;
-        _customizedType=std::make_shared<std::string>(pJson["customized_type"].asString());
+        if(!pJson["customized_type"].isNull())
+        {
+            _customizedType=std::make_shared<std::string>(pJson["customized_type"].asString());
+        }
     }
     if(pJson.isMember("customized_id"))
     {
         _dirtyFlag[2] = true;
-        _customizedId=std::make_shared<int32_t>((int32_t)pJson["customized_id"].asInt64());
+        if(!pJson["customized_id"].isNull())
+        {
+            _customizedId=std::make_shared<int32_t>((int32_t)pJson["customized_id"].asInt64());
+        }
     }
     if(pJson.isMember("custom_field_id"))
     {
         _dirtyFlag[3] = true;
-        _customFieldId=std::make_shared<int32_t>((int32_t)pJson["custom_field_id"].asInt64());
+        if(!pJson["custom_field_id"].isNull())
+        {
+            _customFieldId=std::make_shared<int32_t>((int32_t)pJson["custom_field_id"].asInt64());
+        }
     }
     if(pJson.isMember("value"))
     {
         _dirtyFlag[4] = true;
-        _value=std::make_shared<std::string>(pJson["value"].asString());
+        if(!pJson["value"].isNull())
+        {
+            _value=std::make_shared<std::string>(pJson["value"].asString());
+        }
     }
 }
 
@@ -327,37 +397,49 @@ const std::vector<std::string> &CustomValues::insertColumns() noexcept
 
 void CustomValues::outputArgs(drogon::orm::internal::SqlBinder &binder) const
 {
-    if(getCustomizedType())
+    if(_dirtyFlag[1])
     {
-        binder << getValueOfCustomizedType();
+        if(getCustomizedType())
+        {
+            binder << getValueOfCustomizedType();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[2])
     {
-        binder << nullptr;
+        if(getCustomizedId())
+        {
+            binder << getValueOfCustomizedId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getCustomizedId())
+    if(_dirtyFlag[3])
     {
-        binder << getValueOfCustomizedId();
+        if(getCustomFieldId())
+        {
+            binder << getValueOfCustomFieldId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[4])
     {
-        binder << nullptr;
-    }
-    if(getCustomFieldId())
-    {
-        binder << getValueOfCustomFieldId();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getValue())
-    {
-        binder << getValueOfValue();
-    }
-    else
-    {
-        binder << nullptr;
+        if(getValue())
+        {
+            binder << getValueOfValue();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
 }
 

@@ -116,27 +116,51 @@ LaborBudgetItems::LaborBudgetItems(const Json::Value &pJson, const std::vector<s
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        _dirtyFlag[0] = true;
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
-        _costObjectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        _dirtyFlag[1] = true;
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _costObjectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
-        _hours=std::make_shared<double>(pJson[pMasqueradingVector[2]].asDouble());
+        _dirtyFlag[2] = true;
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _hours=std::make_shared<double>(pJson[pMasqueradingVector[2]].asDouble());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
-        _userId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        _dirtyFlag[3] = true;
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _userId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        }
     }
     if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
     {
-        _comments=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        _dirtyFlag[4] = true;
+        if(!pJson[pMasqueradingVector[4]].isNull())
+        {
+            _comments=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        }
     }
     if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
     {
-        _budget=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[5]].asInt64());
+        _dirtyFlag[5] = true;
+        if(!pJson[pMasqueradingVector[5]].isNull())
+        {
+            _budget=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[5]].asInt64());
+        }
     }
 }
 
@@ -144,27 +168,51 @@ LaborBudgetItems::LaborBudgetItems(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        _dirtyFlag[0]=true;
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("cost_object_id"))
     {
-        _costObjectId=std::make_shared<int32_t>((int32_t)pJson["cost_object_id"].asInt64());
+        _dirtyFlag[1]=true;
+        if(!pJson["cost_object_id"].isNull())
+        {
+            _costObjectId=std::make_shared<int32_t>((int32_t)pJson["cost_object_id"].asInt64());
+        }
     }
     if(pJson.isMember("hours"))
     {
-        _hours=std::make_shared<double>(pJson["hours"].asDouble());
+        _dirtyFlag[2]=true;
+        if(!pJson["hours"].isNull())
+        {
+            _hours=std::make_shared<double>(pJson["hours"].asDouble());
+        }
     }
     if(pJson.isMember("user_id"))
     {
-        _userId=std::make_shared<int32_t>((int32_t)pJson["user_id"].asInt64());
+        _dirtyFlag[3]=true;
+        if(!pJson["user_id"].isNull())
+        {
+            _userId=std::make_shared<int32_t>((int32_t)pJson["user_id"].asInt64());
+        }
     }
     if(pJson.isMember("comments"))
     {
-        _comments=std::make_shared<std::string>(pJson["comments"].asString());
+        _dirtyFlag[4]=true;
+        if(!pJson["comments"].isNull())
+        {
+            _comments=std::make_shared<std::string>(pJson["comments"].asString());
+        }
     }
     if(pJson.isMember("budget"))
     {
-        _budget=std::make_shared<int64_t>((int64_t)pJson["budget"].asInt64());
+        _dirtyFlag[5]=true;
+        if(!pJson["budget"].isNull())
+        {
+            _budget=std::make_shared<int64_t>((int64_t)pJson["budget"].asInt64());
+        }
     }
 }
 
@@ -178,32 +226,50 @@ void LaborBudgetItems::updateByMasqueradedJson(const Json::Value &pJson,
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
         _dirtyFlag[1] = true;
-        _costObjectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _costObjectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
         _dirtyFlag[2] = true;
-        _hours=std::make_shared<double>(pJson[pMasqueradingVector[2]].asDouble());
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _hours=std::make_shared<double>(pJson[pMasqueradingVector[2]].asDouble());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
         _dirtyFlag[3] = true;
-        _userId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _userId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        }
     }
     if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
     {
         _dirtyFlag[4] = true;
-        _comments=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        if(!pJson[pMasqueradingVector[4]].isNull())
+        {
+            _comments=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        }
     }
     if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
     {
         _dirtyFlag[5] = true;
-        _budget=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[5]].asInt64());
+        if(!pJson[pMasqueradingVector[5]].isNull())
+        {
+            _budget=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[5]].asInt64());
+        }
     }
 }
                                                                     
@@ -211,32 +277,50 @@ void LaborBudgetItems::updateByJson(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("cost_object_id"))
     {
         _dirtyFlag[1] = true;
-        _costObjectId=std::make_shared<int32_t>((int32_t)pJson["cost_object_id"].asInt64());
+        if(!pJson["cost_object_id"].isNull())
+        {
+            _costObjectId=std::make_shared<int32_t>((int32_t)pJson["cost_object_id"].asInt64());
+        }
     }
     if(pJson.isMember("hours"))
     {
         _dirtyFlag[2] = true;
-        _hours=std::make_shared<double>(pJson["hours"].asDouble());
+        if(!pJson["hours"].isNull())
+        {
+            _hours=std::make_shared<double>(pJson["hours"].asDouble());
+        }
     }
     if(pJson.isMember("user_id"))
     {
         _dirtyFlag[3] = true;
-        _userId=std::make_shared<int32_t>((int32_t)pJson["user_id"].asInt64());
+        if(!pJson["user_id"].isNull())
+        {
+            _userId=std::make_shared<int32_t>((int32_t)pJson["user_id"].asInt64());
+        }
     }
     if(pJson.isMember("comments"))
     {
         _dirtyFlag[4] = true;
-        _comments=std::make_shared<std::string>(pJson["comments"].asString());
+        if(!pJson["comments"].isNull())
+        {
+            _comments=std::make_shared<std::string>(pJson["comments"].asString());
+        }
     }
     if(pJson.isMember("budget"))
     {
         _dirtyFlag[5] = true;
-        _budget=std::make_shared<int64_t>((int64_t)pJson["budget"].asInt64());
+        if(!pJson["budget"].isNull())
+        {
+            _budget=std::make_shared<int64_t>((int64_t)pJson["budget"].asInt64());
+        }
     }
 }
 
@@ -370,45 +454,60 @@ const std::vector<std::string> &LaborBudgetItems::insertColumns() noexcept
 
 void LaborBudgetItems::outputArgs(drogon::orm::internal::SqlBinder &binder) const
 {
-    if(getCostObjectId())
+    if(_dirtyFlag[1])
     {
-        binder << getValueOfCostObjectId();
+        if(getCostObjectId())
+        {
+            binder << getValueOfCostObjectId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[2])
     {
-        binder << nullptr;
+        if(getHours())
+        {
+            binder << getValueOfHours();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getHours())
+    if(_dirtyFlag[3])
     {
-        binder << getValueOfHours();
+        if(getUserId())
+        {
+            binder << getValueOfUserId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[4])
     {
-        binder << nullptr;
+        if(getComments())
+        {
+            binder << getValueOfComments();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getUserId())
+    if(_dirtyFlag[5])
     {
-        binder << getValueOfUserId();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getComments())
-    {
-        binder << getValueOfComments();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getBudget())
-    {
-        binder << getValueOfBudget();
-    }
-    else
-    {
-        binder << nullptr;
+        if(getBudget())
+        {
+            binder << getValueOfBudget();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
 }
 

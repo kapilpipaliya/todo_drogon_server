@@ -5,11 +5,8 @@
  *  Users should implement business logic in the derived class.
  */
 
-#include "RestfulArInternalMetadataCtrl.h"
+#include "RestfulArInternalMetadataCtrlBase.h"
 #include <string>
-
-
-
 
 void RestfulArInternalMetadataCtrlBase::getOne(const HttpRequestPtr &req,
                                                std::function<void(const HttpResponsePtr &)> &&callback,

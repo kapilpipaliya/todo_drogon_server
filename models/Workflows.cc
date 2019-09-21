@@ -127,31 +127,59 @@ Workflows::Workflows(const Json::Value &pJson, const std::vector<std::string> &p
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        _dirtyFlag[0] = true;
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
-        _typeId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        _dirtyFlag[1] = true;
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _typeId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
-        _oldStatusId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        _dirtyFlag[2] = true;
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _oldStatusId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
-        _newStatusId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        _dirtyFlag[3] = true;
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _newStatusId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        }
     }
     if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
     {
-        _roleId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[4]].asInt64());
+        _dirtyFlag[4] = true;
+        if(!pJson[pMasqueradingVector[4]].isNull())
+        {
+            _roleId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[4]].asInt64());
+        }
     }
     if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
     {
-        _assignee=std::make_shared<bool>(pJson[pMasqueradingVector[5]].asBool());
+        _dirtyFlag[5] = true;
+        if(!pJson[pMasqueradingVector[5]].isNull())
+        {
+            _assignee=std::make_shared<bool>(pJson[pMasqueradingVector[5]].asBool());
+        }
     }
     if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
     {
-        _author=std::make_shared<bool>(pJson[pMasqueradingVector[6]].asBool());
+        _dirtyFlag[6] = true;
+        if(!pJson[pMasqueradingVector[6]].isNull())
+        {
+            _author=std::make_shared<bool>(pJson[pMasqueradingVector[6]].asBool());
+        }
     }
 }
 
@@ -159,31 +187,59 @@ Workflows::Workflows(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        _dirtyFlag[0]=true;
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("type_id"))
     {
-        _typeId=std::make_shared<int32_t>((int32_t)pJson["type_id"].asInt64());
+        _dirtyFlag[1]=true;
+        if(!pJson["type_id"].isNull())
+        {
+            _typeId=std::make_shared<int32_t>((int32_t)pJson["type_id"].asInt64());
+        }
     }
     if(pJson.isMember("old_status_id"))
     {
-        _oldStatusId=std::make_shared<int32_t>((int32_t)pJson["old_status_id"].asInt64());
+        _dirtyFlag[2]=true;
+        if(!pJson["old_status_id"].isNull())
+        {
+            _oldStatusId=std::make_shared<int32_t>((int32_t)pJson["old_status_id"].asInt64());
+        }
     }
     if(pJson.isMember("new_status_id"))
     {
-        _newStatusId=std::make_shared<int32_t>((int32_t)pJson["new_status_id"].asInt64());
+        _dirtyFlag[3]=true;
+        if(!pJson["new_status_id"].isNull())
+        {
+            _newStatusId=std::make_shared<int32_t>((int32_t)pJson["new_status_id"].asInt64());
+        }
     }
     if(pJson.isMember("role_id"))
     {
-        _roleId=std::make_shared<int32_t>((int32_t)pJson["role_id"].asInt64());
+        _dirtyFlag[4]=true;
+        if(!pJson["role_id"].isNull())
+        {
+            _roleId=std::make_shared<int32_t>((int32_t)pJson["role_id"].asInt64());
+        }
     }
     if(pJson.isMember("assignee"))
     {
-        _assignee=std::make_shared<bool>(pJson["assignee"].asBool());
+        _dirtyFlag[5]=true;
+        if(!pJson["assignee"].isNull())
+        {
+            _assignee=std::make_shared<bool>(pJson["assignee"].asBool());
+        }
     }
     if(pJson.isMember("author"))
     {
-        _author=std::make_shared<bool>(pJson["author"].asBool());
+        _dirtyFlag[6]=true;
+        if(!pJson["author"].isNull())
+        {
+            _author=std::make_shared<bool>(pJson["author"].asBool());
+        }
     }
 }
 
@@ -197,37 +253,58 @@ void Workflows::updateByMasqueradedJson(const Json::Value &pJson,
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
         _dirtyFlag[1] = true;
-        _typeId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _typeId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
         _dirtyFlag[2] = true;
-        _oldStatusId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _oldStatusId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
         _dirtyFlag[3] = true;
-        _newStatusId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _newStatusId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        }
     }
     if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
     {
         _dirtyFlag[4] = true;
-        _roleId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[4]].asInt64());
+        if(!pJson[pMasqueradingVector[4]].isNull())
+        {
+            _roleId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[4]].asInt64());
+        }
     }
     if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
     {
         _dirtyFlag[5] = true;
-        _assignee=std::make_shared<bool>(pJson[pMasqueradingVector[5]].asBool());
+        if(!pJson[pMasqueradingVector[5]].isNull())
+        {
+            _assignee=std::make_shared<bool>(pJson[pMasqueradingVector[5]].asBool());
+        }
     }
     if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
     {
         _dirtyFlag[6] = true;
-        _author=std::make_shared<bool>(pJson[pMasqueradingVector[6]].asBool());
+        if(!pJson[pMasqueradingVector[6]].isNull())
+        {
+            _author=std::make_shared<bool>(pJson[pMasqueradingVector[6]].asBool());
+        }
     }
 }
                                                                     
@@ -235,37 +312,58 @@ void Workflows::updateByJson(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("type_id"))
     {
         _dirtyFlag[1] = true;
-        _typeId=std::make_shared<int32_t>((int32_t)pJson["type_id"].asInt64());
+        if(!pJson["type_id"].isNull())
+        {
+            _typeId=std::make_shared<int32_t>((int32_t)pJson["type_id"].asInt64());
+        }
     }
     if(pJson.isMember("old_status_id"))
     {
         _dirtyFlag[2] = true;
-        _oldStatusId=std::make_shared<int32_t>((int32_t)pJson["old_status_id"].asInt64());
+        if(!pJson["old_status_id"].isNull())
+        {
+            _oldStatusId=std::make_shared<int32_t>((int32_t)pJson["old_status_id"].asInt64());
+        }
     }
     if(pJson.isMember("new_status_id"))
     {
         _dirtyFlag[3] = true;
-        _newStatusId=std::make_shared<int32_t>((int32_t)pJson["new_status_id"].asInt64());
+        if(!pJson["new_status_id"].isNull())
+        {
+            _newStatusId=std::make_shared<int32_t>((int32_t)pJson["new_status_id"].asInt64());
+        }
     }
     if(pJson.isMember("role_id"))
     {
         _dirtyFlag[4] = true;
-        _roleId=std::make_shared<int32_t>((int32_t)pJson["role_id"].asInt64());
+        if(!pJson["role_id"].isNull())
+        {
+            _roleId=std::make_shared<int32_t>((int32_t)pJson["role_id"].asInt64());
+        }
     }
     if(pJson.isMember("assignee"))
     {
         _dirtyFlag[5] = true;
-        _assignee=std::make_shared<bool>(pJson["assignee"].asBool());
+        if(!pJson["assignee"].isNull())
+        {
+            _assignee=std::make_shared<bool>(pJson["assignee"].asBool());
+        }
     }
     if(pJson.isMember("author"))
     {
         _dirtyFlag[6] = true;
-        _author=std::make_shared<bool>(pJson["author"].asBool());
+        if(!pJson["author"].isNull())
+        {
+            _author=std::make_shared<bool>(pJson["author"].asBool());
+        }
     }
 }
 
@@ -413,53 +511,71 @@ const std::vector<std::string> &Workflows::insertColumns() noexcept
 
 void Workflows::outputArgs(drogon::orm::internal::SqlBinder &binder) const
 {
-    if(getTypeId())
+    if(_dirtyFlag[1])
     {
-        binder << getValueOfTypeId();
+        if(getTypeId())
+        {
+            binder << getValueOfTypeId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[2])
     {
-        binder << nullptr;
+        if(getOldStatusId())
+        {
+            binder << getValueOfOldStatusId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getOldStatusId())
+    if(_dirtyFlag[3])
     {
-        binder << getValueOfOldStatusId();
+        if(getNewStatusId())
+        {
+            binder << getValueOfNewStatusId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[4])
     {
-        binder << nullptr;
+        if(getRoleId())
+        {
+            binder << getValueOfRoleId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getNewStatusId())
+    if(_dirtyFlag[5])
     {
-        binder << getValueOfNewStatusId();
+        if(getAssignee())
+        {
+            binder << getValueOfAssignee();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[6])
     {
-        binder << nullptr;
-    }
-    if(getRoleId())
-    {
-        binder << getValueOfRoleId();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getAssignee())
-    {
-        binder << getValueOfAssignee();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getAuthor())
-    {
-        binder << getValueOfAuthor();
-    }
-    else
-    {
-        binder << nullptr;
+        if(getAuthor())
+        {
+            binder << getValueOfAuthor();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
 }
 

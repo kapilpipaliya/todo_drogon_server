@@ -138,35 +138,67 @@ Forums::Forums(const Json::Value &pJson, const std::vector<std::string> &pMasque
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        _dirtyFlag[0] = true;
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
-        _projectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        _dirtyFlag[1] = true;
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _projectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
-        _name=std::make_shared<std::string>(pJson[pMasqueradingVector[2]].asString());
+        _dirtyFlag[2] = true;
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _name=std::make_shared<std::string>(pJson[pMasqueradingVector[2]].asString());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
-        _description=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+        _dirtyFlag[3] = true;
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _description=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+        }
     }
     if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
     {
-        _position=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[4]].asInt64());
+        _dirtyFlag[4] = true;
+        if(!pJson[pMasqueradingVector[4]].isNull())
+        {
+            _position=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[4]].asInt64());
+        }
     }
     if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
     {
-        _topicsCount=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[5]].asInt64());
+        _dirtyFlag[5] = true;
+        if(!pJson[pMasqueradingVector[5]].isNull())
+        {
+            _topicsCount=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[5]].asInt64());
+        }
     }
     if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
     {
-        _messagesCount=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[6]].asInt64());
+        _dirtyFlag[6] = true;
+        if(!pJson[pMasqueradingVector[6]].isNull())
+        {
+            _messagesCount=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[6]].asInt64());
+        }
     }
     if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
     {
-        _lastMessageId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[7]].asInt64());
+        _dirtyFlag[7] = true;
+        if(!pJson[pMasqueradingVector[7]].isNull())
+        {
+            _lastMessageId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[7]].asInt64());
+        }
     }
 }
 
@@ -174,35 +206,67 @@ Forums::Forums(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        _dirtyFlag[0]=true;
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("project_id"))
     {
-        _projectId=std::make_shared<int32_t>((int32_t)pJson["project_id"].asInt64());
+        _dirtyFlag[1]=true;
+        if(!pJson["project_id"].isNull())
+        {
+            _projectId=std::make_shared<int32_t>((int32_t)pJson["project_id"].asInt64());
+        }
     }
     if(pJson.isMember("name"))
     {
-        _name=std::make_shared<std::string>(pJson["name"].asString());
+        _dirtyFlag[2]=true;
+        if(!pJson["name"].isNull())
+        {
+            _name=std::make_shared<std::string>(pJson["name"].asString());
+        }
     }
     if(pJson.isMember("description"))
     {
-        _description=std::make_shared<std::string>(pJson["description"].asString());
+        _dirtyFlag[3]=true;
+        if(!pJson["description"].isNull())
+        {
+            _description=std::make_shared<std::string>(pJson["description"].asString());
+        }
     }
     if(pJson.isMember("position"))
     {
-        _position=std::make_shared<int32_t>((int32_t)pJson["position"].asInt64());
+        _dirtyFlag[4]=true;
+        if(!pJson["position"].isNull())
+        {
+            _position=std::make_shared<int32_t>((int32_t)pJson["position"].asInt64());
+        }
     }
     if(pJson.isMember("topics_count"))
     {
-        _topicsCount=std::make_shared<int32_t>((int32_t)pJson["topics_count"].asInt64());
+        _dirtyFlag[5]=true;
+        if(!pJson["topics_count"].isNull())
+        {
+            _topicsCount=std::make_shared<int32_t>((int32_t)pJson["topics_count"].asInt64());
+        }
     }
     if(pJson.isMember("messages_count"))
     {
-        _messagesCount=std::make_shared<int32_t>((int32_t)pJson["messages_count"].asInt64());
+        _dirtyFlag[6]=true;
+        if(!pJson["messages_count"].isNull())
+        {
+            _messagesCount=std::make_shared<int32_t>((int32_t)pJson["messages_count"].asInt64());
+        }
     }
     if(pJson.isMember("last_message_id"))
     {
-        _lastMessageId=std::make_shared<int32_t>((int32_t)pJson["last_message_id"].asInt64());
+        _dirtyFlag[7]=true;
+        if(!pJson["last_message_id"].isNull())
+        {
+            _lastMessageId=std::make_shared<int32_t>((int32_t)pJson["last_message_id"].asInt64());
+        }
     }
 }
 
@@ -216,42 +280,66 @@ void Forums::updateByMasqueradedJson(const Json::Value &pJson,
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
         _dirtyFlag[1] = true;
-        _projectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _projectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
         _dirtyFlag[2] = true;
-        _name=std::make_shared<std::string>(pJson[pMasqueradingVector[2]].asString());
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _name=std::make_shared<std::string>(pJson[pMasqueradingVector[2]].asString());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
         _dirtyFlag[3] = true;
-        _description=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _description=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+        }
     }
     if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
     {
         _dirtyFlag[4] = true;
-        _position=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[4]].asInt64());
+        if(!pJson[pMasqueradingVector[4]].isNull())
+        {
+            _position=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[4]].asInt64());
+        }
     }
     if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
     {
         _dirtyFlag[5] = true;
-        _topicsCount=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[5]].asInt64());
+        if(!pJson[pMasqueradingVector[5]].isNull())
+        {
+            _topicsCount=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[5]].asInt64());
+        }
     }
     if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
     {
         _dirtyFlag[6] = true;
-        _messagesCount=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[6]].asInt64());
+        if(!pJson[pMasqueradingVector[6]].isNull())
+        {
+            _messagesCount=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[6]].asInt64());
+        }
     }
     if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
     {
         _dirtyFlag[7] = true;
-        _lastMessageId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[7]].asInt64());
+        if(!pJson[pMasqueradingVector[7]].isNull())
+        {
+            _lastMessageId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[7]].asInt64());
+        }
     }
 }
                                                                     
@@ -259,42 +347,66 @@ void Forums::updateByJson(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("project_id"))
     {
         _dirtyFlag[1] = true;
-        _projectId=std::make_shared<int32_t>((int32_t)pJson["project_id"].asInt64());
+        if(!pJson["project_id"].isNull())
+        {
+            _projectId=std::make_shared<int32_t>((int32_t)pJson["project_id"].asInt64());
+        }
     }
     if(pJson.isMember("name"))
     {
         _dirtyFlag[2] = true;
-        _name=std::make_shared<std::string>(pJson["name"].asString());
+        if(!pJson["name"].isNull())
+        {
+            _name=std::make_shared<std::string>(pJson["name"].asString());
+        }
     }
     if(pJson.isMember("description"))
     {
         _dirtyFlag[3] = true;
-        _description=std::make_shared<std::string>(pJson["description"].asString());
+        if(!pJson["description"].isNull())
+        {
+            _description=std::make_shared<std::string>(pJson["description"].asString());
+        }
     }
     if(pJson.isMember("position"))
     {
         _dirtyFlag[4] = true;
-        _position=std::make_shared<int32_t>((int32_t)pJson["position"].asInt64());
+        if(!pJson["position"].isNull())
+        {
+            _position=std::make_shared<int32_t>((int32_t)pJson["position"].asInt64());
+        }
     }
     if(pJson.isMember("topics_count"))
     {
         _dirtyFlag[5] = true;
-        _topicsCount=std::make_shared<int32_t>((int32_t)pJson["topics_count"].asInt64());
+        if(!pJson["topics_count"].isNull())
+        {
+            _topicsCount=std::make_shared<int32_t>((int32_t)pJson["topics_count"].asInt64());
+        }
     }
     if(pJson.isMember("messages_count"))
     {
         _dirtyFlag[6] = true;
-        _messagesCount=std::make_shared<int32_t>((int32_t)pJson["messages_count"].asInt64());
+        if(!pJson["messages_count"].isNull())
+        {
+            _messagesCount=std::make_shared<int32_t>((int32_t)pJson["messages_count"].asInt64());
+        }
     }
     if(pJson.isMember("last_message_id"))
     {
         _dirtyFlag[7] = true;
-        _lastMessageId=std::make_shared<int32_t>((int32_t)pJson["last_message_id"].asInt64());
+        if(!pJson["last_message_id"].isNull())
+        {
+            _lastMessageId=std::make_shared<int32_t>((int32_t)pJson["last_message_id"].asInt64());
+        }
     }
 }
 
@@ -471,61 +583,82 @@ const std::vector<std::string> &Forums::insertColumns() noexcept
 
 void Forums::outputArgs(drogon::orm::internal::SqlBinder &binder) const
 {
-    if(getProjectId())
+    if(_dirtyFlag[1])
     {
-        binder << getValueOfProjectId();
+        if(getProjectId())
+        {
+            binder << getValueOfProjectId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[2])
     {
-        binder << nullptr;
+        if(getName())
+        {
+            binder << getValueOfName();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getName())
+    if(_dirtyFlag[3])
     {
-        binder << getValueOfName();
+        if(getDescription())
+        {
+            binder << getValueOfDescription();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[4])
     {
-        binder << nullptr;
+        if(getPosition())
+        {
+            binder << getValueOfPosition();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getDescription())
+    if(_dirtyFlag[5])
     {
-        binder << getValueOfDescription();
+        if(getTopicsCount())
+        {
+            binder << getValueOfTopicsCount();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[6])
     {
-        binder << nullptr;
+        if(getMessagesCount())
+        {
+            binder << getValueOfMessagesCount();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getPosition())
+    if(_dirtyFlag[7])
     {
-        binder << getValueOfPosition();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getTopicsCount())
-    {
-        binder << getValueOfTopicsCount();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getMessagesCount())
-    {
-        binder << getValueOfMessagesCount();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getLastMessageId())
-    {
-        binder << getValueOfLastMessageId();
-    }
-    else
-    {
-        binder << nullptr;
+        if(getLastMessageId())
+        {
+            binder << getValueOfLastMessageId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
 }
 

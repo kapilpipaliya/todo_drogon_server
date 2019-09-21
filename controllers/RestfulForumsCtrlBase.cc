@@ -5,11 +5,8 @@
  *  Users should implement business logic in the derived class.
  */
 
-#include "RestfulForumsCtrl.h"
+#include "RestfulForumsCtrlBase.h"
 #include <string>
-
-
-
 
 void RestfulForumsCtrlBase::getOne(const HttpRequestPtr &req,
                                    std::function<void(const HttpResponsePtr &)> &&callback,

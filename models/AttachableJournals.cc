@@ -94,19 +94,35 @@ AttachableJournals::AttachableJournals(const Json::Value &pJson, const std::vect
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        _dirtyFlag[0] = true;
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
-        _journalId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        _dirtyFlag[1] = true;
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _journalId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
-        _attachmentId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        _dirtyFlag[2] = true;
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _attachmentId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
-        _filename=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+        _dirtyFlag[3] = true;
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _filename=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+        }
     }
 }
 
@@ -114,19 +130,35 @@ AttachableJournals::AttachableJournals(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        _dirtyFlag[0]=true;
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("journal_id"))
     {
-        _journalId=std::make_shared<int32_t>((int32_t)pJson["journal_id"].asInt64());
+        _dirtyFlag[1]=true;
+        if(!pJson["journal_id"].isNull())
+        {
+            _journalId=std::make_shared<int32_t>((int32_t)pJson["journal_id"].asInt64());
+        }
     }
     if(pJson.isMember("attachment_id"))
     {
-        _attachmentId=std::make_shared<int32_t>((int32_t)pJson["attachment_id"].asInt64());
+        _dirtyFlag[2]=true;
+        if(!pJson["attachment_id"].isNull())
+        {
+            _attachmentId=std::make_shared<int32_t>((int32_t)pJson["attachment_id"].asInt64());
+        }
     }
     if(pJson.isMember("filename"))
     {
-        _filename=std::make_shared<std::string>(pJson["filename"].asString());
+        _dirtyFlag[3]=true;
+        if(!pJson["filename"].isNull())
+        {
+            _filename=std::make_shared<std::string>(pJson["filename"].asString());
+        }
     }
 }
 
@@ -140,22 +172,34 @@ void AttachableJournals::updateByMasqueradedJson(const Json::Value &pJson,
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
         _dirtyFlag[1] = true;
-        _journalId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _journalId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
         _dirtyFlag[2] = true;
-        _attachmentId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _attachmentId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
         _dirtyFlag[3] = true;
-        _filename=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _filename=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+        }
     }
 }
                                                                     
@@ -163,22 +207,34 @@ void AttachableJournals::updateByJson(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("journal_id"))
     {
         _dirtyFlag[1] = true;
-        _journalId=std::make_shared<int32_t>((int32_t)pJson["journal_id"].asInt64());
+        if(!pJson["journal_id"].isNull())
+        {
+            _journalId=std::make_shared<int32_t>((int32_t)pJson["journal_id"].asInt64());
+        }
     }
     if(pJson.isMember("attachment_id"))
     {
         _dirtyFlag[2] = true;
-        _attachmentId=std::make_shared<int32_t>((int32_t)pJson["attachment_id"].asInt64());
+        if(!pJson["attachment_id"].isNull())
+        {
+            _attachmentId=std::make_shared<int32_t>((int32_t)pJson["attachment_id"].asInt64());
+        }
     }
     if(pJson.isMember("filename"))
     {
         _dirtyFlag[3] = true;
-        _filename=std::make_shared<std::string>(pJson["filename"].asString());
+        if(!pJson["filename"].isNull())
+        {
+            _filename=std::make_shared<std::string>(pJson["filename"].asString());
+        }
     }
 }
 
@@ -274,29 +330,38 @@ const std::vector<std::string> &AttachableJournals::insertColumns() noexcept
 
 void AttachableJournals::outputArgs(drogon::orm::internal::SqlBinder &binder) const
 {
-    if(getJournalId())
+    if(_dirtyFlag[1])
     {
-        binder << getValueOfJournalId();
+        if(getJournalId())
+        {
+            binder << getValueOfJournalId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[2])
     {
-        binder << nullptr;
+        if(getAttachmentId())
+        {
+            binder << getValueOfAttachmentId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getAttachmentId())
+    if(_dirtyFlag[3])
     {
-        binder << getValueOfAttachmentId();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getFilename())
-    {
-        binder << getValueOfFilename();
-    }
-    else
-    {
-        binder << nullptr;
+        if(getFilename())
+        {
+            binder << getValueOfFilename();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
 }
 

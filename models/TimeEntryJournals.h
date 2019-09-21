@@ -12,6 +12,7 @@
 #include <drogon/orm/SqlBinder.h>
 #include <drogon/orm/Mapper.h>
 #include <trantor/utils/Date.h>
+#include <trantor/utils/Logger.h>
 #include <json/json.h>
 #include <string>
 #include <memory>
@@ -271,10 +272,179 @@ class TimeEntryJournals
         static const std::string sql="delete from " + tableName + " where id = $1";
         return sql;                   
     }
-
-    static const std::string &sqlForInserting()
+    std::string sqlForInserting(bool &needSelection) const
     {
-        static const std::string sql="insert into " + tableName + " (journal_id,project_id,user_id,work_package_id,hours,comments,activity_id,spent_on,tyear,tmonth,tweek,overridden_costs,costs,rate_id) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14) returning *";
+        std::string sql="insert into " + tableName + " (";
+        size_t parametersCount = 0;
+        needSelection = false;
+            sql += "id,";
+            ++parametersCount;
+        if(_dirtyFlag[1])
+        {
+            sql += "journal_id,";
+            ++parametersCount;
+        }
+        if(_dirtyFlag[2])
+        {
+            sql += "project_id,";
+            ++parametersCount;
+        }
+        if(_dirtyFlag[3])
+        {
+            sql += "user_id,";
+            ++parametersCount;
+        }
+        if(_dirtyFlag[4])
+        {
+            sql += "work_package_id,";
+            ++parametersCount;
+        }
+        if(_dirtyFlag[5])
+        {
+            sql += "hours,";
+            ++parametersCount;
+        }
+        if(_dirtyFlag[6])
+        {
+            sql += "comments,";
+            ++parametersCount;
+        }
+        if(_dirtyFlag[7])
+        {
+            sql += "activity_id,";
+            ++parametersCount;
+        }
+        if(_dirtyFlag[8])
+        {
+            sql += "spent_on,";
+            ++parametersCount;
+        }
+        if(_dirtyFlag[9])
+        {
+            sql += "tyear,";
+            ++parametersCount;
+        }
+        if(_dirtyFlag[10])
+        {
+            sql += "tmonth,";
+            ++parametersCount;
+        }
+        if(_dirtyFlag[11])
+        {
+            sql += "tweek,";
+            ++parametersCount;
+        }
+        if(_dirtyFlag[12])
+        {
+            sql += "overridden_costs,";
+            ++parametersCount;
+        }
+        if(_dirtyFlag[13])
+        {
+            sql += "costs,";
+            ++parametersCount;
+        }
+        if(_dirtyFlag[14])
+        {
+            sql += "rate_id,";
+            ++parametersCount;
+        }
+        needSelection=true;
+        if(parametersCount > 0)
+        {
+            sql[sql.length()-1]=')';
+            sql += " values (";
+        }
+        else
+            sql += ") values (";
+        
+        int placeholder=1;
+        char placeholderStr[64];
+        size_t n=0;
+        sql +="default,";
+        if(_dirtyFlag[1])
+        {
+            n = sprintf(placeholderStr,"$%d,",placeholder++);
+            sql.append(placeholderStr, n);
+        } 
+        if(_dirtyFlag[2])
+        {
+            n = sprintf(placeholderStr,"$%d,",placeholder++);
+            sql.append(placeholderStr, n);
+        } 
+        if(_dirtyFlag[3])
+        {
+            n = sprintf(placeholderStr,"$%d,",placeholder++);
+            sql.append(placeholderStr, n);
+        } 
+        if(_dirtyFlag[4])
+        {
+            n = sprintf(placeholderStr,"$%d,",placeholder++);
+            sql.append(placeholderStr, n);
+        } 
+        if(_dirtyFlag[5])
+        {
+            n = sprintf(placeholderStr,"$%d,",placeholder++);
+            sql.append(placeholderStr, n);
+        } 
+        if(_dirtyFlag[6])
+        {
+            n = sprintf(placeholderStr,"$%d,",placeholder++);
+            sql.append(placeholderStr, n);
+        } 
+        if(_dirtyFlag[7])
+        {
+            n = sprintf(placeholderStr,"$%d,",placeholder++);
+            sql.append(placeholderStr, n);
+        } 
+        if(_dirtyFlag[8])
+        {
+            n = sprintf(placeholderStr,"$%d,",placeholder++);
+            sql.append(placeholderStr, n);
+        } 
+        if(_dirtyFlag[9])
+        {
+            n = sprintf(placeholderStr,"$%d,",placeholder++);
+            sql.append(placeholderStr, n);
+        } 
+        if(_dirtyFlag[10])
+        {
+            n = sprintf(placeholderStr,"$%d,",placeholder++);
+            sql.append(placeholderStr, n);
+        } 
+        if(_dirtyFlag[11])
+        {
+            n = sprintf(placeholderStr,"$%d,",placeholder++);
+            sql.append(placeholderStr, n);
+        } 
+        if(_dirtyFlag[12])
+        {
+            n = sprintf(placeholderStr,"$%d,",placeholder++);
+            sql.append(placeholderStr, n);
+        } 
+        if(_dirtyFlag[13])
+        {
+            n = sprintf(placeholderStr,"$%d,",placeholder++);
+            sql.append(placeholderStr, n);
+        } 
+        if(_dirtyFlag[14])
+        {
+            n = sprintf(placeholderStr,"$%d,",placeholder++);
+            sql.append(placeholderStr, n);
+        } 
+        if(parametersCount > 0)
+        {
+            sql.resize(sql.length() - 1);
+        }
+        if(needSelection)
+        {
+            sql.append(") returning *");
+        }
+        else
+        {
+            sql.append(1, ')');
+        }
+        LOG_TRACE << sql;
         return sql;   
     }
 };

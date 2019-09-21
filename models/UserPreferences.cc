@@ -105,23 +105,43 @@ UserPreferences::UserPreferences(const Json::Value &pJson, const std::vector<std
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        _dirtyFlag[0] = true;
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
-        _userId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        _dirtyFlag[1] = true;
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _userId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
-        _others=std::make_shared<std::string>(pJson[pMasqueradingVector[2]].asString());
+        _dirtyFlag[2] = true;
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _others=std::make_shared<std::string>(pJson[pMasqueradingVector[2]].asString());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
-        _hideMail=std::make_shared<bool>(pJson[pMasqueradingVector[3]].asBool());
+        _dirtyFlag[3] = true;
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _hideMail=std::make_shared<bool>(pJson[pMasqueradingVector[3]].asBool());
+        }
     }
     if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
     {
-        _timeZone=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        _dirtyFlag[4] = true;
+        if(!pJson[pMasqueradingVector[4]].isNull())
+        {
+            _timeZone=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        }
     }
 }
 
@@ -129,23 +149,43 @@ UserPreferences::UserPreferences(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        _dirtyFlag[0]=true;
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("user_id"))
     {
-        _userId=std::make_shared<int32_t>((int32_t)pJson["user_id"].asInt64());
+        _dirtyFlag[1]=true;
+        if(!pJson["user_id"].isNull())
+        {
+            _userId=std::make_shared<int32_t>((int32_t)pJson["user_id"].asInt64());
+        }
     }
     if(pJson.isMember("others"))
     {
-        _others=std::make_shared<std::string>(pJson["others"].asString());
+        _dirtyFlag[2]=true;
+        if(!pJson["others"].isNull())
+        {
+            _others=std::make_shared<std::string>(pJson["others"].asString());
+        }
     }
     if(pJson.isMember("hide_mail"))
     {
-        _hideMail=std::make_shared<bool>(pJson["hide_mail"].asBool());
+        _dirtyFlag[3]=true;
+        if(!pJson["hide_mail"].isNull())
+        {
+            _hideMail=std::make_shared<bool>(pJson["hide_mail"].asBool());
+        }
     }
     if(pJson.isMember("time_zone"))
     {
-        _timeZone=std::make_shared<std::string>(pJson["time_zone"].asString());
+        _dirtyFlag[4]=true;
+        if(!pJson["time_zone"].isNull())
+        {
+            _timeZone=std::make_shared<std::string>(pJson["time_zone"].asString());
+        }
     }
 }
 
@@ -159,27 +199,42 @@ void UserPreferences::updateByMasqueradedJson(const Json::Value &pJson,
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
         _dirtyFlag[1] = true;
-        _userId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _userId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
         _dirtyFlag[2] = true;
-        _others=std::make_shared<std::string>(pJson[pMasqueradingVector[2]].asString());
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _others=std::make_shared<std::string>(pJson[pMasqueradingVector[2]].asString());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
         _dirtyFlag[3] = true;
-        _hideMail=std::make_shared<bool>(pJson[pMasqueradingVector[3]].asBool());
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _hideMail=std::make_shared<bool>(pJson[pMasqueradingVector[3]].asBool());
+        }
     }
     if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
     {
         _dirtyFlag[4] = true;
-        _timeZone=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        if(!pJson[pMasqueradingVector[4]].isNull())
+        {
+            _timeZone=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        }
     }
 }
                                                                     
@@ -187,27 +242,42 @@ void UserPreferences::updateByJson(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("user_id"))
     {
         _dirtyFlag[1] = true;
-        _userId=std::make_shared<int32_t>((int32_t)pJson["user_id"].asInt64());
+        if(!pJson["user_id"].isNull())
+        {
+            _userId=std::make_shared<int32_t>((int32_t)pJson["user_id"].asInt64());
+        }
     }
     if(pJson.isMember("others"))
     {
         _dirtyFlag[2] = true;
-        _others=std::make_shared<std::string>(pJson["others"].asString());
+        if(!pJson["others"].isNull())
+        {
+            _others=std::make_shared<std::string>(pJson["others"].asString());
+        }
     }
     if(pJson.isMember("hide_mail"))
     {
         _dirtyFlag[3] = true;
-        _hideMail=std::make_shared<bool>(pJson["hide_mail"].asBool());
+        if(!pJson["hide_mail"].isNull())
+        {
+            _hideMail=std::make_shared<bool>(pJson["hide_mail"].asBool());
+        }
     }
     if(pJson.isMember("time_zone"))
     {
         _dirtyFlag[4] = true;
-        _timeZone=std::make_shared<std::string>(pJson["time_zone"].asString());
+        if(!pJson["time_zone"].isNull())
+        {
+            _timeZone=std::make_shared<std::string>(pJson["time_zone"].asString());
+        }
     }
 }
 
@@ -327,37 +397,49 @@ const std::vector<std::string> &UserPreferences::insertColumns() noexcept
 
 void UserPreferences::outputArgs(drogon::orm::internal::SqlBinder &binder) const
 {
-    if(getUserId())
+    if(_dirtyFlag[1])
     {
-        binder << getValueOfUserId();
+        if(getUserId())
+        {
+            binder << getValueOfUserId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[2])
     {
-        binder << nullptr;
+        if(getOthers())
+        {
+            binder << getValueOfOthers();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getOthers())
+    if(_dirtyFlag[3])
     {
-        binder << getValueOfOthers();
+        if(getHideMail())
+        {
+            binder << getValueOfHideMail();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[4])
     {
-        binder << nullptr;
-    }
-    if(getHideMail())
-    {
-        binder << getValueOfHideMail();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getTimeZone())
-    {
-        binder << getValueOfTimeZone();
-    }
-    else
-    {
-        binder << nullptr;
+        if(getTimeZone())
+        {
+            binder << getValueOfTimeZone();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
 }
 

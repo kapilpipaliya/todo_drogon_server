@@ -225,68 +225,128 @@ TimeEntryJournals::TimeEntryJournals(const Json::Value &pJson, const std::vector
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        _dirtyFlag[0] = true;
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
-        _journalId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        _dirtyFlag[1] = true;
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _journalId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
-        _projectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        _dirtyFlag[2] = true;
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _projectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
-        _userId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        _dirtyFlag[3] = true;
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _userId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        }
     }
     if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
     {
-        _workPackageId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[4]].asInt64());
+        _dirtyFlag[4] = true;
+        if(!pJson[pMasqueradingVector[4]].isNull())
+        {
+            _workPackageId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[4]].asInt64());
+        }
     }
     if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
     {
-        _hours=std::make_shared<double>(pJson[pMasqueradingVector[5]].asDouble());
+        _dirtyFlag[5] = true;
+        if(!pJson[pMasqueradingVector[5]].isNull())
+        {
+            _hours=std::make_shared<double>(pJson[pMasqueradingVector[5]].asDouble());
+        }
     }
     if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
     {
-        _comments=std::make_shared<std::string>(pJson[pMasqueradingVector[6]].asString());
+        _dirtyFlag[6] = true;
+        if(!pJson[pMasqueradingVector[6]].isNull())
+        {
+            _comments=std::make_shared<std::string>(pJson[pMasqueradingVector[6]].asString());
+        }
     }
     if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
     {
-        _activityId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[7]].asInt64());
+        _dirtyFlag[7] = true;
+        if(!pJson[pMasqueradingVector[7]].isNull())
+        {
+            _activityId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[7]].asInt64());
+        }
     }
     if(!pMasqueradingVector[8].empty() && pJson.isMember(pMasqueradingVector[8]))
     {
-        auto daysStr = pJson[pMasqueradingVector[8]].asString();
-        struct tm stm;
-        memset(&stm,0,sizeof(stm));
-        strptime(daysStr.c_str(),"%Y-%m-%d",&stm);
-        long t = timelocal(&stm);
-        _spentOn=std::make_shared<::trantor::Date>(t*1000000);
+        _dirtyFlag[8] = true;
+        if(!pJson[pMasqueradingVector[8]].isNull())
+        {
+            auto daysStr = pJson[pMasqueradingVector[8]].asString();
+            struct tm stm;
+            memset(&stm,0,sizeof(stm));
+            strptime(daysStr.c_str(),"%Y-%m-%d",&stm);
+            long t = timelocal(&stm);
+            _spentOn=std::make_shared<::trantor::Date>(t*1000000);
+        }
     }
     if(!pMasqueradingVector[9].empty() && pJson.isMember(pMasqueradingVector[9]))
     {
-        _tyear=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[9]].asInt64());
+        _dirtyFlag[9] = true;
+        if(!pJson[pMasqueradingVector[9]].isNull())
+        {
+            _tyear=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[9]].asInt64());
+        }
     }
     if(!pMasqueradingVector[10].empty() && pJson.isMember(pMasqueradingVector[10]))
     {
-        _tmonth=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[10]].asInt64());
+        _dirtyFlag[10] = true;
+        if(!pJson[pMasqueradingVector[10]].isNull())
+        {
+            _tmonth=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[10]].asInt64());
+        }
     }
     if(!pMasqueradingVector[11].empty() && pJson.isMember(pMasqueradingVector[11]))
     {
-        _tweek=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[11]].asInt64());
+        _dirtyFlag[11] = true;
+        if(!pJson[pMasqueradingVector[11]].isNull())
+        {
+            _tweek=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[11]].asInt64());
+        }
     }
     if(!pMasqueradingVector[12].empty() && pJson.isMember(pMasqueradingVector[12]))
     {
-        _overriddenCosts=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[12]].asInt64());
+        _dirtyFlag[12] = true;
+        if(!pJson[pMasqueradingVector[12]].isNull())
+        {
+            _overriddenCosts=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[12]].asInt64());
+        }
     }
     if(!pMasqueradingVector[13].empty() && pJson.isMember(pMasqueradingVector[13]))
     {
-        _costs=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[13]].asInt64());
+        _dirtyFlag[13] = true;
+        if(!pJson[pMasqueradingVector[13]].isNull())
+        {
+            _costs=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[13]].asInt64());
+        }
     }
     if(!pMasqueradingVector[14].empty() && pJson.isMember(pMasqueradingVector[14]))
     {
-        _rateId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[14]].asInt64());
+        _dirtyFlag[14] = true;
+        if(!pJson[pMasqueradingVector[14]].isNull())
+        {
+            _rateId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[14]].asInt64());
+        }
     }
 }
 
@@ -294,68 +354,128 @@ TimeEntryJournals::TimeEntryJournals(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        _dirtyFlag[0]=true;
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("journal_id"))
     {
-        _journalId=std::make_shared<int32_t>((int32_t)pJson["journal_id"].asInt64());
+        _dirtyFlag[1]=true;
+        if(!pJson["journal_id"].isNull())
+        {
+            _journalId=std::make_shared<int32_t>((int32_t)pJson["journal_id"].asInt64());
+        }
     }
     if(pJson.isMember("project_id"))
     {
-        _projectId=std::make_shared<int32_t>((int32_t)pJson["project_id"].asInt64());
+        _dirtyFlag[2]=true;
+        if(!pJson["project_id"].isNull())
+        {
+            _projectId=std::make_shared<int32_t>((int32_t)pJson["project_id"].asInt64());
+        }
     }
     if(pJson.isMember("user_id"))
     {
-        _userId=std::make_shared<int32_t>((int32_t)pJson["user_id"].asInt64());
+        _dirtyFlag[3]=true;
+        if(!pJson["user_id"].isNull())
+        {
+            _userId=std::make_shared<int32_t>((int32_t)pJson["user_id"].asInt64());
+        }
     }
     if(pJson.isMember("work_package_id"))
     {
-        _workPackageId=std::make_shared<int32_t>((int32_t)pJson["work_package_id"].asInt64());
+        _dirtyFlag[4]=true;
+        if(!pJson["work_package_id"].isNull())
+        {
+            _workPackageId=std::make_shared<int32_t>((int32_t)pJson["work_package_id"].asInt64());
+        }
     }
     if(pJson.isMember("hours"))
     {
-        _hours=std::make_shared<double>(pJson["hours"].asDouble());
+        _dirtyFlag[5]=true;
+        if(!pJson["hours"].isNull())
+        {
+            _hours=std::make_shared<double>(pJson["hours"].asDouble());
+        }
     }
     if(pJson.isMember("comments"))
     {
-        _comments=std::make_shared<std::string>(pJson["comments"].asString());
+        _dirtyFlag[6]=true;
+        if(!pJson["comments"].isNull())
+        {
+            _comments=std::make_shared<std::string>(pJson["comments"].asString());
+        }
     }
     if(pJson.isMember("activity_id"))
     {
-        _activityId=std::make_shared<int32_t>((int32_t)pJson["activity_id"].asInt64());
+        _dirtyFlag[7]=true;
+        if(!pJson["activity_id"].isNull())
+        {
+            _activityId=std::make_shared<int32_t>((int32_t)pJson["activity_id"].asInt64());
+        }
     }
     if(pJson.isMember("spent_on"))
     {
-        auto daysStr = pJson["spent_on"].asString();
-        struct tm stm;
-        memset(&stm,0,sizeof(stm));
-        strptime(daysStr.c_str(),"%Y-%m-%d",&stm);
-        long t = timelocal(&stm);
-        _spentOn=std::make_shared<::trantor::Date>(t*1000000);
+        _dirtyFlag[8]=true;
+        if(!pJson["spent_on"].isNull())
+        {
+            auto daysStr = pJson["spent_on"].asString();
+            struct tm stm;
+            memset(&stm,0,sizeof(stm));
+            strptime(daysStr.c_str(),"%Y-%m-%d",&stm);
+            long t = timelocal(&stm);
+            _spentOn=std::make_shared<::trantor::Date>(t*1000000);
+        }
     }
     if(pJson.isMember("tyear"))
     {
-        _tyear=std::make_shared<int32_t>((int32_t)pJson["tyear"].asInt64());
+        _dirtyFlag[9]=true;
+        if(!pJson["tyear"].isNull())
+        {
+            _tyear=std::make_shared<int32_t>((int32_t)pJson["tyear"].asInt64());
+        }
     }
     if(pJson.isMember("tmonth"))
     {
-        _tmonth=std::make_shared<int32_t>((int32_t)pJson["tmonth"].asInt64());
+        _dirtyFlag[10]=true;
+        if(!pJson["tmonth"].isNull())
+        {
+            _tmonth=std::make_shared<int32_t>((int32_t)pJson["tmonth"].asInt64());
+        }
     }
     if(pJson.isMember("tweek"))
     {
-        _tweek=std::make_shared<int32_t>((int32_t)pJson["tweek"].asInt64());
+        _dirtyFlag[11]=true;
+        if(!pJson["tweek"].isNull())
+        {
+            _tweek=std::make_shared<int32_t>((int32_t)pJson["tweek"].asInt64());
+        }
     }
     if(pJson.isMember("overridden_costs"))
     {
-        _overriddenCosts=std::make_shared<int64_t>((int64_t)pJson["overridden_costs"].asInt64());
+        _dirtyFlag[12]=true;
+        if(!pJson["overridden_costs"].isNull())
+        {
+            _overriddenCosts=std::make_shared<int64_t>((int64_t)pJson["overridden_costs"].asInt64());
+        }
     }
     if(pJson.isMember("costs"))
     {
-        _costs=std::make_shared<int64_t>((int64_t)pJson["costs"].asInt64());
+        _dirtyFlag[13]=true;
+        if(!pJson["costs"].isNull())
+        {
+            _costs=std::make_shared<int64_t>((int64_t)pJson["costs"].asInt64());
+        }
     }
     if(pJson.isMember("rate_id"))
     {
-        _rateId=std::make_shared<int32_t>((int32_t)pJson["rate_id"].asInt64());
+        _dirtyFlag[14]=true;
+        if(!pJson["rate_id"].isNull())
+        {
+            _rateId=std::make_shared<int32_t>((int32_t)pJson["rate_id"].asInt64());
+        }
     }
 }
 
@@ -369,82 +489,127 @@ void TimeEntryJournals::updateByMasqueradedJson(const Json::Value &pJson,
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
         _dirtyFlag[1] = true;
-        _journalId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _journalId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
         _dirtyFlag[2] = true;
-        _projectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _projectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
         _dirtyFlag[3] = true;
-        _userId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _userId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        }
     }
     if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
     {
         _dirtyFlag[4] = true;
-        _workPackageId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[4]].asInt64());
+        if(!pJson[pMasqueradingVector[4]].isNull())
+        {
+            _workPackageId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[4]].asInt64());
+        }
     }
     if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
     {
         _dirtyFlag[5] = true;
-        _hours=std::make_shared<double>(pJson[pMasqueradingVector[5]].asDouble());
+        if(!pJson[pMasqueradingVector[5]].isNull())
+        {
+            _hours=std::make_shared<double>(pJson[pMasqueradingVector[5]].asDouble());
+        }
     }
     if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
     {
         _dirtyFlag[6] = true;
-        _comments=std::make_shared<std::string>(pJson[pMasqueradingVector[6]].asString());
+        if(!pJson[pMasqueradingVector[6]].isNull())
+        {
+            _comments=std::make_shared<std::string>(pJson[pMasqueradingVector[6]].asString());
+        }
     }
     if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
     {
         _dirtyFlag[7] = true;
-        _activityId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[7]].asInt64());
+        if(!pJson[pMasqueradingVector[7]].isNull())
+        {
+            _activityId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[7]].asInt64());
+        }
     }
     if(!pMasqueradingVector[8].empty() && pJson.isMember(pMasqueradingVector[8]))
     {
         _dirtyFlag[8] = true;
-        auto daysStr = pJson[pMasqueradingVector[8]].asString();
-        struct tm stm;
-        memset(&stm,0,sizeof(stm));
-        strptime(daysStr.c_str(),"%Y-%m-%d",&stm);
-        long t = timelocal(&stm);
-        _spentOn=std::make_shared<::trantor::Date>(t*1000000);
+        if(!pJson[pMasqueradingVector[8]].isNull())
+        {
+            auto daysStr = pJson[pMasqueradingVector[8]].asString();
+            struct tm stm;
+            memset(&stm,0,sizeof(stm));
+            strptime(daysStr.c_str(),"%Y-%m-%d",&stm);
+            long t = timelocal(&stm);
+            _spentOn=std::make_shared<::trantor::Date>(t*1000000);
+        }
     }
     if(!pMasqueradingVector[9].empty() && pJson.isMember(pMasqueradingVector[9]))
     {
         _dirtyFlag[9] = true;
-        _tyear=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[9]].asInt64());
+        if(!pJson[pMasqueradingVector[9]].isNull())
+        {
+            _tyear=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[9]].asInt64());
+        }
     }
     if(!pMasqueradingVector[10].empty() && pJson.isMember(pMasqueradingVector[10]))
     {
         _dirtyFlag[10] = true;
-        _tmonth=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[10]].asInt64());
+        if(!pJson[pMasqueradingVector[10]].isNull())
+        {
+            _tmonth=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[10]].asInt64());
+        }
     }
     if(!pMasqueradingVector[11].empty() && pJson.isMember(pMasqueradingVector[11]))
     {
         _dirtyFlag[11] = true;
-        _tweek=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[11]].asInt64());
+        if(!pJson[pMasqueradingVector[11]].isNull())
+        {
+            _tweek=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[11]].asInt64());
+        }
     }
     if(!pMasqueradingVector[12].empty() && pJson.isMember(pMasqueradingVector[12]))
     {
         _dirtyFlag[12] = true;
-        _overriddenCosts=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[12]].asInt64());
+        if(!pJson[pMasqueradingVector[12]].isNull())
+        {
+            _overriddenCosts=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[12]].asInt64());
+        }
     }
     if(!pMasqueradingVector[13].empty() && pJson.isMember(pMasqueradingVector[13]))
     {
         _dirtyFlag[13] = true;
-        _costs=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[13]].asInt64());
+        if(!pJson[pMasqueradingVector[13]].isNull())
+        {
+            _costs=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[13]].asInt64());
+        }
     }
     if(!pMasqueradingVector[14].empty() && pJson.isMember(pMasqueradingVector[14]))
     {
         _dirtyFlag[14] = true;
-        _rateId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[14]].asInt64());
+        if(!pJson[pMasqueradingVector[14]].isNull())
+        {
+            _rateId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[14]].asInt64());
+        }
     }
 }
                                                                     
@@ -452,82 +617,127 @@ void TimeEntryJournals::updateByJson(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("journal_id"))
     {
         _dirtyFlag[1] = true;
-        _journalId=std::make_shared<int32_t>((int32_t)pJson["journal_id"].asInt64());
+        if(!pJson["journal_id"].isNull())
+        {
+            _journalId=std::make_shared<int32_t>((int32_t)pJson["journal_id"].asInt64());
+        }
     }
     if(pJson.isMember("project_id"))
     {
         _dirtyFlag[2] = true;
-        _projectId=std::make_shared<int32_t>((int32_t)pJson["project_id"].asInt64());
+        if(!pJson["project_id"].isNull())
+        {
+            _projectId=std::make_shared<int32_t>((int32_t)pJson["project_id"].asInt64());
+        }
     }
     if(pJson.isMember("user_id"))
     {
         _dirtyFlag[3] = true;
-        _userId=std::make_shared<int32_t>((int32_t)pJson["user_id"].asInt64());
+        if(!pJson["user_id"].isNull())
+        {
+            _userId=std::make_shared<int32_t>((int32_t)pJson["user_id"].asInt64());
+        }
     }
     if(pJson.isMember("work_package_id"))
     {
         _dirtyFlag[4] = true;
-        _workPackageId=std::make_shared<int32_t>((int32_t)pJson["work_package_id"].asInt64());
+        if(!pJson["work_package_id"].isNull())
+        {
+            _workPackageId=std::make_shared<int32_t>((int32_t)pJson["work_package_id"].asInt64());
+        }
     }
     if(pJson.isMember("hours"))
     {
         _dirtyFlag[5] = true;
-        _hours=std::make_shared<double>(pJson["hours"].asDouble());
+        if(!pJson["hours"].isNull())
+        {
+            _hours=std::make_shared<double>(pJson["hours"].asDouble());
+        }
     }
     if(pJson.isMember("comments"))
     {
         _dirtyFlag[6] = true;
-        _comments=std::make_shared<std::string>(pJson["comments"].asString());
+        if(!pJson["comments"].isNull())
+        {
+            _comments=std::make_shared<std::string>(pJson["comments"].asString());
+        }
     }
     if(pJson.isMember("activity_id"))
     {
         _dirtyFlag[7] = true;
-        _activityId=std::make_shared<int32_t>((int32_t)pJson["activity_id"].asInt64());
+        if(!pJson["activity_id"].isNull())
+        {
+            _activityId=std::make_shared<int32_t>((int32_t)pJson["activity_id"].asInt64());
+        }
     }
     if(pJson.isMember("spent_on"))
     {
         _dirtyFlag[8] = true;
-        auto daysStr = pJson["spent_on"].asString();
-        struct tm stm;
-        memset(&stm,0,sizeof(stm));
-        strptime(daysStr.c_str(),"%Y-%m-%d",&stm);
-        long t = timelocal(&stm);
-        _spentOn=std::make_shared<::trantor::Date>(t*1000000);
+        if(!pJson["spent_on"].isNull())
+        {
+            auto daysStr = pJson["spent_on"].asString();
+            struct tm stm;
+            memset(&stm,0,sizeof(stm));
+            strptime(daysStr.c_str(),"%Y-%m-%d",&stm);
+            long t = timelocal(&stm);
+            _spentOn=std::make_shared<::trantor::Date>(t*1000000);
+        }
     }
     if(pJson.isMember("tyear"))
     {
         _dirtyFlag[9] = true;
-        _tyear=std::make_shared<int32_t>((int32_t)pJson["tyear"].asInt64());
+        if(!pJson["tyear"].isNull())
+        {
+            _tyear=std::make_shared<int32_t>((int32_t)pJson["tyear"].asInt64());
+        }
     }
     if(pJson.isMember("tmonth"))
     {
         _dirtyFlag[10] = true;
-        _tmonth=std::make_shared<int32_t>((int32_t)pJson["tmonth"].asInt64());
+        if(!pJson["tmonth"].isNull())
+        {
+            _tmonth=std::make_shared<int32_t>((int32_t)pJson["tmonth"].asInt64());
+        }
     }
     if(pJson.isMember("tweek"))
     {
         _dirtyFlag[11] = true;
-        _tweek=std::make_shared<int32_t>((int32_t)pJson["tweek"].asInt64());
+        if(!pJson["tweek"].isNull())
+        {
+            _tweek=std::make_shared<int32_t>((int32_t)pJson["tweek"].asInt64());
+        }
     }
     if(pJson.isMember("overridden_costs"))
     {
         _dirtyFlag[12] = true;
-        _overriddenCosts=std::make_shared<int64_t>((int64_t)pJson["overridden_costs"].asInt64());
+        if(!pJson["overridden_costs"].isNull())
+        {
+            _overriddenCosts=std::make_shared<int64_t>((int64_t)pJson["overridden_costs"].asInt64());
+        }
     }
     if(pJson.isMember("costs"))
     {
         _dirtyFlag[13] = true;
-        _costs=std::make_shared<int64_t>((int64_t)pJson["costs"].asInt64());
+        if(!pJson["costs"].isNull())
+        {
+            _costs=std::make_shared<int64_t>((int64_t)pJson["costs"].asInt64());
+        }
     }
     if(pJson.isMember("rate_id"))
     {
         _dirtyFlag[14] = true;
-        _rateId=std::make_shared<int32_t>((int32_t)pJson["rate_id"].asInt64());
+        if(!pJson["rate_id"].isNull())
+        {
+            _rateId=std::make_shared<int32_t>((int32_t)pJson["rate_id"].asInt64());
+        }
     }
 }
 
@@ -832,117 +1042,159 @@ const std::vector<std::string> &TimeEntryJournals::insertColumns() noexcept
 
 void TimeEntryJournals::outputArgs(drogon::orm::internal::SqlBinder &binder) const
 {
-    if(getJournalId())
+    if(_dirtyFlag[1])
     {
-        binder << getValueOfJournalId();
+        if(getJournalId())
+        {
+            binder << getValueOfJournalId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[2])
     {
-        binder << nullptr;
+        if(getProjectId())
+        {
+            binder << getValueOfProjectId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getProjectId())
+    if(_dirtyFlag[3])
     {
-        binder << getValueOfProjectId();
+        if(getUserId())
+        {
+            binder << getValueOfUserId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[4])
     {
-        binder << nullptr;
+        if(getWorkPackageId())
+        {
+            binder << getValueOfWorkPackageId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getUserId())
+    if(_dirtyFlag[5])
     {
-        binder << getValueOfUserId();
+        if(getHours())
+        {
+            binder << getValueOfHours();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[6])
     {
-        binder << nullptr;
+        if(getComments())
+        {
+            binder << getValueOfComments();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getWorkPackageId())
+    if(_dirtyFlag[7])
     {
-        binder << getValueOfWorkPackageId();
+        if(getActivityId())
+        {
+            binder << getValueOfActivityId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[8])
     {
-        binder << nullptr;
+        if(getSpentOn())
+        {
+            binder << getValueOfSpentOn();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getHours())
+    if(_dirtyFlag[9])
     {
-        binder << getValueOfHours();
+        if(getTyear())
+        {
+            binder << getValueOfTyear();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[10])
     {
-        binder << nullptr;
+        if(getTmonth())
+        {
+            binder << getValueOfTmonth();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getComments())
+    if(_dirtyFlag[11])
     {
-        binder << getValueOfComments();
+        if(getTweek())
+        {
+            binder << getValueOfTweek();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[12])
     {
-        binder << nullptr;
+        if(getOverriddenCosts())
+        {
+            binder << getValueOfOverriddenCosts();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getActivityId())
+    if(_dirtyFlag[13])
     {
-        binder << getValueOfActivityId();
+        if(getCosts())
+        {
+            binder << getValueOfCosts();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[14])
     {
-        binder << nullptr;
-    }
-    if(getSpentOn())
-    {
-        binder << getValueOfSpentOn();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getTyear())
-    {
-        binder << getValueOfTyear();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getTmonth())
-    {
-        binder << getValueOfTmonth();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getTweek())
-    {
-        binder << getValueOfTweek();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getOverriddenCosts())
-    {
-        binder << getValueOfOverriddenCosts();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getCosts())
-    {
-        binder << getValueOfCosts();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getRateId())
-    {
-        binder << getValueOfRateId();
-    }
-    else
-    {
-        binder << nullptr;
+        if(getRateId())
+        {
+            binder << getValueOfRateId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
 }
 

@@ -5,11 +5,8 @@
  *  Users should implement business logic in the derived class.
  */
 
-#include "RestfulMeetingContentJournalsCtrl.h"
+#include "RestfulMeetingContentJournalsCtrlBase.h"
 #include <string>
-
-
-
 
 void RestfulMeetingContentJournalsCtrlBase::getOne(const HttpRequestPtr &req,
                                                    std::function<void(const HttpResponsePtr &)> &&callback,

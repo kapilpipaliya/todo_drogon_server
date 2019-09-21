@@ -72,11 +72,19 @@ CustomFieldsProjects::CustomFieldsProjects(const Json::Value &pJson, const std::
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _customFieldId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        _dirtyFlag[0] = true;
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _customFieldId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
-        _projectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        _dirtyFlag[1] = true;
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _projectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
 }
 
@@ -84,11 +92,19 @@ CustomFieldsProjects::CustomFieldsProjects(const Json::Value &pJson) noexcept(fa
 {
     if(pJson.isMember("custom_field_id"))
     {
-        _customFieldId=std::make_shared<int32_t>((int32_t)pJson["custom_field_id"].asInt64());
+        _dirtyFlag[0]=true;
+        if(!pJson["custom_field_id"].isNull())
+        {
+            _customFieldId=std::make_shared<int32_t>((int32_t)pJson["custom_field_id"].asInt64());
+        }
     }
     if(pJson.isMember("project_id"))
     {
-        _projectId=std::make_shared<int32_t>((int32_t)pJson["project_id"].asInt64());
+        _dirtyFlag[1]=true;
+        if(!pJson["project_id"].isNull())
+        {
+            _projectId=std::make_shared<int32_t>((int32_t)pJson["project_id"].asInt64());
+        }
     }
 }
 
@@ -103,12 +119,18 @@ void CustomFieldsProjects::updateByMasqueradedJson(const Json::Value &pJson,
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
         _dirtyFlag[0] = true;
-        _customFieldId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _customFieldId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
         _dirtyFlag[1] = true;
-        _projectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _projectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
 }
                                                                     
@@ -117,12 +139,18 @@ void CustomFieldsProjects::updateByJson(const Json::Value &pJson) noexcept(false
     if(pJson.isMember("custom_field_id"))
     {
         _dirtyFlag[0] = true;
-        _customFieldId=std::make_shared<int32_t>((int32_t)pJson["custom_field_id"].asInt64());
+        if(!pJson["custom_field_id"].isNull())
+        {
+            _customFieldId=std::make_shared<int32_t>((int32_t)pJson["custom_field_id"].asInt64());
+        }
     }
     if(pJson.isMember("project_id"))
     {
         _dirtyFlag[1] = true;
-        _projectId=std::make_shared<int32_t>((int32_t)pJson["project_id"].asInt64());
+        if(!pJson["project_id"].isNull())
+        {
+            _projectId=std::make_shared<int32_t>((int32_t)pJson["project_id"].asInt64());
+        }
     }
 }
 
@@ -177,21 +205,27 @@ const std::vector<std::string> &CustomFieldsProjects::insertColumns() noexcept
 
 void CustomFieldsProjects::outputArgs(drogon::orm::internal::SqlBinder &binder) const
 {
-    if(getCustomFieldId())
+    if(_dirtyFlag[0])
     {
-        binder << getValueOfCustomFieldId();
+        if(getCustomFieldId())
+        {
+            binder << getValueOfCustomFieldId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[1])
     {
-        binder << nullptr;
-    }
-    if(getProjectId())
-    {
-        binder << getValueOfProjectId();
-    }
-    else
-    {
-        binder << nullptr;
+        if(getProjectId())
+        {
+            binder << getValueOfProjectId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
 }
 

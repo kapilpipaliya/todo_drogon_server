@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <drogon/HttpController.h>
+
 #include "TwoFactorAuthenticationDevices.h"
 using namespace drogon;
 

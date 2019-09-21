@@ -64,7 +64,6 @@ class RoleSeeder : public Seeder {
         role_permission.setUpdatedAt(trantor::Date::now());
         mapper_role_perm.insert(role_permission);
       }
-      fflush(stdout);
     }
   }
 
@@ -88,7 +87,6 @@ class RoleSeeder : public Seeder {
           role_permission.setUpdatedAt(trantor::Date::now());
           mapper_role_perm.insert(role_permission);
         }
-        fflush(stdout);
       }
     }
   }

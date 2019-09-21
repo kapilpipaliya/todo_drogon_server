@@ -86,7 +86,6 @@ class SettingSeeder : public Seeder {
       setting.setUpdatedOn(trantor::Date::now());
       mapper.insert(setting);
     }
-    fflush(stdout);
   }
 
   bool applicable() {

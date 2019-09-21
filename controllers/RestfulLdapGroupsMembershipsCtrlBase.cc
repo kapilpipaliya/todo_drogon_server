@@ -5,11 +5,8 @@
  *  Users should implement business logic in the derived class.
  */
 
-#include "RestfulLdapGroupsMembershipsCtrl.h"
+#include "RestfulLdapGroupsMembershipsCtrlBase.h"
 #include <string>
-
-
-
 
 void RestfulLdapGroupsMembershipsCtrlBase::getOne(const HttpRequestPtr &req,
                                                   std::function<void(const HttpResponsePtr &)> &&callback,

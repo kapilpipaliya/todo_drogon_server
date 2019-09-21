@@ -193,55 +193,107 @@ Relations::Relations(const Json::Value &pJson, const std::vector<std::string> &p
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        _dirtyFlag[0] = true;
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
-        _fromId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        _dirtyFlag[1] = true;
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _fromId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
-        _toId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        _dirtyFlag[2] = true;
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _toId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
-        _delay=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        _dirtyFlag[3] = true;
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _delay=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        }
     }
     if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
     {
-        _description=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        _dirtyFlag[4] = true;
+        if(!pJson[pMasqueradingVector[4]].isNull())
+        {
+            _description=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        }
     }
     if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
     {
-        _hierarchy=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[5]].asInt64());
+        _dirtyFlag[5] = true;
+        if(!pJson[pMasqueradingVector[5]].isNull())
+        {
+            _hierarchy=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[5]].asInt64());
+        }
     }
     if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
     {
-        _relates=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[6]].asInt64());
+        _dirtyFlag[6] = true;
+        if(!pJson[pMasqueradingVector[6]].isNull())
+        {
+            _relates=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[6]].asInt64());
+        }
     }
     if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
     {
-        _duplicates=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[7]].asInt64());
+        _dirtyFlag[7] = true;
+        if(!pJson[pMasqueradingVector[7]].isNull())
+        {
+            _duplicates=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[7]].asInt64());
+        }
     }
     if(!pMasqueradingVector[8].empty() && pJson.isMember(pMasqueradingVector[8]))
     {
-        _blocks=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[8]].asInt64());
+        _dirtyFlag[8] = true;
+        if(!pJson[pMasqueradingVector[8]].isNull())
+        {
+            _blocks=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[8]].asInt64());
+        }
     }
     if(!pMasqueradingVector[9].empty() && pJson.isMember(pMasqueradingVector[9]))
     {
-        _follows=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[9]].asInt64());
+        _dirtyFlag[9] = true;
+        if(!pJson[pMasqueradingVector[9]].isNull())
+        {
+            _follows=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[9]].asInt64());
+        }
     }
     if(!pMasqueradingVector[10].empty() && pJson.isMember(pMasqueradingVector[10]))
     {
-        _includes=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[10]].asInt64());
+        _dirtyFlag[10] = true;
+        if(!pJson[pMasqueradingVector[10]].isNull())
+        {
+            _includes=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[10]].asInt64());
+        }
     }
     if(!pMasqueradingVector[11].empty() && pJson.isMember(pMasqueradingVector[11]))
     {
-        _requires=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[11]].asInt64());
+        _dirtyFlag[11] = true;
+        if(!pJson[pMasqueradingVector[11]].isNull())
+        {
+            _requires=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[11]].asInt64());
+        }
     }
     if(!pMasqueradingVector[12].empty() && pJson.isMember(pMasqueradingVector[12]))
     {
-        _count=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[12]].asInt64());
+        _dirtyFlag[12] = true;
+        if(!pJson[pMasqueradingVector[12]].isNull())
+        {
+            _count=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[12]].asInt64());
+        }
     }
 }
 
@@ -249,55 +301,107 @@ Relations::Relations(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        _dirtyFlag[0]=true;
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("from_id"))
     {
-        _fromId=std::make_shared<int32_t>((int32_t)pJson["from_id"].asInt64());
+        _dirtyFlag[1]=true;
+        if(!pJson["from_id"].isNull())
+        {
+            _fromId=std::make_shared<int32_t>((int32_t)pJson["from_id"].asInt64());
+        }
     }
     if(pJson.isMember("to_id"))
     {
-        _toId=std::make_shared<int32_t>((int32_t)pJson["to_id"].asInt64());
+        _dirtyFlag[2]=true;
+        if(!pJson["to_id"].isNull())
+        {
+            _toId=std::make_shared<int32_t>((int32_t)pJson["to_id"].asInt64());
+        }
     }
     if(pJson.isMember("delay"))
     {
-        _delay=std::make_shared<int32_t>((int32_t)pJson["delay"].asInt64());
+        _dirtyFlag[3]=true;
+        if(!pJson["delay"].isNull())
+        {
+            _delay=std::make_shared<int32_t>((int32_t)pJson["delay"].asInt64());
+        }
     }
     if(pJson.isMember("description"))
     {
-        _description=std::make_shared<std::string>(pJson["description"].asString());
+        _dirtyFlag[4]=true;
+        if(!pJson["description"].isNull())
+        {
+            _description=std::make_shared<std::string>(pJson["description"].asString());
+        }
     }
     if(pJson.isMember("hierarchy"))
     {
-        _hierarchy=std::make_shared<int32_t>((int32_t)pJson["hierarchy"].asInt64());
+        _dirtyFlag[5]=true;
+        if(!pJson["hierarchy"].isNull())
+        {
+            _hierarchy=std::make_shared<int32_t>((int32_t)pJson["hierarchy"].asInt64());
+        }
     }
     if(pJson.isMember("relates"))
     {
-        _relates=std::make_shared<int32_t>((int32_t)pJson["relates"].asInt64());
+        _dirtyFlag[6]=true;
+        if(!pJson["relates"].isNull())
+        {
+            _relates=std::make_shared<int32_t>((int32_t)pJson["relates"].asInt64());
+        }
     }
     if(pJson.isMember("duplicates"))
     {
-        _duplicates=std::make_shared<int32_t>((int32_t)pJson["duplicates"].asInt64());
+        _dirtyFlag[7]=true;
+        if(!pJson["duplicates"].isNull())
+        {
+            _duplicates=std::make_shared<int32_t>((int32_t)pJson["duplicates"].asInt64());
+        }
     }
     if(pJson.isMember("blocks"))
     {
-        _blocks=std::make_shared<int32_t>((int32_t)pJson["blocks"].asInt64());
+        _dirtyFlag[8]=true;
+        if(!pJson["blocks"].isNull())
+        {
+            _blocks=std::make_shared<int32_t>((int32_t)pJson["blocks"].asInt64());
+        }
     }
     if(pJson.isMember("follows"))
     {
-        _follows=std::make_shared<int32_t>((int32_t)pJson["follows"].asInt64());
+        _dirtyFlag[9]=true;
+        if(!pJson["follows"].isNull())
+        {
+            _follows=std::make_shared<int32_t>((int32_t)pJson["follows"].asInt64());
+        }
     }
     if(pJson.isMember("includes"))
     {
-        _includes=std::make_shared<int32_t>((int32_t)pJson["includes"].asInt64());
+        _dirtyFlag[10]=true;
+        if(!pJson["includes"].isNull())
+        {
+            _includes=std::make_shared<int32_t>((int32_t)pJson["includes"].asInt64());
+        }
     }
     if(pJson.isMember("requires"))
     {
-        _requires=std::make_shared<int32_t>((int32_t)pJson["requires"].asInt64());
+        _dirtyFlag[11]=true;
+        if(!pJson["requires"].isNull())
+        {
+            _requires=std::make_shared<int32_t>((int32_t)pJson["requires"].asInt64());
+        }
     }
     if(pJson.isMember("count"))
     {
-        _count=std::make_shared<int32_t>((int32_t)pJson["count"].asInt64());
+        _dirtyFlag[12]=true;
+        if(!pJson["count"].isNull())
+        {
+            _count=std::make_shared<int32_t>((int32_t)pJson["count"].asInt64());
+        }
     }
 }
 
@@ -311,67 +415,106 @@ void Relations::updateByMasqueradedJson(const Json::Value &pJson,
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
         _dirtyFlag[1] = true;
-        _fromId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _fromId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
         _dirtyFlag[2] = true;
-        _toId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _toId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
         _dirtyFlag[3] = true;
-        _delay=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _delay=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        }
     }
     if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
     {
         _dirtyFlag[4] = true;
-        _description=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        if(!pJson[pMasqueradingVector[4]].isNull())
+        {
+            _description=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        }
     }
     if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
     {
         _dirtyFlag[5] = true;
-        _hierarchy=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[5]].asInt64());
+        if(!pJson[pMasqueradingVector[5]].isNull())
+        {
+            _hierarchy=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[5]].asInt64());
+        }
     }
     if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
     {
         _dirtyFlag[6] = true;
-        _relates=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[6]].asInt64());
+        if(!pJson[pMasqueradingVector[6]].isNull())
+        {
+            _relates=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[6]].asInt64());
+        }
     }
     if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
     {
         _dirtyFlag[7] = true;
-        _duplicates=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[7]].asInt64());
+        if(!pJson[pMasqueradingVector[7]].isNull())
+        {
+            _duplicates=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[7]].asInt64());
+        }
     }
     if(!pMasqueradingVector[8].empty() && pJson.isMember(pMasqueradingVector[8]))
     {
         _dirtyFlag[8] = true;
-        _blocks=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[8]].asInt64());
+        if(!pJson[pMasqueradingVector[8]].isNull())
+        {
+            _blocks=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[8]].asInt64());
+        }
     }
     if(!pMasqueradingVector[9].empty() && pJson.isMember(pMasqueradingVector[9]))
     {
         _dirtyFlag[9] = true;
-        _follows=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[9]].asInt64());
+        if(!pJson[pMasqueradingVector[9]].isNull())
+        {
+            _follows=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[9]].asInt64());
+        }
     }
     if(!pMasqueradingVector[10].empty() && pJson.isMember(pMasqueradingVector[10]))
     {
         _dirtyFlag[10] = true;
-        _includes=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[10]].asInt64());
+        if(!pJson[pMasqueradingVector[10]].isNull())
+        {
+            _includes=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[10]].asInt64());
+        }
     }
     if(!pMasqueradingVector[11].empty() && pJson.isMember(pMasqueradingVector[11]))
     {
         _dirtyFlag[11] = true;
-        _requires=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[11]].asInt64());
+        if(!pJson[pMasqueradingVector[11]].isNull())
+        {
+            _requires=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[11]].asInt64());
+        }
     }
     if(!pMasqueradingVector[12].empty() && pJson.isMember(pMasqueradingVector[12]))
     {
         _dirtyFlag[12] = true;
-        _count=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[12]].asInt64());
+        if(!pJson[pMasqueradingVector[12]].isNull())
+        {
+            _count=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[12]].asInt64());
+        }
     }
 }
                                                                     
@@ -379,67 +522,106 @@ void Relations::updateByJson(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("from_id"))
     {
         _dirtyFlag[1] = true;
-        _fromId=std::make_shared<int32_t>((int32_t)pJson["from_id"].asInt64());
+        if(!pJson["from_id"].isNull())
+        {
+            _fromId=std::make_shared<int32_t>((int32_t)pJson["from_id"].asInt64());
+        }
     }
     if(pJson.isMember("to_id"))
     {
         _dirtyFlag[2] = true;
-        _toId=std::make_shared<int32_t>((int32_t)pJson["to_id"].asInt64());
+        if(!pJson["to_id"].isNull())
+        {
+            _toId=std::make_shared<int32_t>((int32_t)pJson["to_id"].asInt64());
+        }
     }
     if(pJson.isMember("delay"))
     {
         _dirtyFlag[3] = true;
-        _delay=std::make_shared<int32_t>((int32_t)pJson["delay"].asInt64());
+        if(!pJson["delay"].isNull())
+        {
+            _delay=std::make_shared<int32_t>((int32_t)pJson["delay"].asInt64());
+        }
     }
     if(pJson.isMember("description"))
     {
         _dirtyFlag[4] = true;
-        _description=std::make_shared<std::string>(pJson["description"].asString());
+        if(!pJson["description"].isNull())
+        {
+            _description=std::make_shared<std::string>(pJson["description"].asString());
+        }
     }
     if(pJson.isMember("hierarchy"))
     {
         _dirtyFlag[5] = true;
-        _hierarchy=std::make_shared<int32_t>((int32_t)pJson["hierarchy"].asInt64());
+        if(!pJson["hierarchy"].isNull())
+        {
+            _hierarchy=std::make_shared<int32_t>((int32_t)pJson["hierarchy"].asInt64());
+        }
     }
     if(pJson.isMember("relates"))
     {
         _dirtyFlag[6] = true;
-        _relates=std::make_shared<int32_t>((int32_t)pJson["relates"].asInt64());
+        if(!pJson["relates"].isNull())
+        {
+            _relates=std::make_shared<int32_t>((int32_t)pJson["relates"].asInt64());
+        }
     }
     if(pJson.isMember("duplicates"))
     {
         _dirtyFlag[7] = true;
-        _duplicates=std::make_shared<int32_t>((int32_t)pJson["duplicates"].asInt64());
+        if(!pJson["duplicates"].isNull())
+        {
+            _duplicates=std::make_shared<int32_t>((int32_t)pJson["duplicates"].asInt64());
+        }
     }
     if(pJson.isMember("blocks"))
     {
         _dirtyFlag[8] = true;
-        _blocks=std::make_shared<int32_t>((int32_t)pJson["blocks"].asInt64());
+        if(!pJson["blocks"].isNull())
+        {
+            _blocks=std::make_shared<int32_t>((int32_t)pJson["blocks"].asInt64());
+        }
     }
     if(pJson.isMember("follows"))
     {
         _dirtyFlag[9] = true;
-        _follows=std::make_shared<int32_t>((int32_t)pJson["follows"].asInt64());
+        if(!pJson["follows"].isNull())
+        {
+            _follows=std::make_shared<int32_t>((int32_t)pJson["follows"].asInt64());
+        }
     }
     if(pJson.isMember("includes"))
     {
         _dirtyFlag[10] = true;
-        _includes=std::make_shared<int32_t>((int32_t)pJson["includes"].asInt64());
+        if(!pJson["includes"].isNull())
+        {
+            _includes=std::make_shared<int32_t>((int32_t)pJson["includes"].asInt64());
+        }
     }
     if(pJson.isMember("requires"))
     {
         _dirtyFlag[11] = true;
-        _requires=std::make_shared<int32_t>((int32_t)pJson["requires"].asInt64());
+        if(!pJson["requires"].isNull())
+        {
+            _requires=std::make_shared<int32_t>((int32_t)pJson["requires"].asInt64());
+        }
     }
     if(pJson.isMember("count"))
     {
         _dirtyFlag[12] = true;
-        _count=std::make_shared<int32_t>((int32_t)pJson["count"].asInt64());
+        if(!pJson["count"].isNull())
+        {
+            _count=std::make_shared<int32_t>((int32_t)pJson["count"].asInt64());
+        }
     }
 }
 
@@ -706,101 +888,137 @@ const std::vector<std::string> &Relations::insertColumns() noexcept
 
 void Relations::outputArgs(drogon::orm::internal::SqlBinder &binder) const
 {
-    if(getFromId())
+    if(_dirtyFlag[1])
     {
-        binder << getValueOfFromId();
+        if(getFromId())
+        {
+            binder << getValueOfFromId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[2])
     {
-        binder << nullptr;
+        if(getToId())
+        {
+            binder << getValueOfToId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getToId())
+    if(_dirtyFlag[3])
     {
-        binder << getValueOfToId();
+        if(getDelay())
+        {
+            binder << getValueOfDelay();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[4])
     {
-        binder << nullptr;
+        if(getDescription())
+        {
+            binder << getValueOfDescription();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getDelay())
+    if(_dirtyFlag[5])
     {
-        binder << getValueOfDelay();
+        if(getHierarchy())
+        {
+            binder << getValueOfHierarchy();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[6])
     {
-        binder << nullptr;
+        if(getRelates())
+        {
+            binder << getValueOfRelates();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getDescription())
+    if(_dirtyFlag[7])
     {
-        binder << getValueOfDescription();
+        if(getDuplicates())
+        {
+            binder << getValueOfDuplicates();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[8])
     {
-        binder << nullptr;
+        if(getBlocks())
+        {
+            binder << getValueOfBlocks();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getHierarchy())
+    if(_dirtyFlag[9])
     {
-        binder << getValueOfHierarchy();
+        if(getFollows())
+        {
+            binder << getValueOfFollows();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[10])
     {
-        binder << nullptr;
+        if(getIncludes())
+        {
+            binder << getValueOfIncludes();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getRelates())
+    if(_dirtyFlag[11])
     {
-        binder << getValueOfRelates();
+        if(getRequires())
+        {
+            binder << getValueOfRequires();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[12])
     {
-        binder << nullptr;
-    }
-    if(getDuplicates())
-    {
-        binder << getValueOfDuplicates();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getBlocks())
-    {
-        binder << getValueOfBlocks();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getFollows())
-    {
-        binder << getValueOfFollows();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getIncludes())
-    {
-        binder << getValueOfIncludes();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getRequires())
-    {
-        binder << getValueOfRequires();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getCount())
-    {
-        binder << getValueOfCount();
-    }
-    else
-    {
-        binder << nullptr;
+        if(getCount())
+        {
+            binder << getValueOfCount();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
 }
 

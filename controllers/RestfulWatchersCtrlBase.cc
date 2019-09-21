@@ -5,11 +5,8 @@
  *  Users should implement business logic in the derived class.
  */
 
-#include "RestfulWatchersCtrl.h"
+#include "RestfulWatchersCtrlBase.h"
 #include <string>
-
-
-
 
 void RestfulWatchersCtrlBase::getOne(const HttpRequestPtr &req,
                                      std::function<void(const HttpResponsePtr &)> &&callback,

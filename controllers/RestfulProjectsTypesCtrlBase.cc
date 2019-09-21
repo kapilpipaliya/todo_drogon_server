@@ -5,11 +5,8 @@
  *  Users should implement business logic in the derived class.
  */
 
-#include "RestfulProjectsTypesCtrl.h"
+#include "RestfulProjectsTypesCtrlBase.h"
 #include <string>
-
-
-
 
 
 void RestfulProjectsTypesCtrlBase::get(const HttpRequestPtr &req,

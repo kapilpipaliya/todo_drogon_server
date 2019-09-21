@@ -94,19 +94,35 @@ CustomizableJournals::CustomizableJournals(const Json::Value &pJson, const std::
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        _dirtyFlag[0] = true;
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
-        _journalId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        _dirtyFlag[1] = true;
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _journalId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
-        _customFieldId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        _dirtyFlag[2] = true;
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _customFieldId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
-        _value=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+        _dirtyFlag[3] = true;
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _value=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+        }
     }
 }
 
@@ -114,19 +130,35 @@ CustomizableJournals::CustomizableJournals(const Json::Value &pJson) noexcept(fa
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        _dirtyFlag[0]=true;
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("journal_id"))
     {
-        _journalId=std::make_shared<int32_t>((int32_t)pJson["journal_id"].asInt64());
+        _dirtyFlag[1]=true;
+        if(!pJson["journal_id"].isNull())
+        {
+            _journalId=std::make_shared<int32_t>((int32_t)pJson["journal_id"].asInt64());
+        }
     }
     if(pJson.isMember("custom_field_id"))
     {
-        _customFieldId=std::make_shared<int32_t>((int32_t)pJson["custom_field_id"].asInt64());
+        _dirtyFlag[2]=true;
+        if(!pJson["custom_field_id"].isNull())
+        {
+            _customFieldId=std::make_shared<int32_t>((int32_t)pJson["custom_field_id"].asInt64());
+        }
     }
     if(pJson.isMember("value"))
     {
-        _value=std::make_shared<std::string>(pJson["value"].asString());
+        _dirtyFlag[3]=true;
+        if(!pJson["value"].isNull())
+        {
+            _value=std::make_shared<std::string>(pJson["value"].asString());
+        }
     }
 }
 
@@ -140,22 +172,34 @@ void CustomizableJournals::updateByMasqueradedJson(const Json::Value &pJson,
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
         _dirtyFlag[1] = true;
-        _journalId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _journalId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
         _dirtyFlag[2] = true;
-        _customFieldId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _customFieldId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
         _dirtyFlag[3] = true;
-        _value=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _value=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+        }
     }
 }
                                                                     
@@ -163,22 +207,34 @@ void CustomizableJournals::updateByJson(const Json::Value &pJson) noexcept(false
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("journal_id"))
     {
         _dirtyFlag[1] = true;
-        _journalId=std::make_shared<int32_t>((int32_t)pJson["journal_id"].asInt64());
+        if(!pJson["journal_id"].isNull())
+        {
+            _journalId=std::make_shared<int32_t>((int32_t)pJson["journal_id"].asInt64());
+        }
     }
     if(pJson.isMember("custom_field_id"))
     {
         _dirtyFlag[2] = true;
-        _customFieldId=std::make_shared<int32_t>((int32_t)pJson["custom_field_id"].asInt64());
+        if(!pJson["custom_field_id"].isNull())
+        {
+            _customFieldId=std::make_shared<int32_t>((int32_t)pJson["custom_field_id"].asInt64());
+        }
     }
     if(pJson.isMember("value"))
     {
         _dirtyFlag[3] = true;
-        _value=std::make_shared<std::string>(pJson["value"].asString());
+        if(!pJson["value"].isNull())
+        {
+            _value=std::make_shared<std::string>(pJson["value"].asString());
+        }
     }
 }
 
@@ -274,29 +330,38 @@ const std::vector<std::string> &CustomizableJournals::insertColumns() noexcept
 
 void CustomizableJournals::outputArgs(drogon::orm::internal::SqlBinder &binder) const
 {
-    if(getJournalId())
+    if(_dirtyFlag[1])
     {
-        binder << getValueOfJournalId();
+        if(getJournalId())
+        {
+            binder << getValueOfJournalId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[2])
     {
-        binder << nullptr;
+        if(getCustomFieldId())
+        {
+            binder << getValueOfCustomFieldId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getCustomFieldId())
+    if(_dirtyFlag[3])
     {
-        binder << getValueOfCustomFieldId();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getValue())
-    {
-        binder << getValueOfValue();
-    }
-    else
-    {
-        binder << nullptr;
+        if(getValue())
+        {
+            binder << getValueOfValue();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
 }
 

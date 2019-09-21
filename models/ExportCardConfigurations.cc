@@ -138,35 +138,67 @@ ExportCardConfigurations::ExportCardConfigurations(const Json::Value &pJson, con
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        _dirtyFlag[0] = true;
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
-        _name=std::make_shared<std::string>(pJson[pMasqueradingVector[1]].asString());
+        _dirtyFlag[1] = true;
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _name=std::make_shared<std::string>(pJson[pMasqueradingVector[1]].asString());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
-        _perPage=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        _dirtyFlag[2] = true;
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _perPage=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
-        _pageSize=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+        _dirtyFlag[3] = true;
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _pageSize=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+        }
     }
     if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
     {
-        _orientation=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        _dirtyFlag[4] = true;
+        if(!pJson[pMasqueradingVector[4]].isNull())
+        {
+            _orientation=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        }
     }
     if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
     {
-        _rows=std::make_shared<std::string>(pJson[pMasqueradingVector[5]].asString());
+        _dirtyFlag[5] = true;
+        if(!pJson[pMasqueradingVector[5]].isNull())
+        {
+            _rows=std::make_shared<std::string>(pJson[pMasqueradingVector[5]].asString());
+        }
     }
     if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
     {
-        _active=std::make_shared<bool>(pJson[pMasqueradingVector[6]].asBool());
+        _dirtyFlag[6] = true;
+        if(!pJson[pMasqueradingVector[6]].isNull())
+        {
+            _active=std::make_shared<bool>(pJson[pMasqueradingVector[6]].asBool());
+        }
     }
     if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
     {
-        _description=std::make_shared<std::string>(pJson[pMasqueradingVector[7]].asString());
+        _dirtyFlag[7] = true;
+        if(!pJson[pMasqueradingVector[7]].isNull())
+        {
+            _description=std::make_shared<std::string>(pJson[pMasqueradingVector[7]].asString());
+        }
     }
 }
 
@@ -174,35 +206,67 @@ ExportCardConfigurations::ExportCardConfigurations(const Json::Value &pJson) noe
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        _dirtyFlag[0]=true;
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("name"))
     {
-        _name=std::make_shared<std::string>(pJson["name"].asString());
+        _dirtyFlag[1]=true;
+        if(!pJson["name"].isNull())
+        {
+            _name=std::make_shared<std::string>(pJson["name"].asString());
+        }
     }
     if(pJson.isMember("per_page"))
     {
-        _perPage=std::make_shared<int32_t>((int32_t)pJson["per_page"].asInt64());
+        _dirtyFlag[2]=true;
+        if(!pJson["per_page"].isNull())
+        {
+            _perPage=std::make_shared<int32_t>((int32_t)pJson["per_page"].asInt64());
+        }
     }
     if(pJson.isMember("page_size"))
     {
-        _pageSize=std::make_shared<std::string>(pJson["page_size"].asString());
+        _dirtyFlag[3]=true;
+        if(!pJson["page_size"].isNull())
+        {
+            _pageSize=std::make_shared<std::string>(pJson["page_size"].asString());
+        }
     }
     if(pJson.isMember("orientation"))
     {
-        _orientation=std::make_shared<std::string>(pJson["orientation"].asString());
+        _dirtyFlag[4]=true;
+        if(!pJson["orientation"].isNull())
+        {
+            _orientation=std::make_shared<std::string>(pJson["orientation"].asString());
+        }
     }
     if(pJson.isMember("rows"))
     {
-        _rows=std::make_shared<std::string>(pJson["rows"].asString());
+        _dirtyFlag[5]=true;
+        if(!pJson["rows"].isNull())
+        {
+            _rows=std::make_shared<std::string>(pJson["rows"].asString());
+        }
     }
     if(pJson.isMember("active"))
     {
-        _active=std::make_shared<bool>(pJson["active"].asBool());
+        _dirtyFlag[6]=true;
+        if(!pJson["active"].isNull())
+        {
+            _active=std::make_shared<bool>(pJson["active"].asBool());
+        }
     }
     if(pJson.isMember("description"))
     {
-        _description=std::make_shared<std::string>(pJson["description"].asString());
+        _dirtyFlag[7]=true;
+        if(!pJson["description"].isNull())
+        {
+            _description=std::make_shared<std::string>(pJson["description"].asString());
+        }
     }
 }
 
@@ -216,42 +280,66 @@ void ExportCardConfigurations::updateByMasqueradedJson(const Json::Value &pJson,
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
         _dirtyFlag[1] = true;
-        _name=std::make_shared<std::string>(pJson[pMasqueradingVector[1]].asString());
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _name=std::make_shared<std::string>(pJson[pMasqueradingVector[1]].asString());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
         _dirtyFlag[2] = true;
-        _perPage=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _perPage=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
         _dirtyFlag[3] = true;
-        _pageSize=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _pageSize=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+        }
     }
     if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
     {
         _dirtyFlag[4] = true;
-        _orientation=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        if(!pJson[pMasqueradingVector[4]].isNull())
+        {
+            _orientation=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        }
     }
     if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
     {
         _dirtyFlag[5] = true;
-        _rows=std::make_shared<std::string>(pJson[pMasqueradingVector[5]].asString());
+        if(!pJson[pMasqueradingVector[5]].isNull())
+        {
+            _rows=std::make_shared<std::string>(pJson[pMasqueradingVector[5]].asString());
+        }
     }
     if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
     {
         _dirtyFlag[6] = true;
-        _active=std::make_shared<bool>(pJson[pMasqueradingVector[6]].asBool());
+        if(!pJson[pMasqueradingVector[6]].isNull())
+        {
+            _active=std::make_shared<bool>(pJson[pMasqueradingVector[6]].asBool());
+        }
     }
     if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
     {
         _dirtyFlag[7] = true;
-        _description=std::make_shared<std::string>(pJson[pMasqueradingVector[7]].asString());
+        if(!pJson[pMasqueradingVector[7]].isNull())
+        {
+            _description=std::make_shared<std::string>(pJson[pMasqueradingVector[7]].asString());
+        }
     }
 }
                                                                     
@@ -259,42 +347,66 @@ void ExportCardConfigurations::updateByJson(const Json::Value &pJson) noexcept(f
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("name"))
     {
         _dirtyFlag[1] = true;
-        _name=std::make_shared<std::string>(pJson["name"].asString());
+        if(!pJson["name"].isNull())
+        {
+            _name=std::make_shared<std::string>(pJson["name"].asString());
+        }
     }
     if(pJson.isMember("per_page"))
     {
         _dirtyFlag[2] = true;
-        _perPage=std::make_shared<int32_t>((int32_t)pJson["per_page"].asInt64());
+        if(!pJson["per_page"].isNull())
+        {
+            _perPage=std::make_shared<int32_t>((int32_t)pJson["per_page"].asInt64());
+        }
     }
     if(pJson.isMember("page_size"))
     {
         _dirtyFlag[3] = true;
-        _pageSize=std::make_shared<std::string>(pJson["page_size"].asString());
+        if(!pJson["page_size"].isNull())
+        {
+            _pageSize=std::make_shared<std::string>(pJson["page_size"].asString());
+        }
     }
     if(pJson.isMember("orientation"))
     {
         _dirtyFlag[4] = true;
-        _orientation=std::make_shared<std::string>(pJson["orientation"].asString());
+        if(!pJson["orientation"].isNull())
+        {
+            _orientation=std::make_shared<std::string>(pJson["orientation"].asString());
+        }
     }
     if(pJson.isMember("rows"))
     {
         _dirtyFlag[5] = true;
-        _rows=std::make_shared<std::string>(pJson["rows"].asString());
+        if(!pJson["rows"].isNull())
+        {
+            _rows=std::make_shared<std::string>(pJson["rows"].asString());
+        }
     }
     if(pJson.isMember("active"))
     {
         _dirtyFlag[6] = true;
-        _active=std::make_shared<bool>(pJson["active"].asBool());
+        if(!pJson["active"].isNull())
+        {
+            _active=std::make_shared<bool>(pJson["active"].asBool());
+        }
     }
     if(pJson.isMember("description"))
     {
         _dirtyFlag[7] = true;
-        _description=std::make_shared<std::string>(pJson["description"].asString());
+        if(!pJson["description"].isNull())
+        {
+            _description=std::make_shared<std::string>(pJson["description"].asString());
+        }
     }
 }
 
@@ -486,61 +598,82 @@ const std::vector<std::string> &ExportCardConfigurations::insertColumns() noexce
 
 void ExportCardConfigurations::outputArgs(drogon::orm::internal::SqlBinder &binder) const
 {
-    if(getName())
+    if(_dirtyFlag[1])
     {
-        binder << getValueOfName();
+        if(getName())
+        {
+            binder << getValueOfName();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[2])
     {
-        binder << nullptr;
+        if(getPerPage())
+        {
+            binder << getValueOfPerPage();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getPerPage())
+    if(_dirtyFlag[3])
     {
-        binder << getValueOfPerPage();
+        if(getPageSize())
+        {
+            binder << getValueOfPageSize();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[4])
     {
-        binder << nullptr;
+        if(getOrientation())
+        {
+            binder << getValueOfOrientation();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getPageSize())
+    if(_dirtyFlag[5])
     {
-        binder << getValueOfPageSize();
+        if(getRows())
+        {
+            binder << getValueOfRows();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[6])
     {
-        binder << nullptr;
+        if(getActive())
+        {
+            binder << getValueOfActive();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getOrientation())
+    if(_dirtyFlag[7])
     {
-        binder << getValueOfOrientation();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getRows())
-    {
-        binder << getValueOfRows();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getActive())
-    {
-        binder << getValueOfActive();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getDescription())
-    {
-        binder << getValueOfDescription();
-    }
-    else
-    {
-        binder << nullptr;
+        if(getDescription())
+        {
+            binder << getValueOfDescription();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
 }
 

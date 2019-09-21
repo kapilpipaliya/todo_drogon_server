@@ -5,11 +5,8 @@
  *  Users should implement business logic in the derived class.
  */
 
-#include "RestfulWebhooksEventsCtrl.h"
+#include "RestfulWebhooksEventsCtrlBase.h"
 #include <string>
-
-
-
 
 void RestfulWebhooksEventsCtrlBase::getOne(const HttpRequestPtr &req,
                                            std::function<void(const HttpResponsePtr &)> &&callback,

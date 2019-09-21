@@ -5,11 +5,8 @@
  *  Users should implement business logic in the derived class.
  */
 
-#include "RestfulDelayedJobsCtrl.h"
+#include "RestfulDelayedJobsCtrlBase.h"
 #include <string>
-
-
-
 
 void RestfulDelayedJobsCtrlBase::getOne(const HttpRequestPtr &req,
                                         std::function<void(const HttpResponsePtr &)> &&callback,

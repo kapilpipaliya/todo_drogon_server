@@ -5,11 +5,8 @@
  *  Users should implement business logic in the derived class.
  */
 
-#include "RestfulChangesetsWorkPackagesCtrl.h"
+#include "RestfulChangesetsWorkPackagesCtrlBase.h"
 #include <string>
-
-
-
 
 
 void RestfulChangesetsWorkPackagesCtrlBase::get(const HttpRequestPtr &req,

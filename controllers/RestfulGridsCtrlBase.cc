@@ -5,11 +5,8 @@
  *  Users should implement business logic in the derived class.
  */
 
-#include "RestfulGridsCtrl.h"
+#include "RestfulGridsCtrlBase.h"
 #include <string>
-
-
-
 
 void RestfulGridsCtrlBase::getOne(const HttpRequestPtr &req,
                                   std::function<void(const HttpResponsePtr &)> &&callback,

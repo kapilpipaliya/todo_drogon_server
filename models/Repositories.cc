@@ -212,66 +212,114 @@ Repositories::Repositories(const Json::Value &pJson, const std::vector<std::stri
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        _dirtyFlag[0] = true;
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
-        _projectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        _dirtyFlag[1] = true;
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _projectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
-        _url=std::make_shared<std::string>(pJson[pMasqueradingVector[2]].asString());
+        _dirtyFlag[2] = true;
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _url=std::make_shared<std::string>(pJson[pMasqueradingVector[2]].asString());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
-        _login=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+        _dirtyFlag[3] = true;
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _login=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+        }
     }
     if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
     {
-        _password=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        _dirtyFlag[4] = true;
+        if(!pJson[pMasqueradingVector[4]].isNull())
+        {
+            _password=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        }
     }
     if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
     {
-        _rootUrl=std::make_shared<std::string>(pJson[pMasqueradingVector[5]].asString());
+        _dirtyFlag[5] = true;
+        if(!pJson[pMasqueradingVector[5]].isNull())
+        {
+            _rootUrl=std::make_shared<std::string>(pJson[pMasqueradingVector[5]].asString());
+        }
     }
     if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
     {
-        _type=std::make_shared<std::string>(pJson[pMasqueradingVector[6]].asString());
+        _dirtyFlag[6] = true;
+        if(!pJson[pMasqueradingVector[6]].isNull())
+        {
+            _type=std::make_shared<std::string>(pJson[pMasqueradingVector[6]].asString());
+        }
     }
     if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
     {
-        _pathEncoding=std::make_shared<std::string>(pJson[pMasqueradingVector[7]].asString());
+        _dirtyFlag[7] = true;
+        if(!pJson[pMasqueradingVector[7]].isNull())
+        {
+            _pathEncoding=std::make_shared<std::string>(pJson[pMasqueradingVector[7]].asString());
+        }
     }
     if(!pMasqueradingVector[8].empty() && pJson.isMember(pMasqueradingVector[8]))
     {
-        _logEncoding=std::make_shared<std::string>(pJson[pMasqueradingVector[8]].asString());
+        _dirtyFlag[8] = true;
+        if(!pJson[pMasqueradingVector[8]].isNull())
+        {
+            _logEncoding=std::make_shared<std::string>(pJson[pMasqueradingVector[8]].asString());
+        }
     }
     if(!pMasqueradingVector[9].empty() && pJson.isMember(pMasqueradingVector[9]))
     {
-        _scmType=std::make_shared<std::string>(pJson[pMasqueradingVector[9]].asString());
+        _dirtyFlag[9] = true;
+        if(!pJson[pMasqueradingVector[9]].isNull())
+        {
+            _scmType=std::make_shared<std::string>(pJson[pMasqueradingVector[9]].asString());
+        }
     }
     if(!pMasqueradingVector[10].empty() && pJson.isMember(pMasqueradingVector[10]))
     {
-        _requiredStorageBytes=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[10]].asInt64());
+        _dirtyFlag[10] = true;
+        if(!pJson[pMasqueradingVector[10]].isNull())
+        {
+            _requiredStorageBytes=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[10]].asInt64());
+        }
     }
     if(!pMasqueradingVector[11].empty() && pJson.isMember(pMasqueradingVector[11]))
     {
-        auto timeStr = pJson[pMasqueradingVector[11]].asString();
-        struct tm stm;
-        memset(&stm,0,sizeof(stm));
-        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
-        size_t t = timelocal(&stm);
-        size_t decimalNum = 0;
-        if(*p=='.')
+        _dirtyFlag[11] = true;
+        if(!pJson[pMasqueradingVector[11]].isNull())
         {
-            std::string decimals(p+1,&timeStr[timeStr.length()]);
-            while(decimals.length()<6)
+            auto timeStr = pJson[pMasqueradingVector[11]].asString();
+            struct tm stm;
+            memset(&stm,0,sizeof(stm));
+            auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+            size_t t = timelocal(&stm);
+            size_t decimalNum = 0;
+            if(*p=='.')
             {
-                decimals += "0";
+                std::string decimals(p+1,&timeStr[timeStr.length()]);
+                while(decimals.length()<6)
+                {
+                    decimals += "0";
+                }
+                decimalNum = (size_t)atol(decimals.c_str());
             }
-            decimalNum = (size_t)atol(decimals.c_str());
+            _storageUpdatedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
         }
-        _storageUpdatedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
     }
 }
 
@@ -279,66 +327,114 @@ Repositories::Repositories(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        _dirtyFlag[0]=true;
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("project_id"))
     {
-        _projectId=std::make_shared<int32_t>((int32_t)pJson["project_id"].asInt64());
+        _dirtyFlag[1]=true;
+        if(!pJson["project_id"].isNull())
+        {
+            _projectId=std::make_shared<int32_t>((int32_t)pJson["project_id"].asInt64());
+        }
     }
     if(pJson.isMember("url"))
     {
-        _url=std::make_shared<std::string>(pJson["url"].asString());
+        _dirtyFlag[2]=true;
+        if(!pJson["url"].isNull())
+        {
+            _url=std::make_shared<std::string>(pJson["url"].asString());
+        }
     }
     if(pJson.isMember("login"))
     {
-        _login=std::make_shared<std::string>(pJson["login"].asString());
+        _dirtyFlag[3]=true;
+        if(!pJson["login"].isNull())
+        {
+            _login=std::make_shared<std::string>(pJson["login"].asString());
+        }
     }
     if(pJson.isMember("password"))
     {
-        _password=std::make_shared<std::string>(pJson["password"].asString());
+        _dirtyFlag[4]=true;
+        if(!pJson["password"].isNull())
+        {
+            _password=std::make_shared<std::string>(pJson["password"].asString());
+        }
     }
     if(pJson.isMember("root_url"))
     {
-        _rootUrl=std::make_shared<std::string>(pJson["root_url"].asString());
+        _dirtyFlag[5]=true;
+        if(!pJson["root_url"].isNull())
+        {
+            _rootUrl=std::make_shared<std::string>(pJson["root_url"].asString());
+        }
     }
     if(pJson.isMember("type"))
     {
-        _type=std::make_shared<std::string>(pJson["type"].asString());
+        _dirtyFlag[6]=true;
+        if(!pJson["type"].isNull())
+        {
+            _type=std::make_shared<std::string>(pJson["type"].asString());
+        }
     }
     if(pJson.isMember("path_encoding"))
     {
-        _pathEncoding=std::make_shared<std::string>(pJson["path_encoding"].asString());
+        _dirtyFlag[7]=true;
+        if(!pJson["path_encoding"].isNull())
+        {
+            _pathEncoding=std::make_shared<std::string>(pJson["path_encoding"].asString());
+        }
     }
     if(pJson.isMember("log_encoding"))
     {
-        _logEncoding=std::make_shared<std::string>(pJson["log_encoding"].asString());
+        _dirtyFlag[8]=true;
+        if(!pJson["log_encoding"].isNull())
+        {
+            _logEncoding=std::make_shared<std::string>(pJson["log_encoding"].asString());
+        }
     }
     if(pJson.isMember("scm_type"))
     {
-        _scmType=std::make_shared<std::string>(pJson["scm_type"].asString());
+        _dirtyFlag[9]=true;
+        if(!pJson["scm_type"].isNull())
+        {
+            _scmType=std::make_shared<std::string>(pJson["scm_type"].asString());
+        }
     }
     if(pJson.isMember("required_storage_bytes"))
     {
-        _requiredStorageBytes=std::make_shared<int64_t>((int64_t)pJson["required_storage_bytes"].asInt64());
+        _dirtyFlag[10]=true;
+        if(!pJson["required_storage_bytes"].isNull())
+        {
+            _requiredStorageBytes=std::make_shared<int64_t>((int64_t)pJson["required_storage_bytes"].asInt64());
+        }
     }
     if(pJson.isMember("storage_updated_at"))
     {
-        auto timeStr = pJson["storage_updated_at"].asString();
-        struct tm stm;
-        memset(&stm,0,sizeof(stm));
-        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
-        size_t t = timelocal(&stm);
-        size_t decimalNum = 0;
-        if(*p=='.')
+        _dirtyFlag[11]=true;
+        if(!pJson["storage_updated_at"].isNull())
         {
-            std::string decimals(p+1,&timeStr[timeStr.length()]);
-            while(decimals.length()<6)
+            auto timeStr = pJson["storage_updated_at"].asString();
+            struct tm stm;
+            memset(&stm,0,sizeof(stm));
+            auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+            size_t t = timelocal(&stm);
+            size_t decimalNum = 0;
+            if(*p=='.')
             {
-                decimals += "0";
+                std::string decimals(p+1,&timeStr[timeStr.length()]);
+                while(decimals.length()<6)
+                {
+                    decimals += "0";
+                }
+                decimalNum = (size_t)atol(decimals.c_str());
             }
-            decimalNum = (size_t)atol(decimals.c_str());
+            _storageUpdatedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
         }
-        _storageUpdatedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
     }
 }
 
@@ -352,77 +448,113 @@ void Repositories::updateByMasqueradedJson(const Json::Value &pJson,
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
         _dirtyFlag[1] = true;
-        _projectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _projectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
         _dirtyFlag[2] = true;
-        _url=std::make_shared<std::string>(pJson[pMasqueradingVector[2]].asString());
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _url=std::make_shared<std::string>(pJson[pMasqueradingVector[2]].asString());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
         _dirtyFlag[3] = true;
-        _login=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _login=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+        }
     }
     if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
     {
         _dirtyFlag[4] = true;
-        _password=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        if(!pJson[pMasqueradingVector[4]].isNull())
+        {
+            _password=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        }
     }
     if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
     {
         _dirtyFlag[5] = true;
-        _rootUrl=std::make_shared<std::string>(pJson[pMasqueradingVector[5]].asString());
+        if(!pJson[pMasqueradingVector[5]].isNull())
+        {
+            _rootUrl=std::make_shared<std::string>(pJson[pMasqueradingVector[5]].asString());
+        }
     }
     if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
     {
         _dirtyFlag[6] = true;
-        _type=std::make_shared<std::string>(pJson[pMasqueradingVector[6]].asString());
+        if(!pJson[pMasqueradingVector[6]].isNull())
+        {
+            _type=std::make_shared<std::string>(pJson[pMasqueradingVector[6]].asString());
+        }
     }
     if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
     {
         _dirtyFlag[7] = true;
-        _pathEncoding=std::make_shared<std::string>(pJson[pMasqueradingVector[7]].asString());
+        if(!pJson[pMasqueradingVector[7]].isNull())
+        {
+            _pathEncoding=std::make_shared<std::string>(pJson[pMasqueradingVector[7]].asString());
+        }
     }
     if(!pMasqueradingVector[8].empty() && pJson.isMember(pMasqueradingVector[8]))
     {
         _dirtyFlag[8] = true;
-        _logEncoding=std::make_shared<std::string>(pJson[pMasqueradingVector[8]].asString());
+        if(!pJson[pMasqueradingVector[8]].isNull())
+        {
+            _logEncoding=std::make_shared<std::string>(pJson[pMasqueradingVector[8]].asString());
+        }
     }
     if(!pMasqueradingVector[9].empty() && pJson.isMember(pMasqueradingVector[9]))
     {
         _dirtyFlag[9] = true;
-        _scmType=std::make_shared<std::string>(pJson[pMasqueradingVector[9]].asString());
+        if(!pJson[pMasqueradingVector[9]].isNull())
+        {
+            _scmType=std::make_shared<std::string>(pJson[pMasqueradingVector[9]].asString());
+        }
     }
     if(!pMasqueradingVector[10].empty() && pJson.isMember(pMasqueradingVector[10]))
     {
         _dirtyFlag[10] = true;
-        _requiredStorageBytes=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[10]].asInt64());
+        if(!pJson[pMasqueradingVector[10]].isNull())
+        {
+            _requiredStorageBytes=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[10]].asInt64());
+        }
     }
     if(!pMasqueradingVector[11].empty() && pJson.isMember(pMasqueradingVector[11]))
     {
         _dirtyFlag[11] = true;
-        auto timeStr = pJson[pMasqueradingVector[11]].asString();
-        struct tm stm;
-        memset(&stm,0,sizeof(stm));
-        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
-        size_t t = timelocal(&stm);
-        size_t decimalNum = 0;
-        if(*p=='.')
+        if(!pJson[pMasqueradingVector[11]].isNull())
         {
-            std::string decimals(p+1,&timeStr[timeStr.length()]);
-            while(decimals.length()<6)
+            auto timeStr = pJson[pMasqueradingVector[11]].asString();
+            struct tm stm;
+            memset(&stm,0,sizeof(stm));
+            auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+            size_t t = timelocal(&stm);
+            size_t decimalNum = 0;
+            if(*p=='.')
             {
-                decimals += "0";
+                std::string decimals(p+1,&timeStr[timeStr.length()]);
+                while(decimals.length()<6)
+                {
+                    decimals += "0";
+                }
+                decimalNum = (size_t)atol(decimals.c_str());
             }
-            decimalNum = (size_t)atol(decimals.c_str());
+            _storageUpdatedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
         }
-        _storageUpdatedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
     }
 }
                                                                     
@@ -430,77 +562,113 @@ void Repositories::updateByJson(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("project_id"))
     {
         _dirtyFlag[1] = true;
-        _projectId=std::make_shared<int32_t>((int32_t)pJson["project_id"].asInt64());
+        if(!pJson["project_id"].isNull())
+        {
+            _projectId=std::make_shared<int32_t>((int32_t)pJson["project_id"].asInt64());
+        }
     }
     if(pJson.isMember("url"))
     {
         _dirtyFlag[2] = true;
-        _url=std::make_shared<std::string>(pJson["url"].asString());
+        if(!pJson["url"].isNull())
+        {
+            _url=std::make_shared<std::string>(pJson["url"].asString());
+        }
     }
     if(pJson.isMember("login"))
     {
         _dirtyFlag[3] = true;
-        _login=std::make_shared<std::string>(pJson["login"].asString());
+        if(!pJson["login"].isNull())
+        {
+            _login=std::make_shared<std::string>(pJson["login"].asString());
+        }
     }
     if(pJson.isMember("password"))
     {
         _dirtyFlag[4] = true;
-        _password=std::make_shared<std::string>(pJson["password"].asString());
+        if(!pJson["password"].isNull())
+        {
+            _password=std::make_shared<std::string>(pJson["password"].asString());
+        }
     }
     if(pJson.isMember("root_url"))
     {
         _dirtyFlag[5] = true;
-        _rootUrl=std::make_shared<std::string>(pJson["root_url"].asString());
+        if(!pJson["root_url"].isNull())
+        {
+            _rootUrl=std::make_shared<std::string>(pJson["root_url"].asString());
+        }
     }
     if(pJson.isMember("type"))
     {
         _dirtyFlag[6] = true;
-        _type=std::make_shared<std::string>(pJson["type"].asString());
+        if(!pJson["type"].isNull())
+        {
+            _type=std::make_shared<std::string>(pJson["type"].asString());
+        }
     }
     if(pJson.isMember("path_encoding"))
     {
         _dirtyFlag[7] = true;
-        _pathEncoding=std::make_shared<std::string>(pJson["path_encoding"].asString());
+        if(!pJson["path_encoding"].isNull())
+        {
+            _pathEncoding=std::make_shared<std::string>(pJson["path_encoding"].asString());
+        }
     }
     if(pJson.isMember("log_encoding"))
     {
         _dirtyFlag[8] = true;
-        _logEncoding=std::make_shared<std::string>(pJson["log_encoding"].asString());
+        if(!pJson["log_encoding"].isNull())
+        {
+            _logEncoding=std::make_shared<std::string>(pJson["log_encoding"].asString());
+        }
     }
     if(pJson.isMember("scm_type"))
     {
         _dirtyFlag[9] = true;
-        _scmType=std::make_shared<std::string>(pJson["scm_type"].asString());
+        if(!pJson["scm_type"].isNull())
+        {
+            _scmType=std::make_shared<std::string>(pJson["scm_type"].asString());
+        }
     }
     if(pJson.isMember("required_storage_bytes"))
     {
         _dirtyFlag[10] = true;
-        _requiredStorageBytes=std::make_shared<int64_t>((int64_t)pJson["required_storage_bytes"].asInt64());
+        if(!pJson["required_storage_bytes"].isNull())
+        {
+            _requiredStorageBytes=std::make_shared<int64_t>((int64_t)pJson["required_storage_bytes"].asInt64());
+        }
     }
     if(pJson.isMember("storage_updated_at"))
     {
         _dirtyFlag[11] = true;
-        auto timeStr = pJson["storage_updated_at"].asString();
-        struct tm stm;
-        memset(&stm,0,sizeof(stm));
-        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
-        size_t t = timelocal(&stm);
-        size_t decimalNum = 0;
-        if(*p=='.')
+        if(!pJson["storage_updated_at"].isNull())
         {
-            std::string decimals(p+1,&timeStr[timeStr.length()]);
-            while(decimals.length()<6)
+            auto timeStr = pJson["storage_updated_at"].asString();
+            struct tm stm;
+            memset(&stm,0,sizeof(stm));
+            auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+            size_t t = timelocal(&stm);
+            size_t decimalNum = 0;
+            if(*p=='.')
             {
-                decimals += "0";
+                std::string decimals(p+1,&timeStr[timeStr.length()]);
+                while(decimals.length()<6)
+                {
+                    decimals += "0";
+                }
+                decimalNum = (size_t)atol(decimals.c_str());
             }
-            decimalNum = (size_t)atol(decimals.c_str());
+            _storageUpdatedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
         }
-        _storageUpdatedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
     }
 }
 
@@ -783,93 +951,126 @@ const std::vector<std::string> &Repositories::insertColumns() noexcept
 
 void Repositories::outputArgs(drogon::orm::internal::SqlBinder &binder) const
 {
-    if(getProjectId())
+    if(_dirtyFlag[1])
     {
-        binder << getValueOfProjectId();
+        if(getProjectId())
+        {
+            binder << getValueOfProjectId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[2])
     {
-        binder << nullptr;
+        if(getUrl())
+        {
+            binder << getValueOfUrl();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getUrl())
+    if(_dirtyFlag[3])
     {
-        binder << getValueOfUrl();
+        if(getLogin())
+        {
+            binder << getValueOfLogin();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[4])
     {
-        binder << nullptr;
+        if(getPassword())
+        {
+            binder << getValueOfPassword();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getLogin())
+    if(_dirtyFlag[5])
     {
-        binder << getValueOfLogin();
+        if(getRootUrl())
+        {
+            binder << getValueOfRootUrl();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[6])
     {
-        binder << nullptr;
+        if(getType())
+        {
+            binder << getValueOfType();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getPassword())
+    if(_dirtyFlag[7])
     {
-        binder << getValueOfPassword();
+        if(getPathEncoding())
+        {
+            binder << getValueOfPathEncoding();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[8])
     {
-        binder << nullptr;
+        if(getLogEncoding())
+        {
+            binder << getValueOfLogEncoding();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getRootUrl())
+    if(_dirtyFlag[9])
     {
-        binder << getValueOfRootUrl();
+        if(getScmType())
+        {
+            binder << getValueOfScmType();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[10])
     {
-        binder << nullptr;
+        if(getRequiredStorageBytes())
+        {
+            binder << getValueOfRequiredStorageBytes();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getType())
+    if(_dirtyFlag[11])
     {
-        binder << getValueOfType();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getPathEncoding())
-    {
-        binder << getValueOfPathEncoding();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getLogEncoding())
-    {
-        binder << getValueOfLogEncoding();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getScmType())
-    {
-        binder << getValueOfScmType();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getRequiredStorageBytes())
-    {
-        binder << getValueOfRequiredStorageBytes();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getStorageUpdatedAt())
-    {
-        binder << getValueOfStorageUpdatedAt();
-    }
-    else
-    {
-        binder << nullptr;
+        if(getStorageUpdatedAt())
+        {
+            binder << getValueOfStorageUpdatedAt();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
 }
 

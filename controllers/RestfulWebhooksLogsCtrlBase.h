@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <drogon/HttpController.h>
+
 #include "WebhooksLogs.h"
 using namespace drogon;
 

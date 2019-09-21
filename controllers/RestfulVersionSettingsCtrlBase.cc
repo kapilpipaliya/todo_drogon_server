@@ -5,11 +5,8 @@
  *  Users should implement business logic in the derived class.
  */
 
-#include "RestfulVersionSettingsCtrl.h"
+#include "RestfulVersionSettingsCtrlBase.h"
 #include <string>
-
-
-
 
 void RestfulVersionSettingsCtrlBase::getOne(const HttpRequestPtr &req,
                                             std::function<void(const HttpResponsePtr &)> &&callback,

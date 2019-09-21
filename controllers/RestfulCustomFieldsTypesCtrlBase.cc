@@ -5,11 +5,8 @@
  *  Users should implement business logic in the derived class.
  */
 
-#include "RestfulCustomFieldsTypesCtrl.h"
+#include "RestfulCustomFieldsTypesCtrlBase.h"
 #include <string>
-
-
-
 
 
 void RestfulCustomFieldsTypesCtrlBase::get(const HttpRequestPtr &req,

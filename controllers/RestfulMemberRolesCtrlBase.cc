@@ -5,11 +5,8 @@
  *  Users should implement business logic in the derived class.
  */
 
-#include "RestfulMemberRolesCtrl.h"
+#include "RestfulMemberRolesCtrlBase.h"
 #include <string>
-
-
-
 
 void RestfulMemberRolesCtrlBase::getOne(const HttpRequestPtr &req,
                                         std::function<void(const HttpResponsePtr &)> &&callback,

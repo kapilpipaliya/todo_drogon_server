@@ -72,11 +72,19 @@ DoneStatusesForProject::DoneStatusesForProject(const Json::Value &pJson, const s
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _projectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        _dirtyFlag[0] = true;
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _projectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
-        _statusId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        _dirtyFlag[1] = true;
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _statusId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
 }
 
@@ -84,11 +92,19 @@ DoneStatusesForProject::DoneStatusesForProject(const Json::Value &pJson) noexcep
 {
     if(pJson.isMember("project_id"))
     {
-        _projectId=std::make_shared<int32_t>((int32_t)pJson["project_id"].asInt64());
+        _dirtyFlag[0]=true;
+        if(!pJson["project_id"].isNull())
+        {
+            _projectId=std::make_shared<int32_t>((int32_t)pJson["project_id"].asInt64());
+        }
     }
     if(pJson.isMember("status_id"))
     {
-        _statusId=std::make_shared<int32_t>((int32_t)pJson["status_id"].asInt64());
+        _dirtyFlag[1]=true;
+        if(!pJson["status_id"].isNull())
+        {
+            _statusId=std::make_shared<int32_t>((int32_t)pJson["status_id"].asInt64());
+        }
     }
 }
 
@@ -103,12 +119,18 @@ void DoneStatusesForProject::updateByMasqueradedJson(const Json::Value &pJson,
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
         _dirtyFlag[0] = true;
-        _projectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _projectId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
         _dirtyFlag[1] = true;
-        _statusId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _statusId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
 }
                                                                     
@@ -117,12 +139,18 @@ void DoneStatusesForProject::updateByJson(const Json::Value &pJson) noexcept(fal
     if(pJson.isMember("project_id"))
     {
         _dirtyFlag[0] = true;
-        _projectId=std::make_shared<int32_t>((int32_t)pJson["project_id"].asInt64());
+        if(!pJson["project_id"].isNull())
+        {
+            _projectId=std::make_shared<int32_t>((int32_t)pJson["project_id"].asInt64());
+        }
     }
     if(pJson.isMember("status_id"))
     {
         _dirtyFlag[1] = true;
-        _statusId=std::make_shared<int32_t>((int32_t)pJson["status_id"].asInt64());
+        if(!pJson["status_id"].isNull())
+        {
+            _statusId=std::make_shared<int32_t>((int32_t)pJson["status_id"].asInt64());
+        }
     }
 }
 
@@ -177,21 +205,27 @@ const std::vector<std::string> &DoneStatusesForProject::insertColumns() noexcept
 
 void DoneStatusesForProject::outputArgs(drogon::orm::internal::SqlBinder &binder) const
 {
-    if(getProjectId())
+    if(_dirtyFlag[0])
     {
-        binder << getValueOfProjectId();
+        if(getProjectId())
+        {
+            binder << getValueOfProjectId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[1])
     {
-        binder << nullptr;
-    }
-    if(getStatusId())
-    {
-        binder << getValueOfStatusId();
-    }
-    else
-    {
-        binder << nullptr;
+        if(getStatusId())
+        {
+            binder << getValueOfStatusId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
 }
 

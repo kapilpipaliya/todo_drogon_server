@@ -5,11 +5,8 @@
  *  Users should implement business logic in the derived class.
  */
 
-#include "RestfulEnumerationsCtrl.h"
+#include "RestfulEnumerationsCtrlBase.h"
 #include <string>
-
-
-
 
 void RestfulEnumerationsCtrlBase::getOne(const HttpRequestPtr &req,
                                          std::function<void(const HttpResponsePtr &)> &&callback,

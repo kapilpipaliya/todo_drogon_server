@@ -72,11 +72,19 @@ ChangesetsWorkPackages::ChangesetsWorkPackages(const Json::Value &pJson, const s
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _changesetId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        _dirtyFlag[0] = true;
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _changesetId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
-        _workPackageId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        _dirtyFlag[1] = true;
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _workPackageId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
 }
 
@@ -84,11 +92,19 @@ ChangesetsWorkPackages::ChangesetsWorkPackages(const Json::Value &pJson) noexcep
 {
     if(pJson.isMember("changeset_id"))
     {
-        _changesetId=std::make_shared<int32_t>((int32_t)pJson["changeset_id"].asInt64());
+        _dirtyFlag[0]=true;
+        if(!pJson["changeset_id"].isNull())
+        {
+            _changesetId=std::make_shared<int32_t>((int32_t)pJson["changeset_id"].asInt64());
+        }
     }
     if(pJson.isMember("work_package_id"))
     {
-        _workPackageId=std::make_shared<int32_t>((int32_t)pJson["work_package_id"].asInt64());
+        _dirtyFlag[1]=true;
+        if(!pJson["work_package_id"].isNull())
+        {
+            _workPackageId=std::make_shared<int32_t>((int32_t)pJson["work_package_id"].asInt64());
+        }
     }
 }
 
@@ -103,12 +119,18 @@ void ChangesetsWorkPackages::updateByMasqueradedJson(const Json::Value &pJson,
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
         _dirtyFlag[0] = true;
-        _changesetId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _changesetId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
         _dirtyFlag[1] = true;
-        _workPackageId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _workPackageId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
 }
                                                                     
@@ -117,12 +139,18 @@ void ChangesetsWorkPackages::updateByJson(const Json::Value &pJson) noexcept(fal
     if(pJson.isMember("changeset_id"))
     {
         _dirtyFlag[0] = true;
-        _changesetId=std::make_shared<int32_t>((int32_t)pJson["changeset_id"].asInt64());
+        if(!pJson["changeset_id"].isNull())
+        {
+            _changesetId=std::make_shared<int32_t>((int32_t)pJson["changeset_id"].asInt64());
+        }
     }
     if(pJson.isMember("work_package_id"))
     {
         _dirtyFlag[1] = true;
-        _workPackageId=std::make_shared<int32_t>((int32_t)pJson["work_package_id"].asInt64());
+        if(!pJson["work_package_id"].isNull())
+        {
+            _workPackageId=std::make_shared<int32_t>((int32_t)pJson["work_package_id"].asInt64());
+        }
     }
 }
 
@@ -177,21 +205,27 @@ const std::vector<std::string> &ChangesetsWorkPackages::insertColumns() noexcept
 
 void ChangesetsWorkPackages::outputArgs(drogon::orm::internal::SqlBinder &binder) const
 {
-    if(getChangesetId())
+    if(_dirtyFlag[0])
     {
-        binder << getValueOfChangesetId();
+        if(getChangesetId())
+        {
+            binder << getValueOfChangesetId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[1])
     {
-        binder << nullptr;
-    }
-    if(getWorkPackageId())
-    {
-        binder << getValueOfWorkPackageId();
-    }
-    else
-    {
-        binder << nullptr;
+        if(getWorkPackageId())
+        {
+            binder << getValueOfWorkPackageId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
 }
 

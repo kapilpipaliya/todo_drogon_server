@@ -35,7 +35,6 @@ class ActivitySeeder : public Seeder {
       enumeration.setCreatedAt(trantor::Date::now());
       enumeration.setUpdatedAt(trantor::Date::now());
       mapper.insert(enumeration);
-      fflush(stdout);
     }
   }
 

@@ -94,19 +94,35 @@ Watchers::Watchers(const Json::Value &pJson, const std::vector<std::string> &pMa
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        _dirtyFlag[0] = true;
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
-        _watchableType=std::make_shared<std::string>(pJson[pMasqueradingVector[1]].asString());
+        _dirtyFlag[1] = true;
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _watchableType=std::make_shared<std::string>(pJson[pMasqueradingVector[1]].asString());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
-        _watchableId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        _dirtyFlag[2] = true;
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _watchableId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
-        _userId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        _dirtyFlag[3] = true;
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _userId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        }
     }
 }
 
@@ -114,19 +130,35 @@ Watchers::Watchers(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        _dirtyFlag[0]=true;
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("watchable_type"))
     {
-        _watchableType=std::make_shared<std::string>(pJson["watchable_type"].asString());
+        _dirtyFlag[1]=true;
+        if(!pJson["watchable_type"].isNull())
+        {
+            _watchableType=std::make_shared<std::string>(pJson["watchable_type"].asString());
+        }
     }
     if(pJson.isMember("watchable_id"))
     {
-        _watchableId=std::make_shared<int32_t>((int32_t)pJson["watchable_id"].asInt64());
+        _dirtyFlag[2]=true;
+        if(!pJson["watchable_id"].isNull())
+        {
+            _watchableId=std::make_shared<int32_t>((int32_t)pJson["watchable_id"].asInt64());
+        }
     }
     if(pJson.isMember("user_id"))
     {
-        _userId=std::make_shared<int32_t>((int32_t)pJson["user_id"].asInt64());
+        _dirtyFlag[3]=true;
+        if(!pJson["user_id"].isNull())
+        {
+            _userId=std::make_shared<int32_t>((int32_t)pJson["user_id"].asInt64());
+        }
     }
 }
 
@@ -140,22 +172,34 @@ void Watchers::updateByMasqueradedJson(const Json::Value &pJson,
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
         _dirtyFlag[1] = true;
-        _watchableType=std::make_shared<std::string>(pJson[pMasqueradingVector[1]].asString());
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _watchableType=std::make_shared<std::string>(pJson[pMasqueradingVector[1]].asString());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
         _dirtyFlag[2] = true;
-        _watchableId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _watchableId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[2]].asInt64());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
         _dirtyFlag[3] = true;
-        _userId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _userId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[3]].asInt64());
+        }
     }
 }
                                                                     
@@ -163,22 +207,34 @@ void Watchers::updateByJson(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("watchable_type"))
     {
         _dirtyFlag[1] = true;
-        _watchableType=std::make_shared<std::string>(pJson["watchable_type"].asString());
+        if(!pJson["watchable_type"].isNull())
+        {
+            _watchableType=std::make_shared<std::string>(pJson["watchable_type"].asString());
+        }
     }
     if(pJson.isMember("watchable_id"))
     {
         _dirtyFlag[2] = true;
-        _watchableId=std::make_shared<int32_t>((int32_t)pJson["watchable_id"].asInt64());
+        if(!pJson["watchable_id"].isNull())
+        {
+            _watchableId=std::make_shared<int32_t>((int32_t)pJson["watchable_id"].asInt64());
+        }
     }
     if(pJson.isMember("user_id"))
     {
         _dirtyFlag[3] = true;
-        _userId=std::make_shared<int32_t>((int32_t)pJson["user_id"].asInt64());
+        if(!pJson["user_id"].isNull())
+        {
+            _userId=std::make_shared<int32_t>((int32_t)pJson["user_id"].asInt64());
+        }
     }
 }
 
@@ -274,29 +330,38 @@ const std::vector<std::string> &Watchers::insertColumns() noexcept
 
 void Watchers::outputArgs(drogon::orm::internal::SqlBinder &binder) const
 {
-    if(getWatchableType())
+    if(_dirtyFlag[1])
     {
-        binder << getValueOfWatchableType();
+        if(getWatchableType())
+        {
+            binder << getValueOfWatchableType();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[2])
     {
-        binder << nullptr;
+        if(getWatchableId())
+        {
+            binder << getValueOfWatchableId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getWatchableId())
+    if(_dirtyFlag[3])
     {
-        binder << getValueOfWatchableId();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getUserId())
-    {
-        binder << getValueOfUserId();
-    }
-    else
-    {
-        binder << nullptr;
+        if(getUserId())
+        {
+            binder << getValueOfUserId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
 }
 

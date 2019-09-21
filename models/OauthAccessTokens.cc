@@ -220,73 +220,113 @@ OauthAccessTokens::OauthAccessTokens(const Json::Value &pJson, const std::vector
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[0]].asInt64());
+        _dirtyFlag[0] = true;
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
-        _resourceOwnerId=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[1]].asInt64());
+        _dirtyFlag[1] = true;
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _resourceOwnerId=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
-        _applicationId=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[2]].asInt64());
+        _dirtyFlag[2] = true;
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _applicationId=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[2]].asInt64());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
-        _token=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+        _dirtyFlag[3] = true;
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _token=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+        }
     }
     if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
     {
-        _refreshToken=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        _dirtyFlag[4] = true;
+        if(!pJson[pMasqueradingVector[4]].isNull())
+        {
+            _refreshToken=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        }
     }
     if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
     {
-        _expiresIn=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[5]].asInt64());
+        _dirtyFlag[5] = true;
+        if(!pJson[pMasqueradingVector[5]].isNull())
+        {
+            _expiresIn=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[5]].asInt64());
+        }
     }
     if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
     {
-        auto timeStr = pJson[pMasqueradingVector[6]].asString();
-        struct tm stm;
-        memset(&stm,0,sizeof(stm));
-        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
-        size_t t = timelocal(&stm);
-        size_t decimalNum = 0;
-        if(*p=='.')
+        _dirtyFlag[6] = true;
+        if(!pJson[pMasqueradingVector[6]].isNull())
         {
-            std::string decimals(p+1,&timeStr[timeStr.length()]);
-            while(decimals.length()<6)
+            auto timeStr = pJson[pMasqueradingVector[6]].asString();
+            struct tm stm;
+            memset(&stm,0,sizeof(stm));
+            auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+            size_t t = timelocal(&stm);
+            size_t decimalNum = 0;
+            if(*p=='.')
             {
-                decimals += "0";
+                std::string decimals(p+1,&timeStr[timeStr.length()]);
+                while(decimals.length()<6)
+                {
+                    decimals += "0";
+                }
+                decimalNum = (size_t)atol(decimals.c_str());
             }
-            decimalNum = (size_t)atol(decimals.c_str());
+            _revokedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
         }
-        _revokedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
     }
     if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
     {
-        auto timeStr = pJson[pMasqueradingVector[7]].asString();
-        struct tm stm;
-        memset(&stm,0,sizeof(stm));
-        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
-        size_t t = timelocal(&stm);
-        size_t decimalNum = 0;
-        if(*p=='.')
+        _dirtyFlag[7] = true;
+        if(!pJson[pMasqueradingVector[7]].isNull())
         {
-            std::string decimals(p+1,&timeStr[timeStr.length()]);
-            while(decimals.length()<6)
+            auto timeStr = pJson[pMasqueradingVector[7]].asString();
+            struct tm stm;
+            memset(&stm,0,sizeof(stm));
+            auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+            size_t t = timelocal(&stm);
+            size_t decimalNum = 0;
+            if(*p=='.')
             {
-                decimals += "0";
+                std::string decimals(p+1,&timeStr[timeStr.length()]);
+                while(decimals.length()<6)
+                {
+                    decimals += "0";
+                }
+                decimalNum = (size_t)atol(decimals.c_str());
             }
-            decimalNum = (size_t)atol(decimals.c_str());
+            _createdAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
         }
-        _createdAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
     }
     if(!pMasqueradingVector[8].empty() && pJson.isMember(pMasqueradingVector[8]))
     {
-        _scopes=std::make_shared<std::string>(pJson[pMasqueradingVector[8]].asString());
+        _dirtyFlag[8] = true;
+        if(!pJson[pMasqueradingVector[8]].isNull())
+        {
+            _scopes=std::make_shared<std::string>(pJson[pMasqueradingVector[8]].asString());
+        }
     }
     if(!pMasqueradingVector[9].empty() && pJson.isMember(pMasqueradingVector[9]))
     {
-        _previousRefreshToken=std::make_shared<std::string>(pJson[pMasqueradingVector[9]].asString());
+        _dirtyFlag[9] = true;
+        if(!pJson[pMasqueradingVector[9]].isNull())
+        {
+            _previousRefreshToken=std::make_shared<std::string>(pJson[pMasqueradingVector[9]].asString());
+        }
     }
 }
 
@@ -294,73 +334,113 @@ OauthAccessTokens::OauthAccessTokens(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int64_t>((int64_t)pJson["id"].asInt64());
+        _dirtyFlag[0]=true;
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int64_t>((int64_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("resource_owner_id"))
     {
-        _resourceOwnerId=std::make_shared<int64_t>((int64_t)pJson["resource_owner_id"].asInt64());
+        _dirtyFlag[1]=true;
+        if(!pJson["resource_owner_id"].isNull())
+        {
+            _resourceOwnerId=std::make_shared<int64_t>((int64_t)pJson["resource_owner_id"].asInt64());
+        }
     }
     if(pJson.isMember("application_id"))
     {
-        _applicationId=std::make_shared<int64_t>((int64_t)pJson["application_id"].asInt64());
+        _dirtyFlag[2]=true;
+        if(!pJson["application_id"].isNull())
+        {
+            _applicationId=std::make_shared<int64_t>((int64_t)pJson["application_id"].asInt64());
+        }
     }
     if(pJson.isMember("token"))
     {
-        _token=std::make_shared<std::string>(pJson["token"].asString());
+        _dirtyFlag[3]=true;
+        if(!pJson["token"].isNull())
+        {
+            _token=std::make_shared<std::string>(pJson["token"].asString());
+        }
     }
     if(pJson.isMember("refresh_token"))
     {
-        _refreshToken=std::make_shared<std::string>(pJson["refresh_token"].asString());
+        _dirtyFlag[4]=true;
+        if(!pJson["refresh_token"].isNull())
+        {
+            _refreshToken=std::make_shared<std::string>(pJson["refresh_token"].asString());
+        }
     }
     if(pJson.isMember("expires_in"))
     {
-        _expiresIn=std::make_shared<int32_t>((int32_t)pJson["expires_in"].asInt64());
+        _dirtyFlag[5]=true;
+        if(!pJson["expires_in"].isNull())
+        {
+            _expiresIn=std::make_shared<int32_t>((int32_t)pJson["expires_in"].asInt64());
+        }
     }
     if(pJson.isMember("revoked_at"))
     {
-        auto timeStr = pJson["revoked_at"].asString();
-        struct tm stm;
-        memset(&stm,0,sizeof(stm));
-        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
-        size_t t = timelocal(&stm);
-        size_t decimalNum = 0;
-        if(*p=='.')
+        _dirtyFlag[6]=true;
+        if(!pJson["revoked_at"].isNull())
         {
-            std::string decimals(p+1,&timeStr[timeStr.length()]);
-            while(decimals.length()<6)
+            auto timeStr = pJson["revoked_at"].asString();
+            struct tm stm;
+            memset(&stm,0,sizeof(stm));
+            auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+            size_t t = timelocal(&stm);
+            size_t decimalNum = 0;
+            if(*p=='.')
             {
-                decimals += "0";
+                std::string decimals(p+1,&timeStr[timeStr.length()]);
+                while(decimals.length()<6)
+                {
+                    decimals += "0";
+                }
+                decimalNum = (size_t)atol(decimals.c_str());
             }
-            decimalNum = (size_t)atol(decimals.c_str());
+            _revokedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
         }
-        _revokedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
     }
     if(pJson.isMember("created_at"))
     {
-        auto timeStr = pJson["created_at"].asString();
-        struct tm stm;
-        memset(&stm,0,sizeof(stm));
-        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
-        size_t t = timelocal(&stm);
-        size_t decimalNum = 0;
-        if(*p=='.')
+        _dirtyFlag[7]=true;
+        if(!pJson["created_at"].isNull())
         {
-            std::string decimals(p+1,&timeStr[timeStr.length()]);
-            while(decimals.length()<6)
+            auto timeStr = pJson["created_at"].asString();
+            struct tm stm;
+            memset(&stm,0,sizeof(stm));
+            auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+            size_t t = timelocal(&stm);
+            size_t decimalNum = 0;
+            if(*p=='.')
             {
-                decimals += "0";
+                std::string decimals(p+1,&timeStr[timeStr.length()]);
+                while(decimals.length()<6)
+                {
+                    decimals += "0";
+                }
+                decimalNum = (size_t)atol(decimals.c_str());
             }
-            decimalNum = (size_t)atol(decimals.c_str());
+            _createdAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
         }
-        _createdAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
     }
     if(pJson.isMember("scopes"))
     {
-        _scopes=std::make_shared<std::string>(pJson["scopes"].asString());
+        _dirtyFlag[8]=true;
+        if(!pJson["scopes"].isNull())
+        {
+            _scopes=std::make_shared<std::string>(pJson["scopes"].asString());
+        }
     }
     if(pJson.isMember("previous_refresh_token"))
     {
-        _previousRefreshToken=std::make_shared<std::string>(pJson["previous_refresh_token"].asString());
+        _dirtyFlag[9]=true;
+        if(!pJson["previous_refresh_token"].isNull())
+        {
+            _previousRefreshToken=std::make_shared<std::string>(pJson["previous_refresh_token"].asString());
+        }
     }
 }
 
@@ -374,82 +454,112 @@ void OauthAccessTokens::updateByMasqueradedJson(const Json::Value &pJson,
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[0]].asInt64());
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
         _dirtyFlag[1] = true;
-        _resourceOwnerId=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[1]].asInt64());
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _resourceOwnerId=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
         _dirtyFlag[2] = true;
-        _applicationId=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[2]].asInt64());
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _applicationId=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[2]].asInt64());
+        }
     }
     if(!pMasqueradingVector[3].empty() && pJson.isMember(pMasqueradingVector[3]))
     {
         _dirtyFlag[3] = true;
-        _token=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+        if(!pJson[pMasqueradingVector[3]].isNull())
+        {
+            _token=std::make_shared<std::string>(pJson[pMasqueradingVector[3]].asString());
+        }
     }
     if(!pMasqueradingVector[4].empty() && pJson.isMember(pMasqueradingVector[4]))
     {
         _dirtyFlag[4] = true;
-        _refreshToken=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        if(!pJson[pMasqueradingVector[4]].isNull())
+        {
+            _refreshToken=std::make_shared<std::string>(pJson[pMasqueradingVector[4]].asString());
+        }
     }
     if(!pMasqueradingVector[5].empty() && pJson.isMember(pMasqueradingVector[5]))
     {
         _dirtyFlag[5] = true;
-        _expiresIn=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[5]].asInt64());
+        if(!pJson[pMasqueradingVector[5]].isNull())
+        {
+            _expiresIn=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[5]].asInt64());
+        }
     }
     if(!pMasqueradingVector[6].empty() && pJson.isMember(pMasqueradingVector[6]))
     {
         _dirtyFlag[6] = true;
-        auto timeStr = pJson[pMasqueradingVector[6]].asString();
-        struct tm stm;
-        memset(&stm,0,sizeof(stm));
-        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
-        size_t t = timelocal(&stm);
-        size_t decimalNum = 0;
-        if(*p=='.')
+        if(!pJson[pMasqueradingVector[6]].isNull())
         {
-            std::string decimals(p+1,&timeStr[timeStr.length()]);
-            while(decimals.length()<6)
+            auto timeStr = pJson[pMasqueradingVector[6]].asString();
+            struct tm stm;
+            memset(&stm,0,sizeof(stm));
+            auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+            size_t t = timelocal(&stm);
+            size_t decimalNum = 0;
+            if(*p=='.')
             {
-                decimals += "0";
+                std::string decimals(p+1,&timeStr[timeStr.length()]);
+                while(decimals.length()<6)
+                {
+                    decimals += "0";
+                }
+                decimalNum = (size_t)atol(decimals.c_str());
             }
-            decimalNum = (size_t)atol(decimals.c_str());
+            _revokedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
         }
-        _revokedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
     }
     if(!pMasqueradingVector[7].empty() && pJson.isMember(pMasqueradingVector[7]))
     {
         _dirtyFlag[7] = true;
-        auto timeStr = pJson[pMasqueradingVector[7]].asString();
-        struct tm stm;
-        memset(&stm,0,sizeof(stm));
-        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
-        size_t t = timelocal(&stm);
-        size_t decimalNum = 0;
-        if(*p=='.')
+        if(!pJson[pMasqueradingVector[7]].isNull())
         {
-            std::string decimals(p+1,&timeStr[timeStr.length()]);
-            while(decimals.length()<6)
+            auto timeStr = pJson[pMasqueradingVector[7]].asString();
+            struct tm stm;
+            memset(&stm,0,sizeof(stm));
+            auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+            size_t t = timelocal(&stm);
+            size_t decimalNum = 0;
+            if(*p=='.')
             {
-                decimals += "0";
+                std::string decimals(p+1,&timeStr[timeStr.length()]);
+                while(decimals.length()<6)
+                {
+                    decimals += "0";
+                }
+                decimalNum = (size_t)atol(decimals.c_str());
             }
-            decimalNum = (size_t)atol(decimals.c_str());
+            _createdAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
         }
-        _createdAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
     }
     if(!pMasqueradingVector[8].empty() && pJson.isMember(pMasqueradingVector[8]))
     {
         _dirtyFlag[8] = true;
-        _scopes=std::make_shared<std::string>(pJson[pMasqueradingVector[8]].asString());
+        if(!pJson[pMasqueradingVector[8]].isNull())
+        {
+            _scopes=std::make_shared<std::string>(pJson[pMasqueradingVector[8]].asString());
+        }
     }
     if(!pMasqueradingVector[9].empty() && pJson.isMember(pMasqueradingVector[9]))
     {
         _dirtyFlag[9] = true;
-        _previousRefreshToken=std::make_shared<std::string>(pJson[pMasqueradingVector[9]].asString());
+        if(!pJson[pMasqueradingVector[9]].isNull())
+        {
+            _previousRefreshToken=std::make_shared<std::string>(pJson[pMasqueradingVector[9]].asString());
+        }
     }
 }
                                                                     
@@ -457,82 +567,112 @@ void OauthAccessTokens::updateByJson(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int64_t>((int64_t)pJson["id"].asInt64());
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int64_t>((int64_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("resource_owner_id"))
     {
         _dirtyFlag[1] = true;
-        _resourceOwnerId=std::make_shared<int64_t>((int64_t)pJson["resource_owner_id"].asInt64());
+        if(!pJson["resource_owner_id"].isNull())
+        {
+            _resourceOwnerId=std::make_shared<int64_t>((int64_t)pJson["resource_owner_id"].asInt64());
+        }
     }
     if(pJson.isMember("application_id"))
     {
         _dirtyFlag[2] = true;
-        _applicationId=std::make_shared<int64_t>((int64_t)pJson["application_id"].asInt64());
+        if(!pJson["application_id"].isNull())
+        {
+            _applicationId=std::make_shared<int64_t>((int64_t)pJson["application_id"].asInt64());
+        }
     }
     if(pJson.isMember("token"))
     {
         _dirtyFlag[3] = true;
-        _token=std::make_shared<std::string>(pJson["token"].asString());
+        if(!pJson["token"].isNull())
+        {
+            _token=std::make_shared<std::string>(pJson["token"].asString());
+        }
     }
     if(pJson.isMember("refresh_token"))
     {
         _dirtyFlag[4] = true;
-        _refreshToken=std::make_shared<std::string>(pJson["refresh_token"].asString());
+        if(!pJson["refresh_token"].isNull())
+        {
+            _refreshToken=std::make_shared<std::string>(pJson["refresh_token"].asString());
+        }
     }
     if(pJson.isMember("expires_in"))
     {
         _dirtyFlag[5] = true;
-        _expiresIn=std::make_shared<int32_t>((int32_t)pJson["expires_in"].asInt64());
+        if(!pJson["expires_in"].isNull())
+        {
+            _expiresIn=std::make_shared<int32_t>((int32_t)pJson["expires_in"].asInt64());
+        }
     }
     if(pJson.isMember("revoked_at"))
     {
         _dirtyFlag[6] = true;
-        auto timeStr = pJson["revoked_at"].asString();
-        struct tm stm;
-        memset(&stm,0,sizeof(stm));
-        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
-        size_t t = timelocal(&stm);
-        size_t decimalNum = 0;
-        if(*p=='.')
+        if(!pJson["revoked_at"].isNull())
         {
-            std::string decimals(p+1,&timeStr[timeStr.length()]);
-            while(decimals.length()<6)
+            auto timeStr = pJson["revoked_at"].asString();
+            struct tm stm;
+            memset(&stm,0,sizeof(stm));
+            auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+            size_t t = timelocal(&stm);
+            size_t decimalNum = 0;
+            if(*p=='.')
             {
-                decimals += "0";
+                std::string decimals(p+1,&timeStr[timeStr.length()]);
+                while(decimals.length()<6)
+                {
+                    decimals += "0";
+                }
+                decimalNum = (size_t)atol(decimals.c_str());
             }
-            decimalNum = (size_t)atol(decimals.c_str());
+            _revokedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
         }
-        _revokedAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
     }
     if(pJson.isMember("created_at"))
     {
         _dirtyFlag[7] = true;
-        auto timeStr = pJson["created_at"].asString();
-        struct tm stm;
-        memset(&stm,0,sizeof(stm));
-        auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
-        size_t t = timelocal(&stm);
-        size_t decimalNum = 0;
-        if(*p=='.')
+        if(!pJson["created_at"].isNull())
         {
-            std::string decimals(p+1,&timeStr[timeStr.length()]);
-            while(decimals.length()<6)
+            auto timeStr = pJson["created_at"].asString();
+            struct tm stm;
+            memset(&stm,0,sizeof(stm));
+            auto p = strptime(timeStr.c_str(),"%Y-%m-%d %H:%M:%S",&stm);
+            size_t t = timelocal(&stm);
+            size_t decimalNum = 0;
+            if(*p=='.')
             {
-                decimals += "0";
+                std::string decimals(p+1,&timeStr[timeStr.length()]);
+                while(decimals.length()<6)
+                {
+                    decimals += "0";
+                }
+                decimalNum = (size_t)atol(decimals.c_str());
             }
-            decimalNum = (size_t)atol(decimals.c_str());
+            _createdAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
         }
-        _createdAt=std::make_shared<::trantor::Date>(t*1000000+decimalNum);
     }
     if(pJson.isMember("scopes"))
     {
         _dirtyFlag[8] = true;
-        _scopes=std::make_shared<std::string>(pJson["scopes"].asString());
+        if(!pJson["scopes"].isNull())
+        {
+            _scopes=std::make_shared<std::string>(pJson["scopes"].asString());
+        }
     }
     if(pJson.isMember("previous_refresh_token"))
     {
         _dirtyFlag[9] = true;
-        _previousRefreshToken=std::make_shared<std::string>(pJson["previous_refresh_token"].asString());
+        if(!pJson["previous_refresh_token"].isNull())
+        {
+            _previousRefreshToken=std::make_shared<std::string>(pJson["previous_refresh_token"].asString());
+        }
     }
 }
 
@@ -757,77 +897,104 @@ const std::vector<std::string> &OauthAccessTokens::insertColumns() noexcept
 
 void OauthAccessTokens::outputArgs(drogon::orm::internal::SqlBinder &binder) const
 {
-    if(getResourceOwnerId())
+    if(_dirtyFlag[1])
     {
-        binder << getValueOfResourceOwnerId();
+        if(getResourceOwnerId())
+        {
+            binder << getValueOfResourceOwnerId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[2])
     {
-        binder << nullptr;
+        if(getApplicationId())
+        {
+            binder << getValueOfApplicationId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getApplicationId())
+    if(_dirtyFlag[3])
     {
-        binder << getValueOfApplicationId();
+        if(getToken())
+        {
+            binder << getValueOfToken();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[4])
     {
-        binder << nullptr;
+        if(getRefreshToken())
+        {
+            binder << getValueOfRefreshToken();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getToken())
+    if(_dirtyFlag[5])
     {
-        binder << getValueOfToken();
+        if(getExpiresIn())
+        {
+            binder << getValueOfExpiresIn();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[6])
     {
-        binder << nullptr;
+        if(getRevokedAt())
+        {
+            binder << getValueOfRevokedAt();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getRefreshToken())
+    if(_dirtyFlag[7])
     {
-        binder << getValueOfRefreshToken();
+        if(getCreatedAt())
+        {
+            binder << getValueOfCreatedAt();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[8])
     {
-        binder << nullptr;
+        if(getScopes())
+        {
+            binder << getValueOfScopes();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    if(getExpiresIn())
+    if(_dirtyFlag[9])
     {
-        binder << getValueOfExpiresIn();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getRevokedAt())
-    {
-        binder << getValueOfRevokedAt();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getCreatedAt())
-    {
-        binder << getValueOfCreatedAt();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getScopes())
-    {
-        binder << getValueOfScopes();
-    }
-    else
-    {
-        binder << nullptr;
-    }
-    if(getPreviousRefreshToken())
-    {
-        binder << getValueOfPreviousRefreshToken();
-    }
-    else
-    {
-        binder << nullptr;
+        if(getPreviousRefreshToken())
+        {
+            binder << getValueOfPreviousRefreshToken();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
 }
 

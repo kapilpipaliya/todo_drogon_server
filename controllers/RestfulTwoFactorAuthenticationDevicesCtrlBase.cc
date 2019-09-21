@@ -5,11 +5,8 @@
  *  Users should implement business logic in the derived class.
  */
 
-#include "RestfulTwoFactorAuthenticationDevicesCtrl.h"
+#include "RestfulTwoFactorAuthenticationDevicesCtrlBase.h"
 #include <string>
-
-
-
 
 void RestfulTwoFactorAuthenticationDevicesCtrlBase::getOne(const HttpRequestPtr &req,
                                                            std::function<void(const HttpResponsePtr &)> &&callback,

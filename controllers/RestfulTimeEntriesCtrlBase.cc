@@ -5,11 +5,8 @@
  *  Users should implement business logic in the derived class.
  */
 
-#include "RestfulTimeEntriesCtrl.h"
+#include "RestfulTimeEntriesCtrlBase.h"
 #include <string>
-
-
-
 
 void RestfulTimeEntriesCtrlBase::getOne(const HttpRequestPtr &req,
                                         std::function<void(const HttpResponsePtr &)> &&callback,

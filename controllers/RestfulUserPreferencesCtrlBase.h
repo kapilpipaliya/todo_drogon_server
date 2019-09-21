@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <drogon/HttpController.h>
+
 #include "UserPreferences.h"
 using namespace drogon;
 

@@ -5,11 +5,8 @@
  *  Users should implement business logic in the derived class.
  */
 
-#include "RestfulProjectAssociationsCtrl.h"
+#include "RestfulProjectAssociationsCtrlBase.h"
 #include <string>
-
-
-
 
 void RestfulProjectAssociationsCtrlBase::getOne(const HttpRequestPtr &req,
                                                 std::function<void(const HttpResponsePtr &)> &&callback,

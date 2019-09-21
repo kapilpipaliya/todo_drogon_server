@@ -5,11 +5,8 @@
  *  Users should implement business logic in the derived class.
  */
 
-#include "RestfulAttributeHelpTextsCtrl.h"
+#include "RestfulAttributeHelpTextsCtrlBase.h"
 #include <string>
-
-
-
 
 void RestfulAttributeHelpTextsCtrlBase::getOne(const HttpRequestPtr &req,
                                                std::function<void(const HttpResponsePtr &)> &&callback,

@@ -5,11 +5,8 @@
  *  Users should implement business logic in the derived class.
  */
 
-#include "RestfulCustomizableJournalsCtrl.h"
+#include "RestfulCustomizableJournalsCtrlBase.h"
 #include <string>
-
-
-
 
 void RestfulCustomizableJournalsCtrlBase::getOne(const HttpRequestPtr &req,
                                                  std::function<void(const HttpResponsePtr &)> &&callback,

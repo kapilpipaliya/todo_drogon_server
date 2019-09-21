@@ -72,11 +72,19 @@ GroupUsers::GroupUsers(const Json::Value &pJson, const std::vector<std::string> 
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _groupId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        _dirtyFlag[0] = true;
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _groupId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
-        _userId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        _dirtyFlag[1] = true;
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _userId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
 }
 
@@ -84,11 +92,19 @@ GroupUsers::GroupUsers(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("group_id"))
     {
-        _groupId=std::make_shared<int32_t>((int32_t)pJson["group_id"].asInt64());
+        _dirtyFlag[0]=true;
+        if(!pJson["group_id"].isNull())
+        {
+            _groupId=std::make_shared<int32_t>((int32_t)pJson["group_id"].asInt64());
+        }
     }
     if(pJson.isMember("user_id"))
     {
-        _userId=std::make_shared<int32_t>((int32_t)pJson["user_id"].asInt64());
+        _dirtyFlag[1]=true;
+        if(!pJson["user_id"].isNull())
+        {
+            _userId=std::make_shared<int32_t>((int32_t)pJson["user_id"].asInt64());
+        }
     }
 }
 
@@ -103,12 +119,18 @@ void GroupUsers::updateByMasqueradedJson(const Json::Value &pJson,
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
         _dirtyFlag[0] = true;
-        _groupId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _groupId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
         _dirtyFlag[1] = true;
-        _userId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _userId=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
 }
                                                                     
@@ -117,12 +139,18 @@ void GroupUsers::updateByJson(const Json::Value &pJson) noexcept(false)
     if(pJson.isMember("group_id"))
     {
         _dirtyFlag[0] = true;
-        _groupId=std::make_shared<int32_t>((int32_t)pJson["group_id"].asInt64());
+        if(!pJson["group_id"].isNull())
+        {
+            _groupId=std::make_shared<int32_t>((int32_t)pJson["group_id"].asInt64());
+        }
     }
     if(pJson.isMember("user_id"))
     {
         _dirtyFlag[1] = true;
-        _userId=std::make_shared<int32_t>((int32_t)pJson["user_id"].asInt64());
+        if(!pJson["user_id"].isNull())
+        {
+            _userId=std::make_shared<int32_t>((int32_t)pJson["user_id"].asInt64());
+        }
     }
 }
 
@@ -177,21 +205,27 @@ const std::vector<std::string> &GroupUsers::insertColumns() noexcept
 
 void GroupUsers::outputArgs(drogon::orm::internal::SqlBinder &binder) const
 {
-    if(getGroupId())
+    if(_dirtyFlag[0])
     {
-        binder << getValueOfGroupId();
+        if(getGroupId())
+        {
+            binder << getValueOfGroupId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[1])
     {
-        binder << nullptr;
-    }
-    if(getUserId())
-    {
-        binder << getValueOfUserId();
-    }
-    else
-    {
-        binder << nullptr;
+        if(getUserId())
+        {
+            binder << getValueOfUserId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
 }
 

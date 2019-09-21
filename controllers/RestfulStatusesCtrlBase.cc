@@ -5,11 +5,8 @@
  *  Users should implement business logic in the derived class.
  */
 
-#include "RestfulStatusesCtrl.h"
+#include "RestfulStatusesCtrlBase.h"
 #include <string>
-
-
-
 
 void RestfulStatusesCtrlBase::getOne(const HttpRequestPtr &req,
                                      std::function<void(const HttpResponsePtr &)> &&callback,

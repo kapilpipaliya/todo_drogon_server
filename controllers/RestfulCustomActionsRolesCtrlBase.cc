@@ -5,11 +5,8 @@
  *  Users should implement business logic in the derived class.
  */
 
-#include "RestfulCustomActionsRolesCtrl.h"
+#include "RestfulCustomActionsRolesCtrlBase.h"
 #include <string>
-
-
-
 
 void RestfulCustomActionsRolesCtrlBase::getOne(const HttpRequestPtr &req,
                                                std::function<void(const HttpResponsePtr &)> &&callback,

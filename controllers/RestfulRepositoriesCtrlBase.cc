@@ -5,11 +5,8 @@
  *  Users should implement business logic in the derived class.
  */
 
-#include "RestfulRepositoriesCtrl.h"
+#include "RestfulRepositoriesCtrlBase.h"
 #include <string>
-
-
-
 
 void RestfulRepositoriesCtrlBase::getOne(const HttpRequestPtr &req,
                                          std::function<void(const HttpResponsePtr &)> &&callback,

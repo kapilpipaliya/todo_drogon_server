@@ -5,11 +5,8 @@
  *  Users should implement business logic in the derived class.
  */
 
-#include "RestfulMenuItemsCtrl.h"
+#include "RestfulMenuItemsCtrlBase.h"
 #include <string>
-
-
-
 
 void RestfulMenuItemsCtrlBase::getOne(const HttpRequestPtr &req,
                                       std::function<void(const HttpResponsePtr &)> &&callback,

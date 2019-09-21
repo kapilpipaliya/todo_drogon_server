@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <drogon/HttpController.h>
+
 #include "NewsJournals.h"
 using namespace drogon;
 

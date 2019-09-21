@@ -83,15 +83,27 @@ CustomActionsTypes::CustomActionsTypes(const Json::Value &pJson, const std::vect
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        _dirtyFlag[0] = true;
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
-        _typeId=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[1]].asInt64());
+        _dirtyFlag[1] = true;
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _typeId=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
-        _customActionId=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[2]].asInt64());
+        _dirtyFlag[2] = true;
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _customActionId=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[2]].asInt64());
+        }
     }
 }
 
@@ -99,15 +111,27 @@ CustomActionsTypes::CustomActionsTypes(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        _dirtyFlag[0]=true;
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("type_id"))
     {
-        _typeId=std::make_shared<int64_t>((int64_t)pJson["type_id"].asInt64());
+        _dirtyFlag[1]=true;
+        if(!pJson["type_id"].isNull())
+        {
+            _typeId=std::make_shared<int64_t>((int64_t)pJson["type_id"].asInt64());
+        }
     }
     if(pJson.isMember("custom_action_id"))
     {
-        _customActionId=std::make_shared<int64_t>((int64_t)pJson["custom_action_id"].asInt64());
+        _dirtyFlag[2]=true;
+        if(!pJson["custom_action_id"].isNull())
+        {
+            _customActionId=std::make_shared<int64_t>((int64_t)pJson["custom_action_id"].asInt64());
+        }
     }
 }
 
@@ -121,17 +145,26 @@ void CustomActionsTypes::updateByMasqueradedJson(const Json::Value &pJson,
     }
     if(!pMasqueradingVector[0].empty() && pJson.isMember(pMasqueradingVector[0]))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        if(!pJson[pMasqueradingVector[0]].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson[pMasqueradingVector[0]].asInt64());
+        }
     }
     if(!pMasqueradingVector[1].empty() && pJson.isMember(pMasqueradingVector[1]))
     {
         _dirtyFlag[1] = true;
-        _typeId=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[1]].asInt64());
+        if(!pJson[pMasqueradingVector[1]].isNull())
+        {
+            _typeId=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[1]].asInt64());
+        }
     }
     if(!pMasqueradingVector[2].empty() && pJson.isMember(pMasqueradingVector[2]))
     {
         _dirtyFlag[2] = true;
-        _customActionId=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[2]].asInt64());
+        if(!pJson[pMasqueradingVector[2]].isNull())
+        {
+            _customActionId=std::make_shared<int64_t>((int64_t)pJson[pMasqueradingVector[2]].asInt64());
+        }
     }
 }
                                                                     
@@ -139,17 +172,26 @@ void CustomActionsTypes::updateByJson(const Json::Value &pJson) noexcept(false)
 {
     if(pJson.isMember("id"))
     {
-        _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        if(!pJson["id"].isNull())
+        {
+            _id=std::make_shared<int32_t>((int32_t)pJson["id"].asInt64());
+        }
     }
     if(pJson.isMember("type_id"))
     {
         _dirtyFlag[1] = true;
-        _typeId=std::make_shared<int64_t>((int64_t)pJson["type_id"].asInt64());
+        if(!pJson["type_id"].isNull())
+        {
+            _typeId=std::make_shared<int64_t>((int64_t)pJson["type_id"].asInt64());
+        }
     }
     if(pJson.isMember("custom_action_id"))
     {
         _dirtyFlag[2] = true;
-        _customActionId=std::make_shared<int64_t>((int64_t)pJson["custom_action_id"].asInt64());
+        if(!pJson["custom_action_id"].isNull())
+        {
+            _customActionId=std::make_shared<int64_t>((int64_t)pJson["custom_action_id"].asInt64());
+        }
     }
 }
 
@@ -221,21 +263,27 @@ const std::vector<std::string> &CustomActionsTypes::insertColumns() noexcept
 
 void CustomActionsTypes::outputArgs(drogon::orm::internal::SqlBinder &binder) const
 {
-    if(getTypeId())
+    if(_dirtyFlag[1])
     {
-        binder << getValueOfTypeId();
+        if(getTypeId())
+        {
+            binder << getValueOfTypeId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
-    else
+    if(_dirtyFlag[2])
     {
-        binder << nullptr;
-    }
-    if(getCustomActionId())
-    {
-        binder << getValueOfCustomActionId();
-    }
-    else
-    {
-        binder << nullptr;
+        if(getCustomActionId())
+        {
+            binder << getValueOfCustomActionId();
+        }
+        else
+        {
+            binder << nullptr;
+        }
     }
 }
 
