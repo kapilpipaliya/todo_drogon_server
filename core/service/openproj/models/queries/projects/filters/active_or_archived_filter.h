@@ -15,7 +15,7 @@ class ActiveOrArchivedFilter : public openproj::models::Queries::Projects::Filte
   }
 
    void human_name() {
-//    I18n.t('query_fields.active_or_archived')
+//    I18n.t("query_fields.active_or_archived")
   }
 
    void allowed_values() {

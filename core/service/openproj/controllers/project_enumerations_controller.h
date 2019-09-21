@@ -16,7 +16,7 @@ public:
 //      flash[:notice] = l(:notice_successful_update)
 //    }
 
-//    redirect_to settings_project_path(id: this->project, tab: 'activities')
+//    redirect_to settings_project_path(id: this->project, tab: "activities")
   }
 
    void destroy() {
@@ -24,7 +24,7 @@ public:
 
 //    flash[:notice] = l(:notice_successful_update)
 
-//    redirect_to settings_project_path(id: this->project, tab: 'activities')
+//    redirect_to settings_project_path(id: this->project, tab: "activities")
   }
 };
 }

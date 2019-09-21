@@ -52,7 +52,7 @@ class WorkPackageToPdf : public WorkPackageN::Exporter::Base {
 
 //   void make_attribute_cells(attribute, label_options: {}, value_options: {}) {
 //    label = pdf.make_cell(
-//      WorkPackage.human_attribute_name(attribute) + ':',
+//      WorkPackage.human_attribute_name(attribute) + ":",
 //      label_options
 //    )
 
@@ -78,7 +78,7 @@ class WorkPackageToPdf : public WorkPackageN::Exporter::Base {
 //   void make_custom_fields() {
 //    work_package.custom_field_values.map { |custom_value|
 //      cf = custom_value.custom_field
-//      name = cf.name || Array(cf.name_translations.first).last || '?'
+//      name = cf.name || Array(cf.name_translations.first).last || "?"
 
 //      label = pdf.make_cell "#{name}:",
 //                            borders: [:left], font_style: :bold,
@@ -179,12 +179,12 @@ class WorkPackageToPdf : public WorkPackageN::Exporter::Base {
 //  }
 
 //   void make_description_label() {
-//    text = WorkPackage.human_attribute_name(:description) + ':'
+//    text = WorkPackage.human_attribute_name(:description) + ":"
 //    pdf.make_cell(text, borders: [:left], font_style: :bold, padding: cell_padding)
 //  }
 
 //   void make_empty_label() {
-//    pdf.make_cell '', borders: [:left]
+//    pdf.make_cell "", borders: [:left]
 //  }
 
 //   void write_changesets!() {
@@ -200,7 +200,7 @@ class WorkPackageToPdf : public WorkPackageN::Exporter::Base {
 
 //      for changeset in work_package.changesets
 //        pdf.font style: :bold, size: 8
-//        pdf.text(format_time(changeset.committed_on) + ' - ' + changeset.author.to_s)
+//        pdf.text(format_time(changeset.committed_on) + " - " + changeset.author.to_s)
 //        newline!
 
 //        if ( changeset.comments.present?) {
@@ -228,15 +228,15 @@ class WorkPackageToPdf : public WorkPackageN::Exporter::Base {
 //      if ( journal.initial?) { next ;}
 
 //      pdf.font style: :bold, size: 8
-//      pdf.text(format_time(journal.created_at) + ' - ' + journal.user.name)
+//      pdf.text(format_time(journal.created_at) + " - " + journal.user.name)
 //      newline!
 
 //      pdf.font style: :italic, size: 8
 //      journal.details.each { |detail|
 //        text = journal
 //          .render_detail(detail, no_html: true, only_path: false)
-//          .gsub(/\((https?[^\)]+)\)$/, "(<link href='\\1'>\\1</link>)")
-//        pdf.text('- ' + text, inline_format: true)
+//          .gsub(/\((https?[^\)]+)\)$/, "(<link href="\\1">\\1</link>)")
+//        pdf.text("- " + text, inline_format: true)
 //        newline!
 //      }
 

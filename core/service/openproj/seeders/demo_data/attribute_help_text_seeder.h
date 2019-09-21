@@ -8,7 +8,7 @@ namespace DemoData {
      AttributeHelpTextSeeder() {}
 
      void seed_data() {
-//      print '    ↳ Creating attribute help texts'
+//      LOG_DEBUG << "    ↳ Creating attribute help texts"
 
       seed_attribute_help_texts();
 
@@ -18,10 +18,10 @@ namespace DemoData {
     private:
 
      void seed_attribute_help_texts() {
-//      help_texts = demo_data_for('attribute_help_texts')
+//      help_texts = demo_data_for("attribute_help_texts")
 //      if ( help_texts.present?) {
 //        help_texts.each { |help_text_attr|
-//          print '.'
+//          LOG_DEBUG << "."
 //          create_attribute_help_text help_text_attr
 //        }
 //      }

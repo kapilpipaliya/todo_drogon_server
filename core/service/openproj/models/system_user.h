@@ -10,13 +10,13 @@ class SystemUser : public User {
 
 //  // There should be only one SystemUser in the database
 //   void validate_unique_system_user() {
-//    if ( SystemUser.any?) { errors.add :base, 'A SystemUser already exists.' ;}
+//    if ( SystemUser.any?) { errors.add :base, "A SystemUser already exists." ;}
 //  }
 
   // Overrides a few properties
 //   void logged?; false }() {
 
-//   void name(*_args) {; 'System' }
+//   void name(*_args) {; "System" }
 
 //   void mail; nil }() {
 
@@ -49,7 +49,7 @@ class SystemUser : public User {
 //        User.current = old_user
 //      }
 //    else
-//      raise 'no block given'
+//      raise "no block given"
 //    }
 //  }
 };

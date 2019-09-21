@@ -9,7 +9,7 @@ namespace Concerns::UserConsent {
 
    void consent() {
 //    if ( consent_required?) {
-//      render 'account/consent', locals: { consenting_user: consenting_user }
+//      render "account/consent", locals: { consenting_user: consenting_user }
 //    else
 //      consent_finished
 //    }
@@ -29,17 +29,17 @@ namespace Concerns::UserConsent {
 //    // Ensure consent is enabled and a text is provided
 //    return false unless user_consent_required?
 
-//    // Require the user to consent if ( he hasn't already) {
+//    // Require the user to consent if ( he hasn"t already) {
 //    consent_expired?
   }
 
    void decline_consent() {
-//    message = I18n.t('consent.decline_warning_message') + "\n"
+//    message = I18n.t("consent.decline_warning_message") + "\n"
 //    message <<
 //      if ( Setting.consent_decline_mail) {
-//        I18n.t('consent.contact_this_mail_address', mail_address: Setting.consent_decline_mail)
+//        I18n.t("consent.contact_this_mail_address", mail_address: Setting.consent_decline_mail)
 //      else
-//        I18n.t('consent.contact_your_administrator')
+//        I18n.t("consent.contact_your_administrator")
 //      }
 
 //    flash[:error] = message
@@ -73,7 +73,7 @@ namespace Concerns::UserConsent {
   }
 
    void reject_consent() {
-//    flash[:error] = I18n.t('consent.failure_message')
+//    flash[:error] = I18n.t("consent.failure_message")
 //    redirect_to authentication_stage_failure_path :consent
   }
 }

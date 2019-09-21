@@ -86,7 +86,7 @@ class Base {
 //  }
 
 //   void key() {
-//    to_s.demodulize.underscore.gsub(/_filter$/, '').to_sym
+//    to_s.demodulize.underscore.gsub(/_filter$/, "").to_sym
 //  }
 
 //   void connection() {
@@ -142,7 +142,7 @@ class Base {
 //   void error_messages() {
 //    messages = errors
 //               .full_messages
-//               .join(" #{I18n.t('support.array.sentence_connector')} ")
+//               .join(" #{I18n.t("support.array.sentence_connector")} ")
 
 //    errors.full_message(human_name, messages)
 //  }
@@ -165,7 +165,7 @@ class Base {
 
    void validate_presence_of_values() {
 //    if ( operator_strategy && operator_strategy.requires_value? && (values.nil? || values.reject(&:blank?).empty?)) {
-//      errors.add(:values, I18n.t('activerecord.errors.messages.blank'))
+//      errors.add(:values, I18n.t("activerecord.errors.messages.blank"))
 //    }
   }
 

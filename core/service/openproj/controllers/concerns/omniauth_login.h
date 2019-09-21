@@ -22,12 +22,12 @@ namespace Concerns::OmniauthLogin {
 //  }
 
    void omniauth_login() {
-//    auth_hash = request.env['omniauth.auth']
+//    auth_hash = request.env["omniauth.auth"]
 
 //    return render_400 unless auth_hash.valid?
 
 //    // Set back url to page the omniauth login link was clicked on
-//    params[:back_url] = request.env['omniauth.origin']
+//    params[:back_url] = request.env["omniauth.origin"]
 
 //    user_attributes = omniauth_hash_to_user_attributes(auth_hash)
 //    user =
@@ -105,7 +105,7 @@ namespace Concerns::OmniauthLogin {
 
 //   void show_error(error) {
 //    flash[:error] = error
-//    redirect_to action: 'login'
+//    redirect_to action: "login"
 //  }
 
   // a user may login via omniauth and (if ( that user does not exist) {
@@ -121,7 +121,7 @@ namespace Concerns::OmniauthLogin {
 //    }
 
 //    // only enforce here so user has email filled in for the admin notification
-//    // about who couldn't register/activate
+//    // about who couldn"t register/activate
 //    if ( enforce_activation_user_limit(user: user)) { return ;}
 
 //    // Create on the fly
@@ -168,7 +168,7 @@ namespace Concerns::OmniauthLogin {
 //    }
 
 //    // Allow strategies to override mapping
-//    strategy = request.env['omniauth.strategy']
+//    strategy = request.env["omniauth.strategy"]
 //    if ( strategy.respond_to?(:omniauth_hash_to_user_attributes)) {
 //      attribute_map.merge(strategy.omniauth_hash_to_user_attributes(auth))
 //    else
@@ -181,9 +181,9 @@ namespace Concerns::OmniauthLogin {
 //  }
 
   // if the omni auth registration happened too long ago,
-  // we don't accept it anymore.
+  // we don"t accept it anymore.
 //   void handle_omniauth_registration_expired(auth) {
-//    if ( auth['timestamp'] < Time.now - 30.minutes) {
+//    if ( auth["timestamp"] < Time.now - 30.minutes) {
 //      flash[:error] = I18n.t(:error_omniauth_registration_timed_out)
 //      redirect_to(signin_url)
 //    }
@@ -191,7 +191,7 @@ namespace Concerns::OmniauthLogin {
 
 //   void url_with_params(url, params = {}) {
 //    URI.parse(url).tap { |uri|
-//      query = URI.decode_www_form(uri.query || '')
+//      query = URI.decode_www_form(uri.query || "")
 //      params.each { |key, value|
 //        query << [key, value]
 //      }

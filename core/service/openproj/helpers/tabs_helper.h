@@ -5,9 +5,9 @@ namespace TabsHelper {
 //   void render_tabs(tabs) {
 //    if ( tabs.any?) {
 //      selected_tab = tabs.detect { |t| t[:name] == params[:tab] } if ( params[:tab].present?) {
-//      render partial: 'common/tabs', locals: { tabs: tabs, selected_tab: selected_tab || tabs.first }
+//      render partial: "common/tabs", locals: { tabs: tabs, selected_tab: selected_tab || tabs.first }
 //    else
-//      content_tag 'p', l(:label_no_data), class: 'nodata'
+//      content_tag "p", l(:label_no_data), class: "nodata"
 //    }
 //  }
 

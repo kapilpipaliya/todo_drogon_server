@@ -19,7 +19,7 @@ namespace Concerns {
 //      else
 //        flash[:error] = I18n.t(
 //          :notice_auth_stage_wrong_stage,
-//          expected: stage || '(none)',
+//          expected: stage || "(none)",
 //          actual: params[:stage]
 //        )
 
@@ -59,8 +59,8 @@ namespace Concerns {
 //      session[:authentication_stages] = stages.map(&:identifier)
 //      session[:stage_secrets] = new_stage_secrets
 
-//      // Remember back_url from params since we're redirecting
-//      // but don't use the referer
+//      // Remember back_url from params since we"re redirecting
+//      // but don"t use the referer
 //      session[:back_url] = params[:back_url]
 
 //      stages

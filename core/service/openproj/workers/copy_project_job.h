@@ -40,7 +40,7 @@ public:
 
 //  rescue StandardError => e
 //    logger.error { "Failed to finish copy project job: #{e} #{e.message}" }
-//    errors = [I18n.t('copy_project.failed_internal')]
+//    errors = [I18n.t("copy_project.failed_internal")]
 //    ProjectMailer.copy_project_failed(user, source_project, target_project_name, errors).deliver_now
   }
 
@@ -77,7 +77,7 @@ public:
 //        error_objects = (target_project.compiled_errors.flatten + [target_project.errors]).flatten
 //        error_objects.each { |error_object|
 //          base = error_object.instance_variable_get(:this->base)
-//          error_prefix = base.is_a?(Project) ? '' : "#{base.class.model_name.human} '#{base}': "
+//          error_prefix = base.is_a?(Project) ? "" : "#{base.class.model_name.human} "#{base}": "
 
 //          error_object.full_messages.flatten.each { |error|
 //            errors << error_prefix + error
@@ -92,18 +92,18 @@ public:
 //  rescue ActiveRecord::RecordNotFound => e
 //    logger.error("Entity missing: #{e.message} #{e.backtrace.join("\n")}")
 //  rescue StandardError => e
-//    logger.error('Encountered an error when trying to copy project '\
-//                 "'#{source_project_id}' : #{e.message} #{e.backtrace.join("\n")}")
+//    logger.error("Encountered an error when trying to copy project "\
+//                 ""#{source_project_id}" : #{e.message} #{e.backtrace.join("\n")}")
 //  ensure
 //    unless errors.empty?
-//      logger.error('Encountered an errors while trying to copy related objects for '\
-//                   "project '#{source_project_id}': #{errors.inspect}")
+//      logger.error("Encountered an errors while trying to copy related objects for "\
+//                   "project "#{source_project_id}": #{errors.inspect}")
 //    }
 
 //    return target_project, errors
 //  }
 
-  // Validates parent_id param according to user's permissions
+  // Validates parent_id param according to user"s permissions
   // TODO: move it to Project model in a validation that depends on User.current
 //   void validate_parent_id(project, parent_id) {
 //    if ( User.current.admin?) { return true ;}

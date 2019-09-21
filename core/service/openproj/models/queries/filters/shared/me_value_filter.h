@@ -12,7 +12,7 @@ namespace Queries::Filters::Shared::MeValueFilter {
 //      if ( User.current.logged?) {
 //        vals.push(User.current.id.to_s)
 //      else
-//        vals.push('0')
+//        vals.push("0")
 //      }
 //    }
 

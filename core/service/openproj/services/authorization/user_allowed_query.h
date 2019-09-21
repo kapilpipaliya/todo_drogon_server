@@ -82,14 +82,14 @@ public:
 
 //   void anonymous_user_condition() {
 //    users_table[:type]
-//      .eq('AnonymousUser')
+//      .eq("AnonymousUser")
 //      .and(roles_table[:builtin].eq(Role::BUILTIN_ANONYMOUS))
 //  }
 
 //   void member_or_public_project_condition(id_equal) {
 //    roles_table
 //      .grouping(users_table[:type]
-//                .eq('User')
+//                .eq("User")
 //                .and(id_equal.or(no_membership_and_non_member_role_condition)))
 //      .or(anonymous_user_condition)
 //  }

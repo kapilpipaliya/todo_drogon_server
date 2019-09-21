@@ -7,11 +7,11 @@ public:
 //  attr_reader :users_only, :project
 
 //  SEARCH_SCOPES = [
-//    'project_id',
-//    'ids',
-//    'group_id',
-//    'status',
-//    'name'
+//    "project_id",
+//    "ids",
+//    "group_id",
+//    "status",
+//    "name"
 //  ]
 
 //   UserSearchService(params, users_only: false) {
@@ -34,7 +34,7 @@ public:
   }
 
 //   void ids_search(scope) {
-//    ids = params[:ids].split(',')
+//    ids = params[:ids].split(",")
 
 //    scope.not_builtin.where(id: ids)
 //  }
@@ -43,21 +43,21 @@ public:
 //    if ( params[:group_id].present?) { scope = scope.in_group(params[:group_id].to_i) ;}
 //    c = ARCondition.new
 
-//    if ( params[:status] == 'blocked') {
+//    if ( params[:status] == "blocked") {
 //      this->status = :blocked
 //      scope = scope.blocked
-//    } else if ( params[:status] == 'all') {
+//    } else if ( params[:status] == "all") {
 //      this->status = :all
 //      scope = scope.not_builtin
 //    else
 //      this->status = params[:status] ? params[:status].to_i : UserN::STATUSES[:active]
 //      if ( users_only && this->status == UserN::STATUSES[:active]) { scope = scope.not_blocked ;}
-//      c << ['status = ?', this->status]
+//      c << ["status = ?", this->status]
 //    }
 
 //    unless params[:name].blank?
 //      name = "%#{params[:name].strip.downcase}%"
-//      c << ['LOWER(login) LIKE ? OR LOWER(firstname) LIKE ? OR LOWER(lastname) LIKE ? OR LOWER(mail) LIKE ?', name, name, name, name]
+//      c << ["LOWER(login) LIKE ? OR LOWER(firstname) LIKE ? OR LOWER(lastname) LIKE ? OR LOWER(mail) LIKE ?", name, name, name, name]
 //    }
 
 //    scope.where(c.conditions)

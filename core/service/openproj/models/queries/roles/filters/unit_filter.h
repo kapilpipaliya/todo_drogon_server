@@ -12,9 +12,9 @@ class UnitFilter : public openproj::models::Queries::Roles::Filters::RoleFilter 
   }
 
    void where() {
-//    if ( operator == '!') {
+//    if ( operator == "!") {
 //      ["roles.type != ?", db_values]
-//    } else if ( values.first == 'project') {
+//    } else if ( values.first == "project") {
 //      ["roles.type = ? AND roles.builtin = ?", db_values, Role::NON_BUILTIN]
 //    else
 //      ["roles.type = ?", db_values]
@@ -29,7 +29,7 @@ class UnitFilter : public openproj::models::Queries::Roles::Filters::RoleFilter 
   private:
 
    void db_values() {
-//    if ( values.first == 'system') {
+//    if ( values.first == "system") {
 //      [GlobalRole.name.to_s]
 //    else
 //      [Role.name.to_s]

@@ -11,7 +11,7 @@ public:
   // before_action :find_project, only: %i[index new create close_completed]
   // before_action :authorize
    void index() {
-//    this->types = this->project.types.order(Arel.sql('position'))
+//    this->types = this->project.types.order(Arel.sql("position"))
 //    retrieve_selected_type_ids(this->types, this->types.select(&:is_in_roadmap?))
 //    this->with_subprojects = params[:with_subprojects].nil? ? Setting.display_subprojects_work_packages? : (params[:with_subprojects].to_i == 1)
 //    project_ids = this->with_subprojects ? this->project.self_and_descendants.map(&:id) : [this->project.id]
@@ -63,7 +63,7 @@ public:
 //      flash[:notice] = l(:notice_successful_create)
 //      redirect_back_or_version_settings
 //    else
-//      render action: 'new'
+//      render action: "new"
 //    }
   }
 
@@ -82,7 +82,7 @@ public:
 //      flash[:notice] = l(:notice_successful_update)
 //      redirect_back_or_version_settings
 //    else
-//      render action: 'edit'
+//      render action: "edit"
 //    }
   }
 
@@ -90,7 +90,7 @@ public:
 //    if ( request.put?) {
 //      this->project.close_completed_versions
 //    }
-//    redirect_to settings_project_path(tab: 'versions', id: this->project)
+//    redirect_to settings_project_path(tab: "versions", id: this->project)
   }
 
    void destroy() {
@@ -103,13 +103,13 @@ public:
 //      flash[:error] = call.errors.full_messages
 //    }
 
-//    redirect_to settings_project_path(tab: 'versions', id: this->project)
+//    redirect_to settings_project_path(tab: "versions", id: this->project)
   }
 
   private:
 
    void redirect_back_or_version_settings() {
-//    redirect_back_or_default(settings_project_path(tab: 'versions', id: this->project))
+//    redirect_back_or_default(settings_project_path(tab: "versions", id: this->project))
   }
 
    void find_project() {
@@ -124,7 +124,7 @@ public:
 
 //   void selected_type_ids(selectable_types, default_types = nil) {
 //    if ( (ids = params[:type_ids])) {
-//      ids.is_a?(Array) ? ids.map(&:to_s) : ids.split('/')
+//      ids.is_a?(Array) ? ids.map(&:to_s) : ids.split("/")
 //    else
 //      (default_types || selectable_types).map { |t| t.id.to_s }
 //    }

@@ -31,20 +31,20 @@ public:
   private:
 
 //   void check_error_in_filter(filter) {
-//    if ( !filter.first['id']) {
+//    if ( !filter.first["id"]) {
 //      :id_filter_required
-//    } else if ( filter.first['id']['operator'] != '=') {
+//    } else if ( filter.first["id"]["operator"] != "=") {
 //      :unsupported_operator
-//    } else if ( filter.first['id']['values'].any? { |id_string| !id_string.match(/\d+-\d+/) }) {
+//    } else if ( filter.first["id"]["values"].any? { |id_string| !id_string.match(/\d+-\d+/) }) {
 //      :invalid_values
 //    }
 //  }
 
 //   void parse_ids(filter) {
-//    ids_string = filter.first['id']['values']
+//    ids_string = filter.first["id"]["values"]
 
 //    ids_string.map { |id_string|
-//      id_string.split('-')
+//      id_string.split("-")
 //    }
 //  }
 

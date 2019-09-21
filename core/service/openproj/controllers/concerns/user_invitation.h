@@ -7,11 +7,11 @@ namespace UserInvitation {
 //  namespace Events {
 //    class << self {
 //       void user_invited() {
-//        'user_invited'
+//        "user_invited"
 //      }
 
 //       void user_reinvited() {
-//        'user_reinvited'
+//        "user_reinvited"
 //      }
 //    }
 //  }
@@ -22,9 +22,9 @@ namespace UserInvitation {
   // Creates an invited user with the given email address.
   //
   // @param email E-Mail address the invitation is sent to.
-  // @param login User's login (optional)
-  // @param first_name The user's first name (optional)
-  // @param last_name The user's last name (optional)
+  // @param login User"s login (optional)
+  // @param first_name The user"s first name (optional)
+  // @param last_name The user"s last name (optional)
   //
   // this->yield [user] Allows modifying the created user before saving it.
   //
@@ -82,14 +82,14 @@ namespace UserInvitation {
   // are longer than 30 characters they will be trimmed to 27 characters and an
   // elipsis will be appended.
 //   void placeholder_name(email) {
-//    first, last = email.split('this->').map { |name| trim_name(name) }
+//    first, last = email.split("this->").map { |name| trim_name(name) }
 
-//    [first, 'this->' + last]
+//    [first, "this->" + last]
 //  }
 
    std::string trim_name(std::string name) {
 //    if ( name.size > 30) {
-//      name[0..26] + '...'
+//      name[0..26] + "..."
 //    else
 //      name
 //    }
@@ -114,8 +114,8 @@ namespace UserInvitation {
 
   //
   // Creates an invited user with the given email address.
-  // If no first and last is given it will default to 'OpenProject User'
-  // for the first name and 'To-be' for the last name.
+  // If no first and last is given it will default to "OpenProject User"
+  // for the first name and "To-be" for the last name.
   // The default login is the email address.
   //
   // @return Returns the user and the invitation token required to register.

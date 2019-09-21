@@ -4,7 +4,7 @@ namespace openproj {
 namespace models {
 class Announcement : public ActiveRecord::Base {
   // scope :active,  -> { where(active: true) }
-  // scope :current, -> { where('show_until >= ?', Date.today) }
+  // scope :current, -> { where("show_until >= ?", Date.today) }
 
   // validates :show_until, presence: true
 
@@ -23,7 +23,7 @@ class Announcement : public ActiveRecord::Base {
 //  }
 
    void create_default_announcement() {
-//    Announcement.create text: 'Announcement',
+//    Announcement.create text: "Announcement",
 //                        show_until: Date.today + 14.days,
 //                        active: false
   }

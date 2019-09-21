@@ -8,9 +8,9 @@ namespace Queries::Filters::Shared {
     class ListOptional : public Base {
        void value_objects() {
 //        case custom_field.field_format
-//        when 'version'
+//        when "version"
 //          ::Version.where(id: values)
-//        when 'list'
+//        when "list"
 //          custom_field.custom_options.where(id: values)
 //        else
 //          super

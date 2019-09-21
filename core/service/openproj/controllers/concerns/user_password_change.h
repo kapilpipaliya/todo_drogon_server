@@ -13,7 +13,7 @@ namespace Concerns::UserPasswordChange {
 //    if ( OpenProject::Configuration.disable_password_login?) { return render_404 ;}
 
 //    // A JavaScript hides the force_password_change field for external
-//    // auth sources in the admin UI, so this shouldn't normally happen.
+//    // auth sources in the admin UI, so this shouldn"t normally happen.
 //    if ( redirect_if_password_change_not_allowed(user)) { return ;}
 
 //    // Ensure the current password is validated
@@ -46,7 +46,7 @@ namespace Concerns::UserPasswordChange {
 //      return
 //    }
 
-//    flash_error_message(log_reason: 'invalid credentials', flash_now: flash_now) {
+//    flash_error_message(log_reason: "invalid credentials", flash_now: flash_now) {
 //      if ( Setting.brute_force_block_after_failed_logins?) {
 //        :notice_account_invalid_credentials_or_blocked
 //      else
@@ -60,17 +60,17 @@ namespace Concerns::UserPasswordChange {
 //    flash[:_password_change_user_id] = user.id
 //    this->user = user
 //    this->username = user.login
-//    render 'my/password', locals: { show_user_name: show_user_name }
+//    render "my/password", locals: { show_user_name: show_user_name }
 //  }
 
   //
   // Redirect if the user cannot change its password
 //   void redirect_if_password_change_not_allowed(user) {
 //    if ( user and not user.change_password_allowed?) {
-//      logger.warn "Password change for user '#{user}' forced, but user is not allowed " +
-//                    'to change password'
+//      logger.warn "Password change for user "#{user}" forced, but user is not allowed " +
+//                    "to change password"
 //      flash[:error] = l(:notice_can_t_change_password)
-//      redirect_to action: 'login'
+//      redirect_to action: "login"
 //      return true
 //    }
 //    false
@@ -79,7 +79,7 @@ namespace Concerns::UserPasswordChange {
    void flash_error_message(std::string log_reason = std::string(""), bool flash_now = true) {
 //    flash_hash = flash_now ? flash.now : flash
 
-//    logger.warn "Failed login for '#{params[:username]}' from #{request.remote_ip}" \
+//    logger.warn "Failed login for "#{params[:username]}" from #{request.remote_ip}" \
 //                " at #{Time.now.utc}: #{log_reason}"
 
 //    flash_message = yield

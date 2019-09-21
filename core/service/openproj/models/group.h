@@ -65,7 +65,7 @@ class Group : public Principal {
 //   void user_removed(user) {
 //    member_roles = MemberRole
 //                   .includes(member: :member_roles)
-//                   .where(inherited_from: members.joins(:member_roles).select('member_roles.id'))
+//                   .where(inherited_from: members.joins(:member_roles).select("member_roles.id"))
 //                   .where(members: { user_id: user.id })
 
 //    project_ids = member_roles.map { |mr| mr.member.project_id }
@@ -99,7 +99,7 @@ class Group : public Principal {
   }
 
    void uniqueness_of_groupname() {
-//    groups_with_name = Group.where('lastname = ? AND id <> ?', groupname, id ? id : 0).count
+//    groups_with_name = Group.where("lastname = ? AND id <> ?", groupname, id ? id : 0).count
 //    if ( groups_with_name > 0) {
 //      errors.add :groupname, :taken
 //    }

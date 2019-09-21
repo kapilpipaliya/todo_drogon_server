@@ -27,7 +27,7 @@ class Project : public ActiveRecord::Base {
 //  // has_many :members, -> {
 //    includes(:principal, :roles)
 //      .where(
-//        "#{Principal.table_name}.type='User' AND (
+//        "#{Principal.table_name}.type="User" AND (
 //          #{User.table_name}.status=#{Principal::STATUSES[:active]} OR
 //          #{User.table_name}.status=#{Principal::STATUSES[:invited]}
 //        )"
@@ -39,7 +39,7 @@ class Project : public ActiveRecord::Base {
 //    includes(:principal, :roles)
 //      .where(Project.possible_principles_condition)
 //      .references(:principals, :roles)
-//  }, class_name: 'Member'
+//  }, class_name: "Member"
 //  // Read only
 //  // has_many :possible_assignees,
 //           ->(object) {
@@ -60,7 +60,7 @@ class Project : public ActiveRecord::Base {
 //    includes(:principal, :roles)
 //      .where(Project.possible_principles_condition)
 //      .references(:principals, :roles)
-//  }, class_name: 'Member'
+//  }, class_name: "Member"
 //  // Read only
 //  // has_many :possible_responsibles,
 //           ->(object) {
@@ -77,18 +77,18 @@ class Project : public ActiveRecord::Base {
 //           },
 //           through: :possible_responsible_members,
 //           source: :principal
-//  // has_many :memberships, class_name: 'Member'
+//  // has_many :memberships, class_name: "Member"
 //  // has_many :member_principals,
 //           -> {
 //             includes(:principal)
 //               .references(:principals)
-//               .where("#{Principal.table_name}.type='Group' OR " +
-//               "(#{Principal.table_name}.type='User' AND " +
+//               .where("#{Principal.table_name}.type="Group" OR " +
+//               "(#{Principal.table_name}.type="User" AND " +
 //               "(#{Principal.table_name}.status=#{Principal::STATUSES[:active]} OR " +
 //               "#{Principal.table_name}.status=#{Principal::STATUSES[:registered]} OR " +
 //               "#{Principal.table_name}.status=#{Principal::STATUSES[:invited]}))")
 //           },
-//           class_name: 'Member'
+//           class_name: "Member"
 //  // has_many :users, through: :members, source: :principal
 //  // has_many :principals, through: :member_principals, source: :principal
 
@@ -108,23 +108,23 @@ class Project : public ActiveRecord::Base {
   // has_many :queries, dependent: :delete_all
   // has_many :news, -> { includes(:author) }, dependent: :destroy
   // has_many :categories, -> { order("#{Category.table_name}.name") }, dependent: :delete_all
-  // has_many :forums, -> { order('position ASC') }, dependent: :destroy
+  // has_many :forums, -> { order("position ASC") }, dependent: :destroy
   // has_one :repository, dependent: :destroy
   // has_many :changesets, through: :repository
   // has_one :wiki, dependent: :destroy
-  // Custom field for the project's work_packages
+  // Custom field for the project"s work_packages
 //  has_and_belongs_to_many :work_package_custom_fields, -> {
 //    order("#{CustomField.table_name}.position")
-//  }, class_name: 'WorkPackageCustomField',
+//  }, class_name: "WorkPackageCustomField",
 //     join_table: "#{table_name_prefix}custom_fields_projects#{table_name_suffix}",
-//     association_foreign_key: 'custom_field_id'
+//     association_foreign_key: "custom_field_id"
 
 //  acts_as_nested_set order_column: :name, dependent: :destroy
 
 //  acts_as_customizable
-//  acts_as_searchable columns: ["#{table_name}.name", "#{table_name}.identifier", "#{table_name}.description"], project_key: 'id', permission: nil
+//  acts_as_searchable columns: ["#{table_name}.name", "#{table_name}.identifier", "#{table_name}.description"], project_key: "id", permission: nil
 //  acts_as_event title: Proc.new { |o| "#{Project.model_name.human}: #{o.name}" },
-//                url: Proc.new { |o| { controller: '/projects', action: 'show', id: o } },
+//                url: Proc.new { |o| { controller: "/projects", action: "show", id: o } },
 //                author: nil,
 //                datetime: :created_on
 
@@ -182,16 +182,16 @@ class Project : public ActiveRecord::Base {
 //    super
 
 //    initialized = (attributes || {}).stringify_keys
-//    if ( !initialized.key?('identifier') && Setting.sequential_project_identifiers?) {
+//    if ( !initialized.key?("identifier") && Setting.sequential_project_identifiers?) {
 //      this->identifier = Project.next_identifier
 //    }
-//    if ( !initialized.key?('is_public')) {
+//    if ( !initialized.key?("is_public")) {
 //      this->is_public = Setting.default_projects_public?
 //    }
-//    if ( !initialized.key?('enabled_module_names')) {
+//    if ( !initialized.key?("enabled_module_names")) {
 //      this->enabled_module_names = Setting.default_projects_modules
 //    }
-//    if ( !initialized.key?('types') && !initialized.key?('type_ids')) {
+//    if ( !initialized.key?("types") && !initialized.key?("type_ids")) {
 //      this->types = ::Type.default
 //    }
 //  }
@@ -217,7 +217,7 @@ class Project : public ActiveRecord::Base {
 //  // Employs the :view_project permission to perform the
 //  // authorization check as the permissino is public, meaning it is granted
 //  // to everybody having at least one role in a project regardless of the
-//  // role's permissions.
+//  // role"s permissions.
 //   void visible_by(user = User.current) {
 //    allowed_to(user, :view_project)
 //  }
@@ -248,7 +248,7 @@ class Project : public ActiveRecord::Base {
 //  // This will raise a ActiveRecord::Rollback if ( the TimeEntryActivity) {
 //  // does not successfully save.
 //   void update_or_create_time_entry_activity(id, activity_hash) {
-//    if ( activity_hash.respond_to?(:has_key?) && activity_hash.has_key?('parent_id')) {
+//    if ( activity_hash.respond_to?(:has_key?) && activity_hash.has_key?("parent_id")) {
 //      create_time_entry_activity_if_needed(activity_hash)
 //    else
 //      activity = project.time_entry_activities.find_by(id: id.to_i)
@@ -261,19 +261,19 @@ class Project : public ActiveRecord::Base {
 //  // This will raise a ActiveRecord::Rollback if ( the TimeEntryActivity) {
 //  // does not successfully save.
 //   void create_time_entry_activity_if_needed(activity) {
-//    if ( activity['parent_id']) {
+//    if ( activity["parent_id"]) {
 
-//      parent_activity = TimeEntryActivity.find(activity['parent_id'])
-//      activity['name'] = parent_activity.name
-//      activity['position'] = parent_activity.position
+//      parent_activity = TimeEntryActivity.find(activity["parent_id"])
+//      activity["name"] = parent_activity.name
+//      activity["position"] = parent_activity.position
 
 //      if ( Enumeration.overridding_change?(activity, parent_activity)) {
 //        project_activity = time_entry_activities.create(activity)
 
 //        if ( project_activity.new_record?) {
-//          raise ActiveRecord::Rollback, 'Overridding TimeEntryActivity was not successfully saved'
+//          raise ActiveRecord::Rollback, "Overridding TimeEntryActivity was not successfully saved"
 //        else
-//          time_entries.where(['activity_id = ?', parent_activity.id])
+//          time_entries.where(["activity_id = ?", parent_activity.id])
 //            .update_all("activity_id = #{project_activity.id}")
 //        }
 //      }
@@ -358,7 +358,7 @@ class Project : public ActiveRecord::Base {
 //      // Nothing to {
 //      true
 //    } else if ( p.nil? || (p.active? && move_possible?(p))) {
-//      // Insert the project so that target's children or root projects stay alphabetically sorted
+//      // Insert the project so that target"s children or root projects stay alphabetically sorted
 //      sibs = (p.nil? ? this->class.roots : p.children)
 //      to_be_inserted_before = sibs.detect { |c| c.name.to_s.downcase > name.to_s.downcase }
 //      if ( to_be_inserted_before) {
@@ -402,7 +402,7 @@ class Project : public ActiveRecord::Base {
 //    Version.transaction {
 //      versions.where(status: %w(open locked)).each { |version|
 //        if ( version.completed?) {
-//          version.update_attribute(:status, 'closed')
+//          version.update_attribute(:status, "closed")
 //        }
 //      }
 //    }
@@ -424,11 +424,11 @@ class Project : public ActiveRecord::Base {
 //      Version.includes(:project)
 //      .where("#{Project.table_name}.id = #{id}" +
 //                                    " OR (#{Project.table_name}.status = #{Project::STATUS_ACTIVE} AND (" +
-//                                          " #{Version.table_name}.sharing = 'system'" +
-//                                          " OR (#{Project.table_name}.lft >= #{r.lft} AND #{Project.table_name}.rgt <= #{r.rgt} AND #{Version.table_name}.sharing = 'tree')" +
-//                                          " OR (#{Project.table_name}.lft < #{lft} AND #{Project.table_name}.rgt > #{rgt} AND #{Version.table_name}.sharing IN ('hierarchy', 'descendants'))" +
-//                                          " OR (#{Project.table_name}.lft > #{lft} AND #{Project.table_name}.rgt < #{rgt} AND #{Version.table_name}.sharing = 'hierarchy')" +
-//                                          '))')
+//                                          " #{Version.table_name}.sharing = "system"" +
+//                                          " OR (#{Project.table_name}.lft >= #{r.lft} AND #{Project.table_name}.rgt <= #{r.rgt} AND #{Version.table_name}.sharing = "tree")" +
+//                                          " OR (#{Project.table_name}.lft < #{lft} AND #{Project.table_name}.rgt > #{rgt} AND #{Version.table_name}.sharing IN ("hierarchy", "descendants"))" +
+//                                          " OR (#{Project.table_name}.lft > #{lft} AND #{Project.table_name}.rgt < #{rgt} AND #{Version.table_name}.sharing = "hierarchy")" +
+//                                          "))")
 //      .references(:projects)
 //    }
 //  }
@@ -436,12 +436,12 @@ class Project : public ActiveRecord::Base {
 //  // Returns all versions a work package can be assigned to.  Opposed to
 //  // #shared_versions this returns an array of Versions, not a scope.
 //  //
-//  // The main benefit is in scenarios where work packages' projects are eager
+//  // The main benefit is in scenarios where work packages" projects are eager
 //  // loaded.  Because eager loading the project e.g. via
 //  // WorkPackage.includes(:project).where(type: 5) will assign the same instance
 //  // (same object_id) for every work package having the same project this will
 //  // reduce the number of db queries when performing operations including the
-//  // project's versions.
+//  // project"s versions.
 //   void assignable_versions() {
 //    this->all_shared_versions ||= shared_versions.with_status_open.to_a
 //  }
@@ -457,7 +457,7 @@ class Project : public ActiveRecord::Base {
 //    }
 //  }
 
-//  // Deletes all project's members
+//  // Deletes all project"s members
 //   void delete_all_members() {
 //    me = Member.table_name
 //    mr = MemberRole.table_name
@@ -486,7 +486,7 @@ class Project : public ActiveRecord::Base {
 //    notified_members = members.select { |member|
 //      setting = member.principal.mail_notification
 
-//      (setting == 'selected' && member.mail_notification?) || setting == 'all'
+//      (setting == "selected" && member.mail_notification?) || setting == "all"
 //    }
 
 //    notified_members.map(&:principal)
@@ -525,16 +525,16 @@ class Project : public ActiveRecord::Base {
 //  // Returns a short description of the projects (first lines)
 //   void short_description(length = 255) {
 //    unless description.present?
-//      return ''
+//      return ""
 //    }
 
-//    description.gsub(/\A(.{#{length}}[^\n\r]*).*\z/m, '\1...').strip
+//    description.gsub(/\A(.{#{length}}[^\n\r]*).*\z/m, "\1...").strip
 //  }
 
-//  // The earliest start date of a project, based on it's issues and versions
+//  // The earliest start date of a project, based on it"s issues and versions
 //   void start_date() {
 //    [
-//      work_packages.minimum('start_date'),
+//      work_packages.minimum("start_date"),
 //      shared_versions.map(&:effective_date),
 //      shared_versions.map(&:start_date)
 //    ].flatten.compact.min
@@ -543,9 +543,9 @@ class Project : public ActiveRecord::Base {
 //  // The latest finish date of an issue or version
 //   void due_date() {
 //    [
-//      work_packages.maximum('due_date'),
+//      work_packages.maximum("due_date"),
 //      shared_versions.map(&:effective_date),
-//      shared_versions.map { |v| v.fixed_issues.maximum('due_date') }
+//      shared_versions.map { |v| v.fixed_issues.maximum("due_date") }
 //    ].flatten.compact.max
 //  }
 
@@ -554,7 +554,7 @@ class Project : public ActiveRecord::Base {
 //  }
 
 //  // Returns the percent completed for this project, based on the
-//  // progress on it's versions.
+//  // progress on it"s versions.
 //   void completed_percent(options = { include_subprojects: false }) {
 //    if ( options.delete(:include_subprojects)) {
 //      total = self_and_descendants.map(&:completed_percent).sum
@@ -573,7 +573,7 @@ class Project : public ActiveRecord::Base {
 
 //  // Return true if ( this project is allowed to { the specified action.) {
 //  // action can be:
-//  // * a parameter-like Hash (eg. controller: '/projects', action: 'edit')
+//  // * a parameter-like Hash (eg. controller: "/projects", action: "edit")
 //  // * a permission Symbol (eg. :edit_project)
 //   void allows_to?(action) {
 //    if ( action.is_a? Hash) {
@@ -602,7 +602,7 @@ class Project : public ActiveRecord::Base {
 //    enabled_modules.map(&:name)
 //  }
 
-//  // Returns an array of projects that are in this project's hierarchy
+//  // Returns an array of projects that are in this project"s hierarchy
 //  //
 //  // Example: parents, children, siblings
 //   void hierarchy() {
@@ -613,7 +613,7 @@ class Project : public ActiveRecord::Base {
 
 //  // Returns an auto-generated project identifier based on the last identifier used
 //   void next_identifier() {
-//    p = Project.order(Arel.sql('created_on DESC')).first
+//    p = Project.order(Arel.sql("created_on DESC")).first
 //    p.nil? ? nil : p.identifier.to_s.succ
 //  }
 
@@ -729,13 +729,13 @@ class Project : public ActiveRecord::Base {
 //    if ( include_inactive) {
 //      TimeEntryActivity
 //        .shared
-//        .where(['id NOT IN (?)', time_entry_activities.map(&:parent_id)]) +
+//        .where(["id NOT IN (?)", time_entry_activities.map(&:parent_id)]) +
 //        time_entry_activities
 //    else
 //      TimeEntryActivity
 //        .shared
 //        .active
-//        .where(['id NOT IN (?)', time_entry_activities.map(&:parent_id)]) +
+//        .where(["id NOT IN (?)", time_entry_activities.map(&:parent_id)]) +
 //        time_entry_activities.active
 //    }
 //  }
@@ -750,9 +750,9 @@ class Project : public ActiveRecord::Base {
 
 //   void possible_principles_condition() {
 //    condition = if ( Setting.work_package_group_assignment?) {
-//                  ["(#{Principal.table_name}.type=? OR #{Principal.table_name}.type=?)", 'User', 'Group']
+//                  ["(#{Principal.table_name}.type=? OR #{Principal.table_name}.type=?)", "User", "Group"]
 //                else
-//                  ["(#{Principal.table_name}.type=?)", 'User']
+//                  ["(#{Principal.table_name}.type=?)", "User"]
 //                }
 
 //    condition[0] += " AND (#{User.table_name}.status=? OR #{User.table_name}.status=?) AND roles.assignable = ?"

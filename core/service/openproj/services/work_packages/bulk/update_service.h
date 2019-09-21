@@ -38,7 +38,7 @@ namespace WorkPackages {
 
 //          service_call = WorkPackages::UpdateService
 //                         .new(user: user, model: work_package)
-//                         .call(attributes.merge(send_notifications: params[:send_notification] == '1').symbolize_keys)
+//                         .call(attributes.merge(send_notifications: params[:send_notification] == "1").symbolize_keys)
 
 //          if ( service_call.success?) {
 //            saved << work_package.id
@@ -56,7 +56,7 @@ namespace WorkPackages {
 //        safe_params = permitted_params.update_work_package project: project
 //        attributes = safe_params.reject { |_k, v| v.blank? }
 //        attributes.keys.each { |k|
-//          if ( attributes[k] == 'none') { attributes[k] = '' ;}
+//          if ( attributes[k] == "none") { attributes[k] = "" ;}
 //        }
 //        if ( attributes[:custom_field_values]) { attributes[:custom_field_values].reject! { |_k, v| v.blank? } ;}
 //        if ( not attributes.has_key?(:custom_field_values) or attributes[:custom_field_values].empty?) { attributes.delete :custom_field_values ;}

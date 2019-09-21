@@ -7,33 +7,33 @@ class Message : public ActiveRecord::Base {
 
   // belongs_to :forum
   // has_one :project, through: :forum
-  // belongs_to :author, class_name: 'User', foreign_key: 'author_id'
+  // belongs_to :author, class_name: "User", foreign_key: "author_id"
 //  acts_as_tree counter_cache: :replies_count, order: "#{Message.table_name}.created_on ASC"
 //  acts_as_attachable after_add: :attachments_changed,
 //                     after_remove: :attachments_changed,
 //                     add_on_new_permission: :add_messages,
 //                     add_on_persisted_permission: :edit_messages
-//  // belongs_to :last_reply, class_name: 'Message', foreign_key: 'last_reply_id'
+//  // belongs_to :last_reply, class_name: "Message", foreign_key: "last_reply_id"
 
 //  acts_as_journalized
 
 //  acts_as_event title: Proc.new { |o| "#{o.forum.name}: #{o.subject}" },
 //                description: :content,
 //                datetime: :created_on,
-//                type: Proc.new { |o| o.parent_id.nil? ? 'message' : 'reply' },
+//                type: Proc.new { |o| o.parent_id.nil? ? "message" : "reply" },
 //                url: (Proc.new { |o|
 //                        msg = o
 //                        if ( msg.parent_id.nil?) {
 //                          { id: msg.id }
 //                        else
 //                          { id: msg.parent_id, r: msg.id, anchor: "message-#{msg.id}" }
-//                        }.reverse_merge controller: '/messages', action: 'show', forum_id: msg.forum_id
+//                        }.reverse_merge controller: "/messages", action: "show", forum_id: msg.forum_id
 //                      })
 
-//  acts_as_searchable columns: ['subject', 'content'],
+//  acts_as_searchable columns: ["subject", "content"],
 //                     include: { forum: :project },
 //                     references: [:forums],
-//                     project_key: 'project_id',
+//                     project_key: "project_id",
 //                     date_column: "#{table_name}.created_on"
 
 //  acts_as_watchable
@@ -63,7 +63,7 @@ class Message : public ActiveRecord::Base {
 
 //  // Can not reply to a locked topic
 //   void validate_unlocked_root() {
-//    if ( root.locked? && self != root) { errors.add :base, 'Topic is locked' ;}
+//    if ( root.locked? && self != root) { errors.add :base, "Topic is locked" ;}
 //  }
 
 //   void set_sticked_on_date() {
@@ -84,7 +84,7 @@ class Message : public ActiveRecord::Base {
 //  }
 
 //   void sticky=(arg) {
-//    write_attribute :sticky, (arg == true || arg.to_s == '1' ? 1 : 0)
+//    write_attribute :sticky, (arg == true || arg.to_s == "1" ? 1 : 0)
 //  }
 
 //   void sticky?() {
@@ -121,7 +121,7 @@ class Message : public ActiveRecord::Base {
   }
 
    void send_message_posted_mail() {
-//    return unless Setting.notified_events.include?('message_posted')
+//    return unless Setting.notified_events.include?("message_posted")
 
 //    to_mail = recipients +
 //              root.watcher_recipients +

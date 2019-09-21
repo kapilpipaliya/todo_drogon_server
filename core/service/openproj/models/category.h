@@ -4,14 +4,14 @@ namespace openproj {
 namespace models {
 class Category : public ActiveRecord::Base {
   // belongs_to :project
-  // belongs_to :assigned_to, class_name: 'Principal', foreign_key: 'assigned_to_id'
-  // has_many :work_packages, foreign_key: 'category_id', dependent: :nullify
+  // belongs_to :assigned_to, class_name: "Principal", foreign_key: "assigned_to_id"
+  // has_many :work_packages, foreign_key: "category_id", dependent: :nullify
 
   // validates :name,
             // uniqueness: { scope: [:project_id], case_sensitive: true },
             // length: { maximum: 255 }
 
-  // validates that assignee is member of the issue category's project
+  // validates that assignee is member of the issue category"s project
   // validates_each :assigned_to_id { |record, attr, value|
   //   if ( value // allow nil) {
   //     record.errors.add(attr, l(:error_must_be_project_member)) unless record.project.principals.map(&:id).include? value

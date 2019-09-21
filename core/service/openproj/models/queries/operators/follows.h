@@ -4,7 +4,7 @@ namespace openproj {
 namespace models {
 namespace Queries::Operators {
   class Follows : public Base {
-//    label 'follows'
+//    label "follows"
 //    set_symbol ::Relation::TYPE_FOLLOWS
   };
 }

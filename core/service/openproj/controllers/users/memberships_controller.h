@@ -6,7 +6,7 @@ namespace Users {
 
 class MembershipsController : public ApplicationController {
 public:
-  // layout 'admin'
+  // layout "admin"
 
   // before_action :require_admin
   // before_action :find_user
@@ -27,7 +27,7 @@ public:
 //      flash[:notice] = I18n.t(:notice_successful_delete)
 //    }
 
-//    redirect_to controller: '/users', action: 'edit', id: this->user, tab: 'memberships'
+//    redirect_to controller: "/users", action: "edit", id: this->user, tab: "memberships"
   }
 
   private:
@@ -42,7 +42,7 @@ public:
 //    else
 //      flash[:error] = result.errors.full_messages.join("\n")
 //    }
-//    redirect_to controller: '/users', action: 'edit', id: this->user, tab: 'memberships'
+//    redirect_to controller: "/users", action: "edit", id: this->user, tab: "memberships"
 //  }
 
    void find_user() {

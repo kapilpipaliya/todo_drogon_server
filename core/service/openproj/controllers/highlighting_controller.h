@@ -13,8 +13,8 @@ public:
 
 //    expires_in 1.year, public: true, must_revalidate: false
 //    if ( stale?(last_modified: Time.zone.parse(this->max_updated_at), etag: this->highlight_version_tag, public: true)) {
-//      OpenProject::Cache.fetch('highlighting/styles', this->highlight_version_tag) {
-//        render template: 'highlighting/styles', formats: [:css]
+//      OpenProject::Cache.fetch("highlighting/styles", this->highlight_version_tag) {
+//        render template: "highlighting/styles", formats: [:css]
 //      }
 //    }
   }

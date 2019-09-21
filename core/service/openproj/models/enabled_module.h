@@ -16,12 +16,12 @@ class EnabledModule : public ActiveRecord::Base {
   // after_create callback used to do things when a namespace is enabled
    void module_enabled() {
 //    case name
-//    when 'wiki'
+//    when "wiki"
 //      // Create a wiki with a default start page
 //      if ( project && project.wiki.nil?) {
-//        Wiki.create(project: project, start_page: 'Wiki')
+//        Wiki.create(project: project, start_page: "Wiki")
 //      }
-//    when 'repository'
+//    when "repository"
 //      if ( project &&) {
 //         project.repository.nil? &&
 //         Setting.repositories_automatic_managed_vendor.present?

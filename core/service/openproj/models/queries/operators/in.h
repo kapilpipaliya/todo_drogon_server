@@ -4,8 +4,8 @@ namespace openproj {
 namespace models {
 namespace Queries::Operators {
   class In : public Base {
-//    label 'in'
-//    set_symbol 't+'
+//    label "in"
+//    set_symbol "t+"
 
     // extend DateRangeClauses
 

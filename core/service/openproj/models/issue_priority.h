@@ -3,7 +3,7 @@
 namespace openproj {
 namespace models {
 class IssuePriority : public Enumeration {
-  // has_many :work_packages, foreign_key: 'priority_id'
+  // has_many :work_packages, foreign_key: "priority_id"
   // belongs_to :color
 
 //  OptionName = :enumeration_work_package_priorities
@@ -13,7 +13,7 @@ class IssuePriority : public Enumeration {
 //  }
 
    void color_label() {
-//    I18n.t('prioritiies.edit.priority_color_text')
+//    I18n.t("prioritiies.edit.priority_color_text")
   }
 
    void option_name() {

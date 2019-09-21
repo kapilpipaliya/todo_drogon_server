@@ -32,7 +32,7 @@ namespace service {
 //  }
 
 //   void set_notified_project_ids(notified_project_ids) {
-//    if ( user.mail_notification == 'selected') {
+//    if ( user.mail_notification == "selected") {
 //      user.notified_project_ids = notified_project_ids
 //    else
 //      user.notified_project_ids = []

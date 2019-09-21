@@ -8,7 +8,7 @@ namespace DemoData {
      GlobalQuerySeeder() {}
 
      void seed_data() {
-//      print '    ↳ Creating global queries'
+//      LOG_DEBUG << "    ↳ Creating global queries"
 
       seed_global_queries();
 
@@ -18,7 +18,7 @@ namespace DemoData {
     private:
 
      void seed_global_queries() {
-//      Array(demo_data_for('global_queries')).each { |config|
+//      Array(demo_data_for("global_queries")).each { |config|
 //        DemoData::QueryBuilder.new(config, nil).create!
 //      }
     }

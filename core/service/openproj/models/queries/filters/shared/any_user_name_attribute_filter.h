@@ -18,12 +18,12 @@ namespace Queries::Filters::Shared::AnyUserNameAttributeFilter {
 //        <<-SQL
 //    LOWER(
 //      CONCAT(
-//        users.firstname, ' ', users.lastname,
-//        ' ',
-//        users.lastname, ' ', users.firstname,
-//        ' ',
+//        users.firstname, " ", users.lastname,
+//        " ",
+//        users.lastname, " ", users.firstname,
+//        " ",
 //        users.login,
-//        ' ',
+//        " ",
 //        users.mail
 //      )
 //    )

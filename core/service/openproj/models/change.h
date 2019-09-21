@@ -15,17 +15,17 @@ class Change : public ActiveRecord::Base {
   }
 
    void path() {
-    // TODO: shouldn't access Changeset#to_utf8 directly
+    // TODO: shouldn"t access Changeset#to_utf8 directly
 //    this->path = Changeset.to_utf8(read_attribute(:path), changeset_repository_encoding)
   }
 
    void from_path() {
-    // TODO: shouldn't access Changeset#to_utf8 directly
+    // TODO: shouldn"t access Changeset#to_utf8 directly
 //    this->from_path = Changeset.to_utf8(read_attribute(:from_path), changeset_repository_encoding)
   }
 
    void init_path() {
-//    this->path ||= ''
+//    this->path ||= ""
   }
 };
 }

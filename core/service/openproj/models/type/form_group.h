@@ -15,7 +15,7 @@ class FormGroup {
 
   //
   // Translate the given attribute group if ( its internal) {
-  // (== if ( it's a symbol)) {
+  // (== if ( it"s a symbol)) {
 //   void translated_key() {
 //    if ( key.is_a? Symbol) {
 //      I18n.t(Type.default_groups[key])

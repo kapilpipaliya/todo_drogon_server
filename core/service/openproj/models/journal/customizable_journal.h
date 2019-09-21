@@ -4,7 +4,7 @@ namespace openproj {
 namespace models {
 namespace JournalN {
 class CustomizableJournal : public JournalN::BaseJournal {
-//  this->table_name = 'customizable_journals'
+//  this->table_name = "customizable_journals"
 
   // belongs_to :custom_field, foreign_key: :custom_field_id
 };

@@ -4,8 +4,8 @@ namespace openproj {
 namespace models {
 namespace Queries::Operators {
   class Everywhere : public Base {
-//    label 'everywhere'
-//    set_symbol '**'
+//    label "everywhere"
+//    set_symbol "**"
   };
 }
 }

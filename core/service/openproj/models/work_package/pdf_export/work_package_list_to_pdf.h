@@ -18,7 +18,7 @@ class WorkPackageListToPdf : public WorkPackageN::Exporter::Base {
 
 //    this->pdf = get_pdf(current_language)
 
-//    pdf.options[:page_size] = 'EXECUTIVE'
+//    pdf.options[:page_size] = "EXECUTIVE"
 //    pdf.options[:page_layout] = :landscape
 //  }
 
@@ -95,7 +95,7 @@ class WorkPackageListToPdf : public WorkPackageN::Exporter::Base {
 
 //   void text_column?(column) {
 //    column.is_a?(Queries::WorkPackages::Columns::CustomFieldColumn) &&
-//      ['string', 'text'].include?(column.custom_field.field_format)
+//      ["string", "text"].include?(column.custom_field.field_format)
 //  }
 
 //   void data() {
@@ -104,7 +104,7 @@ class WorkPackageListToPdf : public WorkPackageN::Exporter::Base {
 
 //   void data_headers() {
 //    valid_export_columns.map(&:caption).map { |caption|
-//      pdf.make_cell caption, font_style: :bold, background_color: 'CCCCCC'
+//      pdf.make_cell caption, font_style: :bold, background_color: "CCCCCC"
 //    }
 //  }
 
@@ -141,7 +141,7 @@ class WorkPackageListToPdf : public WorkPackageN::Exporter::Base {
 //        result.insert 0, [
 //          pdf.make_cell(label, font_style: :bold,
 //                               colspan: valid_export_columns.size,
-//                               background_color: 'DDDDDD')
+//                               background_color: "DDDDDD")
 //        ]
 //      }
 
@@ -166,7 +166,7 @@ class WorkPackageListToPdf : public WorkPackageN::Exporter::Base {
 //    if ( group.blank?) {
 //      I18n.t(:label_none_parentheses)
 //    } else if ( group.is_a? Array) {
-//      group.join(', ')
+//      group.join(", ")
 //    else
 //      group.to_s
 //    }
@@ -177,7 +177,7 @@ class WorkPackageListToPdf : public WorkPackageN::Exporter::Base {
 //             .custom_values
 //             .select { |v| v.custom_field_id == column.custom_field.id }
 
-//    pdf.make_cell values.map(&:formatted_value).join(', '),
+//    pdf.make_cell values.map(&:formatted_value).join(", "),
 //                  padding: cell_padding
 //  }
 };

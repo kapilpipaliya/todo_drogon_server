@@ -43,7 +43,7 @@ namespace Concerns::UserLimits {
 
   //
   // Ensures that the given user object has an email set.
-  // If it hasn't it takes the value from the params.
+  // If it hasn"t it takes the value from the params.
 //   void user_with_email(user) {
 //    if ( user.mail.blank?) { user.mail = permitted_params.user["mail"] ;}
 //    user

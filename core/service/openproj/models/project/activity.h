@@ -1,5 +1,5 @@
 #pragma once
-//require Rails.root.join('config/constants/project_activity')
+//require Rails.root.join("config/constants/project_activity")
 
 namespace openproj {
 namespace models {
@@ -26,8 +26,8 @@ namespace ProjectN::Activity {
 
 //     void with_latest_activity() {
 //      Project
-//        .select('projects.*')
-//        .select('activity.latest_activity_at')
+//        .select("projects.*")
+//        .select("activity.latest_activity_at")
 //        .joins("LEFT JOIN (#{latest_activity_sql}) activity ON projects.id = activity.project_id")
 //    }
 
@@ -40,7 +40,7 @@ namespace ProjectN::Activity {
 //    }
 
 //     void all_activity_provider_union_sql() {
-//      latest_project_activity.join(' UNION ALL ')
+//      latest_project_activity.join(" UNION ALL ")
 //    }
 
 //     void build_latest_project_activity_for(on:, chain:, attribute:) {
@@ -52,7 +52,7 @@ namespace ProjectN::Activity {
 //      <<-SQL
 //        SELECT project_id, MAX(#{on.table_name}.#{attribute}) updated_at
 //        FROM #{from.table_name}
-//        #{joins.join(' ')}
+//        #{joins.join(" ")}
 //        WHERE #{on.table_name}.#{attribute} IS NOT NULL
 //        GROUP BY project_id
 //      SQL

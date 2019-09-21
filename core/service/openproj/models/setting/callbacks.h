@@ -11,7 +11,7 @@ namespace models {
 
     // instructs the underlying notifications system to publish all setting events for setting #name
     // based on the new and old setting objects different events can be triggered
-    // currently, that's whenever a setting is set regardless whether the value changed
+    // currently, that"s whenever a setting is set regardless whether the value changed
 //     void fire_callbacks(name, new_value, old_value) {
 //      notifier.send(notification_event_for(name), value: new_value, old_value: old_value)
 //    }

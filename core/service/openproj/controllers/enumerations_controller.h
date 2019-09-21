@@ -4,7 +4,7 @@ namespace openproj {
 namespace controller {
 class EnumerationsController : public ApplicationController {
 public:
-  // layout 'admin'
+  // layout "admin"
 
   // before_action :require_admin
   // before_action :find_enumeration, only: [:edit, :update, :destroy]
@@ -33,9 +33,9 @@ public:
 
 //    if ( this->enumeration.save) {
 //      flash[:notice] = l(:notice_successful_create)
-//      redirect_to action: 'index', type: this->enumeration.type
+//      redirect_to action: "index", type: this->enumeration.type
 //    else
-//      render action: 'new'
+//      render action: "new"
 //    }
   }
 
@@ -47,7 +47,7 @@ public:
 //      flash[:notice] = l(:notice_successful_update)
 //      redirect_to enumerations_path(type: this->enumeration.type)
 //    else
-//      render action: 'edit'
+//      render action: "edit"
 //    }
   }
 
@@ -55,12 +55,12 @@ public:
 //    if ( !this->enumeration.in_use?) {
 //      // No associated objects
 //      this->enumeration.destroy
-//      redirect_to action: 'index'
+//      redirect_to action: "index"
 //      return
 //    } else if ( params[:reassign_to_id]) {
 //      if ( reassign_to = this->enumeration.class.find_by(id: params[:reassign_to_id])) {
 //        this->enumeration.destroy(reassign_to)
-//        redirect_to action: 'index'
+//        redirect_to action: "index"
 //        return
 //      }
 //    }
@@ -70,7 +70,7 @@ public:
   protected:
 
    void default_breadcrumb() {
-//    if ( action_name == 'index') {
+//    if ( action_name == "index") {
 //      t(:label_enumerations)
 //    else
 //      ActionController::Base.helpers.link_to(t(:label_enumerations), enumerations_path)

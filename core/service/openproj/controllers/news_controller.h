@@ -52,9 +52,9 @@ public:
 //    this->news.attributes = permitted_params.news
 //    if ( this->news.save) {
 //      flash[:notice] = l(:notice_successful_create)
-//      redirect_to controller: '/news', action: 'index', project_id: this->project
+//      redirect_to controller: "/news", action: "index", project_id: this->project
 //    else
-//      render action: 'new'
+//      render action: "new"
 //    }
   }
 
@@ -64,16 +64,16 @@ public:
 //    this->news.attributes = permitted_params.news
 //    if ( this->news.save) {
 //      flash[:notice] = l(:notice_successful_update)
-//      redirect_to action: 'show', id: this->news
+//      redirect_to action: "show", id: this->news
 //    else
-//      render action: 'edit'
+//      render action: "edit"
 //    }
   }
 
    void destroy() {
 //    this->news.destroy
 //    flash[:notice] = l(:notice_successful_delete)
-//    redirect_to action: 'index', project_id: this->project
+//    redirect_to action: "index", project_id: this->project
   }
 
   private:

@@ -75,7 +75,7 @@ public:
 //  }
 
 //   void normalize_whitespace(string) {
-//    string.gsub(/\s/, ' ').squeeze(' ')
+//    string.gsub(/\s/, " ").squeeze(" ")
 //  }
 
 //   void set_custom_attributes(attributes) {

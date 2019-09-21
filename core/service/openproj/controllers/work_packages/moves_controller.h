@@ -68,7 +68,7 @@ public:
 //      flash[:error] = l(:notice_failed_to_save_work_packages,
 //                        count: unsaved_work_package_ids.size,
 //                        total: work_packages.size,
-//                        ids: '#' + unsaved_work_package_ids.join(', #'))
+//                        ids: "#" + unsaved_work_package_ids.join(", #"))
 //    }
 //  }
 
@@ -98,7 +98,7 @@ public:
    void check_project_uniqueness() {
 //    unless this->project
 //      // TODO: let users bulk move/copy work packages from different projects
-//      render_error message: :'work_packages.move.unsupported_for_multiple_projects', status: 400
+//      render_error message: :"work_packages.move.unsupported_for_multiple_projects", status: 400
 //      return false
 //    }
   }
@@ -112,7 +112,7 @@ public:
 //    this->types = this->target_project.types
 //    this->available_statuses = Workflow.available_statuses(this->project)
 //    this->notes = params[:notes]
-//    this->notes ||= ''
+//    this->notes ||= ""
 
 //    // When copying, avoid copying elements when any of their ancestors
 //    // are in the set to be copied

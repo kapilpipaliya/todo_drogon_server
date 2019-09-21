@@ -8,7 +8,7 @@ namespace Orders {
 class CustomFieldOrder : public openproj::models::Queries::BaseOrder {
 //  this->model = Project.all
 
-  // validates :custom_field, presence: { message: I18n.t(:'activerecord.errors.messages.does_not_exist') }
+  // validates :custom_field, presence: { message: I18n.t(:"activerecord.errors.messages.does_not_exist") }
 
    void key() {
 //    /cf_(\d+)/
@@ -31,7 +31,7 @@ class CustomFieldOrder : public openproj::models::Queries::BaseOrder {
    void order() {
 //    joined_statement = custom_field.order_statements.map { |statement|
 //      "#{statement} #{direction}"
-//    }.join(', ')
+//    }.join(", ")
 
 //    model.order(joined_statement)
   }

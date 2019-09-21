@@ -6,7 +6,7 @@ class Relation : public ActiveRecord::Base {
   // include Concerns::VirtualAttribute
 
   // scope :of_work_package,
-//        ->(work_package) { where('from_id = ? OR to_id = ?', work_package, work_package) }
+//        ->(work_package) { where("from_id = ? OR to_id = ?", work_package, work_package) }
 
 //  virtual_attribute :relation_type {
 //    types = ((TYPES.keys + [TYPE_HIERARCHY]) & Relation.column_names).select { |name|
@@ -23,19 +23,19 @@ class Relation : public ActiveRecord::Base {
 //    }
 //  }
 
-//  TYPE_RELATES      = 'relates'.freeze
-//  TYPE_DUPLICATES   = 'duplicates'.freeze
-//  TYPE_DUPLICATED   = 'duplicated'.freeze
-//  TYPE_BLOCKS       = 'blocks'.freeze
-//  TYPE_BLOCKED      = 'blocked'.freeze
-//  TYPE_PRECEDES     = 'precedes'.freeze
-//  TYPE_FOLLOWS      = 'follows'.freeze
-//  TYPE_INCLUDES     = 'includes'.freeze
-//  TYPE_PARTOF       = 'partof'.freeze
-//  TYPE_REQUIRES     = 'requires'.freeze
-//  TYPE_REQUIRED     = 'required'.freeze
-//  TYPE_HIERARCHY    = 'hierarchy'.freeze
-//  TYPE_MIXED        = 'mixed'.freeze
+//  TYPE_RELATES      = "relates".freeze
+//  TYPE_DUPLICATES   = "duplicates".freeze
+//  TYPE_DUPLICATED   = "duplicated".freeze
+//  TYPE_BLOCKS       = "blocks".freeze
+//  TYPE_BLOCKED      = "blocked".freeze
+//  TYPE_PRECEDES     = "precedes".freeze
+//  TYPE_FOLLOWS      = "follows".freeze
+//  TYPE_INCLUDES     = "includes".freeze
+//  TYPE_PARTOF       = "partof".freeze
+//  TYPE_REQUIRES     = "requires".freeze
+//  TYPE_REQUIRED     = "required".freeze
+//  TYPE_HIERARCHY    = "hierarchy".freeze
+//  TYPE_MIXED        = "mixed".freeze
 
 //  TYPES = {
 //    TYPE_RELATES => {
@@ -158,7 +158,7 @@ class Relation : public ActiveRecord::Base {
 //    joins("LEFT OUTER JOIN relations r2
 //          ON relations.to_id = r2.to_id
 //          AND relations.hierarchy < r2.hierarchy")
-//      .where('r2.id IS NULL')
+//      .where("r2.id IS NULL")
 //      .where(to_id: work_package.id)
 //      .hierarchy_or_reflexive
 //  }
@@ -211,9 +211,9 @@ class Relation : public ActiveRecord::Base {
 //    TYPES[relation_type][:order] <=> TYPES[other.relation_type][:order]
 //  }
 
-//  // delay is an attribute of Relation but its getter is masked by delayed_job's #delay method
-//  // here we overwrite dj's delay method with the one reading the attribute
-//  // since we don't plan to use dj with Relation objects, this should be fine
+//  // delay is an attribute of Relation but its getter is masked by delayed_job"s #delay method
+//  // here we overwrite dj"s delay method with the one reading the attribute
+//  // since we don"t plan to use dj with Relation objects, this should be fine
 //   void delay() {
 //    self[:delay]
 //  }

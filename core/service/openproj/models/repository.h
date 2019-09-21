@@ -62,7 +62,7 @@ class Repository : public ActiveRecord::Base {
 //      project.identifier
 //    )
 
-//    // override the adapter's root url with the full url
+//    // override the adapter"s root url with the full url
 //    // if ( none other was set.) {
 //    unless this->scm.root_url.present?
 //      this->scm.root_url = root_url.presence || url
@@ -159,8 +159,8 @@ class Repository : public ActiveRecord::Base {
 //    scm.diff(path, rev, rev_to)
 //  }
 
-//   void diff_format_revisions(cs, cs_to, sep = ':') {
-//    text = ''
+//   void diff_format_revisions(cs, cs_to, sep = ":") {
+//    text = ""
 //    if ( cs_to) { text << cs_to.format_identifier + sep ;}
 //    if ( cs) { text << cs.format_identifier ;}
 //    text
@@ -192,7 +192,7 @@ class Repository : public ActiveRecord::Base {
 //   void find_changeset_by_name(name) {
 //    name = name.to_s
 //    if ( name.blank?) { return nil ;}
-//    changesets.where((name.match(/\A\d*\z/) ? ['revision = ?', name] : ['revision LIKE ?', name + '%'])).first
+//    changesets.where((name.match(/\A\d*\z/) ? ["revision = ?", name] : ["revision LIKE ?", name + "%"])).first
 //  }
 
 //   void latest_changeset() {
@@ -208,7 +208,7 @@ class Repository : public ActiveRecord::Base {
 //        .limit(limit)
 //    else
 //      changesets.includes(changeset: :user)
-//        .where(['path = ?', path.with_leading_slash])
+//        .where(["path = ?", path.with_leading_slash])
 //        .order("#{Changeset.table_name}.committed_on DESC, #{Changeset.table_name}.id DESC")
 //        .limit(limit)
 //        .map(&:changeset)
@@ -231,8 +231,8 @@ class Repository : public ActiveRecord::Base {
 //        new_user_id = h[committer]
 //        if ( new_user_id && (new_user_id.to_i != user_id.to_i)) {
 //          new_user_id = (new_user_id.to_i > 0 ? new_user_id.to_i : nil)
-//          Changeset.where(['repository_id = ? AND committer = ?', id, committer])
-//            .update_all("user_id = #{new_user_id.nil? ? 'NULL' : new_user_id}")
+//          Changeset.where(["repository_id = ? AND committer = ?", id, committer])
+//            .update_all("user_id = #{new_user_id.nil? ? "NULL" : new_user_id}")
 //        }
 //      }
 //      this->committers = nil
@@ -269,7 +269,7 @@ class Repository : public ActiveRecord::Base {
 
 //   void repo_log_encoding() {
 //    encoding = log_encoding.to_s.strip
-//    encoding.blank? ? 'UTF-8' : encoding
+//    encoding.blank? ? "UTF-8" : encoding
 //  }
 
   // Fetches new changesets for all repositories of active projects
@@ -310,7 +310,7 @@ class Repository : public ActiveRecord::Base {
 //   void build(project, vendor, params, type) {
 //    klass = build_scm_class(vendor)
 
-//    // We can't possibly know the form fields this particular vendor
+//    // We can"t possibly know the form fields this particular vendor
 //    // desires, so we allow it to filter them from raw params
 //    // before building the instance with it.
 //    args = klass.permitted_params(params)
@@ -334,7 +334,7 @@ class Repository : public ActiveRecord::Base {
 
 //    if ( klass.nil?) {
 //      raise OpenProject::Scm::Exceptions::RepositoryBuildError.new(
-//        I18n.t('repositories.errors.disabled_or_unknown_vendor', vendor: vendor)
+//        I18n.t("repositories.errors.disabled_or_unknown_vendor", vendor: vendor)
 //      )
 //    else
 //      klass
@@ -348,7 +348,7 @@ class Repository : public ActiveRecord::Base {
 //      repository.scm_type = type
 //    else
 //      raise OpenProject::Scm::Exceptions::RepositoryBuildError.new(
-//        I18n.t('repositories.errors.disabled_or_unknown_type',
+//        I18n.t("repositories.errors.disabled_or_unknown_type",
 //               type: type,
 //               vendor: repository.vendor)
 //      )

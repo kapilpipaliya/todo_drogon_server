@@ -69,8 +69,8 @@ public:
 //    filters.each { |filter|
 //      attribute = filter.keys.first // there should only be one attribute per filter
 //      ar_attribute = convert_attribute attribute, append_id: true
-//      operators[ar_attribute] = filter[attribute]['operator']
-//      values[ar_attribute] = filter[attribute]['values']
+//      operators[ar_attribute] = filter[attribute]["operator"]
+//      values[ar_attribute] = filter[attribute]["values"]
 //    }
 
 //    {

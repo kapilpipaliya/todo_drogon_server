@@ -5,12 +5,12 @@ namespace mailer {
 class UserMailer : public BaseMailer {
 public:
 //   void test_mail(user) {
-//    this->welcome_url = url_for(controller: '/homescreen')
+//    this->welcome_url = url_for(controller: "/homescreen")
 
-//    headers['X-OpenProject-Type'] = 'Test'
+//    headers["X-OpenProject-Type"] = "Test"
 
 //    with_locale_for(user) {
-//      mail to: "\"#{user.name}\" <#{user.mail}>", subject: 'OpenProject Test'
+//      mail to: "\"#{user.name}\" <#{user.mail}>", subject: "OpenProject Test"
 //    }
 //  }
 
@@ -65,14 +65,14 @@ public:
 //  }
 
 //   void password_lost(token) {
-//    return unless token.user // token's can have no user
+//    return unless token.user // token"s can have no user
 
 //    this->token = token
-//    this->reset_password_url = url_for(controller: '/account',
+//    this->reset_password_url = url_for(controller: "/account",
 //                                  action:     :lost_password,
 //                                  token:      this->token.value)
 
-//    open_project_headers 'Type' => 'Account'
+//    open_project_headers "Type" => "Account"
 
 //    user = this->token.user
 //    with_locale_for(user) {
@@ -86,13 +86,13 @@ public:
 //    this->target_project_name = target_project_name
 //    this->errors = errors
 
-//    open_project_headers 'Source-Project' => source_project.identifier,
-//                         'Author'         => user.login
+//    open_project_headers "Source-Project" => source_project.identifier,
+//                         "Author"         => user.login
 
 //    message_id source_project, user
 
 //    with_locale_for(user) {
-//      subject = I18n.t('copy_project.failed', source_project_name: source_project.name)
+//      subject = I18n.t("copy_project.failed", source_project_name: source_project.name)
 
 //      mail to: user.mail, subject: subject
 //    }
@@ -103,14 +103,14 @@ public:
 //    this->target_project = target_project
 //    this->errors = errors
 
-//    open_project_headers 'Source-Project' => source_project.identifier,
-//                         'Target-Project' => target_project.identifier,
-//                         'Author'         => user.login
+//    open_project_headers "Source-Project" => source_project.identifier,
+//                         "Target-Project" => target_project.identifier,
+//                         "Author"         => user.login
 
 //    message_id target_project, user
 
 //    with_locale_for(user) {
-//      subject = I18n.t('copy_project.succeeded', target_project_name: target_project.name)
+//      subject = I18n.t("copy_project.succeeded", target_project_name: target_project.name)
 
 //      mail to: user.mail, subject: subject
 //    }
@@ -119,8 +119,8 @@ public:
 //   void news_added(user, news, author) {
 //    this->news = news
 
-//    open_project_headers 'Type'    => 'News'
-//    if ( this->news.project) { open_project_headers 'Project' => this->news.project.identifier ;}
+//    open_project_headers "Type"    => "News"
+//    if ( this->news.project) { open_project_headers "Project" => this->news.project.identifier ;}
 
 //    message_id this->news, user
 
@@ -135,11 +135,11 @@ public:
 //    return unless token.user
 
 //    this->token = token
-//    this->activation_url = url_for(controller: '/account',
+//    this->activation_url = url_for(controller: "/account",
 //                              action:     :activate,
 //                              token:      this->token.value)
 
-//    open_project_headers 'Type' => 'Account'
+//    open_project_headers "Type" => "Account"
 
 //    user = token.user
 //    with_locale_for(user) {
@@ -152,7 +152,7 @@ public:
 //    this->comment = comment
 //    this->news    = this->comment.commented
 
-//    if ( this->news.project) { open_project_headers 'Project' => this->news.project.identifier ;}
+//    if ( this->news.project) { open_project_headers "Project" => this->news.project.identifier ;}
 
 //    message_id this->comment, user
 //    references this->news, user
@@ -167,9 +167,9 @@ public:
 //   void wiki_content_added(user, wiki_content, author) {
 //    this->wiki_content = wiki_content
 
-//    open_project_headers 'Project'      => this->wiki_content.project.identifier,
-//                         'Wiki-Page-Id' => this->wiki_content.page.id,
-//                         'Type'         => 'Wiki'
+//    open_project_headers "Project"      => this->wiki_content.project.identifier,
+//                         "Wiki-Page-Id" => this->wiki_content.page.id,
+//                         "Type"         => "Wiki"
 
 //    message_id this->wiki_content, user
 
@@ -181,16 +181,16 @@ public:
 
 //   void wiki_content_updated(user, wiki_content, author) {
 //    this->wiki_content  = wiki_content
-//    this->wiki_diff_url = url_for(controller: '/wiki',
+//    this->wiki_diff_url = url_for(controller: "/wiki",
 //                             action:     :diff,
 //                             project_id: wiki_content.project,
 //                             id:         wiki_content.page.slug,
 //                             // using wiki_content.version + 1 because at this point the journal is not saved yet
 //                             version:    wiki_content.version + 1)
 
-//    open_project_headers 'Project'      => this->wiki_content.project.identifier,
-//                         'Wiki-Page-Id' => this->wiki_content.page.id,
-//                         'Type'         => 'Wiki'
+//    open_project_headers "Project"      => this->wiki_content.project.identifier,
+//                         "Wiki-Page-Id" => this->wiki_content.page.id,
+//                         "Type"         => "Wiki"
 
 //    message_id this->wiki_content, user
 
@@ -204,9 +204,9 @@ public:
 //    this->message     = message
 //    this->message_url = topic_url(this->message.root, r: this->message.id, anchor: "message-#{this->message.id}")
 
-//    open_project_headers 'Project'      => this->message.project.identifier,
-//                         'Wiki-Page-Id' => this->message.parent_id || this->message.id,
-//                         'Type'         => 'Forum'
+//    open_project_headers "Project"      => this->message.project.identifier,
+//                         "Wiki-Page-Id" => this->message.parent_id || this->message.id,
+//                         "Type"         => "Forum"
 
 //    message_id this->message, user
 //    if ( this->message.parent) { references this->message.parent, user ;}
@@ -220,7 +220,7 @@ public:
 //   void account_activated(user) {
 //    this->user = user
 
-//    open_project_headers 'Type' => 'Account'
+//    open_project_headers "Type" => "Account"
 
 //    with_locale_for(user) {
 //      subject = t(:mail_subject_register, value: Setting.app_title)
@@ -232,7 +232,7 @@ public:
 //    this->user     = user
 //    this->password = password
 
-//    open_project_headers 'Type' => 'Account'
+//    open_project_headers "Type" => "Account"
 
 //    with_locale_for(user) {
 //      subject = t(:mail_subject_register, value: Setting.app_title)
@@ -242,12 +242,12 @@ public:
 
 //   void account_activation_requested(admin, user) {
 //    this->user           = user
-//    this->activation_url = url_for(controller: '/users',
+//    this->activation_url = url_for(controller: "/users",
 //                              action:     :index,
-//                              status:     'registered',
-//                              sort:       'created_at:desc')
+//                              status:     "registered",
+//                              sort:       "created_at:desc")
 
-//    open_project_headers 'Type' => 'Account'
+//    open_project_headers "Type" => "Account"
 
 //    with_locale_for(admin) {
 //      subject = t(:mail_subject_account_activation_request, value: Setting.app_title)
@@ -263,9 +263,9 @@ public:
 //                                   action:         :index,
 //                                   set_filter:     1,
 //                                   assigned_to_id: user.id,
-//                                   sort:           'due_date:asc')
+//                                   sort:           "due_date:asc")
 
-//    open_project_headers 'Type' => 'Issue'
+//    open_project_headers "Type" => "Issue"
 
 //    with_locale_for(user) {
 //      subject = t(:mail_subject_reminder, count: this->issues.size, days: this->days)
@@ -305,17 +305,17 @@ public:
 //  }
 
 //   void references(object, user) {
-//    headers['References'] = "<#{this->class.generate_message_id(object, user)}>"
+//    headers["References"] = "<#{this->class.generate_message_id(object, user)}>"
 //  }
 
 //   void set_work_package_headers(work_package) {
-//    open_project_headers 'Project'        => work_package.project.identifier,
-//                         'Issue-Id'       => work_package.id,
-//                         'Issue-Author'   => work_package.author.login,
-//                         'Type'           => 'WorkPackage'
+//    open_project_headers "Project"        => work_package.project.identifier,
+//                         "Issue-Id"       => work_package.id,
+//                         "Issue-Author"   => work_package.author.login,
+//                         "Type"           => "WorkPackage"
 
 //    if ( work_package.assigned_to) {
-//      open_project_headers 'Issue-Assignee' => work_package.assigned_to.login
+//      open_project_headers "Issue-Assignee" => work_package.assigned_to.login
 //    }
 //  }
 };
@@ -335,11 +335,11 @@ class DefaultHeadersInterceptor{
 
 //   void default_headers() {
 //    {
-//      'X-Mailer'           => 'OpenProject',
-//      'X-OpenProject-Host' => Setting.host_name,
-//      'X-OpenProject-Site' => Setting.app_title,
-//      'Precedence'         => 'bulk',
-//      'Auto-Submitted'     => 'auto-generated'
+//      "X-Mailer"           => "OpenProject",
+//      "X-OpenProject-Host" => Setting.host_name,
+//      "X-OpenProject-Site" => Setting.app_title,
+//      "Precedence"         => "bulk",
+//      "Auto-Submitted"     => "auto-generated"
 //    }
 //  }
 };

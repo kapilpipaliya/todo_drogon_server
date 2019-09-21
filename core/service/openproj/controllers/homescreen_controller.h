@@ -6,7 +6,7 @@ class HomescreenController : public ApplicationController {
 public:
   // skip_before_action :check_if_login_required, only: [:robots]
 
-  // layout 'no_menu'
+  // layout "no_menu"
 
    void index() {
 //    this->newest_projects = Project.visible.newest.take(3)

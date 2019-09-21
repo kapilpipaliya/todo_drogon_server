@@ -22,11 +22,11 @@ class LdapAuthSource : public AuthSource {
 //    attrs = get_user_dn(login)
 
 //    if ( attrs && attrs[:dn] && authenticate_dn(attrs[:dn], password)) {
-//      Rails.logger.debug { "Authentication successful for '#{login}'" }
+//      Rails.logger.debug { "Authentication successful for "#{login}"" }
 //      return attrs.except(:dn)
 //    }
 //  rescue  Net::LDAP::LdapError => error
-//    raise 'LdapError: ' + error.message
+//    raise "LdapError: " + error.message
 //  }
 
 //   void find_user(login) {
@@ -34,24 +34,24 @@ class LdapAuthSource : public AuthSource {
 //    attrs = get_user_dn(login)
 
 //    if ( attrs && attrs[:dn]) {
-//      Rails.logger.debug { "Lookup successful for '#{login}'" }
+//      Rails.logger.debug { "Lookup successful for "#{login}"" }
 //      return attrs.except(:dn)
 //    }
 //  rescue  Net::LDAP::LdapError => error
-//    raise 'LdapError: ' + error.message
+//    raise "LdapError: " + error.message
 //  }
 
 //  // test the connection to the LDAP
 //   void test_connection() {
 //    unless authenticate_dn(account, account_password)
-//      raise I18n.t('auth_source.ldap_error', error_message: I18n.t('auth_source.ldap_auth_failed'))
+//      raise I18n.t("auth_source.ldap_error", error_message: I18n.t("auth_source.ldap_auth_failed"))
 //    }
 //  rescue  Net::LDAP::LdapError => text
-//    raise I18n.t('auth_source.ldap_error', error_message: text.to_s)
+//    raise I18n.t("auth_source.ldap_error", error_message: text.to_s)
 //  }
 
 //   void auth_method_name() {
-//    'LDAP'
+//    "LDAP"
 //  }
 
   private:
@@ -73,7 +73,7 @@ class LdapAuthSource : public AuthSource {
 //  }
 
 //   void ldap_encryption() {
-//    if ( tls_mode == 'plain_ldap') {
+//    if ( tls_mode == "plain_ldap") {
 //      nil
 //    else
 //      tls_mode.to_sym
@@ -95,9 +95,9 @@ class LdapAuthSource : public AuthSource {
 //  // include the user attributes if ( on-the-fly registration is enabled) {
 //   void search_attributes() {
 //    if ( onthefly_register?) {
-//      ['dn', attr_firstname, attr_lastname, attr_mail, attr_admin]
+//      ["dn", attr_firstname, attr_lastname, attr_mail, attr_admin]
 //    else
-//      ['dn']
+//      ["dn"]
 //    }
 //  }
 
@@ -108,11 +108,11 @@ class LdapAuthSource : public AuthSource {
 //    }
 //  }
 
-//  // Get the user's dn and any attributes for them, given their login
+//  // Get the user"s dn and any attributes for them, given their login
 //   void get_user_dn(login) {
 //    ldap_con = initialize_ldap_con(account, account_password)
 //    login_filter = Net::LDAP::Filter.eq(attr_login, login)
-//    object_filter = Net::LDAP::Filter.eq('objectClass', '*')
+//    object_filter = Net::LDAP::Filter.eq("objectClass", "*")
 //    attrs = {}
 
 //    Rails.logger.debug {

@@ -2,7 +2,7 @@ namespace openproj {
 namespace helper {
 namespace AdminHelper {
 //   void project_status_options_for_select(selected) {
-//    options_for_select([[l(:label_all), ''],
+//    options_for_select([[l(:label_all), ""],
 //                        [l(:status_active), 1]], selected)
 //  }
 }

@@ -29,7 +29,7 @@ public:
 //    if ( members.present? && members.all?(&:valid?)) {
 //      flash[:notice] = members_added_notice members
 
-//      redirect_to project_members_path(project_id: this->project, status: 'all')
+//      redirect_to project_members_path(project_id: this->project, status: "all")
 //    else
 //      if ( members.present? && params[:member]) {
 //        this->member = members.first
@@ -40,7 +40,7 @@ public:
 //      set_index_data!
 
 //      respond_to { |format|
-//        format.html { render 'index' }
+//        format.html { render "index" }
 //      }
 //    }
   }
@@ -98,7 +98,7 @@ public:
 //    respond_to { |format|
 //      format.json
 //      format.html {
-//        render partial: 'members/autocomplete_for_member',
+//        render partial: "members/autocomplete_for_member",
 //               locals: { project: this->project,
 //                         principals: this->principals,
 //                         roles: Role.givable }
@@ -116,7 +116,7 @@ public:
 //    {
 //      project: this->project,
 //      available_roles: roles,
-//      authorize_update: authorize_for('members', 'update')
+//      authorize_update: authorize_for("members", "update")
 //    }
 //  }
 
@@ -147,7 +147,7 @@ public:
    void tab_scripts() {
 //    scripts = %w(hideOnLoad init_members_cb)
 
-//    scripts.join('(); ') + '();'
+//    scripts.join("(); ") + "();"
   }
 
    void set_index_data() {
@@ -162,7 +162,7 @@ public:
    void set_roles_and_principles() {
 //    this->roles = Role.givable
 //    // Check if ( there is at least one principal that can be added to the project) {
-//    this->principals_available = this->project.possible_members('', 1)
+//    this->principals_available = this->project.possible_members("", 1)
   }
 
    void index_members() {
@@ -188,7 +188,7 @@ public:
 
 //      members
 //    else
-//      // Pick a user that exists but can't be chosen.
+//      // Pick a user that exists but can"t be chosen.
 //      // We only want the missing role error message.
 //      dummy = new_member User.anonymous.id
 
@@ -204,7 +204,7 @@ public:
 
   //  void invite_new_users(user_ids) {
 //    user_ids.map { |id|
-//      if ( id.to_i == 0 && id.present? // we've got an email - invite that user) {
+//      if ( id.to_i == 0 && id.present? // we"ve got an email - invite that user) {
 //        // only admins can invite new users
 //        if ( current_user.admin? && enterprise_allow_new_users?) {
 //          // The invitation can pretty much only fail due to the user already
@@ -237,7 +237,7 @@ public:
   //  void transform_array_of_comma_seperated_ids(array) {
 //    return array unless array.present?
 //    each_comma_seperated(array) { |elem|
-//      elem.to_s.split(',')
+//      elem.to_s.split(",")
 //    }
   // }
 

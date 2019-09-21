@@ -104,14 +104,14 @@ class Watcher : public ActiveRecord::Base {
 //      //   where(projects: { id: project.id }
 //      // instead of
 //      //   where(projects_id: project.id)
-//      // we don't have to distinguish between project associations with
+//      // we don"t have to distinguish between project associations with
 //      // project_id on the watchable class and those on a class associated to
 //      // the watchable class (using :through).
 //      id_subquery = watchable
 //                    .joins(:watchers)
 //                    .joins(:project)
 //                    .where(projects: { id: projects.map(&:id) })
-//                    .select('watchers.id')
+//                    .select("watchers.id")
 
 //      id_subquery = id_subquery.where(watchers: { user_id: user_ids }) unless user_ids.empty?
 

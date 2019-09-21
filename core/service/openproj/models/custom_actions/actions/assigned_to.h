@@ -12,7 +12,7 @@ class AssignedTo : public CustomActions::Actions::Base {
   }
 
    void associated() {
-//    [[current_user_value_key, I18n.t('custom_actions.actions.assigned_to.executing_user_value')]] + available_principles
+//    [[current_user_value_key, I18n.t("custom_actions.actions.assigned_to.executing_user_value")]] + available_principles
   }
 
 //   void values=(values) {
@@ -50,7 +50,7 @@ class AssignedTo : public CustomActions::Actions::Base {
 //  }
 
 //   void current_user_value_key() {
-//    'current_user'.freeze
+//    "current_user".freeze
 //  }
 
 //   void has_me_value?() {
@@ -67,7 +67,7 @@ class AssignedTo : public CustomActions::Actions::Base {
 //   void validate_me_value(errors) {
 //    if ( has_me_value? && !User.current.logged?) {
 //      errors.add :actions,
-//                 I18n.t(:'activerecord.errors.models.custom_actions.not_logged_in', name: human_name),
+//                 I18n.t(:"activerecord.errors.models.custom_actions.not_logged_in", name: human_name),
 //                 error_symbol: :not_logged_in
 //    }
 //  }

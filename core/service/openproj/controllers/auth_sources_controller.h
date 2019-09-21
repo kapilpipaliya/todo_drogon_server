@@ -5,7 +5,7 @@ namespace controller {
 class AuthSourcesController : public ApplicationController {
 public:
   // include PaginationHelper
-  // layout 'admin'
+  // layout "admin"
 
   // before_action :require_admin
   // before_action :block_if_password_login_disabled
@@ -14,27 +14,27 @@ public:
 //    this->auth_sources = AuthSource.page(page_param)
 //                    .per_page(per_page_param)
 
-//    render 'auth_sources/index'
+//    render "auth_sources/index"
   }
 
    void new_() {
 //    this->auth_source = auth_source_class.new
-//    render 'auth_sources/new'
+//    render "auth_sources/new"
   }
 
    void create() {
 //    this->auth_source = auth_source_class.new permitted_params.auth_source
 //    if ( this->auth_source.save) {
 //      flash[:notice] = l(:notice_successful_create)
-//      redirect_to action: 'index'
+//      redirect_to action: "index"
 //    else
-//      render 'auth_sources/new'
+//      render "auth_sources/new"
 //    }
   }
 
    void edit() {
 //    this->auth_source = AuthSource.find(params[:id])
-//    render 'auth_sources/edit'
+//    render "auth_sources/edit"
   }
 
    void update() {
@@ -44,9 +44,9 @@ public:
 
 //    if ( this->auth_source.update_attributes updated) {
 //      flash[:notice] = l(:notice_successful_update)
-//      redirect_to action: 'index'
+//      redirect_to action: "index"
 //    else
-//      render 'auth_sources/edit'
+//      render "auth_sources/edit"
 //    }
   }
 
@@ -58,7 +58,7 @@ public:
 //    rescue => text
 //      flash[:error] = l(:error_unable_to_connect, text.message)
 //    }
-//    redirect_to action: 'index'
+//    redirect_to action: "index"
   }
 
    void destroy() {
@@ -70,7 +70,7 @@ public:
 //    else
 //      flash[:warning] = t(:notice_wont_delete_auth_source)
 //    }
-//    redirect_to action: 'index'
+//    redirect_to action: "index"
   }
 
   protected:
@@ -80,7 +80,7 @@ public:
   }
 
    void default_breadcrumb() {
-//    if ( action_name == 'index') {
+//    if ( action_name == "index") {
 //      t(:label_auth_source_plural)
 //    else
 //      ActionController::Base.helpers.link_to(t(:label_auth_source_plural), ldap_auth_sources_path)

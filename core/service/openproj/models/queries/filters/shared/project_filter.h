@@ -10,7 +10,7 @@ namespace Queries::Filters::Shared::ProjectFilter {
   namespace InstanceMethods {
      void allowed_values() {
 //      this->allowed_values ||= begin
-        // We don't care for the first value as we do not display the values visibly
+        // We don"t care for the first value as we do not display the values visibly
 //        ::Project.visible.pluck(:id).map { |id| [id, id.to_s] }
       }
     }

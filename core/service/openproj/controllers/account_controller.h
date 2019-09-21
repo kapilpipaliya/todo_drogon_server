@@ -19,7 +19,7 @@ public:
   // before_action :disable_api
   // before_action :check_auth_source_sso_failure, only: :auth_source_sso_failed
 
-  // layout 'no_menu'
+  // layout "no_menu"
 
   // Login request and validation
   void login() {
@@ -58,11 +58,11 @@ public:
 //        call.apply_flash_message!(flash)
 
 //        if ( call.success?) {
-//          this->token.destroy redirect_to action : 'login' return
+//          this->token.destroy redirect_to action : "login" return
 //        }
 //      }
 
-//      render template : 'account/password_recovery'
+//      render template : "account/password_recovery"
 //    } else if ( request.post?) {
 //      mail = params[:mail]
 //      user = User.find_by_mail(mail) if ( mail.present?) {
@@ -88,7 +88,7 @@ public:
 //      UserMailer.password_lost(token)
 //          .deliver_now flash[:notice] = l(
 //                                          : notice_account_lost_email_sent) redirect_to action
-//          : 'login',
+//          : "login",
 //                       back_url : home_url return
 //    }
 //  }
@@ -184,7 +184,7 @@ void activate() {
 //                                     token.user
 
 //                                     if (user.auth_source &&
-//                                         user.auth_source.auth_method_name == 'LDAP') {
+//                                         user.auth_source.auth_method_name == "LDAP") {
 //        activate_through_ldap user else activate_user user
 //      }
 //    }
@@ -193,7 +193,7 @@ void activate() {
 //    if ( omniauth_direct_login?) {
 //      direct_login user
 //    } else if ( OpenProject::Configuration.disable_password_login?) {
-//      flash[:notice] = I18n.t('account.omniauth_login')
+//      flash[:notice] = I18n.t("account.omniauth_login")
 
 //                           redirect_to signin_path else redirect_to account_register_path
 //    }
@@ -206,7 +206,7 @@ void activate() {
 //      }
 
 //                                         flash
-//      [:notice] = I18n.t('account.auth_source_login', login
+//      [:notice] = I18n.t("account.auth_source_login", login
 //                         : user.login)
 //                      .html_safe
 
@@ -245,7 +245,7 @@ void activate() {
 //    flash.now[:error] = I18n.t(:error_auth_source_sso_failed, value: failure[:login]) +
 //      ": " + String(flash.now[:error])
 
-//    render action: 'login', back_url: failure[:back_url]
+//    render action: "login", back_url: failure[:back_url]
     }
 
    private:
@@ -330,7 +330,7 @@ void activate() {
 
     void logout_user() {
 //    if ( User.current.logged?) {
-//      cookies.delete OpenProject::Configuration['autologin_cookie_name'] Token::AutoLogin
+//      cookies.delete OpenProject::Configuration["autologin_cookie_name"] Token::AutoLogin
 //          .where(user_id
 //                 : current_user.id)
 //          .delete_all this->logged_user = nil
@@ -417,10 +417,10 @@ void activate() {
 //                                      : user) cookie_options = {
 //        value : token.plain_value,
 //        expires : 1.year.from_now,
-//        path : OpenProject::Configuration['autologin_cookie_path'],
-//        secure : OpenProject::Configuration['autologin_cookie_secure'],
+//        path : OpenProject::Configuration["autologin_cookie_path"],
+//        secure : OpenProject::Configuration["autologin_cookie_secure"],
 //        httponly : true
-//      } cookies[OpenProject::Configuration['autologin_cookie_name']] = cookie_options
+//      } cookies[OpenProject::Configuration["autologin_cookie_name"]] = cookie_options
 //    }
 
 //    void login_user_if_active(user) {
@@ -450,8 +450,8 @@ void activate() {
 //          if (this->user.save) {
 //        session[:auth_source_registration] = nil this->logged_user = this->user flash
 //        [:notice] = I18n.t(
-//                      : notice_account_activated) redirect_to controller : '/my',
-//        action : 'account'
+//                      : notice_account_activated) redirect_to controller : "/my",
+//        action : "account"
 //      }
 //      // Otherwise render register view again
 //    }
@@ -461,16 +461,16 @@ void activate() {
 //      this->user = user session[:auth_source_registration] = auth_source_options unless
 //                                                                auth_source_options.empty
 //                                                            ? render action
-//                                                            : 'register'
+//                                                            : "register"
 //    }
 
     // Register a user depending on Setting.self_registration
 //    void register_user_according_to_setting(user, opts = {}, &block) {
 //    if ( user.invited?) { return register_automatically(user, opts, &block) ;}
 //    case Setting.self_registration
-//    when '1'
+//    when "1"
 //      register_by_email_activation(user, opts, &block)
-//    when '3'
+//    when "3"
 //      register_automatically(user, opts, &block)
 //    else
 //      register_manually_by_administrator(user, opts, &block)
@@ -487,7 +487,7 @@ void activate() {
 //        send_activation_email !token flash[:notice] = I18n.t(
 //                                                        : notice_account_register_done)
 
-//                                                          redirect_to action : 'login'
+//                                                          redirect_to action : "login"
 //      } else if ( block_given?) {
 //        yield
 //      }
@@ -555,7 +555,7 @@ void activate() {
 //    }
 
     void self_registration_disabled() {
-//      flash[:error] = I18n.t('account.error_self_registration_disabled') redirect_to signin_url
+//      flash[:error] = I18n.t("account.error_self_registration_disabled") redirect_to signin_url
     }
 
     // Call if ( an account is inactive - either registered or locked) {
@@ -569,16 +569,16 @@ void activate() {
 
     // Log an attempt to log in to an account in "registered" state and show a flash message.
     void account_not_activated(bool flash_now = true) {
-//      flash_error_message(log_reason : 'NOT ACTIVATED', flash_now : flash_now) {
-//        if (Setting.self_registration == '1') {
-//          'account.error_inactive_activation_by_mail' else 'account.error_inactive_manual_activation'
+//      flash_error_message(log_reason : "NOT ACTIVATED", flash_now : flash_now) {
+//        if (Setting.self_registration == "1") {
+//          "account.error_inactive_activation_by_mail" else "account.error_inactive_manual_activation"
 //        }
 //      }
     }
 
 //    void invited_account_not_activated(user) {
-//      flash_error_message(log_reason : 'invited, NOT ACTIVATED', flash_now : false) {
-//        'account.error_inactive_activation_by_mail'
+//      flash_error_message(log_reason : "invited, NOT ACTIVATED", flash_now : false) {
+//        "account.error_inactive_activation_by_mail"
 //      }
 //    }
 
@@ -589,7 +589,7 @@ void activate() {
 //                     // when registering via the external service. This also redirects the user
 //                     // to the original page where the user clicked on the omniauth login link for a
 //                     // provider.
-//                     redirect_to action : 'login',
+//                     redirect_to action : "login",
 //      back_url : params
 //      [:back_url]
     }

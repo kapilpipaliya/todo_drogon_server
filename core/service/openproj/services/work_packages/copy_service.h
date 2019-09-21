@@ -50,8 +50,8 @@ public:
 //    wp
 //      .attributes
 //      .slice(*writable_work_package_attributes(wp))
-//      .merge('parent_id' => wp.parent_id,
-//             'custom_field_values' => wp.custom_value_attributes)
+//      .merge("parent_id" => wp.parent_id,
+//             "custom_field_values" => wp.custom_value_attributes)
 //      .merge(override)
 //  }
 

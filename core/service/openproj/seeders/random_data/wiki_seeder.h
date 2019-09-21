@@ -7,19 +7,19 @@ namespace RandomData {
 //     void seed(project) {
 //      user = User.admin.first
 
-//      puts ''
-//      print ' ↳ Creating wikis'
+//      puts ""
+//      LOG_DEBUG << " ↳ Creating wikis"
 
 //      rand(5).times {
-//        print '.'
+//        LOG_DEBUG << "."
 //        wiki_page = WikiPage.create(
 //          wiki:  project.wiki,
-//          title: Faker::Lorem.words(5).join(' ')
+//          title: Faker::Lorem.words(5).join(" ")
 //        )
 
 //        //// create some wiki contents
 //        rand(5).times {
-//          print '.'
+//          LOG_DEBUG << "."
 //          wiki_content = WikiContent.create(
 //            page:    wiki_page,
 //            author:  user,

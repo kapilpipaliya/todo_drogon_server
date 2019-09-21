@@ -3,7 +3,7 @@
 namespace openproj {
 namespace models {
 class Journal : public ActiveRecord::Base {
-//  this->table_name = 'journals'
+//  this->table_name = "journals"
 
   // include ::JournalChanges
   // include ::JournalFormatter
@@ -19,15 +19,15 @@ class Journal : public ActiveRecord::Base {
   // belongs_to :user
   // belongs_to :journable, polymorphic: true
 
-  // has_many :attachable_journals, class_name: 'JournalN::AttachableJournal', dependent: :destroy
-  // has_many :customizable_journals, class_name: 'JournalN::CustomizableJournal', dependent: :destroy
+  // has_many :attachable_journals, class_name: "JournalN::AttachableJournal", dependent: :destroy
+  // has_many :customizable_journals, class_name: "JournalN::CustomizableJournal", dependent: :destroy
 
   // after_create :save_data, if (: :data) {
   // after_save :save_data, :touch_journable
 
   // Scopes to all journals excluding the initial journal - useful for change
   // logs like the history on issue#show
-  // scope :changing, -> { where(['version > 1']) }
+  // scope :changing, -> { where(["version > 1"]) }
 
 //   void changed_data=(changed_attributes) {
 //    attributes = changed_attributes
@@ -124,7 +124,7 @@ class Journal : public ActiveRecord::Base {
   }
 
    void journalized_object_type() {
-//    "#{journaled_type.gsub('Journal', '')}".constantize
+//    "#{journaled_type.gsub("Journal", "")}".constantize
   }
 };
 }

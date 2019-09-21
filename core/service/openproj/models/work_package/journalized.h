@@ -20,21 +20,21 @@ namespace WorkPackageN::Journalized {
 
 //       void event_name() {
 //        Proc.new { |o|
-//          I18n.t(o.event_type.underscore, scope: 'events')
+//          I18n.t(o.event_type.underscore, scope: "events")
 //        }
 //      }
 
 //       void event_type() {
 //        Proc.new { |o|
 //          journal = o.last_journal
-//          t = 'work_package'
+//          t = "work_package"
 
 //          t << if ( journal && journal.details.empty? && !journal.initial?) {
-//                 '-note'
+//                 "-note"
 //               else
 //                 status = Status.find_by(id: o.status_id)
 
-//                 status.try(:is_closed?) ? '-closed' : '-edit'
+//                 status.try(:is_closed?) ? "-closed" : "-edit"
 //               }
 //          t
 //        }
@@ -52,11 +52,11 @@ namespace WorkPackageN::Journalized {
 //                  name: JournalizedProcs.event_name,
 //                  url: JournalizedProcs.event_url
 
-//    register_on_journal_formatter(:id, 'parent_id')
-//    register_on_journal_formatter(:fraction, 'estimated_hours')
-//    register_on_journal_formatter(:fraction, 'derived_estimated_hours')
-//    register_on_journal_formatter(:decimal, 'done_ratio')
-//    register_on_journal_formatter(:diff, 'description')
+//    register_on_journal_formatter(:id, "parent_id")
+//    register_on_journal_formatter(:fraction, "estimated_hours")
+//    register_on_journal_formatter(:fraction, "derived_estimated_hours")
+//    register_on_journal_formatter(:decimal, "done_ratio")
+//    register_on_journal_formatter(:diff, "description")
 //    register_on_journal_formatter(:attachment, /attachments_?\d+/)
 //    register_on_journal_formatter(:custom_field, /custom_fields_\d+/)
 

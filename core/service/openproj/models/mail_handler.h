@@ -15,7 +15,7 @@ class MailHandler : public mailer::ActionMailer::Base {
 //  // Code copied from base class and extended with optional options parameter
 //  // as well as force_encoding support.
 //   void receive(raw_mail, options = {}) {
-//    if ( raw_mail.respond_to?(:force_encoding)) { raw_mail.force_encoding('ASCII-8BIT') ;}
+//    if ( raw_mail.respond_to?(:force_encoding)) { raw_mail.force_encoding("ASCII-8BIT") ;}
 
 //    ActiveSupport::Notifications.instrument("receive.action_mailer") { |payload|
 //      mail = Mail.new(raw_mail)
@@ -34,8 +34,8 @@ class MailHandler : public mailer::ActionMailer::Base {
 
 //  cattr_accessor :ignored_emails_headers
 //  static int ignored_emails_headers = {
-//    'X-Auto-Response-Suppress' => 'oof',
-//    'Auto-Submitted' => /\Aauto-/
+//    "X-Auto-Response-Suppress" => "oof",
+//    "Auto-Submitted" => /\Aauto-/
 //  }
 
 //  // Processes incoming emails
@@ -67,9 +67,9 @@ class MailHandler : public mailer::ActionMailer::Base {
 //    if ( this->user.nil?) {
 //      // Email was submitted by an unknown user
 //      case options[:unknown_user]
-//      when 'accept'
+//      when "accept"
 //        this->user = User.anonymous
-//      when 'create'
+//      when "create"
 //        this->user = MailHandler.create_user_from_email(email)
 //        if ( this->user) {
 //          log "[#{this->user.login}] account created"
@@ -97,7 +97,7 @@ class MailHandler : public mailer::ActionMailer::Base {
 //    options[:allow_override] << :project unless options[:issue].has_key?(:project)
 //    // Status overridable by default
 //    options[:allow_override] << :status unless options[:issue].has_key?(:status)
-//    options[:no_permission_check] = options[:no_permission_check].to_s == '1'
+//    options[:no_permission_check] = options[:no_permission_check].to_s == "1"
 //  }
 
   private:
@@ -198,7 +198,7 @@ class MailHandler : public mailer::ActionMailer::Base {
 //      }
 
 //      if ( !message.locked?) {
-//        reply = Message.new(subject: email.subject.gsub(%r{^.*msg\d+\]}, '').strip,
+//        reply = Message.new(subject: email.subject.gsub(%r{^.*msg\d+\]}, "").strip,
 //                            content: cleaned_up_text_body)
 //        reply.author = user
 //        reply.forum = message.forum
@@ -247,7 +247,7 @@ class MailHandler : public mailer::ActionMailer::Base {
 //      user.allowed_to?("add_#{obj.class.lookup_ancestors.last.name.underscore}_watchers".to_sym, obj.project)
 //      addresses = [email.to, email.cc].flatten.compact.uniq.map { |a| a.strip.downcase }
 //      unless addresses.empty?
-//        watchers = User.active.where(['LOWER(mail) IN (?)', addresses])
+//        watchers = User.active.where(["LOWER(mail) IN (?)", addresses])
 //        watchers.each { |w|
 //          obj.add_watcher(w)
 //        }
@@ -288,8 +288,8 @@ class MailHandler : public mailer::ActionMailer::Base {
 //    keys.map! { |k|
 //      Regexp.escape(k)
 //    }
-//    format ||= '.+'
-//    text.gsub!(/^(#{keys.join('|')})[ \t]*:[ \t]*(#{format})\s*$/i, '')
+//    format ||= ".+"
+//    text.gsub!(/^(#{keys.join("|")})[ \t]*:[ \t]*(#{format})\s*$/i, "")
 //    $2&.strip
 //  }
 
@@ -298,7 +298,7 @@ class MailHandler : public mailer::ActionMailer::Base {
 //    // * parse the email To field
 //    // * specific project (eg. Setting.mail_handler_target_project)
 //    target = Project.find_by(identifier: get_keyword(:project))
-//    if ( target.nil?) { raise MissingInformation.new('Unable to determine target project') ;}
+//    if ( target.nil?) { raise MissingInformation.new("Unable to determine target project") ;}
 //    target
 //  }
 
@@ -308,21 +308,21 @@ class MailHandler : public mailer::ActionMailer::Base {
 //    project = issue.project
 
 //    attrs = {
-//      'type_id' => (k = get_keyword(:type)) && project.types.find_by(name: k).try(:id),
-//      'status_id' => (k = get_keyword(:status)) && Status.find_by(name: k).try(:id),
-//      'parent_id' => (k = get_keyword(:parent)),
-//      'priority_id' => (k = get_keyword(:priority)) && IssuePriority.find_by(name: k).try(:id),
-//      'category_id' => (k = get_keyword(:category)) && project.categories.find_by(name: k).try(:id),
-//      'assigned_to_id' => assigned_to.try(:id),
-//      'fixed_version_id' => (k = get_keyword(:fixed_version)) && project.shared_versions.find_by(name: k).try(:id),
-//      'start_date' => get_keyword(:start_date, override: true, format: '\d{4}-\d{2}-\d{2}'),
-//      'due_date' => get_keyword(:due_date, override: true, format: '\d{4}-\d{2}-\d{2}'),
-//      'estimated_hours' => get_keyword(:estimated_hours, override: true),
-//      'done_ratio' => get_keyword(:done_ratio, override: true, format: '(\d|10)?0')
+//      "type_id" => (k = get_keyword(:type)) && project.types.find_by(name: k).try(:id),
+//      "status_id" => (k = get_keyword(:status)) && Status.find_by(name: k).try(:id),
+//      "parent_id" => (k = get_keyword(:parent)),
+//      "priority_id" => (k = get_keyword(:priority)) && IssuePriority.find_by(name: k).try(:id),
+//      "category_id" => (k = get_keyword(:category)) && project.categories.find_by(name: k).try(:id),
+//      "assigned_to_id" => assigned_to.try(:id),
+//      "fixed_version_id" => (k = get_keyword(:fixed_version)) && project.shared_versions.find_by(name: k).try(:id),
+//      "start_date" => get_keyword(:start_date, override: true, format: "\d{4}-\d{2}-\d{2}"),
+//      "due_date" => get_keyword(:due_date, override: true, format: "\d{4}-\d{2}-\d{2}"),
+//      "estimated_hours" => get_keyword(:estimated_hours, override: true),
+//      "done_ratio" => get_keyword(:done_ratio, override: true, format: "(\d|10)?0")
 //    }.delete_if ( { |_, v| v.blank? }) {
 
-//    if ( issue.new_record? && attrs['type_id'].nil?) {
-//      attrs['type_id'] = issue.project.types.first.try(:id)
+//    if ( issue.new_record? && attrs["type_id"].nil?) {
+//      attrs["type_id"] = issue.project.types.first.try(:id)
 //    }
 //    attrs
 //  }
@@ -350,7 +350,7 @@ class MailHandler : public mailer::ActionMailer::Base {
 //    this->plain_text_body = strip_tags(this->plain_text_body.strip)
 //    this->plain_text_body = CGI.unescapeHTML(this->plain_text_body)
 
-//    this->plain_text_body.sub! %r{^<!DOCTYPE .*$}, ''
+//    this->plain_text_body.sub! %r{^<!DOCTYPE .*$}, ""
 //    this->plain_text_body
 //  }
 
@@ -370,15 +370,15 @@ class MailHandler : public mailer::ActionMailer::Base {
 //    user.random_password!
 //    user.language = Setting.default_language
 
-//    names = fullname.blank? ? email_address.gsub(/this->.*\z/, '').split('.') : fullname.split
+//    names = fullname.blank? ? email_address.gsub(/this->.*\z/, "").split(".") : fullname.split
 //    user.firstname = names.shift
-//    user.lastname = names.join(' ')
-//    if ( user.lastname.blank?) { user.lastname = '-' ;}
+//    user.lastname = names.join(" ")
+//    if ( user.lastname.blank?) { user.lastname = "-" ;}
 
 //    unless user.valid?
 //      user.login = "user#{SecureRandom.hex(6)}" unless user.errors[:login].blank?
-//      user.firstname = '-' unless user.errors[:firstname].blank?
-//      user.lastname = '-' unless user.errors[:lastname].blank?
+//      user.firstname = "-" unless user.errors[:firstname].blank?
+//      user.lastname = "-" unless user.errors[:lastname].blank?
 //    }
 
 //    user
@@ -386,7 +386,7 @@ class MailHandler : public mailer::ActionMailer::Base {
 
 //  // Creates a user account for the +email+ sender
 //   void create_user_from_email(email) {
-//    from = email.header['from'].to_s
+//    from = email.header["from"].to_s
 //    addr = from
 //    name = nil
 //    if ( m = from.match(/\A"?(.+?)"?\s+<(.+this->.+)>\z/)) {
@@ -402,7 +402,7 @@ class MailHandler : public mailer::ActionMailer::Base {
 //        nil
 //      }
 //    else
-//      log 'failed to create User: no FROM address found', :error
+//      log "failed to create User: no FROM address found", :error
 //      nil
 //    }
 //  }
@@ -411,7 +411,7 @@ class MailHandler : public mailer::ActionMailer::Base {
 
 //   void allow_override_option(options) {
 //    if ( options[:allow_override].is_a?(String)) {
-//      options[:allow_override].split(',').map(&:strip)
+//      options[:allow_override].split(",").map(&:strip)
 //    else
 //      options[:allow_override] || []
 //    }
@@ -421,14 +421,14 @@ class MailHandler : public mailer::ActionMailer::Base {
 //   void cleanup_body(body) {
 //    delimiters = Setting.mail_handler_body_delimiters.to_s.split(/[\r\n]+/).reject(&:blank?).map { |s| Regexp.escape(s) }
 //    unless delimiters.empty?
-//      regex = Regexp.new("^[> ]*(#{delimiters.join('|')})\s*[\r\n].*", Regexp::MULTILINE)
-//      body = body.gsub(regex, '')
+//      regex = Regexp.new("^[> ]*(#{delimiters.join("|")})\s*[\r\n].*", Regexp::MULTILINE)
+//      body = body.gsub(regex, "")
 //    }
 
 //    regex_delimiter = Setting.mail_handler_body_delimiter_regex
 //    if ( regex_delimiter.present?) {
 //      regex = Regexp.new(regex_delimiter, Regexp::MULTILINE)
-//      body = body.gsub(regex, '')
+//      body = body.gsub(regex, "")
 //    }
 
 //    body.strip
@@ -491,9 +491,9 @@ class MailHandler : public mailer::ActionMailer::Base {
 //   void collect_wp_attributes_from_email_on_create(work_package) {
 //    attributes = issue_attributes_from_keywords(work_package)
 //    attributes
-//      .merge('custom_field_values' => custom_field_values_from_keywords(work_package),
-//             'subject' => email.subject.to_s.chomp[0, 255] || '(no subject)',
-//             'description' => cleaned_up_text_body)
+//      .merge("custom_field_values" => custom_field_values_from_keywords(work_package),
+//             "subject" => email.subject.to_s.chomp[0, 255] || "(no subject)",
+//             "description" => cleaned_up_text_body)
 //  }
 
 //   void update_work_package(work_package) {
@@ -516,8 +516,8 @@ class MailHandler : public mailer::ActionMailer::Base {
 //   void collect_wp_attributes_from_email_on_update(work_package) {
 //    attributes = issue_attributes_from_keywords(work_package)
 //    attributes
-//      .merge('custom_field_values' => custom_field_values_from_keywords(work_package),
-//             'journal_notes' => cleaned_up_text_body)
+//      .merge("custom_field_values" => custom_field_values_from_keywords(work_package),
+//             "journal_notes" => cleaned_up_text_body)
 //  }
 
 //   void log(message, level = :info) {

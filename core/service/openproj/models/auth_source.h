@@ -24,11 +24,11 @@ class AuthSource : public ActiveRecord::Base {
 
 //  // implemented by a subclass, should raise when no connection is possible and not raise on success
 //   void test_connection() {
-//    raise I18n.t('auth_source.using_abstract_auth_source')
+//    raise I18n.t("auth_source.using_abstract_auth_source")
 //  }
 
 //   void auth_method_name() {
-//    'Abstract'
+//    "Abstract"
 //  }
 
 //   void account_password() {
@@ -50,9 +50,9 @@ class AuthSource : public ActiveRecord::Base {
 
   // Try to authenticate a user not yet registered against available sources
 //   void authenticate(login, password) {
-//    AuthSource.where(['onthefly_register=?', true]).each { |source|
+//    AuthSource.where(["onthefly_register=?", true]).each { |source|
 //      begin
-//        Rails.logger.debug { "Authenticating '#{login}' against '#{source.name}'" }
+//        Rails.logger.debug { "Authenticating "#{login}" against "#{source.name}"" }
 //        attrs = source.authenticate(login, password)
 //      rescue => e
 //        Rails.logger.error "Error during authentication: #{e.message}"
@@ -64,9 +64,9 @@ class AuthSource : public ActiveRecord::Base {
 //  }
 
 //   void find_user(login) {
-//    AuthSource.where(['onthefly_register=?', true]).each { |source|
+//    AuthSource.where(["onthefly_register=?", true]).each { |source|
 //      begin
-//        Rails.logger.debug { "Looking up '#{login}' in '#{source.name}'" }
+//        Rails.logger.debug { "Looking up "#{login}" in "#{source.name}"" }
 //        attrs = source.find_user login
 //      rescue => e
 //        Rails.logger.error "Error during authentication: #{e.message}"

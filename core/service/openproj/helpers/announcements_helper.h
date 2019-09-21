@@ -3,9 +3,9 @@ namespace helper {
 namespace AnnouncementsHelper {
 //   void notice_annoucement_active() {
 //    if ( this->announcement.active_and_current?) {
-//      l(:'announcements.is_active')
+//      l(:"announcements.is_active")
 //    else
-//      l(:'announcements.is_inactive')
+//      l(:"announcements.is_inactive")
 //    }
 //  }
 }

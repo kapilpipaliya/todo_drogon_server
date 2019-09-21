@@ -26,7 +26,7 @@ class Project : public CustomActions::Actions::Base {
    void associated() {
 //    ::Project
 //      .select(:id, :name)
-//      .order(Arel.sql('LOWER(name)'))
+//      .order(Arel.sql("LOWER(name)"))
 //      .map { |u| [u.id, u.name] }
   }
 };

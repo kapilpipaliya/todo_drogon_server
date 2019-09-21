@@ -18,7 +18,7 @@ namespace API {
 //                           } else if ( representer) {
 //                             representer
 //                           else
-//                             raise 'Representer not defined'
+//                             raise "Representer not defined"
 //                           }
 //      }
 

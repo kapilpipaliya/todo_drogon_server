@@ -6,11 +6,11 @@ namespace Reports {
 class AuthorReport : public Report {
 public:
    void report_type() {
-//    'author'
+//    "author"
   }
 
    void field() {
-//    'author_id'
+//    "author_id"
   }
 
    void rows() {

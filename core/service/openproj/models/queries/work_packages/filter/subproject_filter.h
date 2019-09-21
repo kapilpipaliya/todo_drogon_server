@@ -29,7 +29,7 @@ class SubprojectFilter  : openproj::models::Queries::WorkPackages::Filter::WorkP
 //  }
 
 //   void human_name() {
-//    I18n.t('query_fields.subproject_id')
+//    I18n.t("query_fields.subproject_id")
 //  }
 
 //   void key() {
@@ -50,14 +50,14 @@ class SubprojectFilter  : openproj::models::Queries::WorkPackages::Filter::WorkP
 //    ids = [project.id]
 
 //    case operator
-//    when '='
+//    when "="
 //      // include the selected subprojects
 //      ids += values.each(&:to_i)
-//    when '*'
+//    when "*"
 //      ids += visible_subproject_array.map(&:first)
 //    }
 
-//    "#{Project.table_name}.id IN (%s)" % ids.join(',')
+//    "#{Project.table_name}.id IN (%s)" % ids.join(",")
 //  }
 
   private:
@@ -79,11 +79,11 @@ class SubprojectFilter  : openproj::models::Queries::WorkPackages::Filter::WorkP
 
    void operator_strategy() {
 //    case operator
-//    when '*'
+//    when "*"
 //      ::Queries::Operators::All
-//    when '!*'
+//    when "!*"
 //      ::Queries::Operators::None
-//    when '='
+//    when "="
 //      ::Queries::Operators::Equals
 //    }
   }

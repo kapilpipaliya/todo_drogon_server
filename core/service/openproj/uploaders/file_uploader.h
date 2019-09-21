@@ -68,7 +68,7 @@ namespace FileUploader {
 
   namespace ClassMethods {
      void cache_dir() {
-//      this->cache_dir ||= File.join(Dir.tmpdir, 'op_uploaded_files')
+//      this->cache_dir ||= File.join(Dir.tmpdir, "op_uploaded_files")
     }
   }
 }

@@ -17,18 +17,18 @@ class MemberRole : public ActiveRecord::Base {
 //  }
 
 //  // Add alias, so Member can still destroy MemberRoles
-//  // Don't call this from anywhere else, use remove_member_role on Member.
+//  // Don"t call this from anywhere else, use remove_member_role on Member.
 //  alias :destroy_for_member :destroy
 
-//  // You shouldn't call this, only ActiveRecord itself is allowed to do this
+//  // You shouldn"t call this, only ActiveRecord itself is allowed to do this
 //  // when destroying a Member. Use Member.remove_member_role to remove a role from a member.
 //  //
 //  // You may remove this once we have a layer above persistence that handles business logic
 //  // and prevents or at least discourages working on persistence objects from controllers
 //  // or unrelated business logic.
 //   void destroy(*args) {
-//    unless caller[2] =~ /has_many_association\.rb:[0-9]+:in `delete_records'/
-//      raise 'MemberRole.destroy called from method other than HasManyAssociation.delete_records' +
+//    unless caller[2] =~ /has_many_association\.rb:[0-9]+:in `delete_records"/
+//      raise "MemberRole.destroy called from method other than HasManyAssociation.delete_records" +
 //        "\n  on #{inspect}\n from #{caller.first} / #{caller[6]}"
 //    else
 //      super

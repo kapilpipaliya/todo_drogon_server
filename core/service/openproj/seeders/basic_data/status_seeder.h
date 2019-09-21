@@ -54,7 +54,7 @@ class StatusSeeder : public Seeder {
   }
 
   void not_applicable_message() {
-    //      'Skipping statuses - already exists/configured'
+    //      "Skipping statuses - already exists/configured"
   }
 
   virtual std::vector<row> data() = 0;

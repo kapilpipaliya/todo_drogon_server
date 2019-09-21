@@ -10,7 +10,7 @@ class CustomStyle : public ActiveRecord::Base {
 //  class << self {
 //     void current() {
 //      RequestStore.fetch(:current_custom_style) {
-//        custom_style = CustomStyle.order(Arel.sql('created_at DESC')).first
+//        custom_style = CustomStyle.order(Arel.sql("created_at DESC")).first
 //        if ( custom_style.nil?) {
 //          return nil
 //        else

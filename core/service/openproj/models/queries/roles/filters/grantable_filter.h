@@ -18,7 +18,7 @@ class GrantableFilter : public openproj::models::Queries::Roles::Filters::RoleFi
 //                  [Role::BUILTIN_ANONYMOUS, Role::BUILTIN_NON_MEMBER]
 //                }
 
-//    if ( operator == '=') {
+//    if ( operator == "=") {
 //      ["roles.builtin IN (?)", db_values]
 //    else
 //      ["roles.builtin NOT IN (?)", db_values]

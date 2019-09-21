@@ -7,7 +7,7 @@ public:
   // include PaginationHelper
   // include Roles::NotifyMixin
 
-  // layout 'admin'
+  // layout "admin"
 
   // before_action :require_admin, except: [:autocomplete_for_role]
 
@@ -16,7 +16,7 @@ public:
 //             .page(page_param)
 //             .per_page(per_page_param)
 
-//    if ( request.xhr?) { render action: 'index', layout: false ;}
+//    if ( request.xhr?) { render action: "index", layout: false ;}
   }
 
    void new_() {
@@ -31,17 +31,17 @@ public:
 
 //    if ( this->call.success?) {
 //      flash[:notice] = t(:notice_successful_create)
-//      redirect_to action: 'index'
+//      redirect_to action: "index"
 //    else
 //      this->roles = roles_scope
 
-//      render action: 'new'
+//      render action: "new"
 //    }
   }
 
    void edit() {
 //    this->role = Role.find(params[:id])
-//    this->call = set_role_attributes(this->role, 'update')
+//    this->call = set_role_attributes(this->role, "update")
   }
 
    void update() {
@@ -50,9 +50,9 @@ public:
 
 //    if ( this->call.success?) {
 //      flash[:notice] = l(:notice_successful_update)
-//      redirect_to action: 'index'
+//      redirect_to action: "index"
 //    else
-//      render action: 'edit'
+//      render action: "edit"
 //    }
   }
 
@@ -60,15 +60,15 @@ public:
 //    this->role = Role.find(params[:id])
 //    this->role.destroy
 //    flash[:notice] = l(:notice_successful_delete)
-//    redirect_to action: 'index'
+//    redirect_to action: "index"
 //    notify_changed_roles(:removed, this->role)
 //  rescue
 //    flash[:error] = l(:error_can_not_remove_role)
-//    redirect_to action: 'index'
+//    redirect_to action: "index"
   }
 
    void report() {
-//    this->roles = Role.order(Arel.sql('builtin, position'))
+//    this->roles = Role.order(Arel.sql("builtin, position"))
 //    this->permissions = OpenProject::AccessControl.permissions.reject(&:public?)
   }
 
@@ -79,11 +79,11 @@ public:
 
 //    if ( calls.all?(&:success?)) {
 //      flash[:notice] = l(:notice_successful_update)
-//      redirect_to action: 'index'
+//      redirect_to action: "index"
 //    else
 //      this->calls = calls
 //      this->permissions = OpenProject::AccessControl.permissions.reject(&:public?)
-//      render action: 'report'
+//      render action: "report"
 //    }
   }
 
@@ -132,14 +132,14 @@ public:
   }
 
    void roles_scope() {
-//    Role.order(Arel.sql('builtin, position'))
+//    Role.order(Arel.sql("builtin, position"))
   }
 
    void default_breadcrumb() {
-//    if ( action_name == 'index') {
-//      t('label_role_plural')
+//    if ( action_name == "index") {
+//      t("label_role_plural")
 //    else
-//      ActionController::Base.helpers.link_to(t('label_role_plural'), roles_path)
+//      ActionController::Base.helpers.link_to(t("label_role_plural"), roles_path)
 //    }
   }
 

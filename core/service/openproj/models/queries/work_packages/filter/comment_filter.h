@@ -15,7 +15,7 @@ class CommentFilter : public openproj::models::Queries::WorkPackages::Filter::Wo
    void join_condition() {
 //    <<-SQL
 //     #{join_table_alias}.journable_id = #{WorkPackage.table_name}.id
-//	   AND #{join_table_alias}.journable_type = '#{WorkPackage.name}'
+//	   AND #{join_table_alias}.journable_type = "#{WorkPackage.name}"
 //     AND #{notes_condition}
 //    SQL
   }
@@ -27,7 +27,7 @@ class CommentFilter : public openproj::models::Queries::WorkPackages::Filter::Wo
   }
 
    void notes_condition() {
-//    Queries::Operators::Contains.sql_for_field(values, join_table_alias, 'notes')
+//    Queries::Operators::Contains.sql_for_field(values, join_table_alias, "notes")
   }
 };
 }

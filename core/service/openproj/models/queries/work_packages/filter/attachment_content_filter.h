@@ -15,11 +15,11 @@ class AttachmentContentFilter : public openproj::models::Queries::WorkPackages::
   }
 
    void human_name() {
-//    Attachment.human_attribute_name('attachment_content')
+//    Attachment.human_attribute_name("attachment_content")
   }
 
    void search_column() {
-//    'fulltext'
+//    "fulltext"
   }
 };
 }

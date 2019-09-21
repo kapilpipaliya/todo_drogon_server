@@ -4,7 +4,7 @@ namespace openproj {
 namespace controller {
 class AnnouncementsController : public ApplicationController {
 public:
-  // layout 'admin'
+  // layout "admin"
 
   // before_action :require_admin
 
@@ -20,7 +20,7 @@ public:
 //      flash[:notice] = t(:notice_successful_update)
 //    }
 
-//    redirect_to action: 'edit'
+//    redirect_to action: "edit"
   }
 
   private:
@@ -34,7 +34,7 @@ public:
   }
 
    void announcement_params() {
-//    params.require(:announcement).permit('text', 'show_until', 'active')
+//    params.require(:announcement).permit("text", "show_until", "active")
   }
 };
 }

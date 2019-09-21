@@ -10,7 +10,7 @@ namespace VersionsHelper {
 //  }
 
 //   void format_version_sharing(sharing) {
-//    sharing = 'none' unless VersionN::VERSION_SHARINGS.include?(sharing)
+//    sharing = "none" unless VersionN::VERSION_SHARINGS.include?(sharing)
 //    l("label_version_sharing_#{sharing}")
 //  }
 }

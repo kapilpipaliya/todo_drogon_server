@@ -71,11 +71,11 @@ public:
 //  }
 
 //   void permission_roles_table() {
-//    Role.arel_table.alias('permission_roles')
+//    Role.arel_table.alias("permission_roles")
 //  }
 
 //   void assigned_roles_table() {
-//    Role.arel_table.alias('assigned_roles')
+//    Role.arel_table.alias("assigned_roles")
 //  }
 
 //   void role_has_permission_and_is_assigned(user, action) {

@@ -131,7 +131,7 @@ class PermittedParams {
 //    p = params.require(:query).permit(*this->class.permitted_attributes[:query])
 //    p[:sort_criteria] = params
 //                        .require(:query)
-//                        .permit(sort_criteria: { '0' => [], '1' => [], '2' => [] })
+//                        .permit(sort_criteria: { "0" => [], "1" => [], "2" => [] })
 //    p[:sort_criteria].delete :sort_criteria
 //    p
 //  }
@@ -186,7 +186,7 @@ class PermittedParams {
 
 //   void user_update_as_admin(external_authentication, change_password_allowed) {
 //    // Found group_ids in safe_attributes and added them here as I
-//    // didn't know the consequences of removing these.
+//    // didn"t know the consequences of removing these.
 //    // They were not allowed on create.
 //    user_create_as_admin(external_authentication, change_password_allowed, [group_ids: []])
 //  }
@@ -328,7 +328,7 @@ class PermittedParams {
 //  }
 
 //   void attachments() {
-//    params.permit(attachments: %i[file description id])['attachments']
+//    params.permit(attachments: %i[file description id])["attachments"]
 //  }
 
 //   void enumerations() {
@@ -389,10 +389,10 @@ class PermittedParams {
 //    values = object[:custom_field_values] || ActionController::Parameters.new
 
 //    // only permit values following the schema
-//    // 'id as string' => 'value as string'
+//    // "id as string" => "value as string"
 //    values.reject! { |k, v| k.to_i < 1 || !v.is_a?(String) }
 
-//    values.empty? ? {} : { 'custom_field_values' => values.permit! }
+//    values.empty? ? {} : { "custom_field_values" => values.permit! }
 //  }
 
 //   void permitted_attributes(key, additions = {}) {
@@ -510,8 +510,8 @@ class PermittedParams {
 //          :subject,
 //          Proc.new { |args|
 //            // avoid costly allowed_to? if ( the param is not there at all) {
-//            if ( args[:params]['work_package'] &&) {
-//               args[:params]['work_package'].has_key?('watcher_user_ids') &&
+//            if ( args[:params]["work_package"] &&) {
+//               args[:params]["work_package"].has_key?("watcher_user_ids") &&
 //               args[:current_user].allowed_to?(:add_work_package_watchers, args[:project])
 
 //              { watcher_user_ids: [] }
@@ -519,8 +519,8 @@ class PermittedParams {
 //          },
 //          Proc.new { |args|
 //            // avoid costly allowed_to? if ( the param is not there at all) {
-//            if ( args[:params]['work_package'] &&) {
-//               args[:params]['work_package'].has_key?('time_entry') &&
+//            if ( args[:params]["work_package"] &&) {
+//               args[:params]["work_package"].has_key?("time_entry") &&
 //               args[:current_user].allowed_to?(:log_time, args[:project])
 
 //              { time_entry: %i[hours activity_id comments] }

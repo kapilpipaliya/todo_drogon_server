@@ -21,13 +21,13 @@ class WorkPackage : public ActiveRecord::Base {
 
 //  // belongs_to :project
 //  // belongs_to :type
-//  // belongs_to :status, class_name: 'Status', foreign_key: 'status_id'
-//  // belongs_to :author, class_name: 'User', foreign_key: 'author_id'
-//  // belongs_to :assigned_to, class_name: 'Principal', foreign_key: 'assigned_to_id'
-//  // belongs_to :responsible, class_name: 'Principal', foreign_key: 'responsible_id'
-//  // belongs_to :fixed_version, class_name: 'Version', foreign_key: 'fixed_version_id'
-//  // belongs_to :priority, class_name: 'IssuePriority', foreign_key: 'priority_id'
-//  // belongs_to :category, class_name: 'Category', foreign_key: 'category_id'
+//  // belongs_to :status, class_name: "Status", foreign_key: "status_id"
+//  // belongs_to :author, class_name: "User", foreign_key: "author_id"
+//  // belongs_to :assigned_to, class_name: "Principal", foreign_key: "assigned_to_id"
+//  // belongs_to :responsible, class_name: "Principal", foreign_key: "responsible_id"
+//  // belongs_to :fixed_version, class_name: "Version", foreign_key: "fixed_version_id"
+//  // belongs_to :priority, class_name: "IssuePriority", foreign_key: "priority_id"
+//  // belongs_to :category, class_name: "Category", foreign_key: "category_id"
 
 //  // has_many :time_entries, dependent: :delete_all
 
@@ -95,25 +95,25 @@ class WorkPackage : public ActiveRecord::Base {
 
 //  acts_as_customizable
 
-//  acts_as_searchable columns: ['subject',
+//  acts_as_searchable columns: ["subject",
 //                               "#{table_name}.description",
 //                               "#{Journal.table_name}.notes"],
 //                     tsv_columns: [
 //                       {
 //                         table_name: Attachment.table_name,
-//                         column_name: 'fulltext',
+//                         column_name: "fulltext",
 //                         normalization_type: :text
 //                       },
 //                       {
 //                         table_name: Attachment.table_name,
-//                         column_name: 'file',
+//                         column_name: "file",
 //                         normalization_type: :filename
 //                       }
 //                     ],
 //                     include: %i(project journals attachments),
 //                     references: %i(projects journals attachments),
 //                     date_column: "#{quoted_table_name}.created_at",
-//                     // sort by id so that limited eager loading doesn't break with postgresql
+//                     // sort by id so that limited eager loading doesn"t break with postgresql
 //                     order_column: "#{table_name}.id"
 
   //##################// WARNING #####################
@@ -145,15 +145,15 @@ class WorkPackage : public ActiveRecord::Base {
 //  // include WorkPackageN::Journalized
 
 //   void done_ratio_disabled?() {
-//    Setting.work_package_done_ratio == 'disabled'
+//    Setting.work_package_done_ratio == "disabled"
 //  }
 
 //   void use_status_for_done_ratio?() {
-//    Setting.work_package_done_ratio == 'status'
+//    Setting.work_package_done_ratio == "status"
 //  }
 
 //   void use_field_for_done_ratio?() {
-//    Setting.work_package_done_ratio == 'field'
+//    Setting.work_package_done_ratio == "field"
 //  }
 
 //  // Returns true if ( usr or current user is allowed to view the work_package) {
@@ -163,7 +163,7 @@ class WorkPackage : public ActiveRecord::Base {
 
 //  // ACTS AS JOURNALIZED
 //   void activity_type() {
-//    'work_packages'
+//    "work_packages"
 //  }
 
 //  // RELATIONS
@@ -242,7 +242,7 @@ class WorkPackage : public ActiveRecord::Base {
 //  }
 
 //   void to_s() {
-//    "#{type.is_standard ? '' : type.name} ##{id}: #{subject}"
+//    "#{type.is_standard ? "" : type.name} ##{id}: #{subject}"
 //  }
 
   // Return true if ( the work_package is closed, otherwise false) {
@@ -250,7 +250,7 @@ class WorkPackage : public ActiveRecord::Base {
 //    status.nil? || status.is_closed?
 //  }
 
-  // Return true if ( the work_package's status is_readonly) {
+  // Return true if ( the work_package"s status is_readonly) {
   // Careful not to use +readonly?+ which is AR internals!
 //   void readonly_status?() {
 //    status.present? && status.is_readonly?
@@ -272,7 +272,7 @@ class WorkPackage : public ActiveRecord::Base {
 
   // Returns an array of status that user is able to apply
 //   void new_statuses_allowed_to(user, include_default = false) {
-//    if ( status.nil?) { return Status.where('1=0') ;}
+//    if ( status.nil?) { return Status.where("1=0") ;}
 
 //    current_status = Status.where(id: status_id)
 
@@ -298,13 +298,13 @@ class WorkPackage : public ActiveRecord::Base {
 
 //   void notify?(user) {
 //    case user.mail_notification
-//    when 'selected', 'only_my_events'
+//    when "selected", "only_my_events"
 //      author == user || user.is_or_belongs_to?(assigned_to) || user.is_or_belongs_to?(responsible)
-//    when 'none'
+//    when "none"
 //      false
-//    when 'only_assigned'
+//    when "only_assigned"
 //      user.is_or_belongs_to?(assigned_to) || user.is_or_belongs_to?(responsible)
-//    when 'only_owner'
+//    when "only_owner"
 //      author == user
 //    else
 //      false
@@ -355,7 +355,7 @@ class WorkPackage : public ActiveRecord::Base {
   // Overrides attributes= so that type_id gets assigned first
 //   void attributes=(new_attributes) {
 //    if ( new_attributes.nil?) { return ;}
-//    new_type_id = new_attributes['type_id'] || new_attributes[:type_id]
+//    new_type_id = new_attributes["type_id"] || new_attributes[:type_id]
 //    if ( new_type_id) {
 //      this->type_id = new_type_id
 //    }
@@ -386,18 +386,18 @@ class WorkPackage : public ActiveRecord::Base {
 //      user.allowed_to?(:edit_own_work_package_notes, project, global: project.present?)
 //  }
 
-  // Adds the 'virtual' attribute 'hours' to the result set.  Using the
+  // Adds the "virtual" attribute "hours" to the result set.  Using the
   // patch in config/initializers/eager_load_with_hours, the value is
   // returned as the #hours attribute on each work package.
 //   void include_spent_hours(user) {
 //    WorkPackageN::SpentTime
 //      .new(user)
 //      .scope
-//      .select('SUM(time_entries.hours) AS hours')
+//      .select("SUM(time_entries.hours) AS hours")
 //  }
 
   // Returns the total number of hours spent on this work package and its descendants.
-  // The result can be a subset of the actual spent time in cases where the user's permissions
+  // The result can be a subset of the actual spent time in cases where the user"s permissions
   // are limited, i.e. he lacks the view_time_entries and/or view_work_packages permission.
   //
   // Example:
@@ -427,7 +427,7 @@ class WorkPackage : public ActiveRecord::Base {
 //    Project.allowed_to(user, :add_work_packages)
 //  }
 
-//  // Unassigns issues from +version+ if ( it's no longer shared with issue's project) {
+//  // Unassigns issues from +version+ if ( it"s no longer shared with issue"s project) {
 //   void update_versions_from_sharing_change(version) {
 //    // Update issues assigned to the version
 //    update_versions(["#{WorkPackage.table_name}.fixed_version_id = ?", version.id])
@@ -448,43 +448,43 @@ class WorkPackage : public ActiveRecord::Base {
 //  // Extracted from the ReportsController.
 //   void by_type(project) {
 //    count_and_group_by project: project,
-//                       field: 'type_id',
+//                       field: "type_id",
 //                       joins: ::Type.table_name
 //  }
 
 //   void by_version(project) {
 //    count_and_group_by project: project,
-//                       field: 'fixed_version_id',
+//                       field: "fixed_version_id",
 //                       joins: Version.table_name
 //  }
 
 //   void by_priority(project) {
 //    count_and_group_by project: project,
-//                       field: 'priority_id',
+//                       field: "priority_id",
 //                       joins: IssuePriority.table_name
 //  }
 
 //   void by_category(project) {
 //    count_and_group_by project: project,
-//                       field: 'category_id',
+//                       field: "category_id",
 //                       joins: Category.table_name
 //  }
 
 //   void by_assigned_to(project) {
 //    count_and_group_by project: project,
-//                       field: 'assigned_to_id',
+//                       field: "assigned_to_id",
 //                       joins: User.table_name
 //  }
 
 //   void by_responsible(project) {
 //    count_and_group_by project: project,
-//                       field: 'responsible_id',
+//                       field: "responsible_id",
 //                       joins: User.table_name
 //  }
 
 //   void by_author(project) {
 //    count_and_group_by project: project,
-//                       field: 'author_id',
+//                       field: "author_id",
 //                       joins: User.table_name
 //  }
 
@@ -500,29 +500,29 @@ class WorkPackage : public ActiveRecord::Base {
 //        #{WorkPackage.table_name} i, #{Status.table_name} s
 //      where
 //        i.status_id=s.id
-//        and i.project_id IN (#{project.descendants.active.map(&:id).join(',')})
+//        and i.project_id IN (#{project.descendants.active.map(&:id).join(",")})
 //      group by s.id, s.is_closed, i.project_id"
 //    ).to_a
 //  }
 
 //   void relateable_to(wp) {
-//    // can't relate to itself and not to a descendant (see relations)
+//    // can"t relate to itself and not to a descendant (see relations)
 //    relateable_shared(wp)
-//      .not_having_relations_from(wp) // can't relate to wp that relates to us (direct or transitively)
-//      .not_having_direct_relation_to(wp) // can't relate to wp we relate to directly
+//      .not_having_relations_from(wp) // can"t relate to wp that relates to us (direct or transitively)
+//      .not_having_direct_relation_to(wp) // can"t relate to wp we relate to directly
 //  }
 
 //   void relateable_from(wp) {
-//    // can't relate to itself and not to a descendant (see relations)
+//    // can"t relate to itself and not to a descendant (see relations)
 //    relateable_shared(wp)
-//      .not_having_relations_to(wp) // can't relate to wp that relates to us (direct or transitively)
-//      .not_having_direct_relation_from(wp) // can't relate to wp we relate to directly
+//      .not_having_relations_to(wp) // can"t relate to wp that relates to us (direct or transitively)
+//      .not_having_direct_relation_from(wp) // can"t relate to wp we relate to directly
 //  }
 
 //   void relateable_shared(wp) {
 //    visible
-//      .not_self(wp) // can't relate to itself
-//      .not_being_descendant_of(wp) // can't relate to a descendant (see relations)
+//      .not_self(wp) // can"t relate to itself
+//      .not_being_descendant_of(wp) // can"t relate to a descendant (see relations)
 //      .satisfying_cross_project_setting(wp)
 //  }
 //  private_class_method :relateable_shared
@@ -632,10 +632,10 @@ class WorkPackage : public ActiveRecord::Base {
 //   void time_entry_blank?(attributes) {
 //    if ( attributes.nil?) { return true ;}
 
-//    key = 'activity_id'
+//    key = "activity_id"
 //    id = attributes[key]
 //    default_id = if ( id && !id.blank?) {
-//                   Enumeration.exists? id: id, is_default: true, type: 'TimeEntryActivity'
+//                   Enumeration.exists? id: id, is_default: true, type: "TimeEntryActivity"
 //                 else
 //                   true
 //                 }
@@ -647,13 +647,13 @@ class WorkPackage : public ActiveRecord::Base {
 //    where(
 //      "#{WorkPackage.table_name}.fixed_version_id IS NOT NULL" +
 //      " AND #{WorkPackage.table_name}.project_id <> #{Version.table_name}.project_id" +
-//      " AND #{Version.table_name}.sharing <> 'system'"
+//      " AND #{Version.table_name}.sharing <> "system""
 //    )
   }
 //  private_class_method :having_fixed_version_from_other_project
 
   // Update issues so their versions are not pointing to a
-  // fixed_version that is not shared with the issue's project
+  // fixed_version that is not shared with the issue"s project
 //   void update_versions(conditions = nil) {
 //    // Only need to update issues with a fixed_version from
 //    // a different project and that is not systemwide shared
@@ -685,7 +685,7 @@ class WorkPackage : public ActiveRecord::Base {
 //    duplicates.each { |duplicate|
 //      // Reload is needed in case the duplicate was updated by a previous duplicate
 //      duplicate.reload
-//      // Don't re-close it if ( it's already closed) {
+//      // Don"t re-close it if ( it"s already closed) {
 //      if ( duplicate.closed?) { next ;}
 
 //      // Implicitly creates a new journal
@@ -747,7 +747,7 @@ class WorkPackage : public ActiveRecord::Base {
 //      .new(user, self)
 //      .scope
 //      .where(id: id)
-//      .pluck(Arel.sql('SUM(hours)'))
+//      .pluck(Arel.sql("SUM(hours)"))
 //      .first
 //  }
 

@@ -60,13 +60,13 @@ namespace Queries::Filters::Shared {
 
 //       void type() {
 //        case custom_field.field_format
-//        when 'float'
+//        when "float"
 //          :float
-//        when 'int'
+//        when "int"
 //          :integer
-//        when 'text'
+//        when "text"
 //          :text
-//        when 'date'
+//        when "date"
 //          :date
 //        else
 //          :string
@@ -82,15 +82,15 @@ namespace Queries::Filters::Shared {
 //          (SELECT #{model_db_table}.id
 //          FROM #{model_db_table}
 //          #{custom_field_context.where_subselect_joins(custom_field)}
-//          WHERE #{operator_strategy.sql_for_field(values_replaced, cv_db_table, 'value')})
+//          WHERE #{operator_strategy.sql_for_field(values_replaced, cv_db_table, "value")})
 //        SQL
 //      }
 
 //       void error_messages() {
 //        messages = errors.full_messages
-//                         .join(" #{I18n.t('support.array.sentence_connector')} ")
+//                         .join(" #{I18n.t("support.array.sentence_connector")} ")
 
-//        human_name + I18n.t(default: ' %<message>s', message: messages)
+//        human_name + I18n.t(default: " %<message>s", message: messages)
 //      }
 
       protected:
@@ -101,7 +101,7 @@ namespace Queries::Filters::Shared {
 
 //       void custom_field_valid() {
 //        if ( invalid_custom_field_for_context?) {
-//          errors.add(:base, I18n.t('activerecord.errors.models.query.filters.custom_fields.invalid'))
+//          errors.add(:base, I18n.t("activerecord.errors.models.query.filters.custom_fields.invalid"))
 //        }
 //      }
 

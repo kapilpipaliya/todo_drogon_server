@@ -4,9 +4,9 @@ namespace openproj {
 namespace models {
 class Workflow : public ActiveRecord::Base {
   // belongs_to :role
-  // belongs_to :old_status, class_name: 'Status', foreign_key: 'old_status_id'
-  // belongs_to :new_status, class_name: 'Status', foreign_key: 'new_status_id'
-  // belongs_to :type, inverse_of: 'workflows'
+  // belongs_to :old_status, class_name: "Status", foreign_key: "old_status_id"
+  // belongs_to :new_status, class_name: "Status", foreign_key: "new_status_id"
+  // belongs_to :type, inverse_of: "workflows"
 
   // validates_presence_of :role, :old_status, :new_status
 
@@ -14,15 +14,15 @@ class Workflow : public ActiveRecord::Base {
    void count_by_type_and_role() {
 //    counts = connection
 //             .select_all("SELECT role_id, type_id, count(id) AS c FROM #{Workflow.table_name} GROUP BY role_id, type_id")
-//    roles = Role.order(Arel.sql('builtin, position'))
-//    types = ::Type.order(Arel.sql('position'))
+//    roles = Role.order(Arel.sql("builtin, position"))
+//    types = ::Type.order(Arel.sql("position"))
 
 //    result = []
 //    types.each { |type|
 //      t = []
 //      roles.each { |role|
-//        row = counts.detect { |c| c['role_id'].to_s == role.id.to_s && c['type_id'].to_s == type.id.to_s }
-//        t << [role, (row.nil? ? 0 : row['c'].to_i)]
+//        row = counts.detect { |c| c["role_id"].to_s == role.id.to_s && c["type_id"].to_s == type.id.to_s }
+//        t << [role, (row.nil? ? 0 : row["c"].to_i)]
 //      }
 //      result << [type, t]
 //    }
@@ -67,7 +67,7 @@ class Workflow : public ActiveRecord::Base {
   // Copies workflows from source to targets
 //   void copy(source_type, source_role, target_types, target_roles) {
 //    unless source_type.is_a?(::Type) || source_role.is_a?(Role)
-//      raise ArgumentError.new('source_type or source_role must be specified')
+//      raise ArgumentError.new("source_type or source_role must be specified")
 //    }
 
 //    target_types = Array(target_types)
@@ -93,7 +93,7 @@ class Workflow : public ActiveRecord::Base {
 //           target_type.is_a?(::Type) && !target_type.new_record? &&
 //           target_role.is_a?(Role) && !target_role.new_record?
 
-//      raise ArgumentError.new('arguments can not be nil or unsaved objects')
+//      raise ArgumentError.new("arguments can not be nil or unsaved objects")
 //    }
 
 //    if ( source_type == target_type && source_role == target_role) {

@@ -2,7 +2,7 @@ namespace openproj {
 namespace helper {
 namespace RepositoriesHelper {
 //   void settings_repository_tab_path() {
-//    settings_project_path(this->project, tab: 'repository')
+//    settings_project_path(this->project, tab: "repository")
 //  }
 
 //   void format_revision(revision) {
@@ -16,36 +16,36 @@ namespace RepositoriesHelper {
   //
   // Format revision commits with plain formatter
 //   void format_revision_text(commit_message) {
-//    format_text(commit_message, format: 'plain')
+//    format_text(commit_message, format: "plain")
 //  }
 
 //   void truncate_at_line_break(text, length = 255) {
 //    if ( text) {
-//      text.gsub(%r{^(.{#{length}}[^\n]*)\n.+$}m, '\\1...')
+//      text.gsub(%r{^(.{#{length}}[^\n]*)\n.+$}m, "\\1...")
 //    }
 //  }
 
 //   void render_properties(properties) {
 //    unless properties.nil? || properties.empty?
-//      content = ''
+//      content = ""
 //      properties.keys.sort.each { |property|
-//        content << content_tag('li', raw("<b>#{h property}</b>: <span>#{h properties[property]}</span>"))
+//        content << content_tag("li", raw("<b>#{h property}</b>: <span>#{h properties[property]}</span>"))
 //      }
-//      content_tag('ul', content.html_safe, class: 'properties')
+//      content_tag("ul", content.html_safe, class: "properties")
 //    }
 //  }
 
 //   void render_changeset_changes() {
-//    changes = this->changeset.file_changes.limit(1000).order(Arel.sql('path')).map { |change|
+//    changes = this->changeset.file_changes.limit(1000).order(Arel.sql("path")).map { |change|
 //      case change.action
-//      when 'A'
+//      when "A"
 //        // Detects moved/copied files
 //        if ( !change.from_path.blank?) {
-//          action = this->changeset.file_changes.detect { |c| c.action == 'D' && c.path == change.from_path }
-//          change.action = action ? 'R' : 'C'
+//          action = this->changeset.file_changes.detect { |c| c.action == "D" && c.path == change.from_path }
+//          change.action = action ? "R" : "C"
 //        }
 //        change
-//      when 'D'
+//      when "D"
 //        this->changeset.file_changes.detect { |c| c.from_path == change.path } ? nil : change
 //      else
 //        change
@@ -55,8 +55,8 @@ namespace RepositoriesHelper {
 //    tree = {}
 //    changes.each { |change|
 //      p = tree
-//      dirs = change.path.to_s.split('/').select { |d| !d.blank? }
-//      path = ''
+//      dirs = change.path.to_s.split("/").select { |d| !d.blank? }
+//      path = ""
 //      dirs.each { |dir|
 //        path += with_leading_slash(dir)
 //        p[:s] ||= {}
@@ -73,8 +73,8 @@ namespace RepositoriesHelper {
   // Mapping from internal action to (folder|file)-icon type
 //   void change_action_mapping() {
 //    {
-//      'A' => :add,
-//      'B' => :remove
+//      "A" => :add,
+//      "B" => :remove
 //    }
 //  }
 
@@ -92,14 +92,14 @@ namespace RepositoriesHelper {
 //  }
 
 //   void render_changes_tree(tree) {
-//    if ( tree.nil?) { return '' ;}
+//    if ( tree.nil?) { return "" ;}
 
-//    output = '<ul>'
+//    output = "<ul>"
 //    tree.keys.sort.each { |file|
-//      style = 'change'
+//      style = "change"
 //      text = File.basename(file)
 //      if ( s = tree[file][:s]) {
-//        style << ' folder'
+//        style << " folder"
 //        path_param = without_leading_slash(to_path_param(this->repository.relative_path(file)))
 //        text = link_to(h(text),
 //                       show_revisions_path_project_repository_path(project_id: this->project,
@@ -107,13 +107,13 @@ namespace RepositoriesHelper {
 //                                                                   rev: this->changeset.identifier),
 //                       title: l(:label_folder))
 
-//        output << "<li class='#{style} icon icon-folder-#{calculate_folder_action(s)}'>#{text}</li>"
+//        output << "<li class="#{style} icon icon-folder-#{calculate_folder_action(s)}">#{text}</li>"
 //        output << render_changes_tree(s)
 //      } else if ( c = tree[file][:c]) {
 //        style << " change-#{c.action}"
 //        path_param = without_leading_slash(to_path_param(this->repository.relative_path(c.path)))
 
-//        unless c.action == 'D'
+//        unless c.action == "D"
 //          title_text = changes_tree_change_title c.action
 
 //          text = link_to(h(text),
@@ -125,19 +125,19 @@ namespace RepositoriesHelper {
 
 //        text << raw(" - #{h(c.revision)}") unless c.revision.blank?
 
-//        if ( c.action == 'M') {
-//          text << raw(' (' + link_to(l(:label_diff),
+//        if ( c.action == "M") {
+//          text << raw(" (" + link_to(l(:label_diff),
 //                                     diff_revision_project_repository_path(project_id: this->project,
 //                                                                           repo_path: path_param,
-//                                                                           rev: this->changeset.identifier)) + ') ')
+//                                                                           rev: this->changeset.identifier)) + ") ")
 //        }
 
-//        text << raw(' ' + content_tag('span', h(c.from_path), class: 'copied-from')) unless c.from_path.blank?
+//        text << raw(" " + content_tag("span", h(c.from_path), class: "copied-from")) unless c.from_path.blank?
 
 //        output << changes_tree_li_element(c.action, text, style)
 //      }
 //    }
-//    output << '</ul>'
+//    output << "</ul>"
 //    output.html_safe
 //  }
 
@@ -145,7 +145,7 @@ namespace RepositoriesHelper {
 //    if ( str.nil?) { return str ;}
 //    str = to_utf8_internal(str)
 //    if ( str.respond_to?(:force_encoding)) {
-//      str.force_encoding('UTF-8')
+//      str.force_encoding("UTF-8")
 //    }
 //    str
 //  }
@@ -153,17 +153,17 @@ namespace RepositoriesHelper {
 //   void to_utf8_internal(str) {
 //    if ( str.nil?) { return str ;}
 //    if ( str.respond_to?(:force_encoding)) {
-//      str.force_encoding('ASCII-8BIT')
+//      str.force_encoding("ASCII-8BIT")
 //    }
 //    if ( str.empty?) { return str ;}
 //    if ( /\A[\r\n\t\x20-\x7e]*\Z/n.match(str) // for us-ascii) { return str ;}
 //    if ( str.respond_to?(:force_encoding)) {
-//      str.force_encoding('UTF-8')
+//      str.force_encoding("UTF-8")
 //    }
-//    this->encodings ||= Setting.repositories_encodings.split(',').map(&:strip)
+//    this->encodings ||= Setting.repositories_encodings.split(",").map(&:strip)
 //    this->encodings.each { |encoding|
 //      begin
-//        return str.to_s.encode('UTF-8', encoding)
+//        return str.to_s.encode("UTF-8", encoding)
 //      rescue Encoding::InvalidByteSequenceError, Encoding::UndefinedConversionError
 //        // do nothing here and try the next encoding
 //      }
@@ -176,15 +176,15 @@ namespace RepositoriesHelper {
 //   void replace_invalid_utf8(str) {
 //    if ( str.nil?) { return str ;}
 //    if ( str.respond_to?(:force_encoding)) {
-//      str.force_encoding('UTF-8')
+//      str.force_encoding("UTF-8")
 //      if ( !str.valid_encoding?) {
 //        str = str.encode("US-ASCII", invalid: :replace,
-//                         undef: :replace, replace: '?').encode("UTF-8")
+//                         undef: :replace, replace: "?").encode("UTF-8")
 //      }
 //    else
 //      // removes invalid UTF8 sequences
 //      begin
-//        (str + '  ').encode('UTF-8', invalid: :replace, undef: :replace, replace: '?')[0..-3]
+//        (str + "  ").encode("UTF-8", invalid: :replace, undef: :replace, replace: "?")[0..-3]
 //      rescue Encoding::InvalidByteSequenceError, Encoding::UndefinedConversionError
 //      }
 //    }
@@ -212,19 +212,19 @@ namespace RepositoriesHelper {
 //   void default_selected_option() {
 //    [
 //      "--- #{l(:actionview_instancetag_blank_option)} ---",
-//      '',
+//      "",
 //      { disabled: true, selected: true }
 //    ]
 //  }
 
 //   void scm_vendor_tag(repository) {
-//    select_tag('scm_vendor',
+//    select_tag("scm_vendor",
 //               scm_options(repository),
-//               class: 'form--select repositories--remote-select',
+//               class: "form--select repositories--remote-select",
 //               data: {
-//                 url: url_for(controller: '/project_settings',
-//                              action: 'show',
-//                              tab: 'repository',
+//                 url: url_for(controller: "/project_settings",
+//                              action: "show",
+//                              tab: "repository",
 //                              project_id: this->project.id),
 //               },
 //               disabled: (repository && !repository.new_record?)
@@ -232,7 +232,7 @@ namespace RepositoriesHelper {
 //  }
 
 //   void git_path_encoding_options(repository) {
-//    default = repository.new_record? ? 'UTF-8' : repository.path_encoding
+//    default = repository.new_record? ? "UTF-8" : repository.path_encoding
 //    options_for_select(Setting::ENCODINGS, default)
 //  }
 
@@ -246,22 +246,22 @@ namespace RepositoriesHelper {
 //  }
 
 //   void with_leading_slash(path) {
-//    path.to_s.starts_with?('/') ? path : "/#{path}"
+//    path.to_s.starts_with?("/") ? path : "/#{path}"
 //  }
 
 //   void without_leading_slash(path) {
-//    path.gsub(%r{\A/+}, '')
+//    path.gsub(%r{\A/+}, "")
 //  }
 
 //   void changes_tree_change_title(action) {
 //    case action
-//    when 'A'
+//    when "A"
 //      l(:label_added)
-//    when 'D'
+//    when "D"
 //      l(:label_deleted)
-//    when 'C'
+//    when "C"
 //      l(:label_copied)
-//    when 'R'
+//    when "R"
 //      l(:label_renamed)
 //    else
 //      l(:label_modified)
@@ -270,20 +270,20 @@ namespace RepositoriesHelper {
 
 //   void changes_tree_li_element(action, text, style) {
 //    icon_name = case action
-//                when 'A'
-//                  'icon-add'
-//                when 'D'
-//                  'icon-delete'
-//                when 'C'
-//                  'icon-copy'
-//                when 'R'
-//                  'icon-rename'
+//                when "A"
+//                  "icon-add"
+//                when "D"
+//                  "icon-delete"
+//                when "C"
+//                  "icon-copy"
+//                when "R"
+//                  "icon-rename"
 //                else
-//                  'icon-arrow-left-right'
+//                  "icon-arrow-left-right"
 //                }
 
-//    "<li class='#{style} icon #{icon_name}'
-//         title='#{changes_tree_change_title(action)}'>#{text}</li>"
+//    "<li class="#{style} icon #{icon_name}"
+//         title="#{changes_tree_change_title(action)}">#{text}</li>"
 //  }
 }
 }

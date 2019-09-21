@@ -3,10 +3,10 @@
 namespace openproj {
 namespace models {
 class Color : public ActiveRecord::Base {
-//  this->table_name = 'colors'
+//  this->table_name = "colors"
 
-  // has_many :planning_element_types, class_name:  'Type',
-//                                    foreign_key: 'color_id',
+  // has_many :planning_element_types, class_name:  "Type",
+//                                    foreign_key: "color_id",
 //                                    dependent:   :nullify
 
 //  before_validation :normalize_hexcode
@@ -19,7 +19,7 @@ class Color : public ActiveRecord::Base {
   //
   // Returns the best contrasting color, either white or black
   // depending on the overall brightness.
-//   void contrasting_color(light_color: '#FFFFFF', dark_color: '#333333') {
+//   void contrasting_color(light_color: "#FFFFFF", dark_color: "#333333") {
 //    if ( bright?) {
 //      dark_color
 //    else
@@ -31,11 +31,11 @@ class Color : public ActiveRecord::Base {
   // Get the fill style for this color.
   // If the color is light, use a dark font.
   // Otherwise, use a white font.
-//   void color_styles(light_color: '#FFFFFF', dark_color: '#333333') {
+//   void color_styles(light_color: "#FFFFFF", dark_color: "#333333") {
 //    if ( bright?) {
-//      { color: dark_color, 'background-color': hexcode }
+//      { color: dark_color, "background-color": hexcode }
 //    else
-//      { color: light_color, 'background-color': hexcode }
+//      { color: light_color, "background-color": hexcode }
 //    }
 //  }
 
@@ -65,7 +65,7 @@ class Color : public ActiveRecord::Base {
   // Splits the hexcode into rbg color array
 //   void rgb_colors() {
 //    hexcode
-//      .gsub('#', '') // Remove trailing #
+//      .gsub("#", "") // Remove trailing #
 //      .scan(/../) // Pair hex chars
 //      .map { |c| c.hex } // to int
 //  }
@@ -76,12 +76,12 @@ class Color : public ActiveRecord::Base {
 //    if ( hexcode.present? and hexcode_changed?) {
 //      this->hexcode = hexcode.strip.upcase
 
-//      unless hexcode.starts_with? '#'
-//        this->hexcode = '#' + hexcode
+//      unless hexcode.starts_with? "#"
+//        this->hexcode = "#" + hexcode
 //      }
 
 //      if ( hexcode.size == 4  // =~ /#.../) {
-//        this->hexcode = hexcode.gsub(/([^#])/, '\1\1')
+//        this->hexcode = hexcode.gsub(/([^#])/, "\1\1")
 //      }
 //    }
 //  }

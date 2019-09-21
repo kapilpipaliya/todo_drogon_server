@@ -41,7 +41,7 @@ public:
 //  }
 
 //   void prepare_menu_item(query) {
-//    if ( query.changes.include?('name') &&) {
+//    if ( query.changes.include?("name") &&) {
 //       query.query_menu_item
 
 //      // menu_item = query.query_menu_item

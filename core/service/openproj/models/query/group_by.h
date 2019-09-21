@@ -45,7 +45,7 @@ namespace QueryN::Grouping {
 
 //   void pluck_for_count() {
 //    Array(query.group_by_statement).map { |statement| Arel.sql(statement) } +
-//      [Arel.sql('COUNT(DISTINCT "work_packages"."id")')]
+//      [Arel.sql("COUNT(DISTINCT "work_packages"."id")")]
 //  }
 
 //   void order_for_count() {
@@ -75,7 +75,7 @@ namespace QueryN::Grouping {
 
 //    groups.transform_keys { |key|
 //      if ( custom_field.multi_value?) {
-//        key.split('.').map { |subkey|
+//        key.split(".").map { |subkey|
 //          options[subkey].first
 //        }
 //      else
@@ -85,7 +85,7 @@ namespace QueryN::Grouping {
 //  }
 
 //   void custom_options_for_keys(custom_field, groups) {
-//    keys = groups.keys.map { |k| k.split('.') }
+//    keys = groups.keys.map { |k| k.split(".") }
 //    // Because of multi select cfs we might } up having overlapping groups
 //    // (e.g group "1" and group "1.3" and group "3" which represent concatenated ids).
 //    // This can result in us having ids in the keys array multiple times (e.g. ["1", "1", "3", "3"]).
@@ -126,7 +126,7 @@ namespace QueryN::Grouping {
 //        direction = order ? order_for_group_by(column) : nil
 
 //        aliased_group_by_sort_order(aliases[column.name], s, direction)
-//      }.join(', ')
+//      }.join(", ")
 //    }
 //  }
 

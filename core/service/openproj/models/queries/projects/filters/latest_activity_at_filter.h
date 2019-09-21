@@ -25,7 +25,7 @@ class LatestActivityAtFilter : public openproj::models::Queries::Projects::Filte
 //  }
 
    void human_name() {
-//    I18n.t('activerecord.attributes.project.latest_activity_at')
+//    I18n.t("activerecord.attributes.project.latest_activity_at")
   }
 
    void where() {

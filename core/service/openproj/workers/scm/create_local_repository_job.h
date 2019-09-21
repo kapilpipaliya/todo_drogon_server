@@ -16,7 +16,7 @@ public:
 //    // Cowardly refusing to override existing local repository
 //    if ( File.directory?(repository.root_url)) {
 //      raise OpenProject::Scm::Exceptions::ScmError.new(
-//        I18n.t('repositories.errors.exists_on_filesystem')
+//        I18n.t("repositories.errors.exists_on_filesystem")
 //      )
 //    }
 

@@ -23,7 +23,7 @@ public:
 //      respond_to { |format|
 //        format.html {
 //          flash[:notice] = l(:notice_successful_create)
-//          redirect_to controller: '/project_settings', action: 'show', tab: 'categories', id: this->project
+//          redirect_to controller: "/project_settings", action: "show", tab: "categories", id: this->project
 //        }
 //        format.js {
 //          render locals: { project: this->project, category: this->category }
@@ -35,7 +35,7 @@ public:
 //          render action: :new
 //        }
 //        format.js {
-//          render(:update) { |page| page.alert(this->category.errors.full_messages.join('\n')) }
+//          render(:update) { |page| page.alert(this->category.errors.full_messages.join("\n")) }
 //        }
 //      }
 //    }
@@ -45,9 +45,9 @@ public:
 //    this->category.attributes = permitted_params.category
 //    if ( this->category.save) {
 //      flash[:notice] = l(:notice_successful_update)
-//      redirect_to controller: '/project_settings', action: 'show', tab: 'categories', id: this->project
+//      redirect_to controller: "/project_settings", action: "show", tab: "categories", id: this->project
 //    else
-//      render action: 'edit'
+//      render action: "edit"
 //    }
   }
 
@@ -56,12 +56,12 @@ public:
 //    if ( this->issue_count == 0) {
 //      // No issue assigned to this category
 //      this->category.destroy
-//      redirect_to controller: '/project_settings', action: 'show', id: this->project, tab: 'categories'
+//      redirect_to controller: "/project_settings", action: "show", id: this->project, tab: "categories"
 //      return
 //    } else if ( params[:todo]) {
-//      if ( params[:todo] == 'reassign') { reassign_to = this->project.categories.find_by(id: params[:reassign_to_id]) ;}
+//      if ( params[:todo] == "reassign") { reassign_to = this->project.categories.find_by(id: params[:reassign_to_id]) ;}
 //      this->category.destroy(reassign_to)
-//      redirect_to controller: '/project_settings', action: 'show', id: this->project, tab: 'categories'
+//      redirect_to controller: "/project_settings", action: "show", id: this->project, tab: "categories"
 //      return
 //    }
 //    this->categories = this->project.categories - [this->category]
@@ -69,7 +69,7 @@ public:
 
   private:
 
-  // Wrap ApplicationController's find_model_object method to set
+  // Wrap ApplicationController"s find_model_object method to set
   // this->category instead of just this->category
    void find_model_object() {
 //    super

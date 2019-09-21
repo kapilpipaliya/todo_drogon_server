@@ -21,7 +21,7 @@ class PrincipalFilter : public openproj::models::Queries::Projects::Filters::Pro
   }
 
    void where() {
-//    operator_strategy.sql_for_field(values, 'members', 'user_id')
+//    operator_strategy.sql_for_field(values, "members", "user_id")
   }
 };
 }

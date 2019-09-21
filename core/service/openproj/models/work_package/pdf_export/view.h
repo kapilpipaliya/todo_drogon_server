@@ -27,7 +27,7 @@ class View {
 //    this->document ||= Prawn::Document.new(options.merge(info: info)).tap { |document|
 //      register_fonts! document
 
-//      document.set_font document.font('NotoSans')
+//      document.set_font document.font("NotoSans")
 //      document.fallback_fonts = fallback_fonts
 //    }
 //  }
@@ -37,24 +37,24 @@ class View {
 //  }
 
 //   void register_fonts!(document) {
-//    font_path = Rails.root.join('public/fonts')
+//    font_path = Rails.root.join("public/fonts")
 
-//    document.font_families['NotoSans'] = {
+//    document.font_families["NotoSans"] = {
 //      normal: {
-//        file: font_path.join('noto/NotoSans-Regular.ttf'),
-//        font: 'NotoSans-Regular'
+//        file: font_path.join("noto/NotoSans-Regular.ttf"),
+//        font: "NotoSans-Regular"
 //      },
 //      italic: {
-//        file: font_path.join('noto/NotoSans-Italic.ttf'),
-//        font: 'NotoSans-Italic'
+//        file: font_path.join("noto/NotoSans-Italic.ttf"),
+//        font: "NotoSans-Italic"
 //      },
 //      bold: {
-//        file: font_path.join('noto/NotoSans-Bold.ttf'),
-//        font: 'NotoSans-Bold'
+//        file: font_path.join("noto/NotoSans-Bold.ttf"),
+//        font: "NotoSans-Bold"
 //      },
 //      bold_italic: {
-//        file: font_path.join('noto/NotoSans-BoldItalic.ttf'),
-//        font: 'NotoSans-BoldItalic'
+//        file: font_path.join("noto/NotoSans-BoldItalic.ttf"),
+//        font: "NotoSans-BoldItalic"
 //      }
 //    }
 //  }
@@ -68,7 +68,7 @@ class View {
 //  }
 
 //   void font(name: nil, style: nil, size: nil) {
-//    name ||= document.font.basename.split('-').first // e.g. NotoSans-Bold => NotoSans
+//    name ||= document.font.basename.split("-").first // e.g. NotoSans-Bold => NotoSans
 //    font_opts = {}
 //    if ( style) { font_opts[:style] = style ;}
 

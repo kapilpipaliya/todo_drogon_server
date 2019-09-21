@@ -7,7 +7,7 @@ class BaseJournal : public ActiveRecord::Base {
 //  this->abstract_class = true
 
   // belongs_to :journal
-  // belongs_to :author, class_name: 'User', foreign_key: :author_id
+  // belongs_to :author, class_name: "User", foreign_key: :author_id
 
    void journaled_attributes() {
 //    attributes.symbolize_keys.select { |k, _| this->class.journaled_attributes.include? k }

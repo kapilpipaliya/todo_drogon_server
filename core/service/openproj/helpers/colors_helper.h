@@ -12,7 +12,7 @@ namespace ColorsHelper {
 //      options[:data] = {
 //        color: c.hexcode,
 //        bright: c.bright?,
-//        background: c.contrasting_color(light_color: 'transparent')
+//        background: c.contrasting_color(light_color: "transparent")
 //      }
 //      options[:selected] = true if ( c.id == colored_thing.color_id) {
 
@@ -26,7 +26,7 @@ namespace ColorsHelper {
 //  }
 
 //   void darken_color(hex_color, amount = 0.4) {
-//    hex_color = hex_color.delete('#')
+//    hex_color = hex_color.delete("#")
 //    rgb = hex_color.scan(/../).map(&:hex)
 //    rgb[0] = (rgb[0].to_i * amount).round
 //    rgb[1] = (rgb[1].to_i * amount).round
@@ -35,9 +35,9 @@ namespace ColorsHelper {
 //  }
 
 //   void colored_text(color) {
-//    background = color.contrasting_color(dark_color: '#333', light_color: 'transparent')
+//    background = color.contrasting_color(dark_color: "#333", light_color: "transparent")
 //    style = "background-color: #{background}; color: #{color.hexcode}"
-//    content_tag(:span, color.hexcode, class: 'color--text-preview', style: style)
+//    content_tag(:span, color.hexcode, class: "color--text-preview", style: style)
 //  }
 
   //
@@ -66,10 +66,10 @@ namespace ColorsHelper {
 
 //      styles = color.color_styles
 
-//      background_style = styles.map { |k,v| "#{k}:#{v} !important"}.join(';')
-//      border_color = color.bright? ? '#555555' : color.hexcode
+//      background_style = styles.map { |k,v| "#{k}:#{v} !important"}.join(";")
+//      border_color = color.bright? ? "#555555" : color.hexcode
 
-//      if ( name === 'type') {
+//      if ( name === "type") {
 //        concat ".__hl_inline_#{name}_#{entry.id} { color: #{color.hexcode} !important;}"
 //        concat ".__hl_inline_#{name}_#{entry.id} { -webkit-text-stroke: 0.5px grey;}" if ( color.super_bright?) {
 //      else
@@ -89,11 +89,11 @@ namespace ColorsHelper {
 //   void icon_for_color(color, options = {}) {
 //    return unless color
 
-//    options.merge! class: 'color--preview ' + options[:class].to_s,
+//    options.merge! class: "color--preview " + options[:class].to_s,
 //                   title: color.name,
 //                   style: "background-color: #{color.hexcode};" + options[:style].to_s
 
-//    content_tag(:span, ' ', options)
+//    content_tag(:span, " ", options)
 //  }
 }
 }

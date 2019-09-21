@@ -11,7 +11,7 @@ namespace BasicData {
 class DocumentCategorySeeder : public seeder::BasicData::DocumentCategorySeeder {
  public:
   std::vector<row> data() {
-    //['documentation', 'specification', 'other']
+    //["documentation", "specification", "other"]
 
     // todo: doing batch search is good too here for color_id;
     data_.insert(data_.end(),

@@ -19,7 +19,7 @@ namespace UserConsentHelper {
 
    bool consent_configured() {
 //    if ( Setting.consent_info.count == 0) {
-//      Rails.logger.error 'Instance is configured to require consent, but no consent_info has been set.'
+//      Rails.logger.error "Instance is configured to require consent, but no consent_info has been set."
 
 //      false
 //    else

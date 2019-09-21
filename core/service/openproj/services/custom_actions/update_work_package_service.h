@@ -63,7 +63,7 @@ public:
 //  }
 
 //   void append_id(sym) {
-//    sym.to_s.chomp('_id') + '_id'
+//    sym.to_s.chomp("_id") + "_id"
 //  }
 };
 }

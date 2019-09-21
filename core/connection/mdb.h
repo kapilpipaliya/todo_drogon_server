@@ -82,7 +82,7 @@ class M_DB {
                           // with the given column number. Column num- bers
                           // start at 0. PQfsize returns the space allocated for
                           // this column in a database row, in other words the
-                          // size of the server's internal representation of the
+                          // size of the server"s internal representation of the
                           // data type. (Accordingly, it is not really very
                           // useful to clients.) A negative value indicates the
                           // data type is variable-length.

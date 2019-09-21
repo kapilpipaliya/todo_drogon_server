@@ -6,11 +6,11 @@ namespace Reports{
 class AssigneeReport : public Report {
 public:
    void report_type() {
-//    'assigned_to'
+//    "assigned_to"
   }
 
    void field() {
-//    this->field ||= 'assigned_to_id'
+//    this->field ||= "assigned_to_id"
   }
 
    void rows() {

@@ -17,7 +17,7 @@ public:
 
 //    this->journal = find_aggregated_journal
 
-//    // If we can't find the aggregated journal, it was superseded by a journal that aggregated ours.
+//    // If we can"t find the aggregated journal, it was superseded by a journal that aggregated ours.
 //    // In that case a job for the new journal will have been enqueued that is now responsible for
 //    // sending the notification. Our job here is done.
 //    return nil unless this->journal
@@ -77,7 +77,7 @@ public:
 //      if ( this->journal.details[field].try(:any?)) {
 //        from = this->journal.details[field].first
 //        to = this->journal.details[field].second
-//        potential_text << "\n" + Redmine::Helpers::Diff.new(to, from).additions.join(' ')
+//        potential_text << "\n" + Redmine::Helpers::Diff.new(to, from).additions.join(" ")
 //      }
 //    }
 //    potential_text

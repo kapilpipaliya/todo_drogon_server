@@ -6,9 +6,9 @@ namespace WorkPackageN::Parent {
 //    if (: :saved_change_to_parent_id?) { base.after_save :update_parent_relation, ;}
 //    base.include Concerns::VirtualAttribute
 
-//    base.virtual_attribute 'parent_id', cast_type: :integer
+//    base.virtual_attribute "parent_id", cast_type: :integer
 
-//    base.define_attribute_method 'parent'
+//    base.define_attribute_method "parent"
 
 //    base.scope :with_parent, ->(*args) {
 //      opts = Hash(args.first)
@@ -121,14 +121,14 @@ namespace WorkPackageN::Parent {
 
    void parent_from_relation() {
 //    if ( parent_relation && ((this->parent_id && parent_relation.from.id == this->parent_id) || !this->parent_id)) {
-//      set_virtual_attribute_was('parent_id', parent_relation.from_id)
+//      set_virtual_attribute_was("parent_id", parent_relation.from_id)
 //      this->parent_object = parent_relation.from
 //    }
   }
 
    void parent_from_id() {
 //    if ( this->parent_id) {
-//      set_virtual_attribute_was('parent_id', this->parent_id)
+//      set_virtual_attribute_was("parent_id", this->parent_id)
 //      this->parent_object = WorkPackage.find(this->parent_id)
 //    }
   }

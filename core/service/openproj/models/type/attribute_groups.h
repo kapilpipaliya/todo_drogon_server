@@ -32,7 +32,7 @@ namespace TypeN::AttributeGroups {
 //        estimates_and_time: :label_estimates_and_time,
 //        details: :label_details,
 //        other: :label_other,
-//        children: :'activerecord.attributes.work_package.children'
+//        children: :"activerecord.attributes.work_package.children"
 //      }
 //    }
 //  }
@@ -48,7 +48,7 @@ namespace TypeN::AttributeGroups {
 //    // Add a mapping from attribute key to an existing default group
 //     void add_default_mapping(group, *keys) {
 //      unless default_groups.include? group
-//        raise ArgumentError, "Can't add mapping for '#{keys.inspect}'. Unknown default group '#{group}'."
+//        raise ArgumentError, "Can"t add mapping for "#{keys.inspect}". Unknown default group "#{group}"."
 //      }
 
 //      keys.each { |key|

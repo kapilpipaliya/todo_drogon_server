@@ -6,12 +6,12 @@ namespace DevelopmentData {
 class UsersSeeder : public Seeder {
  public:
   void seed_data() {
-    //      puts 'Seeding development users ...'
+    //      puts "Seeding development users ..."
     //      user_names.each { |login|
     //        user = new_user login.to_s
 
     //        if ( login == :admin_de) {
-    //          user.language = 'de'
+    //          user.language = "de"
     //          user.admin = true
     //        }
 
@@ -32,7 +32,7 @@ class UsersSeeder : public Seeder {
   bool seed_users_disabled() {
     //      off_values = ["off", "false", "no", "0"]
 
-    //      off_values.include? ENV['OP_DEV_USER_SEEDER_ENABLED']
+    //      off_values.include? ENV["OP_DEV_USER_SEEDER_ENABLED"]
   }
 
   void user_names() {
@@ -40,9 +40,9 @@ class UsersSeeder : public Seeder {
   }
 
   void not_applicable_message() {
-    //      msg = 'Not seeding development users.'
-    //      if ( seed_users_disabled?) { msg << ' seed users disabled through
-    //      ENV' ;}
+    //      msg = "Not seeding development users."
+    //      if ( seed_users_disabled?) { msg << " seed users disabled through
+    //      ENV" ;}
 
     //      msg
   }
@@ -52,7 +52,7 @@ class UsersSeeder : public Seeder {
   //        user.login = login
   //        user.password = login
   //        user.firstname = login.humanize
-  //        user.lastname = 'DEV user'
+  //        user.lastname = "DEV user"
   //        user.mail = "#{login}@example.net"
   //        user.status = UserN::STATUSES[:active]
   //        user.language = I18n.locale
@@ -61,7 +61,7 @@ class UsersSeeder : public Seeder {
   //    }
 
   bool force_password_change() {
-    //      Rails.env != 'development' && !force_password_change_disabled?
+    //      Rails.env != "development" && !force_password_change_disabled?
   }
 
   bool force_password_change_disabled() {

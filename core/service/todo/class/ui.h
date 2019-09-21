@@ -115,7 +115,7 @@ class UI {
    *
    * This shows the top of the box.
    */
-  // static void show_box_top($title = '', $class = '');
+  // static void show_box_top($title = "", $class = "");
   /**
    * show_box_bottom
    *

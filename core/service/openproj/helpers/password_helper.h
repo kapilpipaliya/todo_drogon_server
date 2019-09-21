@@ -30,7 +30,7 @@ namespace PasswordHelper {
 
 //   void password_confirmation_data_attribute(with_data = {}) {
 //    if ( password_confirmation_required?) {
-//      with_data.merge('request-for-confirmation': true)
+//      with_data.merge("request-for-confirmation": true)
 //    else
 //      with_data
 //    }
@@ -58,7 +58,7 @@ namespace PasswordHelper {
   // Returns a text describing the active password complexity rules,
   // the minimum number of rules to adhere to and the total number of rules.
 //   void password_rules_description() {
-//    if ( OpenProject::Passwords::Evaluator.min_adhered_rules == 0) { return '' ;}
+//    if ( OpenProject::Passwords::Evaluator.min_adhered_rules == 0) { return "" ;}
 //    OpenProject::Passwords::Evaluator.rules_description_locale(password_active_rules)
 //  }
 }

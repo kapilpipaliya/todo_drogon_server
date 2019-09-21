@@ -14,7 +14,7 @@ public:
   // Adds and saves the uploaded file as attachment of the given container.
   // In case the container supports it, a journal will be written.
   //
-  // An ActiveRecord::RecordInvalid error is raised if any record can't be saved.
+  // An ActiveRecord::RecordInvalid error is raised if any record can"t be saved.
 //   void add_attachment(uploaded_file:, description:) {
 //    attachment = Attachment.new(file: uploaded_file,
 //                                container: container,

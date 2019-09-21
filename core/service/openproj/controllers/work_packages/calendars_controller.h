@@ -10,7 +10,7 @@ public:
   // before_action :find_optional_project
 
    void index() {
-//    render layout: 'angular'
+//    render layout: "angular"
   }
 };
 }

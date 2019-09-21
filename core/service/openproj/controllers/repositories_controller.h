@@ -2,7 +2,7 @@
 //#include "SVG/Graph/Bar"
 //#include "SVG/Graph/BarHorizontal"
 //#include "digest/sha1"
-//require_dependency 'open_project/scm/adapters'
+//require_dependency "open_project/scm/adapters"
 
 //class ChangesetNotFound : public StandardError {
 //}
@@ -39,8 +39,8 @@ public:
 //    service = Scm::RepositoryFactoryService.new(this->project, params)
 //    if ( service.build_and_save) {
 //      this->repository = service.repository
-//      flash[:notice] = l('repositories.create_successful')
-//      if ( this->repository.managed?) { flash[:notice] << (' ' + l('repositories.create_managed_delay')) ;}
+//      flash[:notice] = l("repositories.create_successful")
+//      if ( this->repository.managed?) { flash[:notice] << (" " + l("repositories.create_managed_delay")) ;}
 //    else
 //      flash[:error] = service.build_error
 //    }
@@ -63,7 +63,7 @@ public:
 //          h
 //        }
 //      flash[:notice] = l(:notice_successful_update)
-//      redirect_to action: 'committers', project_id: this->project
+//      redirect_to action: "committers", project_id: this->project
 //    }
   }
 
@@ -75,7 +75,7 @@ public:
    void destroy() {
 //    repository = this->project.repository
 //    if ( repository.destroy) {
-//      flash[:notice] = I18n.t('repositories.delete_sucessful')
+//      flash[:notice] = I18n.t("repositories.delete_sucessful")
 //    else
 //      flash[:error] = repository.errors.full_messages
 //    }
@@ -94,7 +94,7 @@ public:
 
 //    if ( request.xhr?) {
 //      if ( this->entries && this->repository.valid?) {
-//        render(partial: 'dir_list_content')
+//        render(partial: "dir_list_content")
 //      else
 //        render(nothing: true)
 //      }
@@ -103,7 +103,7 @@ public:
 //    else
 //      this->changesets = this->repository.latest_changesets(this->path, this->rev)
 //      this->properties = this->repository.properties(this->path, this->rev)
-//      render action: 'show'
+//      render action: "show"
 //    }
   }
 
@@ -123,7 +123,7 @@ public:
 //    this->properties = this->repository.properties(this->path, this->rev)
 //    this->changeset  = this->repository.find_changeset_by_name(this->rev)
 
-//    render 'changes', formats: [:html]
+//    render "changes", formats: [:html]
   }
 
    void revisions() {
@@ -173,14 +173,14 @@ private :
 //    // UTF-16 contains "\x00".
 //    // It is very strict that file contains less than 30% of ascii symbols
 //    // in non Western Europe.
-//    return true if ( Redmine::MimeType.is_type?('text', path)) {
+//    return true if ( Redmine::MimeType.is_type?("text", path)) {
 //    // Ruby 1.8.6 has a bug of integer divisions.
 //    // http://apidock.com/ruby/v1_8_6_287/String/is_binary_data%3F
-//    if ( ent.respond_to?('is_binary_data?') && ent.is_binary_data? // Ruby 1.8.x and <1.9.2) {
+//    if ( ent.respond_to?("is_binary_data?") && ent.is_binary_data? // Ruby 1.8.x and <1.9.2) {
 //      return false
 //    } else if ( ent.respond_to?(:force_encoding) &&) {
-//          (ent.dup.force_encoding('UTF-8') != ent.dup.force_encoding('BINARY')) // Ruby 1.9.2
-//      // TODO: need to handle edge cases of non-binary content that isn't UTF-8
+//          (ent.dup.force_encoding("UTF-8") != ent.dup.force_encoding("BINARY")) // Ruby 1.9.2
+//      // TODO: need to handle edge cases of non-binary content that isn"t UTF-8
 //      return false
 //    }
 //    true
@@ -197,7 +197,7 @@ private :
 //    this->annotate  = this->repository.scm.annotate(this->path, this->rev)
 //    this->changeset = this->repository.find_changeset_by_name(this->rev)
 
-//    render 'annotate', formats: [:html]
+//    render "annotate", formats: [:html]
   }
 
    void revision() {
@@ -214,7 +214,7 @@ private :
   }
 
    void diff() {
-//    if ( params[:format] == 'diff') {
+//    if ( params[:format] == "diff") {
 //      this->diff = this->repository.diff(this->path, this->rev, this->rev_to)
 
 //      unless this->diff
@@ -226,11 +226,11 @@ private :
 //      filename << "_r#{this->rev_to}" if ( this->rev_to) {
 //      send_data this->diff.join,
 //                filename: "#{filename}.diff",
-//                type: 'text/x-patch',
-//                disposition: 'attachment'
+//                type: "text/x-patch",
+//                disposition: "attachment"
 //    else
-//      this->diff_type = params[:type] || User.current.pref[:diff_type] || 'inline'
-//      this->diff_type = 'inline' unless %w(inline sbs).include?(this->diff_type)
+//      this->diff_type = params[:type] || User.current.pref[:diff_type] || "inline"
+//      this->diff_type = "inline" unless %w(inline sbs).include?(this->diff_type)
 
 //      // Save diff type as user preference
 //      if ( User.current.logged? && this->diff_type != User.current.pref[:diff_type]) {
@@ -250,13 +250,13 @@ private :
 //      this->changeset_to = this->rev_to ? this->repository.find_changeset_by_name(this->rev_to) : nil
 //      this->diff_format_revisions = this->repository.diff_format_revisions(this->changeset, this->changeset_to)
 
-//      render 'diff', formats: :html
+//      render "diff", formats: :html
 //    }
   }
 
    void stats() {
 //    // allow object_src self to be able to load dynamic stats SVGs from ./graph
-//    override_content_security_policy_directives object_src: %w('self')
+//    override_content_security_policy_directives object_src: %w("self")
 
 //    this->show_commits_per_author = current_user.allowed_to_in_project?(:view_commit_author_statistics,
 //                                                                   this->project)
@@ -265,9 +265,9 @@ private :
    void graph() {
 //    data = nil
 //    case params[:graph]
-//    when 'commits_per_month'
+//    when "commits_per_month"
 //      data = graph_commits_per_month(this->repository)
-//    when 'commits_per_author'
+//    when "commits_per_author"
 //      unless current_user.allowed_to_in_project?(:view_commit_author_statistics, this->project)
 //        return deny_access
 //      }
@@ -275,8 +275,8 @@ private :
 //    }
 
 //    if ( data) {
-//      headers['Content-Type'] = 'image/svg+xml'
-//      send_data(data, type: 'image/svg+xml', disposition: 'inline')
+//      headers["Content-Type"] = "image/svg+xml"
+//      send_data(data, type: "image/svg+xml", disposition: "inline")
 //    else
 //      render_404
 //    }
@@ -290,9 +290,9 @@ private :
 //    this->repository.attributes = this->repository.class.permitted_params(repo_params)
 
 //    if ( this->repository.save) {
-//      flash[:notice] = l('repositories.update_settings_successful')
+//      flash[:notice] = l("repositories.update_settings_successful")
 //    else
-//      flash[:error] = this->repository.errors.full_messages.join('\n')
+//      flash[:error] = this->repository.errors.full_messages.join("\n")
 //    }
 //  }
 
@@ -306,7 +306,7 @@ private :
 
 //    // Prepare checkout instructions
 //    // available on all pages (even empty!)
-//    this->path = params[:repo_path] || ''
+//    this->path = params[:repo_path] || ""
 //    this->instructions = ::Scm::CheckoutInstructionsService.new(this->repository, path: this->path)
 
 //    // Asserts repository availability, or renders an appropriate error
@@ -321,7 +321,7 @@ private :
 //      }
 //    }
 //  rescue OpenProject::Scm::Exceptions::ScmEmpty
-//    render 'empty'
+//    render "empty"
 //  rescue ActiveRecord::RecordNotFound
 //    render_404
 //  rescue InvalidRevisionParam
@@ -341,7 +341,7 @@ private :
 //    this->date_from = this->date_to << 11
 //    this->date_from = Date.civil(this->date_from.year, this->date_from.month, 1)
 //    commits_by_day = Changeset.where(
-//      ['repository_id = ? AND commit_date BETWEEN ? AND ?', repository.id, this->date_from, this->date_to]
+//      ["repository_id = ? AND commit_date BETWEEN ? AND ?", repository.id, this->date_from, this->date_to]
 //    ).group(:commit_date).size
 //    commits_by_month = [0] * 12
 //    commits_by_day.each { |c|
@@ -391,7 +391,7 @@ private :
 //  }
 
 //   void graph_commits_per_author(repository) {
-//    commits_by_author = Changeset.where(['repository_id = ?', repository.id]).group(:committer).size
+//    commits_by_author = Changeset.where(["repository_id = ?", repository.id]).group(:committer).size
 //    commits_by_author.to_a.sort! { |x, y|
 //      x.last <=> y.last
 //    }
@@ -410,12 +410,12 @@ private :
 //    commits_data = commits_by_author.map(&:last)
 //    changes_data = commits_by_author.map { |r| h[r.first] || 0 }
 
-//    if ( fields.length < 10) { fields = fields + [''] * (10 - fields.length) ;}
+//    if ( fields.length < 10) { fields = fields + [""] * (10 - fields.length) ;}
 //    if ( commits_data.length < 10) { commits_data = commits_data + [0] * (10 - commits_data.length) ;}
 //    if ( changes_data.length < 10) { changes_data = changes_data + [0] * (10 - changes_data.length) ;}
 
 //    // Remove email adress in usernames
-//    fields = fields.map { |c| c.gsub(%r{<.+this->.+>}, '') }
+//    fields = fields.map { |c| c.gsub(%r{<.+this->.+>}, "") }
 
 //    graph = SVG::Graph::BarHorizontal.new(
 //      height: 400,
@@ -444,14 +444,14 @@ private :
   }
 
 //   void raw_or_to_large_or_non_text(content, path) {
-//    params[:format] == 'raw' ||
+//    params[:format] == "raw" ||
 //      (content.size && content.size > Setting.file_max_size_displayed.to_i.kilobyte) ||
 //      !is_entry_text_data?(content, path)
 //  }
 
 //   void send_raw(content, path) {
 //    // Force the download
-//    send_opt = { filename: filename_for_content_disposition(path.split('/').last) }
+//    send_opt = { filename: filename_for_content_disposition(path.split("/").last) }
 //    send_type = Redmine::MimeType.of(path)
 //    if ( send_type) { send_opt[:type] = send_type.to_s ;}
 //    send_data content, send_opt
@@ -466,7 +466,7 @@ private :
 
 //    // Forcing html format here to avoid
 //    // rails looking for e.g text when .txt is asked for
-//    render 'entry', formats: [:html]
+//    render "entry", formats: [:html]
   }
 };
 
@@ -482,7 +482,7 @@ private :
 
 //class String{
 //   void with_leading_slash() {
-//    starts_with?('/') ? self : "/#{self}"
+//    starts_with?("/") ? self : "/#{self}"
 //  }
 //};
 }

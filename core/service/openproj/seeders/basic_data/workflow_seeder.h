@@ -38,7 +38,7 @@ namespace BasicData {
 //        WorkPackage.transaction {
 //          green_color = colors[I18n.t(:default_color_green_light)]
 //          standard_type = Type.find_or_create_by(is_standard: true,
-//                                                 name: 'none',
+//                                                 name: "none",
 //                                                 position: 0,
 //                                                 color_id: green_color,
 //                                                 is_default: true,
@@ -52,19 +52,19 @@ namespace BasicData {
 //      }
 
 //      if ( Type.where(is_standard: false).any? || Status.any? || Workflow.any?) {
-//        puts '   *** Skipping types, statuses and workflows as there are already some configured'
+//        puts "   *** Skipping types, statuses and workflows as there are already some configured"
 //      } else if ( Role.where(name: I18n.t(:default_role_member)).empty? ||) {
 //            Role.where(name: I18n.t(:default_role_project_admin)).empty?
 
-//        puts '   *** Skipping types, statuses and workflows as the required roles do not exist'
+//        puts "   *** Skipping types, statuses and workflows as the required roles do not exist"
 //      else
 //        member = Role.where(name: I18n.t(:default_role_member)).first
 //        manager = Role.where(name: I18n.t(:default_role_project_admin)).first
 
-//        puts '   ↳ Types'
+//        puts "   ↳ Types"
 //        type_seeder_class.new.seed!
 
-//        puts '   ↳ Statuses'
+//        puts "   ↳ Statuses"
 //        status_seeder_class.new.seed!
 
 //        // Workflow - Each type has its own workflow

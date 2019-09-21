@@ -3,7 +3,7 @@ namespace helper {
 namespace BreadcrumbHelper {
    void full_breadcrumb() {
 //    if ( show_defaults) {
-//      breadcrumb_list(link_to(icon_wrapper('icon2 icon-home', I18n.t(:label_home)), home_path),
+//      breadcrumb_list(link_to(icon_wrapper("icon2 icon-home", I18n.t(:label_home)), home_path),
 //                      link_to_project_ancestors(this->project),
 //                      *breadcrumb_paths)
 //    else
@@ -13,20 +13,20 @@ namespace BreadcrumbHelper {
 
 //   void breadcrumb(*args) {
 //    elements = args.flatten
-//    elements.any? ? content_tag('p', (args.join(' &#187; ') + ' &#187; ').html_safe, class: 'breadcrumb') : nil
+//    elements.any? ? content_tag("p", (args.join(" &#187; ") + " &#187; ").html_safe, class: "breadcrumb") : nil
 //  }
 
 //   void breadcrumb_list(*args) {
 //    elements = args.flatten
 //    breadcrumb_elements = [content_tag(:li,
 //                                       elements.shift.to_s,
-//                                       class: 'first-breadcrumb-element',
-//                                       style: 'list-style-image:none;')]
+//                                       class: "first-breadcrumb-element",
+//                                       style: "list-style-image:none;")]
 
 //    breadcrumb_elements += elements.map { |element|
 //      if ( element) {
-//        css_class = if ( element.try(:include?, 'breadcrumb-project-title')) {
-//                      'breadcrumb-project-element '
+//        css_class = if ( element.try(:include?, "breadcrumb-project-title")) {
+//                      "breadcrumb-project-element "
 //                    }
 //        content_tag(:li,
 //                    h(element.to_s),
@@ -34,7 +34,7 @@ namespace BreadcrumbHelper {
 //      }
 //    }
 
-//    content_tag(:ul, breadcrumb_elements.join.html_safe, class: 'breadcrumb')
+//    content_tag(:ul, breadcrumb_elements.join.html_safe, class: "breadcrumb")
 //  }
 
 //   void breadcrumb_paths(*args) {
@@ -72,9 +72,9 @@ namespace BreadcrumbHelper {
 //      ancestors << project
 //      ancestors.map { |p|
 //        if ( p == project) {
-//          link_to_project(p, { only_path: false }, title: p, class: 'breadcrumb-project-title nocut').html_safe
+//          link_to_project(p, { only_path: false }, title: p, class: "breadcrumb-project-title nocut").html_safe
 //        else
-//          link_to_project(p, { jump: current_menu_item }, title: p, class: 'breadcrumb-project-title').html_safe
+//          link_to_project(p, { jump: current_menu_item }, title: p, class: "breadcrumb-project-title").html_safe
 //        }
 //      }
 //    }

@@ -4,8 +4,8 @@ namespace openproj {
 namespace models {
 namespace Queries::Filters::Strategies {
   class DateTimePast : public openproj::models::Queries::Filters::Strategies::Integer {
-//    this->supported_operators = ['>t-', '<t-', 't-', 't', 'w', '=d', '<>d']
-//    this->default_operator = '>t-'
+//    this->supported_operators = [">t-", "<t-", "t-", "t", "w", "=d", "<>d"]
+//    this->default_operator = ">t-"
 
      void validate() {
 //      if ( operator == Queries::Operators::OnDateTime ||) {
@@ -20,15 +20,15 @@ namespace Queries::Filters::Strategies {
 
      void operator_map() {
 //      super_value = super.dup
-//      super_value['=d'] = Queries::Operators::OnDateTime
-//      super_value['<>d'] = Queries::Operators::BetweenDateTime
+//      super_value["=d"] = Queries::Operators::OnDateTime
+//      super_value["<>d"] = Queries::Operators::BetweenDateTime
 
 //      super_value
     }
 
      void validate_values_all_datetime() {
 //      unless values.all? { |value| value.blank? || datetime?(value) }
-//        errors.add(:values, I18n.t('activerecord.errors.messages.not_a_datetime'))
+//        errors.add(:values, I18n.t("activerecord.errors.messages.not_a_datetime"))
 //      }
     }
 

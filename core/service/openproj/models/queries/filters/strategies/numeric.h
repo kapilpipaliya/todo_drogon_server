@@ -4,8 +4,8 @@ namespace models {
 namespace Queries::Filters::Strategies {
   namespace Numeric {
 //     void included(base) {
-//      base.supported_operators = ['=', '!', '>=', '<=', '!*', '*']
-//      base.default_operator = '='
+//      base.supported_operators = ["=", "!", ">=", "<=", "!*", "*"]
+//      base.default_operator = "="
 //    }
 
      void validate() {

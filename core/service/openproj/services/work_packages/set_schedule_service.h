@@ -41,11 +41,11 @@ public:
 //      .each { |wp| wp.start_date = wp.parent.soonest_start }
 //  }
 
-  // Finds all work packages that need to be rescheduled because of a rescheduling of the service's work package
+  // Finds all work packages that need to be rescheduled because of a rescheduling of the service"s work package
   // and reschedules them.
-  // The order of the rescheduling is important as successors' dates are calculated based on their predecessors' dates and
-  // ancestors' dates based on their childrens' dates.
-  // Thus, the work packages following (having a follows relation, direct or transitively) the service's work package
+  // The order of the rescheduling is important as successors" dates are calculated based on their predecessors" dates and
+  // ancestors" dates based on their childrens" dates.
+  // Thus, the work packages following (having a follows relation, direct or transitively) the service"s work package
   // are first all loaded, and then sorted by their need to be scheduled before one another:
   // - predecessors are scheduled before their successors
   // - children/descendants are scheduled before their parents/ancestors

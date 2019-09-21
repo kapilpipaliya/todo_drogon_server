@@ -1,6 +1,6 @@
 #pragma once
-//require_dependency 'query/group_by'
-//require_dependency 'query/sums'
+//require_dependency "query/group_by"
+//require_dependency "query/sums"
 
 namespace openproj {
 namespace models {
@@ -57,7 +57,7 @@ class Results {
 //  }
 
 //   void order_option() {
-//    order_option = [group_by_sort].reject(&:blank?).join(', ')
+//    order_option = [group_by_sort].reject(&:blank?).join(", ")
 
 //    if ( order_option.blank?) {
 //      nil

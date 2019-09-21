@@ -80,14 +80,13 @@ TEST_CASE("seed2", "[WSTest]") {
   //    nlohmann::json event1 = nlohmann::json::array({"seed", "seed1", 0});
   //    nlohmann::json event2 = nlohmann::json::array({"seed", "seed2", 0});
   nlohmann::json event3 = nlohmann::json::array({"seed", "seedall", 0});
-  //  nlohmann::json event4 = nlohmann::json::array({"seed", "summery", 0});
+  nlohmann::json event4 = nlohmann::json::array({"seed", "summary", 0});
 
-  nlohmann::json payload = nlohmann::json::array({
-      //      {event1, nlohmann::json::object({})},
-      //      {event2, nlohmann::json::array({{}})},
-      {event3, nlohmann::json::array({{}})},
-      //                             {event4, nlohmann::json::array({{}})}
-  });
+  nlohmann::json payload =
+      nlohmann::json::array({//      {event1, nlohmann::json::object({})},
+                             //      {event2, nlohmann::json::array({{}})},
+                             {event3, nlohmann::json::array({})},
+                             {event4, nlohmann::json::array({})}});
   LOG_DEBUG << payload.dump();
   bool r0 = false, r2 = false, r3 = false;
   //    auto b = w2.bindOnce(event1, [&r0](nlohmann::json r) {
@@ -108,7 +107,7 @@ TEST_CASE("seed2", "[WSTest]") {
   REQUIRE(b3);
   QTimer *timer = new QTimer();
   QObject::connect(timer, SIGNAL(timeout()), &a, SLOT(quit()));
-  timer->start(500);
+  timer->start(2000);
   a.exec();
   //    REQUIRE(r0);
   //    REQUIRE(r2);

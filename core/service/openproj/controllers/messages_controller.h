@@ -32,7 +32,7 @@ public:
 //                     .per_page(per_page_param)
 
 //    this->reply = Message.new(subject: "RE: #{this->message.subject}", parent: this->topic)
-//    render action: 'show', layout: !request.xhr?
+//    render action: "show", layout: !request.xhr?
   }
 
   // new topic
@@ -59,7 +59,7 @@ public:
 
 //      redirect_to topic_path(this->message)
 //    else
-//      render action: 'new'
+//      render action: "new"
 //    }
   }
 
@@ -100,7 +100,7 @@ public:
 //      this->message.reload
 //      redirect_to topic_path(this->message.root, r: (this->message.parent_id && this->message.id))
 //    else
-//      render action: 'edit'
+//      render action: "edit"
 //    }
   }
 
@@ -110,9 +110,9 @@ public:
 //    this->message.destroy
 //    flash[:notice] = l(:notice_successful_delete)
 //    redirect_target = if ( this->message.parent.nil?) {
-//                        { controller: '/forums', action: 'show', project_id: this->project, id: this->forum }
+//                        { controller: "/forums", action: "show", project_id: this->project, id: this->forum }
 //                      else
-//                        { action: 'show', id: this->message.parent, r: this->message }
+//                        { action: "show", id: this->message.parent, r: this->message }
 //                      }
 
 //    redirect_to redirect_target
@@ -121,10 +121,10 @@ public:
    void quote() {
 //    user = this->message.author
 //    text = this->message.content
-//    subject = this->message.subject.gsub('"', '\"')
-//    subject = "RE: #{subject}" unless subject.starts_with?('RE:')
+//    subject = this->message.subject.gsub(""", "\"")
+//    subject = "RE: #{subject}" unless subject.starts_with?("RE:")
 //    content = "#{ll(Setting.default_language, :text_user_wrote, user)}\n> "
-//    content << text.to_s.strip.gsub(%r{<pre>((.|\s)*?)</pre>}m, '[...]').gsub('"', '\"').gsub(/(\r?\n|\r\n?)/, "\n> ") + "\n\n"
+//    content << text.to_s.strip.gsub(%r{<pre>((.|\s)*?)</pre>}m, "[...]").gsub(""", "\"").gsub(/(\r?\n|\r\n?)/, "\n> ") + "\n\n"
 
 //    respond_to { |format|
 //      format.json { render json: { subject: subject, content: content } }

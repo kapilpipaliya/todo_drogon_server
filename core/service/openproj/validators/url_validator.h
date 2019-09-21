@@ -11,7 +11,7 @@ class UrlValidator{// : public ActiveModel::EachValidator {
 //    if ( url.nil?) {
 //      record.errors.add(attribute, :invalid_url)
 //    } else if ( !allowed_protocols.include?(url.scheme)) {
-//      record.errors.add(attribute, :invalid_url_scheme, allowed_schemes: allowed_protocols.join(', '))
+//      record.errors.add(attribute, :invalid_url_scheme, allowed_schemes: allowed_protocols.join(", "))
 //    }
 //  }
 

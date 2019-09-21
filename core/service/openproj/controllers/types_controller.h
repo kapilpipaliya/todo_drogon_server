@@ -6,7 +6,7 @@ class TypesController : public ApplicationController {
 public:
   // include PaginationHelper
 
-  // layout 'admin'
+  // layout "admin"
 
   // before_action :require_admin
 
@@ -37,7 +37,7 @@ public:
 //      call.on_failure { |result|
 //        flash[:error] = result.errors.full_messages.join("\n")
 //        load_projects_and_types
-//        render action: 'new'
+//        render action: "new"
 //      }
 //    }
   }
@@ -79,8 +79,8 @@ public:
 //    if ( this->type.update_attributes(permitted_params.type_move)) {
 //      flash[:notice] = l(:notice_successful_update)
 //    else
-//      flash.now[:error] = t('type_could_not_be_saved')
-//      render action: 'edit'
+//      flash.now[:error] = t("type_could_not_be_saved")
+//      render action: "edit"
 //    }
 //    redirect_to types_path
   }
@@ -100,7 +100,7 @@ public:
 //                        t(:error_can_not_delete_type)
 //                      }
 //    }
-//    redirect_to action: 'index'
+//    redirect_to action: "index"
   }
 
   protected:
@@ -112,7 +112,7 @@ public:
   }
 
    void load_projects_and_types() {
-//    this->types = ::Type.order(Arel.sql('position'))
+//    this->types = ::Type.order(Arel.sql("position"))
 //    this->projects = Project.all
   }
 
@@ -123,7 +123,7 @@ public:
 //  }
 
    void default_breadcrumb() {
-//    if ( action_name == 'index') {
+//    if ( action_name == "index") {
 //      t(:label_work_package_types)
 //    else
 //      ActionController::Base.helpers.link_to(t(:label_work_package_types), types_path)
@@ -135,7 +135,7 @@ public:
 //    this->projects = Project.all
 //    this->type = type
 
-//    render action: 'edit'
+//    render action: "edit"
 //  }
 
    bool show_local_breadcrumb() {

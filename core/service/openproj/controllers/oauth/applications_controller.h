@@ -10,7 +10,7 @@ namespace OAuth {
     // before_action :new_app, only: %i[new create]
     // before_action :find_app, only: %i[edit update show destroy]
 
-    // layout 'admin'
+    // layout "admin"
     // menu_item :oauth_applications
 
      void index() {
@@ -35,7 +35,7 @@ namespace OAuth {
 //        redirect_to action: :show, id: call.result.id
 //      else
 //        this->errors = call.errors
-//        flash[:error] = call.errors.full_messages.join('\n')
+//        flash[:error] = call.errors.full_messages.join("\n")
 //        render action: :new
 //      }
     }
@@ -49,7 +49,7 @@ namespace OAuth {
 //        redirect_to action: :index
 //      else
 //        this->errors = call.errors
-//        flash[:error] = call.errors.full_messages.join('\n')
+//        flash[:error] = call.errors.full_messages.join("\n")
 //        render action: :edit
 //      }
     }
@@ -68,10 +68,10 @@ namespace OAuth {
     protected:
 
      void default_breadcrumb() {
-//      if ( action_name == 'index') {
-//        t('oauth.application.plural')
+//      if ( action_name == "index") {
+//        t("oauth.application.plural")
 //      else
-//        ActionController::Base.helpers.link_to(t('oauth.application.plural'), oauth_applications_path)
+//        ActionController::Base.helpers.link_to(t("oauth.application.plural"), oauth_applications_path)
 //      }
     }
 

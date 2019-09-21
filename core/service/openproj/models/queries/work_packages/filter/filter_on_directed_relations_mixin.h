@@ -6,7 +6,7 @@ namespace Queries::WorkPackages::Filter::FilterOnDirectedRelationsMixin {
 
    void where() {
     // The order in which we call the methods on `Relation` matters, as
-    // the `Relation`'s association `includes` is overwritten with the method `includes`
+    // the `Relation`"s association `includes` is overwritten with the method `includes`
     // otherwise.
 //    relations_subselect = Relation
 //                          .send(normalized_relation_type)
@@ -15,9 +15,9 @@ namespace Queries::WorkPackages::Filter::FilterOnDirectedRelationsMixin {
 //                          .select(relation_select)
 
 //    operator = if ( operator_class == Queries::Operators::Equals) {
-//                 'IN'
+//                 "IN"
 //               else
-//                 'NOT IN'
+//                 "NOT IN"
 //               }
 
 //    "#{WorkPackage.table_name}.id #{operator} (#{relations_subselect.to_sql})"

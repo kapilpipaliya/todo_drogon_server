@@ -33,22 +33,22 @@ public:
   // include AdditionalUrlHelpers
   // include OpenProjectErrorHelper
 
-  // layout 'base'
+  // layout "base"
 
   //  protect_from_forgery
   // CSRF protection prevents two things. It prevents an attacker from using a
-  // user's session to execute requests. It also prevents an attacker to log in
-  // a user with the attacker's account. API requests each contain their own
-  // authentication token, e.g. as key parameter or header, so they don't have
-  // to be protected by CSRF protection as long as they don't create a session
+  // user"s session to execute requests. It also prevents an attacker to log in
+  // a user with the attacker"s account. API requests each contain their own
+  // authentication token, e.g. as key parameter or header, so they don"t have
+  // to be protected by CSRF protection as long as they don"t create a session
   //
-  // We can't reliably determine here whether a request is an API
+  // We can"t reliably determine here whether a request is an API
   // request as this happens in our way too complex find_current_user method
   // that is only executed after this method. E.g we might have to check that
   // no session is active and that no autologin cookie is set.
   //
   // Thus, we always reset any active session and the autologin cookie to make
-  // sure find_current user doesn't find a user based on an active session.
+  // sure find_current user doesn"t find a user based on an active session.
   //
   // Nevertheless, API requests should not be aborted, which they would be
   // if we raised an error here. Still, users should see an error message
@@ -56,26 +56,26 @@ public:
   // expiration). Thus, we show an error message unless the request probably is
   // an API request.
   //   void handle_unverified_request() {
-  //    cookies.delete(OpenProject::Configuration['autologin_cookie_name'])
+  //    cookies.delete(OpenProject::Configuration["autologin_cookie_name"])
   //    this->logged_user = nil
 
-  // Don't render an error message for requests that appear to be API requests.
+  // Don"t render an error message for requests that appear to be API requests.
   //
   // The api_request? method uses the format parameter or a header
   // to determine whether a request is an API request. Unfortunately, having
-  // an API request doesn't mean we don't use a session for authentication.
+  // an API request doesn"t mean we don"t use a session for authentication.
   // Also, attackers can send CSRF requests with arbitrary headers using
   // browser plugins. For more information on this, see:
   // http://weblog.rubyonrails.org/2011/2/8/csrf-protection-bypass-in-ruby-on-rails/
   //
   // Resetting the session above is enough for preventing an attacking from
-  // using a user's session to execute requests with the user's account.
+  // using a user"s session to execute requests with the user"s account.
   //
-  // It's not enough to prevent login CSRF, so we have to explicitly deny
+  // It"s not enough to prevent login CSRF, so we have to explicitly deny
   // requests with invalid CSRF token for all requests that create a session
   // with a logged in user. This is implemented as a before filter on
   // AccountController that disallows all requests classified as API calls by
-  // api_request (via disable_api). It's important that disable_api and
+  // api_request (via disable_api). It"s important that disable_api and
   // handle_unverified_request both use the same method to determine whether a
   // request is an API request to ensure that a request either has a valid CSRF
   // token and is not classified as API request, so no error is raised here OR a
@@ -85,10 +85,10 @@ public:
   // See http://stackoverflow.com/a/15350123 for more information on login CSRF.
   //    unless api_request?
 
-  //      // Check whether user have cookies enabled, otherwise they'll only be
+  //      // Check whether user have cookies enabled, otherwise they"ll only be
   //      // greeted with the CSRF error upon login.
   //      message = I18n.t(:error_token_authenticity)
-  //      message << ' ' + I18n.t(:error_cookie_missing) if (
+  //      message << " " + I18n.t(:error_cookie_missing) if (
   //      openproject_cookie_missing?) {
 
   //      log_csrf_failure
@@ -132,7 +132,7 @@ public:
 
   //   void default_url_options(_options = {}) {
   //    {
-  //      // layout: params['layout'],
+  //      // layout: params["layout"],
   //      protocol: Setting.protocol
   //    }
   //  }
@@ -143,7 +143,7 @@ public:
   // https://websecuritytool.codeplex.com/wikipage?title=Checks#http-cache-control-header-no-store
   // http://stackoverflow.com/questions/711418/how-to-prevent-browser-page-caching-in-rails
      void set_cache_buster() {
-  //    if ( OpenProject::Configuration['disable_browser_cache']) {
+  //    if ( OpenProject::Configuration["disable_browser_cache"]) {
   //      response.cache_control.merge!(
   //        max_age: 0,
   //        public: false,
@@ -159,7 +159,7 @@ public:
   // controller responsibility. A globally accessible User.current is a big code
   // smell. When used incorrectly it allows getting the current user outside of
   // a session scope, i.e. in the model layer, from mailers or in the console
-  // which doesn't make any sense. For model code that needs to be aware of the
+  // which doesn"t make any sense. For model code that needs to be aware of the
   // current user, i.e. when returning all visible projects for <somebody>, the
   // controller should pass the current user to the model, instead of letting it
   // fetch it by itself through `User.current`. This method acts as a reminder
@@ -182,14 +182,14 @@ public:
   //    if ( session[:user_id]) {
   //      // existing session
   //      User.active.find_by(id: session[:user_id])
-  //    } else if ( cookies[OpenProject::Configuration['autologin_cookie_name']]
+  //    } else if ( cookies[OpenProject::Configuration["autologin_cookie_name"]]
   //    && Setting.autologin?) {
   //      // auto-login feature starts a new session
   //      user =
-  //      User.try_to_autologin(cookies[OpenProject::Configuration['autologin_cookie_name']])
+  //      User.try_to_autologin(cookies[OpenProject::Configuration["autologin_cookie_name"]])
   //      if ( user) {session[:user_id] = user.id }
   //      user
-  //    } else if ( params[:format] == 'atom' && params[:key] &&
+  //    } else if ( params[:format] == "atom" && params[:key] &&
   //    accept_key_auth_actions.include?(params[:action])) {
   //      // RSS key authentication does not start a session
   //      User.find_by_rss_key(params[:key])
@@ -224,14 +224,14 @@ public:
   // Checks if the session cookie is missing.
   // This is useful only on a second request
      bool openproject_cookie_missing() {
-  //    request.cookies[OpenProject::Configuration['session_cookie_name']].nil?
+  //    request.cookies[OpenProject::Configuration["session_cookie_name"]].nil?
     }
 
   //
   // Create CSRF issue
      void log_csrf_failure() {
-  //    message = 'CSRF validation error'
-  //    message << ' (No session cookie present)' if (
+  //    message = "CSRF validation error"
+  //    message << " (No session cookie present)" if (
   //    openproject_cookie_missing?) {
 
   //    op_handle_error message, reference: :csrf_validation_failed
@@ -253,7 +253,7 @@ public:
      void escape_for_logging(std::string string) {
   //    // only allow numbers, ASCII letters, space and the following
   //    characters:
-  //    @.-"'!?=/ string.gsub(/[^0-9a-zA-Z@._\-"\'!\?=\/ ]{1}/, '#')
+  //    @.-""!?=/ string.gsub(/[^0-9a-zA-Z@._\-"\"!\?=\/ ]{1}/, "#")
     }
 
      void reset_i18n_fallbacks() {
@@ -265,7 +265,7 @@ public:
 
      void set_localization() {
   //    SetLocalizationService.new(User.current,
-  //    request.env['HTTP_ACCEPT_LANGUAGE']).call
+  //    request.env["HTTP_ACCEPT_LANGUAGE"]).call
     }
 
      void require_login() {
@@ -284,8 +284,8 @@ public:
 
   //        format.any(:xml, :js, :json) {
   //          head :unauthorized,
-  //               'X-Reason' => 'login needed',
-  //               'WWW-Authenticate' => auth_header
+  //               "X-Reason" => "login needed",
+  //               "WWW-Authenticate" => auth_header
   //        }
 
   //        format.all { head :not_acceptable }
@@ -377,7 +377,7 @@ public:
   //    model = this->class._model_object
   //    if ( model) {
   //      this->object = model.find(params[:id])
-  //      if (this->object){ instance_variable_set('this->' + controller_name.singularize, this->object) ;}
+  //      if (this->object){ instance_variable_set("this->" + controller_name.singularize, this->object) ;}
   //  rescue ActiveRecord::RecordNotFound
   //    render_404
     }
@@ -387,7 +387,7 @@ public:
   //      // model_object = this->class._model_object
   //      instance = model_object.find(params[object_id])
   //      this->project = instance.project
-  //      instance_variable_set('this->' + model_object.to_s.underscore, instance)
+  //      instance_variable_set("this->" + model_object.to_s.underscore, instance)
   //    else
   //      this->project = Project.find(params[:project_id])
   //    }
@@ -406,7 +406,7 @@ public:
   //    associated = find_belongs_to_chained_objects(associations, model_object)
 
   //    associated.each { |a|
-  //      instance_variable_set('this->' + a.class.to_s.downcase, a)
+  //      instance_variable_set("this->" + a.class.to_s.downcase, a)
   //    }
 
   //  rescue ActiveRecord::RecordNotFound
@@ -443,7 +443,7 @@ public:
      void find_work_packages() {
   //    this->work_packages = WorkPackage.includes(:project)
   //                     .where(id: params[:work_package_id] || params[:ids])
-  //                     .order('id ASC')
+  //                     .order("id ASC")
   //    if ( this->work_packages.empty?) {fail ActiveRecord::RecordNotFound ;}
   //    this->projects = this->work_packages.map(&:project).compact.uniq
   //    if ( this->projects.size == 1) { this->project = this->projects.first ;}
@@ -470,7 +470,7 @@ public:
     }
 
      void back_url() {
-  //    params[:back_url] || request.env['HTTP_REFERER']
+  //    params[:back_url] || request.env["HTTP_REFERER"]
     }
 
 //     void redirect_back_or_default(default, use_escaped = true) {
@@ -488,7 +488,7 @@ public:
   //
   // @return [boolean, string] name of the layout to use or false for no layout
      void use_layout() {
-  //    request.xhr? ? false : 'no_menu'
+  //    request.xhr? ? false : "no_menu"
     }
 
   //   void render_feed(items, options = {}) {
@@ -496,8 +496,8 @@ public:
   //    this->items = this->items.sort { |x, y| y.event_datetime <=> x.event_datetime }
   //    this->items = this->items.slice(0, Setting.feeds_limit.to_i)
   //    this->title = options[:title] || Setting.app_title
-  //    render template: 'common/feed', layout: false, content_type:
-  //    'application/atom+xml'
+  //    render template: "common/feed", layout: false, content_type:
+  //    "application/atom+xml"
   //  }
 
   //   void accept_key_auth(*actions) {
@@ -512,7 +512,7 @@ public:
   // Returns a string that can be used as filename value in Content-Disposition
   // header
      void filename_for_content_disposition(std::string name) {
-  //    request.env['HTTP_USER_AGENT'] =~ %r{(MSIE|Trident)} ?
+  //    request.env["HTTP_USER_AGENT"] =~ %r{(MSIE|Trident)} ?
   //    ERB::Util.url_encode(name) : name
     }
 
@@ -528,8 +528,8 @@ public:
      void api_key_from_request() {
   //    if ( params[:key].present?) {
   //      params[:key]
-  //    } else if ( request.headers['X-OpenProject-API-Key'].present?) {
-  //      request.headers['X-OpenProject-API-Key']
+  //    } else if ( request.headers["X-OpenProject-API-Key"].present?) {
+  //      request.headers["X-OpenProject-API-Key"]
   //    }
     }
 
@@ -553,10 +553,10 @@ public:
   //   void render_validation_errors(object) {
   //    options = { status: :unprocessable_entity, layout: false }
   //    errors = case params[:format]
-  //             when 'xml'
+  //             when "xml"
   //               { xml:  object.errors }
-  //             when 'json'
-  //               { json: { 'errors' => object.errors } } // ActiveResource
+  //             when "json"
+  //               { json: { "errors" => object.errors } } // ActiveResource
   //               client compliance
   //             else
   //               fail "Unknown format #{params[:format]} in
@@ -572,7 +572,7 @@ public:
   //    if ( api_request?) {
   //      begin
   //        return view_paths.find_template(default_template_name(action_name),
-  //        'api')
+  //        "api")
   //      rescue ::ActionView::MissingTemplate
   //        // the api template was not found
   //        // fallback to the default behaviour
@@ -582,17 +582,17 @@ public:
   //  }
 
   // Overrides #pick_layout so that #render with no arguments
-  // doesn't use the layout for api requests
+  // doesn"t use the layout for api requests
   //   void pick_layout(*args) {
   //    api_request? ? nil : super
 //    }
 
      void default_breadcrumb() {
-  //    name = l('label_' + this->class.name.gsub('Controller',
-  //    '').underscore.singularize + '_plural') if ( name =~ /translation
+  //    name = l("label_" + this->class.name.gsub("Controller",
+  //    "").underscore.singularize + "_plural") if ( name =~ /translation
   //    missing/i) {
-  //      name = l('label_' + this->class.name.gsub('Controller',
-  //      '').underscore.singularize)
+  //      name = l("label_" + this->class.name.gsub("Controller",
+  //      "").underscore.singularize)
   //    }
   //    name
     }
@@ -605,9 +605,9 @@ public:
   //    if ( session_expired?) {
   //      this->logged_user = nil
 
-  //      flash[:warning] = I18n.t('notice_forced_logout', ttl_time:
-  //      Setting.session_ttl) redirect_to(controller: '/account', action:
-  //      'login', back_url: login_back_url)
+  //      flash[:warning] = I18n.t("notice_forced_logout", ttl_time:
+  //      Setting.session_ttl) redirect_to(controller: "/account", action:
+  //      "login", back_url: login_back_url)
   //    }
   //    session[:updated_at] = Time.now
     }
@@ -623,7 +623,7 @@ public:
 
      void stop_if_feeds_disabled() {
   //    if ( feed_request? && !Setting.feeds_enabled?) {
-  //      render_404(message: I18n.t('label_disabled'))
+  //      render_404(message: I18n.t("label_disabled"))
   //    }
     }
 
@@ -648,7 +648,7 @@ public:
   //    else
   //      url_params = params.permit(:action, :id, :project_id, :controller)
 
-  //      unless url_params[:controller].to_s.starts_with?('/')
+  //      unless url_params[:controller].to_s.starts_with?("/")
   //        url_params[:controller] = "/#{url_params[:controller]}"
   //      }
 

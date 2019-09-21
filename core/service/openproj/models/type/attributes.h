@@ -30,15 +30,15 @@ namespace TypeN::Attributes {
 //    //
 //    // E.g.
 //    //
-//    //   ::Type.work_package_form_attributes['author'][:required] // => true
+//    //   ::Type.work_package_form_attributes["author"][:required] // => true
 //    //
 //    // @return [Hash{String => Hash}] Map from attribute names to options.
 //     void all_work_package_form_attributes(merge_date: false) {
 //      wp_cf_cache_parts = RequestStore.fetch(:wp_cf_max_updated_at_and_count) {
-//        WorkPackageCustomField.pluck(Arel.sql('max(updated_at), count(id)')).flatten
+//        WorkPackageCustomField.pluck(Arel.sql("max(updated_at), count(id)")).flatten
 //      }
 
-//      OpenProject::Cache.fetch('all_work_package_form_attributes',
+//      OpenProject::Cache.fetch("all_work_package_form_attributes",
 //                               *wp_cf_cache_parts,
 //                               merge_date) {
 //        calculate_all_work_package_form_attributes(merge_date)
@@ -84,16 +84,16 @@ namespace TypeN::Attributes {
 //      //  * directly in other envs, e.g. test
 //      definitions = representable_config.key?(:definitions) ? representable_config[:definitions] : representable_config
 
-//      skip = ['_type', '_dependencies', 'attribute_groups', 'links', 'parent_id', 'parent', 'description']
+//      skip = ["_type", "_dependencies", "attribute_groups", "links", "parent_id", "parent", "description"]
 //      definitions.keys
 //                 .reject { |key| skip.include?(key) || definitions[key][:required] }
 //                 .map { |key| [key, JSON::parse(definitions[key].to_json)] }.to_h
 //    }
 
 //     void merge_date_for_form_attributes(attributes) {
-//      attributes['date'] = { required: false, has_default: false }
-//      attributes.delete 'due_date'
-//      attributes.delete 'start_date'
+//      attributes["date"] = { required: false, has_default: false }
+//      attributes.delete "due_date"
+//      attributes.delete "start_date"
 //    }
 
 //     void add_custom_fields_to_form_attributes(attributes) {
@@ -108,19 +108,19 @@ namespace TypeN::Attributes {
 //    }
 
 //     void attr_i18n_key(name) {
-//      if ( name == 'percentage_done') {
-//        'done_ratio'
+//      if ( name == "percentage_done") {
+//        "done_ratio"
 //      else
 //        name
 //      }
 //    }
 
 //     void attr_translate(name) {
-//      if ( name == 'date') {
-//        I18n.t('label_date')
+//      if ( name == "date") {
+//        I18n.t("label_date")
 //      else
 //        key = attr_i18n_key(name)
-//        I18n.t("activerecord.attributes.work_package.#{key}", fallback: false, default: '')
+//        I18n.t("activerecord.attributes.work_package.#{key}", fallback: false, default: "")
 //          .presence || I18n.t("attributes.#{key}")
 //      }
 //    }

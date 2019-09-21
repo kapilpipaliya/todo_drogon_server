@@ -5,7 +5,7 @@ namespace QueriesHelper {
 //    this->query = if ( params[:query_id].present?) {
 //               Query.where(project: this->project).find(params[:query_id])
 //             else
-//               Query.new_default(name: '_',
+//               Query.new_default(name: "_",
 //                                 project: this->project)
 //             }
 

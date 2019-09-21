@@ -5,7 +5,7 @@ namespace controller {
 class GroupsController : public ApplicationController {
 public:
   // include GroupsHelper
-  // layout 'admin'
+  // layout "admin"
 
   // before_action :require_admin
   // before_action :find_group, only: [:destroy,
@@ -15,7 +15,7 @@ public:
   // GET /groups
   // GET /groups.xml
    void index() {
-//    this->groups = Group.order(Arel.sql('lastname ASC'))
+//    this->groups = Group.order(Arel.sql("lastname ASC"))
 
 //    respond_to { |format|
 //      format.html // index.html.erb
@@ -61,7 +61,7 @@ public:
 //        format.html { redirect_to(groups_path) }
 //        format.xml  { render xml: this->group, status: :created, location: this->group }
 //      else
-//        format.html { render action: 'new' }
+//        format.html { render action: "new" }
 //        format.xml  { render xml: this->group.errors, status: :unprocessable_entity }
 //      }
 //    }
@@ -78,7 +78,7 @@ public:
 //        format.html { redirect_to(groups_path) }
 //        format.xml  { head :ok }
 //      else
-//        format.html { render action: 'edit' }
+//        format.html { render action: "edit" }
 //        format.xml  { render xml: this->group.errors, status: :unprocessable_entity }
 //      }
 //    }
@@ -102,7 +102,7 @@ public:
 //    this->group.users << this->users
 
 //    I18n.t :notice_successful_update
-//    redirect_to controller: '/groups', action: 'edit', id: this->group, tab: 'users'
+//    redirect_to controller: "/groups", action: "edit", id: this->group, tab: "users"
   }
 
    void remove_user() {
@@ -110,7 +110,7 @@ public:
 //    this->group.users.delete(User.includes(:memberships).find(params[:user_id]))
 
 //    I18n.t :notice_successful_update
-//    redirect_to controller: '/groups', action: 'edit', id: this->group, tab: 'users'
+//    redirect_to controller: "/groups", action: "edit", id: this->group, tab: "users"
   }
 
    void create_memberships() {
@@ -133,7 +133,7 @@ public:
 //    else
 //      flash[:error] = result.errors.full_messages.join("\n")
 //    }
-//    redirect_to controller: '/groups', action: 'edit', id: this->group, tab: 'memberships'
+//    redirect_to controller: "/groups", action: "edit", id: this->group, tab: "memberships"
   }
 
 //  alias :edit_membership :create_memberships
@@ -143,7 +143,7 @@ public:
 //    Member.find(membership_params[:membership_id]).destroy
 
 //    flash[:notice] = I18n.t :notice_successful_delete
-//    redirect_to controller: '/groups', action: 'edit', id: this->group, tab: 'memberships'
+//    redirect_to controller: "/groups", action: "edit", id: this->group, tab: "memberships"
   }
 
   protected:
@@ -153,10 +153,10 @@ public:
   }
 
    void default_breadcrumb() {
-//    if ( action_name == 'index') {
-//      t('label_group_plural')
+//    if ( action_name == "index") {
+//      t("label_group_plural")
 //    else
-//      ActionController::Base.helpers.link_to(t('label_group_plural'), groups_path)
+//      ActionController::Base.helpers.link_to(t("label_group_plural"), groups_path)
 //    }
   }
 

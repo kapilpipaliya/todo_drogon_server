@@ -30,7 +30,7 @@ class SHA1 : public UserPassword {
   //
   // Override the base method to disallow new passwords being generated this way.
 //   void salt_and_hash_password!() {
-//    raise ArgumentError, 'Do not use UserPasswordN::SHA1 for new passwords!'
+//    raise ArgumentError, "Do not use UserPasswordN::SHA1 for new passwords!"
 //  }
 
   //

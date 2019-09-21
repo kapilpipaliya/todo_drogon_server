@@ -19,7 +19,7 @@ public:
   //
   // Initialize the job, optionally saving the whole repository object
   // (use only when not serializing the job.)
-  // As we're using the jobs majorly synchronously for the time being, it saves a db trip.
+  // As we"re using the jobs majorly synchronously for the time being, it saves a db trip.
   // When we have error handling for asynchronous tasks, refactor this.
 //   RemoteRepositoryJob(repository, perform_now: false) {
 //    if ( perform_now) {
@@ -35,11 +35,11 @@ public:
   // Submits the request to the configured managed remote as JSON.
 //   void send_request(request) {
 //    uri = repository.class.managed_remote
-//    req = ::Net::HTTP::Post.new(uri, 'Content-Type' => 'application/json')
+//    req = ::Net::HTTP::Post.new(uri, "Content-Type" => "application/json")
 //    req.body = request.to_json
 
 //    http = Net::HTTP.new(uri.host, uri.port)
-//    http.use_ssl = uri.scheme == 'https'
+//    http.use_ssl = uri.scheme == "https"
 //    http.verify_mode = configured_verification
 //    response = http.request(req)
 
@@ -47,9 +47,9 @@ public:
 
 //    unless response.is_a? ::Net::HTTPSuccess
 //      raise OpenProject::Scm::Exceptions::ScmError.new(
-//              I18n.t('repositories.errors.remote_call_failed',
+//              I18n.t("repositories.errors.remote_call_failed",
 //                     code: response.code,
-//                     message: info['message']
+//                     message: info["message"]
 //              )
 //            )
 //    }
@@ -61,7 +61,7 @@ public:
 //    JSON.parse(body)
 //  rescue JSON::JSONError => e
 //    raise OpenProject::Scm::Exceptions::ScmError.new(
-//            I18n.t('repositories.errors.remote_invalid_response')
+//            I18n.t("repositories.errors.remote_invalid_response")
 //          )
 //  }
 

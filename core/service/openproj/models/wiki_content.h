@@ -5,8 +5,8 @@
 namespace openproj {
 namespace models {
 class WikiContent : public ActiveRecord::Base {
-  // belongs_to :page, class_name: 'WikiPage', foreign_key: 'page_id'
-  // belongs_to :author, class_name: 'User', foreign_key: 'author_id'
+  // belongs_to :page, class_name: "WikiPage", foreign_key: "page_id"
+  // belongs_to :author, class_name: "User", foreign_key: "author_id"
   // validates_length_of :comments, maximum: 255, allow_nil: true
 
   // attr_accessor :comments
@@ -17,12 +17,12 @@ class WikiContent : public ActiveRecord::Base {
 
 //  acts_as_journalized
 
-//  acts_as_event type: 'wiki-page',
+//  acts_as_event type: "wiki-page",
 //                title: Proc.new { |o| "#{l(:label_wiki_edit)}: #{o.journal.journable.page.title} (##{o.journal.journable.version})" },
-//                url: Proc.new { |o| { controller: '/wiki', action: 'show', id: o.journal.journable.page, project_id: o.journal.journable.page.wiki.project, version: o.journal.journable.version } }
+//                url: Proc.new { |o| { controller: "/wiki", action: "show", id: o.journal.journable.page, project_id: o.journal.journable.page.wiki.project, version: o.journal.journable.version } }
 
    void activity_type() {
-//    'wiki_edits'
+//    "wiki_edits"
   }
 
 //   void visible?(user = User.current) {
@@ -38,7 +38,7 @@ class WikiContent : public ActiveRecord::Base {
   }
 
 //   void text=(value) {
-//    super value.presence || ''
+//    super value.presence || ""
 //  }
 
   // Returns the mail adresses of users that should be notified
@@ -64,7 +64,7 @@ class WikiContent : public ActiveRecord::Base {
   }
 
    void send_content_added_mail() {
-//    return unless Setting.notified_events.include?('wiki_content_added')
+//    return unless Setting.notified_events.include?("wiki_content_added")
 
 //    create_recipients.uniq.each { |user|
 //      UserMailer.wiki_content_added(user, self, User.current).deliver_now
@@ -72,7 +72,7 @@ class WikiContent : public ActiveRecord::Base {
   }
 
    void send_content_updated_mail() {
-//    return unless Setting.notified_events.include?('wiki_content_updated')
+//    return unless Setting.notified_events.include?("wiki_content_updated")
 
 //    update_recipients.uniq.each { |user|
 //      UserMailer.wiki_content_updated(user, self, User.current).deliver_now

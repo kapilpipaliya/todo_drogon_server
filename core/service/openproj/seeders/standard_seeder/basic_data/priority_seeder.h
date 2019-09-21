@@ -8,10 +8,10 @@ namespace StandardSeeder {
     public:
         std::vector<row>  data() {
 //        color_names = [
-//          'lime-0', // low
-//          'green-1', // normal
-//          'yellow-2', // high
-//          'red-3', // immediate
+//          "lime-0", // low
+//          "green-1", // normal
+//          "yellow-2", // high
+//          "red-3", // immediate
 //        ]
 
 //        // When selecting for an array of values, implicit order is applied

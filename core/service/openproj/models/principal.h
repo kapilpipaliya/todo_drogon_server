@@ -17,19 +17,19 @@ class Principal : public ActiveRecord::Base {
 
 //  // has_one :preference,
 //          dependent: :destroy,
-//          class_name: 'UserPreference',
-//          foreign_key: 'user_id'
-//  // has_many :members, foreign_key: 'user_id', dependent: :destroy
+//          class_name: "UserPreference",
+//          foreign_key: "user_id"
+//  // has_many :members, foreign_key: "user_id", dependent: :destroy
 //  // has_many :memberships, -> {
 //    includes(:project, :roles)
 //      .where(projects: { status: Project::STATUS_ACTIVE })
-//      .order(Arel.sql('projects.name ASC'))
-    // haven't been able to produce the order using hashes
+//      .order(Arel.sql("projects.name ASC"))
+    // haven"t been able to produce the order using hashes
 //  },
-//           class_name: 'Member',
-//           foreign_key: 'user_id'
+//           class_name: "Member",
+//           foreign_key: "user_id"
 //  // has_many :projects, through: :memberships
-//  // has_many :categories, foreign_key: 'assigned_to_id', dependent: :nullify
+//  // has_many :categories, foreign_key: "assigned_to_id", dependent: :nullify
 
 //  // scope :active, -> { where(status: STATUSES[:active]) }
 
@@ -53,15 +53,15 @@ class Principal : public ActiveRecord::Base {
 //  }
 
 //  // scope :like, ->(q) {
-//    firstnamelastname = "((firstname || ' ') || lastname)"
-//    lastnamefirstname = "((lastname || ' ') || firstname)"
+//    firstnamelastname = "((firstname || " ") || lastname)"
+//    lastnamefirstname = "((lastname || " ") || firstname)"
 
-//    s = "%#{q.to_s.downcase.strip.tr(',', '')}%"
+//    s = "%#{q.to_s.downcase.strip.tr(",", "")}%"
 
-//    where(['LOWER(login) LIKE :s OR ' +
+//    where(["LOWER(login) LIKE :s OR " +
 //             "LOWER(#{firstnamelastname}) LIKE :s OR " +
 //             "LOWER(#{lastnamefirstname}) LIKE :s OR " +
-//             'LOWER(mail) LIKE :s',
+//             "LOWER(mail) LIKE :s",
 //           { s: s }])
 //      .order(:type, :login, :lastname, :firstname, :mail)
 //  }
@@ -100,11 +100,11 @@ class Principal : public ActiveRecord::Base {
 //   void status_name() {
 //    // Only Users should have another status than active.
 //    // User defines the status values and other classes like Principal
-//    // shouldn't know anything about them. Nevertheless, some functions
+//    // shouldn"t know anything about them. Nevertheless, some functions
 //    // want to know the status for other Principals than User.
-//    raise 'Principal has status other than active' unless status == STATUSES[:active]
+//    raise "Principal has status other than active" unless status == STATUSES[:active]
 
-//    'active'
+//    "active"
 //  }
 
 //   void active_or_registered?() {
@@ -138,12 +138,12 @@ class Principal : public ActiveRecord::Base {
 
   protected:
 
-  // Make sure we don't try to insert NULL values (see #4632)
+  // Make sure we don"t try to insert NULL values (see #4632)
 //   void set_default_empty_values() {
-//    this->login ||= ''
-//    this->firstname ||= ''
-//    this->lastname ||= ''
-//    this->mail ||= ''
+//    this->login ||= ""
+//    this->firstname ||= ""
+//    this->lastname ||= ""
+//    this->mail ||= ""
 //    true
 //  }
 

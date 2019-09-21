@@ -31,26 +31,26 @@ public:
 //  }
 
    void show() {
-//    sort_init 'updated_on', 'desc'
-//    sort_update 'created_on' => "#{Message.table_name}.created_on",
-//                'replies' => "#{Message.table_name}.replies_count",
-//                'updated_on' => "#{Message.table_name}.updated_on"
+//    sort_init "updated_on", "desc"
+//    sort_update "created_on" => "#{Message.table_name}.created_on",
+//                "replies" => "#{Message.table_name}.replies_count",
+//                "updated_on" => "#{Message.table_name}.updated_on"
 
 //    respond_to { |format|
 //      format.html {
 //        set_topics
 //        this->message = Message.new
-//        render action: 'show', layout: !request.xhr?
+//        render action: "show", layout: !request.xhr?
 //      }
 //      format.json {
 //        set_topics
 
-//        render template: 'messages/index'
+//        render template: "messages/index"
 //      }
 //      format.atom {
 //        this->messages = this->forum
 //                    .messages
-//                    .order(["#{Message.table_name}.sticked_on ASC", sort_clause].compact.join(', '))
+//                    .order(["#{Message.table_name}.sticked_on ASC", sort_clause].compact.join(", "))
 //                    .includes(:author, :forum)
 //                    .limit(Setting.feeds_limit.to_i)
 
@@ -62,7 +62,7 @@ public:
    void set_topics() {
 //    this->topics =  this->forum
 //               .topics
-//               .order(["#{Message.table_name}.sticked_on ASC", sort_clause].compact.join(', '))
+//               .order(["#{Message.table_name}.sticked_on ASC", sort_clause].compact.join(", "))
 //               .includes(:author, last_reply: :author)
 //               .page(page_param)
 //               .per_page(per_page_param)
@@ -94,8 +94,8 @@ public:
 //    if ( this->forum.update_attributes(permitted_params.forum_move)) {
 //      flash[:notice] = t(:notice_successful_update)
 //    else
-//      flash.now[:error] = t('forum_could_not_be_saved')
-//      render action: 'edit'
+//      flash.now[:error] = t("forum_could_not_be_saved")
+//      render action: "edit"
 //    }
 //    redirect_to_settings_in_projects(this->forum.project_id)
   }
@@ -109,7 +109,7 @@ public:
   private:
 
 //   void redirect_to_settings_in_projects(id = this->project) {
-//    redirect_to controller: '/project_settings', action: 'show', id: id, tab: 'forums'
+//    redirect_to controller: "/project_settings", action: "show", id: id, tab: "forums"
 //  }
 
    void find_forum() {

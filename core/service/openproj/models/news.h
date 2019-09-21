@@ -4,9 +4,9 @@ namespace openproj {
 namespace models {
 class News : public ActiveRecord::Base {
   // belongs_to :project
-  // belongs_to :author, class_name: 'User', foreign_key: 'author_id'
+  // belongs_to :author, class_name: "User", foreign_key: "author_id"
   // has_many :comments, -> {
-//    order('created_on')
+//    order("created_on")
 //  }, as: :commented, dependent: :delete_all
 
 //  // validates_presence_of :title
@@ -15,7 +15,7 @@ class News : public ActiveRecord::Base {
 
 //  acts_as_journalized
 
-//  acts_as_event url: Proc.new { |o| { controller: '/news', action: 'show', id: o.id } },
+//  acts_as_event url: Proc.new { |o| { controller: "/news", action: "show", id: o.id } },
 //                datetime: :created_on
 
 //  acts_as_searchable columns: ["#{table_name}.title", "#{table_name}.summary", "#{table_name}.description"],
@@ -38,7 +38,7 @@ class News : public ActiveRecord::Base {
 //  }
 
 //   void description=(val) {
-//    super val.presence || ''
+//    super val.presence || ""
 //  }
 
   // returns latest news for projects visible by user
@@ -58,7 +58,7 @@ class News : public ActiveRecord::Base {
 //    }
 //  }
 
-  // table_name shouldn't be needed :(
+  // table_name shouldn"t be needed :(
 //   void newest_first() {
 //    order "#{table_name}.created_on DESC"
 //  }
@@ -82,7 +82,7 @@ class News : public ActiveRecord::Base {
 //  }
 
 //   void send_news_added_mail() {
-//    if ( Setting.notified_events.include?('news_added')) {
+//    if ( Setting.notified_events.include?("news_added")) {
 //      recipients.uniq.each { |user|
 //        UserMailer.news_added(user, self, User.current).deliver_now
 //      }

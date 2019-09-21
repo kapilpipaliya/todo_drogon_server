@@ -3,11 +3,11 @@
 namespace openproj {
 namespace controller {
 class UsersSettingsController : public ApplicationController {
-  // layout 'admin'
+  // layout "admin"
   // menu_item :user_settings
 public:
    void index() {
-//    render 'users/users_settings'
+//    render "users/users_settings"
   }
 
    void edit() {
@@ -17,7 +17,7 @@ public:
 //        .call(settings: permitted_params.settings.to_h)
 
 //      flash[:notice] = l(:notice_successful_update)
-//      redirect_to action: 'index'
+//      redirect_to action: "index"
 //    }
   }
 

@@ -10,7 +10,7 @@ public:
 //    if ( types_missing?(type_ids)) {
 //      project.errors.add(:types,
 //                         :in_use_by_work_packages,
-//                         types: missing_types(type_ids).map(&:name).join(', '))
+//                         types: missing_types(type_ids).map(&:name).join(", "))
 //      false
 //    else
 //      project.type_ids = type_ids

@@ -25,11 +25,11 @@ class IdFilter : public openproj::models::Queries::Principals::Filters::Principa
    void values_replaced() {
 //    vals = values.clone
 
-//    if ( vals.delete('me')) {
+//    if ( vals.delete("me")) {
 //      if ( User.current.logged?) {
 //        vals.push(User.current.id.to_s)
 //      else
-//        vals.push('0')
+//        vals.push("0")
 //      }
 //    }
 

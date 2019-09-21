@@ -4,7 +4,7 @@ namespace openproj {
 namespace controller {
 class UsersController : public ApplicationController {
 public:
-  // layout 'admin'
+  // layout "admin"
 
   // before_action :require_admin, except: [:show, :deletion_info, :destroy]
   // before_action :find_user, only: [:show,
@@ -63,7 +63,7 @@ public:
 //    }
 
 //    respond_to { |format|
-//      format.html { render layout: 'no_menu' }
+//      format.html { render layout: "no_menu" }
 //    }
   }
 
@@ -92,7 +92,7 @@ public:
 //      this->auth_sources = AuthSource.all
 
 //      respond_to { |format|
-//        format.html { render action: 'new' }
+//        format.html { render action: "new" }
 //      }
 //    }
 //  }
@@ -125,7 +125,7 @@ public:
 //    if ( this->user.save) {
 //      update_email_service = UpdateUserEmailSettingsService.new(this->user)
 //      update_email_service.call(mail_notification: pref_params.delete(:mail_notification),
-//                                self_notified: params[:self_notified] == '1',
+//                                self_notified: params[:self_notified] == "1",
 //                                notified_project_ids: params[:notified_project_ids])
 
 //      this->user.pref.attributes = pref_params
@@ -180,14 +180,14 @@ public:
    void change_status() {
 //    if ( this->user.id == current_user.id) {
 //      // user is not allowed to change own status
-//      redirect_back_or_default(action: 'edit', id: this->user)
+//      redirect_back_or_default(action: "edit", id: this->user)
 //      return
 //    }
 
 //    if ( (params[:unlock] || params[:activate]) && user_limit_reached?) {
 //      show_user_limit_error!
 
-//      return redirect_back_or_default(action: 'edit', id: this->user)
+//      return redirect_back_or_default(action: "edit", id: this->user)
 //    }
 
 //    if ( params[:unlock]) {
@@ -213,10 +213,10 @@ public:
 //      }
 //    else
 //      flash[:error] = I18n.t(:error_status_change_failed,
-//                             errors: this->user.errors.full_messages.join(', '),
+//                             errors: this->user.errors.full_messages.join(", "),
 //                             scope: :user)
 //    }
-//    redirect_back_or_default(action: 'edit', id: this->user)
+//    redirect_back_or_default(action: "edit", id: this->user)
   }
 
    void resend_invitation() {
@@ -228,7 +228,7 @@ public:
 //    if ( token.persisted?) {
 //      flash[:notice] = I18n.t(:notice_user_invitation_resent, email: this->user.mail)
 //    else
-//      logger.error "could not re-invite #{this->user.mail}: #{token.errors.full_messages.join(' ')}"
+//      logger.error "could not re-invite #{this->user.mail}: #{token.errors.full_messages.join(" ")}"
 //      flash[:error] = I18n.t(:notice_internal_server_error, app_title: Setting.app_title)
 //    }
 
@@ -241,7 +241,7 @@ public:
 
 //    Users::DeleteService.new(this->user, User.current).call
 
-//    flash[:notice] = l('account.deleted')
+//    flash[:notice] = l("account.deleted")
 
 //    respond_to { |format|
 //      format.html {
@@ -251,13 +251,13 @@ public:
   }
 
    void deletion_info() {
-//    render action: 'deletion_info', layout: my_or_admin_layout
+//    render action: "deletion_info", layout: my_or_admin_layout
   }
 
   private:
 
    void find_user() {
-//    if ( params[:id] == 'current' || params['id'].nil?) {
+//    if ( params[:id] == "current" || params["id"].nil?) {
 //      require_login || return
 //      this->user = User.current
 //    else
@@ -274,9 +274,9 @@ public:
 
 //      respond_to { |format|
 //        format.html { render_403 }
-//        format.xml  { head :unauthorized, 'WWW-Authenticate' => 'Basic realm="OpenProject API"' }
-//        format.js   { head :unauthorized, 'WWW-Authenticate' => 'Basic realm="OpenProject API"' }
-//        format.json { head :unauthorized, 'WWW-Authenticate' => 'Basic realm="OpenProject API"' }
+//        format.xml  { head :unauthorized, "WWW-Authenticate" => "Basic realm="OpenProject API"" }
+//        format.js   { head :unauthorized, "WWW-Authenticate" => "Basic realm="OpenProject API"" }
+//        format.json { head :unauthorized, "WWW-Authenticate" => "Basic realm="OpenProject API"" }
 //      }
 
 //      false
@@ -289,11 +289,11 @@ public:
 
    void my_or_admin_layout() {
 //    // TODO: how can this be done better:
-//    // check if ( the route used to call the action is in the 'my' namespace) {
+//    // check if ( the route used to call the action is in the "my" namespace) {
 //    if ( url_for(:delete_my_account_info) == request.url) {
-//      'my'
+//      "my"
 //    else
-//      'admin'
+//      "admin"
 //    }
   }
 
@@ -304,10 +304,10 @@ public:
   protected:
 
    void default_breadcrumb() {
-//    if ( action_name == 'index') {
-//      t('label_user_plural')
+//    if ( action_name == "index") {
+//      t("label_user_plural")
 //    else
-//      ActionController::Base.helpers.link_to(t('label_user_plural'), users_path)
+//      ActionController::Base.helpers.link_to(t("label_user_plural"), users_path)
 //    }
   }
 

@@ -1,5 +1,5 @@
 #pragma once
-//require_dependency 'token/base'
+//require_dependency "token/base"
 #include "base.h"
 namespace openproj {
 namespace models {

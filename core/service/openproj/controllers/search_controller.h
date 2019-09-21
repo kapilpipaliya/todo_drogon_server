@@ -31,12 +31,12 @@ public:
   private:
 
    void prepare_tokens() {
-//    this->question = search_params[:q] || ''
+//    this->question = search_params[:q] || ""
 //    this->question.strip!
 //    this->tokens = scan_query_tokens(this->question).uniq
 
 //    unless this->tokens.any?
-//      this->question = ''
+//      this->question = ""
 //    }
   }
 
@@ -76,7 +76,7 @@ public:
   // extract tokens from the question
   // eg. hello "bye bye" => ["hello", "bye bye"]
    void scan_query_tokens(std::string query) {
-//    tokens = query.scan(%r{((\s|^)"[\s\w]+"(\s|$)|\S+)}).map { |m| m.first.gsub(%r{(^\s*"\s*|\s*"\s*$)}, '') }
+//    tokens = query.scan(%r{((\s|^)"[\s\w]+"(\s|$)|\S+)}).map { |m| m.first.gsub(%r{(^\s*"\s*|\s*"\s*$)}, "") }
 
 //    // no more than 5 tokens to search for
 //    if ( tokens.size > 5) { tokens.slice! 5..-1 ;}
@@ -100,9 +100,9 @@ public:
 
    void projects_to_search() {
 //    case search_params[:scope]
-//    when 'all'
+//    when "all"
 //      nil
-//    when 'current_project'
+//    when "current_project"
 //      this->project
 //    else
 //      this->project ? this->project.self_and_descendants.active : nil
@@ -137,8 +137,8 @@ public:
 //    types = Redmine::Search.available_search_types.dup
 
 //    if ( projects_to_search.is_a? Project) {
-//      // don't search projects
-//      types.delete('projects')
+//      // don"t search projects
+//      types.delete("projects")
 //      // only show what the user is allowed to view
 //      types = types.select { |o| User.current.allowed_to?("view_#{o}".to_sym, projects_to_search) }
 //    }
@@ -151,7 +151,7 @@ public:
 
 //    scope = if ( scope.empty?) {
 //              search_types
-//            } else if ( scope & ['work_packages'] == scope) {
+//            } else if ( scope & ["work_packages"] == scope) {
 //              []
 //            else
 //              scope
@@ -165,7 +165,7 @@ public:
 //  }
 
    void provision_gon() {
-//    available_search_types = Redmine::Search.available_search_types.dup.push('all')
+//    available_search_types = Redmine::Search.available_search_types.dup.push("all")
 
 //    gon.global_search = {
 //      search_term: this->question,
@@ -176,7 +176,7 @@ public:
 //          name: OpenProject::GlobalSearch.tab_name(search_type)
 //        }
 //      },
-//      current_tab: available_search_types.select { |search_type| search_params[search_type] }.first || 'all'
+//      current_tab: available_search_types.select { |search_type| search_params[search_type] }.first || "all"
 //    }
   }
 };

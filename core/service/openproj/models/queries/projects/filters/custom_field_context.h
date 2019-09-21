@@ -20,7 +20,7 @@ namespace Queries::Projects::Filters::CustomFieldContext {
 //      project_db_table = Project.table_name
 
 //      "LEFT OUTER JOIN #{cv_db_table}
-//         ON #{cv_db_table}.customized_type='Project'
+//         ON #{cv_db_table}.customized_type="Project"
 //         AND #{cv_db_table}.customized_id=#{project_db_table}.id
 //         AND #{cv_db_table}.custom_field_id=#{custom_field.id}"
 //    }

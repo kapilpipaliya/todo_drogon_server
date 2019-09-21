@@ -6,7 +6,7 @@ namespace MetaTagsHelper {
    void output_title_and_meta_tags() {
 //    display_meta_tags site: Setting.app_title,
 //                      title: html_title_parts,
-//                      separator: ' | ', // Update the TitleService when changing this!
+//                      separator: " | ", // Update the TitleService when changing this!
 //                      reverse: true
   }
 
@@ -15,7 +15,7 @@ namespace MetaTagsHelper {
 //   void html_title(*args) {
 //    title = []
 
-//    if ( args.empty?) { raise "Don't use html_title getter" ;}
+//    if ( args.empty?) { raise "Don"t use html_title getter" ;}
 
 //    this->html_title ||= []
 //    this->html_title += args

@@ -33,13 +33,13 @@ public:
   //
   // Returns the checkout base URL as defined in settings.
    void checkout_base_url() {
-//    checkout_settings['base_url']
+//    checkout_settings["base_url"]
   }
 
   //
   // Returns the instructions defined in the settings.
    void instructions() {
-//    checkout_settings['text'].presence ||
+//    checkout_settings["text"].presence ||
 //      I18n.t("repositories.checkout.default_instructions.#{repository.vendor}")
   }
 
@@ -51,7 +51,7 @@ public:
 
   //
   // Determines whether the checkout URL may be built, i.e. all information is available
-  // This is the case when the base_url is set or the vendor doesn't use base URLs.
+  // This is the case when the base_url is set or the vendor doesn"t use base URLs.
    bool checkout_url_buildable() {
 //    !repository.class.requires_checkout_base_url? || checkout_base_url.present?
   }
@@ -66,7 +66,7 @@ public:
   }
 
    bool checkout_enabled() {
-//    checkout_settings['enabled'].to_i > 0
+//    checkout_settings["enabled"].to_i > 0
   }
 
    bool supported_but_not_enabled() {

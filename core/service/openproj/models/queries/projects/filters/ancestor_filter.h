@@ -8,9 +8,9 @@ namespace Queries {
       class AncestorFilter : public openproj::models::Queries::Projects::Filters::ProjectFilter {
          void scope() {
 //          case operator
-//          when '='
+//          when "="
 //            Project.joins(join_specific_ancestor_projects.join_sources)
-//          when '!'
+//          when "!"
 //            Project.joins(left_join_ancestor_projects.join_sources)
 //                   .where(ancestor_not_in_values_condition)
 //          else

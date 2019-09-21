@@ -83,8 +83,8 @@ namespace API {
 
 //        filters.each_with_object([]) { |filter, array|
 //          attribute = filter.keys.first // there should only be one attribute per filter
-//          operator =  filter[attribute]['operator']
-//          values = filter[attribute]['values']
+//          operator =  filter[attribute]["operator"]
+//          values = filter[attribute]["values"]
 //          ar_attribute = convert_filter_attribute attribute, append_id: true
 
 //          internal_representation = { field: ar_attribute,
@@ -95,7 +95,7 @@ namespace API {
 //      }
 
 //       void columns_from_params(params) {
-//        columns = params[:columns] || params[:c] || params[:column_names] || params[:'columns[]']
+//        columns = params[:columns] || params[:c] || params[:column_names] || params[:"columns[]"]
 
 //        return unless columns
 
@@ -110,15 +110,15 @@ namespace API {
 //        return unless highlighted_attributes.present?
 
 //        highlighted_attributes.map { |href|
-//          attr = href.split('/').last
+//          attr = href.split("/").last
 //          convert_attribute(attr)
 //        }
 //      }
 
 //       void boolearize(value) {
-//        if ( value == 'true') {
+//        if ( value == "true") {
 //          true
-//        } else if ( value == 'false') {
+//        } else if ( value == "false") {
 //          false
 //        }
 //      }
@@ -151,7 +151,7 @@ namespace API {
 //          attribute, direction = if ( order.is_a?(Array)) {
 //                                   [order.first, order.last]
 //                                 } else if ( order.is_a?(String)) {
-//                                   order.split(':')
+//                                   order.split(":")
 //                                 }
 
 //          [convert_attribute(attribute), direction]

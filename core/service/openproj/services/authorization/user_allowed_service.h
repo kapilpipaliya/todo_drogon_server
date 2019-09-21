@@ -13,7 +13,7 @@ public:
 
   // Return true if the user is allowed to do the specified action on a specific context
   // Action can be:
-  // * a parameter-like Hash (eg. controller: '/projects', action: 'edit')
+  // * a parameter-like Hash (eg. controller: "/projects", action: "edit")
   // * a permission Symbol (eg. :edit_project)
   // Context can be:
   // * a project : returns true if user is allowed to do the specified action on this project
@@ -93,7 +93,7 @@ public:
 //  }
 
 //   void normalize_action(action) {
-//    if ( action.is_a?(Hash) && action[:controller] && action[:controller].to_s.starts_with?('/')) {
+//    if ( action.is_a?(Hash) && action[:controller] && action[:controller].to_s.starts_with?("/")) {
 //      action = action.dup
 //      action[:controller] = action[:controller][1..-1]
 //    }

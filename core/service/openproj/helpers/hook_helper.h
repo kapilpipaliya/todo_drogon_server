@@ -2,11 +2,11 @@
 // hooks can be called in views like this:
 //
 //   <%= call_hook(:some_hook) %>
-//   <%= call_hook(:another_hook, foo: 'bar') %>
+//   <%= call_hook(:another_hook, foo: "bar") %>
 //
 // Or in controllers like:
 //   call_hook(:some_hook)
-//   call_hook(:another_hook, foo: 'bar')
+//   call_hook(:another_hook, foo: "bar")
 //
 // Hooks added to views will be concatenated into a string. Hooks added to
 // controllers will return an array of results.
@@ -29,7 +29,7 @@ namespace HookHelper {
 //      default_context = { project: this->project, hook_caller: self }
 //      if ( respond_to?(:controller)) { default_context[:controller] = controller ;}
 //      if ( respond_to?(:request)) { default_context[:request] = request ;}
-//      Redmine::Hook.call_hook(hook, default_context.merge(context)).join(' ').html_safe
+//      Redmine::Hook.call_hook(hook, default_context.merge(context)).join(" ").html_safe
 //    }
 //  }
 }

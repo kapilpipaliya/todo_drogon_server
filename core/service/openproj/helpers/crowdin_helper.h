@@ -6,7 +6,7 @@ namespace CrowdinHelper {
 //    return unless ::I18n.locale == :lol
 
 //    // Enable CSP to load the following script by whitelisting for this request.
-//    // This will be slower than manually adding it to the initializer, but we wouldn't want to
+//    // This will be slower than manually adding it to the initializer, but we wouldn"t want to
 //    // allow cdn.crowdin.com for users without in context translations.
 //    controller.append_content_security_policy_directives(
 //      // initial script and setup API calls
@@ -24,9 +24,9 @@ namespace CrowdinHelper {
 //    )
 
 //    concat(nonced_javascript_tag {
-//      "var _jipt = []; _jipt.push(['project', 'openproject']);".html_safe
+//      "var _jipt = []; _jipt.push(["project", "openproject"]);".html_safe
 //    })
-//    concat javascript_include_tag 'https://cdn.crowdin.com/jipt/jipt.js'
+//    concat javascript_include_tag "https://cdn.crowdin.com/jipt/jipt.js"
   }
 }
 }

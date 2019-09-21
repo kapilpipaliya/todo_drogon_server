@@ -6,11 +6,11 @@ namespace Reports {
 class TypeReport : public Reports::Report {
 public:
    void report_type() {
-//    'type'
+//    "type"
   }
 
    void field() {
-//    this->field || 'type_id'
+//    this->field || "type_id"
   }
 
    void rows() {

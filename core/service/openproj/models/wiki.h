@@ -5,18 +5,18 @@ namespace models {
 class Wiki : public ActiveRecord::Base {
   // belongs_to :project
   // has_many :pages, -> {
-//    order('title')
-//  }, class_name: 'WikiPage', dependent: :destroy
+//    order("title")
+//  }, class_name: "WikiPage", dependent: :destroy
   // has_many :wiki_menu_items, -> {
-//    order('name')
-//  }, class_name: 'MenuItems::WikiMenuItem', dependent: :delete_all, foreign_key: 'navigatable_id'
-  // has_many :redirects, class_name: 'WikiRedirect', dependent: :delete_all
+//    order("name")
+//  }, class_name: "MenuItems::WikiMenuItem", dependent: :delete_all, foreign_key: "navigatable_id"
+  // has_many :redirects, class_name: "WikiRedirect", dependent: :delete_all
 
 //  acts_as_watchable permission: :view_wiki_pages
 
 //  accepts_nested_attributes_for :wiki_menu_items,
 //                                allow_destroy: true,
-//                                reject_if (: proc { |attr| attr['name'].blank? && attr['title'].blank? }) {
+//                                reject_if (: proc { |attr| attr["name"].blank? && attr["title"].blank? }) {
 
   // validates_presence_of :start_page
 
@@ -27,7 +27,7 @@ class Wiki : public ActiveRecord::Base {
 //  }
 
   // find the page with the given title
-  // if ( page doesn't exist, return a new page) {
+  // if ( page doesn"t exist, return a new page) {
 //   void find_or_new_page(title) {
 //    if ( title.blank?) { title = start_page ;}
 //    find_page(title) || WikiPage.new(wiki: self, title: title)
@@ -70,7 +70,7 @@ class Wiki : public ActiveRecord::Base {
 
    void create_menu_item_for_start_page() {
 //    wiki_menu_item = wiki_menu_items.find_or_initialize_by(title: start_page) { |item|
-//      item.name = 'wiki'
+//      item.name = "wiki"
 //    }
 //    wiki_menu_item.new_wiki_page = true
 //    wiki_menu_item.index_page = true

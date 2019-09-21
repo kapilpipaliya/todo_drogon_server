@@ -43,7 +43,7 @@ public:
 //  }
 
 //   void build_error() {
-//    I18n.t('repositories.errors.build_failed', reason: this->build_failed_msg)
+//    I18n.t("repositories.errors.build_failed", reason: this->build_failed_msg)
 //  }
 
   private:

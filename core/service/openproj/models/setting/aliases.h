@@ -11,7 +11,7 @@ namespace models {
 //    // Whether the application is configured to use or force SSL output
 //    // for cookie storage et al.
 //     void https?() {
-//      Setting.protocol == 'https' || Rails.configuration.force_ssl
+//      Setting.protocol == "https" || Rails.configuration.force_ssl
 //    }
 //  }
 //};

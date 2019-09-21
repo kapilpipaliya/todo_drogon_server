@@ -4,7 +4,7 @@ namespace openproj {
 namespace controller {
 class EnterprisesController : public ApplicationController {
 public:
-  // layout 'admin'
+  // layout "admin"
   // menu_item :enterprise
 
   // before_action :require_admin

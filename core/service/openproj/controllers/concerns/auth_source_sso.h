@@ -68,7 +68,7 @@ namespace Concerns {
 //     void create_user_from_auth_source(login) {
 //      if ( attrs = AuthSource.find_user(login)) {
 //        // login is both safe and protected in chilis core code
-//        // in case it's intentional we keep it that way
+//        // in case it"s intentional we keep it that way
 //        user = User.new attrs.except(:login)
 //        user.login = login
 //        user.language = Setting.default_language
@@ -85,7 +85,7 @@ namespace Concerns {
 
 //        if ( logger && user.auth_source) {
 //          logger.info(
-//            "User '#{user.login}' created from external auth source: " +
+//            "User "#{user.login}" created from external auth source: " +
 //            "#{user.auth_source.type} - #{user.auth_source.name}"
 //          )
 //        }

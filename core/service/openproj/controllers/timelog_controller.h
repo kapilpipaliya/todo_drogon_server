@@ -20,14 +20,14 @@ public:
   // menu_item :time_entries
 
    void index() {
-//    sort_init 'spent_on', 'desc'
-//    sort_update 'spent_on' => 'spent_on',
-//                'user' => 'user_id',
-//                'activity' => 'activity_id',
-//                'project' => "#{Project.table_name}.name",
-//                'work_package' => 'work_package_id',
-//                'comments' => 'comments',
-//                'hours' => 'hours'
+//    sort_init "spent_on", "desc"
+//    sort_update "spent_on" => "spent_on",
+//                "user" => "user_id",
+//                "activity" => "activity_id",
+//                "project" => "#{Project.table_name}.name",
+//                "work_package" => "work_package_id",
+//                "comments" => "comments",
+//                "hours" => "hours"
 
 //    cond = ARCondition.new
 //    if ( this->issue) {
@@ -38,7 +38,7 @@ public:
 
 //    retrieve_date_range allow_nil: true
 //    if ( this->from && this->to) {
-//      cond << ['spent_on BETWEEN ? AND ?', this->from, this->to]
+//      cond << ["spent_on BETWEEN ? AND ?", this->from, this->to]
 //    }
 
 //    respond_to { |format|
@@ -58,7 +58,7 @@ public:
 //                   .distinct(false)
 //                   .order(sort_clause)
 
-//        render csv: entries_to_csv(this->entries), filename: 'timelog.csv'
+//        render csv: entries_to_csv(this->entries), filename: "timelog.csv"
 //      }
 //    }
   }
@@ -68,7 +68,7 @@ public:
 
 //    call_hook(:controller_timelog_edit_before_save, params: params, time_entry: this->time_entry)
 
-//    render action: 'edit'
+//    render action: "edit"
   }
 
    void create() {
@@ -106,7 +106,7 @@ public:
 //      respond_to { |format|
 //        format.html {
 //          flash[:notice] = l(:notice_successful_delete)
-//          redirect_back fallback_location: { action: 'index', project_id: this->time_entry.project }
+//          redirect_back fallback_location: { action: "index", project_id: this->time_entry.project }
 //        }
 //        format.json {
 //          render json: { text: l(:notice_successful_delete) }
@@ -116,7 +116,7 @@ public:
 //      respond_to { |format|
 //        format.html {
 //          flash[:error] = l(:notice_unable_delete_time_entry)
-//          redirect_back fallback_location: { action: 'index', project_id: this->time_entry.project }
+//          redirect_back fallback_location: { action: "index", project_id: this->time_entry.project }
 //        }
 //        format.json {
 //          render json: { isError: true, text: l(:notice_unable_delete_time_entry) }
@@ -162,13 +162,13 @@ public:
 //      respond_to { |format|
 //        format.html {
 //          flash[:notice] = l(:notice_successful_update)
-//          redirect_back_or_default action: 'index', project_id: this->time_entry.project
+//          redirect_back_or_default action: "index", project_id: this->time_entry.project
 //        }
 //      }
 //    else
 //      respond_to { |format|
 //        format.html {
-//          render action: 'edit'
+//          render action: "edit"
 //        }
 //      }
 //    }

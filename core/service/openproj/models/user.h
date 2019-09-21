@@ -13,12 +13,12 @@ class User : public Principal {
 //    username:                 [:login]
 //  }.freeze
 
-//  USER_MAIL_OPTION_ALL            = ['all', :label_user_mail_option_all].freeze
-//  USER_MAIL_OPTION_SELECTED       = ['selected', :label_user_mail_option_selected].freeze
-//  USER_MAIL_OPTION_ONLY_MY_EVENTS = ['only_my_events', :label_user_mail_option_only_my_events].freeze
-//  USER_MAIL_OPTION_ONLY_ASSIGNED  = ['only_assigned', :label_user_mail_option_only_assigned].freeze
-//  USER_MAIL_OPTION_ONLY_OWNER     = ['only_owner', :label_user_mail_option_only_owner].freeze
-//  USER_MAIL_OPTION_NON            = ['none', :label_user_mail_option_none].freeze
+//  USER_MAIL_OPTION_ALL            = ["all", :label_user_mail_option_all].freeze
+//  USER_MAIL_OPTION_SELECTED       = ["selected", :label_user_mail_option_selected].freeze
+//  USER_MAIL_OPTION_ONLY_MY_EVENTS = ["only_my_events", :label_user_mail_option_only_my_events].freeze
+//  USER_MAIL_OPTION_ONLY_ASSIGNED  = ["only_assigned", :label_user_mail_option_only_assigned].freeze
+//  USER_MAIL_OPTION_ONLY_OWNER     = ["only_owner", :label_user_mail_option_only_owner].freeze
+//  USER_MAIL_OPTION_NON            = ["none", :label_user_mail_option_none].freeze
 
 //  MAIL_NOTIFICATION_OPTIONS = [
 //    USER_MAIL_OPTION_ALL,
@@ -34,34 +34,34 @@ class User : public Principal {
 //                          after_add:    ->(user, group) { group.user_added(user) },
 //                          after_remove: ->(user, group) { group.user_removed(user) }
 
-//  // has_many :categories, foreign_key: 'assigned_to_id',
+//  // has_many :categories, foreign_key: "assigned_to_id",
 //                        dependent: :nullify
-//  // has_many :assigned_issues, foreign_key: 'assigned_to_id',
-//                             class_name: 'WorkPackage',
+//  // has_many :assigned_issues, foreign_key: "assigned_to_id",
+//                             class_name: "WorkPackage",
 //                             dependent: :nullify
-//  // has_many :responsible_for_issues, foreign_key: 'responsible_id',
-//                                    class_name: 'WorkPackage',
+//  // has_many :responsible_for_issues, foreign_key: "responsible_id",
+//                                    class_name: "WorkPackage",
 //                                    dependent: :nullify
-//  // has_many :watches, class_name: 'Watcher',
+//  // has_many :watches, class_name: "Watcher",
 //                     dependent: :delete_all
 //  // has_many :changesets, dependent: :nullify
 //  // has_many :passwords, -> {
-//    order('id DESC')
-//  }, class_name: 'UserPassword',
+//    order("id DESC")
+//  }, class_name: "UserPassword",
 //     dependent: :destroy,
 //     inverse_of: :user
-//  // has_one :rss_token, class_name: '::Token::Rss', dependent: :destroy
-//  // has_one :api_token, class_name: '::Token::Api', dependent: :destroy
+//  // has_one :rss_token, class_name: "::Token::Rss", dependent: :destroy
+//  // has_one :api_token, class_name: "::Token::Api", dependent: :destroy
 //  // belongs_to :auth_source
 
 //  // Authorized OAuth grants
 //  // has_many :oauth_grants,
-//           class_name: 'Doorkeeper::AccessGrant',
-//           foreign_key: 'resource_owner_id'
+//           class_name: "Doorkeeper::AccessGrant",
+//           foreign_key: "resource_owner_id"
 
 //  // User-defined oauth applications
 //  // has_many :oauth_applications,
-//           class_name: 'Doorkeeper::Application',
+//           class_name: "Doorkeeper::Application",
 //           as: :owner
 
 //  // Users blocked via brute force prevention
@@ -76,7 +76,7 @@ class User : public Principal {
 //   void blocked_condition(blocked) {
 //    block_duration = Setting.brute_force_block_minutes.to_i.minutes
 //    blocked_if_login_since = Time.now - block_duration
-//    negation = blocked ? '' : 'NOT'
+//    negation = blocked ? "" : "NOT"
 
 //    ["#{negation} (users.failed_login_count >= ? AND users.last_failed_login_on > ?)",
 //     Setting.brute_force_block_after_failed_logins.to_i,
@@ -123,8 +123,8 @@ class User : public Principal {
 //  // scope :within_group, ->(group, positive = true) {
 //    group_id = group.is_a?(Group) ? [group.id] : Array(group).map(&:to_i)
 
-//    sql_condition = group_id.any? ? 'WHERE gu.group_id IN (?)' : ''
-//    sql_not = positive ? '' : 'NOT'
+//    sql_condition = group_id.any? ? "WHERE gu.group_id IN (?)" : ""
+//    sql_not = positive ? "" : "NOT"
 
 //    sql_query = ["#{User.table_name}.id #{sql_not} IN (SELECT gu.user_id FROM #{table_name_prefix}group_users#{table_name_suffix} gu #{sql_condition})"]
 //    if ( group_id.any?) {
@@ -244,7 +244,7 @@ class User : public Principal {
 //    attrs = AuthSource.authenticate(login, password)
 //    if ( attrs) {
 //      // login is both safe and protected in chilis core code
-//      // in case it's intentional we keep it that way
+//      // in case it"s intentional we keep it that way
 //      user = new(attrs.except(:login))
 //      user.login = login
 //      user.language = Setting.default_language
@@ -255,7 +255,7 @@ class User : public Principal {
 //        user.errors.add :base, I18n.t(:error_enterprise_activation_user_limit)
 //      } else if ( user.save) {
 //        user.reload
-//        if ( logger && user.auth_source) { logger.info("User '#{user.login}' created from external auth source: #{user.auth_source.type} - #{user.auth_source.name}") ;}
+//        if ( logger && user.auth_source) { logger.info("User "#{user.login}" created from external auth source: #{user.auth_source.type} - #{user.auth_source.name}") ;}
 //      }
 //    }
 //    user
@@ -264,7 +264,7 @@ class User : public Principal {
   // Returns the user who matches the given autologin +key+ or nil
 //   void try_to_autologin(key) {
 //    token = Token::AutoLogin.find_by_plaintext_value(key)
-//    // Make sure there's only 1 token that matches the key
+//    // Make sure there"s only 1 token that matches the key
 //    if ( token) {
 //      if ( (token.created_on > Setting.autologin.to_i.day.ago) && token.user && token.user.active?) {
 //        token.user.log_successful_login
@@ -273,7 +273,7 @@ class User : public Principal {
 //    }
 //  }
 
-  // Formats the user's name.
+  // Formats the user"s name.
 //   void name(formatter = nil) {
 //    case formatter || Setting.user_format
 
@@ -288,10 +288,10 @@ class User : public Principal {
 //    }
 //  }
 
-  // Return user's authentication provider for display
+  // Return user"s authentication provider for display
 //   void authentication_provider() {
 //    if ( identity_url.blank?) { return ;}
-//    identity_url.split(':', 2).first.titleize
+//    identity_url.split(":", 2).first.titleize
 //  }
 
 //   void status_name() {
@@ -355,7 +355,7 @@ class User : public Principal {
 //    update_attribute(:status, STATUSES[:locked])
 //  }
 
-  // Returns true if +clear_password+ is the correct user's password, otherwise false
+  // Returns true if +clear_password+ is the correct user"s password, otherwise false
   // If +update_legacy+ is set, will automatically save legacy passwords using the current
   // format.
 //   void check_password?(clear_password, update_legacy: true) {
@@ -455,7 +455,7 @@ class User : public Principal {
 //    // Note that this->user.membership.size would fail since AR ignores
 //    // :include association option when doing a count
 //    if ( user.nil? || user.memberships.length < 1) {
-//      MAIL_NOTIFICATION_OPTIONS.reject { |option| option.first == 'selected' }
+//      MAIL_NOTIFICATION_OPTIONS.reject { |option| option.first == "selected" }
 //    else
 //      MAIL_NOTIFICATION_OPTIONS
 //    }
@@ -495,12 +495,12 @@ class User : public Principal {
   // Includes searching for suffixes from +Setting.mail_suffix_separtors+.
   //
   // For example:
-  //  - With Setting.mail_suffix_separators = '+'
-  //  - Will find 'foo+bar@example.org' with input of 'foo@example.org'
+  //  - With Setting.mail_suffix_separators = "+"
+  //  - Will find "foo+bar@example.org" with input of "foo@example.org"
 //   void where_mail_with_suffix(mail) {
 //    skip_suffix_check, regexp = mail_regexp(mail)
 
-//    // if ( the recipient part already contains a suffix, don't expand) {
+//    // if ( the recipient part already contains a suffix, don"t expand) {
 //    if ( skip_suffix_check) {
 //      where("LOWER(mail) = ?", mail)
 //    else
@@ -524,7 +524,7 @@ class User : public Principal {
 //    name
 //  }
 
-  // Returns the current day according to user's time zone
+  // Returns the current day according to user"s time zone
 //   void today() {
 //    if ( time_zone.nil?) {
 //      Date.today
@@ -541,7 +541,7 @@ class User : public Principal {
 //    !logged?
 //  }
 
-  // Return user's roles for project
+  // Return user"s roles for project
 //   void roles_for_project(project) {
 //    project_role_cache.fetch(project)
 //  }
@@ -561,7 +561,7 @@ class User : public Principal {
 //    roles_for_project(project).any?(&:member?)
 //  }
 
-  // Returns a hash of user's projects grouped by roles
+  // Returns a hash of user"s projects grouped by roles
 //   void projects_by_role() {
 //    if ( this->projects_by_role) { return this->projects_by_role ;}
 
@@ -616,7 +616,7 @@ class User : public Principal {
   // Utility method to help check if ( a user should be notified about an) {
   // event.
 //   void notify_about?(object) {
-//    active? && (mail_notification == 'all' || (object.is_a?(WorkPackage) && object.notify?(self)))
+//    active? && (mail_notification == "all" || (object.is_a?(WorkPackage) && object.notify?(self)))
 //  }
 
 //   void reported_work_package_count() {
@@ -656,13 +656,13 @@ class User : public Principal {
 //    anonymous_user = AnonymousUser.first
 //    if ( anonymous_user.nil?) {
 //      (anonymous_user = AnonymousUser.new.tap { |u|
-//        u.lastname = 'Anonymous'
-//        u.login = ''
-//        u.firstname = ''
-//        u.mail = ''
+//        u.lastname = "Anonymous"
+//        u.login = ""
+//        u.firstname = ""
+//        u.mail = ""
 //        u.status = 0
 //      }).save
-//      if ( anonymous_user.new_record?) { raise 'Unable to create the anonymous user.' ;}
+//      if ( anonymous_user.new_record?) { raise "Unable to create the anonymous user." ;}
 //    }
 //    anonymous_user
 //  }
@@ -683,7 +683,7 @@ class User : public Principal {
 
 //      system_user.save(validate: false)
 
-//      raise 'Unable to create the automatic migration user.' unless system_user.persisted?
+//      raise "Unable to create the automatic migration user." unless system_user.persisted?
 //    }
 
 //    system_user
@@ -691,9 +691,9 @@ class User : public Principal {
 
   protected:
 
-  // Login must not be special value 'me'
+  // Login must not be special value "me"
 //   void login_is_not_special_value() {
-//    if ( login.present? && login == 'me') {
+//    if ( login.present? && login == "me") {
 //      errors.add(:login, :invalid)
 //    }
 //  }
@@ -725,7 +725,7 @@ class User : public Principal {
 
 //   void mail_regexp(mail) {
 //    separators = Regexp.escape(Setting.mail_suffix_separators)
-//    recipient, domain = mail.split('this->').map { |part| Regexp.escape(part) }
+//    recipient, domain = mail.split("this->").map { |part| Regexp.escape(part) }
 //    skip_suffix_check = recipient.nil? || Setting.mail_suffix_separators.empty? || recipient.match?(/.+[#{separators}].+/)
 //    regexp = "#{recipient}([#{separators}][^this->]+)*this->#{domain}"
 
@@ -758,11 +758,11 @@ class User : public Principal {
 //    substitute = DeletedUser.first
 
 //    [WorkPackage, Attachment, WikiContent, News, Comment, Message].each { |klass|
-//      klass.where(['author_id = ?', id]).update_all ['author_id = ?', substitute.id]
+//      klass.where(["author_id = ?", id]).update_all ["author_id = ?", substitute.id]
 //    }
 
 //    [TimeEntry, Journal, ::Query].each { |klass|
-//      klass.where(['user_id = ?', id]).update_all ['user_id = ?', substitute.id]
+//      klass.where(["user_id = ?", id]).update_all ["user_id = ?", substitute.id]
 //    }
 
 //    JournalManager.update_user_references id, substitute.id
@@ -825,7 +825,7 @@ class User : public Principal {
 //  }
 
 //   void default_admin_account_changed?() {
-//    !User.active.find_by_login('admin').try(:current_password).try(:matches_plaintext?, 'admin')
+//    !User.active.find_by_login("admin").try(:current_password).try(:matches_plaintext?, "admin")
 //  }
 };
 }
@@ -838,7 +838,7 @@ class AnonymousUser : public User {
 
   // There should be only one AnonymousUser in the database
    void validate_unique_anonymous_user() {
-//    if ( AnonymousUser.any?) { errors.add :base, 'An anonymous user already exists.' ;}
+//    if ( AnonymousUser.any?) { errors.add :base, "An anonymous user already exists." ;}
   }
 
    void available_custom_fields() {
@@ -873,7 +873,7 @@ class DeletedUser : public User {
 
   // There should be only one DeletedUser in the database
    void validate_unique_deleted_user() {
-//    if ( DeletedUser.any?) { errors.add :base, 'A DeletedUser already exists.' ;}
+//    if ( DeletedUser.any?) { errors.add :base, "A DeletedUser already exists." ;}
   }
 
    void first() {
@@ -885,7 +885,7 @@ class DeletedUser : public User {
 
 //   void admin; false }() {
 
-//   void name(*_args); I18n.t('user.deleted') { }
+//   void name(*_args); I18n.t("user.deleted") { }
 
 //   void mail; nil }() {
 

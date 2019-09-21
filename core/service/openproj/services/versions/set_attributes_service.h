@@ -9,8 +9,8 @@ namespace Versions {
 //     void set_default_attributes() {
 //      return unless model.new_record?
 
-//      model.sharing ||= 'none'
-//      model.status ||= 'open'
+//      model.sharing ||= "none"
+//      model.status ||= "open"
 //    }
   };
 }

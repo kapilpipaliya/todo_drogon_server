@@ -23,8 +23,8 @@ namespace Projects {
 //        logger.error("Failed to delete project #{project} in background job: #{call.errors.join("\n")}")
 //      }
 //    rescue StandardError => e
-//      logger.error('Encountered an error when trying to delete project '
-//                   "'#{project_id}' : #{e.message} #{e.backtrace.join("\n")}")
+//      logger.error("Encountered an error when trying to delete project "
+//                   ""#{project_id}" : #{e.message} #{e.backtrace.join("\n")}")
     }
 
     private:

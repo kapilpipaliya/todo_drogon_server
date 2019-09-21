@@ -7,9 +7,9 @@ class Enumeration : public ActiveRecord::Base {
 
   // belongs_to :project
 
-//  acts_as_list scope: 'type = \'#{type}\''
+//  acts_as_list scope: "type = \"#{type}\""
 //  acts_as_customizable
-//  acts_as_tree order: 'position ASC'
+//  acts_as_tree order: "position ASC"
 
 //  before_destroy :check_integrity
 
@@ -22,7 +22,7 @@ class Enumeration : public ActiveRecord::Base {
 
 //  before_save :unmark_old_default_value, if (: :became_default_value?) {
 
-//  // let all child classes have Enumeration as it's model name
+//  // let all child classes have Enumeration as it"s model name
 //  // used to not having to create another route for every subclass of Enumeration
 //   void inherited(child) {
 //    child.instance_eval {
@@ -39,10 +39,10 @@ class Enumeration : public ActiveRecord::Base {
 
    void default_() {
 //    // Creates a fake default scope so Enumeration.default will check
-//    // it's type.  STI subclasses will automatically add their own
+//    // it"s type.  STI subclasses will automatically add their own
 //    // types to the finder.
 //    if ( descends_from_active_record?) {
-//      where(is_default: true, type: 'Enumeration').first
+//      where(is_default: true, type: "Enumeration").first
 //    else
 //      // STI classes are
 //      where(is_default: true).first
@@ -51,7 +51,7 @@ class Enumeration : public ActiveRecord::Base {
 
 //  // Destroys enumerations in a single transaction
 //  // It ensures, that the transactions can be safely transferred to each
-//  // entry's parent
+//  // entry"s parent
 //   void bulk_destroy(entries) {
 //    sorted_entries = sort_by_ancestor_last(entries)
 
@@ -105,7 +105,7 @@ class Enumeration : public ActiveRecord::Base {
 
   // Does the +new+ Hash override the previous Enumeration?
 //   void overridding_change?(new, previous) {
-//    if ( same_active_state?(new['active'], previous.active) && same_custom_values?(new, previous)) {
+//    if ( same_active_state?(new["active"], previous.active) && same_custom_values?(new, previous)) {
 //      false
 //    else
 //      true
@@ -116,8 +116,8 @@ class Enumeration : public ActiveRecord::Base {
 //   void same_custom_values?(new, previous) {
 //    previous.custom_field_values.each { |custom_value|
 //      if ( new &&) {
-//        new['custom_field_values'] &&
-//        custom_value.value != new['custom_field_values'][custom_value.custom_field_id.to_s]
+//        new["custom_field_values"] &&
+//        custom_value.value != new["custom_field_values"][custom_value.custom_field_id.to_s]
 //        return false
 //      }
 //    }
@@ -127,7 +127,7 @@ class Enumeration : public ActiveRecord::Base {
 
   // Are the new and previous fields equal?
 //   void same_active_state?(new, previous) {
-//    new = new == '1'
+//    new = new == "1"
 //    new == previous
 //  }
 
@@ -149,7 +149,7 @@ class Enumeration : public ActiveRecord::Base {
   private:
 
    void check_integrity() {
-//    if ( in_use?) { raise "Can't delete enumeration" ;}
+//    if ( in_use?) { raise "Can"t delete enumeration" ;}
   }
 };
 }

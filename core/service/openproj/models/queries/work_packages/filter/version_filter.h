@@ -18,7 +18,7 @@ class VersionFilter  : openproj::models::Queries::WorkPackages::Filter::WorkPack
   }
 
    void human_name() {
-//    WorkPackage.human_attribute_name('fixed_version')
+//    WorkPackage.human_attribute_name("fixed_version")
   }
 
    void key() {

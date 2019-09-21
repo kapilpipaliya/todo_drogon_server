@@ -52,12 +52,12 @@ class CustomFieldColumn : public openproj::models::Queries::WorkPackages::Column
 
 //   void sum_of(work_packages) {
 //    if ( work_packages.respond_to?(:joins)) {
-//      // we can't perform the aggregation on the SQL side. Try to filter useless rows to reduce work.
+//      // we can"t perform the aggregation on the SQL side. Try to filter useless rows to reduce work.
 //      work_packages = work_packages
 //                      .joins(:custom_values)
 //                      .where(custom_values: { custom_field: this->cf })
 //                      .where("#{CustomValue.table_name}.value IS NOT NULL")
-//                      .where("#{CustomValue.table_name}.value != ''")
+//                      .where("#{CustomValue.table_name}.value != """)
 //    }
 
 //    // TODO: eliminate calls of this method with an Array and drop the :compact call below
@@ -70,7 +70,7 @@ class CustomFieldColumn : public openproj::models::Queries::WorkPackages::Column
 //    else
 //      WorkPackageCustomField.all
 //    }
-//      .reject { |cf| cf.field_format == 'text' }
+//      .reject { |cf| cf.field_format == "text" }
 //      .map { |cf| new(cf) }
 //  }
 };

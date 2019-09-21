@@ -39,7 +39,7 @@ namespace WorkPackagesHelper {
 //              link: [],
 //              suffix: [],
 //              title: [],
-//              css_class: ['issue'] }
+//              css_class: ["issue"] }
 
 //    // Prefix part
 
@@ -60,9 +60,9 @@ namespace WorkPackagesHelper {
 //    if ( package.closed?) {
 //      parts[:hidden_link] << content_tag(:span,
 //                                         I18n.t(:label_closed_work_packages),
-//                                         class: 'hidden-for-sighted')
+//                                         class: "hidden-for-sighted")
 
-//      parts[:css_class] << 'closed'
+//      parts[:css_class] << "closed"
 //    }
 
 //    // Suffix part
@@ -86,12 +86,12 @@ namespace WorkPackagesHelper {
 
 //    // combining
 
-//    prefix = parts[:prefix].join(' ')
-//    suffix = parts[:suffix].join(' ')
-//    link = parts[:link].join(' ').strip
-//    hidden_link = parts[:hidden_link].join('')
-//    title = parts[:title].join(' ')
-//    css_class = parts[:css_class].join(' ')
+//    prefix = parts[:prefix].join(" ")
+//    suffix = parts[:suffix].join(" ")
+//    link = parts[:link].join(" ").strip
+//    hidden_link = parts[:hidden_link].join("")
+//    title = parts[:title].join(" ")
+//    css_class = parts[:css_class].join(" ")
 //    css_class << options[:class].to_s
 
 //    // Determine path or url
@@ -103,24 +103,24 @@ namespace WorkPackagesHelper {
 //      }
 
 //    text = if ( options[:all_link]) {
-//             link_text = [prefix, link].reject(&:empty?).join(' - ')
-//             link_text = [link_text, suffix].reject(&:empty?).join(': ')
-//             link_text = [hidden_link, link_text].reject(&:empty?).join('')
+//             link_text = [prefix, link].reject(&:empty?).join(" - ")
+//             link_text = [link_text, suffix].reject(&:empty?).join(": ")
+//             link_text = [hidden_link, link_text].reject(&:empty?).join("")
 
 //             link_to(link_text.html_safe,
 //                     work_package_link,
 //                     title: title,
 //                     class: css_class)
 //           else
-//             link_text = [hidden_link, link].reject(&:empty?).join('')
+//             link_text = [hidden_link, link].reject(&:empty?).join("")
 
 //             html_link = link_to(link_text.html_safe,
 //                                 work_package_link,
 //                                 title: title,
 //                                 class: css_class)
 
-//             [[prefix, html_link].reject(&:empty?).join(' - '),
-//              suffix].reject(&:empty?).join(': ')
+//             [[prefix, html_link].reject(&:empty?).join(" - "),
+//              suffix].reject(&:empty?).join(": ")
 //            }.html_safe
 //  }
 
@@ -136,14 +136,14 @@ namespace WorkPackagesHelper {
 //  }
 
    void send_notification_option(bool checked = false) {
-//    content_tag(:label, for: 'send_notification', class: 'form--label-with-check-box') {
-//      (content_tag 'span', class: 'form--check-box-container' {
-//        boxes = hidden_field_tag('send_notification', '0', id: nil)
+//    content_tag(:label, for: "send_notification", class: "form--label-with-check-box") {
+//      (content_tag "span", class: "form--check-box-container" {
+//        boxes = hidden_field_tag("send_notification", "0", id: nil)
 
-//        boxes += check_box_tag('send_notification',
-//                               '1',
+//        boxes += check_box_tag("send_notification",
+//                               "1",
 //                               checked,
-//                               class: 'form--check-box')
+//                               class: "form--check-box")
 //        boxes
 //      }) + l(:label_notify_member_plural)
 //    }
@@ -152,26 +152,26 @@ namespace WorkPackagesHelper {
   // Returns a string of css classes that apply to the issue
 //   void work_package_css_classes(work_package) {
 //    // TODO: remove issue once css is cleaned of it
-//    s = 'issue work_package preview-trigger'.html_safe
+//    s = "issue work_package preview-trigger".html_safe
 //    if ( work_package.status) { s << " status-#{work_package.status.position}" ;}
 //    if ( work_package.priority) { s << " priority-#{work_package.priority.position}" ;}
-//    if ( work_package.closed?) { s << ' closed' ;}
-//    if ( work_package.overdue?) { s << ' overdue' ;}
-//    if ( work_package.child?) { s << ' child' ;}
-//    s << ' parent' unless work_package.leaf?
-//    if ( User.current.logged? && work_package.author_id == User.current.id) { s << ' created-by-me' ;}
-//    if ( User.current.logged? && work_package.assigned_to_id == User.current.id) { s << ' assigned-to-me' ;}
+//    if ( work_package.closed?) { s << " closed" ;}
+//    if ( work_package.overdue?) { s << " overdue" ;}
+//    if ( work_package.child?) { s << " child" ;}
+//    s << " parent" unless work_package.leaf?
+//    if ( User.current.logged? && work_package.author_id == User.current.id) { s << " created-by-me" ;}
+//    if ( User.current.logged? && work_package.assigned_to_id == User.current.id) { s << " assigned-to-me" ;}
 //    s
 //  }
 
 //   void work_package_associations_to_address(associated) {
-//    ret = ''.html_safe
+//    ret = "".html_safe
 
-//    ret += content_tag(:p, l(:text_destroy_with_associated), class: 'bold')
+//    ret += content_tag(:p, l(:text_destroy_with_associated), class: "bold")
 
 //    ret += content_tag(:ul) {
-//      associated.inject(''.html_safe) { |list, associated_class|
-//        list += content_tag(:li, associated_class.model_name.human, class: 'decorated')
+//      associated.inject("".html_safe) { |list, associated_class|
+//        list += content_tag(:li, associated_class.model_name.human, class: "decorated")
 
 //        list
 //      }
@@ -188,8 +188,8 @@ namespace WorkPackagesHelper {
 //    if ( description_lines[lines - 1] && work_package.description.to_s.lines.to_a.size > lines) {
 //      description_lines[lines - 1].strip!
 
-//      while (!description_lines[lines - 1].end_with?('...')){
-//        description_lines[lines - 1] = description_lines[lines - 1] + '.'
+//      while (!description_lines[lines - 1].end_with?("...")){
+//        description_lines[lines - 1] = description_lines[lines - 1] + "."
 //      }
 //    }
 
@@ -197,7 +197,7 @@ namespace WorkPackagesHelper {
 //      empty_element_tag
 //    else
 //      ::OpenProject::TextFormatting::Renderer.format_text(
-//        description_lines.join(''),
+//        description_lines.join(""),
 //        object: work_package,
 //        attribute: :description,
 //        no_nesting: true
@@ -207,16 +207,16 @@ namespace WorkPackagesHelper {
 
 //   void info_user_attributes(work_package) {
 //    responsible = if ( work_package.responsible_id.present?) {
-//                    "<span class='label'>#{WorkPackage.human_attribute_name(:responsible)}:</span> " +
+//                    "<span class="label">#{WorkPackage.human_attribute_name(:responsible)}:</span> " +
 //                    "#{h(work_package.responsible.name)}"
 //                  }
 
 //    assignee = if ( work_package.assigned_to_id.present?) {
-//                 "<span class='label'>#{WorkPackage.human_attribute_name(:assigned_to)}:</span> " +
+//                 "<span class="label">#{WorkPackage.human_attribute_name(:assigned_to)}:</span> " +
 //                 "#{h(work_package.assigned_to.name)}"
 //               }
 
-//    [responsible, assignee].compact.join('<br>').html_safe
+//    [responsible, assignee].compact.join("<br>").html_safe
 //  }
 }
 }

@@ -27,7 +27,7 @@ namespace Queries::WorkPackages::Filter::OrFilterForWpMixin {
 //  }
 
 //   void where() {
-//    filters.map(&:where).join(' OR ')
+//    filters.map(&:where).join(" OR ")
 //  }
 
 //   virtual void filter_configurations() = 0;

@@ -22,7 +22,7 @@ class WorkPackageSeeder : public Seeder {
   //    }
 
   void seed_data() {
-    //      print '    ↳ Creating work_packages'
+    //      LOG_DEBUG << "    ↳ Creating work_packages"
 
     //      seed_demo_work_packages
     //      set_workpackage_relations
@@ -32,10 +32,10 @@ class WorkPackageSeeder : public Seeder {
 
  private:
   void seed_demo_work_packages() {
-    //      work_packages_data = project_data_for(key, 'work_packages')
+    //      work_packages_data = project_data_for(key, "work_packages")
 
     //      work_packages_data.each { |attributes|
-    //        print '.'
+    //        LOG_DEBUG << "."
     //        create_or_update_work_package(attributes)
     //      }
   }
@@ -72,7 +72,7 @@ class WorkPackageSeeder : public Seeder {
 
   //     void create_children!(work_package, attributes) {
   //      Array(attributes[:children]).each { |child_attributes|
-  //        print '.'
+  //        LOG_DEBUG << "."
   //        child = create_work_package child_attributes
 
   //        child.parent = work_package
@@ -161,7 +161,7 @@ class WorkPackageSeeder : public Seeder {
   //    }
 
   //     void set_workpackage_relations() {
-  //      work_packages_data =  project_data_for(key, 'work_packages')
+  //      work_packages_data =  project_data_for(key, "work_packages")
 
   //      work_packages_data.each { |attributes|
   //        create_relations attributes

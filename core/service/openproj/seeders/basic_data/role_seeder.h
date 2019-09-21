@@ -95,7 +95,7 @@ class RoleSeeder : public Seeder {
     return true;
   }
   void not_applicable_message() {
-    //      'Skipping roles as there are already some configured'
+    //      "Skipping roles as there are already some configured"
   }
   std::vector<row> roles() {
     //      [project_admin, member, reader]
@@ -216,7 +216,7 @@ class RoleSeeder : public Seeder {
           // reporting default_data.rb
           // project admin = default_role_project_admin
           // The Project Admin role is assigned all possible permission in
-          // the core's `roles.rb` seed. Here we remove those permissions
+          // the core"s `roles.rb` seed. Here we remove those permissions
           // which should not be assigned by default.
           //          "save_cost_reports",  // set role_id to null
           //          "save_private_cost_reports",  // set role_id to null
@@ -427,10 +427,10 @@ class RoleSeeder : public Seeder {
   std::vector<row> globalrole() {
     // modules/global_roles/lib/open_project/global_roles/patches/role_seeder_patch.rb
     //      def project_creator
-    //        { name: I18n.t(:'seeders.default_role_project_creator'),
+    //        { name: I18n.t(:"seeders.default_role_project_creator"),
     //          position: 6,
     //          permissions: [:add_project],
-    //          type: 'GlobalRole'
+    //          type: "GlobalRole"
     //        }
     //      end
     return {{std::string("Project creator"), 6, 0, {"add_project"}}};

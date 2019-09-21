@@ -11,7 +11,7 @@ namespace OAuth {
   class AuthBaseController : public ApplicationController {
   public:
     // skip_before_action :check_if_login_required
-    // layout 'only_logo'
+    // layout "only_logo"
   };
 }
 }

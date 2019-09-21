@@ -10,7 +10,7 @@ class UserFilter : public openproj::models::Queries::TimeEntries::Filters::TimeE
 
    void allowed_values() {
 //    this->allowed_values ||= begin
-//      // We don't care for the first value as we do not display the values visibly
+//      // We don"t care for the first value as we do not display the values visibly
 //      me_allowed_value + ::Principal
 //                         .in_visible_project
 //                         .pluck(:id)

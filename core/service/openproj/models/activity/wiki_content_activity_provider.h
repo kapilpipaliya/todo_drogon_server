@@ -4,7 +4,7 @@ namespace openproj {
 namespace models {
 namespace Activity {
 class WikiContentActivityProvider : public Activity::BaseActivityProvider {
-//  acts_as_activity_provider type: 'wiki_edits',
+//  acts_as_activity_provider type: "wiki_edits",
 //                            permission: :view_wiki_edits
 
 //   void extend_event_query(query, activity) {
@@ -14,8 +14,8 @@ class WikiContentActivityProvider : public Activity::BaseActivityProvider {
 
 //   void event_query_projection(_activity) {
 //    [
-//      projection_statement(wikis_table, :project_id, 'project_id'),
-//      projection_statement(wiki_pages_table, :title, 'wiki_title')
+//      projection_statement(wikis_table, :project_id, "project_id"),
+//      projection_statement(wiki_pages_table, :title, "wiki_title")
 //    ]
 //  }
 
@@ -26,11 +26,11 @@ class WikiContentActivityProvider : public Activity::BaseActivityProvider {
   protected:
 
 //   void event_title(event, _activity) {
-//    "#{l(:label_wiki_edit)}: #{event['wiki_title']} (##{event['version']})"
+//    "#{l(:label_wiki_edit)}: #{event["wiki_title"]} (##{event["version"]})"
 //  }
 
 //   void event_type(_event, _activity) {
-//    'wiki-page'
+//    "wiki-page"
 //  }
 
 //   void event_path(event, _activity) {
@@ -52,7 +52,7 @@ class WikiContentActivityProvider : public Activity::BaseActivityProvider {
   }
 
 //   void url_helper_parameter(event) {
-//    [event['project_id'], event['wiki_title'], { version: event['version'] }]
+//    [event["project_id"], event["wiki_title"], { version: event["version"] }]
 //  }
 };
 }

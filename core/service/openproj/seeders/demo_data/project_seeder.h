@@ -1,7 +1,9 @@
 #pragma once
 #include <drogon/drogon.h>
 #include <yaml-cpp/yaml.h>
+#include "../basic_data/type_seeder.h"
 #include "../seeder.h"
+#include "group_seeder.h"
 #include "iostream"
 #include "models/Categories.h"
 #include "models/MemberRoles.h"
@@ -13,6 +15,7 @@
 #include "models/Settings.h"
 #include "models/Types.h"
 #include "models/Users.h"
+#include "version_builder.h"
 namespace openproj {
 namespace seeder {
 namespace DemoData {
@@ -27,19 +30,19 @@ class ProjectSeeder : public Seeder {
     //      seed_projects = demo_data_for("projects").keys
 
     try {
-      seed_projects_overview =
-          YAML::LoadFile("./config/locales/en.seeders.standard_overview.yml")
-              ["en"]["seeders"]["standard"]["demo_data"]["projects"];
+      seed_projects_overview = YAML::LoadFile(
+          "./config/locales/en.seeders.standard_overview.yml")["en"]["seeders"]
+                                                              ["standard"]
+                                                              ["demo_data"];
 
       seed_projects_standard = YAML::LoadFile(
           "./config/locales/en.seeders.standard.yml")["en"]["seeders"]
-                                                     ["standard"]["demo_data"]
-                                                     ["projects"];
-    } catch (YAML::BadFile &e) {
+                                                     ["standard"]["demo_data"];
+    } catch (YAML::BadFile& e) {
       LOG_DEBUG << e.what();
     }
     //      seed_projects.each { |key|
-    for (auto it : seed_projects_standard) {
+    for (auto it : seed_projects_standard["projects"]) {
       auto key = it.first.as<std::string>();
       LOG_DEBUG << key;
       curr_proj = key;
@@ -91,7 +94,8 @@ class ProjectSeeder : public Seeder {
     return true;
   }
 
-  void project_data_seeders(long project_id, std::string key) {
+  std::vector<std::shared_ptr<seeder::Seeder>> project_data_seeders(
+      long project_id, std::string key) {
     //      seeders = [
     //        DemoData::WikiSeeder,
     //        DemoData::CustomFieldSeeder,
@@ -110,10 +114,33 @@ class ProjectSeeder : public Seeder {
     //        Setting.welcome_text = welcome[:text]
     //        Setting.welcome_on_homescreen = 1
     //      }
+    auto welcome_node = seed_projects_standard["welcome"];
+    if (welcome_node.IsDefined()) {
+      auto title = welcome_node["title"].as<std::string>();
+      auto text = welcome_node["text"].as<std::string>();
 
+      updateSetting("welcome_title", title);
+      updateSetting("welcome_text", text);
+      updateSetting("welcome_on_homescreen", std::to_string(1));
+    }
+  }
+  void updateSetting(std::string key, std::string value) {
     auto clientPtr = drogon::app().getDbClient("sce");
-    drogon::orm::Mapper<drogon_model::openproject6::Settings> mapper(clientPtr);
-    drogon_model::openproject6::Settings settings;
+    drogon::orm::Mapper<drogon_model::openproject6::Settings> mapper_settings(
+        clientPtr);
+
+    auto result_settings = mapper_settings.findBy(
+        (Criteria(drogon_model::openproject6::Settings::Cols::_name,
+                  CompareOperator::EQ, key)));
+    if (result_settings.size() > 0) {
+      auto settings = result_settings.at(0);
+      settings.setValue(value);  // text  ;
+      settings.setUpdatedOn(
+          trantor::Date::now());  // timestamp_without_time_zone  ;
+      mapper_settings.update(settings);
+    } else {
+      LOG_DEBUG << "no rows found for settings table";
+    }
   }
 
   long reset_project(std::string key) {
@@ -184,12 +211,69 @@ class ProjectSeeder : public Seeder {
 
   void set_groups() {
     //      DemoData::GroupSeeder.new.add_projects_to_groups
+    openproj::seeder::DemoData::GroupSeeder g;
+    g.add_projects_to_groups();
   }
 
   void set_form_configuration() {
     //      Type.all.each { |type|
     //        BasicData::TypeSeeder.new.set_attribute_groups_for_type(type)
     //      }
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::Types> mapper_types(
+        clientPtr);
+
+    auto result_types =
+        mapper_types.orderBy(drogon_model::openproject6::Types::Cols::_id)
+            .findAll();
+
+    return;  // because demo_data_for("type_configuration") is nil
+    // move set_attribute_groups_for_type from typeseeder class as its abstract
+    // class.
+    for (auto& it : result_types) {
+      //      if ( demo_data_for("type_configuration").nil?) { return ;}
+
+      //      demo_data_for("type_configuration").each { |entry|
+      //        if ( entry[:form_configuration] && I18n.t(entry[:type]) ===
+      //        type.name) {
+
+      //          entry[:form_configuration].each { |form_config_attr|
+      //            groups = type.default_attribute_groups
+      //            query_association = "query_" +
+      //            find_query_by_name(form_config_attr[:query_name]).to_s
+      //            groups.unshift([form_config_attr[:group_name],
+      //            [query_association.to_sym]])
+
+      //            type.attribute_groups = groups
+      //          }
+
+      //          type.save!
+      //        }
+      //      }
+      auto clientPtr = drogon::app().getDbClient("sce");
+      drogon::orm::Mapper<drogon_model::openproject6::Types> mapper_types(
+          clientPtr);
+      drogon_model::openproject6::Types types;
+      //        types.setName();  // character_varying
+      //        DEFAULT=""::character_varying
+      //                          // NOT_NULL;
+      //        types.set "position"();          // integer DEFAULT=1 ;
+      //        types.setIsInRoadmap();          // boolean DEFAULT=true
+      //        NOT_NULL; types.setIsMilestone();          // boolean
+      //        DEFAULT=false NOT_NULL; types.setIsDEFAULT = boolean();  //
+      //        DEFAULT=false NOT_NULL ; types.setColorId();              //
+      //        integer  ; types.setCreatedAt(
+      //            trantor::Date::now());  // timestamp_without_time_zone
+      //            NOT_NULL ;
+      //        types.setUpdatedAt(
+      //            trantor::Date::now());   // timestamp_without_time_zone
+      //            NOT_NULL ;
+      //        types.setIsStandard();       // boolean DEFAULT=false NOT_NULL;
+      //        types.setAttributeGroups();  // text  ;
+      //        types.setDescription();      // text  ;
+
+      // mapper_types.update(types);
+    }
   }
 
   void set_types(long project_id, std::string key) {
@@ -203,7 +287,7 @@ class ProjectSeeder : public Seeder {
     drogon::orm::Mapper<drogon_model::openproject6::Types> mapper_types(
         clientPtr);
 
-    for (auto it : seed_projects_standard[curr_proj]["types"]) {
+    for (auto it : seed_projects_standard["projects"][curr_proj]["types"]) {
       drogon_model::openproject6::Types types;
       auto t = it.as<std::string>();
       if (t == ":default_type_task") {
@@ -250,7 +334,8 @@ class ProjectSeeder : public Seeder {
     drogon::orm::Mapper<drogon_model::openproject6::Categories>
         mapper_categories(clientPtr);
 
-    auto categories_node = seed_projects_standard[curr_proj]["categories"];
+    auto categories_node =
+        seed_projects_standard["projects"][curr_proj]["categories"];
     if (categories_node.Type() == YAML::NodeType::Sequence) {
       for (auto it : categories_node) {
         auto t = it.as<std::string>();
@@ -274,7 +359,7 @@ class ProjectSeeder : public Seeder {
     auto clientPtr = drogon::app().getDbClient("sce");
     drogon::orm::Mapper<drogon_model::openproject6::News> mapper_news(
         clientPtr);
-    auto news_yaml = seed_projects_standard[curr_proj]["news"][0];
+    auto news_yaml = seed_projects_standard["projects"][curr_proj]["news"][0];
     // LOG_DEBUG << it.first.as<std::string>();
     auto title = news_yaml["title"].as<std::string>();
     auto summary = news_yaml["summary"].as<std::string>();
@@ -302,6 +387,14 @@ class ProjectSeeder : public Seeder {
     //      version_data.each { |attributes|
     //        VersionBuilder.new(attributes, project).create!
     //      }
+    auto version_data =
+        seed_projects_standard["projects"][curr_proj]["versions"];
+    if (version_data.IsDefined()) {
+      for (auto it : version_data) {
+        openproj::seeder::DemoData::VersionBuilder v(version_data, project_id);
+        v.create();
+      }
+    }
   }
 
   void seed_board(long project_id) {

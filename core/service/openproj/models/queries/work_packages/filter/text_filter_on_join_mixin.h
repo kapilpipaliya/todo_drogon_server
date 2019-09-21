@@ -4,12 +4,12 @@ namespace models {
 namespace Queries::WorkPackages::Filter::TextFilterOnJoinMixin {
    void where() {
 //    case operator
-//    when '~'
-//      Queries::Operators::All.sql_for_field(values, join_table_alias, 'id')
-//    when '!~'
-//      Queries::Operators::None.sql_for_field(values, join_table_alias, 'id')
+//    when "~"
+//      Queries::Operators::All.sql_for_field(values, join_table_alias, "id")
+//    when "!~"
+//      Queries::Operators::None.sql_for_field(values, join_table_alias, "id")
 //    else
-//      raise 'Unsupported operator'
+//      raise "Unsupported operator"
 //    }
   }
 

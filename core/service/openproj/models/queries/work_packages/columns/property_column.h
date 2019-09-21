@@ -18,71 +18,71 @@ class PropertyColumn : public openproj::models::Queries::WorkPackages::Columns::
 //      groupable: false
 //    },
 //    project: {
-//      association: 'project',
+//      association: "project",
 //      sortable: "name",
-//      groupable: 'project_id'
+//      groupable: "project_id"
 //    },
 //    subject: {
 //      sortable: "#{WorkPackage.table_name}.subject"
 //    },
 //    type: {
-//      association: 'type',
+//      association: "type",
 //      sortable: "position",
-//      groupable: 'type_id'
+//      groupable: "type_id"
 //    },
 //    parent: {
-//      association: 'ancestors_relations',
-//      default_order: 'asc',
+//      association: "ancestors_relations",
+//      default_order: "asc",
 //      sortable: false
 //    },
 //    status: {
-//      association: 'status',
+//      association: "status",
 //      sortable: "position",
 //      highlightable: true,
-//      groupable: 'status_id'
+//      groupable: "status_id"
 //    },
 //    priority: {
-//      association: 'priority',
+//      association: "priority",
 //      sortable: "position",
-//      default_order: 'desc',
+//      default_order: "desc",
 //      highlightable: true,
-//      groupable: 'priority_id'
+//      groupable: "priority_id"
 //    },
 //    author: {
-//      association: 'author',
+//      association: "author",
 //      sortable: ["lastname",
 //                 "firstname",
 //                 "id"],
-//      groupable: 'author_id'
+//      groupable: "author_id"
 //    },
 //    assigned_to: {
-//      association: 'assigned_to',
+//      association: "assigned_to",
 //      sortable: ["lastname",
 //                 "firstname",
 //                 "id"],
-//      groupable: 'assigned_to_id'
+//      groupable: "assigned_to_id"
 //    },
 //    responsible: {
-//      association: 'responsible',
+//      association: "responsible",
 //      sortable: ["lastname",
 //                 "firstname",
 //                 "id"],
-//      groupable: 'responsible_id'
+//      groupable: "responsible_id"
 //    },
 //    updated_at: {
 //      sortable: "#{WorkPackage.table_name}.updated_at",
-//      default_order: 'desc'
+//      default_order: "desc"
 //    },
 //    category: {
-//      association: 'category',
+//      association: "category",
 //      sortable: "name",
-//      groupable: 'category_id'
+//      groupable: "category_id"
 //    },
 //    fixed_version: {
-//      association: 'fixed_version',
+//      association: "fixed_version",
 //      sortable: ["name"],
-//      default_order: 'desc',
-//      groupable: 'fixed_version_id'
+//      default_order: "desc",
+//      groupable: "fixed_version_id"
 //    },
 //    start_date: {
 //      // Put empty start_dates in the far future rather than in the far past
@@ -114,7 +114,7 @@ class PropertyColumn : public openproj::models::Queries::WorkPackages::Columns::
 //    },
 //    created_at: {
 //      sortable: "#{WorkPackage.table_name}.created_at",
-//      default_order: 'desc'
+//      default_order: "desc"
 //    }
 //  }
 

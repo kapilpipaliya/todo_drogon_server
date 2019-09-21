@@ -4,7 +4,7 @@ namespace openproj {
 namespace controller {
 class CustomFieldsController : public ApplicationController {
 public:
-  // layout 'admin'
+  // layout "admin"
 
   // before_action :require_admin
   // before_action :find_custom_field, only: %i(edit update destroy move delete_option)
@@ -13,10 +13,10 @@ public:
 
    void index() {
 //    // loading wp cfs exclicity to allow for eager loading
-//    this->custom_fields_by_type = CustomField.all.where.not(type: 'WorkPackageCustomField').group_by { |f| f.class.name }
-//    this->custom_fields_by_type['WorkPackageCustomField'] = WorkPackageCustomField.includes(:types).all
+//    this->custom_fields_by_type = CustomField.all.where.not(type: "WorkPackageCustomField").group_by { |f| f.class.name }
+//    this->custom_fields_by_type["WorkPackageCustomField"] = WorkPackageCustomField.includes(:types).all
 
-//    this->tab = params[:tab] || 'WorkPackageCustomField'
+//    this->tab = params[:tab] || "WorkPackageCustomField"
   }
 
    void new_() {
@@ -31,7 +31,7 @@ public:
 //      call_hook(:controller_custom_fields_new_after_save, custom_field: this->custom_field)
 //      redirect_to custom_fields_path(tab: this->custom_field.class.name)
 //    else
-//      render action: 'new'
+//      render action: "new"
 //    }
   }
 
@@ -45,7 +45,7 @@ public:
 //      call_hook(:controller_custom_fields_edit_after_save, custom_field: this->custom_field)
 //      redirect_back_or_default edit_custom_field_path(id: this->custom_field.id)
 //    else
-//      render action: 'edit'
+//      render action: "edit"
 //    }
   }
 
@@ -129,10 +129,10 @@ public:
   protected:
 
    void default_breadcrumb() {
-//    if ( action_name == 'index') {
-//      t('label_custom_field_plural')
+//    if ( action_name == "index") {
+//      t("label_custom_field_plural")
 //    else
-//      ActionController::Base.helpers.link_to(t('label_custom_field_plural'), custom_fields_path)
+//      ActionController::Base.helpers.link_to(t("label_custom_field_plural"), custom_fields_path)
 //    }
   }
 

@@ -4,7 +4,7 @@ namespace openproj {
 namespace models {
 namespace JournalN {
 class ChangesetJournal : public JournalN::BaseJournal {
-//  this->table_name = 'changeset_journals'
+//  this->table_name = "changeset_journals"
 };
 }
 }

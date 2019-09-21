@@ -1,14 +1,14 @@
 namespace openproj {
 namespace helper {
 namespace FrontendAssetHelper {
-//  CLI_DEFAULT_PROXY = 'http://localhost:4200'.freeze
+//  CLI_DEFAULT_PROXY = "http://localhost:4200".freeze
 
    bool assets_proxied() {
 //    !Rails.env.production? && cli_proxy?
   }
 
 //   void cli_proxy() {
-//    ENV.fetch('OPENPROJECT_CLI_PROXY', CLI_DEFAULT_PROXY)
+//    ENV.fetch("OPENPROJECT_CLI_PROXY", CLI_DEFAULT_PROXY)
 //  }
 
    bool cli_proxy() {

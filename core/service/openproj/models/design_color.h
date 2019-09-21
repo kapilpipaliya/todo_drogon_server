@@ -43,7 +43,7 @@ class DesignColor : public ActiveRecord::Base {
 //    }
 //  }
 
-  // shortcut to get the color's value
+  // shortcut to get the color"s value
    void get_hexcode() {
 //    hexcode.presence || this->class.defaults[variable]
   }
@@ -55,12 +55,12 @@ class DesignColor : public ActiveRecord::Base {
 //    if ( hexcode.present? and hexcode_changed?) {
 //      this->hexcode = hexcode.strip.upcase
 
-//      unless hexcode.starts_with? '#'
-//        this->hexcode = '#' + hexcode
+//      unless hexcode.starts_with? "#"
+//        this->hexcode = "#" + hexcode
 //      }
 
 //      if ( hexcode.size == 4 // =~ /#.../) {
-//        this->hexcode = hexcode.gsub(/([^#])/, '\1\1')
+//        this->hexcode = hexcode.gsub(/([^#])/, "\1\1")
 //      }
 //    }
   }

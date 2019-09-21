@@ -4,8 +4,8 @@ namespace openproj {
 namespace models {
 namespace Queries::Operators {
   class MoreThanAgo : public Base {
-//    label 'more_than_ago'
-//    set_symbol '<t-'
+//    label "more_than_ago"
+//    set_symbol "<t-"
 
     // extend DateRangeClauses
 

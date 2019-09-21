@@ -17,7 +17,7 @@ namespace WorkPackageN::AskBeforeDestruction {
 //      !associated_to_ask_before_destruction_of(work_packages).empty?
 //    }
 
-//     void cleanup_associated_before_destructing_if_required(work_packages, user, to_do = { action: 'destroy' }) {
+//     void cleanup_associated_before_destructing_if_required(work_packages, user, to_do = { action: "destroy" }) {
 //      cleanup_required = cleanup_action_required_before_destructing?(work_packages)
 
 //      (!cleanup_required ||

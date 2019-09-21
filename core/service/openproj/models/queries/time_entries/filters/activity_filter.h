@@ -27,7 +27,7 @@ class ActivityFilter : public openproj::models::Queries::TimeEntries::Filters::T
 
    void where() {
 //    // Because the project specific activity is used for storing the time entry,
-//    // we have to deduce the actual filter value which is the id of all the provided activities' children.
+//    // we have to deduce the actual filter value which is the id of all the provided activities" children.
 //    // But when the activity itself is already shared, we use that value.
 //    db_values = child_values
 //                .or(shared_values)

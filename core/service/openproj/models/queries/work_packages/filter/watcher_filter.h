@@ -13,7 +13,7 @@ class WatcherFilter  : openproj::models::Queries::WorkPackages::Filter::Principa
 //      // in at least one project
 //      // TODO: this could be differentiated
 //      // more, e.g. all users could watch issues in public projects,
-//      // but won't necessarily be shown here
+//      // but won"t necessarily be shown here
 //      values = me_allowed_value
 //      if ( User.current.allowed_to?(:view_work_package_watchers, project, global: project.nil?)) {
 //        values += principal_loader.user_values
@@ -43,13 +43,13 @@ class WatcherFilter  : openproj::models::Queries::WorkPackages::Filter::Principa
 
    void where_any_watcher() {
 //    db_table = Watcher.table_name
-//    db_field = 'user_id'
+//    db_field = "user_id"
 
 //    <<-SQL
-//      #{WorkPackage.table_name}.id #{operator == '=' ? 'IN' : 'NOT IN'}
+//      #{WorkPackage.table_name}.id #{operator == "=" ? "IN" : "NOT IN"}
 //        (SELECT #{db_table}.watchable_id
 //         FROM #{db_table}
-//         WHERE #{db_table}.watchable_type='WorkPackage'
+//         WHERE #{db_table}.watchable_type="WorkPackage"
 //           AND #{::Queries::Operators::Equals.sql_for_field values_replaced, db_table, db_field})
 //    SQL
   }
@@ -64,25 +64,25 @@ class WatcherFilter  : openproj::models::Queries::WorkPackages::Filter::Principa
 //    // filter watchers only in projects the user has the permission to view watchers in
 //    sql_parts << where_watcher_in_view_watchers_allowed
 
-//    sql_parts.join(' OR ')
+//    sql_parts.join(" OR ")
   }
 
 //   void where_self_watcher(user_id) {
 //    <<-SQL
-//      #{WorkPackage.table_name}.id #{operator == '=' ? 'IN' : 'NOT IN'}
+//      #{WorkPackage.table_name}.id #{operator == "=" ? "IN" : "NOT IN"}
 //        (SELECT #{db_table}.watchable_id
 //         FROM #{db_table}
-//         WHERE #{db_table}.watchable_type='WorkPackage'
+//         WHERE #{db_table}.watchable_type="WorkPackage"
 //         AND #{::Queries::Operators::Equals.sql_for_field [user_id], db_table, db_field})
 //    SQL
 //  }
 
    void where_watcher_in_view_watchers_allowed() {
 //    <<-SQL
-//      #{WorkPackage.table_name}.id #{operator == '=' ? 'IN' : 'NOT IN'}
+//      #{WorkPackage.table_name}.id #{operator == "=" ? "IN" : "NOT IN"}
 //        (SELECT #{db_table}.watchable_id
 //         FROM #{db_table}
-//         WHERE #{db_table}.watchable_type='WorkPackage'
+//         WHERE #{db_table}.watchable_type="WorkPackage"
 //           AND #{::Queries::Operators::Equals.sql_for_field values_replaced, db_table, db_field})
 //           AND #{Project.table_name}.id IN
 //             (#{view_watcher_allowed_scoped.to_sql})
@@ -94,7 +94,7 @@ class WatcherFilter  : openproj::models::Queries::WorkPackages::Filter::Principa
   }
 
    void db_field() {
-//    'user_id'
+//    "user_id"
   }
 
    void view_watcher_allowed_scoped() {

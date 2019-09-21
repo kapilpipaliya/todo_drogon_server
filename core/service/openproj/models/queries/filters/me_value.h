@@ -4,7 +4,7 @@ namespace models {
 namespace Queries {
 namespace Filters {
 class MeValue {
-//  KEY = 'me'.freeze
+//  KEY = "me".freeze
 
    void id() {
 //    KEY

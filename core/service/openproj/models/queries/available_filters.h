@@ -1,5 +1,5 @@
 #pragma once
-//require_dependency 'queries/filters'
+//require_dependency "queries/filters"
 
 namespace openproj {
 namespace models {

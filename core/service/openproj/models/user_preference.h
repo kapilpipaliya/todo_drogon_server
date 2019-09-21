@@ -28,7 +28,7 @@ class UserPreference : public ActiveRecord::Base {
 //  }
 
 //   void comments_in_reverse_order?() {
-//    comments_sorting == 'desc'
+//    comments_sorting == "desc"
 //  }
 
 //   void self_notified?() {
@@ -48,7 +48,7 @@ class UserPreference : public ActiveRecord::Base {
 //  }
 
 //   void warn_on_leaving_unsaved?() {
-//    // Need to cast here as previous values were '0' / '1'
+//    // Need to cast here as previous values were "0" / "1"
 //    to_boolean(others.fetch(:warn_on_leaving_unsaved) { true })
 //  }
 
@@ -62,7 +62,7 @@ class UserPreference : public ActiveRecord::Base {
 //  alias :auto_hide_popups :auto_hide_popups?
 
 //   void comments_in_reverse_order=(value) {
-//    others[:comments_sorting] = to_boolean(value) ? 'desc' : 'asc'
+//    others[:comments_sorting] = to_boolean(value) ? "desc" : "asc"
 //  }
 
 //   void time_zone() {

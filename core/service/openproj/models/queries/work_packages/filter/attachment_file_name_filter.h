@@ -15,11 +15,11 @@ class AttachmentFileNameFilter : public openproj::models::Queries::WorkPackages:
   }
 
    void human_name() {
-//    Attachment.human_attribute_name('attachment_file_name')
+//    Attachment.human_attribute_name("attachment_file_name")
   }
 
    void search_column() {
-//    'file'
+//    "file"
   }
 
    void normalization_type() {

@@ -37,7 +37,7 @@ class CSV : public WorkPackageN::Exporter::Base {
 //      .new format: :csv,
 //           title: title,
 //           content: serialized,
-//           mime_type: 'text/csv'
+//           mime_type: "text/csv"
 //  }
 
 //   void title() {
@@ -58,7 +58,7 @@ class CSV : public WorkPackageN::Exporter::Base {
 
 //    // because of
 //    // https://support.microsoft.com/en-us/help/323626/-sylk-file-format-is-not-valid-error-message-when-you-open-file
-//    if ( headers[0].start_with?('ID')) {
+//    if ( headers[0].start_with?("ID")) {
 //      headers[0] = headers[0].downcase
 //    }
 
@@ -76,7 +76,7 @@ class CSV : public WorkPackageN::Exporter::Base {
 //      row << if ( work_package.description) {
 //               work_package.description.squish
 //             else
-//               ''
+//               ""
 //             }
 //    }
 
@@ -107,7 +107,7 @@ class CSV : public WorkPackageN::Exporter::Base {
 
 //    cv
 //      .map { |v| show_value(v) }
-//      .join('; ')
+//      .join("; ")
 //  }
 };
 }

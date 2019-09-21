@@ -33,7 +33,7 @@ public:
 
 //    respond_to { |format|
 //      format.html {
-//        render layout: 'no_menu'
+//        render layout: "no_menu"
 //      }
 //    }
   }
@@ -45,7 +45,7 @@ public:
    void new_() {
 //    assign_default_create_variables
 
-//    render layout: 'no_menu'
+//    render layout: "no_menu"
   }
 
 //  current_menu_item :new {
@@ -56,7 +56,7 @@ public:
 //    assign_default_create_variables
 
 //    if ( validate_parent_id && this->project.save) {
-//      this->project.set_allowed_parent!(params['project']['parent_id']) if ( params['project'].has_key?('parent_id')) {
+//      this->project.set_allowed_parent!(params["project"]["parent_id"]) if ( params["project"].has_key?("parent_id")) {
 //      add_current_user_to_project_if_not_admin(this->project)
 //      respond_to { |format|
 //        format.html {
@@ -66,7 +66,7 @@ public:
 //      }
 //    else
 //      respond_to { |format|
-//        format.html { render action: 'new', layout: 'no_menu' }
+//        format.html { render action: "new", layout: "no_menu" }
 //      }
 //    }
   }
@@ -81,11 +81,11 @@ public:
 //                   model: this->altered_project)
 
 //    if ( validate_parent_id && service.call(permitted_params.project).success?) {
-//      if ( params['project'].has_key?('parent_id')) {
-//        this->altered_project.set_allowed_parent!(params['project']['parent_id'])
+//      if ( params["project"].has_key?("parent_id")) {
+//        this->altered_project.set_allowed_parent!(params["project"]["parent_id"])
 //      }
 //      flash[:notice] = l(:notice_successful_update)
-//      OpenProject::Notifications.send('project_updated', project: this->altered_project)
+//      OpenProject::Notifications.send("project_updated", project: this->altered_project)
 //    }
 
 //    redirect_to settings_project_path(this->altered_project)
@@ -97,20 +97,20 @@ public:
 //    if ( this->project.save) {
 //      flash[:notice] = I18n.t(:notice_successful_update)
 //      redirect_to settings_project_path(this->project)
-//      OpenProject::Notifications.send('project_renamed', project: this->project)
+//      OpenProject::Notifications.send("project_renamed", project: this->project)
 //    else
-//      render action: 'identifier'
+//      render action: "identifier"
 //    }
   }
 
    void types() {
 //    if ( UpdateProjectsTypesService.new(this->project).call(permitted_params.projects_type_ids)) {
-//      flash[:notice] = l('notice_successful_update')
+//      flash[:notice] = l("notice_successful_update")
 //    else
 //      flash[:error] = this->project.errors.full_messages
 //    }
 
-//    redirect_to settings_project_path(this->project.identifier, tab: 'types')
+//    redirect_to settings_project_path(this->project.identifier, tab: "types")
   }
 
    void modules() {
@@ -118,7 +118,7 @@ public:
 //    // Ensure the project is touched to update its cache key
 //    this->project.touch
 //    flash[:notice] = I18n.t(:notice_successful_update)
-//    redirect_to settings_project_path(this->project, tab: 'modules')
+//    redirect_to settings_project_path(this->project, tab: "modules")
   }
 
    void custom_fields() {
@@ -128,15 +128,15 @@ public:
 //        flash[:notice] = t(:notice_successful_update)
 //      else
 //        flash[:error] = t(:notice_project_cannot_update_custom_fields,
-//                          errors: this->project.errors.full_messages.join(', '))
+//                          errors: this->project.errors.full_messages.join(", "))
 //        raise ActiveRecord::Rollback
 //      }
 //    }
-//    redirect_to settings_project_path(this->project, tab: 'custom_fields')
+//    redirect_to settings_project_path(this->project, tab: "custom_fields")
   }
 
    void archive() {
-//    projects_url = url_for(controller: '/projects', action: 'index', status: params[:status])
+//    projects_url = url_for(controller: "/projects", action: "index", status: params[:status])
 //    if ( this->project.archive) {
 //      redirect_to projects_url
 //    else
@@ -149,7 +149,7 @@ public:
 
    void unarchive() {
 //    if ( !this->project.active?) { this->project.unarchive ;}
-//    redirect_to(url_for(controller: '/projects', action: 'index', status: params[:status]))
+//    redirect_to(url_for(controller: "/projects", action: "index", status: params[:status]))
 //    update_demo_project_settings this->project, true
   }
 
@@ -159,12 +159,12 @@ public:
 //    call = service.call(delayed: true)
 
 //    if ( call.success?) {
-//      flash[:notice] = I18n.t('projects.delete.scheduled')
+//      flash[:notice] = I18n.t("projects.delete.scheduled")
 //    else
-//      flash[:error] = I18n.t('projects.delete.schedule_failed', errors: call.errors.full_messages.join("\n"))
+//      flash[:error] = I18n.t("projects.delete.schedule_failed", errors: call.errors.full_messages.join("\n"))
 //    }
 
-//    redirect_to controller: 'projects', action: 'index'
+//    redirect_to controller: "projects", action: "index"
 //    update_demo_project_settings this->project, false
   }
 
@@ -218,7 +218,7 @@ public:
 //    this->query = ParamsToQueryService.new(Project, current_user).call(params)
 
 //    // Set default filter on status no filter is provided.
-//    this->query.where('status', '=', Project::STATUS_ACTIVE.to_s) unless params[:filters]
+//    this->query.where("status", "=", Project::STATUS_ACTIVE.to_s) unless params[:filters]
 
 //    // Order lft if ( no order is provided.) {
 //    this->query.order(lft: :asc) unless params[:sortBy]
@@ -262,7 +262,7 @@ public:
 //      .paginate(page: page_param, per_page: per_page_param)
 //  }
 
-  // Validates parent_id param according to user's permissions
+  // Validates parent_id param according to user"s permissions
   // TODO: move it to Project model in a validation that depends on User.current
    void validate_parent_id() {
 //    if ( User.current.admin?) { return true ;}
@@ -280,7 +280,7 @@ public:
 
 //   void update_demo_project_settings(project, value) {
 //    // e.g. when one of the demo projects gets deleted or a archived
-//    if ( project.identifier == 'your-scrum-project' || project.identifier == 'demo-project') {
+//    if ( project.identifier == "your-scrum-project" || project.identifier == "demo-project") {
 //      Setting.demo_projects_available = value
 //    }
 //  }

@@ -7,10 +7,10 @@ class Status : public ActiveRecord::Base {
 
 //  default_scope { order_by_position }
 //  before_destroy :check_integrity
-//  // has_many :workflows, foreign_key: 'old_status_id'
+//  // has_many :workflows, foreign_key: "old_status_id"
 //  acts_as_list
 
-//  // belongs_to :color, class_name: 'Color', foreign_key: 'color_id'
+//  // belongs_to :color, class_name: "Color", foreign_key: "color_id"
 
 //  before_destroy :delete_workflows
 
@@ -39,10 +39,10 @@ class Status : public ActiveRecord::Base {
 //  // Update all the +Issues+ setting their done_ratio to the value of their +Status+
 //   void update_work_package_done_ratios() {
 //    if ( WorkPackage.use_status_for_done_ratio?) {
-//      Status.where(['default_done_ratio >= 0']).each { |status|
+//      Status.where(["default_done_ratio >= 0"]).each { |status|
 //        WorkPackage
-//          .where(['status_id = ?', status.id])
-//          .update_all(['done_ratio = ?', status.default_done_ratio])
+//          .where(["status_id = ?", status.id])
+//          .update_all(["done_ratio = ?", status.default_done_ratio])
 //      }
 //    }
 
@@ -67,7 +67,7 @@ class Status : public ActiveRecord::Base {
 
 //      Status.where(id: workflows.select(:new_status_id))
 //    else
-//      Status.where('1 = 0')
+//      Status.where("1 = 0")
 //    }
 //  }
 
@@ -91,7 +91,7 @@ class Status : public ActiveRecord::Base {
   //
   // Overrides cache key so that changes to EE state are reflected
    void cache_key() {
-//    super + '/' + can_readonly?.to_s
+//    super + "/" + can_readonly?.to_s
   }
 
 //   void can_readonly?() {
@@ -101,7 +101,7 @@ class Status : public ActiveRecord::Base {
   private:
 
    void check_integrity() {
-//    if ( WorkPackage.where(status_id: id).exists?) { raise "Can't delete status" ;}
+//    if ( WorkPackage.where(status_id: id).exists?) { raise "Can"t delete status" ;}
   }
 
   // Deletes associated workflows

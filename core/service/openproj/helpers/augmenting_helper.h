@@ -9,10 +9,10 @@ namespace AugmentingHelper {
   //
   // @param initiallyExpanded [Boolean] Whether the section is initially expanded
   //
-  // @param block [Block] A block that renders the section's body.
+  // @param block [Block] A block that renders the section"s body.
 //   void augmented_collapsible_section(title:, initiallyExpanded: true, &block) {
 //    render(
-//      partial: '/augmented/collapsible_section',
+//      partial: "/augmented/collapsible_section",
 //      locals: { title: title, initiallyExpanded: !!initiallyExpanded, block: block }
 //    )
 //  }

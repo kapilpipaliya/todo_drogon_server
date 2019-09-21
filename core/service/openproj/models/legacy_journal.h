@@ -22,8 +22,8 @@ class LegacyJournal : public ActiveRecord::Base {
   // Define a default class_name to prevent `uninitialized constant JournalN::Journaled`
   // subclasses will be given an actual class name when they are created by aaj
   //
-  //  e.g. IssueJournal will get class_name: 'Issue'
-  // belongs_to :journaled, class_name: 'Journal'
+  //  e.g. IssueJournal will get class_name: "Issue"
+  // belongs_to :journaled, class_name: "Journal"
   // belongs_to :user
 
   // register_journal_formatter :diff, OpenProject::JournalFormatter::Diff
@@ -36,10 +36,10 @@ class LegacyJournal : public ActiveRecord::Base {
   // Scopes to all journals excluding the initial journal - useful for change
   // logs like the history on issue#show
   // scope :changing, -> {
-//    where(['version > 1'])
+//    where(["version > 1"])
 //  }
 
-  // let all child classes have Journal as it's model name
+  // let all child classes have Journal as it"s model name
   // used to not having to create another route for every subclass of Journal
 //   void inherited(child) {
 //    child.instance_eval {
@@ -86,7 +86,7 @@ class LegacyJournal : public ActiveRecord::Base {
 //  }
 
 //   void details() {
-//    attributes['changed_data'] || {}
+//    attributes["changed_data"] || {}
 //  }
 
 //  // TODO Evaluate whether this can be removed without disturbing any migrations
@@ -102,9 +102,9 @@ class LegacyJournal : public ActiveRecord::Base {
 
 //  // Returns a string of css classes
 //   void css_classes() {
-//    s = 'journal'
-//    s << ' has-notes' unless notes.blank?
-//    s << ' has-details' unless details.empty?
+//    s = "journal"
+//    s << " has-notes" unless notes.blank?
+//    s << " has-details" unless details.empty?
 //    s
 //  }
 

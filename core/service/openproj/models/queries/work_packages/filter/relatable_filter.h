@@ -28,7 +28,7 @@ class RelatableFilter : public openproj::models::Queries::WorkPackages::Filter::
    void scope() {
 //    if ( operator == Relation::TYPE_RELATES) {
 //      relateable_from_or_to
-//    } else if ( operator != 'parent' && canonical_operator == operator) {
+//    } else if ( operator != "parent" && canonical_operator == operator) {
 //      relateable_to
 //    else
 //      relateable_from

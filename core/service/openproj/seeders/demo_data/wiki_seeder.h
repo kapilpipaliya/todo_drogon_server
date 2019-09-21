@@ -14,7 +14,7 @@ class WikiSeeder : public Seeder {
   //    }
 
   void seed_data() {
-    //      text = project_data_for(key, 'wiki')
+    //      text = project_data_for(key, "wiki")
 
     //      if ( text.is_a?(String) && text.start_with?("translation missing"))
     //      { return ;}
@@ -25,7 +25,7 @@ class WikiSeeder : public Seeder {
     //        text = [{title: "Wiki", content: text}]
     //      }
 
-    //      print '    ↳ Creating wikis'
+    //      LOG_DEBUG << "    ↳ Creating wikis"
 
     //      Array(text).each { |data|
     //        create_wiki_page!(
@@ -46,7 +46,7 @@ class WikiSeeder : public Seeder {
     //        parent: parent
     //      )
 
-    //      print '.'
+    //      LOG_DEBUG << "."
     //      WikiContent.create!(
     //        page:   wiki_page,
     //        author: user,

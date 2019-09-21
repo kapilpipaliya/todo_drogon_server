@@ -4,7 +4,7 @@ namespace openproj {
 namespace models {
 namespace Token {
   class Base : public ActiveRecord::Base {
-//    this->table_name = 'tokens'
+//    this->table_name = "tokens"
 
     // Hashed tokens belong to a user and are unique per type
     // belongs_to :user

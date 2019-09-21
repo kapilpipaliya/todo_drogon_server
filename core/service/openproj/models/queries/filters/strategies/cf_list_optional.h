@@ -8,8 +8,8 @@ namespace Queries::Filters::Strategies {
 
      void operator_map() {
 //      super_value = super.dup
-//      super_value['!*'] = ::Queries::Operators::NoneOrBlank
-//      super_value['*'] = ::Queries::Operators::AllAndNonBlank
+//      super_value["!*"] = ::Queries::Operators::NoneOrBlank
+//      super_value["*"] = ::Queries::Operators::AllAndNonBlank
 
 //      super_value
     }

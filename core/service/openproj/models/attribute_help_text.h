@@ -47,4 +47,4 @@ class AttributeHelpText : public ActiveRecord::Base {
 
 
 }
-//require_dependency 'attribute_help_text/work_package'
+//require_dependency "attribute_help_text/work_package"

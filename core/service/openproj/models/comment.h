@@ -4,7 +4,7 @@ namespace openproj {
 namespace models {
 class Comment : public ActiveRecord::Base {
   // belongs_to :commented, polymorphic: true, counter_cache: true
-  // belongs_to :author, class_name: 'User', foreign_key: 'author_id'
+  // belongs_to :author, class_name: "User", foreign_key: "author_id"
 
   // validates :commented, :author, :comments, presence: true
 
@@ -21,7 +21,7 @@ class Comment : public ActiveRecord::Base {
   private:
 
    void send_news_comment_added_mail() {
-//    return unless Setting.notified_events.include?('news_comment_added')
+//    return unless Setting.notified_events.include?("news_comment_added")
 
 //    return unless commented.is_a?(News)
 

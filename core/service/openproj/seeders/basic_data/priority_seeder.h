@@ -52,7 +52,7 @@ class PrioritySeeder : public Seeder {
   }
 
   void not_applicable_message() {
-    //      'Skipping priorities as there are already some configured'
+    //      "Skipping priorities as there are already some configured"
   }
 
   virtual std::vector<row> data() = 0;

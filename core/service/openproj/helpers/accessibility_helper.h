@@ -12,7 +12,7 @@ namespace AccessibilityHelper {
 //  }
 
    void empty_element_tag() {
-//    this->empty_element_tag ||= ApplicationController.new.render_to_string(partial: 'accessibility/empty_element_tag').html_safe
+//    this->empty_element_tag ||= ApplicationController.new.render_to_string(partial: "accessibility/empty_element_tag").html_safe
   }
 
   // Returns the locale :en for the given menu item if ( the user locale is) {

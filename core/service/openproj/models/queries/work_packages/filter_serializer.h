@@ -8,15 +8,15 @@ namespace Queries::WorkPackages::FilterSerializer {
 //   void load(serialized_filter_hash) {
 //    if ( serialized_filter_hash.nil?) { return [] ;}
 
-//    // yeah, dunno, but apparently '=' may have been serialized as a Syck::DefaultKey instance...
+//    // yeah, dunno, but apparently "=" may have been serialized as a Syck::DefaultKey instance...
 //    yaml = serialized_filter_hash
-//           .gsub('!ruby/object:Syck::DefaultKey {}', '"="')
+//           .gsub("!ruby/object:Syck::DefaultKey {}", ""="")
 
 //    (YAML.load(yaml) || {}).each_with_object([]) { |(field, options), array|
 //      options = options.with_indifferent_access
 //      filter = filter_for(field, true)
-//      filter.operator = options['operator']
-//      filter.values = options['values']
+//      filter.operator = options["operator"]
+//      filter.values = options["values"]
 //      array << filter
 //    }
 //  }

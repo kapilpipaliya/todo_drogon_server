@@ -4,7 +4,7 @@ namespace openproj {
 namespace controller {
 class CustomStylesController : public ApplicationController {
 public:
-  // layout 'admin'
+  // layout "admin"
   // menu_item :custom_style
 
   // before_action :require_admin, except: [:logo_download, :favicon_download, :touch_icon_download]

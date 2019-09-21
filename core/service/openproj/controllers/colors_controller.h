@@ -6,7 +6,7 @@ class ColorsController : public ApplicationController {
 public:
   // before_action :require_admin_unless_readonly_api_request
 
-  // layout 'admin'
+  // layout "admin"
 
   // menu_item :colors
 
@@ -37,8 +37,8 @@ public:
 //      flash[:notice] = l(:notice_successful_create)
 //      redirect_to colors_path
 //    else
-//      flash.now[:error] = l('timelines.color_could_not_be_saved')
-//      render action: 'new'
+//      flash.now[:error] = l("timelines.color_could_not_be_saved")
+//      render action: "new"
 //    }
   }
 
@@ -56,8 +56,8 @@ public:
 //      flash[:notice] = l(:notice_successful_update)
 //      redirect_to colors_path
 //    else
-//      flash.now[:error] = l('timelines.color_could_not_be_saved')
-//      render action: 'edit'
+//      flash.now[:error] = l("timelines.color_could_not_be_saved")
+//      render action: "edit"
 //    }
   }
 
@@ -79,10 +79,10 @@ public:
   protected:
 
    void default_breadcrumb() {
-//    if ( action_name == 'index') {
-//      t('timelines.admin_menu.colors')
+//    if ( action_name == "index") {
+//      t("timelines.admin_menu.colors")
 //    else
-//      ActionController::Base.helpers.link_to(t('timelines.admin_menu.colors'), colors_path)
+//      ActionController::Base.helpers.link_to(t("timelines.admin_menu.colors"), colors_path)
 //    }
   }
 

@@ -25,7 +25,7 @@ class BulkController : public ApplicationController {
 
 //    if ( this->call.success?) {
 //      flash[:notice] = t(:notice_successful_update)
-//      redirect_back_or_default(controller: '/work_packages', action: :index, project_id: this->project)
+//      redirect_back_or_default(controller: "/work_packages", action: :index, project_id: this->project)
 //    else
 //      this->bulk_errors = this->call.errors
 //      setup_edit
@@ -42,7 +42,7 @@ class BulkController : public ApplicationController {
 //                           associated: WorkPackage.associated_classes_to_address_before_destruction_of(this->work_packages) }
 //        }
 //        format.json {
-//          render json: { error_message: 'Clean up of associated objects required' }, status: 420
+//          render json: { error_message: "Clean up of associated objects required" }, status: 420
 //        }
 //      }
 

@@ -26,13 +26,13 @@ namespace BrowserHelper {
   // or mobile detection
    void browser_specific_classes() {
 //    [].tap { |classes|
-//      if ( browser.chrome?) { classes << '-browser-chrome' ;}
-//      if ( browser.firefox?) { classes << '-browser-firefox' ;}
-//      if ( browser.safari?) { classes << '-browser-safari' ;}
-//      if ( browser.edge?) { classes << '-browser-edge' ;}
+//      if ( browser.chrome?) { classes << "-browser-chrome" ;}
+//      if ( browser.firefox?) { classes << "-browser-firefox" ;}
+//      if ( browser.safari?) { classes << "-browser-safari" ;}
+//      if ( browser.edge?) { classes << "-browser-edge" ;}
 
-//      if ( browser.device.mobile?) { classes << '-browser-mobile' ;}
-//      if ( browser.platform.windows?) { classes << '-browser-windows' ;}
+//      if ( browser.device.mobile?) { classes << "-browser-mobile" ;}
+//      if ( browser.platform.windows?) { classes << "-browser-windows" ;}
 //    }
   }
 }

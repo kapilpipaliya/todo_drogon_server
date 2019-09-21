@@ -34,7 +34,7 @@ class BaseActivityProvider {
   // This method returns a list of columns that the activity query needs to    #
   // return, so the activity provider can actually create an activity object.  #
   // You must at least return the column containing the project reference with #
-  // the alias 'project_id'.                                                   #
+  // the alias "project_id".                                                   #
   //###########################################################################
 //   void event_query_projection(_activity) {
 //    []
@@ -42,7 +42,7 @@ class BaseActivityProvider {
 
   //###########################################################################
   // Override this method if the journal table does not contain a reference to #
-  // the 'projects' table.                                                     #
+  // the "projects" table.                                                     #
   //###########################################################################
 //   void projects_reference_table(activity) {
 //    activity_journals_table(activity)
@@ -69,7 +69,7 @@ class BaseActivityProvider {
 //    namespace = activity_type.deconstantize
 
 //    class_name = activity_type.demodulize
-//    class_name.gsub('ActivityProvider', '').constantize
+//    class_name.gsub("ActivityProvider", "").constantize
 //  }
 
 //   void format_event(event, event_data, activity) {
@@ -116,11 +116,11 @@ class BaseActivityProvider {
 
 //  class UndefinedEventTypeError : public StandardError{};
 //   void event_type(_event, _activity) {
-//    raise UndefinedEventTypeError.new('Abstract method event_type called')
+//    raise UndefinedEventTypeError.new("Abstract method event_type called")
 //  }
 
 //   void event_name(event, activity) {
-//    I18n.t(event_type(event, activity).underscore, scope: 'events')
+//    I18n.t(event_type(event, activity).underscore, scope: "events")
 //  }
 
 //   void url_helpers() {

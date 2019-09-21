@@ -6,7 +6,7 @@ class Version : public ActiveRecord::Base {
   // include VersionN::ProjectSharing
 
   // belongs_to :project
-  // has_many :fixed_issues, class_name: 'WorkPackage', foreign_key: 'fixed_version_id', dependent: :nullify
+  // has_many :fixed_issues, class_name: "WorkPackage", foreign_key: "fixed_version_id", dependent: :nullify
   // has_many :work_packages, foreign_key: :fixed_version_id
 //  acts_as_customizable
 
@@ -28,12 +28,12 @@ class Version : public ActiveRecord::Base {
 //      .merge(Project.allowed_to(args.first || User.current, :view_work_packages))
 //  }
 
-  // scope :systemwide, -> { where(sharing: 'system') }
+  // scope :systemwide, -> { where(sharing: "system") }
 
   // scope :order_by_name, -> { order(Arel.sql("LOWER(#{Version.table_name}.name)")) }
 
    void with_status_open() {
-//    where(status: 'open')
+//    where(status: "open")
   }
 
   // Returns true if ( +user+ or current user is allowed to view the version) {
@@ -47,9 +47,9 @@ class Version : public ActiveRecord::Base {
   // based on the earlist start_date of the fixed_issues
    void start_date() {
     // when this->id is nil (e.g. when self is a new_record),
-    // minimum('start_date') works on all issues with fixed_version: nil
+    // minimum("start_date") works on all issues with fixed_version: nil
     // but we expect only issues belonging to this version
-//    read_attribute(:start_date) || fixed_issues.where(WorkPackage.arel_table[:fixed_version_id].not_eq(nil)).minimum('start_date')
+//    read_attribute(:start_date) || fixed_issues.where(WorkPackage.arel_table[:fixed_version_id].not_eq(nil)).minimum("start_date")
   }
 
    void due_date() {
@@ -72,11 +72,11 @@ class Version : public ActiveRecord::Base {
   }
 
    bool closed() {
-//    status == 'closed'
+//    status == "closed"
   }
 
 //   void open?() {
-//    status == 'open'
+//    status == "open"
 //  }
 
   // Returns true if ( the version is completed: finish date reached and no open issues) {
@@ -91,7 +91,7 @@ class Version : public ActiveRecord::Base {
 //      done_date = start_date + ((due_date - start_date + 1) * completed_percent / 100).floor
 //      done_date <= Date.today
 //    else
-//      false // No issues so it's not late
+//      false // No issues so it"s not late
 //    }
   }
 
@@ -107,7 +107,7 @@ class Version : public ActiveRecord::Base {
 //    }
   }
 
-  // Returns the percentage of issues that have been marked as 'closed'.
+  // Returns the percentage of issues that have been marked as "closed".
    void closed_percent() {
 //    if ( issues_count.zero?) {
 //      0
@@ -160,7 +160,7 @@ class Version : public ActiveRecord::Base {
   // Versions are sorted by "Project Name - Version name"
 //   void <=>(other) {
 //    // using string interpolation for comparison is not efficient
-//    // (see to_s_with_project's implementation) but I wanted to
+//    // (see to_s_with_project"s implementation) but I wanted to
 //    // tie the comparison to the presentation as sorting is mostly
 //    // used within sorted tables.
 //    // Thus, when the representation changes, the sorting will change as well.
@@ -201,7 +201,7 @@ class Version : public ActiveRecord::Base {
 //      progress = 0
 
 //      if ( issues_count > 0) {
-//        ratio = open ? 'done_ratio' : 100
+//        ratio = open ? "done_ratio" : 100
 //        sum_sql = this->class.sanitize_sql_array(
 //          ["COALESCE(#{WorkPackage.table_name}.estimated_hours, ?) * #{ratio}", estimated_average]
 //        )

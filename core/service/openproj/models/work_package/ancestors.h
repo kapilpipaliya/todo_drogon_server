@@ -55,7 +55,7 @@ namespace WorkPackageN::Ancestors {
 //        .where(id: this->ids)
 //        .includes(:ancestors)
 //        .where(ancestors_work_packages: { project_id: Project.allowed_to(user, :view_work_packages) })
-//        .order(Arel.sql('relations.hierarchy DESC'))
+//        .order(Arel.sql("relations.hierarchy DESC"))
     }
   };
 }

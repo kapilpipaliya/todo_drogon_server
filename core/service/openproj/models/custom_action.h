@@ -5,15 +5,15 @@ namespace models {
 class CustomAction : public ActiveRecord::Base {
   // validates :name, length: { maximum: 255, minimum: 1 }
 //  serialize :actions, CustomActions::Actions::Serializer
-//  has_and_belongs_to_many :status_conditions, class_name: 'Status'
-//  has_and_belongs_to_many :role_conditions, class_name: 'Role'
-//  has_and_belongs_to_many :type_conditions, class_name: 'Type'
-//  has_and_belongs_to_many :project_conditions, class_name: 'Project'
+//  has_and_belongs_to_many :status_conditions, class_name: "Status"
+//  has_and_belongs_to_many :role_conditions, class_name: "Role"
+//  has_and_belongs_to_many :type_conditions, class_name: "Type"
+//  has_and_belongs_to_many :project_conditions, class_name: "Project"
 
 //  // after_save :persist_conditions
 
 //  attribute :conditions
-//  define_attribute_method 'conditions'
+//  define_attribute_method "conditions"
 
 //  acts_as_list
 

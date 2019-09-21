@@ -5,7 +5,7 @@ namespace controller {
 class AuthenticationController : public ApplicationController {
 public:
   // before_action :require_login
-  // layout 'admin'
+  // layout "admin"
   // menu_item :authentication_settings
 
    void index() {
@@ -21,12 +21,12 @@ public:
 //        .call(settings: permitted_params.settings.to_h)
 
 //      flash[:notice] = l(:notice_successful_update)
-//      redirect_to action: 'authentication_settings'
+//      redirect_to action: "authentication_settings"
 //    }
   }
 
    void authentication_settings() {
-//    render 'authentication_settings'
+//    render "authentication_settings"
   }
 
    void default_breadcrumb() {

@@ -16,8 +16,8 @@ namespace RandomData {
 //    }
 
      void seed(bool random = true) {
-//      puts ''
-//      print ' ↳ Creating work_packages'
+//      puts ""
+//      LOG_DEBUG << " ↳ Creating work_packages"
 
 //      seed_random_work_packages
     }
@@ -26,11 +26,11 @@ namespace RandomData {
 
      void seed_random_work_packages() {
 //      rand(50).times {
-//        print '.'
+//        LOG_DEBUG << "."
 //        work_package = WorkPackage.create!(
 //          project:      project,
 //          author:       user,
-//          subject:      Faker::Lorem.words(8).join(' '),
+//          subject:      Faker::Lorem.words(8).join(" "),
 //          status:       statuses.sample,
 //          type:         types.sample,
 //          start_date:   s = Date.today - (25 - rand(50)).days,
@@ -55,7 +55,7 @@ namespace RandomData {
 
 //     void add_changeset(work_package) {
 //      2.times { |changeset_count|
-//        print '.'
+//        LOG_DEBUG << "."
 //        changeset = Changeset.create(
 //          repository:     repository,
 //          user:           user,
@@ -64,11 +64,11 @@ namespace RandomData {
 //          work_packages:  [work_package],
 //          committer:      Faker::Name.name,
 //          committed_on:   Date.today,
-//          comments:       Faker::Lorem.words(8).join(' ')
+//          comments:       Faker::Lorem.words(8).join(" ")
 //        )
 
 //        5.times {
-//          print '.'
+//          LOG_DEBUG << "."
 //          change = Change.create(
 //            action: Faker::Lorem.characters(1),
 //            path: Faker::Internet.url
@@ -82,12 +82,12 @@ namespace RandomData {
 //        changeset.save!
 
 //        rand(5).times {
-//          print '.'
+//          LOG_DEBUG << "."
 //          changeset.reload
 
 //          if ( rand(99).even?) { changeset.committer = Faker::Name.name ;}
 //          if ( rand(99).even?) { changeset.committed_on = Date.today + rand(999) ;}
-//          if ( rand(99).even?) { changeset.comments = Faker::Lorem.words(8).join(' ') ;}
+//          if ( rand(99).even?) { changeset.comments = Faker::Lorem.words(8).join(" ") ;}
 
 //          changeset.save!
 //        }
@@ -110,7 +110,7 @@ namespace RandomData {
 
 //     void add_attachments(work_package) {
 //      3.times { |_attachment_count|
-//        file = OpenProject::Files.create_uploaded_file(name: Faker::Lorem.words(8).join(' '))
+//        file = OpenProject::Files.create_uploaded_file(name: Faker::Lorem.words(8).join(" "))
 //        attachment = Attachment.new(
 //          container: work_package,
 //          author:    user,
@@ -126,7 +126,7 @@ namespace RandomData {
 //      project.work_package_custom_fields.each { |custom_field|
 //        if ( !work_package.type.custom_fields.include?(custom_field)) { work_package.type.custom_fields << custom_field ;}
 //        work_package.custom_values << CustomValue.new(custom_field: custom_field,
-//                                               value: Faker::Lorem.words(8).join(' '))
+//                                               value: Faker::Lorem.words(8).join(" "))
 //      }
 
 //      work_package.type.save!
@@ -135,11 +135,11 @@ namespace RandomData {
 
 //     void make_changes(work_package) {
 //      20.times {
-//        print '.'
+//        LOG_DEBUG << "."
 //        work_package.reload
 
 //        if ( rand(99).even?) { work_package.status = statuses.sample ;}
-//        if ( rand(99).even?) { work_package.subject = Faker::Lorem.words(8).join(' ') ;}
+//        if ( rand(99).even?) { work_package.subject = Faker::Lorem.words(8).join(" ") ;}
 //        if ( rand(99).even?) { work_package.description = Faker::Lorem.paragraph(5, true, 3) ;}
 //        if ( rand(99).even?) { work_package.type = types.sample ;}
 

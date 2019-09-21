@@ -94,26 +94,26 @@ class SettingSeeder : public Seeder {
   }
 
   void not_applicable_message() {
-    //      'Skipping settings as all settings already exist in the db'
+    //      "Skipping settings as all settings already exist in the db"
   }
 
   std::vector<std::pair<std::string, std::string>> data() {
     //      this->settings ||= begin
     //        settings = Setting.available_settings.each_with_object({}) { |(k,
     //        v), hash|
-    //          hash[k] = v['default'] || ''
+    //          hash[k] = v["default"] || ""
     //        }
 
     //        // deviate from the defaults specified in settings.yml here
     //        // to set a default role. The role cannot be specified in the
     //        settings.yml as
     //        // that would mean to know the ID upfront.
-    //        update_unless_present(settings, 'new_project_user_role_id') {
+    //        update_unless_present(settings, "new_project_user_role_id") {
     //          Role.find_by(name: I18n.t(:default_role_project_admin)).try(:id)
     //        }
 
     //        // Set the closed status for repository commit references
-    //        update_unless_present(settings, 'commit_fix_status_id') {
+    //        update_unless_present(settings, "commit_fix_status_id") {
     //          Status.find_by(name: I18n.t(:default_status_closed)).try(:id)
     //        }
 

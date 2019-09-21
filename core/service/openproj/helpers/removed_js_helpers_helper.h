@@ -10,14 +10,14 @@ namespace RemovedJsHelpersHelper {
 //    id = html_options.delete(:id) { "link-to-function-#{SecureRandom.uuid}" }
 //    csp_onclick(function, "##{id}")
 
-//    content_tag(:a, content, html_options.merge(id: id, href: ''))
+//    content_tag(:a, content, html_options.merge(id: id, href: ""))
 //  }
 
   //
   // Execute the callback on click
 //   void csp_onclick(callback_str, selector) {
 //    content_for(:additional_js_dom_ready) {
-//      "jQuery('#{selector}').click(function() { #{callback_str}; return false; });\n".html_safe
+//      "jQuery("#{selector}").click(function() { #{callback_str}; return false; });\n".html_safe
 //    }
 //  }
 }

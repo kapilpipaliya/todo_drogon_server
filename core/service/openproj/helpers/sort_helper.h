@@ -4,7 +4,7 @@
 //          Jean-Philippe Lang, 2009
 // License: This source code is released under the MIT license.
 //
-// - Consecutive clicks toggle the column's sort order.
+// - Consecutive clicks toggle the column"s sort order.
 // - Sort state is maintained by a session hash entry.
 // - CSS classes identify sort column and state.
 // - Typically used in conjunction with the Pagination module.
@@ -17,7 +17,7 @@
 //   include SortHelper
 //
 //   def list
-//     sort_init 'last_name'
+//     sort_init "last_name"
 //     sort_update %w(first_name last_name)
 //     this->items = Contact.find_all nil, sort_clause
 //   }
@@ -28,7 +28,7 @@
 //   include SortHelper
 //
 //   def list
-//     sort_init 'last_name'
+//     sort_init "last_name"
 //     sort_update %w(first_name last_name)
 //     this->contact_pages, this->items = paginate :contacts,
 //       order_by: sort_clause,
@@ -39,10 +39,10 @@
 //
 //   <thead>
 //     <tr>
-//       <%= sort_header_tag('id', title: 'Sort by contact ID') %>
-//       <%= sort_header_tag('last_name', caption: 'Name') %>
-//       <%= sort_header_tag('phone') %>
-//       <%= sort_header_tag('address', width: 200) %>
+//       <%= sort_header_tag("id", title: "Sort by contact ID") %>
+//       <%= sort_header_tag("last_name", caption: "Name") %>
+//       <%= sort_header_tag("phone") %>
+//       <%= sort_header_tag("address", width: 200) %>
 //     </tr>
 //   </thead>
 //
@@ -68,7 +68,7 @@ namespace SortHelper {
 //    }
 
 //     void from_param(param) {
-//      this->criteria = param.to_s.split(',').map { |s| s.split(':')[0..1] }
+//      this->criteria = param.to_s.split(",").map { |s| s.split(":")[0..1] }
 //      normalize!
 //    }
 
@@ -86,7 +86,7 @@ namespace SortHelper {
 //    }
 
 //     void to_sql() {
-//      sql = to_a.join(', ')
+//      sql = to_a.join(", ")
 //      sql.blank? ? nil : sql
 //    }
 
@@ -132,7 +132,7 @@ namespace SortHelper {
 //      this->criteria ||= []
 //      this->criteria = this->criteria.map { |s|
 //        s = s.to_a
-//        [s.first, !(s.last == false || s.last == 'desc')]
+//        [s.first, !(s.last == false || s.last == "desc")]
 //      }
 
 //      if ( this->available_criteria) {
@@ -161,25 +161,25 @@ namespace SortHelper {
 //    }
 
 //     void to_json_param() {
-//      JSON::dump(this->criteria.map { |k, o| [k, o ? 'asc' : 'desc'] })
+//      JSON::dump(this->criteria.map { |k, o| [k, o ? "asc" : "desc"] })
 //    }
 
 //     void to_sort_param() {
-//      this->criteria.map { |k, o| k + (o ? '' : ':desc') }.join(',')
+//      this->criteria.map { |k, o| k + (o ? "" : ":desc") }.join(",")
 //    }
 //  }
 
 //   void sort_name() {
-//    controller_name + '_' + action_name + '_sort'
+//    controller_name + "_" + action_name + "_sort"
 //  }
 
   // Initializes the default sort.
   // Examples:
   //
-  //   sort_init 'name'
-  //   sort_init 'id', 'desc'
-  //   sort_init ['name', ['id', 'desc']]
-  //   sort_init [['name', 'desc'], ['id', 'desc']]
+  //   sort_init "name"
+  //   sort_init "id", "desc"
+  //   sort_init ["name", ["id", "desc"]]
+  //   sort_init [["name", "desc"], ["id", "desc"]]
   //
 //   void sort_init(*args) {
 //    criteria = case args.size
@@ -213,7 +213,7 @@ namespace SortHelper {
 //  }
 
   // Returns an SQL sort clause corresponding to the current sort state.
-  // Use this to sort the controller's table items collection.
+  // Use this to sort the controller"s table items collection.
   //
 //   void sort_clause() {
 //    this->sort_criteria.to_sql
@@ -246,7 +246,7 @@ namespace SortHelper {
 
 //    sort_options = { sort_key => sort_param }
 
-//    // Don't lose other params.
+//    // Don"t lose other params.
 //    link_to_content_update(h(caption), safe_query_params(%w{filters page per_page expand}).merge(sort_options), html_options)
 //  }
 
@@ -255,13 +255,13 @@ namespace SortHelper {
   //
   // Options:
   //   :caption     The displayed link name (defaults to titleized column name).
-  //   :title       The tag's 'title' attribute (defaults to 'Sort by :caption').
+  //   :title       The tag"s "title" attribute (defaults to "Sort by :caption").
   //
   // Other options hash entries generate additional table header tag attributes.
   //
   // Example:
   //
-  //   <%= sort_header_tag('id', title: 'Sort by contact ID') %>
+  //   <%= sort_header_tag("id", title: "Sort by contact ID") %>
   //
   //   Generates (for the users controller and if ( the table is sorted by the column)) {
   //     <th>
@@ -277,7 +277,7 @@ namespace SortHelper {
 //   void sort_header_tag(column, options = {}) {
 //    caption = get_caption(column, options)
 
-//    default_order = options.delete(:default_order) || 'asc'
+//    default_order = options.delete(:default_order) || "asc"
 //    lang = options.delete(:lang) || nil
 //    param = options.delete(:param) || :sort
 
@@ -297,18 +297,18 @@ namespace SortHelper {
 //   void order_string(column, inverted: false) {
 //    if ( column.to_s == this->sort_criteria.first_key) {
 //      if ( this->sort_criteria.first_asc?) {
-//        inverted ? 'desc' : 'asc'
+//        inverted ? "desc" : "asc"
 //      else
-//        inverted ? 'asc' : 'desc'
+//        inverted ? "asc" : "desc"
 //      }
 //    }
 //  }
 
 //   void within_sort_header_tag_hierarchy(options, classes) {
-//    content_tag 'th', options {
-//      content_tag 'div', class: 'generic-table--sort-header-outer' {
-//        content_tag 'div', class: 'generic-table--sort-header' {
-//          content_tag 'span', class: classes {
+//    content_tag "th", options {
+//      content_tag "div", class: "generic-table--sort-header-outer" {
+//        content_tag "div", class: "generic-table--sort-header" {
+//          content_tag "span", class: classes {
 //            yield
 //          }
 //        }

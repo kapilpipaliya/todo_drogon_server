@@ -52,19 +52,19 @@ class CustomField : public CustomActions::Actions::Base {
 
 //   void strategy(custom_field) {
 //    case custom_field.field_format
-//    when 'string'
+//    when "string"
 //      CustomActions::Actions::Strategies::String
-//    when 'text'
+//    when "text"
 //      CustomActions::Actions::Strategies::Text
-//    when 'int'
+//    when "int"
 //      CustomActions::Actions::Strategies::Integer
-//    when 'float'
+//    when "float"
 //      CustomActions::Actions::Strategies::Float
-//    when 'date'
+//    when "date"
 //      CustomActions::Actions::Strategies::Date
-//    when 'bool'
+//    when "bool"
 //      CustomActions::Actions::Strategies::Boolean
-//    when 'list', 'version', 'user'
+//    when "list", "version", "user"
 //      CustomActions::Actions::Strategies::AssociatedCustomField
 //    }
 //  }

@@ -7,10 +7,10 @@ namespace ProjectN::Copy {
 //    base.send :include, self::CopyMethods
 
 //    // things that are explicitly excluded when copying a project
-//    base.not_to_copy ['id', 'created_on', 'updated_on', 'name', 'identifier', 'status', 'lft', 'rgt']
+//    base.not_to_copy ["id", "created_on", "updated_on", "name", "identifier", "status", "lft", "rgt"]
 
 //    // specify the order of associations to copy
-//    base.copy_precedence ['members', 'versions', 'categories', 'work_packages', 'wiki', 'custom_values', 'queries']
+//    base.copy_precedence ["members", "versions", "categories", "work_packages", "wiki", "custom_values", "queries"]
 //  }
 
   namespace CopyMethods {
@@ -45,7 +45,7 @@ namespace ProjectN::Copy {
 //     void copy_wiki(project, selected_copies = []) {
 //      // Check that the source project has a wiki first
 //      unless project.wiki.nil?
-//        this->wiki = build_wiki(project.wiki.attributes.dup.except('id', 'project_id'))
+//        this->wiki = build_wiki(project.wiki.attributes.dup.except("id", "project_id"))
 //        this->wiki.wiki_menu_items.delete_all
 //        copy_wiki_pages(project, selected_copies)
 //        copy_wiki_menu_items(project, selected_copies)
@@ -58,8 +58,8 @@ namespace ProjectN::Copy {
 //      project.wiki.pages.each { |page|
 //        // Skip pages without content
 //        if ( page.content.nil?) { next ;}
-//        new_wiki_content = WikiContent.new(page.content.attributes.dup.except('id', 'page_id', 'updated_at'))
-//        new_wiki_page = WikiPage.new(page.attributes.dup.except('id', 'wiki_id', 'created_on', 'parent_id'))
+//        new_wiki_content = WikiContent.new(page.content.attributes.dup.except("id", "page_id", "updated_at"))
+//        new_wiki_page = WikiPage.new(page.attributes.dup.except("id", "wiki_id", "created_on", "parent_id"))
 //        new_wiki_page.content = new_wiki_content
 
 //        wiki.pages << new_wiki_page
@@ -88,7 +88,7 @@ namespace ProjectN::Copy {
 //      wiki_menu_items_map = {}
 //      project.wiki.wiki_menu_items.each { |item|
 //        new_item = MenuItems::WikiMenuItem.new
-//        new_item.attributes = item.attributes.dup.except('id', 'wiki_id', 'parent_id')
+//        new_item.attributes = item.attributes.dup.except("id", "wiki_id", "parent_id")
 //        new_item.wiki = wiki
 //        if ( new_item.save) { (wiki_menu_items_map[item.id] = new_item.reload) ;}
 //      }
@@ -104,7 +104,7 @@ namespace ProjectN::Copy {
 //     void copy_versions(project, _selected_copies = []) {
 //      project.versions.each { |version|
 //        new_version = Version.new
-//        new_version.attributes = version.attributes.dup.except('id', 'project_id', 'created_on', 'updated_at')
+//        new_version.attributes = version.attributes.dup.except("id", "project_id", "created_on", "updated_at")
 //        versions << new_version
 //      }
 //    }
@@ -113,7 +113,7 @@ namespace ProjectN::Copy {
 //     void copy_categories(project, _selected_copies = []) {
 //      project.categories.each { |category|
 //        new_category = Category.new
-//        new_category.send(:assign_attributes, category.attributes.dup.except('id', 'project_id'))
+//        new_category.send(:assign_attributes, category.attributes.dup.except("id", "project_id"))
 //        categories << new_category
 //      }
 //    }
@@ -129,9 +129,9 @@ namespace ProjectN::Copy {
 //      to_copy = project
 //                .work_packages
 //                .includes(:custom_values, :fixed_version, :assigned_to, :responsible)
-//                .order_by_ancestors('asc')
+//                .order_by_ancestors("asc")
 
-//      user_cf_ids = WorkPackageCustomField.where(field_format: 'user').pluck(:id)
+//      user_cf_ids = WorkPackageCustomField.where(field_format: "user").pluck(:id)
 
 //      to_copy.each { |wp|
 //        parent_id = (work_packages_map[wp.parent_id]&.id) || wp.parent_id
@@ -189,7 +189,7 @@ namespace ProjectN::Copy {
 //        // Relations
 //        wp.relations_to.non_hierarchy.direct.each { |source_relation|
 //          new_relation = Relation.new
-//          new_relation.attributes = source_relation.attributes.dup.except('id', 'from_id', 'to_id', 'relation_type')
+//          new_relation.attributes = source_relation.attributes.dup.except("id", "from_id", "to_id", "relation_type")
 //          new_relation.to = work_packages_map[source_relation.to_id]
 //          if ( new_relation.to.nil? && Setting.cross_project_work_package_relations?) {
 //            new_relation.to = source_relation.to
@@ -200,7 +200,7 @@ namespace ProjectN::Copy {
 
 //        wp.relations_from.non_hierarchy.direct.each { |source_relation|
 //          new_relation = Relation.new
-//          new_relation.attributes = source_relation.attributes.dup.except('id', 'from_id', 'to_id', 'relation_type')
+//          new_relation.attributes = source_relation.attributes.dup.except("id", "from_id", "to_id", "relation_type")
 //          new_relation.from = work_packages_map[source_relation.from_id]
 //          if ( new_relation.from.nil? && Setting.cross_project_work_package_relations?) {
 //            new_relation.from = source_relation.from
@@ -219,7 +219,7 @@ namespace ProjectN::Copy {
 //      members_to_copy += project.memberships.reject { |m| m.principal.is_a?(User) }
 //      members_to_copy.each { |member|
 //        new_member = Member.new
-//        new_member.send(:assign_attributes, member.attributes.dup.except('id', 'project_id', 'created_on'))
+//        new_member.send(:assign_attributes, member.attributes.dup.except("id", "project_id", "created_on"))
 //        // only copy non inherited roles
 //        // inherited roles will be added when copying the group membership
 //        role_ids = member.member_roles.reject(&:inherited?).map(&:role_id)
@@ -253,11 +253,11 @@ namespace ProjectN::Copy {
 //     void copy_forums(project, selected_copies = []) {
 //      project.forums.each { |forum|
 //        new_forum = Forum.new
-//        new_forum.attributes = forum.attributes.dup.except('id',
-//                                                           'project_id',
-//                                                           'topics_count',
-//                                                           'messages_count',
-//                                                           'last_message_id')
+//        new_forum.attributes = forum.attributes.dup.except("id",
+//                                                           "project_id",
+//                                                           "topics_count",
+//                                                           "messages_count",
+//                                                           "last_message_id")
 //        copy_topics(forum, new_forum)
 
 //        new_forum.project = self
@@ -266,16 +266,16 @@ namespace ProjectN::Copy {
 //    }
 
 //     void copy_topics(board, new_forum) {
-//      topics = board.topics.where('parent_id is NULL')
+//      topics = board.topics.where("parent_id is NULL")
 //      topics.each { |topic|
 //        new_topic = Message.new
-//        new_topic.attributes = topic.attributes.dup.except('id',
-//                                                           'forum_id',
-//                                                           'author_id',
-//                                                           'replies_count',
-//                                                           'last_reply_id',
-//                                                           'created_on',
-//                                                           'updated_on')
+//        new_topic.attributes = topic.attributes.dup.except("id",
+//                                                           "forum_id",
+//                                                           "author_id",
+//                                                           "replies_count",
+//                                                           "last_reply_id",
+//                                                           "created_on",
+//                                                           "updated_on")
 //        new_topic.forum = new_forum
 //        new_topic.author_id = topic.author_id
 //        new_forum.topics << new_topic
@@ -299,8 +299,8 @@ namespace ProjectN::Copy {
 //    }
 
 //     void duplicate_query(query) {
-//      new_query = ::Query.new name: '_'
-//      new_query.attributes = query.attributes.dup.except('id', 'project_id', 'sort_criteria')
+//      new_query = ::Query.new name: "_"
+//      new_query.attributes = query.attributes.dup.except("id", "project_id", "sort_criteria")
 //      if ( query.sort_criteria) { new_query.sort_criteria = query.sort_criteria ;}
 //      new_query.set_context
 //      new_query.project = self

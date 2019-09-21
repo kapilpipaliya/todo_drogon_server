@@ -6,11 +6,11 @@ namespace Reports{
 class VersionReport : public Reports::Report {
 public:
    void report_type() {
-//    'version'
+//    "version"
   }
 
    void field() {
-//    this->field ||= 'fixed_version_id'
+//    this->field ||= "fixed_version_id"
   }
 
    void rows() {

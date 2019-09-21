@@ -43,7 +43,7 @@ public:
 
 //    true
 //  rescue SystemCallError => e
-//    this->rejected = I18n.t('repositories.errors.managed_delete_local',
+//    this->rejected = I18n.t("repositories.errors.managed_delete_local",
 //                       path: repository.root_url,
 //                       error_message: e.message)
 //    false
@@ -52,7 +52,7 @@ public:
   //
   // Returns the error symbol
    void localized_rejected_reason() {
-//    this->rejected ||= I18n.t('repositories.errors.managed_delete')
+//    this->rejected ||= I18n.t("repositories.errors.managed_delete")
   }
 };
 }

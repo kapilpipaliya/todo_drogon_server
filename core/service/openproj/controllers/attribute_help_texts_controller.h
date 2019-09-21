@@ -4,7 +4,7 @@ namespace openproj {
 namespace controller {
 class AttributeHelpTextsController : public ApplicationController {
 public:
-  // layout 'admin'
+  // layout "admin"
   // menu_item :attribute_help_texts
 
   // before_action :require_admin
@@ -25,7 +25,7 @@ public:
 //      flash[:notice] = t(:notice_successful_update)
 //      redirect_to attribute_help_texts_path(tab: this->attribute_help_text.attribute_scope)
 //    else
-//      render action: 'edit'
+//      render action: "edit"
 //    }
   }
 
@@ -36,7 +36,7 @@ public:
 //      flash[:notice] = t(:notice_successful_create)
 //      redirect_to attribute_help_texts_path(tab: this->attribute_help_text.attribute_scope)
 //    else
-//      render action: 'new'
+//      render action: "new"
 //    }
   }
 
@@ -57,10 +57,10 @@ public:
   protected:
 
    void default_breadcrumb() {
-//    if ( action_name == 'index') {
-//      t('attribute_help_texts.label_plural')
+//    if ( action_name == "index") {
+//      t("attribute_help_texts.label_plural")
 //    else
-//      ActionController::Base.helpers.link_to(t('attribute_help_texts.label_plural'), attribute_help_texts_path)
+//      ActionController::Base.helpers.link_to(t("attribute_help_texts.label_plural"), attribute_help_texts_path)
 //    }
   }
 
@@ -77,7 +77,7 @@ public:
   }
 
    void find_type_scope() {
-//    name = params.fetch(:name, 'WorkPackage')
+//    name = params.fetch(:name, "WorkPackage")
 //    submodule = AttributeHelpText.available_types.find { |mod| mod == name }
 
 //    if ( submodule.nil?) {

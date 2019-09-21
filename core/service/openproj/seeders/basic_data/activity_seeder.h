@@ -44,7 +44,7 @@ class ActivitySeeder : public Seeder {
   }
 
   void not_applicable_message() {
-    //      'Skipping activities as there are already some configured'
+    //      "Skipping activities as there are already some configured"
   }
 
   //     virtual void data()  = 0;

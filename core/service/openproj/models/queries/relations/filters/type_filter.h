@@ -24,10 +24,10 @@ namespace Queries {
 //          Array(values).map { |value|
 //            column = Relation.relation_column(value)
 
-//            operator_strategy.sql_for_field(['1'],
+//            operator_strategy.sql_for_field(["1"],
 //                                            this->class.model.table_name,
 //                                            column)
-//          }.join(' OR ')
+//          }.join(" OR ")
         }
       };
     }

@@ -20,7 +20,7 @@ class WatcherNotificationMailer {
     // We need to make sure no work package created or updated job is queued to avoid sending two
     // mails in short succession.
 //     void other_jobs_queued?(work_package) {
-//      Delayed::Job.where('handler LIKE ?',
+//      Delayed::Job.where("handler LIKE ?",
 //                         "%NotificationJob%journal_id: #{work_package.journals.last.id}%").exists?
 //    }
 
@@ -28,9 +28,9 @@ class WatcherNotificationMailer {
 //      if ( notify_about_self_watching?(watcher, watcher_setter)) { return false ;}
 
 //      case watcher.user.mail_notification
-//      when 'only_my_events'
+//      when "only_my_events"
 //        true
-//      when 'selected'
+//      when "selected"
 //        watching_selected_includes_project?(watcher)
 //      else
 //        watcher.user.notify_about?(watcher.watchable)

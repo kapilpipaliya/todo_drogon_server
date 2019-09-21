@@ -13,7 +13,7 @@ namespace Queries::Filters::Strategies {
 
 //     void validate() {
 //      unless values.all? { |value| value.blank? || date?(value) }
-//        errors.add(:values, I18n.t('activerecord.errors.messages.not_a_date'))
+//        errors.add(:values, I18n.t("activerecord.errors.messages.not_a_date"))
 //      }
 //    }
 

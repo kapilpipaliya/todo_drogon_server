@@ -11,7 +11,7 @@ namespace Versions {
 //      if ( model.saved_change_to_sharing?) { update_wps_from_sharing_change ;}
 //    }
 
-//    if ( a version's sharing changes.) { // Update the issue's fixed versions. Used ;}
+//    if ( a version"s sharing changes.) { // Update the issue"s fixed versions. Used ;}
 //     void update_wps_from_sharing_change() {
 //      if ( no_valid_version_before_or_now? ||) {
 //         sharing_now_less_broad?

@@ -59,7 +59,7 @@ public:
 //    url = URI.escape(CGI.unescape(requested.to_s))
 //    URI.parse(url)
 //  rescue URI::InvalidURIError => e
-//    Rails.logger.warn("Encountered invalid redirect URL '#{requested}': #{e.message}")
+//    Rails.logger.warn("Encountered invalid redirect URL "#{requested}": #{e.message}")
 //    nil
 //  }
 
@@ -67,7 +67,7 @@ public:
   // Postprocesses the validated URL
 //   void postprocess(redirect_url) {
 //    // Remove basic auth credentials
-//    redirect_url.userinfo = ''
+//    redirect_url.userinfo = ""
 
 //    if ( this->return_escaped) {
 //      redirect_url.to_s
@@ -79,20 +79,20 @@ public:
   //
   // Avoid paths with references to parent paths
    void no_upper_levels() {
-//    !this->requested_url.path.include? '../'
+//    !this->requested_url.path.include? "../"
   }
 
   //
   // Require URLs to contain a path slash.
   // This will always be the case for parsed URLs unless
-  // +URI.parse('this->foo.bar')+ or a non-root relative URL  +URI.parse('foo')+
+  // +URI.parse("this->foo.bar")+ or a non-root relative URL  +URI.parse("foo")+
    void path_has_slash() {
 //    this->requested_url.path =~ %r{\A/([^/]|\z)}
   }
 
   //
   // do not redirect user to another host (even protocol relative urls have the host set)
-  // whenever a host is set it must match the request's host
+  // whenever a host is set it must match the request"s host
    void same_host() {
 //    this->requested_url.host.nil? || this->requested_url.host == this->current_host
   }
@@ -119,7 +119,7 @@ public:
   //
   // Requires the redirect URL to reside inside the relative root, when given.
    void matches_relative_root() {
-//    relative_root = OpenProject::Configuration['rails_relative_url_root']
+//    relative_root = OpenProject::Configuration["rails_relative_url_root"]
 //    relative_root.blank? || this->requested_url.path.starts_with?(relative_root)
   }
 };

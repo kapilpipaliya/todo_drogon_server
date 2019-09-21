@@ -9,7 +9,7 @@ namespace OAuthHelper {
 //    if ( strings.empty?) {
 //      I18n.t("oauth.scopes.api_v3")
 //    else
-//      safe_join(strings.map { |scope| I18n.t("oauth.scopes.#{scope}", default: scope) }, '</br>'.html_safe)
+//      safe_join(strings.map { |scope| I18n.t("oauth.scopes.#{scope}", default: scope) }, "</br>".html_safe)
 //    }
 //  }
 

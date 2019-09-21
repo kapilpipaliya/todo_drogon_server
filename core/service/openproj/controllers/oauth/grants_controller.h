@@ -8,7 +8,7 @@ namespace OAuth {
   public:
     // before_action :require_login
 
-    // layout 'my'
+    // layout "my"
     // menu_item :access_token
 
      void index() {
@@ -27,8 +27,8 @@ namespace OAuth {
 //        current_user
 //      )
 
-//      flash[:notice] = I18n.t('oauth.grants.successful_application_revocation', application_name: application.name)
-//      redirect_to controller: '/my', action: :access_token
+//      flash[:notice] = I18n.t("oauth.grants.successful_application_revocation", application_name: application.name)
+//      redirect_to controller: "/my", action: :access_token
     }
 
     private:

@@ -10,9 +10,9 @@ class Query : public ActiveRecord::Base {
 
   // belongs_to :project
   // belongs_to :user
-  // has_one :query_menu_item, -> { order('name') },
-//          class_name: 'MenuItems::QueryMenuItem',
-//          dependent: :delete, foreign_key: 'navigatable_id'
+  // has_one :query_menu_item, -> { order("name") },
+//          class_name: "MenuItems::QueryMenuItem",
+//          dependent: :delete, foreign_key: "navigatable_id"
 //  serialize :filters, Queries::WorkPackages::FilterSerializer
 //  serialize :column_names, Array
 //  serialize :sort_criteria, Array
@@ -61,7 +61,7 @@ class Query : public ActiveRecord::Base {
 //    // is present because the information is not available when
 //    // deserializing the filters from the db.
 
-//    // Allow to use AR's select(...) without
+//    // Allow to use AR"s select(...) without
 //    // the filters attribute
 //    return unless respond_to?(:filters)
 
@@ -73,7 +73,7 @@ class Query : public ActiveRecord::Base {
 //   void set_default_sort() {
 //    if ( sort_criteria.any?) { return ;}
 
-//    this->sort_criteria = [['id', 'asc']]
+//    this->sort_criteria = [["id", "asc"]]
 //  }
 
 //   void context() {
@@ -87,7 +87,7 @@ class Query : public ActiveRecord::Base {
 //   void add_default_filter() {
 //    return unless filters.blank?
 
-//    add_filter('status_id', 'o', [''])
+//    add_filter("status_id", "o", [""])
 //  }
 
 //   void validate_work_package_filters() {
@@ -133,7 +133,7 @@ class Query : public ActiveRecord::Base {
 //  //
 //  // Fixes:
 //  // * filters:
-//  //     Reduces the filter's values to those that are valid.
+//  //     Reduces the filter"s values to those that are valid.
 //  //     If the filter remains invalid, it is removed.
 //  // * group_by:
 //  //     Removes the group by if it is invalid
@@ -164,7 +164,7 @@ class Query : public ActiveRecord::Base {
 //    return unless expression
 
 //    parms = expression.scan(/\A(o|c|!\*|!|\*)?(.*)\z/).first
-//    add_filter field, (parms[0] || '='), [parms[1] || '']
+//    add_filter field, (parms[0] || "="), [parms[1] || ""]
 //  }
 
 //  // Add multiple filters using +add_filter+
@@ -236,7 +236,7 @@ class Query : public ActiveRecord::Base {
 //      h
 //    }
 
-//    { 'id' => "#{WorkPackage.table_name}.id" }
+//    { "id" => "#{WorkPackage.table_name}.id" }
 //      .merge(column_sortability)
 //  }
 
@@ -279,14 +279,14 @@ class Query : public ActiveRecord::Base {
 //    if ( arg.is_a?(Hash)) {
 //      arg = arg.keys.sort.map { |k| arg[k] }
 //    }
-//    c = arg.reject { |k, _o| k.to_s.blank? }.slice(0, 3).map { |k, o| [k.to_s, o == 'desc' ? o : 'asc'] }
+//    c = arg.reject { |k, _o| k.to_s.blank? }.slice(0, 3).map { |k, o| [k.to_s, o == "desc" ? o : "asc"] }
 //    write_attribute(:sort_criteria, c)
 //  }
 
 //   void sort_criteria() {
 //    (read_attribute(:sort_criteria) || []).tap { |criteria|
 //      criteria.map! { |attr, direction|
-//        attr = 'id' if ( attr == 'parent') {
+//        attr = "id" if ( attr == "parent") {
 //        [attr, direction]
 //      }
 //    }
@@ -338,12 +338,12 @@ class Query : public ActiveRecord::Base {
 //  }
 
 //   void statement() {
-//    return '1=0' unless valid?
+//    return "1=0" unless valid?
 
 //    statement_filters
 //      .map { |filter| "(#{filter.where})" }
 //      .reject(&:empty?)
-//      .join(' AND ')
+//      .join(" AND ")
 //  }
 
 //  // Returns the result set
@@ -356,11 +356,11 @@ class Query : public ActiveRecord::Base {
 //   void work_package_journals(options = {}) {
 //    Journal.includes(:user)
 //           .where(journable_type: WorkPackage.to_s)
-//           .joins('INNER JOIN work_packages ON work_packages.id = journals.journable_id')
-//           .joins('INNER JOIN projects ON work_packages.project_id = projects.id')
-//           .joins('INNER JOIN users AS authors ON work_packages.author_id = authors.id')
-//           .joins('INNER JOIN types ON work_packages.type_id = types.id')
-//           .joins('INNER JOIN statuses ON work_packages.status_id = statuses.id')
+//           .joins("INNER JOIN work_packages ON work_packages.id = journals.journable_id")
+//           .joins("INNER JOIN projects ON work_packages.project_id = projects.id")
+//           .joins("INNER JOIN users AS authors ON work_packages.author_id = authors.id")
+//           .joins("INNER JOIN types ON work_packages.type_id = types.id")
+//           .joins("INNER JOIN statuses ON work_packages.status_id = statuses.id")
 //           .order(options[:order])
 //           .limit(options[:limit])
 //           .offset(options[:offset])
@@ -381,9 +381,9 @@ class Query : public ActiveRecord::Base {
 //    subproject_filter.context = self
 
 //    subproject_filter.operator = if ( Setting.display_subprojects_work_packages?) {
-//                                   '*'
+//                                   "*"
 //                                 else
-//                                   '!*'
+//                                   "!*"
 //                                 }
 //    subproject_filter
 //  }

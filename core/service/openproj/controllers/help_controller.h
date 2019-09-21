@@ -4,7 +4,7 @@ namespace openproj {
 namespace controller {
 class HelpController : public ApplicationController {
 public:
-  // layout 'help'
+  // layout "help"
 
    void keyboard_shortcuts() {}
 

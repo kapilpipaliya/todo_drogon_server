@@ -17,11 +17,11 @@ class UserSession {//: public ActiveRecord::SessionStore::Session {
   private:
 
    void set_user_id() {
-//    write_attribute(:user_id, data['user_id'])
+//    write_attribute(:user_id, data["user_id"])
   }
 
    void delete_user_sessions() {
-//    user_id = data['user_id']
+//    user_id = data["user_id"]
 //    return unless user_id && OpenProject::Configuration.drop_old_sessions_on_logout?
 
 //    ::UserSession.where(user_id: user_id).delete_all

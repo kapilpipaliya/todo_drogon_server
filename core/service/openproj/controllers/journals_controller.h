@@ -17,7 +17,7 @@ public:
 
    void index() {
 //    retrieve_query
-//    sort_init 'id', 'desc'
+//    sort_init "id", "desc"
 //    sort_update(this->query.sortable_key_by_column_name)
 
 //    if ( this->query.valid?) {
@@ -25,12 +25,12 @@ public:
 //                                               limit: 25)
 //    }
 
-//    title = (this->project ? this->project.name : Setting.app_title) + ': ' + (this->query.new_record? ? l(:label_changes_details) : this->query.name)
+//    title = (this->project ? this->project.name : Setting.app_title) + ": " + (this->query.new_record? ? l(:label_changes_details) : this->query.name)
 
 //    respond_to { |format|
 //      format.atom {
 //        render layout: false,
-//               content_type: 'application/atom+xml',
+//               content_type: "application/atom+xml",
 //               locals: { title: title,
 //                         journals: this->journals }
 //      }
@@ -59,7 +59,7 @@ public:
 //    respond_to { |format|
 //      format.html
 //      format.js {
-//        render partial: 'diff', locals: { diff: this->diff }
+//        render partial: "diff", locals: { diff: this->diff }
 //      }
 //    }
   }
@@ -73,9 +73,9 @@ public:
 //    render_404
   }
 
-  // Is this a valid field for diff'ing?
+  // Is this a valid field for diff"ing?
 //   void valid_field?(field) {
-//    field.to_s.strip == 'description'
+//    field.to_s.strip == "description"
 //  }
 
    bool valid_diff() {

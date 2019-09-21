@@ -4,8 +4,8 @@ namespace openproj {
 namespace models {
 namespace Queries::Operators {
   class Today : public Base {
-//    label 'today'
-//    set_symbol 't'
+//    label "today"
+//    set_symbol "t"
 //    require_value false
 
     // extend DateRangeClauses

@@ -10,7 +10,7 @@ class StorageUpdaterJob : public ApplicationJob {
 
   //    unless repository.scm.storage_available?
   //      raise OpenProject::Scm::Exceptions::ScmError.new(
-  //        I18n.t('repositories.storage.not_available')
+  //        I18n.t("repositories.storage.not_available")
   //      )
   //    }
   //  }
@@ -29,7 +29,7 @@ class StorageUpdaterJob : public ApplicationJob {
   }
 
   //
-  // We don't want to repeat failing jobs here,
+  // We don"t want to repeat failing jobs here,
   // as they might have failed due to I/O problems and thus,
   // we rather keep the old outdated value until an event
   // triggers the update again.

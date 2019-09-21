@@ -5,7 +5,7 @@ class JournalNotificationMailer {
 //  class << self {
 //     void distinguish_journals(journal, send_notification) {
 //      if ( send_notification) {
-//        if ( journal.journable_type == 'WorkPackage') {
+//        if ( journal.journable_type == "WorkPackage") {
 //          handle_work_package_journal(journal)
 //        }
 //      }
@@ -35,24 +35,24 @@ class JournalNotificationMailer {
 //    }
 
 //     void send_notification?(journal) {
-//      (Setting.notified_events.include?('work_package_added') && journal.initial?) ||
-//        (Setting.notified_events.include?('work_package_updated') && !journal.initial?) ||
+//      (Setting.notified_events.include?("work_package_added") && journal.initial?) ||
+//        (Setting.notified_events.include?("work_package_updated") && !journal.initial?) ||
 //        notify_for_notes?(journal) ||
 //        notify_for_status?(journal) ||
 //        notify_for_priority(journal)
 //    }
 
 //     void notify_for_notes?(journal) {
-//      Setting.notified_events.include?('work_package_note_added') && journal.notes.present?
+//      Setting.notified_events.include?("work_package_note_added") && journal.notes.present?
 //    }
 
 //     void notify_for_status?(journal) {
-//      Setting.notified_events.include?('status_updated') &&
+//      Setting.notified_events.include?("status_updated") &&
 //        journal.details.has_key?(:status_id)
 //    }
 
 //     void notify_for_priority(journal) {
-//      Setting.notified_events.include?('work_package_priority_updated') &&
+//      Setting.notified_events.include?("work_package_priority_updated") &&
 //        journal.details.has_key?(:priority_id)
 //    }
 

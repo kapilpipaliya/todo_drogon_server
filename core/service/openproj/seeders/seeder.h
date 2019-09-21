@@ -30,7 +30,7 @@ class Seeder {
 
   void edition_data_for(std::string key) {
     //    data =
-    //    translate_with_base_url("seeders.#{OpenProject::Configuration['edition']}.#{key}")
+    //    translate_with_base_url("seeders.#{OpenProject::Configuration["edition"]}.#{key}")
 
     //    if ( data.is_a?(String) && data.start_with?("translation missing")) {
     //    return nil ;}
@@ -42,7 +42,7 @@ class Seeder {
     demo_data_for("projects." + project + "." + key);
   }
   void project_has_data_for(std::string project, std::string key) {
-    //    I18n.exists?("seeders.#{OpenProject::Configuration['edition']}.demo_data.projects.#{project}.#{key}")
+    //    I18n.exists?("seeders.#{OpenProject::Configuration["edition"]}.demo_data.projects.#{project}.#{key}")
   }
 };
 }  // namespace seeder

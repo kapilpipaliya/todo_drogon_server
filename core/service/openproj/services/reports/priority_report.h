@@ -5,11 +5,11 @@ namespace Reports{
 class PriorityReport : public Reports::Report {
 public:
    void report_type() {
-//    'priority'
+//    "priority"
   }
 
    void field() {
-//    'priority_id'
+//    "priority_id"
   }
 
    void rows() {

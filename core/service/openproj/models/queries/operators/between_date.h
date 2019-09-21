@@ -4,8 +4,8 @@ namespace openproj {
 namespace models {
 namespace Queries::Operators {
   class BetweenDate : public Base {
-//    label 'between'
-//    set_symbol '<>d'
+//    label "between"
+//    set_symbol "<>d"
 
     // extend DateRangeClauses
 

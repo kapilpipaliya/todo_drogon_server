@@ -4,7 +4,7 @@ namespace openproj {
 namespace models {
 namespace Activity {
 class ChangesetActivityProvider : public Activity::BaseActivityProvider {
-//  acts_as_activity_provider type: 'changesets',
+//  acts_as_activity_provider type: "changesets",
 //                            permission: :view_changesets
 
 //   void extend_event_query(query, activity) {
@@ -13,11 +13,11 @@ class ChangesetActivityProvider : public Activity::BaseActivityProvider {
 
 //   void event_query_projection(activity) {
 //    [
-//      activity_journal_projection_statement(:revision, 'revision', activity),
-//      activity_journal_projection_statement(:comments, 'comments', activity),
-//      activity_journal_projection_statement(:committed_on, 'committed_on', activity),
-//      projection_statement(repositories_table, :project_id, 'project_id'),
-//      projection_statement(repositories_table, :type, 'repository_type')
+//      activity_journal_projection_statement(:revision, "revision", activity),
+//      activity_journal_projection_statement(:comments, "comments", activity),
+//      activity_journal_projection_statement(:committed_on, "committed_on", activity),
+//      projection_statement(repositories_table, :project_id, "project_id"),
+//      projection_statement(repositories_table, :type, "repository_type")
 //    ]
 //  }
 
@@ -43,24 +43,24 @@ class ChangesetActivityProvider : public Activity::BaseActivityProvider {
   protected:
 
 //   void event_type(_event, _activity) {
-//    'changeset'
+//    "changeset"
 //  }
 
 //   void event_title(event, _activity) {
 //    revision = format_revision(event)
 
-//    short_comment = split_comment(event['comments']).first
+//    short_comment = split_comment(event["comments"]).first
 
 //    title = "#{l(:label_revision)} #{revision}"
-//    title << (short_comment.blank? ? '' : (': ' + short_comment))
+//    title << (short_comment.blank? ? "" : (": " + short_comment))
 //  }
 
 //   void event_description(event, _activity) {
-//    split_comment(event['comments']).last
+//    split_comment(event["comments"]).last
 //  }
 
 //   void event_datetime(event, _activity) {
-//    committed_on = event['committed_on']
+//    committed_on = event["committed_on"]
 //    committed_date = committed_on.is_a?(String) ? DateTime.parse(committed_on) : committed_on
 //  }
 
@@ -79,9 +79,9 @@ class ChangesetActivityProvider : public Activity::BaseActivityProvider {
 //  }
 
 //   void format_revision(event) {
-//    repository_class = event['repository_type'].constantize {
+//    repository_class = event["repository_type"].constantize {
 
-//    repository_class.respond_to?(:format_revision) ? repository_class.format_revision(event['revision']) : event['revision']
+//    repository_class.respond_to?(:format_revision) ? repository_class.format_revision(event["revision"]) : event["revision"]
 //  }
 
 //   void split_comment(comments) {
@@ -93,7 +93,7 @@ class ChangesetActivityProvider : public Activity::BaseActivityProvider {
 //  }
 
 //   void url_helper_parameter(event) {
-//    { project_id: event['project_id'], rev: event['revision'] }
+//    { project_id: event["project_id"], rev: event["revision"] }
 //  }
 };
 }

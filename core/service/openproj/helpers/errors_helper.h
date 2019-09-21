@@ -68,7 +68,7 @@ namespace ErrorsHelper {
 //    this->message_details = arg[:message_details]
 //    respond_to { |format|
 //      format.html {
-//        render template: 'common/error', layout: use_layout, status: this->status
+//        render template: "common/error", layout: use_layout, status: this->status
 //      }
 //      format.any {
 //        head this->status
@@ -78,9 +78,9 @@ namespace ErrorsHelper {
 
    void unset_template_magic() {
 //    if ( $ERROR_INFO.is_a?(ActionView::ActionViewError)) {
-//      this->template.instance_variable_set('this->project', nil)
-//      this->template.instance_variable_set('this->status', 500)
-//      this->template.instance_variable_set('this->message', message)
+//      this->template.instance_variable_set("this->project", nil)
+//      this->template.instance_variable_set("this->status", 500)
+//      this->template.instance_variable_set("this->message", message)
 //    else
 //      this->project = nil
 //    }

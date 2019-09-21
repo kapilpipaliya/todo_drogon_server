@@ -21,7 +21,7 @@ class RoleFilter : public openproj::models::Queries::WorkPackages::Filter::WorkP
 //  }
 
 //   void human_name() {
-//    I18n.t('query_fields.assigned_to_role')
+//    I18n.t("query_fields.assigned_to_role")
 //  }
 
 //   void key() {
@@ -41,7 +41,7 @@ class RoleFilter : public openproj::models::Queries::WorkPackages::Filter::WorkP
 //   void where() {
 //    operator_for_filtering.sql_for_field(user_ids_for_filtering.map(&:to_s),
 //                                         WorkPackage.table_name,
-//                                         'assigned_to_id')
+//                                         "assigned_to_id")
 //  }
 
   private:
@@ -52,10 +52,10 @@ class RoleFilter : public openproj::models::Queries::WorkPackages::Filter::WorkP
 
 //   void operator_for_filtering() {
 //    case operator
-//    when '*' // Any Role
+//    when "*" // Any Role
 //      // Override the operator since we want to find by assigned_to
 //      ::Queries::Operators::Equals
-//    when '!*' // No role
+//    when "!*" // No role
 //      // Override the operator since we want to find by assigned_to
 //      ::Queries::Operators::NotEquals
 //    else
@@ -64,7 +64,7 @@ class RoleFilter : public openproj::models::Queries::WorkPackages::Filter::WorkP
 //  }
 
    void user_ids_for_filtering() {
-//    scope = if ( ['*', '!*'].include?(operator)) {
+//    scope = if ( ["*", "!*"].include?(operator)) {
 //              user_ids_for_filtering_scope
 //            } else if ( project) {
 //              user_ids_for_filter_project_scope

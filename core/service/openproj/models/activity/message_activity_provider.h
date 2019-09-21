@@ -4,7 +4,7 @@ namespace openproj {
 namespace models {
 namespace Activity {
 class MessageActivityProvider : public Activity::BaseActivityProvider {
-//  acts_as_activity_provider type: 'messages',
+//  acts_as_activity_provider type: "messages",
 //                            permission: :view_messages
 
 //   void extend_event_query(query, activity) {
@@ -13,12 +13,12 @@ class MessageActivityProvider : public Activity::BaseActivityProvider {
 
 //   void event_query_projection(activity) {
 //    [
-//      activity_journal_projection_statement(:subject, 'message_subject', activity),
-//      activity_journal_projection_statement(:content, 'message_content', activity),
-//      activity_journal_projection_statement(:parent_id, 'message_parent_id', activity),
-//      projection_statement(forums_table, :id, 'forum_id'),
-//      projection_statement(forums_table, :name, 'forum_name'),
-//      projection_statement(forums_table, :project_id, 'project_id')
+//      activity_journal_projection_statement(:subject, "message_subject", activity),
+//      activity_journal_projection_statement(:content, "message_content", activity),
+//      activity_journal_projection_statement(:parent_id, "message_parent_id", activity),
+//      projection_statement(forums_table, :id, "forum_id"),
+//      projection_statement(forums_table, :name, "forum_name"),
+//      projection_statement(forums_table, :project_id, "project_id")
 //    ]
 //  }
 
@@ -29,15 +29,15 @@ class MessageActivityProvider : public Activity::BaseActivityProvider {
   protected:
 
 //   void event_title(event, _activity) {
-//    "#{event['forum_name']}: #{event['message_subject']}"
+//    "#{event["forum_name"]}: #{event["message_subject"]}"
 //  }
 
 //   void event_description(event, _activity) {
-//    event['message_content']
+//    event["message_content"]
 //  }
 
 //   void event_type(event, _activity) {
-//    event['parent_id'].blank? ? 'message' : 'reply'
+//    event["parent_id"].blank? ? "message" : "reply"
 //  }
 
 //   void event_path(event, _activity) {
@@ -55,12 +55,12 @@ class MessageActivityProvider : public Activity::BaseActivityProvider {
 //  }
 
 //   void url_helper_parameter(event) {
-//    is_reply = !event['parent_id'].blank?
+//    is_reply = !event["parent_id"].blank?
 
 //    if ( is_reply) {
-//      { id: event['parent_id'], r: event['journable_id'], anchor: "message-#{event['journable_id']}" }
+//      { id: event["parent_id"], r: event["journable_id"], anchor: "message-#{event["journable_id"]}" }
 //    else
-//      [event['journable_id']]
+//      [event["journable_id"]]
 //    }
 //  }
 };

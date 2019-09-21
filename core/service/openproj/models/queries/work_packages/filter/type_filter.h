@@ -37,7 +37,7 @@ class TypeFilter  : openproj::models::Queries::WorkPackages::Filter::WorkPackage
   private:
 
    void types() {
-//    project.nil? ? ::Type.order(Arel.sql('position')) : project.rolled_up_types
+//    project.nil? ? ::Type.order(Arel.sql("position")) : project.rolled_up_types
   }
 };
 }

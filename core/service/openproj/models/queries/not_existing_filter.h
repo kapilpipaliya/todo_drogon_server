@@ -23,7 +23,7 @@ class NotExistingFilter : public openproj::models::Queries::Filters::Base {
 //  validate :always_false
 
    void always_false() {
-//    errors.add :base, I18n.t(:'activerecord.errors.messages.does_not_exist')
+//    errors.add :base, I18n.t(:"activerecord.errors.messages.does_not_exist")
   }
 
   // deactivating superclass validation

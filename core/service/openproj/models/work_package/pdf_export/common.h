@@ -25,7 +25,7 @@ namespace WorkPackageN::PdfExport::Common {
 //      .new format: :csv,
 //           title: title,
 //           content: content,
-//           mime_type: 'application/pdf'
+//           mime_type: "application/pdf"
 //  }
 
 //   void error(message) {
@@ -43,10 +43,10 @@ namespace WorkPackageN::PdfExport::Common {
   // prawn-table does not go crazy with long texts causing
   // empty pages in between.
   //
-  // The fact that prawn-table can't handle multi-page table cells
+  // The fact that prawn-table can"t handle multi-page table cells
   // is a known, unsolved issue. Hence this workaround.
   //
-  // @param description [String] The work package's description
+  // @param description [String] The work package"s description
   // @param options [Hash] Allows changing the number of lines per cell
   //                       through the :max_lines_per_cell option.
   // @return [Array] An array of rows to be added to the work packages table.

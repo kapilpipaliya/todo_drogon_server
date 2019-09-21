@@ -22,7 +22,7 @@ class RelationOfTypeColumn : public openproj::models::Queries::WorkPackages::Col
 //  alias :relation_type :sym
 
    void caption() {
-//    I18n.t(:'activerecord.attributes.query.relations_of_type_column',
+//    I18n.t(:"activerecord.attributes.query.relations_of_type_column",
 //           type: I18n.t(type[:sym_name]))
   }
 

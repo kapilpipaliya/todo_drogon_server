@@ -9,7 +9,7 @@ class Attachment : public ActiveRecord::Base {
 //  ALLOWED_IMAGE_TYPES = %w[image/gif ( image/jpeg image/png image/tiff image/bmp].freeze) {
 
   // belongs_to :container, polymorphic: true
-  // belongs_to :author, class_name: 'User', foreign_key: 'author_id'
+  // belongs_to :author, class_name: "User", foreign_key: "author_id"
 
   // validates_presence_of :author, :content_type, :filesize
   // validates_length_of :description, maximum: 255
@@ -20,7 +20,7 @@ class Attachment : public ActiveRecord::Base {
 //  acts_as_journalized
 //  acts_as_event title: -> { file.name },
 //                url: (Proc.new { |o|
-//                        { controller: '/attachments', action: 'download', id: o.id, filename: o.filename }
+//                        { controller: "/attachments", action: "download", id: o.id, filename: o.filename }
 //                      })
 
 //  mount_uploader :file, OpenProject::Configuration.file_uploader
@@ -89,7 +89,7 @@ class Attachment : public ActiveRecord::Base {
 //  alias :image? :is_image?
 
 //   void is_pdf?() {
-//    content_type == 'application/pdf'
+//    content_type == "application/pdf"
 //  }
 
 //   void is_text?() {
@@ -124,7 +124,7 @@ class Attachment : public ActiveRecord::Base {
 //  }
 
 //   void filename() {
-//    attributes['file']
+//    attributes["file"]
 //  }
 
 //   void file=(file) {

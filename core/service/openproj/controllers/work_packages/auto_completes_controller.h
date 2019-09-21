@@ -42,7 +42,7 @@ public:
 //    work_packages.map { |work_package|
 //      wp_hash = Hash.new
 //      work_package.attributes.each { |key, value| wp_hash[key] = Rack::Utils.escape_html(value) }
-//      wp_hash['to_s'] = Rack::Utils.escape_html(work_package.to_s)
+//      wp_hash["to_s"] = Rack::Utils.escape_html(work_package.to_s)
 //      wp_hash
 //    }
 //  }
@@ -62,13 +62,13 @@ public:
 //    scope = WorkPackage.all
 
 //    // The filter on subject in combination with the ORDER BY on id
-//    // seems to trip MySql's usage of indexes on the order statement
-//    // I haven't seen similar problems on postgresql but there might be as the
+//    // seems to trip MySql"s usage of indexes on the order statement
+//    // I haven"t seen similar problems on postgresql but there might be as the
 //    // data at hand was not very large.
 //    //
 //    // For MySql we are therefore helping the DB optimizer to use the correct index
 
-//    if ( ActiveRecord::Base.connection_config[:adapter] == 'mysql2') {
+//    if ( ActiveRecord::Base.connection_config[:adapter] == "mysql2") {
 //      scope = scope.from("#{WorkPackage.table_name} USE INDEX(PRIMARY)")
 //    }
 

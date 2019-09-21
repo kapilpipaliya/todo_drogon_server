@@ -4,7 +4,7 @@ namespace openproj {
 namespace controller {
 class WorkflowsController : public ApplicationController {
 public :
-  // layout 'admin'
+  // layout "admin"
 
   // before_action :require_admin
 
@@ -22,7 +22,7 @@ public :
   }
 
    void edit() {
-//    this->used_statuses_only = params[:used_statuses_only] != '0'
+//    this->used_statuses_only = params[:used_statuses_only] != "0"
 
 //    statuses_for_form
 
@@ -34,21 +34,21 @@ public :
    void update() {
 //    call = Workflows::BulkUpdateService
 //           .new(role: this->role, type: this->type)
-//           .call(params['status'])
+//           .call(params["status"])
 
 //    if ( call.success?) {
 //      flash[:notice] = I18n.t(:notice_successful_update)
-//      redirect_to action: 'edit', role_id: this->role, type_id: this->type
+//      redirect_to action: "edit", role_id: this->role, type_id: this->type
 //    }
   }
 
    void copy() {
-//    if ( params[:source_type_id].blank? || params[:source_type_id] == 'any') {
+//    if ( params[:source_type_id].blank? || params[:source_type_id] == "any") {
 //      this->source_type = nil
 //    else
 //      this->source_type = ::Type.find_by(id: params[:source_type_id].to_i)
 //    }
-//    if ( params[:source_role_id].blank? || params[:source_role_id] == 'any') {
+//    if ( params[:source_role_id].blank? || params[:source_role_id] == "any") {
 //      this->source_role = nil
 //    else
 //      this->source_role = Role.find_by(id: params[:source_role_id].to_i)
@@ -65,16 +65,16 @@ public :
 //      else
 //        Workflow.copy(this->source_type, this->source_role, this->target_types, this->target_roles)
 //        flash[:notice] = l(:notice_successful_update)
-//        redirect_to action: 'copy', source_type_id: this->source_type, source_role_id: this->source_role
+//        redirect_to action: "copy", source_type_id: this->source_type, source_role_id: this->source_role
 //      }
 //    }
   }
 
    void default_breadcrumb() {
-//    if ( action_name == 'edit') {
-//      t('label_workflow')
+//    if ( action_name == "edit") {
+//      t("label_workflow")
 //    else
-//      ActionController::Base.helpers.link_to(t('label_workflow'), url_for(controller: '/workflows', action: 'edit'))
+//      ActionController::Base.helpers.link_to(t("label_workflow"), url_for(controller: "/workflows", action: "edit"))
 //    }
   }
 
@@ -95,17 +95,17 @@ public :
    void workflows_for_form() {
 //    workflows = Workflow.where(role_id: this->role.id, type_id: this->type.id)
 //    this->workflows = {}
-//    this->workflows['always'] = workflows.select { |w| !w.author && !w.assignee }
-//    this->workflows['author'] = workflows.select(&:author)
-//    this->workflows['assignee'] = workflows.select(&:assignee)
+//    this->workflows["always"] = workflows.select { |w| !w.author && !w.assignee }
+//    this->workflows["author"] = workflows.select(&:author)
+//    this->workflows["assignee"] = workflows.select(&:assignee)
   }
 
    void find_roles() {
-//    this->roles = Role.order(Arel.sql('builtin, position'))
+//    this->roles = Role.order(Arel.sql("builtin, position"))
   }
 
    void find_types() {
-//    this->types = ::Type.order(Arel.sql('position'))
+//    this->types = ::Type.order(Arel.sql("position"))
   }
 
    void find_role() {

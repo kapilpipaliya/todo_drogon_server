@@ -10,13 +10,13 @@ class Notify : public CustomActions::Actions::Base {
 //   void apply(work_package) {
 //    comment = principals.where(id: values).map { |p|
 //      prefix = if ( p.is_a?(User)) {
-//                 'user'
+//                 "user"
 //               else
-//                 'group'
+//                 "group"
 //               }
 
 //      "#{prefix}##{p.id}"
-//    }.join(', ')
+//    }.join(", ")
 
 //    work_package.journal_notes = comment
 //  }

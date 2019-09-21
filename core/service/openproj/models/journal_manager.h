@@ -92,7 +92,7 @@ class JournalManager {
 //        // Consider only custom values with non-blank values. Otherwise,
 //        // non-existing custom values are different to custom values with an empty
 //        // value.
-//        // Mind that false.present? == false, but we don't consider false this being "blank"...
+//        // Mind that false.present? == false, but we don"t consider false this being "blank"...
 //        // This does not matter when we use stringly typed values (as in the database),
 //        // but it matters when we use real types
 //        valid_values = custom_values.select { |cv| cv.value.present? || cv.value == false }
@@ -121,7 +121,7 @@ class JournalManager {
 //      if ( selected_journals.empty?) {
 //        nil
 //      else
-//        selected_journals.join(',')
+//        selected_journals.join(",")
 //      }
 //    }
 //  }
@@ -135,8 +135,8 @@ class JournalManager {
 //   void changed?(journable) {
 //    if ( (journable.journals.loaded? ? journable.journals.size : journable.journals.count) > 0) {
 //      changed = attributes_changed? journable
-//      changed ||= association_changed? journable, 'attachable', :attachments, :id, :attachment_id, :filename
-//      changed ||= association_changed? journable, 'customizable', :custom_values, :custom_field_id, :custom_field_id, :value
+//      changed ||= association_changed? journable, "attachable", :attachments, :id, :attachment_id, :filename
+//      changed ||= association_changed? journable, "customizable", :custom_values, :custom_field_id, :custom_field_id, :value
 
 //      changed
 //    else
@@ -173,7 +173,7 @@ class JournalManager {
 //    }
 //  }
 
-  // associations have value attributes ('value' for custom values and 'filename'
+  // associations have value attributes ("value" for custom values and "filename"
   // for attachments). This method ensures that blank value attributes are
   // treated like non-existing associations. Thus, this prevents that
   // non-existing associations (nil) are different to blank associations ("").
@@ -202,7 +202,7 @@ class JournalManager {
 //    journal.reload
 //  }
 
-//   void add_journal!(journable, user = User.current, notes = '') {
+//   void add_journal!(journable, user = User.current, notes = "") {
 //    return unless journalized?(journable)
 
 //    // Ensure a version exists for this journable type
@@ -242,10 +242,10 @@ class JournalManager {
 //    ::JournalVersion
 //      .connection
 //      .execute(sanitized)
-//      .first['version']
+//      .first["version"]
 //  }
 
-//   void create_journal(journable, journal_attributes, user = User.current, notes = '') {
+//   void create_journal(journable, journal_attributes, user = User.current, notes = "") {
 //    type = base_class(journable.class)
 //    // extended_journal_attributes = journal_attributes
 //      .merge(journable_type: type.to_s)
@@ -285,7 +285,7 @@ class JournalManager {
 //  }
 
 //   void update_user_references(current_user_id, substitute_id) {
-//    foreign_keys = ['author_id', 'user_id', 'assigned_to_id', 'responsible_id']
+//    foreign_keys = ["author_id", "user_id", "assigned_to_id", "responsible_id"]
 
 //    JournalN::BaseJournal.subclasses.each { |klass|
 //      foreign_keys.each { |foreign_key|
@@ -299,7 +299,7 @@ class JournalManager {
 //   void journal_class(type) {
 //    namespace = type.name.deconstantize
 
-//    if ( namespace == 'Journal') {
+//    if ( namespace == "Journal") {
 //      type
 //    else
 //      "JournalN::#{journal_class_name(type)}".constantize
@@ -309,9 +309,9 @@ class JournalManager {
 //   void journaled_class(journal_type) {
 //    namespace = journal_type.name.deconstantize
 
-//    if ( namespace == 'Journal') {
+//    if ( namespace == "Journal") {
 //      class_name = journal_type.name.demodulize
-//      class_name.gsub('Journal', '').constantize
+//      class_name.gsub("Journal", "").constantize
 //    else
 //      journal_type
 //    }

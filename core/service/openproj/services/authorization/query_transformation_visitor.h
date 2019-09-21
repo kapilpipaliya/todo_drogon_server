@@ -68,7 +68,7 @@ public:
 //  }
 
 //   void method_missing(name, *args, &block) {
-//    super unless name.to_s.start_with?('visit_')
+//    super unless name.to_s.start_with?("visit_")
 //  }
 
 //   void replace_if_equals(ast, key = nil) {

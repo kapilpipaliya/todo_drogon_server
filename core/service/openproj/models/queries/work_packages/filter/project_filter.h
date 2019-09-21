@@ -10,7 +10,7 @@ class ProjectFilter : public openproj::models::Queries::WorkPackages::Filter::Wo
 //    this->allowed_values ||= begin
 //      project_values = []
 //      Project.project_tree(visible_projects) { |p, level|
-//        prefix = (level > 0 ? ('--' * level + ' ') : '')
+//        prefix = (level > 0 ? ("--" * level + " ") : "")
 //        project_values << ["#{prefix}#{p.name}", p.id.to_s]
 //      }
 

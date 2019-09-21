@@ -55,7 +55,7 @@ public:
 
   // List of pages, sorted alphabetically and by parent (hierarchy)
    void index() {
-//    slug = wiki_page_title.nil? ? 'wiki' : wiki_page_title.to_url
+//    slug = wiki_page_title.nil? ? "wiki" : wiki_page_title.to_url
 //    this->related_page = WikiPage.find_by(wiki_id: this->wiki.id, slug: slug)
 
 //    load_pages_for_index
@@ -79,7 +79,7 @@ public:
 //    build_wiki_page_and_content
 
 //    this->page.parent = old_page
-//    render action: 'new'
+//    render action: "new"
   }
 
    void create() {
@@ -95,17 +95,17 @@ public:
 //      flash[:notice] = l(:notice_successful_create)
 //      redirect_to_show
 //    else
-//      render action: 'new'
+//      render action: "new"
 //    }
   }
 
-  // display a page (in editing mode if ( it doesn't exist)) {
+  // display a page (in editing mode if ( it doesn"t exist)) {
    void show() {
 //    this->page = this->wiki.find_or_new_page(wiki_page_title)
 //    if ( this->page.new_record?) {
 //      if ( User.current.allowed_to?(:edit_wiki_pages, this->project) && editable?) {
 //        edit
-//        render action: 'new'
+//        render action: "new"
 //      else
 //        render_404
 //      }
@@ -116,13 +116,13 @@ public:
 //    flash[:_related_wiki_page_id] = this->page.id
 
 //    if ( params[:version] && !User.current.allowed_to?(:view_wiki_edits, this->project)) {
-//      // Redirects user to the current version if ( he's not allowed to view previous versions) {
+//      // Redirects user to the current version if ( he"s not allowed to view previous versions) {
 //      redirect_to version: nil
 //      return
 //    }
 //    this->content = this->page.content_for_version(params[:version])
-//    if ( params[:format] == 'markdown' && User.current.allowed_to?(:export_wiki_pages, this->project)) {
-//      send_data(this->content.text, type: 'text/plain', filename: "#{this->page.title}.md")
+//    if ( params[:format] == "markdown" && User.current.allowed_to?(:export_wiki_pages, this->project)) {
+//      send_data(this->content.text, type: "text/plain", filename: "#{this->page.title}.md")
 //      return
 //    }
 //    this->editable = editable?
@@ -139,7 +139,7 @@ public:
 //    }
 
 //    this->content = this->page.content_for_version(params[:version])
-//    // don't keep previous comment
+//    // don"t keep previous comment
 //    this->content.comments = nil
 
 //    // To prevent StaleObjectError exception when reverting to a previous version
@@ -164,7 +164,7 @@ public:
 //    this->page.parent_id = permitted_params.wiki_page[:parent_id].presence
 //    this->content.attributes = permitted_params.wiki_content
 //    this->content.author = User.current
-//    this->content.add_journal User.current, params['content']['comments']
+//    this->content.add_journal User.current, params["content"]["comments"]
 
 //    if ( this->page.save_with_content) {
 //      render_attachment_warning_if_needed(this->page)
@@ -172,12 +172,12 @@ public:
 //      flash[:notice] = l(:notice_successful_update)
 //      redirect_to_show
 //    else
-//      render action: 'edit'
+//      render action: "edit"
 //    }
 //  rescue ActiveRecord::StaleObjectError
 //    // Optimistic locking exception
 //    flash.now[:error] = l(:notice_locking_conflict)
-//    render action: 'edit'
+//    render action: "edit"
   }
 
   // rename a page
@@ -235,7 +235,7 @@ public:
 //      redirect_to_show
 //    } else {
 //      this->parent_pages = this->wiki.pages.includes(:parent) - this->page.self_and_descendants
-//      render 'edit_parent_page'
+//      render "edit_parent_page"
 //    }
   }
 
@@ -246,12 +246,12 @@ public:
 
   // show page history
    bool history() {
-//    // don't load text
+//    // don"t load text
 //    this->versions = this->page
 //                .content
 //                .versions
 //                .select(:id, :user_id, :notes, :created_at, :version)
-//                .order(Arel.sql('version DESC'))
+//                .order(Arel.sql("version DESC"))
 //                .page(page_param)
 //                .per_page(per_page_param)
 
@@ -286,12 +286,12 @@ public:
 //    this->descendants_count = this->page.descendants.size
 //    if ( this->descendants_count > 0) {
 //      case params[:todo]
-//      when 'nullify'
+//      when "nullify"
 //        // Nothing to {
-//      when 'destroy'
+//      when "destroy"
 //        // Removes all its descendants
 //        this->page.descendants.each(&:destroy)
-//      when 'reassign'
+//      when "reassign"
 //        // Reassign children to another parent page
 //        reassign_to = this->wiki.pages.find_by(id: params[:reassign_to_id].presence)
 //        return unless reassign_to
@@ -307,7 +307,7 @@ public:
 
 //    if ( page = this->wiki.find_page(this->wiki.start_page) || this->wiki.pages.first) {
 //      flash[:notice] = l(:notice_successful_delete)
-//      redirect_to action: 'index', project_id: this->project, id: page
+//      redirect_to action: "index", project_id: this->project, id: page
 //    else
 //      flash[:notice] = l(:notice_successful_delete)
 //      redirect_to project_path(this->project)
@@ -317,11 +317,11 @@ public:
   // Export wiki to a single html file
    void export_() {
 //    if ( User.current.allowed_to?(:export_wiki_pages, this->project)) {
-//      this->pages = this->wiki.pages.order(Arel.sql('title'))
-//      export = render_to_string action: 'export_multiple', layout: false
-//      send_data(export, type: 'text/html', filename: 'wiki.html')
+//      this->pages = this->wiki.pages.order(Arel.sql("title"))
+//      export = render_to_string action: "export_multiple", layout: false
+//      send_data(export, type: "text/html", filename: "wiki.html")
 //    else
-//      redirect_to action: 'show', project_id: this->project, id: nil
+//      redirect_to action: "show", project_id: this->project, id: nil
 //    }
   }
 
@@ -359,7 +359,7 @@ public:
 //  }
 
    void wiki_page_title() {
-//    params[:title] || (action_name == 'new_child' ? '' : params[:id].to_s.capitalize.tr('-', ' '))
+//    params[:title] || (action_name == "new_child" ? "" : params[:id].to_s.capitalize.tr("-", " "))
   }
 
    void find_wiki() {
@@ -370,7 +370,7 @@ public:
 //    render_404
   }
 
-  // Finds the requested page and returns a 404 error if ( it doesn't exist) {
+  // Finds the requested page and returns a 404 error if ( it doesn"t exist) {
    void find_existing_page() {
 //    this->page = this->wiki.find_page(wiki_page_title.presence || params[:id])
 //    if ( this->page.nil?) { render_404 ;}
@@ -393,7 +393,7 @@ public:
 //  }
 
    void load_pages_for_index() {
-//    this->pages = this->wiki.pages.with_updated_on.order(Arel.sql('title')).includes(wiki: :project)
+//    this->pages = this->wiki.pages.with_updated_on.order(Arel.sql("title")).includes(wiki: :project)
   }
 
    std::string default_breadcrumb() {

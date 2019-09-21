@@ -24,13 +24,13 @@ class MemberFilter : public openproj::models::Queries::Principals::Filters::Prin
 //    default_scope = Principal.includes(:members)
 
 //    case operator
-//    when '='
+//    when "="
 //      default_scope.where(members: { project_id: values })
-//    when '!'
+//    when "!"
 //      default_scope.where.not(members: { project_id: values })
-//    when '*'
+//    when "*"
 //      default_scope.where.not(members: { project_id: nil })
-//    when '!*'
+//    when "!*"
 //      default_scope.where.not(id: Member.select(:user_id).uniq)
 //    }
   }

@@ -3,10 +3,10 @@
 namespace openproj {
 namespace models {
 class MenuItem : public ActiveRecord::Base {
-  // belongs_to :parent, class_name: 'MenuItem'
+  // belongs_to :parent, class_name: "MenuItem"
   // has_many :children, -> {
-//    order('id ASC')
-//  }, class_name: 'MenuItem', dependent: :destroy, foreign_key: :parent_id
+//    order("id ASC")
+//  }, class_name: "MenuItem", dependent: :destroy, foreign_key: :parent_id
 
 //  serialize :options, Hash
 

@@ -17,7 +17,7 @@ namespace Queries::Filters::Shared::UserBlockedFilter {
     }
 
      void where() {
-//      User.blocked_condition(operator == '=')
+//      User.blocked_condition(operator == "=")
     }
   }
 

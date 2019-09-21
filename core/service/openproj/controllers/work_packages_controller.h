@@ -23,7 +23,7 @@ public:
    void show() {
 //    respond_to { |format|
 //      format.html {
-//        render :show, locals: { work_package: work_package, menu_name: project_or_wp_query_menu }, layout: 'angular'
+//        render :show, locals: { work_package: work_package, menu_name: project_or_wp_query_menu }, layout: "angular"
 //      }
 
 //      format.any(*WorkPackageN::Exporter.single_formats) {
@@ -44,7 +44,7 @@ public:
 //    respond_to { |format|
 //      format.html {
 //        render :index, locals: { query: this->query, project: this->project, menu_name: project_or_wp_query_menu },
-//                       // layout: 'angular'
+//                       // layout: "angular"
 //      }
 
 //      format.any(*WorkPackageN::Exporter.list_formats) {
@@ -79,9 +79,9 @@ public:
   }
 
    void atom_journals() {
-//    render template: 'journals/index',
+//    render template: "journals/index",
 //           // layout: false,
-//           content_type: 'application/atom+xml',
+//           content_type: "application/atom+xml",
 //           locals: { title: "#{Setting.app_title} - #{work_package}",
 //                     journals: journals }
   }
@@ -99,13 +99,13 @@ public:
 //      redirect_back(fallback_location: fallback_path)
 //    } else if ( export.content.is_a? File) {
 //      // browsers should not try to guess the content-type
-//      response.headers['X-Content-Type-Options'] = 'nosniff'
+//      response.headers["X-Content-Type-Options"] = "nosniff"
 
 //      // TODO avoid reading the file in memory here again
 //      // but currently the tempfile gets removed in between
 //      send_data(export.content.read,
 //                type: export.mime_type,
-//                disposition: 'attachment',
+//                disposition: "attachment",
 //                filename: export.title)
 //    else
 //      send_data(export.content,
@@ -136,7 +136,7 @@ public:
 
 //    unless this->query.valid?
 //      // Ensure outputting a html response
-//      request.format = 'html'
+//      request.format = "html"
 //      return render_400(message: this->query.errors.full_messages.join(". "))
     }
 
@@ -146,7 +146,7 @@ public:
 
    void per_page_param() {
 //    case params[:format]
-//    when 'atom'
+//    when "atom"
 //      Setting.feeds_limit.to_i
 //    else
 //      super
@@ -165,9 +165,9 @@ public:
 //    this->journals ||= begin
 //      order =
 //        if ( current_user.wants_comments_in_reverse_order?) {
-//          Journal.arel_table['created_at'].desc
+//          Journal.arel_table["created_at"].desc
 //        else
-//          Journal.arel_table['created_at'].asc
+//          Journal.arel_table["created_at"].asc
 //        }
 
 //      work_package

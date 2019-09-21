@@ -7,29 +7,29 @@ class CustomField : public ActiveRecord::Base {
 
   // has_many :custom_values, dependent: :delete_all
   // WARNING: the inverse_of option is also required in order
-  // for the 'touch: true' option on the custom_field association in CustomOption
+  // for the "touch: true" option on the custom_field association in CustomOption
   // to work as desired.
   // Without it, the after_commit callbacks of acts_as_list will prevent the touch to happen.
   // https://github.com/rails/rails/issues/26726
   // has_many :custom_options,
 //           -> { order(position: :asc) },
 //           dependent: :delete_all,
-//           inverse_of: 'custom_field'
+//           inverse_of: "custom_field"
 //  accepts_nested_attributes_for :custom_options
 
-//  acts_as_list scope: 'type = \'#{this->class}\''
+//  acts_as_list scope: "type = \"#{this->class}\""
 
 //  // validates :field_format, presence: true
 //  // validates :custom_options,
-//            presence: { message: ->(*) { I18n.t(:'activerecord.errors.models.custom_field.at_least_one_custom_option') } },
-//            if (: ->(*) { field_format == 'list' }) {
+//            presence: { message: ->(*) { I18n.t(:"activerecord.errors.models.custom_field.at_least_one_custom_option") } },
+//            if (: ->(*) { field_format == "list" }) {
 //  // validates :name, presence: true, length: { maximum: 30 }
 
 //  validate :uniqueness_of_name_with_scope
 
 //   void uniqueness_of_name_with_scope() {
 //    taken_names = CustomField.where(type: type)
-//    if ( id) { taken_names = taken_names.where('id != ?', id) ;}
+//    if ( id) { taken_names = taken_names.where("id != ?", id) ;}
 //    taken_names = taken_names.pluck(:name)
 
 //    if ( name.in?(taken_names)) { errors.add(:name, :taken) ;}
@@ -71,7 +71,7 @@ class CustomField : public ActiveRecord::Base {
 //   void validate_default_value() {
 //    // It is not possible to determine the validity of a value, when there is no valid format.
 //    // another validation will take care of adding an error, but here we need to abort.
-//    // Also multi value custom fields don't use this field at all, so don't validate it.
+//    // Also multi value custom fields don"t use this field at all, so don"t validate it.
 //    if ( field_format.blank? || multi_value?) { return nil ;}
 
 //    begin
@@ -102,11 +102,11 @@ class CustomField : public ActiveRecord::Base {
 
 //   void possible_values_options(obj = nil) {
 //    case field_format
-//    when 'user'
+//    when "user"
 //      possible_user_values_options(obj)
-//    when 'version'
+//    when "version"
 //      possible_version_values_options(obj)
-//    when 'list'
+//    when "list"
 //      possible_list_values_options
 //    else
 //      possible_values
@@ -128,9 +128,9 @@ class CustomField : public ActiveRecord::Base {
   //        You MUST NOT pass a customizable if this CF has any other format
 //   void possible_values(obj = nil) {
 //    case field_format
-//    when 'user', 'version'
+//    when "user", "version"
 //      possible_values_options(obj).map(&:last)
-//    when 'list'
+//    when "list"
 //      custom_options
 //    else
 //      read_attribute(:possible_values)
@@ -159,17 +159,17 @@ class CustomField : public ActiveRecord::Base {
 //    casted = nil
 //    unless value.blank?
 //      case field_format
-//      when 'string', 'text', 'list'
+//      when "string", "text", "list"
 //        casted = value
-//      when 'date'
+//      when "date"
 //        casted = begin; value.to_date; rescue; nil }
-//      when 'bool'
+//      when "bool"
 //        casted = ActiveRecord::TypeN::Boolean.new.cast(value)
-//      when 'int'
+//      when "int"
 //        casted = value.to_i
-//      when 'float'
+//      when "float"
 //        casted = value.to_f
-//      when 'user', 'version'
+//      when "user", "version"
 //        casted = (value.blank? ? nil : field_format.classify.constantize.find_by(id: value.to_i))
 //      }
 //    }
@@ -177,7 +177,7 @@ class CustomField : public ActiveRecord::Base {
 //  }
 
 //   void <=>(field) {
-//    if ( type == 'WorkPackageCustomField') {
+//    if ( type == "WorkPackageCustomField") {
 //      name.downcase <=> field.name.downcase
 //    else
 //      position <=> field.position
@@ -229,12 +229,12 @@ class CustomField : public ActiveRecord::Base {
 //  }
 
   //
-  // Overrides cache key so that a custom field's representation
-  // is updated correctly when it's mutli_value attribute changes.
+  // Overrides cache key so that a custom field"s representation
+  // is updated correctly when it"s mutli_value attribute changes.
 //   void cache_key() {
 //    tag = multi_value? ? "mv" : "sv"
 
-//    super + '/' + tag
+//    super + "/" + tag
 //  }
 
   private:

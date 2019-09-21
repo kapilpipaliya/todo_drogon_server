@@ -13,7 +13,7 @@ public:
 //    if ( this->copy_project.valid?) {
 //      enqueue_copy_job
 
-//      flash[:notice] = I18n.t('copy_project.started',
+//      flash[:notice] = I18n.t("copy_project.started",
 //                              source_project_name: this->project.name,
 //                              target_project_name: permitted_params.project[:name])
 //      redirect_to origin
@@ -38,7 +38,7 @@ public:
   private:
 
    void copy_action() {
-//    from = (%w(admin settings).include?(params[:coming_from]) ? params[:coming_from] : 'settings')
+//    from = (%w(admin settings).include?(params[:coming_from]) ? params[:coming_from] : "settings")
 
 //    "copy_from_#{from}"
   }
@@ -48,15 +48,15 @@ public:
 //    copy_project.attributes = permitted_params.project
 
 //    // cannot use set_allowed_parent! as it requires a persisted project
-//    if ( copy_project.allowed_parent?(params['project']['parent_id'])) {
-//      copy_project.parent_id = params['project']['parent_id']
+//    if ( copy_project.allowed_parent?(params["project"]["parent_id"])) {
+//      copy_project.parent_id = params["project"]["parent_id"]
 //    }
 
 //    copy_project
   }
 
    void origin() {
-//    params[:coming_from] == 'admin' ? projects_path : settings_project_path(this->project.id)
+//    params[:coming_from] == "admin" ? projects_path : settings_project_path(this->project.id)
   }
 
    void enqueue_copy_job() {
@@ -64,7 +64,7 @@ public:
 //                                          source_project_id: this->project.id,
 //                                          target_project_params: target_project_params,
 //                                          associations_to_copy: params[:only],
-//                                          send_mails: params[:notifications] == '1')
+//                                          send_mails: params[:notifications] == "1")
 
 //    Delayed::Job.enqueue copy_project_job, priority: ::ApplicationJob.priority_number(:low)
   }

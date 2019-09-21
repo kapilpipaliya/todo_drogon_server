@@ -15,7 +15,7 @@ enum AAA{
 };
 
 //  // scope :builtin, ->(*args) {
-//    if ( args.first == true) { compare = 'not' ;}
+//    if ( args.first == true) { compare = "not" ;}
 //    where("#{compare} builtin = #{NON_BUILTIN}")
 //  }
 
@@ -43,8 +43,8 @@ enum AAA{
 
    void givable() {
 //    where(builtin: NON_BUILTIN)
-//      .where(type: 'Role')
-//      .order(Arel.sql('position'))
+//      .where(type: "Role")
+//      .order(Arel.sql("position"))
   }
 
    void permissions() {
@@ -103,7 +103,7 @@ enum AAA{
 
   // Return true if role is allowed to { the specified action
   // action can be:
-  // * a parameter-like Hash (eg. controller: '/projects', action: 'edit')
+  // * a parameter-like Hash (eg. controller: "/projects", action: "edit")
   // * a permission Symbol (eg. :edit_project)
 //   void allowed_to?(action) {
 //    if ( action.is_a? Hash) {
@@ -113,28 +113,28 @@ enum AAA{
 //    }
 //  }
 
-  // Return the builtin 'non member' role.  If the role doesn't exist,
+  // Return the builtin "non member" role.  If the role doesn"t exist,
   // it will be created on the fly.
 //   void non_member() {
 //    non_member_role = where(builtin: BUILTIN_NON_MEMBER).first
 //    if ( non_member_role.nil?) {
-//      non_member_role = create(name: 'Non member', position: 0) { |role|
+//      non_member_role = create(name: "Non member", position: 0) { |role|
 //        role.builtin = BUILTIN_NON_MEMBER
 //      }
-//      if ( non_member_role.new_record?) { raise 'Unable to create the non-member role.' ;}
+//      if ( non_member_role.new_record?) { raise "Unable to create the non-member role." ;}
 //    }
 //    non_member_role
 //  }
 
-  // Return the builtin 'anonymous' role.  If the role doesn't exist,
+  // Return the builtin "anonymous" role.  If the role doesn"t exist,
   // it will be created on the fly.
 //   void anonymous() {
 //    anonymous_role = where(builtin: BUILTIN_ANONYMOUS).first
 //    if ( anonymous_role.nil?) {
-//      anonymous_role = create(name: 'Anonymous', position: 0) { |role|
+//      anonymous_role = create(name: "Anonymous", position: 0) { |role|
 //        role.builtin = BUILTIN_ANONYMOUS
 //      }
-//      if ( anonymous_role.new_record?) { raise 'Unable to create the anonymous role.' ;}
+//      if ( anonymous_role.new_record?) { raise "Unable to create the anonymous role." ;}
 //    }
 //    anonymous_role
 //  }
@@ -162,8 +162,8 @@ enum AAA{
 //  }
 
 //   void check_deletable() {
-//    if ( members.any?) { raise "Can't delete role" ;}
-//    if ( builtin?) { raise "Can't delete builtin role" ;}
+//    if ( members.any?) { raise "Can"t delete role" ;}
+//    if ( builtin?) { raise "Can"t delete builtin role" ;}
 //  }
 
 //   void add_permission(permission) {

@@ -14,7 +14,7 @@ namespace IconsHelper {
   // Icon wrapper with an invisible label
 //   void icon_wrapper(icon_class, label) {
 //    content = op_icon(icon_class)
-//    content << content_tag(:span, label, class: 'hidden-for-sighted')
+//    content << content_tag(:span, label, class: "hidden-for-sighted")
 //    content
 //  }
 }

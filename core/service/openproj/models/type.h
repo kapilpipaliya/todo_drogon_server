@@ -23,13 +23,13 @@ class Type : public ActiveRecord::Base {
 //  has_and_belongs_to_many :projects
 
 //  has_and_belongs_to_many :custom_fields,
-//                          class_name: 'WorkPackageCustomField',
+//                          class_name: "WorkPackageCustomField",
 //                          join_table: "#{table_name_prefix}custom_fields_types#{table_name_suffix}",
-//                          association_foreign_key: 'custom_field_id'
+//                          association_foreign_key: "custom_field_id"
 
   // belongs_to :color,
-//             class_name:  'Color',
-//             foreign_key: 'color_id'
+//             class_name:  "Color",
+//             foreign_key: "color_id"
 
 //  acts_as_list
 
@@ -40,7 +40,7 @@ class Type : public ActiveRecord::Base {
 
   // validates_inclusion_of :is_default, :is_milestone, in: [true, false]
 
-//  default_scope { order('position ASC') }
+//  default_scope { order("position ASC") }
 
   // scope :without_standard, -> {
 //    where(is_standard: false)
@@ -96,7 +96,7 @@ class Type : public ActiveRecord::Base {
   private:
 
    void check_integrity() {
-//    if ( WorkPackage.where(type_id: id).any?) { raise "Can't delete type" ;}
+//    if ( WorkPackage.where(type_id: id).any?) { raise "Can"t delete type" ;}
   }
 
 //   void transition_exists?(status_id_a, status_id_b, role_ids) {

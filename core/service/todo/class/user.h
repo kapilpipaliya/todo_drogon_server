@@ -153,9 +153,9 @@ class User {
    * preferences This funtions pulls all of them an arranges them into a spiffy
    * little array You can specify a type to limit it to a single type of
    * preference
-   * []['title'] = ucased type name
-   * []['prefs'] = array(array('name','display','value'));
-   * []['admin'] = t/f value if this is an admin only section
+   * []["title"] = ucased type name
+   * []["prefs"] = array(array("name","display","value"));
+   * []["admin"] = t/f value if this is an admin only section
    */
   // void get_preferences(type = 0, system = false);
   /**
@@ -280,7 +280,7 @@ class User {
    * update_user_stats
    * updates the playcount mojo for this specific user
    */
-  // void update_stats(media_type, media_id, agent = '', location = array(),
+  // void update_stats(media_type, media_id, agent = "", location = array(),
   // noscrobble = false);
   /**
    * insert_ip_history
@@ -345,13 +345,13 @@ class User {
    * This gets the recently played items for this user respecting
    * the limit passed
    */
-  // void get_recently_played(limit, type='');
+  // void get_recently_played(limit, type="");
   /**
    * get_ip_history
    * This returns the ip_history from the
    * last AmpConfig::get('user_ip_cardinality') days
    */
-  // void get_ip_history(count='', distinct='');
+  // void get_ip_history(count="", distinct="");
   /**
    * Get item fullname.
    * @return string
@@ -362,7 +362,7 @@ class User {
    * Get the user avatar
    */
   // void get_avatar(local = false);
-  // void update_avatar(data, mime = '');
+  // void update_avatar(data, mime = "");
   // void upload_avatar();
   // void delete_avatar();
   /**

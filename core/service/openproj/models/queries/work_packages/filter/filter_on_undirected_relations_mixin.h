@@ -22,7 +22,7 @@ namespace Queries::WorkPackages::Filter::FilterOnUndirectedRelationsMixin {
 //    if ( operator_class == Queries::Operators::Equals) {
 //      %w[IN OR]
 //    else
-//      ['NOT IN', 'AND']
+//      ["NOT IN", "AND"]
 //    }
   }
 

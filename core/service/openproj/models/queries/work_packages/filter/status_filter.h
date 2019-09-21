@@ -55,11 +55,11 @@ class StatusFilter : public openproj::models::Queries::WorkPackages::Filter::Wor
 
 //    if ( !super_value) {
 //      case operator
-//      when 'o'
+//      when "o"
 //        Queries::Operators::OpenWorkPackages
-//      when 'c'
+//      when "c"
 //        Queries::Operators::ClosedWorkPackages
-//      when '*'
+//      when "*"
 //        Queries::Operators::All
 //      }
 //    else

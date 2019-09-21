@@ -13,7 +13,7 @@ class DeliverInvitationJob : public ApplicationJob {
 //    if ( token) {
 //      UserMailer.user_signed_up(token).deliver_now
 //    else
-//      Rails.logger.warn "Can't deliver invitation. The token is missing: #{token_id}"
+//      Rails.logger.warn "Can"t deliver invitation. The token is missing: #{token_id}"
 //    }
   }
 

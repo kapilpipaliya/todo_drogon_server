@@ -24,7 +24,7 @@ namespace DemoData {
 
     //
     // Replaces occurrences of `##child:n` with a link to the given
-    // work package's nth child using the standard OpenProject work package
+    // work package"s nth child using the standard OpenProject work package
     // link syntax `##<id>`.
 //     void link_children(str, work_package) {
 //      return str unless str.present? && str.include?("##child:")

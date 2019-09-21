@@ -77,7 +77,7 @@ namespace QueryN::Highlighting {
 //      if ( difference.any?) {
 //        errors.add(:highlighted_attributes,
 //                   I18n.t(:error_attribute_not_highlightable,
-//                          attributes: difference.map(&:to_s).map(&:capitalize).join(', ')))
+//                          attributes: difference.map(&:to_s).map(&:capitalize).join(", ")))
 //      }
 //    }
 

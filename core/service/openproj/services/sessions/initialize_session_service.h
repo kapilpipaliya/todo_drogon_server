@@ -25,7 +25,7 @@ namespace Sessions {
       private:
 
       //
-      // We can only drop old sessions if they're stored in the database
+      // We can only drop old sessions if they"re stored in the database
       // and enabled by configuration.
 //       void drop_old_sessions?() {
 //        active_record_sessions? && OpenProject::Configuration.drop_old_sessions_on_login?

@@ -42,7 +42,7 @@ namespace ErrorMessageHelper {
 
 //   void render_error_messages_partial(messages, options) {
 //    unless messages.empty?
-//      render partial: 'common/validation_error',
+//      render partial: "common/validation_error",
 //             locals: { error_messages: messages,
 //                       classes: options[:classes],
 //                       object_name:  options[:object].class.model_name.human }

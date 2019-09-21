@@ -4,8 +4,8 @@ namespace openproj {
 namespace models {
 namespace Queries::Operators {
   class Parent : public Base {
-//    label 'parent'
-//    set_symbol 'parent'
+//    label "parent"
+//    set_symbol "parent"
   };
 }
 }

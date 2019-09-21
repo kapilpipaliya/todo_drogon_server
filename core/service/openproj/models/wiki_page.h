@@ -7,9 +7,9 @@ namespace models {
 class WikiPage : public ActiveRecord::Base {
   // belongs_to :wiki, touch: true
   // has_one :project, through: :wiki
-  // has_one :content, class_name: 'WikiContent', foreign_key: 'page_id', dependent: :destroy
+  // has_one :content, class_name: "WikiContent", foreign_key: "page_id", dependent: :destroy
 //  acts_as_attachable delete_permission: :delete_wiki_pages_attachments
-//  acts_as_tree dependent: :nullify, order: 'title'
+//  acts_as_tree dependent: :nullify, order: "title"
 
 //  // Generate slug of the title
 //  acts_as_url :title,
@@ -21,7 +21,7 @@ class WikiPage : public ActiveRecord::Base {
 //  acts_as_event title: Proc.new { |o| "#{Wiki.model_name.human}: #{o.title}" },
 //                description: :text,
 //                datetime: :created_on,
-//                url: Proc.new { |o| { controller: '/wiki', action: 'show', project_id: o.wiki.project, id: o.title } }
+//                url: Proc.new { |o| { controller: "/wiki", action: "show", project_id: o.wiki.project, id: o.title } }
 
 //  acts_as_searchable columns: ["#{WikiPage.table_name}.title", "#{WikiContent.table_name}.text"],
 //                     include: [{ wiki: :project }, :content],
@@ -89,7 +89,7 @@ class WikiPage : public ActiveRecord::Base {
 //      // Remove redirects for the new title
 //      wiki.redirects.where(title: slug).each(&:destroy)
 //      // Create a redirect to the new title
-//      wiki.redirects << WikiRedirect.new(title: previous_slug, redirects_to: slug) unless redirect_existing_links == '0'
+//      wiki.redirects << WikiRedirect.new(title: previous_slug, redirects_to: slug) unless redirect_existing_links == "0"
 
 //      // Change title of dependent wiki menu item
 //      dependent_item = MenuItems::WikiMenuItem.find_by(navigatable_id: wiki.id, name: previous_slug)
@@ -112,7 +112,7 @@ class WikiPage : public ActiveRecord::Base {
 //    if ( version) { journal = content.versions.find_by(version: version.to_i) ;}
 
 //    unless journal.nil? || content.version == journal.version
-//      content_version = WikiContent.new journal.data.attributes.except('id', 'journal_id')
+//      content_version = WikiContent.new journal.data.attributes.except("id", "journal_id")
 //      content_version.updated_on = journal.created_at
 //      content_version.journals = content.journals.select { |j| j.version <= version.to_i }
 
@@ -265,7 +265,7 @@ class WikiPage : public ActiveRecord::Base {
 //      d.each_slice(3) { |s|
 //        sign = s[0]
 //        line = s[1]
-//        if ( sign == '+' && positions[line] && positions[line] != -1) {
+//        if ( sign == "+" && positions[line] && positions[line] != -1) {
 //          if ( this->lines[positions[line]][0].nil?) {
 //            this->lines[positions[line]][0] = current.version
 //            this->lines[positions[line]][1] = current.data.author
@@ -275,7 +275,7 @@ class WikiPage : public ActiveRecord::Base {
 //      d.each_slice(3) { |s|
 //        sign = s[0]
 //        line = s[1]
-//        if ( sign == '-') {
+//        if ( sign == "-") {
 //          positions.insert(line, -1)
 //        else
 //          positions[line] = nil

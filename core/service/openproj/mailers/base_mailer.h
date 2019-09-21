@@ -28,20 +28,20 @@ public:
 
 //     void generate_message_id(object, user) {
 //      // id + timestamp should reduce the odds of a collision
-//      // as far as we don't send multiple emails for the same object
+//      // as far as we don"t send multiple emails for the same object
 //      journable = (object.is_a? Journal) ? object.journable : object
 
 //      timestamp = mail_timestamp(object)
-//      hash = 'openproject'\
-//           '.'\
+//      hash = "openproject"\
+//           "."\
 //           "#{journable.class.name.demodulize.underscore}"\
-//           '-'\
+//           "-"\
 //           "#{user.id}"\
-//           '-'\
+//           "-"\
 //           "#{journable.id}"\
-//           '.'\
-//           "#{timestamp.strftime('%Y%m%d%H%M%S')}"
-//      host = Setting.mail_from.to_s.gsub(%r{\A.*@}, '')
+//           "."\
+//           "#{timestamp.strftime("%Y%m%d%H%M%S")}"
+//      host = Setting.mail_from.to_s.gsub(%r{\A.*@}, "")
 //      if ( host.empty?) { host = "#{::Socket.gethostname}.openproject" ;}
 //      "#{hash}@#{host}"
 //    }
@@ -64,7 +64,7 @@ public:
 //      if ( OpenProject::Configuration.rails_relative_url_root.blank?) {
 //        Setting.host_name
 //      else
-//        Setting.host_name.to_s.gsub(%r{\/.*\z}, '')
+//        Setting.host_name.to_s.gsub(%r{\/.*\z}, "")
 //      }
 //    }
 
@@ -88,10 +88,10 @@ public:
 //  }
 
 //   void message_id(object, user) {
-//    headers['Message-ID'] = "<#{this->class.generate_message_id(object, user)}>"
+//    headers["Message-ID"] = "<#{this->class.generate_message_id(object, user)}>"
 //  }
 
-  // Prepends given fields with 'X-OpenProject-' to save some duplication
+  // Prepends given fields with "X-OpenProject-" to save some duplication
 //   void open_project_headers(hash) {
 //    hash.each { |key, value| headers["X-OpenProject-#{key}"] = value.to_s }
 //  }

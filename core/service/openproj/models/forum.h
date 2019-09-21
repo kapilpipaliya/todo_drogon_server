@@ -7,11 +7,11 @@ class Forum : public ActiveRecord::Base {
   // has_many :topics, -> {
 //    where("#{Message.table_name}.parent_id IS NULL")
 //      .order("#{Message.table_name}.sticky DESC")
-//  }, class_name: 'Message'
+//  }, class_name: "Message"
 //  // has_many :messages, -> {
 //    order("#{Message.table_name}.sticky DESC")
 //  }, dependent: :destroy
-  // belongs_to :last_message, class_name: 'Message', foreign_key: :last_message_id
+  // belongs_to :last_message, class_name: "Message", foreign_key: :last_message_id
 //  acts_as_list scope: :project_id
 //  acts_as_watchable permission: :view_messages
 

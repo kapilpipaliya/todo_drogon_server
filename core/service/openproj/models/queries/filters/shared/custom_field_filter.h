@@ -15,8 +15,8 @@ namespace Queries::Filters::Shared::CustomFieldFilter {
     }
 
     //
-    // TODO this differs from CustomField#accessor_name for reasons I don't see,
-    // however this name will be persisted in queries so we can't just map one to the other.
+    // TODO this differs from CustomField#accessor_name for reasons I don"t see,
+    // however this name will be persisted in queries so we can"t just map one to the other.
 //     void custom_field_accessor(custom_field) {
 //      "cf_#{custom_field.id}"
 //    }
@@ -67,11 +67,11 @@ namespace Queries::Filters::Shared::CustomFieldFilter {
     // Get the subfilter class name for the given custom field
 //     void subfilter_module(custom_field) {
 //      case custom_field.field_format
-//      when 'user'
+//      when "user"
 //        :User
-//      when 'list', 'version'
+//      when "list", "version"
 //        :ListOptional
-//      when 'bool'
+//      when "bool"
 //        :Bool
 //      else
 //        :Base

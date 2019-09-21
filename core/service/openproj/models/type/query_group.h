@@ -4,7 +4,7 @@ namespace openproj {
 namespace models {
 namespace TypeN {
 class QueryGroup : public TypeN::FormGroup {
-//  MEMBER_PREFIX = 'query_'.freeze
+//  MEMBER_PREFIX = "query_".freeze
 
 //   void query_attribute?(name) {
 //    name.to_s.match?(/#{TypeN::QueryGroup::MEMBER_PREFIX}(\d+)/)

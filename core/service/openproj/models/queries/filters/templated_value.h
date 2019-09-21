@@ -4,8 +4,8 @@ namespace models {
 namespace Queries {
 namespace Filters {
 class TemplatedValue {
-//  KEY = '{id}'.freeze
-//  DEPRECATED_KEY = 'templated'.freeze
+//  KEY = "{id}".freeze
+//  DEPRECATED_KEY = "templated".freeze
 
   // attr_accessor :templated_class
 
@@ -14,7 +14,7 @@ class TemplatedValue {
 //  }
 
    void id() {
-//    '{id}'
+//    "{id}"
   }
 
    void name() {

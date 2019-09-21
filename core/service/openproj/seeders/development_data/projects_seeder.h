@@ -7,21 +7,21 @@ class ProjectsSeeder : public Seeder {
  public:
   void seed_data() {
     //      // We are relying on the default_projects_modules setting to set the
-    //      desired project modules puts ' ↳ Creating development projects...'
+    //      desired project modules puts " ↳ Creating development projects..."
 
-    //      puts '   -Creating/Resetting development projects'
+    //      puts "   -Creating/Resetting development projects"
     //      projects = reset_projects
 
-    //      puts '   -Setting members.'
+    //      puts "   -Setting members."
     //      set_members(projects)
 
-    //      puts '   -Creating versions.'
+    //      puts "   -Creating versions."
     //      seed_versions(projects)
 
-    //      puts '   -Linking custom fields.'
+    //      puts "   -Linking custom fields."
 
     //      link_custom_fields(projects.detect { |p| p.identifier ==
-    //      'dev-custom-fields' })
+    //      "dev-custom-fields" })
   }
 
   bool applicable() {
@@ -38,8 +38,8 @@ class ProjectsSeeder : public Seeder {
     //      project_identifiers.map { |id|
     //        project = Project.new project_data(id)
 
-    //        if ( id == 'dev-large-child') {
-    //          project.parent_id = Project.find_by(identifier: 'dev-large').id
+    //        if ( id == "dev-large-child") {
+    //          project.parent_id = Project.find_by(identifier: "dev-large").id
     //        }
 
     //        project.save!
@@ -59,7 +59,7 @@ class ProjectsSeeder : public Seeder {
 
   //     void seed_versions(projects) {
   //      projects.each { |p|
-  //        version_data = project_data_for('scrum-project', 'versions')
+  //        version_data = project_data_for("scrum-project", "versions")
   //        if ( version_data.is_a? Array) {
   //          version_data.each { |attributes|
   //            p.versions << Version.create!(
@@ -74,7 +74,7 @@ class ProjectsSeeder : public Seeder {
 
   //     void link_custom_fields(cf_project) {
   //      cf_project.work_package_custom_field_ids = CustomField.where("name
-  //      like 'CF DEV%'").pluck(:id) cf_project.save!
+  //      like "CF DEV%"").pluck(:id) cf_project.save!
   //    }
 
   //     void project_data(identifier) {

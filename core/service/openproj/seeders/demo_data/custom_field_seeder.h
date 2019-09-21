@@ -17,23 +17,23 @@ class CustomFieldSeeder : public Seeder {
     //      // Careful: The seeding recreates the seeded project before it runs,
     //      so any changes
     //      // on the seeded project will be lost.
-    //      print '    ↳ Creating custom fields...'
+    //      LOG_DEBUG << "    ↳ Creating custom fields..."
 
     //      // create some custom fields and add them to the project
-    //      Array(project_data_for(key,'custom_fields')).each { |name|
+    //      Array(project_data_for(key,"custom_fields")).each { |name|
     //        cf = WorkPackageCustomField.create!(
     //          name: name,
-    //          regexp: '',
+    //          regexp: "",
     //          is_required: false,
     //          min_length: false,
-    //          default_value: '',
+    //          default_value: "",
     //          max_length: false,
     //          editable: true,
-    //          possible_values: '',
+    //          possible_values: "",
     //          visible: true,
-    //          field_format: 'text'
+    //          field_format: "text"
     //        )
-    //        print '.'
+    //        LOG_DEBUG << "."
 
     //        project.work_package_custom_fields << cf
     //      }

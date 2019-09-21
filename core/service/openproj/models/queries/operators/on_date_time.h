@@ -4,8 +4,8 @@ namespace openproj {
 namespace models {
 namespace Queries::Operators {
   class OnDateTime : public Base {
-//    label 'on'
-//    set_symbol '=d'
+//    label "on"
+//    set_symbol "=d"
 
     // extend DatetimeRangeClauses
 

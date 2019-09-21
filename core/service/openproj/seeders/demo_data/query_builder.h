@@ -20,7 +20,7 @@ namespace DemoData {
     private:
 
     //
-    // Don't seed queries specific to the backlogs plugin.
+    // Don"t seed queries specific to the backlogs plugin.
 //     void valid?() {
 //      backlogs_present? || !columns.include?("story_points")
 //    }

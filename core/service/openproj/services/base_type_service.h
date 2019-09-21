@@ -80,7 +80,7 @@ public:
 //   void transform_attribute_groups(groups) {
 //    groups.map { |group|
 
-//      if ( group['type'] == 'query') {
+//      if ( group["type"] == "query") {
 //        transform_query_group(group)
 //      else
 //        transform_attribute_group(group)
@@ -90,21 +90,21 @@ public:
 
 //   void transform_attribute_group(group) {
 //    name =
-//      if ( group['key']) {
-//        group['key'].to_sym
+//      if ( group["key"]) {
+//        group["key"].to_sym
 //      else
-//        group['name']
+//        group["name"]
 //      }
 
 //    [
 //      name,
-//      group['attributes'].map { |attr| attr['key'] }
+//      group["attributes"].map { |attr| attr["key"] }
 //    ]
 //  }
 
 //   void transform_query_group(group) {
-//    name = group['name']
-//    props = JSON.parse group['query']
+//    name = group["name"]
+//    props = JSON.parse group["query"]
 
 //    query = Query.new_default(name: "Embedded table: #{name}")
 
@@ -131,7 +131,7 @@ public:
 //    type.attribute_groups.each { |group|
 //      group.members.each { |attribute|
 //        if ( CustomField.custom_field_attribute? attribute) {
-//          active_cf_ids << attribute.gsub(/^custom_field_/, '').to_i
+//          active_cf_ids << attribute.gsub(/^custom_field_/, "").to_i
 //        }
 //      }
 //    }

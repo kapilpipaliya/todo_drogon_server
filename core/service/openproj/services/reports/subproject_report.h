@@ -6,11 +6,11 @@ namespace Reports {
 class SubprojectReport : public Reports::Report {
 public:
    void report_type() {
-//    'subproject'
+//    "subproject"
   }
 
    void field() {
-//    'project_id'
+//    "project_id"
   }
 
    void rows() {

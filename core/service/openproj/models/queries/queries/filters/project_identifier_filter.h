@@ -19,7 +19,7 @@ class ProjectIdentifierFilter : public openproj::models::Queries::Queries::Filte
   }
 
    void where() {
-//    operator_strategy.sql_for_field(values, 'projects', 'identifier')
+//    operator_strategy.sql_for_field(values, "projects", "identifier")
   }
 
    void allowed_values() {

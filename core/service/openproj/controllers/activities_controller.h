@@ -17,7 +17,7 @@ public:
 
 //    this->date_to ||= User.current.today + 1.day
 //    this->date_from = this->date_to - this->days
-//    this->with_subprojects = params[:with_subprojects].nil? ? Setting.display_subprojects_work_packages? : (params[:with_subprojects] == '1')
+//    this->with_subprojects = params[:with_subprojects].nil? ? Setting.display_subprojects_work_packages? : (params[:with_subprojects] == "1")
 //    this->author = (params[:user_id].blank? ? nil : User.active.find(params[:user_id]))
 
 //    this->activity = Redmine::Activity::Fetcher.new(User.current, project: this->project,
@@ -63,14 +63,14 @@ public:
   }
 
    void verify_activities_module_activated() {
-//    if ( this->project && !this->project.module_enabled?('activity')) { render_403 ;}
+//    if ( this->project && !this->project.module_enabled?("activity")) { render_403 ;}
   }
 
   // Do not show events, which are associated with projects where activities are disabled.
   // In a better world this would be implemented (with better performance) in SQL.
   // TODO: make the world a better place.
 //   void censor_events_from_projects_with_disabled_activity!(events) {
-//    allowed_project_ids = EnabledModule.where(name: 'activity').map(&:project_id)
+//    allowed_project_ids = EnabledModule.where(name: "activity").map(&:project_id)
 //    events.select! { |event|
 //      event.project_id.nil? || allowed_project_ids.include?(event.project_id)
 //    }

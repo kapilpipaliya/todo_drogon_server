@@ -20,8 +20,8 @@ namespace Queries::Filters::Strategies {
 
      void operator_map() {
 //      super_value = super.dup
-//      super_value['='] = ::Queries::Operators::BooleanEquals
-//      super_value['!'] = ::Queries::Operators::BooleanNotEquals
+//      super_value["="] = ::Queries::Operators::BooleanEquals
+//      super_value["!"] = ::Queries::Operators::BooleanNotEquals
 
 //      super_value
     }

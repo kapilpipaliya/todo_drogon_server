@@ -13,7 +13,7 @@ class NotExistingOrder : public openproj::models::Queries::BaseOrder {
   private:
 
    void always_false() {
-//    errors.add :base, I18n.t(:'activerecord.errors.messages.does_not_exist')
+//    errors.add :base, I18n.t(:"activerecord.errors.messages.does_not_exist")
   }
 };
 }

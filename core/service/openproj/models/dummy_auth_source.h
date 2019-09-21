@@ -16,7 +16,7 @@ class DummyAuthSource : public AuthSource {
 //  }
 
    void auth_method_name() {
-//    'LDAP'
+//    "LDAP"
   }
 
   private:
@@ -39,7 +39,7 @@ class DummyAuthSource : public AuthSource {
 //  }
 
 //   void existing_user(login, password) {
-//    registered_login?(login) && password == 'dummy' && find_registered_user(login)
+//    registered_login?(login) && password == "dummy" && find_registered_user(login)
 //  }
 
 //   void on_the_fly_user(login) {
@@ -47,8 +47,8 @@ class DummyAuthSource : public AuthSource {
 
 //    {
 //      firstname: login.capitalize,
-//      lastname: 'Dummy',
-//      mail: 'login@DerpLAP.net',
+//      lastname: "Dummy",
+//      mail: "login@DerpLAP.net",
 //      auth_source_id: id
 //    }
 //  }

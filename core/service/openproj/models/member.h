@@ -5,7 +5,7 @@ namespace models {
 class Member : public ActiveRecord::Base {
   // extend DeprecatedAlias
 
-  // belongs_to :principal, foreign_key: 'user_id'
+  // belongs_to :principal, foreign_key: "user_id"
   // has_many :member_roles, dependent: :destroy, autosave: true
   // has_many :roles, through: :member_roles
   // belongs_to :project
@@ -74,10 +74,10 @@ class Member : public ActiveRecord::Base {
 //    do_add_role(role_or_role_id, inherited_from_id, true)
 //  }
 
-  // Mark one of the member's roles for destruction
+  // Mark one of the member"s roles for destruction
   //
-  // Make sure to get the MemberRole instance from the member's association, otherwise the actual
-  // destruction on save doesn't work.
+  // Make sure to get the MemberRole instance from the member"s association, otherwise the actual
+  // destruction on save doesn"t work.
 //   void mark_member_role_for_destruction(member_role) {
 //    do_remove_member_role(member_role, false)
 //  }
@@ -85,7 +85,7 @@ class Member : public ActiveRecord::Base {
   // Remove a role from a member
   // Destroys the member itself when no role is left afterwards
   //
-  // Make sure to get the MemberRole instance from the member's association, otherwise the
+  // Make sure to get the MemberRole instance from the member"s association, otherwise the
   // destruction of the member, when the last MemberRole is destroyed, might not work.
 //   void remove_member_role_and_destroy_member_if_last(member_role, prune_watchers: true) {
 //    do_remove_member_role(member_role, true, prune_watchers: prune_watchers)
@@ -121,7 +121,7 @@ class Member : public ActiveRecord::Base {
 
   //
   // Returns true if ( this user can be deleted as they have no other memberships) {
-  // and haven't been activated yet. Only applies if ( the member is actually a user) {
+  // and haven"t been activated yet. Only applies if ( the member is actually a user) {
   // as opposed to a group.
 //   void disposable?() {
 //    user? && principal&.invited? && principal.memberships.none? { |m| m.project_id != project_id }
@@ -182,7 +182,7 @@ class Member : public ActiveRecord::Base {
 //    // Roles assigned via MemberRoles.
 //    new_role_ids.each { |id| do_add_role(id, nil, save_and_possibly_destroy) }
 
-//    // Remove roles (Rails' #role_ids= will not trigger MemberRole#on_destroy)
+//    // Remove roles (Rails" #role_ids= will not trigger MemberRole#on_destroy)
 //    member_roles_to_destroy = member_roles.reject { |mr| ids.include?(mr.role_id) }
 //    member_roles_to_destroy.each { |mr| do_remove_member_role(mr, save_and_possibly_destroy) }
 //  }

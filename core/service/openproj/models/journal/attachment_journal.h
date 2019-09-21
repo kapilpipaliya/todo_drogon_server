@@ -4,7 +4,7 @@ namespace openproj {
 namespace models {
 namespace JournalN {
 class AttachmentJournal : public JournalN::BaseJournal {
-//  this->table_name = 'attachment_journals'
+//  this->table_name = "attachment_journals"
 };
 }
 }

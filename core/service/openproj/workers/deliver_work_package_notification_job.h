@@ -15,9 +15,9 @@ public:
 
 //    journal = find_aggregated_journal
 
-//    // The caller should have ensured that the journal can't outdate anymore
+//    // The caller should have ensured that the journal can"t outdate anymore
 //    // before queuing a notification
-//    raise 'aggregated journal got outdated' unless journal
+//    raise "aggregated journal got outdated" unless journal
 
 //    if ( journal.initial?) {
 //      UserMailer.work_package_added(recipient, journal, sender)

@@ -96,7 +96,7 @@ class SpentTime {
 //  }
 
 //   void wp_descendants() {
-//    this->wp_descendants ||= wp_table.alias('descendants')
+//    this->wp_descendants ||= wp_table.alias("descendants")
 //  }
 
 //   void time_entries_table() {

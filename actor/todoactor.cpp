@@ -27,17 +27,20 @@ nlohmann::json TodoActor::handleTextMessage(
   }
   auto contx = wsConnPtr->getContext<websocket::todo::TodoContext>();
   auto evt = in[0][0].get<std::string>();
+  nlohmann::json r;
   if (evt == "auth") {
-    return handleService<todo::service::Auth>(contx, in);
+    r = handleService<todo::service::Auth>(contx, in);
   } else if (evt == "user" || evt == "users") {
-    return handleService<todo::service::User>(contx, in);
+    r = handleService<todo::service::User>(contx, in);
   } else if (evt == "ui") {
-    return handleService<todo::service::UI>(contx, in);
+    r = handleService<todo::service::UI>(contx, in);
   } else if (evt == "seed") {
-      return handleService<todo::service::Seed>(contx, in);
+    r = handleService<todo::service::Seed>(contx, in);
   } else {
-    return nlohmann::json::array();
+    r = nlohmann::json::array();
   }
+  fflush(stdout);
+  return r;
 }
 
 nlohmann::json TodoActor::handleBinaryMessage(

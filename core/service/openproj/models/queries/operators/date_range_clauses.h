@@ -20,12 +20,12 @@ namespace Queries::Operators {
 //     void date_range_clause(table, field, from, to) {
 //      s = []
 //      if ( from) {
-//        s << "#{table}.#{field} > '%s'" % [quoted_date_from_utc(from.yesterday)]
+//        s << "#{table}.#{field} > "%s"" % [quoted_date_from_utc(from.yesterday)]
 //      }
 //      if ( to) {
-//        s << "#{table}.#{field} <= '%s'" % [quoted_date_from_utc(to)]
+//        s << "#{table}.#{field} <= "%s"" % [quoted_date_from_utc(to)]
 //      }
-//      s.join(' AND ')
+//      s.join(" AND ")
 //    }
 
 //     void quoted_date_from_utc(value) {

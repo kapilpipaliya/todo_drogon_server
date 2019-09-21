@@ -4,7 +4,7 @@ namespace openproj {
 namespace controller {
 class AdminController : public ApplicationController {
 public:
-  // layout 'admin'
+  // layout "admin"
 
   // before_action :require_admin
 
@@ -19,7 +19,7 @@ public:
   }
 
    void projects() {
-//    redirect_to controller: 'projects', action: 'index'
+//    redirect_to controller: "projects", action: "index"
   }
 
    void plugins() {
@@ -37,12 +37,12 @@ public:
 //      flash[:error] = I18n.t(:notice_email_error, value: Redmine::CodesetUtil.replace_invalid_utf8(e.message.dup))
 //    }
 //    ActionMailer::Base.raise_delivery_errors = raise_delivery_errors
-//    redirect_to controller: '/settings', action: 'edit', tab: 'notifications'
+//    redirect_to controller: "/settings", action: "edit", tab: "notifications"
   }
 
    void force_user_language() {
-//    available_languages = Setting.find_by(name: 'available_languages').value
-//    User.where(['language not in (?)', available_languages]).each { |u|
+//    available_languages = Setting.find_by(name: "available_languages").value
+//    User.where(["language not in (?)", available_languages]).each { |u|
 //      u.language = Setting.default_language
 //      u.save
 //    }
@@ -57,7 +57,7 @@ public:
 //      [:text_database_allows_tsv, OpenProject::Database.allows_tsv?]
 //    ]
 
-//    // Add local directory test if ( we're not using fog) {
+//    // Add local directory test if ( we"re not using fog) {
 //    if ( OpenProject::Configuration.file_storage?) {
 //      repository_writable = File.writable?(OpenProject::Configuration.attachments_storage_path)
 //      this->checklist << [:text_file_repository_writable, repository_writable]
@@ -72,9 +72,9 @@ public:
 
    void default_breadcrumb() {
 //    case params[:action]
-//    when 'plugins'
+//    when "plugins"
 //      l(:label_plugins)
-//    when 'info'
+//    when "info"
 //      l(:label_information)
 //    }
   }
@@ -87,12 +87,12 @@ public:
 
    void plaintext_extraction_checks() {
 //    [
-//      [:'extraction.available.pdftotext', Plaintext::PdfHandler.available?],
-//      [:'extraction.available.unrtf',     Plaintext::RtfHandler.available?],
-//      [:'extraction.available.catdoc',    Plaintext::DocHandler.available?],
-//      [:'extraction.available.xls2csv',   Plaintext::XlsHandler.available?],
-//      [:'extraction.available.catppt',    Plaintext::PptHandler.available?],
-//      [:'extraction.available.tesseract', Plaintext::ImageHandler.available?]
+//      [:"extraction.available.pdftotext", Plaintext::PdfHandler.available?],
+//      [:"extraction.available.unrtf",     Plaintext::RtfHandler.available?],
+//      [:"extraction.available.catdoc",    Plaintext::DocHandler.available?],
+//      [:"extraction.available.xls2csv",   Plaintext::XlsHandler.available?],
+//      [:"extraction.available.catppt",    Plaintext::PptHandler.available?],
+//      [:"extraction.available.tesseract", Plaintext::ImageHandler.available?]
 //    ]
   }
 };

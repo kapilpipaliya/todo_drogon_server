@@ -12,19 +12,19 @@ class NameAndIdentifierFilter : public openproj::models::Queries::Projects::Filt
 
    void where() {
 //    case operator
-//    when '='
+//    when "="
 //      where_equal
-//    when '!'
+//    when "!"
 //      where_not_equal
-//    when '~'
+//    when "~"
 //      where_contains
-//    when '!~'
+//    when "!~"
 //      where_not_contains
 //    }
   }
 
    void human_name() {
-//    I18n.t('query_fields.name_or_identifier')
+//    I18n.t("query_fields.name_or_identifier")
   }
 
    void key() {
@@ -45,7 +45,7 @@ class NameAndIdentifierFilter : public openproj::models::Queries::Projects::Filt
 //  }
 
    void where_equal() {
-//    concatenate_with_values('LOWER(projects.identifier) = ? OR LOWER(projects.name) = ?', 'OR', &:downcase)
+//    concatenate_with_values("LOWER(projects.identifier) = ? OR LOWER(projects.name) = ?", "OR", &:downcase)
   }
 
    void where_not_equal() {
@@ -53,7 +53,7 @@ class NameAndIdentifierFilter : public openproj::models::Queries::Projects::Filt
   }
 
    void where_contains() {
-//    concatenate_with_values('LOWER(projects.identifier) LIKE ? OR LOWER(projects.name) LIKE ?', 'OR') { |value|
+//    concatenate_with_values("LOWER(projects.identifier) LIKE ? OR LOWER(projects.name) LIKE ?", "OR") { |value|
 //      "%#{value.downcase}%"
 //    }
   }

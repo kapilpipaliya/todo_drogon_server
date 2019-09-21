@@ -5,7 +5,7 @@ namespace Queries {
 class BaseQuery {
 //  class << self {
 //     void model() {
-//      this->model ||= name.demodulize.gsub('Query', '').constantize
+//      this->model ||= name.demodulize.gsub("Query", "").constantize
 //    }
 
 //     void i18n_scope() {
@@ -105,7 +105,7 @@ class BaseQuery {
 //               .messages
 //               .values
 //               .flatten
-//               .join(" #{I18n.t('support.array.sentence_connector')} ")
+//               .join(" #{I18n.t("support.array.sentence_connector")} ")
 
 //    errors.add local_attribute, errors.full_message(attribute_name, messages)
 //  }

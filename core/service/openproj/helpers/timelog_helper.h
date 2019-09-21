@@ -35,22 +35,22 @@ namespace TimelogHelper {
 //   void sum_hours(data) {
 //    sum = 0
 //    data.each { |row|
-//      sum += row['hours'].to_f
+//      sum += row["hours"].to_f
 //    }
 //    sum
 //  }
 
 //   void options_for_period_select(value) {
-//    options_for_select([[l(:label_all_time), 'all'],
-//                        [l(:label_today), 'today'],
-//                        [l(:label_yesterday), 'yesterday'],
-//                        [l(:label_this_week), 'current_week'],
-//                        [l(:label_last_week), 'last_week'],
-//                        [l(:label_last_n_days, 7), '7_days'],
-//                        [l(:label_this_month), 'current_month'],
-//                        [l(:label_last_month), 'last_month'],
-//                        [l(:label_last_n_days, 30), '30_days'],
-//                        [l(:label_this_year), 'current_year']],
+//    options_for_select([[l(:label_all_time), "all"],
+//                        [l(:label_today), "today"],
+//                        [l(:label_yesterday), "yesterday"],
+//                        [l(:label_this_week), "current_week"],
+//                        [l(:label_last_week), "last_week"],
+//                        [l(:label_last_n_days, 7), "7_days"],
+//                        [l(:label_this_month), "current_month"],
+//                        [l(:label_last_month), "last_month"],
+//                        [l(:label_last_n_days, 30), "30_days"],
+//                        [l(:label_this_year), "current_year"]],
 //                       value)
 //  }
 
@@ -82,7 +82,7 @@ namespace TimelogHelper {
 //                  (entry.work_package ? entry.work_package.id : nil),
 //                  (entry.work_package ? entry.work_package.type : nil),
 //                  (entry.work_package ? entry.work_package.subject : nil),
-//                  entry.hours.to_s.gsub('.', decimal_separator),
+//                  entry.hours.to_s.gsub(".", decimal_separator),
 //                  entry.comments
 //                 ]
 //        fields += custom_fields.map { |f| show_value(entry.custom_value_for(f)) }
@@ -121,14 +121,14 @@ namespace TimelogHelper {
 //      // Content
 //      report_criteria_to_csv(csv, criterias, periods, hours)
 //      // Total row
-//      row = [l(:label_total)] + [''] * (criterias.size - 1)
+//      row = [l(:label_total)] + [""] * (criterias.size - 1)
 //      total = 0
 //      periods.each { |period|
 //        sum = sum_hours(select_hours(hours, this->columns, period.to_s))
 //        total += sum
-//        row << (sum > 0 ? '%.2f' % sum : '')
+//        row << (sum > 0 ? "%.2f" % sum : "")
 //      }
-//      row << '%.2f' % total
+//      row << "%.2f" % total
 //      csv << row
 //    }
 //    export
@@ -138,16 +138,16 @@ namespace TimelogHelper {
 //    hours.map { |h| h[criterias[level]].to_s }.uniq.each { |value|
 //      hours_for_value = select_hours(hours, criterias[level], value)
 //      if ( hours_for_value.empty?) { next ;}
-//      row = [''] * level
+//      row = [""] * level
 //      row << to_utf8_for_timelogs(format_criteria_value(criterias[level], value))
-//      row += [''] * (criterias.length - level - 1)
+//      row += [""] * (criterias.length - level - 1)
 //      total = 0
 //      periods.each { |period|
 //        sum = sum_hours(select_hours(hours_for_value, this->columns, period.to_s))
 //        total += sum
-//        row << (sum > 0 ? '%.2f' % sum : '')
+//        row << (sum > 0 ? "%.2f" % sum : "")
 //      }
-//      row << '%.2f' % total
+//      row << "%.2f" % total
 //      csv << row
 
 //      if ( criterias.length > level + 1) {
@@ -157,7 +157,7 @@ namespace TimelogHelper {
 //  }
 
 //   void to_utf8_for_timelogs(s) {
-//    s.to_s.encode(l(:general_csv_encoding), 'UTF-8'); rescue; s.to_s  }
+//    s.to_s.encode(l(:general_csv_encoding), "UTF-8"); rescue; s.to_s  }
 
 //   void polymorphic_time_entries_path(object) {
 //    polymorphic_path([object, :time_entries])
@@ -177,35 +177,35 @@ namespace TimelogHelper {
 //    this->from = nil
 //    this->to = nil
 
-//    if ( params[:period_type] == '1' || (params[:period_type].nil? && !params[:period].nil?)) {
+//    if ( params[:period_type] == "1" || (params[:period_type].nil? && !params[:period].nil?)) {
 //      case params[:period].to_s
-//      when 'today'
+//      when "today"
 //        this->from = this->to = Date.today
-//      when 'yesterday'
+//      when "yesterday"
 //        this->from = this->to = Date.today - 1
-//      when 'current_week'
+//      when "current_week"
 //        this->from = Date.today - (Date.today.cwday - 1) % 7
 //        this->to = this->from + 6
-//      when 'last_week'
+//      when "last_week"
 //        this->from = Date.today - 7 - (Date.today.cwday - 1) % 7
 //        this->to = this->from + 6
-//      when '7_days'
+//      when "7_days"
 //        this->from = Date.today - 7
 //        this->to = Date.today
-//      when 'current_month'
+//      when "current_month"
 //        this->from = Date.civil(Date.today.year, Date.today.month, 1)
 //        this->to = (this->from >> 1) - 1
-//      when 'last_month'
+//      when "last_month"
 //        this->from = Date.civil(Date.today.year, Date.today.month, 1) << 1
 //        this->to = (this->from >> 1) - 1
-//      when '30_days'
+//      when "30_days"
 //        this->from = Date.today - 30
 //        this->to = Date.today
-//      when 'current_year'
+//      when "current_year"
 //        this->from = Date.civil(Date.today.year, 1, 1)
 //        this->to = Date.civil(Date.today.year, 12, 31)
 //      }
-//    } else if ( params[:period_type] == '2' || (params[:period_type].nil? && (!params[:from].nil? || !params[:to].nil?))) {
+//    } else if ( params[:period_type] == "2" || (params[:period_type].nil? && (!params[:from].nil? || !params[:to].nil?))) {
 //      begin; this->from = params[:from].to_s.to_date unless params[:from].blank?; rescue; }
 //      begin; this->to = params[:to].to_s.to_date unless params[:to].blank?; rescue; }
 //      this->free_period = true

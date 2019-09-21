@@ -43,9 +43,9 @@ class BoolStrategy : public CustomValueN::FormatStrategy {
   private:
 
 //   void present?(val) {
-//    // can't use :blank? safely, because false.blank? == true
-//    // can't use :present? safely, because false.present? == false
-//    !val.nil? && val != ''
+//    // can"t use :blank? safely, because false.blank? == true
+//    // can"t use :present? safely, because false.present? == false
+//    !val.nil? && val != ""
 //  }
 };
 }

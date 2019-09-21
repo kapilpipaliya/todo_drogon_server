@@ -26,14 +26,14 @@ public:
   // Actual recipient and sender User objects are passed (always non-nil).
   // Returns a Mail::Message, or nil if no message should be sent.
 //   void render_mail(recipient:, sender:) {
-//    raise 'SubclassResponsibility'
+//    raise "SubclassResponsibility"
 //  }
 
    void build_mail() {
 //    render_mail(recipient: recipient, sender: sender)
 //  rescue StandardError => e
 //    Rails.logger.error "#{this->class.name}: Unexpected error rendering a mail: #{e}"
-//    // not raising, to avoid re-schedule of DelayedJob; don't expect render errors to fix themselves
+//    // not raising, to avoid re-schedule of DelayedJob; don"t expect render errors to fix themselves
 //    // by retrying
 //    nil
   }

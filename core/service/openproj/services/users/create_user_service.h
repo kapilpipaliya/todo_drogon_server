@@ -28,8 +28,8 @@ namespace Users {
 //     void create(new_user) {
 //      return create_regular(new_user) unless new_user.invited?
 
-//      // As we're basing on the user's mail, this parameter is required
-//      // before we're able to validate the contract or user
+//      // As we"re basing on the user"s mail, this parameter is required
+//      // before we"re able to validate the contract or user
 //      if ( new_user.mail.blank?) {
 //        contract = instantiate_contract(new_user, current_user)
 //        contract.errors.add :mail, :blank

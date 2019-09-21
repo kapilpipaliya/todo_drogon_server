@@ -6,11 +6,11 @@ namespace Reports {
 class CategoryReport : public Report {
 public:
    void report_type() {
-//    'category'
+//    "category"
   }
 
    void field() {
-//    'category_id'
+//    "category_id"
   }
 
    void rows() {

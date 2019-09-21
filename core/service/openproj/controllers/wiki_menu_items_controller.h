@@ -43,7 +43,7 @@ public:
 
 //    get_data_from_params(params)
 
-//    if ( wiki_menu_setting == 'no_item') {
+//    if ( wiki_menu_setting == "no_item") {
 //      unless this->wiki_menu_item.nil?
 //        if ( this->wiki_menu_item.is_only_main_item?) {
 //          if ( this->page.only_wiki_page?) {
@@ -61,9 +61,9 @@ public:
 //      this->wiki_menu_item.name = this->page.slug
 //      this->wiki_menu_item.title = wiki_menu_item_params[:title] || this->page_title
 
-//      if ( wiki_menu_setting == 'sub_item') {
+//      if ( wiki_menu_setting == "sub_item") {
 //        this->wiki_menu_item.parent_id = parent_wiki_menu_item
-//      } else if ( wiki_menu_setting == 'main_item') {
+//      } else if ( wiki_menu_setting == "main_item") {
 //        this->wiki_menu_item.parent_id = nil
 //        assign_wiki_menu_item_params this->wiki_menu_item
 //      }
@@ -76,11 +76,11 @@ public:
 //        flash[:notice] = t(:notice_successful_update)
 //      }
 
-//      redirect_back_or_default(action: 'edit', id: this->page)
+//      redirect_back_or_default(action: "edit", id: this->page)
 //    else
 //      respond_to { |format|
 //        format.html {
-//          render action: 'edit', id: this->page
+//          render action: "edit", id: this->page
 //        }
 //      }
 //    }
@@ -137,15 +137,15 @@ public:
 //  }
 
 //   void assign_wiki_menu_item_params(menu_item) {
-//    if ( wiki_menu_item_params[:new_wiki_page] == '1') {
+//    if ( wiki_menu_item_params[:new_wiki_page] == "1") {
 //      // menu_item.new_wiki_page = true
-//    } else if ( wiki_menu_item_params[:new_wiki_page] == '0') {
+//    } else if ( wiki_menu_item_params[:new_wiki_page] == "0") {
 //      // menu_item.new_wiki_page = false
 //    }
 
-//    if ( wiki_menu_item_params[:index_page] == '1') {
+//    if ( wiki_menu_item_params[:index_page] == "1") {
 //      // menu_item.index_page = true
-//    } else if ( wiki_menu_item_params[:index_page] == '0') {
+//    } else if ( wiki_menu_item_params[:index_page] == "0") {
 //      // menu_item.index_page = false
 //    }
 //  }

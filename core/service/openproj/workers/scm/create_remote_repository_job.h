@@ -15,12 +15,12 @@ class CreateRemoteRepositoryJob : public Scm::RemoteRepositoryJob {
 public:
    void perform() {
 //    response = send_request(repository_request.merge(action: :create))
-//    repository.root_url = response['path']
-//    repository.url = response['url']
+//    repository.root_url = response["path"]
+//    repository.url = response["url"]
 
 //    unless repository.save
 //      raise OpenProject::Scm::Exceptions::ScmError.new(
-//        I18n.t('repositories.errors.remote_save_failed')
+//        I18n.t("repositories.errors.remote_save_failed")
 //      )
     }
   };

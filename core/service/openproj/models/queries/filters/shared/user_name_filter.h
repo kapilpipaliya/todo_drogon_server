@@ -18,13 +18,13 @@ namespace Queries::Filters::Shared::UserNameFilter {
 
      void where() {
 //      case operator
-//      when '='
+//      when "="
 //        ["#{sql_concat_name} IN (?)", sql_value]
-//      when '!'
+//      when "!"
 //        ["#{sql_concat_name} NOT IN (?)", sql_value]
-//      when '~'
+//      when "~"
 //        ["#{sql_concat_name} LIKE ?", "%#{sql_value}%"]
-//      when '!~'
+//      when "!~"
 //        ["#{sql_concat_name} NOT LIKE ?", "%#{sql_value}%"]
 //      }
     }
@@ -33,9 +33,9 @@ namespace Queries::Filters::Shared::UserNameFilter {
 
 //     void sql_value() {
 //      case operator
-//      when '=', '!'
-//        values.map { |val| this->class.connection.quote_string(val.downcase) }.join(',')
-//      when '~', '!~'
+//      when "=", "!"
+//        values.map { |val| this->class.connection.quote_string(val.downcase) }.join(",")
+//      when "~", "!~"
 //        values.first.downcase
 //      }
 //    }
@@ -43,11 +43,11 @@ namespace Queries::Filters::Shared::UserNameFilter {
 //     void sql_concat_name() {
 //      case Setting.user_format
 //      when :firstname_lastname, :lastname_coma_firstname
-//        "LOWER(CONCAT(users.firstname, CONCAT(' ', users.lastname)))"
+//        "LOWER(CONCAT(users.firstname, CONCAT(" ", users.lastname)))"
 //      when :firstname
-//        'LOWER(users.firstname)'
+//        "LOWER(users.firstname)"
 //      when :lastname_firstname
-//        "LOWER(CONCAT(users.lastname, CONCAT(' ', users.firstname)))"
+//        "LOWER(CONCAT(users.lastname, CONCAT(" ", users.firstname)))"
 //      when :username
 //        "LOWER(users.login)"
 //      }

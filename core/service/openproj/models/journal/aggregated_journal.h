@@ -77,10 +77,10 @@ class AggregatedJournal {
 //      // already be present (in a merged form) in the row of our predecessor.
 //      Journal.from("(#{sql_rough_group(journable, until_version, journal_id)}) #{table_name}")
 //      .joins(Arel.sql("LEFT OUTER JOIN (#{sql_rough_group(journable, until_version, journal_id)}) addition
-//                              ON #{sql_on_groups_belong_condition(table_name, 'addition')}"))
+//                              ON #{sql_on_groups_belong_condition(table_name, "addition")}"))
 //      .joins(Arel.sql("LEFT OUTER JOIN (#{sql_rough_group(journable, until_version, journal_id)}) predecessor
-//                         ON #{sql_on_groups_belong_condition('predecessor', table_name)}"))
-//      .where(Arel.sql('predecessor.id IS NULL'))
+//                         ON #{sql_on_groups_belong_condition("predecessor", table_name)}"))
+//      .where(Arel.sql("predecessor.id IS NULL"))
 //      .order(Arel.sql("COALESCE(addition.created_at, #{table_name}.created_at) ASC"))
 //      .order(Arel.sql("#{version_projection} ASC"))
 //      .select(Arel.sql("#{table_name}.journable_id,
@@ -143,9 +143,9 @@ class AggregatedJournal {
     // its predecessor and successor.
 //     void sql_rough_group(journable, until_version, journal_id) {
 //      if ( until_version && !journable) {
-//        raise 'need to provide a journable, when specifying a version limit'
+//        raise "need to provide a journable, when specifying a version limit"
 //      } else if ( journable && journable.id.nil?) {
-//        raise 'journable has no id'
+//        raise "journable has no id"
 //      }
 
 //      conditions = additional_conditions(journable, until_version, journal_id)
@@ -158,11 +158,11 @@ class AggregatedJournal {
 //    }
 
 //     void additional_conditions(journable, until_version, journal_id) {
-//      where_conditions = ''
-//      join_conditions = ''
+//      where_conditions = ""
+//      join_conditions = ""
 
 //      if ( journable) {
-//        where_conditions += " AND predecessor.journable_type = '#{journable.class.name}' AND
+//        where_conditions += " AND predecessor.journable_type = "#{journable.class.name}" AND
 //                                  predecessor.journable_id = #{journable.id}"
 
 //        if ( until_version) {
@@ -194,8 +194,8 @@ class AggregatedJournal {
 
 //     void sql_rough_group_where(additional_conditions) {
 //      "WHERE (predecessor.user_id != successor.user_id OR
-//             (predecessor.notes != '' AND predecessor.notes IS NOT NULL) OR
-//             #{sql_beyond_aggregation_time?('predecessor', 'successor')} OR
+//             (predecessor.notes != "" AND predecessor.notes IS NOT NULL) OR
+//             #{sql_beyond_aggregation_time?("predecessor", "successor")} OR
 //             successor.id IS NULL)
 //             #{additional_conditions}"
 //    }
@@ -207,7 +207,7 @@ class AggregatedJournal {
     // This method returns the appropriate statement to be used inside a SELECT to
     // obtain the current group number.
 //     void sql_group_counter() {
-//      'row_number() OVER (ORDER BY predecessor.version ASC)'
+//      "row_number() OVER (ORDER BY predecessor.version ASC)"
 //    }
 
     // Similar to the WHERE statement used in :sql_rough_group. However, this condition will
@@ -218,8 +218,8 @@ class AggregatedJournal {
 //      #{predecessor}.user_id = #{successor}.user_id AND
 //      #{successor}.journable_type = #{predecessor}.journable_type AND
 //      #{successor}.journable_id = #{predecessor}.journable_id AND
-//      NOT ((#{predecessor}.notes != '' AND #{predecessor}.notes IS NOT NULL) AND
-//      (#{successor}.notes != '' AND #{successor}.notes IS NOT NULL)))"
+//      NOT ((#{predecessor}.notes != "" AND #{predecessor}.notes IS NOT NULL) AND
+//      (#{successor}.notes != "" AND #{successor}.notes IS NOT NULL)))"
 //    }
 
     // Returns a SQL condition that will determine whether two entries are too far apart (temporal)
@@ -230,11 +230,11 @@ class AggregatedJournal {
 //      if ( aggregation_time_seconds == 0) {
 //        // if ( aggregation is disabled, we consider everything to be beyond aggregation time) {
 //        // even if ( creation dates are exactly equal) {
-//        return '(true = true)'
+//        return "(true = true)"
 //      }
 
 //      difference = "(#{successor}.created_at - #{predecessor}.created_at)"
-//      threshold = "interval '#{aggregation_time_seconds} second'"
+//      threshold = "interval "#{aggregation_time_seconds} second""
 
 //      "(#{difference} > #{threshold})"
 //    }
@@ -324,7 +324,7 @@ class AggregatedJournal {
 //    this->journal = journal
 
 //    // explicitly checking false to allow passing nil as "no predecessor"
-//    // mind that we check this->predecessor with defined? below, so don't assign to it in all cases!
+//    // mind that we check this->predecessor with defined? below, so don"t assign to it in all cases!
 //    unless predecessor == false
 //      this->predecessor = predecessor
 //    }

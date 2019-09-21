@@ -9,7 +9,7 @@ class SearchFilter  : openproj::models::Queries::WorkPackages::Filter::WorkPacka
   // include Queries::WorkPackages::Filter::OrFilterForWpMixin
   // include Queries::WorkPackages::Filter::FilterOnTsvMixin
 
-//  CONTAINS_OPERATOR = '~'.freeze
+//  CONTAINS_OPERATOR = "~".freeze
 
 //  CE_FILTERS = [
 //    Queries::WorkPackages::Filter::FilterConfiguration.new(
@@ -55,7 +55,7 @@ class SearchFilter  : openproj::models::Queries::WorkPackages::Filter::WorkPacka
   }
 
    void human_name() {
-//    I18n.t('label_search')
+//    I18n.t("label_search")
   }
 
    void custom_field_configurations() {

@@ -5,22 +5,22 @@ namespace models {
 class Changeset : public ActiveRecord::Base {
   // belongs_to :repository
   // belongs_to :user
-  // has_many :file_changes, class_name: 'Change', dependent: :delete_all
+  // has_many :file_changes, class_name: "Change", dependent: :delete_all
 //  has_and_belongs_to_many :work_packages
 
 //  acts_as_journalized
 
-//  acts_as_event title: Proc.new { |o| "#{l(:label_revision)} #{o.format_identifier}" + (o.short_comments.blank? ? '' : (': ' + o.short_comments)) },
+//  acts_as_event title: Proc.new { |o| "#{l(:label_revision)} #{o.format_identifier}" + (o.short_comments.blank? ? "" : (": " + o.short_comments)) },
 //                description: :long_comments,
 //                datetime: :committed_on,
-//                url: Proc.new { |o| { controller: '/repositories', action: 'revision', project_id: o.repository.project_id, rev: o.identifier } },
+//                url: Proc.new { |o| { controller: "/repositories", action: "revision", project_id: o.repository.project_id, rev: o.identifier } },
 //                author: Proc.new { |o| o.author }
 
-//  acts_as_searchable columns: 'comments',
+//  acts_as_searchable columns: "comments",
 //                     include: { repository: :project },
 //                     references: [:repositories],
 //                     project_key: "#{Repository.table_name}.project_id",
-//                     date_column: 'committed_on'
+//                     date_column: "committed_on"
 
 //  // validates_presence_of :repository_id, :revision, :committed_on, :commit_date
 //  // validates_uniqueness_of :revision, scope: :repository_id
@@ -64,10 +64,10 @@ class Changeset : public ActiveRecord::Base {
 //  }
 
 //   void author() {
-//    user || committer.to_s.split('<').first
+//    user || committer.to_s.split("<").first
 //  }
 
-//  // Delegate to a Repository's log encoding
+//  // Delegate to a Repository"s log encoding
 //   void repository_encoding() {
 //    if ( repository.present?) {
 //      repository.repo_log_encoding
@@ -101,12 +101,12 @@ class Changeset : public ActiveRecord::Base {
 //   void scan_comment_for_work_package_ids() {
 //    if ( comments.blank?) { return ;}
 //    // keywords used to reference work packages
-//    ref_keywords = Setting.commit_ref_keywords.downcase.split(',').map(&:strip)
-//    ref_keywords_any = ref_keywords.delete('*')
+//    ref_keywords = Setting.commit_ref_keywords.downcase.split(",").map(&:strip)
+//    ref_keywords_any = ref_keywords.delete("*")
 //    // keywords used to fix work packages
-//    fix_keywords = Setting.commit_fix_keywords.downcase.split(',').map(&:strip)
+//    fix_keywords = Setting.commit_fix_keywords.downcase.split(",").map(&:strip)
 
-//    kw_regexp = (ref_keywords + fix_keywords).map { |kw| Regexp.escape(kw) }.join('|')
+//    kw_regexp = (ref_keywords + fix_keywords).map { |kw| Regexp.escape(kw) }.join("|")
 
 //    referenced_work_packages = []
 
@@ -148,15 +148,15 @@ class Changeset : public ActiveRecord::Base {
 
 //  // Returns the previous changeset
 //   void previous() {
-//    this->previous ||= Changeset.where(['id < ? AND repository_id = ?', id, repository_id]).order(Arel.sql('id DESC')).first
+//    this->previous ||= Changeset.where(["id < ? AND repository_id = ?", id, repository_id]).order(Arel.sql("id DESC")).first
 //  }
 
 //  // Returns the next changeset
 //   void next() {
-//    this->next ||= Changeset.where(['id > ? AND repository_id = ?', id, repository_id]).order(Arel.sql('id ASC')).first
+//    this->next ||= Changeset.where(["id > ? AND repository_id = ?", id, repository_id]).order(Arel.sql("id ASC")).first
 //  }
 
-//  // Creates a new Change from it's common parameters
+//  // Creates a new Change from it"s common parameters
 //   void create_change(change) {
 //    Change.create(changeset: self,
 //                  action: change[:action],
@@ -197,7 +197,7 @@ class Changeset : public ActiveRecord::Base {
 
 //    // the work_package may have been updated by the closure of another one (eg. duplicate)
 //    work_package.reload
-//    // don't change the status if ( the work package is closed) {
+//    // don"t change the status if ( the work package is closed) {
 //    if ( work_package.status && work_package.status.is_closed?) { return ;}
 
 //    work_package.add_journal(user || User.anonymous, ll(Setting.default_language, :text_status_changed_by_changeset, text_tag))
@@ -250,32 +250,32 @@ class Changeset : public ActiveRecord::Base {
   // TODO: refactor to a standard helper method
 //   void to_utf8(str, encoding) {
 //    if ( str.nil?) { return str ;}
-//    if ( str.respond_to?(:force_encoding)) { str.force_encoding('ASCII-8BIT') ;}
+//    if ( str.respond_to?(:force_encoding)) { str.force_encoding("ASCII-8BIT") ;}
 //    if ( str.empty?) {
-//      if ( str.respond_to?(:force_encoding)) { str.force_encoding('UTF-8') ;}
+//      if ( str.respond_to?(:force_encoding)) { str.force_encoding("UTF-8") ;}
 //      return str
 //    }
-//    normalized_encoding = encoding.blank? ? 'UTF-8' : encoding
+//    normalized_encoding = encoding.blank? ? "UTF-8" : encoding
 //    if ( str.respond_to?(:force_encoding)) {
-//      if ( normalized_encoding.upcase != 'UTF-8') {
+//      if ( normalized_encoding.upcase != "UTF-8") {
 //        str.force_encoding(normalized_encoding)
-//        str = str.encode('UTF-8', invalid: :replace,
-//                                  undef: :replace, replace: '?')
+//        str = str.encode("UTF-8", invalid: :replace,
+//                                  undef: :replace, replace: "?")
 //      else
-//        str.force_encoding('UTF-8')
+//        str.force_encoding("UTF-8")
 //        unless str.valid_encoding?
-//          str = str.encode('US-ASCII', invalid: :replace,
-//                                       undef: :replace, replace: '?').encode('UTF-8')
+//          str = str.encode("US-ASCII", invalid: :replace,
+//                                       undef: :replace, replace: "?").encode("UTF-8")
 //        }
 //      }
 //    else
 
-//      txtar = ''
+//      txtar = ""
 //      begin
-//        txtar += str.encode('UTF-8', normalized_encoding)
+//        txtar += str.encode("UTF-8", normalized_encoding)
 //      rescue Encoding::InvalidByteSequenceError, Encoding::UndefinedConversionError
 //        txtar += $!.success
-//        str = '?' + $!.failed[1, $!.failed.length]
+//        str = "?" + $!.failed[1, $!.failed.length]
 //        retry
 //      rescue
 //        txtar += $!.success

@@ -11,7 +11,7 @@ namespace Concerns::Layout {
 //      } else if ( this->project) {
 //        true
 //      else
-//        'no_menu'
+//        "no_menu"
 //      }
 //    }
 

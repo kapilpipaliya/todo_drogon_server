@@ -20,7 +20,7 @@ namespace CustomActions::Actions::Strategies::Date {
 //  private:
 
    void date_to_apply() {
-//    if ( values.first == '%CURRENT_DATE%') {
+//    if ( values.first == "%CURRENT_DATE%") {
 //      Date.today
 //    else
 //      values.first
@@ -29,7 +29,7 @@ namespace CustomActions::Actions::Strategies::Date {
 
 //   void to_date_or_nil(value) {
 //    case value
-//    when nil, '%CURRENT_DATE%'
+//    when nil, "%CURRENT_DATE%"
 //      value
 //    else
 //      value.to_date

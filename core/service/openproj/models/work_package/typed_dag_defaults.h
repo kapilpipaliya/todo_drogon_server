@@ -7,7 +7,7 @@ namespace WorkPackageN::TypedDagDefaults {
   // extend ActiveSupport::Concern
 
 //  included {
-//    // Can't use .alias here
+//    // Can"t use .alias here
 //    // as the dag methods are mixed in later
 
 //     void leaves() {

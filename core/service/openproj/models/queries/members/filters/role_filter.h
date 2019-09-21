@@ -25,7 +25,7 @@ class RoleFilter : public openproj::models::Queries::Members::Filters::MemberFil
   }
 
    void where() {
-//    operator_strategy.sql_for_field(values, 'member_roles', 'role_id')
+//    operator_strategy.sql_for_field(values, "member_roles", "role_id")
   }
 };
 }

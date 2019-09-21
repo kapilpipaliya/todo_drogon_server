@@ -13,7 +13,7 @@ namespace CustomActions::Actions::Strategies::Associated {
 //      if ( required?) {
 //        options
 //      else
-//        options.unshift(value: nil, label: I18n.t('placeholders.default'))
+//        options.unshift(value: nil, label: I18n.t("placeholders.default"))
 //      }
 //    }
   }
@@ -27,7 +27,7 @@ namespace CustomActions::Actions::Strategies::Associated {
   }
 
    void associated() {
-//    raise 'Not implemented error'
+//    raise "Not implemented error"
   }
 
 //   void validate(errors) {

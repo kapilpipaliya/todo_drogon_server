@@ -74,7 +74,7 @@ namespace QueryN::Sums {
 
 //   void crunch(num) {
 //    if ( num.nil? or num.integer?) { return num ;}
-//    Float(format '%.2f', num.to_f)
+//    Float(format "%.2f", num.to_f)
 //  }
 
 //   void group_for_issue(issue = this->current_issue) {

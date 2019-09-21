@@ -4,7 +4,7 @@ namespace openproj {
 namespace controller {
 class SettingsController : public ApplicationController {
 public:
-  // layout 'admin'
+  // layout "admin"
 
   // before_action :require_admin
 
@@ -21,7 +21,7 @@ public:
 
    void index() {
 //    edit
-//    render action: 'edit'
+//    render action: "edit"
   }
 
    void edit() {
@@ -32,7 +32,7 @@ public:
 //        .call(settings: permitted_params.settings.to_h)
 
 //      flash[:notice] = l(:notice_successful_update)
-//      redirect_to action: 'edit', tab: params[:tab]
+//      redirect_to action: "edit", tab: params[:tab]
 //    else
 //      this->options = {}
 //      this->options[:user_format] = UserN::USER_FORMATS_STRUCTURE.keys.map { |f| [User.current.name(f), f.to_s] }
@@ -49,7 +49,7 @@ public:
 //    if ( request.post?) {
 //      Setting["plugin_#{this->plugin.id}"] = params[:settings].permit!.to_h
 //      flash[:notice] = l(:notice_successful_update)
-//      redirect_to action: 'plugin', id: this->plugin.id
+//      redirect_to action: "plugin", id: this->plugin.id
 //    else
 //      this->partial = this->plugin.settings[:partial]
 //      this->settings = Setting["plugin_#{this->plugin.id}"]

@@ -4,9 +4,9 @@ namespace models {
 namespace Queries::WorkPackages::Filter::FilterOnTsvMixin {
    void concatenation() {
 //    case operator
-//    when '~'
+//    when "~"
 //      :and
-//    when '!~'
+//    when "!~"
 //      :and_not
 //    }
   }

@@ -17,7 +17,7 @@ public:
   //
   //   1. The language as configured by the user.
   //   2. The first language defined in the Accept-Language header sent by the browser.
-  //   3. OpenProject's default language defined in the settings.
+  //   3. OpenProject"s default language defined in the settings.
 
    void call() {
 //    lang = user_language || header_language || default_language
@@ -66,7 +66,7 @@ public:
 //   void find_language_or_prefix(language) {
 //    return nil unless language
 //    language = language.to_s.downcase
-//    find_language(language) || find_language(language.split('-').first)
+//    find_language(language) || find_language(language.split("-").first)
 //  }
 };
 }

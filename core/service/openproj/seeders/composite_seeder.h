@@ -37,9 +37,9 @@ public:
   //
   // Discovered seeders defined outside of the core (i.e. in plugins).
   //
-  // Seeders defined in the core have a simple namespace, e.g. 'BasicData'
-  // or 'DemoData'. Plugins must define their seeders in their own namespace,
-  // e.g. 'BasicData::Documents' in order to avoid name conflicts.
+  // Seeders defined in the core have a simple namespace, e.g. "BasicData"
+  // or "DemoData". Plugins must define their seeders in their own namespace,
+  // e.g. "BasicData::Documents" in order to avoid name conflicts.
 //   void discovered_seeder_classes() {
 //    Seeder
 //      .subclasses
@@ -50,7 +50,7 @@ public:
    virtual std::string namespace_() = 0;
 
   //
-  // Accepts plugin seeders, e.g. 'BasicData::Documents'.
+  // Accepts plugin seeders, e.g. "BasicData::Documents".
 //   void include_discovered_class?(discovered_class) {
 //    discovered_class.name =~ /^#{namespace}::/
 //  }

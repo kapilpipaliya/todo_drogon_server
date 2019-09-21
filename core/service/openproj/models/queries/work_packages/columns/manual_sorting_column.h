@@ -10,7 +10,7 @@ class ManualSortingColumn : public openproj::models::Queries::WorkPackages::Colu
 
    ManualSortingColumn() {
 //    super :manual_sorting,
-//          default_order: 'asc',
+//          default_order: "asc",
 //          sortable: "#{OrderedWorkPackage.table_name}.position NULLS LAST, #{WorkPackage.table_name}.id"
   }
 

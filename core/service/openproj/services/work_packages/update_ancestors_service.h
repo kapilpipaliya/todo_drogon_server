@@ -80,7 +80,7 @@ public:
 
 //   void set_journal_note(work_packages) {
 //    work_packages.each { |wp|
-//      wp.journal_notes = I18n.t('work_package.updated_automatically_by_child_changes', child: "##{work_package.id}")
+//      wp.journal_notes = I18n.t("work_package.updated_automatically_by_child_changes", child: "##{work_package.id}")
 //    }
 //  }
 

@@ -24,7 +24,7 @@ class AssigneeOrGroupFilter  :
   }
 
    void human_name() {
-//    I18n.t('query_fields.assignee_or_group')
+//    I18n.t("query_fields.assignee_or_group")
   }
 
    void key() {
@@ -35,7 +35,7 @@ class AssigneeOrGroupFilter  :
 //    operator_strategy.sql_for_field(
 //      values_replaced,
 //      this->class.model.table_name,
-//      'assigned_to_id'
+//      "assigned_to_id"
 //    )
   }
 

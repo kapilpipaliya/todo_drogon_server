@@ -11,7 +11,7 @@ class AssignedToFilter : openproj::models::Queries::WorkPackages::Filter::Princi
   }
 
    void human_name() {
-//    WorkPackage.human_attribute_name('assigned_to')
+//    WorkPackage.human_attribute_name("assigned_to")
   }
 
    void key() {

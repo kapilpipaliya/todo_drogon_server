@@ -28,7 +28,7 @@ class AttachmentBaseFilter : public openproj::models::Queries::WorkPackages::Fil
 //  }
 
    void where() {
-//    Queries::Operators::All.sql_for_field(values, join_table_alias, 'id')
+//    Queries::Operators::All.sql_for_field(values, join_table_alias, "id")
   }
 
   protected:
@@ -44,7 +44,7 @@ class AttachmentBaseFilter : public openproj::models::Queries::WorkPackages::Fil
    void join_condition() {
 //    <<-SQL
 //      #{join_table_alias}.container_id = #{WorkPackage.table_name}.id
-//      AND #{join_table_alias}.container_type = '#{WorkPackage.name}'
+//      AND #{join_table_alias}.container_type = "#{WorkPackage.name}"
 //      AND #{tsv_condition}
 //    SQL
   }

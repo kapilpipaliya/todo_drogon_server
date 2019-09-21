@@ -13,17 +13,17 @@ namespace WorkPackageN::TimeEntries {
 
 //     void cleanup_time_entries_before_destruction_of(work_packages,
 //                                                   user,
-//                                                   to_do = { action: 'destroy' })
+//                                                   to_do = { action: "destroy" })
 //      return false unless to_do.present?
 
 //      case to_do[:action]
-//      when 'destroy'
+//      when "destroy"
 //        true
 //        // nothing to {
-//      when 'nullify'
+//      when "nullify"
 //        work_packages = Array(work_packages)
-//        WorkPackage.update_time_entries(work_packages, 'work_package_id = NULL')
-//      when 'reassign'
+//        WorkPackage.update_time_entries(work_packages, "work_package_id = NULL")
+//      when "reassign"
 //        reassign_time_entries_before_destruction_of(work_packages, user, to_do[:reassign_to_id])
 //      else
 //        false
@@ -31,7 +31,7 @@ namespace WorkPackageN::TimeEntries {
 //    }
 
 //     void update_time_entries(work_packages, action) {
-//      TimeEntry.where(['work_package_id IN (?)', work_packages.map(&:id)]).update_all(action)
+//      TimeEntry.where(["work_package_id IN (?)", work_packages.map(&:id)]).update_all(action)
 //    }
 
 //     void reassign_time_entries_before_destruction_of(work_packages, user, ids) {

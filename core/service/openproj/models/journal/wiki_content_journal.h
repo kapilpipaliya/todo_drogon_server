@@ -4,7 +4,7 @@ namespace openproj {
 namespace models {
 namespace JournalN {
 class WikiContentJournal : public JournalN::BaseJournal {
-//  this->table_name = 'wiki_content_journals'
+//  this->table_name = "wiki_content_journals"
 };
 }
 }

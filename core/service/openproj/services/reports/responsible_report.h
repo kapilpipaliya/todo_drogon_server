@@ -6,11 +6,11 @@ namespace Reports{
 class ResponsibleReport : public Reports::Report {
 public:
    void report_type() {
-//    'responsible'
+//    "responsible"
   }
 
    void field() {
-//    this->field ||= 'responsible_id'
+//    this->field ||= "responsible_id"
   }
 
    void rows() {

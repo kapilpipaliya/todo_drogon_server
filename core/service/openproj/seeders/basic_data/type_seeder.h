@@ -27,10 +27,8 @@ class TypeSeeder : public Seeder {
     //          Type.create!(attributes)
     //        }
     //      }
-    std::cout << "data size: " << data_.size();
     auto clientPtr = drogon::app().getDbClient("sce");
     for (auto &it : data()) {
-      std::cout << "color: " << it.color_name;
       drogon::orm::Mapper<drogon_model::openproject6::Types> mapper(clientPtr);
 
       drogon::orm::Mapper<drogon_model::openproject6::Colors> mapper_color(
@@ -39,7 +37,7 @@ class TypeSeeder : public Seeder {
           Criteria(drogon_model::openproject6::Colors::Cols::_name,
                    CompareOperator::EQ, it.color_name));
       if (r.size() == 0) {
-        std::cout << "Not found color: " << it.color_name;
+        LOG_DEBUG << "Not found color: " << it.color_name;
       } else {
         drogon_model::openproject6::Types type;
         type.setName(it.name);
@@ -64,7 +62,7 @@ class TypeSeeder : public Seeder {
   }
 
   void not_applicable_message() {
-    //      'Skipping types - already exists/configured'
+    //      "Skipping types - already exists/configured"
   }
 
   //
@@ -115,38 +113,38 @@ class TypeSeeder : public Seeder {
   type_table() = 0;
 
   //     void type_description(type_name) {
-  //      if ( demo_data_for('type_configuration').nil?) { return '' ;}
+  //      if ( demo_data_for("type_configuration").nil?) { return "" ;}
 
-  //      demo_data_for('type_configuration').each { |entry|
+  //      demo_data_for("type_configuration").each { |entry|
   //        if ( entry[:type] && I18n.t(entry[:type]) === I18n.t(type_name)) {
-  //          return entry[:description] ? entry[:description] : ''
+  //          return entry[:description] ? entry[:description] : ""
   //        else
-  //          return ''
+  //          return ""
   //        }
   //      }
   //    }
 
-  //     void set_attribute_groups_for_type(type) {
-  //      if ( demo_data_for('type_configuration').nil?) { return ;}
+  void set_attribute_groups_for_type(drogon_model::openproject6::Types type) {
+    //      if ( demo_data_for("type_configuration").nil?) { return ;}
 
-  //      demo_data_for('type_configuration').each { |entry|
-  //        if ( entry[:form_configuration] && I18n.t(entry[:type]) ===
-  //        type.name) {
+    //      demo_data_for("type_configuration").each { |entry|
+    //        if ( entry[:form_configuration] && I18n.t(entry[:type]) ===
+    //        type.name) {
 
-  //          entry[:form_configuration].each { |form_config_attr|
-  //            groups = type.default_attribute_groups
-  //            query_association = 'query_' +
-  //            find_query_by_name(form_config_attr[:query_name]).to_s
-  //            groups.unshift([form_config_attr[:group_name],
-  //            [query_association.to_sym]])
+    //          entry[:form_configuration].each { |form_config_attr|
+    //            groups = type.default_attribute_groups
+    //            query_association = "query_" +
+    //            find_query_by_name(form_config_attr[:query_name]).to_s
+    //            groups.unshift([form_config_attr[:group_name],
+    //            [query_association.to_sym]])
 
-  //            type.attribute_groups = groups
-  //          }
+    //            type.attribute_groups = groups
+    //          }
 
-  //          type.save!
-  //        }
-  //      }
-  //    }
+    //          type.save!
+    //        }
+    //      }
+  }
 
  private:
   //     void find_query_by_name(name) {

@@ -17,7 +17,7 @@ public:
 //    p = Project.active.has_module(:repository)
 //        .includes(:repository)
 //        .references(:repositories)
-//        .order(Arel.sql('identifier'))
+//        .order(Arel.sql("identifier"))
 //    respond_to { |format|
 //      format.json {
 //        render json: p.to_json(include: :repository)
@@ -29,7 +29,7 @@ public:
   }
 
    void update_required_storage() {
-//    result = update_storage_information(this->repository, params[:force] == '1')
+//    result = update_storage_information(this->repository, params[:force] == "1")
 //    render plain: "Updated: #{result}", status: 200
   }
 
@@ -54,9 +54,9 @@ public:
    void repo_auth() {
 //    project = Project.find_by(identifier: params[:repository])
 //    if ( project && authorized?(project, this->authenticated_user)) {
-//      render plain: 'Access granted'
+//      render plain: "Access granted"
 //    else
-//      render plain: 'Not allowed', status: 403 // default to deny
+//      render plain: "Not allowed", status: 403 // default to deny
 //    }
   }
 
@@ -75,7 +75,7 @@ public:
    void check_enabled() {
 //    User.current = nil
 //    unless Setting.sys_api_enabled? && params[:key].to_s == Setting.sys_api_key
-//      render plain: 'Access denied. Repository management WS is disabled or key is invalid.',
+//      render plain: "Access denied. Repository management WS is disabled or key is invalid.",
 //             status: 403
 //      return false
 //    }
@@ -103,7 +103,7 @@ public:
 //      render plain: "Project ##{this->project.id} does not have a repository.", status: 404
 //    else
 //      if ( this->repository.scm.storage_available?) { return true ;}
-//      render plain: 'repositories.storage.not_available', status: 400
+//      render plain: "repositories.storage.not_available", status: 400
 //    }
 
 //    false
@@ -115,8 +115,8 @@ public:
 //      if ( this->authenticated_user) { return true ;}
 //    }
 
-//    response.headers['WWW-Authenticate'] = 'Basic realm="Repository Authentication"'
-//    render plain: 'Authorization required', status: 401
+//    response.headers["WWW-Authenticate"] = "Basic realm="Repository Authentication""
+//    render plain: "Authorization required", status: 401
 //    false
   }
 
@@ -132,10 +132,10 @@ public:
 //    user_id = Rails.cache.fetch(OpenProject::RepositoryAuthentication::CACHE_PREFIX + Digest::SHA1.hexdigest("#{username}#{password}"),
 //                                expires_in: OpenProject::RepositoryAuthentication::CACHE_EXPIRES_AFTER) {
 //      user = user_login(username, password)
-//      user ? user.id.to_s : '-1'
+//      user ? user.id.to_s : "-1"
 //    }
 
-//    if ( user_id.blank? or user_id == '-1') { return nil ;}
+//    if ( user_id.blank? or user_id == "-1") { return nil ;}
 
 //    user || User.find_by(id: user_id.to_i)
   }

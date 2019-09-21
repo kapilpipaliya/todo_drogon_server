@@ -10,13 +10,13 @@ namespace HomescreenHelper {
   //
   // Homescreen organization icon
    void organization_icon() {
-//    op_icon('icon-context icon-enterprise')
+//    op_icon("icon-context icon-enterprise")
   }
 
   //
   // Returns the user avatar or a default image
    void homescreen_user_avatar() {
-//    op_icon('icon-context icon-user')
+//    op_icon("icon-context icon-user")
   }
 
   //
@@ -28,7 +28,7 @@ namespace HomescreenHelper {
 //    link_to label,
 //            link[:href],
 //            title: label,
-//            target: '_blank'
+//            target: "_blank"
 //  }
 
   //

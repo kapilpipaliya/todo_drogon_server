@@ -8,14 +8,14 @@ class TimeEntry : public ActiveRecord::Base {
   // belongs_to :project
   // belongs_to :work_package
   // belongs_to :user
-  // belongs_to :activity, class_name: 'TimeEntryActivity', foreign_key: 'activity_id'
+  // belongs_to :activity, class_name: "TimeEntryActivity", foreign_key: "activity_id"
 
 //  acts_as_customizable
 
 //  acts_as_journalized
 
 //  acts_as_event title: Proc.new { |o| "#{l_hours(o.hours)} (#{o.project.event_title})" },
-//                url: Proc.new { |o| { controller: '/timelog', action: 'index', project_id: o.project, work_package_id: o.work_package } },
+//                url: Proc.new { |o| { controller: "/timelog", action: "index", project_id: o.project, work_package_id: o.work_package } },
 //                datetime: :created_on,
 //                author: :user,
 //                description: :comments
@@ -29,7 +29,7 @@ class TimeEntry : public ActiveRecord::Base {
 //   void visible(*args) {
 //    // TODO: check whether the visibility should also be influenced by the work
 //    // package the time entry is assigned to.  Currently a work package can
-//    // switch projects. But as the time entry is still part of it's original
+//    // switch projects. But as the time entry is still part of it"s original
 //    // project, it is unclear, whether the time entry is actually visible if the
 //    // user lacks the view_work_packages permission in the moved to project.
 //    joins(:project)

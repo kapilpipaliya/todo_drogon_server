@@ -54,7 +54,7 @@ namespace Users {
 
      void log_failure() {
 //      Rails.logger.info {
-//        "User #{current_user.login} failed password change: #{current_user.errors.full_messages.join(', ')}."
+//        "User #{current_user.login} failed password change: #{current_user.errors.full_messages.join(", ")}."
 //      }
     }
   };

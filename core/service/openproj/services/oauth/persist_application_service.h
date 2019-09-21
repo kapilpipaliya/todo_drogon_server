@@ -1,6 +1,6 @@
 #pragma once
-//require_dependency 'user'
-//require_dependency 'principal'
+//require_dependency "user"
+//require_dependency "principal"
 
 namespace openproj {
 namespace service {
@@ -30,7 +30,7 @@ namespace OAuth {
 //      if ( application.owner_id) { return ;}
 
 //      application.owner = current_user
-//      application.owner_type = 'User'
+//      application.owner_type = "User"
 //    }
   };
 }

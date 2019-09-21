@@ -4,69 +4,69 @@ namespace ProjectsHelper {
   // include WorkPackagesFilterHelper
 
 //   void link_to_version(version, html_options = {}, options = {}) {
-//    return '' unless version && version.is_a?(Version)
+//    return "" unless version && version.is_a?(Version)
 
 //    link_name = options[:before_text].to_s.html_safe + format_version_name(version)
 //    link_to_if ( version.visible?,) {
 //               link_name,
-//               { controller: '/versions', action: 'show', id: version },
+//               { controller: "/versions", action: "show", id: version },
 //               html_options
 //  }
 
 //   void project_settings_tabs() {
 //    tabs = [
 //      {
-//        name: 'info',
+//        name: "info",
 //        action: :edit_project,
-//        partial: 'projects/edit',
+//        partial: "projects/edit",
 //        label: :label_information_plural
 //      },
 //      {
-//        name: 'modules',
+//        name: "modules",
 //        action: :select_project_modules,
-//        partial: 'project_settings/modules',
+//        partial: "project_settings/modules",
 //        label: :label_module_plural
 //      },
 //      {
-//        name: 'custom_fields',
+//        name: "custom_fields",
 //        action: :edit_project,
-//        partial: 'project_settings/custom_fields',
+//        partial: "project_settings/custom_fields",
 //        label: :label_custom_field_plural
 //      },
 //      {
-//        name: 'versions',
+//        name: "versions",
 //        action: :manage_versions,
-//        partial: 'project_settings/versions',
+//        partial: "project_settings/versions",
 //        label: :label_version_plural
 //      },
 //      {
-//        name: 'categories',
+//        name: "categories",
 //        action: :manage_categories,
-//        partial: 'project_settings/categories',
+//        partial: "project_settings/categories",
 //        label: :label_work_package_category_plural
 //      },
 //      {
-//        name: 'repository',
+//        name: "repository",
 //        action: :manage_repository,
-//        partial: 'repositories/settings',
+//        partial: "repositories/settings",
 //        label: :label_repository
 //      },
 //      {
-//        name: 'forums',
+//        name: "forums",
 //        action: :manage_forums,
-//        partial: 'project_settings/forums',
+//        partial: "project_settings/forums",
 //        label: :label_forum_plural
 //      },
 //      {
-//        name: 'activities',
+//        name: "activities",
 //        action: :manage_project_activities,
-//        partial: 'project_settings/activities',
+//        partial: "project_settings/activities",
 //        label: :enumeration_activities
 //      },
 //      {
-//        name: 'types',
+//        name: "types",
 //        action: :manage_types,
-//        partial: 'project_settings/types',
+//        partial: "project_settings/types",
 //        label: :label_work_package_types
 //      }
 //    ]
@@ -126,16 +126,16 @@ namespace ProjectsHelper {
 //    if ( User.current.allowed_to? :add_subprojects, project) {
 //      [t(:label_subproject_new),
 //       new_project_path(parent_id: project),
-//       class: 'icon-context icon-add',
+//       class: "icon-context icon-add",
 //       title: t(:label_subproject_new)]
 //    }
 //  }
 
 //   void project_more_menu_settings_item(project) {
-//    if ( User.current.allowed_to?({ controller: '/project_settings', action: 'show' }, project)) {
+//    if ( User.current.allowed_to?({ controller: "/project_settings", action: "show" }, project)) {
 //      [t(:label_project_settings),
-//       { controller: '/project_settings', action: 'show', id: project },
-//       class: 'icon-context icon-settings',
+//       { controller: "/project_settings", action: "show", id: project },
+//       class: "icon-context icon-settings",
 //       title: t(:label_project_settings)]
 //    }
 //  }
@@ -144,9 +144,9 @@ namespace ProjectsHelper {
 //    if ( User.current.admin? && project.active?) {
 //      [t(:button_archive),
 //       archive_project_path(project, status: params[:status]),
-//       data: { confirm: t('project.archive.are_you_sure', name: project.name) },
+//       data: { confirm: t("project.archive.are_you_sure", name: project.name) },
 //       method: :put,
-//       class: 'icon-context icon-locked',
+//       class: "icon-context icon-locked",
 //       title: t(:button_archive)]
 //    }
 //  }
@@ -156,7 +156,7 @@ namespace ProjectsHelper {
 //      [t(:button_unarchive),
 //       unarchive_project_path(project, status: params[:status]),
 //       method: :put,
-//       class: 'icon-context icon-unlocked',
+//       class: "icon-context icon-unlocked",
 //       title: t(:button_unarchive)]
 //    }
 //  }
@@ -165,7 +165,7 @@ namespace ProjectsHelper {
 //    if ( User.current.allowed_to?(:copy_projects, project) && !project.archived?) {
 //      [t(:button_copy),
 //       copy_from_project_path(project, :admin),
-//       class: 'icon-context icon-copy',
+//       class: "icon-context icon-copy",
 //       title: t(:button_copy)]
 //    }
 //  }
@@ -174,13 +174,13 @@ namespace ProjectsHelper {
 //    if ( User.current.admin) {
 //      [t(:button_delete),
 //       confirm_destroy_project_path(project),
-//       class: 'icon-context icon-delete',
+//       class: "icon-context icon-delete",
 //       title: t(:button_delete)]
 //    }
 //  }
 
 //   void shorten_text(text, length) {
-//    text.to_s.gsub(/\A(.{#{length}[^\n\r]*).*\z/m, '\1...').strip
+//    text.to_s.gsub(/\A(.{#{length}[^\n\r]*).*\z/m, "\1...").strip
 //  }
 
 //   void projects_with_level(projects) {
@@ -198,11 +198,11 @@ namespace ProjectsHelper {
 //  }
 
 //   void project_css_classes(project) {
-//    s = 'project'
+//    s = "project"
 
-//    if ( project.root?) { s << ' root' ;}
-//    if ( project.child?) { s << ' child' ;}
-//    s << (project.leaf? ? ' leaf' : ' parent')
+//    if ( project.root?) { s << " root" ;}
+//    if ( project.child?) { s << " child" ;}
+//    s << (project.leaf? ? " leaf" : " parent")
 
 //    s
 //  }
@@ -237,7 +237,7 @@ namespace ProjectsHelper {
 //   void projects_sort_header_tag(*args) {
 //    former_criteria = this->sort_criteria.criteria.dup
 
-//    this->sort_criteria.criteria.reject! { |a, _| a == 'lft' }
+//    this->sort_criteria.criteria.reject! { |a, _| a == "lft" }
 
 //    sort_header_tag(*args)
 //  ensure
@@ -246,18 +246,18 @@ namespace ProjectsHelper {
 
 //   void deactivate_class_on_lft_sort() {
 //    if ( sorted_by_lft?) {
-//      '-inactive'
+//      "-inactive"
 //    }
 //  }
 
 //   void href_only_when_not_sort_lft() {
 //    unless sorted_by_lft?
-//      "href=#{projects_path(sortBy: JSON::dump([['lft', 'asc']]))}"
+//      "href=#{projects_path(sortBy: JSON::dump([["lft", "asc"]]))}"
 //    }
 //  }
 
 //   void sorted_by_lft?() {
-//    this->sort_criteria.first_key == 'lft'
+//    this->sort_criteria.first_key == "lft"
 //  }
 }
 }

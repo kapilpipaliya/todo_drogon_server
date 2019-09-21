@@ -5,18 +5,18 @@ namespace TypesHelper {
 //    return unless type
 
 //    css_class = if ( type.is_milestone?) {
-//                  'color--milestone-icon'
+//                  "color--milestone-icon"
 //                else
-//                  'color--phase-icon'
+//                  "color--phase-icon"
 //                }
 
 //    color = if ( type.color.present?) {
 //              type.color.hexcode
 //            else
-//              '#CCC'
+//              "#CCC"
 //            }
 
-//    content_tag(:span, ' ',
+//    content_tag(:span, " ",
 //                class: css_class,
 //                style: "background-color: #{color}")
 //  }

@@ -17,7 +17,7 @@ class Subversion : public Repository {
 //    if ( scm_type == this->class.managed_type) {
 //      unless manageable?
 //        raise OpenProject::Scm::Exceptions::RepositoryBuildError.new(
-//          I18n.t('repositories.managed.error_not_manageable')
+//          I18n.t("repositories.managed.error_not_manageable")
 //        )
 //      }
 
@@ -46,7 +46,7 @@ class Subversion : public Repository {
   }
 
    void repository_type() {
-//    'Subversion'
+//    "Subversion"
   }
 
    bool supports_directory_revisions() {
@@ -54,17 +54,17 @@ class Subversion : public Repository {
   }
 
    void repo_log_encoding() {
-//    'UTF-8'
+//    "UTF-8"
   }
 
 //   void latest_changesets(path, rev, limit = 10) {
 //    revisions = scm.revisions(path, rev, nil, limit: limit)
-//    revisions ? changesets.where(revision: revisions.map(&:identifier)).order(Arel.sql('committed_on DESC')).includes(:user) : []
+//    revisions ? changesets.where(revision: revisions.map(&:identifier)).order(Arel.sql("committed_on DESC")).includes(:user) : []
 //  }
 
   // Returns a path relative to the url of the repository
 //   void relative_path(path) {
-//    path.gsub(Regexp.new("^\/?#{Regexp.escape(relative_url)}\/"), '')
+//    path.gsub(Regexp.new("^\/?#{Regexp.escape(relative_url)}\/"), "")
 //  }
 
    void fetch_changesets() {
@@ -83,7 +83,7 @@ class Subversion : public Repository {
 //        while (identifier_from <= scm_revision){
 //          // loads changesets by batches of 200
 //          identifier_to = [identifier_from + 199, scm_revision].min
-//          revisions = scm.revisions('', identifier_to, identifier_from, with_paths: true)
+//          revisions = scm.revisions("", identifier_to, identifier_from, with_paths: true)
 //          revisions.reverse_each { |revision|
 //            transaction {
 //              changeset = Changeset.create(repository: self,
@@ -112,7 +112,7 @@ class Subversion : public Repository {
   //     url      = file:///var/svn/foo/bar
   //     => returns /bar
    void relative_url() {
-//    this->relative_url ||= url.gsub(Regexp.new("^#{Regexp.escape(root_url || scm.root_url)}", Regexp::IGNORECASE), '')
+//    this->relative_url ||= url.gsub(Regexp.new("^#{Regexp.escape(root_url || scm.root_url)}", Regexp::IGNORECASE), "")
   }
 };
 }

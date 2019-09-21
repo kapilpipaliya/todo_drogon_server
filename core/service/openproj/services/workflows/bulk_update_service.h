@@ -40,8 +40,8 @@ public:
 //                                      role: role,
 //                                      old_status: status_map[status_id.to_i],
 //                                      new_status: status_map[new_status_id.to_i],
-//                                      author: options_include(options, 'author'),
-//                                      assignee: options_include(options, 'assignee'))
+//                                      author: options_include(options, "author"),
+//                                      assignee: options_include(options, "assignee"))
 //      }
 //    }
 
@@ -57,14 +57,14 @@ public:
 
 //    columns = %w(role_id type_id old_status_id new_status_id author assignee)
 //    values = workflows
-//             .map { |w| "(#{w.attributes.slice(*columns).values.join(', ')})" }
-//             .join(', ')
+//             .map { |w| "(#{w.attributes.slice(*columns).values.join(", ")})" }
+//             .join(", ")
 
 //    // use Workflow.insert_all in rails 6
 //    sql = <<-SQL
 //          INSERT
 //            INTO #{Workflow.table_name}
-//            (#{columns.join(', ')})
+//            (#{columns.join(", ")})
 //          VALUES
 //            #{values}
 //    SQL
@@ -77,7 +77,7 @@ public:
 //  }
 
 //   void options_include(options, string) {
-//    options.is_a?(Array) && options.include?(string) && !options.include?('always')
+//    options.is_a?(Array) && options.include?(string) && !options.include?("always")
 //  }
 };
 }

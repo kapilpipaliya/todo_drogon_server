@@ -20,7 +20,7 @@ class TypeFilter : public openproj::models::Queries::Principals::Filters::Princi
   }
 
    void scope() {
-//    if ( operator == '=') {
+//    if ( operator == "=") {
 //      Principal.where(type: values)
 //    else
 //      Principal.where.not(type: values)
