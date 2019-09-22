@@ -15,6 +15,7 @@ class Seed {
  private:
   std::shared_ptr<websocket::todo::TodoContext> context;
   sql::Query query;
+  void printsummery();
 };
 }  // namespace service
 }  // namespace todo
