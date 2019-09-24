@@ -3,9 +3,10 @@
 #include <yaml-cpp/yaml.h>
 #include "activerecord.h"
 #include "iostream"
+#include "Settings.h"
 namespace openproj {
 namespace models {
-class Setting : public ActiveRecord::Base {
+class Setting : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Settings {
  public:
   YAML::Node available_settings;
   Setting() {

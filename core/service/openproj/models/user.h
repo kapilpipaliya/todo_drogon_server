@@ -1,10 +1,10 @@
 #pragma once
 #include "principal.h"
-//#include "digest/sha1"
+#include "Users.h"
 
 namespace openproj {
 namespace models {
-class User : public Principal {
+class User : public Principal, public drogon_model::openproject6::Users {
 //  USER_FORMATS_STRUCTURE = {
 //    firstname_lastname:       [:firstname, :lastname],
 //    firstname:                [:firstname],

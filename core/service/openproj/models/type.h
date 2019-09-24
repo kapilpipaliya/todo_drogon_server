@@ -1,9 +1,10 @@
 #pragma once
 
 #include "activerecord.h"
+#include "Types.h"
 namespace openproj {
 namespace models {
-class Type : public ActiveRecord::Base {
+class Type : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Types {
   // extend Pagination::Model
 
   // Work Package attributes for this type

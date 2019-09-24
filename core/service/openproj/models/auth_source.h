@@ -1,8 +1,10 @@
-#pragma once
+#ifndef OPENPROJ_MODELS_AUTH_SOURCE_H
+#define OPENPROJ_MODELS_AUTH_SOURCE_H
+#include "AuthSources.h"
 #include "activerecord.h"
 namespace openproj {
 namespace models {
-class AuthSource : public ActiveRecord::Base {
+class AuthSource : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::AuthSources {
   // include Redmine::Ciphering
 
   // has_many :users
@@ -81,3 +83,4 @@ class AuthSource : public ActiveRecord::Base {
 }
 
 }
+#endif

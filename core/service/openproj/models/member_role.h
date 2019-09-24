@@ -1,8 +1,9 @@
 #pragma once
 #include "activerecord.h"
+#include "MemberRoles.h"
 namespace openproj {
 namespace models {
-class MemberRole : public ActiveRecord::Base {
+class MemberRole : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::MemberRoles {
   // belongs_to :member
   // belongs_to :role
 

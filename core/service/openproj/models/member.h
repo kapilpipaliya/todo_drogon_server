@@ -1,8 +1,9 @@
 #pragma once
 #include "activerecord.h"
+#include "Members.h"
 namespace openproj {
 namespace models {
-class Member : public ActiveRecord::Base {
+class Member : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Members {
   // extend DeprecatedAlias
 
   // belongs_to :principal, foreign_key: "user_id"

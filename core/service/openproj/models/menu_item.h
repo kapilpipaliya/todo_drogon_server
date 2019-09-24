@@ -1,8 +1,9 @@
 #pragma once
 #include "activerecord.h"
+#include "Members.h"
 namespace openproj {
 namespace models {
-class MenuItem : public ActiveRecord::Base {
+class MenuItem : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Members {
   // belongs_to :parent, class_name: "MenuItem"
   // has_many :children, -> {
 //    order("id ASC")

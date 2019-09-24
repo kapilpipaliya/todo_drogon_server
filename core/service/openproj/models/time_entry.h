@@ -1,8 +1,9 @@
 #pragma once
 #include "activerecord.h"
+#include "TimeEntries.h"
 namespace openproj {
 namespace models {
-class TimeEntry : public ActiveRecord::Base {
+class TimeEntry : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::TimeEntries {
   // could have used polymorphic association
   // project association here allows easy loading of time entries at project level with one database trip
   // belongs_to :project

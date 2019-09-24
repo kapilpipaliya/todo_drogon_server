@@ -1,10 +1,10 @@
 #pragma once
 #include "activerecord.h"
 //#include "diff"
-
+#include "WikiPages.h"
 namespace openproj {
 namespace models {
-class WikiPage : public ActiveRecord::Base {
+class WikiPage : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::WikiPages {
   // belongs_to :wiki, touch: true
   // has_one :project, through: :wiki
   // has_one :content, class_name: "WikiContent", foreign_key: "page_id", dependent: :destroy

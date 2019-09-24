@@ -1,8 +1,9 @@
 #pragma once
 #include "activerecord.h"
+#include "Repositories.h"
 namespace openproj {
 namespace models {
-class Repository : public ActiveRecord::Base {
+class Repository : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Repositories {
   // include Redmine::Ciphering
   // include OpenProject::Scm::ManageableRepository
 

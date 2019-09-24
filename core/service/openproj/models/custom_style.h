@@ -1,8 +1,9 @@
 #pragma once
 #include "activerecord.h"
+#include "CustomStyles.h"
 namespace openproj {
 namespace models {
-class CustomStyle : public ActiveRecord::Base {
+class CustomStyle : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::CustomStyles {
 //  mount_uploader :logo, OpenProject::Configuration.file_uploader
 //  mount_uploader :favicon, OpenProject::Configuration.file_uploader
 //  mount_uploader :touch_icon, OpenProject::Configuration.file_uploader

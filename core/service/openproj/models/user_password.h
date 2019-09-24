@@ -1,8 +1,9 @@
 #pragma once
 #include "activerecord.h"
+#include "UserPasswords.h"
 namespace openproj {
 namespace models {
-class UserPassword : public ActiveRecord::Base {
+class UserPassword : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::UserPasswords {
   // belongs_to :user, inverse_of: :passwords
 
   // passwords must never be modified, so doing this on create should be enough

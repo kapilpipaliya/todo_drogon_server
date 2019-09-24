@@ -1,10 +1,10 @@
 #pragma once
 #include "activerecord.h"
 //#include "zlib"
-
+#include "WikiContents.h"
 namespace openproj {
 namespace models {
-class WikiContent : public ActiveRecord::Base {
+class WikiContent : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::WikiContents {
   // belongs_to :page, class_name: "WikiPage", foreign_key: "page_id"
   // belongs_to :author, class_name: "User", foreign_key: "author_id"
   // validates_length_of :comments, maximum: 255, allow_nil: true

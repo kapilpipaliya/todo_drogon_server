@@ -1,8 +1,9 @@
 #pragma once
 #include "activerecord.h"
+#include "Forums.h"
 namespace openproj {
 namespace models {
-class Forum : public ActiveRecord::Base {
+class Forum : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Forums {
   // belongs_to :project
   // has_many :topics, -> {
 //    where("#{Message.table_name}.parent_id IS NULL")

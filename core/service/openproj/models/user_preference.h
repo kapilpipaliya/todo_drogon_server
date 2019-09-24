@@ -1,8 +1,9 @@
 #pragma once
 #include "activerecord.h"
+#include "UserPreferences.h"
 namespace openproj {
 namespace models {
-class UserPreference : public ActiveRecord::Base {
+class UserPreference : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::UserPreferences {
   // belongs_to :user
 //  serialize :others
 

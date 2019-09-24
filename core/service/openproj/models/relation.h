@@ -1,8 +1,9 @@
 #pragma once
 #include "activerecord.h"
+#include "Relations.h"
 namespace openproj {
 namespace models {
-class Relation : public ActiveRecord::Base {
+class Relation : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Relations {
   // include Concerns::VirtualAttribute
 
   // scope :of_work_package,

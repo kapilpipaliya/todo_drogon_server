@@ -1,8 +1,9 @@
 #pragma once
 #include "activerecord.h"
+#include "Changesets.h"
 namespace openproj {
 namespace models {
-class Changeset : public ActiveRecord::Base {
+class Changeset : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Changesets {
   // belongs_to :repository
   // belongs_to :user
   // has_many :file_changes, class_name: "Change", dependent: :delete_all

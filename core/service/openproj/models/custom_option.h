@@ -1,11 +1,13 @@
 #pragma once
 #include "activerecord.h"
+#include "CustomOptions.h"
+
 //
 // A custom option is a possible value for a given custom field
 // which is restricted to a set of specific values.
 namespace openproj {
 namespace models {
-class CustomOption : public ActiveRecord::Base {
+class CustomOption : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::CustomOptions {
 //  acts_as_list
 
   // belongs_to :custom_field, touch: true

@@ -1,8 +1,9 @@
 #pragma once
 #include "activerecord.h"
+#include "Journals.h"
 namespace openproj {
 namespace models {
-class Journal : public ActiveRecord::Base {
+class Journal : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Journals {
 //  this->table_name = "journals"
 
   // include ::JournalChanges

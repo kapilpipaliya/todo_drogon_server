@@ -1,8 +1,9 @@
 #pragma once
 #include "activerecord.h"
+#include "CustomFields.h"
 namespace openproj {
 namespace models {
-class CustomField : public ActiveRecord::Base {
+class CustomField : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::CustomFields {
   // include CustomField::OrderStatements
 
   // has_many :custom_values, dependent: :delete_all

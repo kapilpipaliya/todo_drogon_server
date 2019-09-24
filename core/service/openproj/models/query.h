@@ -1,8 +1,9 @@
 #pragma once
 #include "activerecord.h"
+#include "Queries.h"
 namespace openproj {
 namespace models {
-class Query : public ActiveRecord::Base {
+class Query : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Queries {
   // include Timelines
   // include Highlighting
   // include ManualSorting

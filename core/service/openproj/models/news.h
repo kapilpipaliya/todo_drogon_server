@@ -1,8 +1,9 @@
 #pragma once
 #include "activerecord.h"
+#include "News.h"
 namespace openproj {
 namespace models {
-class News : public ActiveRecord::Base {
+class News : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::News {
   // belongs_to :project
   // belongs_to :author, class_name: "User", foreign_key: "author_id"
   // has_many :comments, -> {

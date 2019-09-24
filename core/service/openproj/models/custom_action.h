@@ -1,8 +1,9 @@
 #pragma once
 #include "activerecord.h"
+#include "CustomActions.h"
 namespace openproj {
 namespace models {
-class CustomAction : public ActiveRecord::Base {
+class CustomAction : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::CustomActions {
   // validates :name, length: { maximum: 255, minimum: 1 }
 //  serialize :actions, CustomActions::Actions::Serializer
 //  has_and_belongs_to_many :status_conditions, class_name: "Status"

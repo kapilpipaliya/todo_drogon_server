@@ -1,8 +1,10 @@
 #pragma once
 #include "activerecord.h"
+#include "Colors.h"
+
 namespace openproj {
 namespace models {
-class Color : public ActiveRecord::Base {
+class Color : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Colors {
 //  this->table_name = "colors"
 
   // has_many :planning_element_types, class_name:  "Type",

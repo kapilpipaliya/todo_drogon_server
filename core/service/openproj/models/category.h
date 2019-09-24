@@ -1,8 +1,9 @@
 #pragma once
 #include "activerecord.h"
+#include "Categories.h"
 namespace openproj {
 namespace models {
-class Category : public ActiveRecord::Base {
+class Category : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Categories {
   // belongs_to :project
   // belongs_to :assigned_to, class_name: "Principal", foreign_key: "assigned_to_id"
   // has_many :work_packages, foreign_key: "category_id", dependent: :nullify

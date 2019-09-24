@@ -1,8 +1,12 @@
 #pragma once
 #include "activerecord.h"
+#include "WorkPackages.h"
 namespace openproj {
 namespace models {
-class WorkPackage : public ActiveRecord::Base {
+
+class WorkPackage : public openproj::models::ActiveRecord::Base,
+                    public drogon_model::openproject6::WorkPackages {
+ public:
   // include WorkPackageN::Validations
   // include WorkPackageN::SchedulingRules
   // include WorkPackageN::StatusTransitions

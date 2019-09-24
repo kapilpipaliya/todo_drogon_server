@@ -1,8 +1,9 @@
 #pragma once
 #include "activerecord.h"
+#include "Watchers.h"
 namespace openproj {
 namespace models {
-class Watcher : public ActiveRecord::Base {
+class Watcher : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Watchers {
   // belongs_to :watchable, polymorphic: true
   // belongs_to :user
 

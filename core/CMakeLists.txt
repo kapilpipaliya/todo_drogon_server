@@ -98,6 +98,7 @@ actor/validation.cpp
 
     strfns.cpp
 )
+include_directories(../models)
 
 AUX_SOURCE_DIRECTORY(./service JEWEL_SRC)
 AUX_SOURCE_DIRECTORY(./service/jadmin JEWEL_SRC)

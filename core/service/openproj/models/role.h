@@ -3,7 +3,7 @@
 #include "models/Roles.h"
 namespace openproj {
 namespace models {
-class Role : public ActiveRecord::Base {
+class Role : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Roles {
 public:
   // extend Pagination::Model
 

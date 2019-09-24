@@ -1,8 +1,9 @@
 #pragma once
 #include "activerecord.h"
+#include "Messages.h"
 namespace openproj {
 namespace models {
-class Message : public ActiveRecord::Base {
+class Message : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Messages {
   // include OpenProject::JournalN::AttachmentHelper
 
   // belongs_to :forum

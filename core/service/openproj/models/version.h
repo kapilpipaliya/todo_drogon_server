@@ -1,8 +1,9 @@
 #pragma once
 #include "activerecord.h"
+#include "Versions.h"
 namespace openproj {
 namespace models {
-class Version : public ActiveRecord::Base {
+class Version : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Versions {
   // include VersionN::ProjectSharing
 
   // belongs_to :project

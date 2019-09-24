@@ -1,8 +1,9 @@
 #pragma once
 #include "activerecord.h"
+#include "Statuses.h"
 namespace openproj {
 namespace models {
-class Status : public ActiveRecord::Base {
+class Status : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Statuses {
   // extend Pagination::Model
 
 //  default_scope { order_by_position }

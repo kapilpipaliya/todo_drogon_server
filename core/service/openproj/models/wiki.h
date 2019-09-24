@@ -1,8 +1,9 @@
 #pragma once
 #include "activerecord.h"
+#include "Wikis.h"
 namespace openproj {
 namespace models {
-class Wiki : public ActiveRecord::Base {
+class Wiki : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Wikis {
   // belongs_to :project
   // has_many :pages, -> {
 //    order("title")
