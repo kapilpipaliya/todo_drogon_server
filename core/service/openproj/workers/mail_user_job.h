@@ -1,5 +1,6 @@
 #pragma once
 #include "application_job.h"
+#include "caf/all.hpp"
 //
 // We use this extra job instead of just calling
 //
@@ -21,7 +22,7 @@
 // ```
 namespace openproj {
 namespace worker {
-class MailUserJob : public ApplicationJob {
+class MailUserJob : public caf::event_based_actor, public ApplicationJob {
 public:
 //  attr_reader :mail
 

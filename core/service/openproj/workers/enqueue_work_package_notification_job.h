@@ -1,9 +1,10 @@
 #pragma once
 #include "application_job.h"
+#include "caf/all.hpp"
 // Enqueues
 namespace openproj {
 namespace worker {
-class EnqueueWorkPackageNotificationJob : public ApplicationJob {
+class EnqueueWorkPackageNotificationJob: public caf::event_based_actor, public ApplicationJob {
 public:
 //   EnqueueWorkPackageNotificationJob(journal_id, author_id) {
 //    this->journal_id = journal_id

@@ -1,5 +1,6 @@
 #pragma once
 #include "../application_job.h"
+#include "caf/all.hpp"
 //
 // Provides an asynchronous job to create a managed repository on the filesystem.
 // Currently, this is run synchronously due to potential issues
@@ -12,7 +13,7 @@
 namespace openproj {
 namespace worker {
 namespace Scm {
-class RemoteRepositoryJob : public ApplicationJob {
+class RemoteRepositoryJob: public caf::event_based_actor, public ApplicationJob {
 public:
 //  attr_reader :repository
 

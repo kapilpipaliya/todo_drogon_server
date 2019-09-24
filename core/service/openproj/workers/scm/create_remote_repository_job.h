@@ -1,5 +1,6 @@
 #pragma once
 #include "remote_repository_job.h"
+#include "caf/all.hpp"
 //
 // Provides an asynchronous job to create a managed repository on a remote system
 // using a simple HTTP callback
@@ -11,7 +12,7 @@
 namespace openproj {
 namespace worker {
 namespace Scm {
-class CreateRemoteRepositoryJob : public Scm::RemoteRepositoryJob {
+class CreateRemoteRepositoryJob: public caf::event_based_actor, public Scm::RemoteRepositoryJob {
 public:
    void perform() {
 //    response = send_request(repository_request.merge(action: :create))

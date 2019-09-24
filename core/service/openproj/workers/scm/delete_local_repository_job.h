@@ -1,6 +1,6 @@
 #pragma once
 #include "../application_job.h"
-//
+#include "caf/all.hpp"
 // Provides an asynchronous job to delete a managed repository on the filesystem.
 // Currently, this is run synchronously due to potential issues
 // with error handling.
@@ -11,7 +11,7 @@ namespace openproj {
 namespace worker {
 namespace Scm {
 
-class DeleteLocalRepositoryJob : public ApplicationJob {
+class DeleteLocalRepositoryJob: public caf::event_based_actor, public ApplicationJob {
 public:
 //   DeleteLocalRepositoryJob(managed_path) {
 //    this->managed_path = managed_path

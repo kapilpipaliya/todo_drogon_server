@@ -1,8 +1,9 @@
 #pragma once
 #include "application_job.h"
+#include "caf/all.hpp"
 namespace openproj {
 namespace worker {
-class ExtractFulltextJob : public ApplicationJob {
+class ExtractFulltextJob: public caf::event_based_actor, public ApplicationJob {
 public:
 //   ExtractFulltextJob(attachment_id) {
 //    this->attachment_id = attachment_id

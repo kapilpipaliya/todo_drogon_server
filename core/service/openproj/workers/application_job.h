@@ -1,7 +1,8 @@
 #pragma once
+#include "caf/all.hpp"
 namespace openproj {
 namespace worker {
-class ApplicationJob {
+class ApplicationJob : public caf::event_based_actor{
 public:
   //
   // Return a priority number on the given payload

@@ -1,8 +1,9 @@
 #pragma once
 #include "application_job.h"
+#include "caf/all.hpp"
 namespace openproj {
 namespace worker {
-class DeliverInvitationJob : public ApplicationJob {
+class DeliverInvitationJob : public caf::event_based_actor, public ApplicationJob {
 //  attr_reader :token_id
 
 //   DeliverInvitationJob(token_id) {

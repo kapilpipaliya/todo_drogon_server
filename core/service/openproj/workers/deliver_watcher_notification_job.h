@@ -1,8 +1,9 @@
 #pragma once
 #include "deliver_notification_job.h"
+#include "caf/all.hpp"
 namespace openproj {
 namespace worker {
-class DeliverWatcherNotificationJob : public DeliverNotificationJob {
+class DeliverWatcherNotificationJob : public caf::event_based_actor, public DeliverNotificationJob {
 public:
 //   DeliverWatcherNotificationJob(watcher_id, recipient_id, watcher_setter_id) {
 //    this->watcher_id = watcher_id

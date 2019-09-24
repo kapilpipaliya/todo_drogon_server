@@ -1,10 +1,11 @@
 #pragma once
 #include "../application_job.h"
+#include "caf/all.hpp"
 namespace openproj {
 namespace worker {
 namespace Attachments {
 
-class CleanupUncontaineredJob : public worker::ApplicationJob {
+class CleanupUncontaineredJob: public caf::event_based_actor, public worker::ApplicationJob {
 public:
    void perform() {
 //    Attachment

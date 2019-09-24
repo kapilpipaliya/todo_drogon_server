@@ -1,5 +1,6 @@
 #pragma once
 #include "application_job.h"
+#include "caf/all.hpp"
 //#include "rake"
 
 //
@@ -7,7 +8,7 @@
 // to ensure they are neither loaded nor executed twice.
 namespace openproj {
 namespace worker {
-class RakeJob : public ApplicationJob {
+class RakeJob: public caf::event_based_actor, public ApplicationJob {
 public:
 
 //  attr_reader :task_name

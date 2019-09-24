@@ -1,8 +1,9 @@
 #pragma once
 #include "application_job.h"
+#include "caf/all.hpp"
 namespace openproj {
 namespace worker {
-class CopyProjectJob : public ApplicationJob {
+class CopyProjectJob : public caf::event_based_actor, public ApplicationJob {
 public:
   // include OpenProject::LocaleHelper
 

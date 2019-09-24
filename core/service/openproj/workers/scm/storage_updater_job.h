@@ -1,9 +1,10 @@
 #pragma once
 #include "../application_job.h"
+#include "caf/all.hpp"
 namespace openproj {
 namespace worker {
 namespace Scm {
-class StorageUpdaterJob : public ApplicationJob {
+class StorageUpdaterJob : public caf::event_based_actor, public ApplicationJob {
  public:
   //   StorageUpdaterJob(repository) {
   //    this->id = repository.id

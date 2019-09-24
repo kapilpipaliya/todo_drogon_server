@@ -1,12 +1,13 @@
 #pragma once
 #include "remote_repository_job.h"
+#include "caf/all.hpp"
 //
 // Provides an asynchronous job to relocate a managed repository on the local or remote system
 namespace openproj {
 namespace worker {
 namespace Scm {
 
-class RelocateRepositoryJob : public Scm::RemoteRepositoryJob {
+class RelocateRepositoryJob : public caf::event_based_actor, public Scm::RemoteRepositoryJob {
 public:
    void perform() {
 //    if ( repository.class.manages_remote?) {

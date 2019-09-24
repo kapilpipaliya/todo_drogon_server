@@ -1,8 +1,9 @@
 #pragma once
 #include "application_job.h"
+#include "caf/all.hpp"
 namespace openproj {
 namespace worker {
-class DeleteUserJob : public ApplicationJob {
+class DeleteUserJob : public caf::event_based_actor, public ApplicationJob {
 public:
 //   DeleteUserJob(user_id) {
 //    this->user_id = user_id
