@@ -10,6 +10,13 @@ namespace openproj {
 namespace models {
 
 class Comment : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Comments {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::Comments> mapper_comments(clientPtr);
+    drogon_model::openproject6::Comments* comments = this;
+    mapper_comments.insert(*comments);
+  }
   public:
     // belongs_to :commented, polymorphic: true, counter_cache: true
     // belongs_to :author, class_name: "User", foreign_key: "author_id"

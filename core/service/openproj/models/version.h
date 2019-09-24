@@ -1,9 +1,17 @@
 #pragma once
 #include "activerecord.h"
 #include "Versions.h"
+#include <drogon/drogon.h>
 namespace openproj {
 namespace models {
 class Version : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Versions {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::Versions> mapper_versions(clientPtr);
+    drogon_model::openproject6::Versions* versions = this;
+    mapper_versions.insert(*versions);
+  }
   // include VersionN::ProjectSharing
 
   // belongs_to :project

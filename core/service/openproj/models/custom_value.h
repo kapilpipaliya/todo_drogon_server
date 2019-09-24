@@ -10,6 +10,13 @@ namespace openproj {
 namespace models {
 
 class CustomValue : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::CustomValues {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::CustomValues> mapper_custom_values(clientPtr);
+    drogon_model::openproject6::CustomValues* custom_values = this;
+    mapper_custom_values.insert(*custom_values);
+  }
   public:
     // belongs_to :custom_field
     // belongs_to :customized, polymorphic: true

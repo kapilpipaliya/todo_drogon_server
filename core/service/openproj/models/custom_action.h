@@ -4,6 +4,13 @@
 namespace openproj {
 namespace models {
 class CustomAction : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::CustomActions {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::CustomActions> mapper_custom_actions(clientPtr);
+    drogon_model::openproject6::CustomActions* custom_actions = this;
+    mapper_custom_actions.insert(*custom_actions);
+  }
   // validates :name, length: { maximum: 255, minimum: 1 }
 //  serialize :actions, CustomActions::Actions::Serializer
 //  has_and_belongs_to_many :status_conditions, class_name: "Status"

@@ -10,6 +10,13 @@ namespace openproj {
 namespace models {
 
 class Enumeration : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Enumerations {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::Enumerations> mapper_enumerations(clientPtr);
+    drogon_model::openproject6::Enumerations* enumerations = this;
+    mapper_enumerations.insert(*enumerations);
+  }
   public:
     //  default_scope { order("#{Enumeration.table_name}.position ASC") }
     // belongs_to :project

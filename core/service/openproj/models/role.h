@@ -4,6 +4,13 @@
 namespace openproj {
 namespace models {
 class Role : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Roles {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::Roles> mapper_roles(clientPtr);
+    drogon_model::openproject6::Roles* roles = this;
+    mapper_roles.insert(*roles);
+  }
 public:
   // extend Pagination::Model
 

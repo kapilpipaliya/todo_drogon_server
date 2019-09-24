@@ -4,6 +4,13 @@
 namespace openproj {
 namespace models {
 class Repository : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Repositories {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::Repositories> mapper_repositories(clientPtr);
+    drogon_model::openproject6::Repositories* repositories = this;
+    mapper_repositories.insert(*repositories);
+  }
   // include Redmine::Ciphering
   // include OpenProject::Scm::ManageableRepository
 

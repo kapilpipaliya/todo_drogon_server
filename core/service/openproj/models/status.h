@@ -4,6 +4,13 @@
 namespace openproj {
 namespace models {
 class Status : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Statuses {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::Statuses> mapper_statuses(clientPtr);
+    drogon_model::openproject6::Statuses* statuses = this;
+    mapper_statuses.insert(*statuses);
+  }
   // extend Pagination::Model
 
 //  default_scope { order_by_position }

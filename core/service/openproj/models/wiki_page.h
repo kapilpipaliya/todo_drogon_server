@@ -2,9 +2,17 @@
 #include "activerecord.h"
 //#include "diff"
 #include "WikiPages.h"
+#include <drogon/drogon.h>
 namespace openproj {
 namespace models {
 class WikiPage : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::WikiPages {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::WikiPages> mapper_wiki_pages(clientPtr);
+    drogon_model::openproject6::WikiPages* wiki_pages = this;
+    mapper_wiki_pages.insert(*wiki_pages);
+  }
   // belongs_to :wiki, touch: true
   // has_one :project, through: :wiki
   // has_one :content, class_name: "WikiContent", foreign_key: "page_id", dependent: :destroy

@@ -10,6 +10,13 @@ namespace openproj {
 namespace models {
 
 class Project : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Projects {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::Projects> mapper_projects(clientPtr);
+    drogon_model::openproject6::Projects* projects = this;
+    mapper_projects.insert(*projects);
+  }
   // extend Pagination::Model
   // extend FriendlyId
 

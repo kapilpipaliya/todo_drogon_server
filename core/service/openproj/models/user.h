@@ -2,9 +2,17 @@
 #include "principal.h"
 #include "Users.h"
 
+
 namespace openproj {
 namespace models {
 class User : public Principal, public drogon_model::openproject6::Users {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::Users> mapper_users(clientPtr);
+    drogon_model::openproject6::Users* users = this;
+    mapper_users.insert(*users);
+  }
 //  USER_FORMATS_STRUCTURE = {
 //    firstname_lastname:       [:firstname, :lastname],
 //    firstname:                [:firstname],

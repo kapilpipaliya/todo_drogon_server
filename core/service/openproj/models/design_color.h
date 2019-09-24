@@ -10,6 +10,13 @@ namespace openproj {
 namespace models {
 
 class DesignColor : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::DesignColors {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::DesignColors> mapper_design_colors(clientPtr);
+    drogon_model::openproject6::DesignColors* design_colors = this;
+    mapper_design_colors.insert(*design_colors);
+  }
   public:
     //  after_commit -> {
     //    // CustomStyle.current.updated_at determins the cache key for inline_css

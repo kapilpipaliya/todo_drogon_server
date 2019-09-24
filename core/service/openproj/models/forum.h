@@ -4,6 +4,13 @@
 namespace openproj {
 namespace models {
 class Forum : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Forums {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::Forums> mapper_forums(clientPtr);
+    drogon_model::openproject6::Forums* forums = this;
+    mapper_forums.insert(*forums);
+  }
   // belongs_to :project
   // has_many :topics, -> {
 //    where("#{Message.table_name}.parent_id IS NULL")

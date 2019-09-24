@@ -1,9 +1,17 @@
 #pragma once
 #include "activerecord.h"
 #include "UserPreferences.h"
+#include <drogon/drogon.h>
 namespace openproj {
 namespace models {
 class UserPreference : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::UserPreferences {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::UserPreferences> mapper_user_preferences(clientPtr);
+    drogon_model::openproject6::UserPreferences* user_preferences = this;
+    mapper_user_preferences.insert(*user_preferences);
+  }
   // belongs_to :user
 //  serialize :others
 

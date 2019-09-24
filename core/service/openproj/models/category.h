@@ -4,6 +4,13 @@
 namespace openproj {
 namespace models {
 class Category : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Categories {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::Categories> mapper_categories(clientPtr);
+    drogon_model::openproject6::Categories* categories = this;
+    mapper_categories.insert(*categories);
+  }
   // belongs_to :project
   // belongs_to :assigned_to, class_name: "Principal", foreign_key: "assigned_to_id"
   // has_many :work_packages, foreign_key: "category_id", dependent: :nullify

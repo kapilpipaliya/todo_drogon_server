@@ -4,6 +4,13 @@
 namespace openproj {
 namespace models {
 class News : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::News {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::News> mapper_news(clientPtr);
+    drogon_model::openproject6::News* news = this;
+    mapper_news.insert(*news);
+  }
   // belongs_to :project
   // belongs_to :author, class_name: "User", foreign_key: "author_id"
   // has_many :comments, -> {

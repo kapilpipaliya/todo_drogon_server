@@ -4,6 +4,13 @@
 namespace openproj {
 namespace models {
 class Query : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Queries {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::Queries> mapper_queries(clientPtr);
+    drogon_model::openproject6::Queries* queries = this;
+    mapper_queries.insert(*queries);
+  }
   // include Timelines
   // include Highlighting
   // include ManualSorting

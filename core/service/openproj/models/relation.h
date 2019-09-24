@@ -4,6 +4,13 @@
 namespace openproj {
 namespace models {
 class Relation : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Relations {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::Relations> mapper_relations(clientPtr);
+    drogon_model::openproject6::Relations* relations = this;
+    mapper_relations.insert(*relations);
+  }
   // include Concerns::VirtualAttribute
 
   // scope :of_work_package,

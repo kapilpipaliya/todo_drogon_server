@@ -1,9 +1,17 @@
 #pragma once
 #include "activerecord.h"
 #include "UserPasswords.h"
+#include <drogon/drogon.h>
 namespace openproj {
 namespace models {
 class UserPassword : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::UserPasswords {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::UserPasswords> mapper_user_passwords(clientPtr);
+    drogon_model::openproject6::UserPasswords* user_passwords = this;
+    mapper_user_passwords.insert(*user_passwords);
+  }
   // belongs_to :user, inverse_of: :passwords
 
   // passwords must never be modified, so doing this on create should be enough

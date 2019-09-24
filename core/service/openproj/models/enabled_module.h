@@ -10,6 +10,13 @@ namespace openproj {
 namespace models {
 
 class EnabledModule : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::EnabledModules {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::EnabledModules> mapper_enabled_modules(clientPtr);
+    drogon_model::openproject6::EnabledModules* enabled_modules = this;
+    mapper_enabled_modules.insert(*enabled_modules);
+  }
   public:
     // belongs_to :project
     // validates :name,

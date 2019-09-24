@@ -4,6 +4,13 @@
 namespace openproj {
 namespace models {
 class Message : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Messages {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::Members> mapper_members(clientPtr);
+    drogon_model::openproject6::Members* members = this;
+    mapper_members.insert(*members);
+  }
   // include OpenProject::JournalN::AttachmentHelper
 
   // belongs_to :forum

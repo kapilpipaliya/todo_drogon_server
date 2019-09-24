@@ -4,6 +4,13 @@
 namespace openproj {
 namespace models {
 class CustomStyle : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::CustomStyles {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::CustomStyles> mapper_custom_styles(clientPtr);
+    drogon_model::openproject6::CustomStyles* custom_styles = this;
+    mapper_custom_styles.insert(*custom_styles);
+  }
 //  mount_uploader :logo, OpenProject::Configuration.file_uploader
 //  mount_uploader :favicon, OpenProject::Configuration.file_uploader
 //  mount_uploader :touch_icon, OpenProject::Configuration.file_uploader

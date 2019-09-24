@@ -4,6 +4,13 @@
 namespace openproj {
 namespace models {
 class Member : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Members {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::Members> mapper_members(clientPtr);
+    drogon_model::openproject6::Members* members = this;
+    mapper_members.insert(*members);
+  }
   // extend DeprecatedAlias
 
   // belongs_to :principal, foreign_key: "user_id"

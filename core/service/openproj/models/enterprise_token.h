@@ -10,6 +10,13 @@ namespace openproj {
 namespace models {
 
 class EnterpriseToken : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::EnterpriseTokens {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::EnterpriseTokens> mapper_enterprise_tokens(clientPtr);
+    drogon_model::openproject6::EnterpriseTokens* enterprise_tokens = this;
+    mapper_enterprise_tokens.insert(*enterprise_tokens);
+  }
   public:
     //  class << self {
     //     void current() {

@@ -4,6 +4,13 @@
 namespace openproj {
 namespace models {
 class Changeset : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Changesets {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::Changesets> mapper_changesets(clientPtr);
+    drogon_model::openproject6::Changesets* changesets = this;
+    mapper_changesets.insert(*changesets);
+  }
   // belongs_to :repository
   // belongs_to :user
   // has_many :file_changes, class_name: "Change", dependent: :delete_all

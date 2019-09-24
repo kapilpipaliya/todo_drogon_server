@@ -1,9 +1,17 @@
 #pragma once
 #include "activerecord.h"
 #include "Wikis.h"
+#include <drogon/drogon.h>
 namespace openproj {
 namespace models {
 class Wiki : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Wikis {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::Wikis> mapper_wikis(clientPtr);
+    drogon_model::openproject6::Wikis* wikis = this;
+    mapper_wikis.insert(*wikis);
+  }
   // belongs_to :project
   // has_many :pages, -> {
 //    order("title")

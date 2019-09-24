@@ -5,6 +5,13 @@
 namespace openproj {
 namespace models {
 class Color : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Colors {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::Colors> mapper_colors(clientPtr);
+    drogon_model::openproject6::Colors* colors = this;
+    mapper_colors.insert(*colors);
+  }
 //  this->table_name = "colors"
 
   // has_many :planning_element_types, class_name:  "Type",

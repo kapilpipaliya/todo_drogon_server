@@ -4,6 +4,13 @@
 namespace openproj {
 namespace models {
 class Journal : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Journals {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::Journals> mapper_journals(clientPtr);
+    drogon_model::openproject6::Journals* journals = this;
+    mapper_journals.insert(*journals);
+  }
 //  this->table_name = "journals"
 
   // include ::JournalChanges

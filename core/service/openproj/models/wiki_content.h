@@ -2,9 +2,17 @@
 #include "activerecord.h"
 //#include "zlib"
 #include "WikiContents.h"
+#include <drogon/drogon.h>
 namespace openproj {
 namespace models {
 class WikiContent : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::WikiContents {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::WikiContents> mapper_wiki_contents(clientPtr);
+    drogon_model::openproject6::WikiContents* wiki_contents = this;
+    mapper_wiki_contents.insert(*wiki_contents);
+  }
   // belongs_to :page, class_name: "WikiPage", foreign_key: "page_id"
   // belongs_to :author, class_name: "User", foreign_key: "author_id"
   // validates_length_of :comments, maximum: 255, allow_nil: true

@@ -4,6 +4,13 @@
 namespace openproj {
 namespace models {
 class MemberRole : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::MemberRoles {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::MemberRoles> mapper_member_roles(clientPtr);
+    drogon_model::openproject6::MemberRoles* member_roles = this;
+    mapper_member_roles.insert(*member_roles);
+  }
   // belongs_to :member
   // belongs_to :role
 

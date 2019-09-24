@@ -4,6 +4,13 @@
 namespace openproj {
 namespace models {
 class TimeEntry : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::TimeEntries {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::TimeEntries> mapper_time_entries(clientPtr);
+    drogon_model::openproject6::TimeEntries* time_entries = this;
+    mapper_time_entries.insert(*time_entries);
+  }
   // could have used polymorphic association
   // project association here allows easy loading of time entries at project level with one database trip
   // belongs_to :project

@@ -1,9 +1,17 @@
 #pragma once
 #include "activerecord.h"
 #include "Watchers.h"
+#include <drogon/drogon.h>
 namespace openproj {
 namespace models {
 class Watcher : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Watchers {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::Watchers> mapper_watchers(clientPtr);
+    drogon_model::openproject6::Watchers* watchers = this;
+    mapper_watchers.insert(*watchers);
+  }
   // belongs_to :watchable, polymorphic: true
   // belongs_to :user
 

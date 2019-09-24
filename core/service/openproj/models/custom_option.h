@@ -8,6 +8,13 @@
 namespace openproj {
 namespace models {
 class CustomOption : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::CustomOptions {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::CustomOptions> mapper_custom_options(clientPtr);
+    drogon_model::openproject6::CustomOptions* custom_options = this;
+    mapper_custom_options.insert(*custom_options);
+  }
 //  acts_as_list
 
   // belongs_to :custom_field, touch: true

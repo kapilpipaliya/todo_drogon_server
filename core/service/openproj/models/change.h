@@ -10,6 +10,13 @@ namespace openproj {
 namespace models {
 
 class Change : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Changes {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::Changes> mapper_changes(clientPtr);
+    drogon_model::openproject6::Changes* changes = this;
+    mapper_changes.insert(*changes);
+  }
   public:
     // belongs_to :changeset
     // validates_presence_of :changeset_id, :action, :path

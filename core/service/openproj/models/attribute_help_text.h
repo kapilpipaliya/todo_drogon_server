@@ -10,6 +10,13 @@ namespace openproj {
 namespace models {
 
 class AttributeHelpText : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::AttributeHelpTexts {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::AttributeHelpTexts> mapper_attribute_help_texts(clientPtr);
+    drogon_model::openproject6::AttributeHelpTexts* attribute_help_texts = this;
+    mapper_attribute_help_texts.insert(*attribute_help_texts);
+  }
   public:
     inline void available_types() {
     //    subclasses.map { |child| child.name.demodulize }

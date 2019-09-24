@@ -5,6 +5,13 @@
 namespace openproj {
 namespace models {
 class AuthSource : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::AuthSources {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::AuthSources> mapper_auth_sources(clientPtr);
+    drogon_model::openproject6::AuthSources* auth_sources = this;
+    mapper_auth_sources.insert(*auth_sources);
+  }
   // include Redmine::Ciphering
 
   // has_many :users

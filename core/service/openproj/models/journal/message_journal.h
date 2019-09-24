@@ -12,6 +12,13 @@ namespace models {
 namespace JournalN {
 
 class MessageJournal : public BaseJournal, public drogon_model::openproject6::MessageJournals {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::MessageJournals> mapper_message_journals(clientPtr);
+    drogon_model::openproject6::MessageJournals* message_journals = this;
+    mapper_message_journals.insert(*message_journals);
+  }
 };
 
 } // namespace openproj::models::JournalN

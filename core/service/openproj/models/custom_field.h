@@ -4,6 +4,13 @@
 namespace openproj {
 namespace models {
 class CustomField : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::CustomFields {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::CustomFields> mapper_custom_fields(clientPtr);
+    drogon_model::openproject6::CustomFields* custom_fields = this;
+    mapper_custom_fields.insert(*custom_fields);
+  }
   // include CustomField::OrderStatements
 
   // has_many :custom_values, dependent: :delete_all

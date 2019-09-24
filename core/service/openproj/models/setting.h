@@ -8,6 +8,13 @@ namespace openproj {
 namespace models {
 class Setting : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Settings {
  public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::Settings> mapper_settings(clientPtr);
+    drogon_model::openproject6::Settings* settings = this;
+    mapper_settings.insert(*settings);
+  }
+ public:
   YAML::Node available_settings;
   Setting() {
     try {

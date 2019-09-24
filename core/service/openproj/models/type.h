@@ -5,6 +5,13 @@
 namespace openproj {
 namespace models {
 class Type : public openproj::models::ActiveRecord::Base, public drogon_model::openproject6::Types {
+ public:
+  void save(){
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::Types> mapper_types(clientPtr);
+    drogon_model::openproject6::Types* types = this;
+    mapper_types.insert(*types);
+  }
   // extend Pagination::Model
 
   // Work Package attributes for this type
