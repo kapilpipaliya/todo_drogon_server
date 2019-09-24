@@ -3,6 +3,7 @@
 #include <yaml-cpp/yaml.h>
 #include "models/Versions.h"
 #include "models/WikiPages.h"
+#include "models/Wikis.h"
 namespace openproj {
 namespace seeder {
 namespace DemoData {
@@ -74,46 +75,57 @@ class VersionBuilder {
     versions.setSharing(
         sharing);  // character_varying
                    // DEFAULT='none'::character_varying NOT_NULL;
-    versions.setStartDate(trantor::Date::now());  // date  ;
+    // versions.setStartDate(trantor::Date::now());  // date  ;
     if (config["wiki"]) {
       auto wiki_page_title = config["wiki"]["title"].as<std::string>();
       versions.setWikiPageTitle(wiki_page_title);
     }
-    auto version_id = *versions.getId().get();
     mapper_versions.insert(versions);
+    auto version_id = *versions.getId().get();
     if (config["wiki"]) {
-      //       oh i dont know hot to get wiki id?
-      // set_wiki(version_id, config["wiki"]);
+      set_wiki(version_id, config["wiki"]);
     }
     return version_id;
   }
 
-  void set_wiki(int version_id, YAML::Node config) {
-    //           version.wiki_page_title = config[:title]
-    //           page = WikiPage.create! wiki: version.project.wiki, title:
-    //           version.wiki_page_title
+  void set_wiki(int version_id, YAML::Node wiki_config) {
+    /*
+  version.wiki_page_title = config[:title]
+  page = WikiPage.create! wiki: version.project.wiki, title:
+  version.wiki_page_title
 
-    //           content = with_references config[:content], project
-    //           WikiContent.create! page: page, author: User.admin.first, text:
-    //           content
+  content = with_references config[:content], project
+  WikiContent.create! page: page, author: User.admin.first, text: content
 
-    //      version.save!
-    auto wiki_page_title = config["title"].as<std::string>();
+  version.save!
+*/
 
     auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::Wikis> mapper_wikis(
+        clientPtr);
+    drogon_model::openproject6::Wikis wikis;
+    wikis.setProjectId(this->project_id);  // integer NOT_NULL ;
+    wikis.setStartPage("Wiki");            // character_varying NOT_NULL ;
+    wikis.setStatus(1);                    // integer DEFAULT=1 NOT_NULL;
+    wikis.setCreatedAt(
+        trantor::Date::now());  // timestamp_without_time_zone NOT_NULL ;
+    wikis.setUpdatedAt(
+        trantor::Date::now());  // timestamp_without_time_zone NOT_NULL ;
+    mapper_wikis.insert(wikis);
+    auto wiki_id = *wikis.getId().get();
+
+    auto wiki_page_title = wiki_config["title"].as<std::string>();
+
     drogon::orm::Mapper<drogon_model::openproject6::WikiPages>
         mapper_wiki_pages(clientPtr);
     drogon_model::openproject6::WikiPages wiki_pages;
-    // oh i dont know how to get wiki id!!
-    // wiki_pages.setWikiId(); //integer NOT_NULL ;
-    wiki_pages.setTitle(wiki_page_title);  // character_varying NOT_NULL ;
-    wiki_pages.setCreatedOn(
-        trantor::Date::now());       // timestamp_without_time_zone NOT_NULL ;
-    wiki_pages.setProtected(false);  // boolean DEFAULT=false NOT_NULL;
-    // wiki_pages.setParentId(); //integer  ;
-    wiki_pages.setSlug("");  // character_varying NOT_NULL ;
-    wiki_pages.setUpdatedAt(
-        trantor::Date::now());  // timestamp_without_time_zone NOT_NULL ;
+    wiki_pages.setWikiId(wiki_id);
+    wiki_pages.setTitle(wiki_page_title);
+    wiki_pages.setCreatedOn(trantor::Date::now());
+    wiki_pages.setProtected(false);  // DEFAULT=false NOT_NULL;
+    // wiki_pages.setParentId(); // Todo ;
+    wiki_pages.setSlug(wiki_page_title);  // Todo
+    wiki_pages.setUpdatedAt(trantor::Date::now());
 
     mapper_wiki_pages.insert(wiki_pages);
   }

@@ -3,6 +3,7 @@
 namespace openproj {
 namespace models {
 class Principal : public ActiveRecord::Base {
+ public:
   // Account statuses
   // Code accessing the keys assumes they are ordered, which they are since Ruby 1.9
 //  STATUSES = {
@@ -12,6 +13,9 @@ class Principal : public ActiveRecord::Base {
 //    locked: 3,
 //    invited: 4
 //  }.freeze
+  enum STATUSES {
+    builtin, active, registered, locked, invited
+  };
 
 //  this->table_name = "#{table_name_prefix}users#{table_name_suffix}"
 

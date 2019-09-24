@@ -4,6 +4,9 @@
 #include "models/UserPasswords.h"
 #include "models/Users.h"
 #include "seeder.h"
+
+#include "../models/user.h"
+
 namespace openproj {
 namespace seeder {
 class AdminUserSeeder : public Seeder {
@@ -18,22 +21,72 @@ class AdminUserSeeder : public Seeder {
     //    }
     auto clientPtr = drogon::app().getDbClient("sce");
 
-    drogon::orm::Mapper<drogon_model::openproject6::Users> mapper(clientPtr);
-    drogon_model::openproject6::Users user;
-    user.setAdmin(true);
-    user.setLogin("admin");
+    drogon::orm::Mapper<drogon_model::openproject6::Users> mapper_users(
+        clientPtr);
+
+    auto result_users = mapper_users.findBy(
+        (Criteria(drogon_model::openproject6::Users::Cols::_type,
+                  CompareOperator::EQ, "SystemUser")));
+    if (result_users.size() > 0) {
+      LOG_DEBUG << "not creating system user";
+    } else {
+      drogon_model::openproject6::Users system_user;
+      system_user.setAdmin(false);
+      system_user.setLogin("");
+      system_user.setFirstname("");
+      system_user.setLastname("System");
+      system_user.setMail("");
+
+      system_user.setLanguage("en");
+      system_user.setMailNotification("only_my_events");
+      system_user.setType("SystemUser");
+      system_user.setStatus(
+          openproj::models::Principal::STATUSES::locked);  // this is default
+      system_user.setForcePasswordChange(false);
+      system_user.setFirstLogin(false);  // this is default
+      system_user.setCreatedOn(trantor::Date::now());
+      system_user.setUpdatedOn(trantor::Date::now());
+      mapper_users.insert(system_user);
+    }
+
+    drogon_model::openproject6::Users admin_user;
+    admin_user.setAdmin(true);
+    admin_user.setLogin("admin");
     //     user.set
-    user.setFirstname("OpenProject");
-    user.setLastname("Admin");
-    user.setMail("admin@example.net");
-    user.setAdmin(true);
-    user.setLanguage("en");
-    user.setMailNotification("only_my_events");
-    user.setType("User");
-    user.setStatus(1);  // this is default
-    user.setForcePasswordChange(false);
-    user.setFirstLogin(true);  // this is default
-    mapper.insert(user);
+    admin_user.setFirstname("OpenProject");
+    admin_user.setLastname("Admin");
+    admin_user.setMail("admin@example.net");
+    admin_user.setLanguage("en");
+    admin_user.setMailNotification("only_my_events");
+    admin_user.setType("User");
+    admin_user.setStatus(
+        openproj::models::Principal::STATUSES::active);  // this is default
+    admin_user.setForcePasswordChange(false);
+    admin_user.setFirstLogin(true);  // this is default
+    admin_user.setCreatedOn(trantor::Date::now());
+    admin_user.setUpdatedOn(trantor::Date::now());
+    mapper_users.insert(admin_user);
+
+    // Look at database
+    /*
+    drogon_model::openproject6::Users anonymous_user;
+    anonymous_user.setAdmin(false);
+    anonymous_user.setLogin("");
+    anonymous_user.setFirstname("");
+    anonymous_user.setLastname("System");
+    anonymous_user.setMail("");
+
+    anonymous_user.setLanguage("en");
+    anonymous_user.setMailNotification("only_my_events");
+    anonymous_user.setType("SystemUser");
+    anonymous_user.setStatus(
+        openproj::models::Principal::STATUSES::locked);  // this is default
+    anonymous_user.setForcePasswordChange(false);
+    anonymous_user.setFirstLogin(false);  // this is default
+    anonymous_user.setCreatedOn(trantor::Date::now());
+    anonymous_user.setUpdatedOn(trantor::Date::now());
+    mapper_users.insert(anonymous_user);
+*/
 
     drogon::orm::Mapper<drogon_model::openproject6::UserPasswords>
         mapper_user_passwords(clientPtr);
@@ -46,7 +99,7 @@ class AdminUserSeeder : public Seeder {
     // 20:55:47.415914"], ["type", "UserPassword::Bcrypt"]] D,
     // [2019-09-20T02:25:47.675273 #19304] DEBUG -- :   ↳
     // app/models/user.rb:163:in `update_password"
-    user_passwords.setUserId(*user.getId());  // integer NOT_NULL ;
+    user_passwords.setUserId(*admin_user.getId());  // integer NOT_NULL ;
     user_passwords.setHashedPassword(
         "admin");                     // character_varying(128) NOT_NULL ;
     user_passwords.setSalt("12345");  // character_varying(64)  ;

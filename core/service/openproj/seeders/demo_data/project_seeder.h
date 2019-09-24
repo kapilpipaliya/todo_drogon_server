@@ -63,19 +63,20 @@ class ProjectSeeder : public Seeder {
 
       LOG_DEBUG << "   -Creating categories";
       seed_categories(project_id, key);
+
+      LOG_DEBUG << "   -Creating versions.";
+      seed_versions(project_id, key);
       /*
-                    LOG_DEBUG << "   -Creating versions.";
-                    seed_versions(project_id, key);
+                          LOG_DEBUG << "   -Creating queries.";
+                          seed_queries(project_id, key);
 
-                    LOG_DEBUG << "   -Creating queries.";
-                    seed_queries(project_id, key);
-
-                    //        project_data_seeders(project, key).each { |seeder|
-                    // Todo fix this.
-                    // LOG_DEBUG << "   -#{seeder.class.name.demodulize}";
-                    //          seeder.seed!
-                    //        }
-                */
+                          //        project_data_seeders(project, key).each {
+         |seeder|
+                          // Todo fix this.
+                          // LOG_DEBUG << "   -#{seeder.class.name.demodulize}";
+                          //          seeder.seed!
+                          //        }
+                      */
       //        Setting.demo_projects_available = "true"
     }
 
@@ -149,26 +150,47 @@ class ProjectSeeder : public Seeder {
   }
 
   long create_project(std::string key) {
+    //    parent_id=    Project.find_by(identifier: "parent")
+    // parent_id only set if it exist.
+    //    project_data =      {
+    //          name: project_name(key),"name"
+    //          identifier: project_identifier(key),"identifier"
+    //          description: project_description(key),"description"
+    //          enabled_module_names: project_modules(key),"modules"
+    //          types: project_types,
+    //          parent_id: parent_project_id(key)
+    //        }
     //      Project.create! project_data(key)
+
+    auto project_yaml = seed_projects_standard["projects"][curr_proj];
+    // LOG_DEBUG << it.first.as<std::string>();
+    auto name = project_yaml["name"].as<std::string>();
+    auto identifier = project_yaml["identifier"].as<std::string>();
+    auto description = project_yaml["description"].as<std::string>();
+
     auto clientPtr = drogon::app().getDbClient("sce");
     drogon::orm::Mapper<drogon_model::openproject6::Projects> mapper(clientPtr);
     drogon_model::openproject6::Projects project;
-    project.setName(key);
+    project.setName(name);
     project.setIsPublic(true);  // this is default
     project.setStatus(1);       // This is default
+    project.setIdentifier(identifier);
     project.setCreatedOn(trantor::Date::now());
+    project.setUpdatedOn(trantor::Date::now());
     mapper.insert(project);
     return *project.getId().get();
   }
 
   void delete_project(std::string key) {
+    // Project.find_by(identifier: project_identifier(key))
     //      if ( delete_me = find_project(key)) {
     //        delete_me.destroy
     //      }
     auto clientPtr = drogon::app().getDbClient("sce");
     drogon::orm::Mapper<drogon_model::openproject6::Projects> mapper(clientPtr);
-    mapper.deleteBy(Criteria(drogon_model::openproject6::Projects::Cols::_name,
-                             CompareOperator::EQ, key));
+    mapper.deleteBy(
+        Criteria(drogon_model::openproject6::Projects::Cols::_identifier,
+                 CompareOperator::EQ, key));
   }
 
   void set_members(long project_id) {
@@ -370,8 +392,9 @@ class ProjectSeeder : public Seeder {
     news.setTitle(title);
     news.setSummary(summary);
     news.setDescription(description);
-    news.setAuthorId(0);       // this is default
-    news.setCommentsCount(0);  // This is default
+    news.setAuthorId(0);                      // this is default
+    news.setCommentsCount(0);                 // This is default
+    news.setCreatedOn(trantor::Date::now());  // This is default
     mapper_news.insert(news);
   }
 
@@ -389,9 +412,10 @@ class ProjectSeeder : public Seeder {
     //      }
     auto version_data =
         seed_projects_standard["projects"][curr_proj]["versions"];
-    if (version_data.IsDefined()) {
+    if (version_data) {
+      LOG_DEBUG << version_data.Type();
       for (auto it : version_data) {
-        openproj::seeder::DemoData::VersionBuilder v(version_data, project_id);
+        openproj::seeder::DemoData::VersionBuilder v(it, project_id);
         v.create();
       }
     }
@@ -405,43 +429,6 @@ class ProjectSeeder : public Seeder {
     //      )
   }
 
-  //    namespace Data {
-  //      module_function
-
-  void project_data(std::string key) {
-    //        {
-    //          name: project_name(key),
-    //          identifier: project_identifier(key),
-    //          description: project_description(key),
-    //          enabled_module_names: project_modules(key),
-    //          types: project_types,
-    //          parent_id: parent_project_id(key)
-    //        }
-  }
-
-  void parent_project_id(std::string key) {
-    //        parent_project(key).try(:id)
-  }
-
-  void parent_project(std::string key) {
-    //        identifier = project_data_for(key, "parent")
-    //        return nil unless identifier.present?
-
-    //        Project.find_by(identifier: identifier)
-  }
-
-  void project_name(std::string key) {
-    //        project_data_for(key, "name")
-  }
-
-  void project_identifier(std::string key) {
-    //        project_data_for(key, "identifier")
-  }
-
-  void project_description(std::string key) {
-    //        project_data_for(key, "description")
-  }
-
   void project_types() {
     //        Type.all
     auto clientPtr = drogon::app().getDbClient("sce");
@@ -449,17 +436,6 @@ class ProjectSeeder : public Seeder {
     drogon::orm::Mapper<drogon_model::openproject6::Types> mapper(clientPtr);
     drogon_model::openproject6::Types types;
   }
-
-  void project_modules(std::string key) {
-    //        project_data_for(key, "modules")
-  }
-
-  void find_project(std::string key) {
-    //        Project.find_by(identifier: project_identifier(key))
-    //      }
-  }
-
-  // include Data
 };
 }  // namespace DemoData
 }  // namespace seeder

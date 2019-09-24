@@ -1,6 +1,6 @@
 rsync -avz --progress --exclude=.git --exclude=build --exclude=.vscode . kapil@95.216.152.135:/home/kapil/jdrogon
 rsync -avz --progress --exclude=.git --exclude=build --exclude=.vscode . root@162.241.29.170:jdrogon
-rsync -avz --progress --exclude=.git --exclude=build --exclude=.vscode . kapil@95.216.152.135:/home/kapil/music
+rsync -avz --progress --exclude=.git --exclude=build --exclude=.vscode . kapil@116.203.177.233:/home/kapil/musicb
 rsync -avz --progress /home/kapili3/fileuploads/ kapil@95.216.152.135:/home/kapil/fileuploads/
 
 cd /home/kapili3/k/scert

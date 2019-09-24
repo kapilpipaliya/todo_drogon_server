@@ -38,6 +38,11 @@ class RoleSeeder : public Seeder {
 
     findRoladAndAddPermissions(extra_member());
     findRoladAndAddPermissions(extra_reader());
+
+    // updatePermission_null()
+    // modules/overviews/lib/overviews/engine.rb
+    create_role_permission(3,
+                           "manage_overview");  // i think i should find and set
   }
   void createandAddPermissions(std::string type, std::vector<row> roles_,
                                bool isassignable) {
@@ -55,15 +60,37 @@ class RoleSeeder : public Seeder {
       auto id = roles.getId();
 
       for (auto it_ : it.role_permissions) {
-        drogon::orm::Mapper<drogon_model::openproject6::RolePermissions>
-            mapper_role_perm(clientPtr);
-        drogon_model::openproject6::RolePermissions role_permission;
-        role_permission.setPermission(it_);
-        role_permission.setRoleId(*id);
-        role_permission.setCreatedAt(trantor::Date::now());
-        role_permission.setUpdatedAt(trantor::Date::now());
-        mapper_role_perm.insert(role_permission);
+        create_role_permission(*id, it_);
       }
+    }
+  }
+  void create_role_permission(int role_id, std::string permission) {
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::RolePermissions>
+        mapper_role_perm(clientPtr);
+    drogon_model::openproject6::RolePermissions role_permission;
+    role_permission.setPermission(permission);
+    role_permission.setRoleId(role_id);
+    role_permission.setCreatedAt(trantor::Date::now());
+    role_permission.setUpdatedAt(trantor::Date::now());
+    mapper_role_perm.insert(role_permission);
+  }
+  void updatePermission_null(std::string permission) {
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::RolePermissions>
+        mapper_role_permissions(clientPtr);
+    auto result_role_permissions = mapper_role_permissions.findBy((
+        Criteria(drogon_model::openproject6::RolePermissions::Cols::_permission,
+                 CompareOperator::EQ, permission)));
+    if (result_role_permissions.size() > 0) {
+      auto permission_ = result_role_permissions.at(0);
+      // todo fix this;
+      // permission_.setRoleId(nullptr);  // character_varying  ;
+      permission_.setUpdatedAt(
+          trantor::Date::now());  // timestamp_without_time_zone NOT_NULL ;
+      mapper_role_permissions.update(permission_);
+    } else {
+      LOG_DEBUG << "no rows found for role_permissions table";
     }
   }
 

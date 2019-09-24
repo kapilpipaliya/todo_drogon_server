@@ -46,7 +46,7 @@ class TypeSeeder : public Seeder {
         type.setColorId(*r.at(0).getId());
         type.setIsInRoadmap(it.is_in_roadmap);
         type.setIsMilestone(it.is_milestone);
-        type.setDescription(it.description);
+        //        type.setDescription(it.description);
         type.setIsDefault(true);    // default is false
         type.setIsStandard(false);  // default is false
         type.setCreatedAt(trantor::Date::now());

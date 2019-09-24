@@ -40,6 +40,10 @@ class SettingSeeder : public Seeder {
         //        }
       }
     }
+    // deviate from the defaults specified in settings.yml here
+    //        // to set a default role. The role cannot be specified in the
+    //        settings.yml as
+    //        // that would mean to know the ID upfront.
     auto clientPtr = drogon::app().getDbClient("sce");
     drogon::orm::Mapper<drogon_model::openproject6::Roles> mapper(clientPtr);
     auto role =
@@ -50,7 +54,7 @@ class SettingSeeder : public Seeder {
       update_unless_present("new_project_user_role_id",
                             std::to_string(role_id));
     }
-
+    // Set the closed status for repository commit references
     drogon::orm::Mapper<drogon_model::openproject6::Statuses> mapper_status(
         clientPtr);
     auto status = mapper_status.findBy(
@@ -69,20 +73,49 @@ class SettingSeeder : public Seeder {
     //          Setting[setting_name.to_sym] = datum
     //        }
     //      }
-
-    auto clientPtr = drogon::app().getDbClient("sce");
-    drogon::orm::Mapper<drogon_model::openproject6::Settings> mapper(clientPtr);
     for (auto it : settings_not_in_db()) {
       // auto data = data_[it];
       // on setting.h reimplemented []= operator
       // std::cout << it.first << ": " << it.second << std::endl;
+      insertorupdatesetting(it.first, it.second);
+    }
 
+    insertorupdatesetting("plugin_openproject_openid_connect", "");
+    // modules/costs/lib/open_project/costs/engine.rb
+    insertorupdatesetting("plugin_openproject_costs", "");  // fix
+    // modules/avatars/lib/open_project/avatars/engine.rb
+    insertorupdatesetting("plugin_openproject_avatars", "");  // fix
+    // modules/two_factor_authentication/lib/open_project/two_factor_authentication/engine.rb
+    insertorupdatesetting("plugin_openproject_two_factor_authentication",
+                          "");  // fix
+    // modules/ldap_groups/lib/open_project/ldap_groups/engine.rb
+    insertorupdatesetting("plugin_openproject_ldap_groups", "");  // fix
+    // modules/recaptcha/lib/open_project/recaptcha/engine.rb
+    insertorupdatesetting("plugin_openproject_recaptcha", "");  // fix
+    insertorupdatesetting("plugin_openproject_boards", "");
+    // modules/backlogs/lib/open_project/backlogs/engine.rb
+    insertorupdatesetting("plugin_openproject_backlogs", "");  // fix
+  }
+  void insertorupdatesetting(std::string key, std::string value) {
+    auto clientPtr = drogon::app().getDbClient("sce");
+    drogon::orm::Mapper<drogon_model::openproject6::Settings> mapper_settings(
+        clientPtr);
+    auto result_settings = mapper_settings.findBy(
+        (Criteria(drogon_model::openproject6::Settings::Cols::_name,
+                  CompareOperator::EQ, key)));
+    if (result_settings.size() > 0) {
+      auto settings = result_settings.at(0);
+      settings.setValue(value);  // text  ;
+      settings.setUpdatedOn(
+          trantor::Date::now());  // timestamp_without_time_zone  ;
+      mapper_settings.update(settings);
+    } else {
       auto clientPtr = drogon::app().getDbClient("sce");
       drogon::orm::Mapper<drogon_model::openproject6::Settings> mapper(
           clientPtr);
       drogon_model::openproject6::Settings setting;
-      setting.setName(it.first);
-      setting.setValue(it.second);
+      setting.setName(key);
+      setting.setValue(value);
       setting.setUpdatedOn(trantor::Date::now());
       mapper.insert(setting);
     }
