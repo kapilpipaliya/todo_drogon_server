@@ -16,6 +16,7 @@
 #include "models/Types.h"
 #include "models/Users.h"
 #include "version_builder.h"
+#include "query_builder.h"
 namespace openproj {
 namespace seeder {
 namespace DemoData {
@@ -44,7 +45,6 @@ class ProjectSeeder : public Seeder {
     //      seed_projects.each { |key|
     for (auto it : seed_projects_standard["projects"]) {
       auto key = it.first.as<std::string>();
-      LOG_DEBUG << key;
       curr_proj = key;
 
       LOG_DEBUG << " ↳ Creating " << key << " project...";
@@ -66,10 +66,10 @@ class ProjectSeeder : public Seeder {
 
       LOG_DEBUG << "   -Creating versions.";
       seed_versions(project_id, key);
-      /*
+
                           LOG_DEBUG << "   -Creating queries.";
                           seed_queries(project_id, key);
-
+/*
                           //        project_data_seeders(project, key).each {
          |seeder|
                           // Todo fix this.
@@ -402,6 +402,14 @@ class ProjectSeeder : public Seeder {
     //      Array(project_data_for(key, "queries")).each { |config|
     //        QueryBuilder.new(config, project).create!
     //      }
+    auto queries_data =
+        seed_projects_standard["projects"][curr_proj]["queries"];
+    if (queries_data) {
+      for (auto it : queries_data) {
+        openproj::seeder::DemoData::QueryBuilder v(it, project_id);
+        v.create();
+      }
+    }
   }
 
   void seed_versions(long project_id, std::string key) {
@@ -413,7 +421,6 @@ class ProjectSeeder : public Seeder {
     auto version_data =
         seed_projects_standard["projects"][curr_proj]["versions"];
     if (version_data) {
-      LOG_DEBUG << version_data.Type();
       for (auto it : version_data) {
         openproj::seeder::DemoData::VersionBuilder v(it, project_id);
         v.create();

@@ -5,11 +5,14 @@ namespace models {
 namespace MenuItems {
 class QueryMenuItem : public MenuItem {
   // belongs_to :query, foreign_key: "navigatable_id"
-
-   void unique_name() {
-//    "#{name}-#{id}".to_sym
+ public:
+  QueryMenuItem() {
+    setType("MenuItems::QueryMenuItem");  // character_varying  ;
+  }
+  void unique_name() {
+    //    "#{name}-#{id}".to_sym
   }
 };
-}
-}
-}
+}  // namespace MenuItems
+}  // namespace models
+}  // namespace openproj
