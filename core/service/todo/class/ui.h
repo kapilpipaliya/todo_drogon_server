@@ -5,10 +5,11 @@
 #include <fmt/format.h>
 #include "json.hpp"
 
-
 // A collection of methods related to the user interface
 namespace todo {
 namespace service {
+enum event { header, all, insert, update, delete_, count, key };
+
 class UI {
  public:
   UI(std::shared_ptr<websocket::todo::TodoContext>);
@@ -16,6 +17,7 @@ class UI {
   nlohmann::json handleEvent(nlohmann::json event, unsigned long next,
                              nlohmann::json args);
 
+  nlohmann::json getValueData();
   nlohmann::json getMenuData();
   std::string getPageTitle();
   std::string getUserAccountType();

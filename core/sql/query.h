@@ -9,7 +9,6 @@
 #include <vector>
 #include "json.hpp"
 
-
 #include <drogon/drogon.h>
 #include "wscontroller/wsfns.h"
 
@@ -114,6 +113,11 @@ struct Pagination {
   int offset = 0;
   int current_page = 0;
 };
+struct PrimayKey {
+  std::string prefix_;  // not used.
+  std::string column_;
+  PG_TYPES type_;
+};
 
 class Query {
  public:
@@ -173,6 +177,10 @@ class Query {
   void setSubquery(const SubQuery& query) { m_subquery = query; }
   const std::string& cusm_where() { return m_custm_where; }
   void setCustomWhere(const std::string& custom) { m_custm_where = custom; }
+  const std::vector<PrimayKey>& primarykey() { return m_primaryKey; }
+  void setPrimaryKey(const std::vector<PrimayKey>& primarykey) {
+    m_primaryKey = primarykey;
+  }
   size_t filterCount() const;
   bool select();
   std::string getHeaderName(unsigned long column) const;
@@ -250,6 +258,7 @@ class Query {
   std::vector<GroupByColumn> m_group;
   std::vector<Join> m_joins;
   Pagination m_pagination;
+  std::vector<PrimayKey> m_primaryKey;
   SubQuery m_subquery;
   std::string m_custm_where{""};
   drogon::orm::Result result{nullptr};

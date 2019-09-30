@@ -16,6 +16,8 @@ class TodoActor : public caf::event_based_actor, public system::UserActorBase {
   caf::behavior make_behavior() override;
 
  private:
+  void run(const drogon::WebSocketConnectionPtr& wsConnPtr,
+           std::string&& message, const drogon::WebSocketMessageType& type);
   nlohmann::json handleTextMessage(
       const drogon::WebSocketConnectionPtr& wsConnPtr,
       const nlohmann::json& in) override;

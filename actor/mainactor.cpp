@@ -5,10 +5,9 @@
 #include "json.hpp"
 #include "wscontroller/wsfns.h"
 
-
-
 #include "jadminactor.h"
 #include "madminactor.h"
+#include "myactor.h"
 #include "todoactor.h"
 
 #include "caf.h"
@@ -118,6 +117,20 @@ void MainActor::passToUser(MainActorType actortype,
         monitor(todoActor);  // this will send message when it down
         request(todoActor, caf::infinite, wsConnPtr, std::move(message), type);
         actorMap.insert({wsConnPtr, todoActor});
+      } else {
+        caf::actor todoActor = it->second;
+        request(todoActor, caf::infinite, wsConnPtr, std::move(message), type);
+      }
+
+      break;
+    }
+    case MainActorType::My: {
+      auto it = actorMap.find(wsConnPtr);
+      if (it == actorMap.end()) {
+        caf::actor myActor = spawn<myactor::MyActor>();
+        monitor(myActor);  // this will send message when it down
+        request(myActor, caf::infinite, wsConnPtr, std::move(message), type);
+        actorMap.insert({wsConnPtr, myActor});
       } else {
         caf::actor todoActor = it->second;
         request(todoActor, caf::infinite, wsConnPtr, std::move(message), type);

@@ -6,36 +6,110 @@ namespace todo {
 namespace service {
 UI::UI(std::shared_ptr<websocket::todo::TodoContext> context_)
     : context(std::move(context_)) {
+  query = sql::Query(sql::ObjectIdentifier("public", "ui", "u"));
   setupTable();
 }
 
-void UI ::setupTable() {}
+void UI ::setupTable() {
+  // m_query.setRowIdColumn("id");
+  query.setSelectedColumns(
+      {sql::SelectedColumn({"Id", "id", "", "u", sql::PG_TYPES::INT8, true}),
+       sql::SelectedColumn({"Key", "key", "", "u", sql::PG_TYPES::TEXT, true}),
+       sql::SelectedColumn(
+           {"Purpose", "purpose", "", "u", sql::PG_TYPES::TEXT, true}),
+       sql::SelectedColumn(
+           {"Description", "description", "", "u", sql::PG_TYPES::TEXT, true}),
+       sql::SelectedColumn(
+           {"Parent", "parent_id", "", "u", sql::PG_TYPES::INT8, true, 1, 1}),
+       sql::SelectedColumn({"Key", "",
+                            "u1.id || ' ' || u1.key || ' ' || u1.description",
+                            "u1", sql::PG_TYPES::TEXT, false, 0, 0, false})});
+
+  query.setPrimaryKey({{"u", "id", sql::PG_TYPES::INT8}});
+  auto u = sql::ObjectIdentifier("public", "ui", "u1");
+  query.setJoins({sql::Join("left", u, "u1.id = u.parent_id")});
+}
 
 nlohmann::json UI::handleEvent(nlohmann::json event, unsigned long next,
                                nlohmann::json args) {
-  auto event_cmp = event[next].get<std::string>();
-  if (event_cmp == "menu_data") {
-    return {{event, getMenuData()}};
-  }
-  if (event_cmp == "user_type") {
-    return {{event, getUserTypeData()}};
-  } else if (event_cmp == "user_title") {
-    return {{event, getPageTitle()}};
-  } else if (event_cmp == "user_account_type") {
-    return {{event, getUserAccountType()}};
-  } else if (event_cmp == "catalog_local") {
-    return {{event, getCatalogFilterData()}};
-  } else if (event_cmp == "ins") {
+  auto event_cmp = event[next].get<int>();
+  //  if (event_cmp == "menu_data") {
+  //    return {{event, getMenuData()}};
+  //  }
+  //  if (event_cmp == "user_type") {
+  //    return {{event, getUserTypeData()}};
+  //  } else if (event_cmp == "user_title") {
+  //    return {{event, getPageTitle()}};
+  //  } else if (event_cmp == "user_account_type") {
+  //    return {{event, getUserAccountType()}};
+  //  } else if (event_cmp == "catalog_local") {
+  //    return {{event, getCatalogFilterData()}};
+  //  } else
+  if (event_cmp == header) {
+    return query.headerData(event, args);
+  } else if (event_cmp == all) {
+    return query.allData(event, args);
+  } else if (event_cmp == insert) {
     return query.ins(event, args);
-  } else if (event_cmp == "upd") {
+  } else if (event_cmp == update) {
     return query.upd(event, args);
-  } else if (event_cmp == "del") {
+  } else if (event_cmp == delete_) {
     return query.del(event, args);
+  } else if (event_cmp == count) {
+    return query.count(event, args);
+  } else if (event_cmp == key) {
+    auto new_event = event;
+    new_event.erase(0);
+    auto i = new_event.size();
+    unsigned long l = 1;
+    long key = 0;
+    while (l < i) {
+      std::string key2;
+      if (new_event[l].is_string()) {
+        key2 = new_event[l].get<std::string>();
+      } else if (new_event[l].is_number()) {
+        key2 = std::to_string(new_event[l].get<int>());
+      }
+      std::string sql;
+      if (i == 0) {
+        sql =
+            "select id, key, description from public.ui where u1.key = $1 and "
+            "u1.parent_id is null";
+      } else {
+        sql =
+            "select id, key, description from public.ui where u1.key = $1 and "
+            "parent_id = $2";
+      }
+      auto result = sql::Dba::write(sql, key);
+      l++;
+      std::string next_key;
+      if (new_event[l].is_string()) {
+        next_key = new_event[l].get<std::string>();
+      } else if (new_event[l].is_number()) {
+        next_key = std::to_string(new_event[l].get<int>());
+      }
+      //      auto it =
+      //          std::find_if(result.begin(), result.end(),
+      //                       [next_key](const drogon::orm::Row& value) {
+      //                         return value["key"].as<std::string>() ==
+      //                         next_key;
+      //                       });
+      //      l++;
+      //      if (it != result.end()) {
+      //        // return it["description"].as<std::string>();
+      //        return key;
+      //        // it["key"].as<std::string>();
+      //      }
+    }
+
+    return query.count(event, args);
   } else {
     nlohmann::json ret;
     return ret;
   }
 }
+
+nlohmann::json UI::getValueData() {}
 
 nlohmann::json UI::getMenuData() {
   if (1) {

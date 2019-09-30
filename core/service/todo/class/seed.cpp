@@ -120,6 +120,7 @@
 #include "models/WorkPackageJournals.h"
 #include "models/WorkPackages.h"
 #include "models/Workflows.h"
+
 namespace todo {
 namespace service {
 Seed::Seed(std::shared_ptr<websocket::todo::TodoContext> context_)
@@ -131,35 +132,51 @@ void Seed::setupTable() {}
 
 nlohmann::json Seed::handleEvent(nlohmann::json event, unsigned long next,
                                  nlohmann::json args) {
-  auto event_cmp = event[next].get<std::string>();
-  if (event_cmp == "seed1") {
+  auto event_cmp = event[next].get<int>();
+  if (event_cmp == 1) {
     openproj::seeder::BasicData::BuiltinRolesSeeder a;
     a.seed();
     return {websocket::WsFns::successJsonObject(event, true, "Done")};
-  } else if (event_cmp == "seed2") {
+  } else if (event_cmp == 2) {
     openproj::seeder::BasicData::RoleSeeder a;
     a.seed();
     return {websocket::WsFns::successJsonObject(event, true, "Done")};
-  } else if (event_cmp == "seed3") {
+  } else if (event_cmp == 3) {
     openproj::seeder::BasicData::SettingSeeder a;
     a.seed();
     return {websocket::WsFns::successJsonObject(event, true, "Done")};
-  } else if (event_cmp == "seed4") {
+  } else if (event_cmp == 4) {
     openproj::seeder::StandardSeeder::BasicData::WorkflowSeeder a;
     a.seed();
     return {websocket::WsFns::successJsonObject(event, true, "Done")};
-  } else if (event_cmp == "seed5") {
+  } else if (event_cmp == 5) {
     openproj::seeder::StandardSeeder::BasicData::TypeSeeder a;
     a.seed();
     return {websocket::WsFns::successJsonObject(event, true, "Done")};
-  } else if (event_cmp == "seedall") {
+  } else if (event_cmp == 6) {
     openproj::seeder::RootSeeder a;
     a.seed();
     return {websocket::WsFns::successJsonObject(event, true, "Done")};
-  } else if (event_cmp == "summary") {
+  } else if (event_cmp == 7) {
     printsummery();
     return {websocket::WsFns::successJsonObject(event, true, "Done")};
-  } else if (event_cmp == "clear") {
+  } else if (event_cmp == 8) {
+    auto dropSql = "drop table public.ui";
+    auto createsql = R"(
+CREATE TABLE public.ui (
+        id bigserial NOT NULL,
+        "key" text NULL,
+        purpose text NULL,
+        description text NULL,
+        parent_id int8 NULL,
+        CONSTRAINT ui_pk PRIMARY KEY (id),
+        CONSTRAINT ui_fk FOREIGN KEY (parent_id) REFERENCES ui(id)
+);
+)";
+    sql::Dba::write(dropSql);
+    sql::Dba::write(createsql);
+    return {websocket::WsFns::successJsonObject(event, true, "Done")};
+  } else if (event_cmp == 9) {
     sql::Dba::write("delete from public.announcements;");
     sql::Dba::write("delete from public.ar_internal_metadata;");
     sql::Dba::write("delete from public.attachable_journals;");

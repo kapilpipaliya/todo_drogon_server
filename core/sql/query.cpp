@@ -1,9 +1,9 @@
 #include "query.h"
+#include <boost/algorithm/string/replace.hpp>
 
 #include <algorithm>
 #include "../sql/dba.h"
 #include "condformat.h"
-
 
 namespace sql {
 
@@ -232,6 +232,9 @@ std::string Query::buildInsQuery(nlohmann::json args) const {
           values += v + " ,";
         } else if (val.type() == nlohmann::json::value_t::string) {
           v = val.get<std::string>();
+          if (v != "''") {
+            boost::replace_all(v, "'", "''");
+          }
           values += "'" + v + "'" + " ,";
         } else {
           v = " ";
@@ -239,11 +242,20 @@ std::string Query::buildInsQuery(nlohmann::json args) const {
         }
       }
     }
+    // RETURNING
+    std::string returning = "";
+    if (m_primaryKey.size() > 0) {
+      returning += " RETURNING ";
+      for (auto& p : m_primaryKey) {
+        returning += p.column_ + ",";  // p.prefix_ + "." +
+      }
+      returning.pop_back();
+    }
     if (!column.empty()) column.pop_back();
     if (!values.empty()) values.pop_back();
     if (!column.empty() && !values.empty()) {
       return "INSERT INTO " + m_table.toString() + " " + " (" + column +
-             ") values(" + values + ")";
+             ") values(" + values + ")" + returning;
     }
   }
   return "";
@@ -277,6 +289,9 @@ std::string Query::buildUpdateQuery(nlohmann::json args) const {
           values += v + " ,";
         } else if (val.type() == nlohmann::json::value_t::string) {
           v = val.get<std::string>();
+          if (v != "''") {
+            boost::replace_all(v, "'", "''");
+          }
           values += "'" + v + "'" + " ,";
         } else {
           v = " ";
@@ -354,7 +369,7 @@ bool Query::select() {
   *clientPtr << q << drogon::orm::Mode::Blocking >>
       [this](const drogon::orm::Result& r) { result = r; } >>
       [q](const drogon::orm::DrogonDbException& e) {
-        LOG_DEBUG << "query: {}", q;
+        LOG_DEBUG << "query: " << q;
         LOG_DEBUG << e.base().what();
         // testOutput(false, "DbClient streaming-type interface(0)");
         throw;
@@ -607,17 +622,42 @@ nlohmann::json Query::ins(nlohmann::json event, nlohmann::json args) {
       return ret;
     }
   } catch (const std::exception& e) {
-    LOG_DEBUG << "error: {0}, sql: {1}", e.what(), strSql;
+    LOG_DEBUG << "error: " << e.what() << ", sql: " << strSql;
     throw;
   }
   try {
     auto clientPtr = drogon::app().getDbClient("sce");
-    clientPtr->execSqlSync(strSql);
+    auto result = clientPtr->execSqlSync(strSql);
+
     nlohmann::json ret;
-    ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
+    nlohmann::json result1;
+    result1[0] = event;
+    result1[1] = nlohmann::json::object();
+    result1[1]["ok"] = "true";
+    if (m_primaryKey.size() > 0) {
+      for (auto& p : m_primaryKey) {
+        switch (p.type_) {
+          case INT4:
+          case INT8: {
+            auto key1 = result[0][p.column_].as<long>();
+            result1[1][p.column_] = key1;
+            break;
+          }
+          case TEXT: {
+            auto key1 = result[0][p.column_].as<std::string>();
+            result1[1][p.column_] = key1;
+            break;
+          }
+          default:
+            break;
+        }
+      }
+    }
+
+    ret[0] = result1;
     return ret;
   } catch (const std::exception& e) {
-    LOG_DEBUG << "error: {0}, sql: {1}", e.what(), strSql;
+    LOG_DEBUG << "error: " << e.what() << ", sql: " << strSql;
     nlohmann::json ret;
     ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
     return ret;
@@ -644,7 +684,7 @@ nlohmann::json Query::upd(nlohmann::json event, nlohmann::json args) {
     ret[0] = websocket::WsFns::successJsonObject(event, true, "Done");
     return ret;
   } catch (const std::exception& e) {
-    LOG_DEBUG << "error: {0}, sql: {1}", e.what(), strSql;
+    LOG_DEBUG << "error: " << e.what() << ", sql: " << strSql;
     nlohmann::json ret;
     ret[0] = websocket::WsFns::successJsonObject(event, false, e.what());
     return ret;
