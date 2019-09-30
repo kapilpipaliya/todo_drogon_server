@@ -3,7 +3,7 @@
 #include "drogon/drogon.h"
 namespace dgraph {
 
-DGraphClientStub::DGraphClientStub(std::string addr, bool legacyApi)
+DGraphClientStub::DGraphClientStub(const std::string &addr, bool legacyApi)
     : addr(addr), legacyApi(legacyApi) {}
 
 int DGraphClientStub::detectApiVersion() {
@@ -104,12 +104,18 @@ void DGraphClientStub::mutate(Mutation mu,
     }
     body = obj.dump();
   } else if (!mu.setNquads.empty() || !mu.delNquads.empty()) {
-    body = R"(
-  {
-                {0}
-                {1}
-            }
-)";
+    body = "  {";
+    if (!mu.setNquads.empty()) {
+      body += "set {";
+      body += mu.setNquads;
+      body += "}";
+    }
+    if (!mu.delNquads.empty()) {
+      body += "delete {";
+      body += mu.delNquads;
+      body += "}";
+    }
+    body += "}";
   } else if (!mu.mutation.empty()) {
     body = mu.mutation;
     if (mu.isJsonString) {
@@ -134,7 +140,7 @@ void DGraphClientStub::mutate(Mutation mu,
     content_type = "application/rdf";
   }
 
-  std::string target;
+  std::string target = "/mutate";
 
   std::string nextDelim = "?";
   if (mu.startTs > 0) {
@@ -145,16 +151,61 @@ void DGraphClientStub::mutate(Mutation mu,
     target += nextDelim + "commitNow=true";
   }
   auto callBackHttp = [callBack](std::string result) {
+    auto j = nlohmann::json::parse(result);
+
     Response r;
-    r.json = result;
-    callBack(r);
+    TxnContext t;
+    // Todo handle error here:
+    if (j.contains("errors")) {
+      LOG_DEBUG << j["errors"][0]["message"].get<std::string>();
+      LOG_DEBUG
+          << "-----------Todo: Please Handle this situation properly----------";
+    } else {
+      auto p2 = j["extensions"]["txn"].get<dgraph::TxnContext>();
+      r.txn = p2;
+      r.json = result;
+      callBack(r);
+    }
   };
-  httpClient->drogonHttpAPI("localhost", 8080, "/mutate" + target,
+  httpClient->drogonHttpAPI("localhost", 8080, target,
                             boost::beast::http::verb::post, body, content_type,
                             {}, callBackHttp);
 }
 
-TxnContext DGraphClientStub::commitOrAbort(TxnContext ctx) {}
+void DGraphClientStub::commit(TxnContext &ctx,
+                              std::function<void(TxnContext)> callBack) {
+  std::string body;
+  if (ctx.keysList.size() > 0) {
+    nlohmann::json j;
+    for (auto &i : ctx.keysList) {
+      j.push_back(i);
+    }
+    body = j.dump();
+  }
+  auto url = "/commit?startTs=" + std::to_string(ctx.startTs);
+  auto callBackHttp = [callBack](std::string result) {
+    TxnContext t;
+    // todo..
+    callBack(t);
+  };
+  auto httpClient = dgraph::HttpClientManager::getClient("1");
+  httpClient->drogonHttpAPI("localhost", 8080, url,
+                            boost::beast::http::verb::post, body, "", {},
+                            callBackHttp);
+}
+void DGraphClientStub::abort(TxnContext ctx,
+                             std::function<void(TxnContext)> callBack) {
+  auto url = "commit?startTs=" + std::to_string(ctx.startTs) + "&abort=true";
+  auto callBackHttp = [callBack](std::string result) {
+    TxnContext t;
+    // todo..
+    callBack(t);
+  };
+  auto httpClient = dgraph::HttpClientManager::getClient("1");
+  httpClient->drogonHttpAPI("localhost", 8080, url,
+                            boost::beast::http::verb::post, "", "", {},
+                            callBackHttp);
+}
 
 std::string renderDgraphError(error e) {
   switch (e) {
@@ -171,6 +222,27 @@ std::string renderDgraphError(error e) {
     case ERR_REFRESH_JWT_EMPTY:
       return "refresh jwt should not be empty";
   }
+}
+
+void to_json(nlohmann::json &j, const TxnContext &p) {
+  j = nlohmann::json{
+      {"start_ts", p.startTs},
+      {"keys", p.keysList},
+      {"preds", p.predsList},
+      {"commit_ts", p.commitTs},
+  };
+}
+
+void from_json(const nlohmann::json &j, TxnContext &p) {
+  j.at("start_ts").get_to(p.startTs);
+  // if mutation/commitNow=true it not retrun keys and return commit_ts
+  if (j.contains("keys") && j["keys"].is_array()) {
+    j.at("keys").get_to(p.keysList);
+  }
+  if (j.contains("commit_ts") && j["commit_ts"].is_number()) {
+    j.at("commit_ts").get_to(p.commitTs);
+  }
+  j.at("preds").get_to(p.predsList);
 }
 
 }  // namespace dgraph

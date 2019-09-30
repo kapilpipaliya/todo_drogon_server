@@ -1,3 +1,8 @@
+// TODO 7. commiting a transaction: error will happen catch it.
+// TODO 8. cleanup resources . run close() function. or manage clients properly.
+// test transaction with multiple mutations.
+// test transaction abort.
+// test some drop attr operations.
 #ifndef DGRAPHCLIENT_H
 #define DGRAPHCLIENT_H
 #include <functional>

@@ -47,10 +47,10 @@ enum ValCase {
 struct Value {
   std::string defaultVal;
   std::string bytesVal;
-  int intVal;
-  bool boolVal;
+  int intVal = 0;
+  bool boolVal = false;
   std::string strVal;
-  double doubleVal;
+  double doubleVal = false;
   std::string geoVal;
   std::string dateVal;
   std::string datetimeVal;
@@ -93,36 +93,36 @@ struct Mutation {
   //  Array<NQuad> setList;
   //  Array<NQuad> delList;
   std::string cond;
-  bool commitNow;
-  long startTs;
+  bool commitNow = false;
+  long startTs = 0;
   // Raw mutation text to send;
   std::string mutation;
   // Set to true if `mutation` field (above) contains a JSON mutation.
   bool isJsonString = false;
 };
 struct Request {
-  long startTs;
+  long startTs = 0;
   std::string query;
   std::map<std::string, std::string> varsMap;
-  bool readOnly;
-  bool bestEffort;
+  bool readOnly = false;
+  bool bestEffort = false;
   std::vector<Mutation> mutationsList;
-  bool commitNow;
-  int timeout = 50;
+  bool commitNow = false;
+  int timeout = 20;
   bool debug = false;
 };
 struct TxnContext {
-  long startTs;
-  long commitTs;
-  bool aborted;
+  long startTs = 0;
+  long commitTs = 0;     //?
+  bool aborted = false;  //?
   std::vector<std::string> keysList;
   std::vector<std::string> predsList;
 };
 struct Latency {
-  int parsing_ns;
-  int processing_ns;
-  int encoding_ns;
-  int assignTimestamp_ns;
+  int parsing_ns = 0;
+  int processing_ns = 0;
+  int encoding_ns = 0;
+  int assignTimestamp_ns = 0;
 };
 struct Extensions {
   Latency server_latency;
@@ -152,7 +152,9 @@ struct Assigned {
   AssignedData data;
   Extensions extensions;
 };
+void to_json(nlohmann::json& j, const TxnContext& p);
 
+void from_json(const nlohmann::json& j, TxnContext& p);
 /**
  * Stub is a stub/client connecting to a single dgraph server instance.
  */
@@ -163,7 +165,8 @@ class DGraphClientStub {
   std::string refreshToken;
 
  public:
-  DGraphClientStub(std::string addr = "localhost:9080", bool legacyApi = false);
+  DGraphClientStub(const std::string& addr = "localhost:9080",
+                   bool legacyApi = false);
   int detectApiVersion();
 
   std::string login(std::string userid, std::string password,
@@ -178,7 +181,8 @@ class DGraphClientStub {
 
   void mutate(Mutation mu, std::function<void(Response)> callBack);
 
-  TxnContext commitOrAbort(TxnContext ctx);
+  void commit(TxnContext& ctx, std::function<void(TxnContext)> callBack);
+  void abort(TxnContext ctx, std::function<void(TxnContext)> callBack);
 
   void close() {}
 };

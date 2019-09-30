@@ -27,6 +27,36 @@ void DGraphSeed::handleEvent(const drogon::WebSocketConnectionPtr &wsConnPtr,
       websocket::WsFns::sendJson(wsConnPtr, j);
     };
     dgraphClient->alter(op, callBack);
+  } else if (event_cmp == 11) {
+    dgraph::Operation op;
+    op.schema = R"(
+# Define Types
+
+type Person {
+    name: string
+    age: int
+    friend: [Person]
+}
+
+type Animal {
+    name: string
+}
+
+# Define Directives and index
+
+name: string @index(term) @lang .
+age: int @index(int) .
+friend: [uid] @count .
+)";
+
+    auto dgraphClient = dgraph::DGraphClientManger::getDGraphClient("1");
+
+    auto callBack = [event, wsConnPtr](dgraph::Payload result) {
+      nlohmann::json j = nlohmann::json::array(
+          {nlohmann::json::array({event, nlohmann::json::parse(result.data)})});
+      websocket::WsFns::sendJson(wsConnPtr, j);
+    };
+    dgraphClient->alter(op, callBack);
   } else if (event_cmp == 2) {
     auto dgraphClient = dgraph::DGraphClientManger::getDGraphClient("1");
     dgraphClient->newTxn({});
@@ -52,8 +82,6 @@ void DGraphSeed::handleEvent(const drogon::WebSocketConnectionPtr &wsConnPtr,
     auto dgraphClient = dgraph::DGraphClientManger::getDGraphClient("1");
     auto txn = dgraphClient->newTxn({});
     auto query = R"(
-{
-  set {
     _:michael <name> "Michael" .
     _:michael <dgraph.type> "Person" .
     _:michael <age> "39" .
@@ -115,16 +143,16 @@ void DGraphSeed::handleEvent(const drogon::WebSocketConnectionPtr &wsConnPtr,
 
     _:perro <name> "Perro" .
     _:perro <dgraph.type> "Animal" .
-  }
-}
-
 )";
     try {
       dgraph::Mutation mu;
-      mu.setJson = query;
-      auto callBack = [event, wsConnPtr](dgraph::Response result) {
+      // mu.setJson = query;
+      mu.commitNow = true;
+      mu.setNquads = query;
+      auto callBack = [txn, event, wsConnPtr](dgraph::Response result) {
         nlohmann::json j = nlohmann::json::array({nlohmann::json::array(
             {event, nlohmann::json::parse(result.json)})});
+//                        txn->commit();
         websocket::WsFns::sendJson(wsConnPtr, j);
       };
       txn->mutate(mu, callBack);

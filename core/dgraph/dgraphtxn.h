@@ -45,7 +45,8 @@ class DGraphTxn {
    * queryWithVars is like query, but allows a variable map to be used. This can
    * provide safety against injection attacks.
    */
-  void queryWithVars(std::string q, std::map<std::string, std::string> vars,
+  void queryWithVars(const std::string &q,
+                     const std::map<std::string, std::string> &vars,
                      std::function<void(Response)> callBack);
 
   /**
@@ -62,7 +63,7 @@ class DGraphTxn {
    */
   void mutate(Mutation mu, std::function<void(Response)> callBack);
 
-  void doRequest(Request req, std::function<void(Response)> callBack);
+  // void doRequest(Request req, std::function<void(Response)> callBack);
 
   /**
    * commit commits any mutations that have been made in the transaction. Once
@@ -89,6 +90,12 @@ class DGraphTxn {
 
  private:
   void mergeContext(TxnContext src);
+};
+
+class Utils {
+ public:
+  static bool isAbortedError(std::string error);
+  static bool isConflictError(std::string error);
 };
 }  // namespace dgraph
 #endif  // DGRAPHCLIENT_TXN_H
