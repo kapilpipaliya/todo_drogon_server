@@ -30,6 +30,7 @@ nlohmann::json JAdminActor::handleTextMessage(
 
     if constexpr (false) {
     }
+    /*
     REGISTER("auth", jewel::service::Auth)
     REGISTER("user", jewel::service::User)
     REGISTER("account_type", jewel::service::AccountType)
@@ -88,6 +89,7 @@ nlohmann::json JAdminActor::handleTextMessage(
     REGISTER("setting_type", jewel::service::SettingType)
     REGISTER("certified_by", jewel::service::CertifiedBy)
     REGISTER("policy", jewel::service::Policy)
+*/
     else {
       return nlohmann::json::array();
     }
@@ -114,17 +116,18 @@ nlohmann::json JAdminActor::handleBinaryMessage(
         event = nlohmann::json::parse(r[0]["event"].c_str());
         // p.handleBinaryEvent creates new transaction.
         if (event[0] == "image") {
-          auto contx = wsConnPtr->getContext<websocket::jewel::JAdminContext>();
+          /*auto contx =
+          wsConnPtr->getContext<websocket::jewel::JAdminContext>();
           jewel::service::Auth p{contx};
           auto res = p.handleBinaryEvent(event, 1, message);
           if (!res.is_null()) {
             return res;
-          }
+          }*/
         }
       } catch (nlohmann::json::parse_error &e) {
-        LOG_DEBUG << "message: {}", e.what();
-        LOG_DEBUG << "exception id: {}", e.id;
-        LOG_DEBUG << "byte position of error:", e.byte;
+        LOG_DEBUG << "message: {}" << e.what();
+        LOG_DEBUG << "exception id: {}" << e.id;
+        LOG_DEBUG << "byte position of error:" << e.byte;
         nlohmann::json j =
             std::string("cant parse json reason: ") + e.what() + event.dump();
         websocket::WsFns::sendJson(wsConnPtr, j);

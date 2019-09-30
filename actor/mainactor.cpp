@@ -5,7 +5,7 @@
 #include "json.hpp"
 #include "wscontroller/wsfns.h"
 
-#include "jadminactor.h"
+//#include "jadminactor.h"
 #include "madminactor.h"
 #include "myactor.h"
 #include "todoactor.h"
@@ -82,7 +82,7 @@ void MainActor::passToUser(MainActorType actortype,
                            std::string &&message,
                            const drogon::WebSocketMessageType &type) {
   switch (actortype) {
-    case MainActorType::Jewel: {
+    /*case MainActorType::Jewel: {
       auto it = actorMap.find(wsConnPtr);
       if (it == actorMap.end()) {
         caf::actor userActor = spawn<jewelactor::JAdminActor>();
@@ -95,7 +95,7 @@ void MainActor::passToUser(MainActorType actortype,
       }
 
       break;
-    }
+    }*/
     case MainActorType::Music: {
       auto it = actorMap.find(wsConnPtr);
       if (it == actorMap.end()) {
