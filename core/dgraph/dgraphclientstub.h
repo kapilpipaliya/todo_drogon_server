@@ -169,14 +169,14 @@ class DGraphClientStub {
   std::string login(std::string userid, std::string password,
                     std::string refreshToken) {}
 
-  Payload alter(Operation op, std::function<void(Payload)> callBack);
+  void alter(Operation op, std::function<void(Payload)> callBack);
 
   std::string retryLogin() {}
 
-  // This is the only function that is used
-  Response query(Request req);
+  // I find This is the only function that is used
+  void query(Request req, std::function<void(Response)> callBack);
 
-  Response mutate(Mutation mu);
+  void mutate(Mutation mu, std::function<void(Response)> callBack);
 
   TxnContext commitOrAbort(TxnContext ctx);
 

@@ -41,9 +41,9 @@ void DGraphSeed::handleEvent(const drogon::WebSocketConnectionPtr &wsConnPtr,
   }
 }
 )";
-    auto callBack = [event, wsConnPtr](dgraph::Payload result) {
-      nlohmann::json j =
-          nlohmann::json::array({nlohmann::json::array({event, ppl})});
+    auto callBack = [event, wsConnPtr](dgraph::Response result) {
+      nlohmann::json j = nlohmann::json::array(
+          {nlohmann::json::array({event, nlohmann::json::parse(result.json)})});
       websocket::WsFns::sendJson(wsConnPtr, j);
     };
     dgraphClient->newTxn({})->queryWithVars(query, {{"$a", "Alice"}}, callBack);
@@ -122,13 +122,12 @@ void DGraphSeed::handleEvent(const drogon::WebSocketConnectionPtr &wsConnPtr,
     try {
       dgraph::Mutation mu;
       mu.setJson = query;
-      auto res = txn->mutate(mu);
-      LOG_DEBUG << "Hiiiiiiii" << res.json;
-      auto ppl = nlohmann::json::parse(res.json);
-      // Print results.
-      LOG_DEBUG << "Number of people named \"Alice\": " << ppl.size();
-      nlohmann::json j =
-          nlohmann::json::array({nlohmann::json::array({event, ppl})});
+      auto callBack = [event, wsConnPtr](dgraph::Response result) {
+        nlohmann::json j = nlohmann::json::array({nlohmann::json::array(
+            {event, nlohmann::json::parse(result.json)})});
+        websocket::WsFns::sendJson(wsConnPtr, j);
+      };
+      txn->mutate(mu, callBack);
     } catch (std::exception &e) {
       LOG_DEBUG << "There is error happened when talking to the server"
                 << e.what();

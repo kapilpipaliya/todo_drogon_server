@@ -4,11 +4,13 @@ namespace dgraph {
 
 DGraphTxn::DGraphTxn(DgraphClient *dc, TxnOptions txnOpts) { this->dc = dc; }
 
-Response DGraphTxn::query(std::string q) { return this->queryWithVars(q, {}); }
+void DGraphTxn::query(std::string q, std::function<void(Response)> callBack) {
+  this->queryWithVars(q, {}, callBack);
+}
 
-Response DGraphTxn::queryWithVars(std::string q,
-                                  std::map<std::string, std::string> vars,
-                                  std::function<void(Response)> callBack) {
+void DGraphTxn::queryWithVars(std::string q,
+                              std::map<std::string, std::string> vars,
+                              std::function<void(Response)> callBack) {
   if (this->finished) {
     dc->debug("Query request (ERR_FINISHED):\nquery = ${q}\nvars = ${vars}");
     throw ERR_FINISHED;
@@ -20,20 +22,19 @@ Response DGraphTxn::queryWithVars(std::string q,
   req.readOnly = this->useReadOnly;
   req.bestEffort = this->useBestEffort;
   req.varsMap = vars;
-  return this->doRequest(req, callBack);
+  this->doRequest(req, callBack);
 }
 
-Response DGraphTxn::mutate(Mutation mu) {
+void DGraphTxn::mutate(Mutation mu, std::function<void(Response)> callBack) {
   Request req;
   req.startTs = this->ctx.startTs;
   req.mutationsList.push_back(mu);
   req.commitNow = mu.commitNow;
 
-  return this->doRequest(req);
+  this->doRequest(req, callBack);
 }
 
-Response DGraphTxn::doRequest(Request req,
-                              std::function<void(Response)> callBack) {
+void DGraphTxn::doRequest(Request req, std::function<void(Response)> callBack) {
   auto mutationList = req.mutationsList;
   if (this->finished) {
     this->dc->debug(
@@ -58,10 +59,22 @@ Response DGraphTxn::doRequest(Request req,
   req.startTs = this->ctx.startTs;
   this->dc->debug("Do request :\n " + req.query);  // and/or print mutation
 
-  Response resp;
+  auto callBack2 = [req, callBack, this](Response resp) {
+    callBack(resp);
+
+    if (req.commitNow) {
+      this->finished = true;
+    }
+
+    this->mergeContext(resp.txn);
+    this->dc->debug("Do request :\nresponse" +
+                    resp.json);  // print resp properly
+  };
+
   auto c = this->dc->anyClient();
   try {
-    resp = c.query(req, callBack);  // This is the main line
+    c.query(req, callBack2);  // This is the main line
+
     //        resp = createResponse(reqp);
   } catch (std::exception &e) {
     //    if (isJwtExpired(e)) {
@@ -88,15 +101,6 @@ Response DGraphTxn::doRequest(Request req,
     //        throw e;
     //      }
   }
-
-  if (req.commitNow) {
-    this->finished = true;
-  }
-
-  this->mergeContext(resp.txn);
-  this->dc->debug("Do request :\nresponse" + resp.json);  // print resp properly
-
-  return resp;
 }
 
 void DGraphTxn::commit() {

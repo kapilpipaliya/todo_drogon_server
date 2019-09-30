@@ -6,11 +6,11 @@
 //#include <QNetworkAccessManager>
 //#include <QUrl>
 #include <future>
-#include "Poco/Net/HTMLForm.h"
+/*#include "Poco/Net/HTMLForm.h"
 #include "Poco/Net/HTTPClientSession.h"
 #include "Poco/Net/HTTPRequest.h"
 #include "Poco/Net/HTTPResponse.h"
-#include "Poco/StreamCopier.h"
+#include "Poco/StreamCopier.h"*/
 #include "drogon/drogon.h"
 namespace dgraph {
 
@@ -59,7 +59,7 @@ std::string DGraphHttpClient::callAPICurl(
   QNetworkReply *reply = restclient->post(request,QString::fromStdString(body));
   */
   // https://gist.github.com/jeffcrouse/247717dcca0669090cfa
-  Poco::Net::HTTPClientSession session(host, port);
+  /*Poco::Net::HTTPClientSession session(host, port);
   // s.setProxy("localhost", srv.port());
   Poco::Net::HTTPRequest request(Poco::Net::HTTPRequest::HTTP_POST, target);
   request.setContentType(content_type);
@@ -77,6 +77,7 @@ std::string DGraphHttpClient::callAPICurl(
   Poco::StreamCopier::copyStream(rs, ss);
 
   return ss.str();
+*/
 }
 
 std::string DGraphHttpClient::callAPI(
@@ -148,7 +149,10 @@ void DGraphHttpClient::drogonHttpAPI(
   req->setPath(target);
   // req->setParameter("wd", "weixin");
   req->setBody(body);
-  req->setCustomContentTypeString(content_type);
+  if (!content_type.empty()) {
+    req->setCustomContentTypeString("content-type: " + content_type + "\r\n");
+  }
+  LOG_DEBUG << host << port << target << body << content_type;
 
   client->sendRequest(req, [callback](drogon::ReqResult result,
                                       const drogon::HttpResponsePtr& response) {

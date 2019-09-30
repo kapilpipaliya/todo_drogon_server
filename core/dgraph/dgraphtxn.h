@@ -39,14 +39,14 @@ class DGraphTxn {
    * mutations need to be made in the same transaction, it's convenient to chain
    * the method, e.g. client.newTxn().query("...").
    */
-  Response query(std::string q);
+  void query(std::string q, std::function<void(Response)> callBack);
 
   /**
    * queryWithVars is like query, but allows a variable map to be used. This can
    * provide safety against injection attacks.
    */
-  Response queryWithVars(std::string q, std::map<std::string, std::string> vars,
-                         std::function<void(Response)> callBack);
+  void queryWithVars(std::string q, std::map<std::string, std::string> vars,
+                     std::function<void(Response)> callBack);
 
   /**
    * mutate allows data stored on Dgraph instances to be modified. The fields in
@@ -60,9 +60,9 @@ class DGraphTxn {
    * If the mutation fails, then the transaction is discarded and all future
    * operations on it will fail.
    */
-  Response mutate(Mutation mu);
+  void mutate(Mutation mu, std::function<void(Response)> callBack);
 
-  Response doRequest(Request req, std::function<void(Response)> callBack);
+  void doRequest(Request req, std::function<void(Response)> callBack);
 
   /**
    * commit commits any mutations that have been made in the transaction. Once

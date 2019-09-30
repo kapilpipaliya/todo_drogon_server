@@ -17,9 +17,8 @@ void DgraphClient::alter(Operation op, std::function<void(Payload)> callBack) {
   LOG_DEBUG << op.schema;
 
   auto c = this->anyClient();
-  Payload payload;
   try {
-    payload = c.alter(op, callBack);
+    c.alter(op, callBack);
   } catch (std::exception &e) {
     //          if (isJwtExpired(e) == true) {
     //            c.retryLogin();
