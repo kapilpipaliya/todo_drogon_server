@@ -101,6 +101,7 @@ actor/validation.cpp
 include_directories(../models)
 
 AUX_SOURCE_DIRECTORY(./service JEWEL_SRC)
+AUX_SOURCE_DIRECTORY(./service/generator JEWEL_SRC)
 AUX_SOURCE_DIRECTORY(./service/jadmin JEWEL_SRC)
 AUX_SOURCE_DIRECTORY(./service/jadmin/class JEWEL_SRC)
 AUX_SOURCE_DIRECTORY(./service/jadmin/auth JEWEL_SRC)
@@ -122,6 +123,8 @@ AUX_SOURCE_DIRECTORY(./service/madmin/class JEWEL_SRC)
 AUX_SOURCE_DIRECTORY(./service/madmin/modules/catalog JEWEL_SRC)
 
 AUX_SOURCE_DIRECTORY(./service/muser JEWEL_SRC)
+AUX_SOURCE_DIRECTORY(./dgraph JEWEL_SRC)
+AUX_SOURCE_DIRECTORY(./dgraph/http JEWEL_SRC)
 
 #AUX_SOURCE_DIRECTORY(./service/openproj/controllers JEWEL_SRC)
 #AUX_SOURCE_DIRECTORY(./service/openproj/controllers/concerns JEWEL_SRC)

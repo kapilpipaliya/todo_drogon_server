@@ -2,6 +2,7 @@
 #include "todoactor.h"
 
 #include "inc/todoservices.h"
+
 namespace superactor {
 namespace todoactor {
 TodoActor::TodoActor(caf::actor_config &cfg) : caf::event_based_actor(cfg) {}
@@ -11,7 +12,7 @@ caf::behavior TodoActor::make_behavior() {
       [this](const drogon::WebSocketConnectionPtr &wsConnPtr,
              std::string message,
              const drogon::WebSocketMessageType &type) -> caf::result<void> {
-        blocking_run(wsConnPtr, std::move(message), type);
+        run(wsConnPtr, std::move(message), type);
         return {};
       },
       [this](superactor::system::exit_atom) -> caf::result<void> {
@@ -20,22 +21,63 @@ caf::behavior TodoActor::make_behavior() {
       }};
 }
 
+void TodoActor::run(const drogon::WebSocketConnectionPtr &wsConnPtr,
+                    std::string &&message,
+                    const drogon::WebSocketMessageType &type) {
+  switch (type) {
+    case drogon::WebSocketMessageType::Text: {
+      try {
+        auto valin = nlohmann::json::parse(message);
+        if (valin.is_array()) {
+          for (const auto &i : valin) {
+            handleTextMessage(wsConnPtr, i);
+          }
+        } else {
+          nlohmann::json j = "Invalid Message only array handled: " + message;
+          websocket::WsFns::sendJson(wsConnPtr, j);
+        }
+      } catch (nlohmann::json::parse_error &e) {
+        LOG_DEBUG << "message: " << e.what();
+        LOG_DEBUG << "exception id: " << e.id;
+        LOG_DEBUG << "byte position of error:" << e.byte;
+        nlohmann::json j = std::string("cant parse json reason: ") + e.what();
+        websocket::WsFns::sendJson(wsConnPtr, j);
+      }
+      break;
+    }
+    case drogon::WebSocketMessageType::Binary: {
+      auto result = handleBinaryMessage(wsConnPtr, message);
+      if (!result.is_null()) {
+        websocket::WsFns::sendJson(wsConnPtr, result);
+      }
+      break;
+    }
+    default:
+      break;
+  }
+}
+
 nlohmann::json TodoActor::handleTextMessage(
     const drogon::WebSocketConnectionPtr &wsConnPtr, const nlohmann::json &in) {
-  if (!in.is_array() || !in[0].is_array() || !in[0][0].is_string()) {
+  if (!in.is_array() || !in[0].is_array() || !in[0][0].is_number()) {
     return nlohmann::json::array();
   }
-  auto contx = wsConnPtr->getContext<websocket::todo::TodoContext>();
-  auto evt = in[0][0].get<std::string>();
+  // auto contx = wsConnPtr->getContext<websocket::todo::TodoContext>();
+  auto evt = in[0][0].get<int>();
   nlohmann::json r;
-  if (evt == "auth") {
-    r = handleService<todo::service::Auth>(contx, in);
-  } else if (evt == "user" || evt == "users") {
-    r = handleService<todo::service::User>(contx, in);
-  } else if (evt == "ui") {
-    r = handleService<todo::service::UI>(contx, in);
-  } else if (evt == "seed") {
-    r = handleService<todo::service::Seed>(contx, in);
+  //  if (evt == "auth") {
+  //    r = handleService<todo::service::Auth>(contx, in);
+  //  } else if (evt == 1) {
+  //    r = handleService<todo::service::User>(contx, in);
+  //  } else
+  //  if (evt == 1) {
+  //    r = handleService<todo::service::UI>(contx, in);
+  //  } else if (evt == 2) {
+  //    r = handleService<todo::service::Seed>(contx, in);
+  //  } else
+  if (evt == 3) {
+    todo::service::DGraphSeed t;
+    t.handleEvent(wsConnPtr, in[0], 1, in[1]);
   } else {
     r = nlohmann::json::array();
   }
@@ -67,9 +109,9 @@ nlohmann::json TodoActor::handleBinaryMessage(
           return j;
         }
       } catch (nlohmann::json::parse_error &e) {
-        LOG_DEBUG << "message: {}", e.what();
-        LOG_DEBUG << "exception id: {}", e.id;
-        LOG_DEBUG << "byte position of error:", e.byte;
+        LOG_DEBUG << "message: " << e.what();
+        LOG_DEBUG << "exception id: " << e.id;
+        LOG_DEBUG << "byte position of error:" << e.byte;
         nlohmann::json j =
             std::string("cant parse json reason: ") + e.what() + event.dump();
         websocket::WsFns::sendJson(wsConnPtr, j);
