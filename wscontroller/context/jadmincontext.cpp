@@ -55,5 +55,5 @@ void JAdminContext::setUser() {
     LOG_DEBUG << e.what();
   }
 }
-}  // namespace jadmin
+}  // namespace jewel
 }  // namespace websocket

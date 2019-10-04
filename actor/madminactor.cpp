@@ -1,7 +1,7 @@
 
 #include "madminactor.h"
 
-#include "madminservices.h"
+//#include "madminservices.h"
 namespace superactor {
 namespace musicactor {
 MAdminActor::MAdminActor(caf::actor_config &cfg)
@@ -14,12 +14,14 @@ caf::behavior MAdminActor::make_behavior() {
              const drogon::WebSocketMessageType &type) -> caf::result<void> {
         blocking_run(wsConnPtr, std::move(message), type);
         return {};
-      },
-      [this](superactor::system::exit_atom) -> caf::result<void> {
-        quit();
-        return {};
-      }};
-}
+      }
+      //        ,
+      //      [this](superactor::system::exit_atom) -> caf::result<void> {
+      //        quit();
+      //        return {};
+      //}
+  };
+}  // namespace musicactor
 
 nlohmann::json MAdminActor::handleTextMessage(
     const drogon::WebSocketConnectionPtr &wsConnPtr, const nlohmann::json &in) {
@@ -27,6 +29,7 @@ nlohmann::json MAdminActor::handleTextMessage(
     return nlohmann::json::array();
   }
   auto contx = wsConnPtr->getContext<websocket::music::MAdminContext>();
+  /*
   auto evt = in[0][0].get<std::string>();
   if (evt == "auth") {
     return handleService<music::service::Auth>(contx, in);
@@ -41,6 +44,7 @@ nlohmann::json MAdminActor::handleTextMessage(
   } else {
     return nlohmann::json::array();
   }
+  */
 }
 
 nlohmann::json MAdminActor::handleBinaryMessage(
@@ -57,19 +61,19 @@ nlohmann::json MAdminActor::handleBinaryMessage(
       try {
         event = nlohmann::json::parse(r[0]["event"].c_str());
         // p.handleBinaryEvent creates new transaction.
-
-        if (event[0] == "song") {
-          music::service::Song p{contx};
-          auto r = p.handleBinaryEvent(event, 1, message);
-          if (!r.is_null()) return r;
-        }
+        /*
+                if (event[0] == "song") {
+                  music::service::Song p{contx};
+                  auto r = p.handleBinaryEvent(event, 1, message);
+                  if (!r.is_null()) return r;
+                }*/
       } catch (nlohmann::json::parse_error &e) {
-        LOG_DEBUG << "message: {}", e.what();
-        LOG_DEBUG << "exception id: {}", e.id;
-        LOG_DEBUG << "byte position of error:", e.byte;
+        LOG_DEBUG << "message: {}" << e.what();
+        LOG_DEBUG << "exception id: {}" << e.id;
+        LOG_DEBUG << "byte position of error:" << e.byte;
         nlohmann::json j =
             std::string("cant parse json reason: ") + e.what() + event.dump();
-        websocket::WsFns::sendJson(wsConnPtr, j);
+        //       websocket::WsFns::sendJson(wsConnPtr, j);
       }
     }
   } catch (const std::exception &e) {
