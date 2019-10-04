@@ -11,14 +11,11 @@
 
 #include <drogon/drogon.h>
 #include "wscontroller/wsfns.h"
-
-#include "json.hpp"
-
 /*
  * This file's classes should not talk to database directly
  * */
 namespace sql {
-enum PG_TYPES {
+enum PG_TYPES : short {
   BOOL = 16,
   //    ByTea = 17,
   //    Char = 18,
@@ -29,7 +26,7 @@ enum PG_TYPES {
   XML = 142,
   DOUBLE = 701,
   TIMESTAMP = 1114,
-  ENUM = 64000,
+  ENUM = 6400,
   // ARRAYINT = 9997, // fix
   // ARRAYTEXT = 9998, // fix
   PSJSON = 9999

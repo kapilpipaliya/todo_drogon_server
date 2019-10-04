@@ -4,7 +4,6 @@
 #include <map>
 #include <memory>
 #include <string>
-#include "DGraphHttpClient.h"  //remove
 namespace dgraph {
 class DGraphHttpClient;
 class HttpClientManager {

@@ -1,5 +1,6 @@
 #include "dgraphclientstub.h"
 #include <boost/beast/core.hpp>
+#include "core/dgraph/http/HttpClientManger.h"
 #include "drogon/drogon.h"
 namespace dgraph {
 

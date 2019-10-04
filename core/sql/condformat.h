@@ -1,12 +1,11 @@
 #ifndef CONDFORMAT_H
 #define CONDFORMAT_H
 #include <string>
-#include "query.h"
 
 // Conditional formatting for given format to table cells based on a specified
 // condition.
 namespace sql {
-
+enum PG_TYPES : short;
 class CondFormat {
  public:
   CondFormat() = default;

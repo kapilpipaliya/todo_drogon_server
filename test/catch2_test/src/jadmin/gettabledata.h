@@ -1,7 +1,7 @@
 #ifndef GetTableData_H
 #define GetTableData_H
 
-#include "../wstestbase.h"
+
 namespace wstest {
 class GetTableData : public WSTestBase {
  public:

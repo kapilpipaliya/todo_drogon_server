@@ -1,9 +1,10 @@
 #ifndef DGRAPHCLIENT_TXN_H
 #define DGRAPHCLIENT_TXN_H
 
-#include "./dgraphclientstub.h"
 //#import "./dgraphclient.h" //gives error
 namespace dgraph {
+struct Response;
+class TxnContext;
 class DgraphClient;
 struct TxnOptions {
   bool readOnly = false;

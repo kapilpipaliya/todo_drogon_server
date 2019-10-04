@@ -3,49 +3,44 @@
 
 #include <QWidget>
 #include <QtWidgets>
-#include "anglescript/script.h"
-class MainHighScriptIDe : public QWidget
-{
-    Q_OBJECT
-public:
-    explicit MainHighScriptIDe(QWidget *parent = nullptr);
+class Script;
+class MainHighScriptIDe : public QWidget {
+  Q_OBJECT
+ public:
+  explicit MainHighScriptIDe(QWidget *parent = nullptr);
 
-signals:
+ signals:
 
-public slots:
+ public slots:
 
-private:
-    void init();
-    void initAngelScript();
-    Script* script;
+ private:
+  void init();
+  void initAngelScript();
+  Script *script;
 };
-class GeneralTab : public QWidget
-{
-    Q_OBJECT
+class GeneralTab : public QWidget {
+  Q_OBJECT
 
-public:
-    explicit GeneralTab(const QFileInfo &fileInfo, QWidget *parent = 0);
+ public:
+  explicit GeneralTab(const QFileInfo &fileInfo, QWidget *parent = 0);
 };
 
 //! [1]
-class PermissionsTab : public QWidget
-{
-    Q_OBJECT
+class PermissionsTab : public QWidget {
+  Q_OBJECT
 
-public:
-    explicit PermissionsTab(const QFileInfo &fileInfo, QWidget *parent = 0);
+ public:
+  explicit PermissionsTab(const QFileInfo &fileInfo, QWidget *parent = 0);
 };
 //! [1]
 
-
 //! [2]
-class ApplicationsTab : public QWidget
-{
-    Q_OBJECT
+class ApplicationsTab : public QWidget {
+  Q_OBJECT
 
-public:
-    explicit ApplicationsTab(const QFileInfo &fileInfo, QWidget *parent = 0);
+ public:
+  explicit ApplicationsTab(const QFileInfo &fileInfo, QWidget *parent = 0);
 };
 //! [2]
 
-#endif // MAINHIGHSCRIPTIDE_H
+#endif  // MAINHIGHSCRIPTIDE_H

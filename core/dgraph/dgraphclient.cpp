@@ -1,5 +1,6 @@
 #include "dgraphclient.h"
 #include <memory>
+#include "dgraphclientstub.h"
 #include "dgraphtxn.h"
 #include "drogon/drogon.h"
 namespace dgraph {

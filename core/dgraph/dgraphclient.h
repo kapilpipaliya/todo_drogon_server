@@ -9,8 +9,9 @@
 #include <memory>
 #include <string>
 #include <vector>
-#include "dgraphclientstub.h"
+
 namespace dgraph {
+class DGraphClientStub;
 class DGraphTxn;
 struct TxnOptions;
 

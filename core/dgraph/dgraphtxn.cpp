@@ -1,4 +1,5 @@
 #include "dgraphtxn.h"
+#include "./dgraphclientstub.h"
 #include "dgraphclient.h"
 namespace dgraph {
 

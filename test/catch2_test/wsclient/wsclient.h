@@ -15,7 +15,7 @@
 #include <QTimer>
 #include <functional>
 
-#include "json.hpp"
+
 namespace wstest{
 class SslEchoClient : public QObject {
   Q_OBJECT

@@ -1,7 +1,7 @@
 #ifndef SaveDelete_H
 #define SaveDelete_H
 
-#include "../wstestbase.h"
+
 
 namespace wstest{
 class SaveDelete : public WSTestBase {

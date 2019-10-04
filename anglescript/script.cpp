@@ -1,6 +1,10 @@
 #include "script.h"
 #include <iostream>
 
+#include "thirdparty/angelscriptaddons/scriptarray/scriptarray.h"
+#include "thirdparty/angelscriptaddons/scriptbuilder/scriptbuilder.h"
+#include "thirdparty/angelscriptaddons/scriptstdstring/scriptstdstring.h"
+
 Script::Script()
     : scriptEngine_(nullptr),
       immediateContext_(nullptr),

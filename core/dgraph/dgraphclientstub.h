@@ -5,8 +5,8 @@
 #include <map>
 #include <string>
 #include <vector>
-#include "core/dgraph/http/HttpClientManger.h"
 #include "json.hpp"
+
 namespace dgraph {
 
 enum error {

@@ -1,6 +1,7 @@
 #include "mainhighscriptide.h"
 #include <QtWidgets>
 #include "./editor/mainwindow.h"
+#include "anglescript/script.h"
 MainHighScriptIDe::MainHighScriptIDe(QWidget *parent) : QWidget(parent) {
   init();
 }

@@ -3,6 +3,7 @@
 #include <string>
 #include <utility>
 #include "../strfns.h"
+#include "query.h"
 namespace sql {
 
 CondFormat::CondFormat(const std::string& filter, const std::string& encoding)

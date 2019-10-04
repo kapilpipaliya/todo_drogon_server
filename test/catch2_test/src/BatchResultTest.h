@@ -3,7 +3,7 @@
 
 #include <map>
 #include <string>
-#include "json.hpp"
+
 namespace wstest {
 class BatchResultTest {
  private:

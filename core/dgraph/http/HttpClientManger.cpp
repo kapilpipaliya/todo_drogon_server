@@ -3,6 +3,7 @@
 #include <cassert>
 #include <string>
 #include "DGraphHttpClient.h"
+#include "DGraphHttpClient.h"  //remove
 namespace dgraph {
 
 std::map<std::string, std::shared_ptr<DGraphHttpClient>>

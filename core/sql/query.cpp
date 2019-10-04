@@ -1,7 +1,6 @@
 #include "query.h"
-#include <boost/algorithm/string/replace.hpp>
-
 #include <algorithm>
+#include <boost/algorithm/string/replace.hpp>
 #include "../sql/dba.h"
 #include "condformat.h"
 
