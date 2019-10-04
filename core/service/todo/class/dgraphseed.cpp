@@ -152,7 +152,7 @@ friend: [uid] @count .
       auto callBack = [txn, event, wsConnPtr](dgraph::Response result) {
         nlohmann::json j = nlohmann::json::array({nlohmann::json::array(
             {event, nlohmann::json::parse(result.json)})});
-//                        txn->commit();
+//                                txn->commit();
         websocket::WsFns::sendJson(wsConnPtr, j);
       };
       txn->mutate(mu, callBack);

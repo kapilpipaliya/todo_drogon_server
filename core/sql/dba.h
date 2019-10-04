@@ -2,8 +2,8 @@
 #define DBA_H
 #include <drogon/HttpAppFramework.h>
 #include <string>
-#include "json.hpp"
 
+#include "json.hpp"
 
 /**
  * Dba Class

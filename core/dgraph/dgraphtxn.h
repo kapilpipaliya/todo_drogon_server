@@ -1,7 +1,7 @@
 #ifndef DGRAPHCLIENT_TXN_H
 #define DGRAPHCLIENT_TXN_H
 
-#import "./dgraphclientstub.h"
+#include "./dgraphclientstub.h"
 //#import "./dgraphclient.h" //gives error
 namespace dgraph {
 class DgraphClient;
