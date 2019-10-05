@@ -20,6 +20,49 @@
 
 #include "gui/mainhighscriptide.h"
 
+#include <iostream>
+#include <string>
+
+#include <tao/pegtl.hpp>
+
+namespace pegtl = tao::pegtl;
+
+namespace hello {
+// Parsing rule that matches a literal "Hello, ".
+
+struct prefix : pegtl::string<'H', 'e', 'l', 'l', 'o', ',', ' '> {};
+
+// Parsing rule that matches a non-empty sequence of
+// alphabetic ascii-characters with greedy-matching.
+
+struct name : pegtl::plus<pegtl::alpha> {};
+
+// Parsing rule that matches a sequence of the 'prefix'
+// rule, the 'name' rule, a literal "!", and 'eof'
+// (end-of-file/input), and that throws an exception
+// on failure.
+
+struct grammar : pegtl::must<prefix, name, pegtl::one<'!'>, pegtl::eof> {};
+
+// Class template for user-defined actions that does
+// nothing by default.
+
+template <typename Rule>
+struct action {};
+
+// Specialisation of the user-defined action to do
+// something when the 'name' rule succeeds; is called
+// with the portion of the input that matched the rule.
+
+template <>
+struct action<name> {
+  template <typename Input>
+  static void apply(const Input &in, std::string &v) {
+    v = in.string();
+  }
+};
+
+}  // namespace hello
 //#include
 /**
  * This example refect snippets of code found in the documentation section 1:
@@ -69,7 +112,7 @@ int qInit() {
   return a.exec();
 }
 
-int main() {
+int main(int argc, char *argv[]) {
   /*
 boost::locale::generator gen;
 // Specify location of dictionaries
@@ -81,7 +124,12 @@ std::cout.imbue(std::locale());
 // Display a message using current system locale
 std::cout << boost::locale::translate("Hello World") << std::endl;
 */
-
+  std::string name;
+  if (argc > 1) {
+    pegtl::argv_input in(argv, 1);
+    pegtl::parse<hello::grammar, hello::action>(in, name);
+    std::cout << "Good bye, " << name << "!" << std::endl;
+  }
   // This is great library:
   //  https://github.com/Dobiasd/FunctionalPlus
   std::list<std::string> things = {"same old", "same old"};

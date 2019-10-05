@@ -1,5 +1,5 @@
-#ifndef QUERY_H
-#define QUERY_H
+#ifndef JDROGON_QUERY_H
+#define JDROGON_QUERY_H
 
 #include "objectidentifier.h"
 

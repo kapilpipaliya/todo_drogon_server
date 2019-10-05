@@ -44,9 +44,10 @@ if (UNIX AND NOT APPLE)
   endif()
 endif()
 
-find_package(Drogon CONFIG REQUIRED)
-include_directories(${DROGON_INCLUDE_DIRS})
+#find_package(Drogon CONFIG REQUIRED)
+#include_directories(${DROGON_INCLUDE_DIRS})
 #link_libraries(${DROGON_LIBRARIES})
+add_subdirectory(thirdparty/drogon)
 
 set(THREADS_PREFER_PTHREAD_FLAG TRUE)
 find_package(Threads REQUIRED)
@@ -108,6 +109,7 @@ find_package(CAF COMPONENTS core io REQUIRED )
    SET(CMAKE_AUTOUIC ON)
 find_package(Qt5 COMPONENTS Core Gui Widgets Network Xml Sql REQUIRED)
 find_package(msgpack CONFIG REQUIRED)
+find_package(pegtl CONFIG REQUIRED)
 # https://gist.github.com/Asher-/617872
 #	function processes each sub-directory and then adds each source file in directory
 #	each function should cascade back upward in setting variables so that the bottom directory
@@ -247,7 +249,8 @@ target_link_libraries(jdragon
   ${_OPTIONAL_LIBS}
   # ${UUID_LIBRARY}
   ZLIB::ZLIB
-  ${DROGON_LIBRARIES}
+#  ${DROGON_LIBRARIES}
+  drogon
   ${CAF_LIBRARIES}
   Boost::filesystem
   fmt::fmt
@@ -265,7 +268,7 @@ target_link_libraries(jdragon
   # easyloggingpp
   #Wt::Wt Wt::Dbo Wt::FCGI Wt::HTTP
   amqpcpp
-#  units
+  # units
   Angelscript::angelscript
   kangaru
   Qt5::Core
@@ -278,4 +281,5 @@ target_link_libraries(jdragon
   msgpackc
   msgpackc-cxx
   msgpackc-static
+  taocpp::pegtl
 )

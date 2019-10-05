@@ -11,8 +11,11 @@
 #include <vector>
 
 namespace dgraph {
+struct Operation;
+struct Payload;
 class DGraphClientStub;
 class DGraphTxn;
+struct Mutation;
 struct TxnOptions;
 
 /**

@@ -23,8 +23,8 @@ void MainHighScriptIDe::init() {
   auto v1_h2_v1 = new QVBoxLayout();
   auto v1_h2_v2 = new QVBoxLayout();
 
-  v1_h1->addLayout(v1_h2_v1);
-  v1_h1->addLayout(v1_h2_v2);
+  v1_h2->addLayout(v1_h2_v1);
+  v1_h2->addLayout(v1_h2_v2);
 
   v1->addItem(v1_h1);
   v1->addItem(v1_h2);

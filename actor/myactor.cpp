@@ -1,7 +1,6 @@
 
 #include "myactor.h"
 
-#include "../core/service/generator/generator.h"
 #include "../wscontroller/wsfns.h"
 #include "mainactortype.h"
 
@@ -32,7 +31,7 @@ nlohmann::json MyActor::handleTextMessage(
   // auto contx = wsConnPtr->getContext<websocket::music::MAdminContext>();
   auto evt = in[0][0].get<int>();
   if (evt == 1) {
-    return handleService<generator::service::Generator>(in);
+    // return handleService<generator::service::Generator>(in);
   } else {
     return nlohmann::json::array();
   }

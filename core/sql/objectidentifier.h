@@ -1,5 +1,5 @@
-#ifndef OBJECTIDENTIFIER_H
-#define OBJECTIDENTIFIER_H
+#ifndef OBJECTIDENTIFIER1_H
+#define OBJECTIDENTIFIER1_H
 
 #include <string>
 #include <utility>
