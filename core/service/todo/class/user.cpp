@@ -88,8 +88,8 @@ nlohmann::json User::handleEvent(nlohmann::json event, unsigned long next,
       return query.allData(event, args);
     }
     if (true) {
-      query.setCustomWhere(
-          fmt::format("e.parent_id = {}", context->getUserId()));
+      //      query.setCustomWhere(
+      //          fmt::format("e.parent_id = {}", context->getUserId()));
       return query.allData(event, args);
     } else {
       return {{event, "unauthorised"}};
@@ -107,7 +107,7 @@ nlohmann::json User::handleEvent(nlohmann::json event, unsigned long next,
   } else if (event_cmp == "user_types_form_data") {
     return {{event, getUserTypeFormData()}};
   } else if (event_cmp == "ins") {
-    args[0]["parent_id"] = context->getUserId();
+    // args[0]["parent_id"] = context->getUserId();
     return query.ins(event, args);
   } else if (event_cmp == "upd") {
     return query.upd(event, args);
@@ -229,17 +229,17 @@ void User::get_valid_users() {
 
 bool User::is_logged_in() {
   // auto sql = "SELECT id,ip FROM session WHERE username=1 AND expire > now()";
-  return context->sessionId() != 0;
+  // return context->sessionId() != 0;
 }
 std::string User::get_password() {
   auto sql = "SELECT * FROM music.user WHERE id = $1";
   try {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
-    auto r = sql::Dba::writeInTrans(transPtr, sql, this->context->getUserId());
-    if (r.size() == 1) {
-      return r[0]["password"].as<std::string>();
-    }
+    // auto r = sql::Dba::writeInTrans(transPtr, sql,
+    // this->context->getUserId()); if (r.size() == 1) { return
+    // r[0]["password"].as<std::string>();
+    //}
   } catch (const std::exception& e) {
     LOG_DEBUG << e.what();
   }
@@ -311,11 +311,12 @@ bool User::update_password(std::string new_password) {
   try {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
-    auto r = sql::Dba::writeInTrans(transPtr, sql, this->context->getUserId(),
-                                    std::move(new_password));
-    if (r.affectedRows() == 1) {
-      return true;
-    }
+    // auto r = sql::Dba::writeInTrans(transPtr, sql,
+    // this->context->getUserId(),
+    //                                std::move(new_password));
+    // if (r.affectedRows() == 1) {
+    //  return true;
+    //}
     // todo: save updated password in cache...
   } catch (const std::exception& e) {
     LOG_DEBUG << e.what();

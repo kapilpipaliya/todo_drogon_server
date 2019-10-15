@@ -1106,9 +1106,9 @@ nlohmann::json Auth::handleEvent(nlohmann::json event, unsigned long next,
                                          args["pass"].get<std::string>());
       res[0][1] = session_id;
       if (session_id) {
-        context->setSessionId(session_id);
-        context->setUserId(user_id);
-        context->setUser();
+        // context->setSessionId(session_id);
+        // context->setUserId(user_id);
+        // context->setUser();
         res[0] = websocket::WsFns::successJsonObject(event, true, "Done");
         res[1] = {{"auth", "set_cookie", 0}, session_id};
         return res;
@@ -1143,19 +1143,20 @@ nlohmann::json Auth::saveFileMeta(const nlohmann::json& event,
         websocket::WsFns::successJsonObject(event, false, "No Valid arguments");
     return ret;
   }
-  long c = context->sessionId();
+  // long c = context->sessionId();
 
   // auto strSql = "INSERT INTO music.temp_file_meta ( session_id, event, name,
   // size, type ) VALUES( $1, $2, $3, $4, $5 )";
-  auto strSql = fmt::format(
-      "INSERT INTO music.temp_file_meta ( session_id, event, name, size, type "
-      ") VALUES( {0}, '{1}','{2}', {3}, '{4}' )",
-      c, args[0].dump(), args[1].get<std::string>(), args[2].get<long>(),
-      args[3].get<std::string>());
+  //  auto strSql = fmt::format(
+  //      "INSERT INTO music.temp_file_meta ( session_id, event, name, size,
+  //      type "
+  //      ") VALUES( {0}, '{1}','{2}', {3}, '{4}' )",
+  //      c, args[0].dump(), args[1].get<std::string>(), args[2].get<long>(),
+  //      args[3].get<std::string>());
   try {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
-    auto r = sql::Dba::writeInTrans(transPtr, strSql);
+    //    auto r = sql::Dba::writeInTrans(transPtr, strSql);
     // auto r = sql::Dba::writeInTrans(transPtr, strSql, c, args[0].dump(),
     // args[1].get<std::string>(), args[2].get<long>(),
     // args[3].get<std::string>());
@@ -1172,12 +1173,12 @@ nlohmann::json Auth::saveFileMeta(const nlohmann::json& event,
 
 bool Auth::logout(long key, bool relogin) {
   // If no key is passed try to find the session id
-  key = key ? key : context->sessionId();
+  //  key = key ? key : context->sessionId();
 
   // Nuke the cookie before all else
   auto r = Session::destroy(key);
   if (r) {
-    context->setSessionId(0);
+    //    context->setSessionId(0);
     return true;
   }
   return false;
