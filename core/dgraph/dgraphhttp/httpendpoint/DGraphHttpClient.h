@@ -16,25 +16,19 @@ namespace http = boost::beast::http;  // from <boost/beast/http.hpp>
 enum path { alter, query, mutation };
 
 namespace dgraph {
+namespace http {
 class DGraphHttpClient {
  public:
   DGraphHttpClient();
   ~DGraphHttpClient();
   int version = 11;  // 1.1 is default
 
-  std::string callAPICurl(std::string host, unsigned short port,
-                          std::string target, boost::beast::http::verb method,
-                          std::string body, std::string content_type,
-                          std::map<std::string, std::string> headers);
-  std::string callAPI(std::string host, int port, std::string target,
-                      boost::beast::http::verb method, std::string body,
-                      std::string content_type,
-                      std::map<std::string, std::string> headers);
   void drogonHttpAPI(std::string host, int port, std::string target,
-                     boost::beast::http::verb method, std::string body,
+                     const std::string &method, std::string body,
                      std::string content_type,
                      std::map<std::string, std::string> headers,
                      std::function<void(std::string)> callback);
 };
 }  // namespace dgraph
+}
 #endif

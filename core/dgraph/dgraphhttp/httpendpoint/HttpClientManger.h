@@ -5,7 +5,9 @@
 #include <memory>
 #include <string>
 namespace dgraph {
+namespace http {
 class DGraphHttpClient;
+/*host and port not obaying..*/
 class HttpClientManager {
  private:
  public:
@@ -16,4 +18,5 @@ class HttpClientManager {
                            const std::string &port, const std::string &target);
 };
 }  // namespace dgraph
+}
 #endif

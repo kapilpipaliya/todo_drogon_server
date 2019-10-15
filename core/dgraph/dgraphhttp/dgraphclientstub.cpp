@@ -1,12 +1,13 @@
 #include "dgraphclientstub.h"
-#include <boost/beast/core.hpp>
-#include "core/dgraph/http/DGraphHttpClient.h"
-#include "core/dgraph/http/HttpClientManger.h"
-#include "drogon/drogon.h"
-namespace dgraph {
 
-DGraphClientStub::DGraphClientStub(const std::string &addr, bool legacyApi)
-    : addr(addr), legacyApi(legacyApi) {}
+#include "core/dgraph/dgraphhttp/httpendpoint/DGraphHttpClient.h"
+#include "core/dgraph/dgraphhttp/httpendpoint/HttpClientManger.h"
+
+namespace dgraph {
+namespace http {
+DGraphClientStub::DGraphClientStub(const std::string &host, const int port,
+                                   bool legacyApi)
+    : host(host), port(port), legacyApi(legacyApi) {}
 
 int DGraphClientStub::detectApiVersion() {
   //  auto health = this->health();
@@ -16,7 +17,7 @@ int DGraphClientStub::detectApiVersion() {
 
 void DGraphClientStub::alter(Operation op,
                              std::function<void(Payload)> callBack) {
-  auto httpClient = dgraph::HttpClientManager::getClient("1");
+  auto httpClient = dgraph::http::HttpClientManager::getClient("1");
   std::string body;
   try {
     if (!op.schema.empty()) {
@@ -30,11 +31,10 @@ void DGraphClientStub::alter(Operation op,
       j["drop_all"] = true;
       body = j.dump();
     } else {
-      LOG_DEBUG << "Invalid op argument in alter";
+      std::cout << "Invalid op argument in alter" << std::endl;
     }
     auto callBackHttp = [callBack](std::string result) { callBack({result}); };
-    httpClient->drogonHttpAPI("localhost", 8080, "/alter",
-                              boost::beast::http::verb::post, body, "", {},
+    httpClient->drogonHttpAPI(host, port, "/alter", "post", body, "", {},
                               callBackHttp);
 
   } catch (std::exception const &e) {
@@ -44,7 +44,7 @@ void DGraphClientStub::alter(Operation op,
 
 void DGraphClientStub::query(Request req,
                              std::function<void(Response)> callBack) {
-  auto httpClient = dgraph::HttpClientManager::getClient("1");
+  auto httpClient = dgraph::http::HttpClientManager::getClient("1");
 
   std::string content_type;
   if (req.varsMap.size() > 0) {
@@ -84,15 +84,14 @@ void DGraphClientStub::query(Request req,
     r.json = result;
     callBack(r);
   };
-  httpClient->drogonHttpAPI("localhost", 8080, "/query" + target,
-                            boost::beast::http::verb::post,
+  httpClient->drogonHttpAPI(host, port, "/query" + target, "post",
 
                             req.query, content_type, {}, callBackHttp);
 }
 
 void DGraphClientStub::mutate(Mutation mu,
                               std::function<void(Response)> callBack) {
-  auto httpClient = dgraph::HttpClientManager::getClient("1");
+  auto httpClient = dgraph::http::HttpClientManager::getClient("1");
   std::string body;
   bool usingJSON = false;
   if (!mu.setJson.empty() || !mu.deleteJson.empty()) {
@@ -133,7 +132,7 @@ void DGraphClientStub::mutate(Mutation mu,
       }
     }
   } else {
-    LOG_DEBUG << "Mutation has no data";
+    std::cout << "Mutation has no data" << std::endl;
   }
   std::string content_type;
   if (usingJSON) {
@@ -159,19 +158,19 @@ void DGraphClientStub::mutate(Mutation mu,
     TxnContext t;
     // Todo handle error here:
     if (j.contains("errors")) {
-      LOG_DEBUG << j["errors"][0]["message"].get<std::string>();
-      LOG_DEBUG
-          << "-----------Todo: Please Handle this situation properly----------";
+      std::cout << j["errors"][0]["message"].get<std::string>() << std::endl;
+      std::cout
+          << "-----------Todo: Please Handle this situation properly----------"
+          << std::endl;
     } else {
-      auto p2 = j["extensions"]["txn"].get<dgraph::TxnContext>();
+      auto p2 = j["extensions"]["txn"].get<dgraph::http::TxnContext>();
       r.txn = p2;
       r.json = result;
       callBack(r);
     }
   };
-  httpClient->drogonHttpAPI("localhost", 8080, target,
-                            boost::beast::http::verb::post, body, content_type,
-                            {}, callBackHttp);
+  httpClient->drogonHttpAPI(host, port, target, "post", body, content_type, {},
+                            callBackHttp);
 }
 
 void DGraphClientStub::commit(TxnContext &ctx,
@@ -190,9 +189,8 @@ void DGraphClientStub::commit(TxnContext &ctx,
     // todo..
     callBack(t);
   };
-  auto httpClient = dgraph::HttpClientManager::getClient("1");
-  httpClient->drogonHttpAPI("localhost", 8080, url,
-                            boost::beast::http::verb::post, body, "", {},
+  auto httpClient = dgraph::http::HttpClientManager::getClient("1");
+  httpClient->drogonHttpAPI(host, port, url, "post", body, "", {},
                             callBackHttp);
 }
 void DGraphClientStub::abort(TxnContext ctx,
@@ -203,10 +201,8 @@ void DGraphClientStub::abort(TxnContext ctx,
     // todo..
     callBack(t);
   };
-  auto httpClient = dgraph::HttpClientManager::getClient("1");
-  httpClient->drogonHttpAPI("localhost", 8080, url,
-                            boost::beast::http::verb::post, "", "", {},
-                            callBackHttp);
+  auto httpClient = dgraph::http::HttpClientManager::getClient("1");
+  httpClient->drogonHttpAPI(host, port, url, "post", "", "", {}, callBackHttp);
 }
 
 std::string renderDgraphError(error e) {
@@ -246,5 +242,5 @@ void from_json(const nlohmann::json &j, TxnContext &p) {
   }
   j.at("preds").get_to(p.predsList);
 }
-
+}  // namespace http
 }  // namespace dgraph

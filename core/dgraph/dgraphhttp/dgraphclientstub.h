@@ -1,14 +1,14 @@
 #ifndef DGraphClientStub_H
 #define DGraphClientStub_H
 
-#include <drogon/drogon.h>
 #include <map>
 #include <string>
 #include <vector>
+
 #include "json.hpp"
 
 namespace dgraph {
-
+namespace http {
 enum error {
   ERR_NO_CLIENTS,
   ERR_FINISHED,
@@ -159,13 +159,14 @@ void from_json(const nlohmann::json& j, TxnContext& p);
  * Stub is a stub/client connecting to a single dgraph server instance.
  */
 class DGraphClientStub {
-  std::string addr;
+  std::string host;
+  int port;
   bool legacyApi = false;
   std::string accessToken;  // Jwt
   std::string refreshToken;
 
  public:
-  DGraphClientStub(const std::string& addr = "localhost:9080",
+  DGraphClientStub(const std::string& host = "localhost", const int port = 9080,
                    bool legacyApi = false);
   int detectApiVersion();
 
@@ -186,6 +187,6 @@ class DGraphClientStub {
 
   void close() {}
 };
-
+}  // namespace http
 }  // namespace dgraph
 #endif  // DGraphClientStub_H

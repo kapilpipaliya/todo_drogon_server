@@ -11,6 +11,7 @@
 #include <vector>
 
 namespace dgraph {
+namespace http {
 struct Operation;
 struct Payload;
 class DGraphClientStub;
@@ -21,7 +22,7 @@ struct TxnOptions;
 /**
  * Client is a transaction aware client to a set of Dgraph server instances.
  */
-class DgraphClient {
+class DGraphClient {
   std::vector<DGraphClientStub> clients;
 
  public:
@@ -32,7 +33,7 @@ class DgraphClient {
    * The client can be backed by multiple connections (to the same server, or
    * multiple servers in a cluster).
    */
-  explicit DgraphClient(std::vector<DGraphClientStub> clients);
+  explicit DGraphClient(std::vector<DGraphClientStub> clients);
 
   /**
    * By setting various fields of api.Operation, alter can be used to do the
@@ -79,4 +80,5 @@ void deleteEdges(Mutation mu, std::string uid,
                  std::vector<std::string> predicates);
 ;
 }  // namespace dgraph
+}
 #endif  // DGRAPHCLIENT_H

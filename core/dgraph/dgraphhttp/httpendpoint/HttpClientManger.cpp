@@ -1,11 +1,12 @@
 
-#include "HttpClientManger.h"
+#include "./HttpClientManger.h"
 #include <cassert>
 #include <string>
-#include "DGraphHttpClient.h"
-#include "DGraphHttpClient.h"  //remove
-namespace dgraph {
+#include "./DGraphHttpClient.h"
 
+/*obsolete class*/
+namespace dgraph {
+namespace http {
 std::map<std::string, std::shared_ptr<DGraphHttpClient>>
     HttpClientManager::conns = {};
 HttpClientManager::HttpClientManager() {  // conns = {};
@@ -24,5 +25,5 @@ void HttpClientManager::createClient(const std::string &name,
   auto ptr = std::make_shared<DGraphHttpClient>();
   conns[name] = ptr;
 }
-
+}  // namespace http
 }  // namespace dgraph

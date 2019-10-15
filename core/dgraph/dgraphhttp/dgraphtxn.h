@@ -4,9 +4,10 @@
 #include "./dgraphclientstub.h"
 //#import "./dgraphclient.h" //gives error
 namespace dgraph {
+namespace http {
 // struct Response;
 // struct TxnContext;
-class DgraphClient;
+class DGraphClient;
 struct TxnOptions {
   bool readOnly = false;
   bool bestEffort = false;
@@ -26,7 +27,7 @@ struct TxnOptions {
  * after calling commit.
  */
 class DGraphTxn {
-  DgraphClient *dc;
+  DGraphClient *dc;
   TxnContext ctx;
   bool finished = false;
   bool mutated = false;
@@ -34,7 +35,7 @@ class DGraphTxn {
   bool useBestEffort = false;
 
  public:
-  DGraphTxn(DgraphClient *dc, TxnOptions txnOpts);
+  DGraphTxn(DGraphClient *dc, TxnOptions txnOpts);
 
   /**
    * query sends a query to one of the connected Dgraph instances. If no
@@ -100,4 +101,5 @@ class Utils {
   static bool isConflictError(std::string error);
 };
 }  // namespace dgraph
+}
 #endif  // DGRAPHCLIENT_TXN_H

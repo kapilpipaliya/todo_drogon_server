@@ -1,11 +1,14 @@
 #include "dgraphclient.h"
+
+#include <iostream>
 #include <memory>
+
 #include "dgraphclientstub.h"
 #include "dgraphtxn.h"
-#include "drogon/drogon.h"
-namespace dgraph {
 
-DgraphClient::DgraphClient(std::vector<DGraphClientStub> clients) {
+namespace dgraph {
+namespace http {
+DGraphClient::DGraphClient(std::vector<DGraphClientStub> clients) {
   if (clients.size() == 0) {
     throw ERR_NO_CLIENTS;
   }
@@ -13,9 +16,9 @@ DgraphClient::DgraphClient(std::vector<DGraphClientStub> clients) {
   this->clients = clients;
 }
 
-void DgraphClient::alter(Operation op, std::function<void(Payload)> callBack) {
-  LOG_DEBUG << "Alter request:";
-  LOG_DEBUG << op.schema;
+void DGraphClient::alter(Operation op, std::function<void(Payload)> callBack) {
+  std::cout << "Alter request:" << std::endl;
+  std::cout << op.schema << std::endl;
 
   auto c = this->anyClient();
   try {
@@ -32,20 +35,20 @@ void DgraphClient::alter(Operation op, std::function<void(Payload)> callBack) {
   // this->debug("Alter response:" + payload.data);
 }
 
-std::shared_ptr<DGraphTxn> DgraphClient::newTxn(TxnOptions txnOpts) {
+std::shared_ptr<DGraphTxn> DGraphClient::newTxn(TxnOptions txnOpts) {
   std::shared_ptr<DGraphTxn> txn = std::make_shared<DGraphTxn>(this, txnOpts);
   return txn;
 }
 
-void DgraphClient::setDebugMode(bool mode) { this->debugMode = mode; }
+void DGraphClient::setDebugMode(bool mode) { this->debugMode = mode; }
 
-void DgraphClient::debug(std::string msg) {
+void DGraphClient::debug(std::string msg) {
   if (this->debugMode) {
-    LOG_DEBUG << msg;
+    std::cout << msg << std::endl;
   }
 }
 
-DGraphClientStub DgraphClient::anyClient() {
+DGraphClientStub DGraphClient::anyClient() {
   //      return this.clients[Math.floor(Math.random() *
   //      this.clients.length)];
   return clients.at(0);
@@ -58,6 +61,13 @@ bool isJwtExpired(std::string err) {
   //    return isUnauthenticatedError(err);
 }
 
+/**
+ * deleteEdges sets the edges corresponding to predicates on the node with the
+ * given uid for deletion.
+ *
+ * This helper function doesn't run the mutation on the server. It must be done
+ * by the user after the function returns.
+ */
 void deleteEdges(Mutation mu, std::string uid,
                  std::vector<std::string> predicates) {
   //    for (const predicate of predicates) {
@@ -72,5 +82,5 @@ void deleteEdges(Mutation mu, std::string uid,
   //      mu.addDel(nquad);
   //    }
 }
-
+}  // namespace http
 }  // namespace dgraph

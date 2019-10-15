@@ -1,9 +1,9 @@
-#include "dgraphtxn.h"
+#include "./dgraphtxn.h"
+#include "./dgraphclient.h"
 #include "./dgraphclientstub.h"
-#include "dgraphclient.h"
 namespace dgraph {
-
-DGraphTxn::DGraphTxn(DgraphClient *dc, TxnOptions txnOpts) { this->dc = dc; }
+namespace http {
+DGraphTxn::DGraphTxn(DGraphClient *dc, TxnOptions txnOpts) { this->dc = dc; }
 
 void DGraphTxn::query(std::string q, std::function<void(Response)> callBack) {
   this->queryWithVars(q, {}, callBack);
@@ -82,7 +82,8 @@ void DGraphTxn::mutate(Mutation mu, std::function<void(Response)> callBack) {
     // Transaction could be aborted(status.ABORTED) if commitNow was true, or
     // server could send a message that this mutation
     // conflicts(status.FAILED_PRECONDITION) with another transaction.
-    if (Utils::isAbortedError(e.what()) || Utils::isConflictError(e.what())) {
+    if (dgraph::http::Utils::isAbortedError(e.what()) ||
+        dgraph::http::Utils::isConflictError(e.what())) {
       throw ERR_ABORTED;
     } else {
       throw e;
@@ -263,5 +264,5 @@ bool Utils::isConflictError(std::string error) {
     const message = firstError.message.toLowerCase();
     return message.indexOf("conflict") >= 0;*/
 }
-
+}  // namespace http
 }  // namespace dgraph
