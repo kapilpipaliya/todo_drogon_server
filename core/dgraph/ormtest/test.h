@@ -1,5 +1,5 @@
-#ifndef TEST_H
-#define TEST_H
+#ifndef DGRAPHORMTEST_HCOOL
+#define DGRAPHORMTEST_HCOOL
 
 
 class Test
@@ -8,4 +8,4 @@ public:
     Test();
 };
 
-#endif // TEST_H
+#endif // DGRAPHORMTEST_HCOOL
