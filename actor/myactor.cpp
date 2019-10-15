@@ -1,8 +1,9 @@
 
-#include "myactor.h"
+#include "./myactor.h"
 
 #include "../wscontroller/wsfns.h"
-#include "mainactortype.h"
+#include "./mainactortype.h"
+#include "core/service/todo/class/ui.h"
 
 namespace superactor {
 namespace myactor {
@@ -28,10 +29,10 @@ nlohmann::json MyActor::handleTextMessage(
     return nlohmann::json::array();
   }
 
-  // auto contx = wsConnPtr->getContext<websocket::music::MAdminContext>();
+  auto contx = wsConnPtr->getContext<websocket::todo::TodoContext>();
   auto evt = in[0][0].get<int>();
   if (evt == 1) {
-    // return handleService<generator::service::Generator>(in);
+    return handleService<todo::service::UI>(contx, in);
   } else {
     return nlohmann::json::array();
   }

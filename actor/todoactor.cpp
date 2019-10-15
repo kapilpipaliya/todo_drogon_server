@@ -2,9 +2,18 @@
 #include "todoactor.h"
 
 #include "inc/todoservices.h"
+#include "timeservicehandle.h"
+//#include "core/service/time/auth/user/login/Login.h"
+
+enum all_services { auth_user_Login };
 
 namespace superactor {
 namespace todoactor {
+/*
+ * Todo Actor run() function added
+ * Its not subclassed from baseactor class because batch support is breaked and
+ * not needed.
+ * */
 TodoActor::TodoActor(caf::actor_config &cfg) : caf::event_based_actor(cfg) {}
 
 caf::behavior TodoActor::make_behavior() {
@@ -57,32 +66,18 @@ void TodoActor::run(const drogon::WebSocketConnectionPtr &wsConnPtr,
   }
 }
 
-nlohmann::json TodoActor::handleTextMessage(
+void TodoActor::handleTextMessage(
     const drogon::WebSocketConnectionPtr &wsConnPtr, const nlohmann::json &in) {
   if (!in.is_array() || !in[0].is_array() || !in[0][0].is_number()) {
-    return nlohmann::json::array();
+    LOG_DEBUG << "server_only_respond_number_on_event";
   }
-  // auto contx = wsConnPtr->getContext<websocket::todo::TodoContext>();
+  auto contx = wsConnPtr->getContext<websocket::todo::TodoContext>();
   auto evt = in[0][0].get<int>();
-  nlohmann::json r;
-  //  if (evt == "auth") {
-  //    r = handleService<todo::service::Auth>(contx, in);
-  //  } else if (evt == 1) {
-  //    r = handleService<todo::service::User>(contx, in);
-  //  } else
-  //  if (evt == 1) {
-  //    r = handleService<todo::service::UI>(contx, in);
-  //  } else if (evt == 2) {
-  //    r = handleService<todo::service::Seed>(contx, in);
-  //  } else
-  if (evt == 3) {
-    todo::service::DGraphSeed t;
-    t.handleEvent(wsConnPtr, in[0], 1, in[1]);
-  } else {
-    r = nlohmann::json::array();
+  if (evt == auth_user_Login) {
+    // handleService<timeservice::auth::user::Login>(wsConnPtr, contx, in);
   }
-  fflush(stdout);
-  return r;
+  TimeServiceHandle t;
+  t.runService(contx, in);
 }
 
 nlohmann::json TodoActor::handleBinaryMessage(
@@ -90,12 +85,36 @@ nlohmann::json TodoActor::handleBinaryMessage(
   nlohmann::json event;
   try {
     auto contx = wsConnPtr->getContext<websocket::todo::TodoContext>();
-    long c = contx->sessionId();
+    /*
+        std::vector<uint8_t> source(message.begin(), message.end());
+        std::cout << int(source.at(0)) << std::endl;
+        std::cout << int(source.at(1)) << std::endl;
+        source.erase(source.begin());
+        source.erase(source.begin());
+
+
+        unsigned char buffer[message.length()];
+        //memcpy(buffer, message.data(), message.length());
+        std::copy(message.begin(), message.end(), buffer);
+        */
+    // remember that int8_t and uint8_t are 'fake' types. just aliases to char
+    // and streams try to print chars as they were CHARS :D
+    auto event1 = static_cast<int>(message.at(0));
+    auto event2 = static_cast<uint8_t>(message.at(1));
+    message.erase(message.begin());
+    message.erase(message.begin());
+    // auto me = new timeservice::Registration();
+    // me->ParseFromString(message);
+    std::cout << event1 << std::endl;
+    std::cout << event2 << std::endl;
+    // std::cout << me->username() << std::endl;
+
+    // long c = contx->sessionId();
     auto sqlSession =
         "SELECT event FROM music.temp_file_meta where session_id = $1";
     auto clientPtr = drogon::app().getDbClient("sce");
-    auto r = clientPtr->execSqlSync(sqlSession, c);
-    if (!r.empty()) {
+    // auto r = clientPtr->execSqlSync(sqlSession, c);
+    /*if (!r.empty()) {
       try {
         event = nlohmann::json::parse(r[0]["event"].c_str());
         // p.handleBinaryEvent creates new transaction.
@@ -116,7 +135,7 @@ nlohmann::json TodoActor::handleBinaryMessage(
             std::string("cant parse json reason: ") + e.what() + event.dump();
         websocket::WsFns::sendJson(wsConnPtr, j);
       }
-    }
+    }*/
   } catch (const std::exception &e) {
     LOG_DEBUG << e.what();
     nlohmann::json jresult;

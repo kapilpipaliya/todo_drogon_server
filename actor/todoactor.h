@@ -4,11 +4,10 @@
 #include "caf/all.hpp"
 
 #include "context/todocontext.h"
-
-#include "useractorbase.h"
+#include "json.hpp"
 namespace superactor {
 namespace todoactor {
-class TodoActor : public caf::event_based_actor, public system::UserActorBase {
+class TodoActor : public caf::event_based_actor {
  public:
   TodoActor(caf::actor_config& cfg);
 
@@ -18,24 +17,23 @@ class TodoActor : public caf::event_based_actor, public system::UserActorBase {
  private:
   void run(const drogon::WebSocketConnectionPtr& wsConnPtr,
            std::string&& message, const drogon::WebSocketMessageType& type);
-  nlohmann::json handleTextMessage(
-      const drogon::WebSocketConnectionPtr& wsConnPtr,
-      const nlohmann::json& in) override;
+  void handleTextMessage(const drogon::WebSocketConnectionPtr& wsConnPtr,
+                         const nlohmann::json& in);
   nlohmann::json handleBinaryMessage(
-      const drogon::WebSocketConnectionPtr& wsConnPtr,
-      std::string& message) override;
+      const drogon::WebSocketConnectionPtr& wsConnPtr, std::string& message);
 
   template <typename T>
-  nlohmann::json handleService(
-      std::shared_ptr<websocket::todo::TodoContext> contx, nlohmann::json in) {
+  void handleService(const drogon::WebSocketConnectionPtr& wsConnPtr,
+                     std::shared_ptr<websocket::todo::TodoContext> contx,
+                     nlohmann::json in) {
     try {
-      T p{contx};
-      auto r = p.handleEvent(in[0], 1, in[1]);
-      if (!r.is_null()) return r;
-      return nlohmann::json::array();
+      T p{wsConnPtr, contx, in};
+      p.run();
+      // if (!r.is_null()) return r;
+      // return nlohmann::json::array();
     } catch (const std::exception& e) {
       LOG_DEBUG << e.what();
-      return nlohmann::json::array({{e.what()}});
+      // return nlohmann::json::array({{e.what()}});
     }
   }
 };

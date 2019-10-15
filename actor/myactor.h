@@ -1,14 +1,13 @@
 #ifndef _MyActor_H
 #define _MyActor_H
 
-
+#include "../wscontroller/context/todocontext.h"
 #include "caf/all.hpp"
-
 #include "useractorbase.h"
+
 namespace superactor {
 namespace myactor {
-class MyActor : public caf::event_based_actor,
-                    public system::UserActorBase {
+class MyActor : public caf::event_based_actor, public system::UserActorBase {
  public:
   MyActor(caf::actor_config& cfg);
 
@@ -25,11 +24,9 @@ class MyActor : public caf::event_based_actor,
 
   template <typename T>
   nlohmann::json handleService(
-      //std::shared_ptr<websocket::music::MAdminContext> contx,
-      nlohmann::json in) {
+      std::shared_ptr<websocket::todo::TodoContext> contx, nlohmann::json in) {
     try {
-      // T p{contx};
-      T p;
+      T p{contx};
       auto r = p.handleEvent(in[0], 1, in[1]);
       if (!r.is_null()) return r;
       return nlohmann::json::array();
