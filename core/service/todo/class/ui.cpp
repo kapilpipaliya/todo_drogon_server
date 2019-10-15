@@ -1,33 +1,63 @@
 #include "./ui.h"
 
 #include <utility>
+
 #include "../../../sql/dba.h"
 namespace todo {
 namespace service {
 UI::UI(std::shared_ptr<websocket::todo::TodoContext> context_)
     : context(std::move(context_)) {
-  query = sql::Query(sql::ObjectIdentifier("public", "ui", "u"));
+  //  query = sql::Query(sql::ObjectIdentifier("public", "ui", "u"));
+  query = sql::Query(sql::ObjectIdentifier("public", "generator", "u"));
   setupTable();
 }
 
 void UI ::setupTable() {
   // m_query.setRowIdColumn("id");
+
+  /*
+query.setSelectedColumns(
+    {sql::SelectedColumn({"Id", "id", "", "u", sql::PG_TYPES::INT8, true}),
+     sql::SelectedColumn({"Key", "key", "", "u", sql::PG_TYPES::TEXT, true}),
+     sql::SelectedColumn(
+         {"Purpose", "purpose", "", "u", sql::PG_TYPES::TEXT, true}),
+     sql::SelectedColumn(
+         {"Description", "description", "", "u", sql::PG_TYPES::TEXT, true}),
+     sql::SelectedColumn(
+         {"Parent", "parent_id", "", "u", sql::PG_TYPES::INT8, true, 1, 1}),
+     sql::SelectedColumn({"Key", "",
+                          "u1.id || ' ' || u1.key || ' ' || u1.description",
+                          "u1", sql::PG_TYPES::TEXT, false, 0, 0, false})});
+
+query.setPrimaryKey({{"u", "id", sql::PG_TYPES::INT8}});
+auto u = sql::ObjectIdentifier("public", "ui", "u1");
+query.setJoins({sql::Join("left", u, "u1.id = u.parent_id")});
+*/
+  /*
+  CREATE TABLE public.generator (
+      id bigserial NOT NULL,
+      "language" text NOT NULL,
+      project text NOT NULL,
+      name text NOT NULL,
+      "template" text NULL,
+      "result" text NULL,
+      CONSTRAINT newtable_pk PRIMARY KEY (id)
+      );
+
+  */
+
   query.setSelectedColumns(
       {sql::SelectedColumn({"Id", "id", "", "u", sql::PG_TYPES::INT8, true}),
-       sql::SelectedColumn({"Key", "key", "", "u", sql::PG_TYPES::TEXT, true}),
        sql::SelectedColumn(
-           {"Purpose", "purpose", "", "u", sql::PG_TYPES::TEXT, true}),
+           {"Language", "language", "", "u", sql::PG_TYPES::TEXT, true}),
        sql::SelectedColumn(
-           {"Description", "description", "", "u", sql::PG_TYPES::TEXT, true}),
+           {"Project", "project", "", "u", sql::PG_TYPES::TEXT, true}),
        sql::SelectedColumn(
-           {"Parent", "parent_id", "", "u", sql::PG_TYPES::INT8, true, 1, 1}),
-       sql::SelectedColumn({"Key", "",
-                            "u1.id || ' ' || u1.key || ' ' || u1.description",
-                            "u1", sql::PG_TYPES::TEXT, false, 0, 0, false})});
-
-  query.setPrimaryKey({{"u", "id", sql::PG_TYPES::INT8}});
-  auto u = sql::ObjectIdentifier("public", "ui", "u1");
-  query.setJoins({sql::Join("left", u, "u1.id = u.parent_id")});
+           {"Name", "name", "", "u", sql::PG_TYPES::TEXT, true}),
+       sql::SelectedColumn(
+           {"Template", "template", "", "u", sql::PG_TYPES::TEXT, true}),
+       sql::SelectedColumn(
+           {"Result", "result", "", "u", sql::PG_TYPES::TEXT, true})});
 }
 
 nlohmann::json UI::handleEvent(nlohmann::json event, unsigned long next,
