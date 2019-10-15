@@ -1,0 +1,8 @@
+
+syntax = "proto3";
+package timeservice;
+message LoginRequest {
+  string userid = 1;
+  string password = 2;
+  string refresh_token = 3;
+}

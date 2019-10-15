@@ -1,10 +1,10 @@
 #include "dgraphseed.h"
 
 //#include "core/dgraph/http/HttpClientManger.h"
-#include "core/dgraph/dgraphclient.h"
 #include "core/dgraph/dgraphclientmanger.h"
-#include "core/dgraph/dgraphclientstub.h"
-#include "core/dgraph/dgraphtxn.h"
+#include "core/dgraph/dgraphhttp/dgraphclient.h"
+#include "core/dgraph/dgraphhttp/dgraphclientstub.h"
+#include "core/dgraph/dgraphhttp/dgraphtxn.h"
 namespace todo {
 namespace service {
 DGraphSeed::DGraphSeed() {}
@@ -16,19 +16,19 @@ void DGraphSeed::handleEvent(const drogon::WebSocketConnectionPtr &wsConnPtr,
                              nlohmann::json args) {
   auto event_cmp = event[next].get<int>();
   if (event_cmp == 1) {
-    dgraph::Operation op;
+    dgraph::http::Operation op;
     op.schema = "{\"drop_all\": true}";
 
     auto dgraphClient = dgraph::DGraphClientManger::getDGraphClient("1");
 
-    auto callBack = [event, wsConnPtr](dgraph::Payload result) {
+    auto callBack = [event, wsConnPtr](dgraph::http::Payload result) {
       nlohmann::json j = nlohmann::json::array(
           {nlohmann::json::array({event, nlohmann::json::parse(result.data)})});
       websocket::WsFns::sendJson(wsConnPtr, j);
     };
     dgraphClient->alter(op, callBack);
   } else if (event_cmp == 11) {
-    dgraph::Operation op;
+    dgraph::http::Operation op;
     op.schema = R"(
 # Define Types
 
@@ -51,7 +51,7 @@ friend: [uid] @count .
 
     auto dgraphClient = dgraph::DGraphClientManger::getDGraphClient("1");
 
-    auto callBack = [event, wsConnPtr](dgraph::Payload result) {
+    auto callBack = [event, wsConnPtr](dgraph::http::Payload result) {
       nlohmann::json j = nlohmann::json::array(
           {nlohmann::json::array({event, nlohmann::json::parse(result.data)})});
       websocket::WsFns::sendJson(wsConnPtr, j);
@@ -71,7 +71,7 @@ friend: [uid] @count .
   }
 }
 )";
-    auto callBack = [event, wsConnPtr](dgraph::Response result) {
+    auto callBack = [event, wsConnPtr](dgraph::http::Response result) {
       nlohmann::json j = nlohmann::json::array(
           {nlohmann::json::array({event, nlohmann::json::parse(result.json)})});
       websocket::WsFns::sendJson(wsConnPtr, j);
@@ -145,14 +145,14 @@ friend: [uid] @count .
     _:perro <dgraph.type> "Animal" .
 )";
     try {
-      dgraph::Mutation mu;
+      dgraph::http::Mutation mu;
       // mu.setJson = query;
       mu.commitNow = true;
       mu.setNquads = query;
-      auto callBack = [txn, event, wsConnPtr](dgraph::Response result) {
+      auto callBack = [txn, event, wsConnPtr](dgraph::http::Response result) {
         nlohmann::json j = nlohmann::json::array({nlohmann::json::array(
             {event, nlohmann::json::parse(result.json)})});
-//                                txn->commit();
+//                                                                                txn->commit();
         websocket::WsFns::sendJson(wsConnPtr, j);
       };
       txn->mutate(mu, callBack);

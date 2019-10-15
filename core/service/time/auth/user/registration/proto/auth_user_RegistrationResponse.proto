@@ -1,0 +1,12 @@
+
+syntax = "proto3";
+package timeservice;
+message RegistrationResponse {
+  enum ErrorStatus {
+     OK = 0;
+     INVALID_USERNAME = 1;
+     WEAK_PASSWORD= 2;
+  }
+  ErrorStatus status = 1;
+  string token = 2;
+}
