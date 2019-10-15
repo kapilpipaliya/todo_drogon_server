@@ -51,6 +51,7 @@ add_subdirectory(thirdparty/drogon)
 
 set(THREADS_PREFER_PTHREAD_FLAG TRUE)
 find_package(Threads REQUIRED)
+find_package(protobuf CONFIG REQUIRED)
 
 remove_definitions(USE_MYSQL)
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall ${CMAKE_CXX_STD_FLAGS}")
@@ -110,6 +111,8 @@ find_package(CAF COMPONENTS core io REQUIRED )
 find_package(Qt5 COMPONENTS Core Gui Widgets Network Xml Sql REQUIRED)
 find_package(msgpack CONFIG REQUIRED)
 find_package(pegtl CONFIG REQUIRED)
+find_package(range-v3 CONFIG REQUIRED)
+find_package(gRPC CONFIG REQUIRED)
 # https://gist.github.com/Asher-/617872
 #	function processes each sub-directory and then adds each source file in directory
 #	each function should cascade back upward in setting variables so that the bottom directory
@@ -168,8 +171,12 @@ AUX_SOURCE_DIRECTORY(filters FILTER_SRC)
 AUX_SOURCE_DIRECTORY(plugins PLUGIN_SRC)
 AUX_SOURCE_DIRECTORY(models MODEL_SRC)
 AUX_SOURCE_DIRECTORY(gui MODEL_SRC)
-AUX_SOURCE_DIRECTORY(gui/editor MODEL_SRC)
-set(QRC1_DIR ./gui/editor/application.qrc)
+AUX_SOURCE_DIRECTORY(gui/widgets/script MODEL_SRC)
+AUX_SOURCE_DIRECTORY(gui/widgets/script/editor MODEL_SRC)
+AUX_SOURCE_DIRECTORY(gui/widgets MODEL_SRC)
+AUX_SOURCE_DIRECTORY(gui/widgets/dgraphlog MODEL_SRC)
+AUX_SOURCE_DIRECTORY(gui/MdiMainWindow MODEL_SRC)
+set(QRC1_DIR ./gui/widgets/script/editor/application.qrc)
 #recursively_include_src(thirdparty/angelscriptaddons ANGLE_SCRIPT_ADDONS_SRC)
 AUX_SOURCE_DIRECTORY(thirdparty/angelscriptaddons/autowrapper ANGLE_SCRIPT_ADDONS_SRC1)
 AUX_SOURCE_DIRECTORY(thirdparty/angelscriptaddons/contextmgr ANGLE_SCRIPT_ADDONS_SRC2)
@@ -189,9 +196,11 @@ AUX_SOURCE_DIRECTORY(thirdparty/angelscriptaddons/serializer ANGLE_SCRIPT_ADDONS
 AUX_SOURCE_DIRECTORY(thirdparty/angelscriptaddons/weakref ANGLE_SCRIPT_ADDONS_SRC16)
 AUX_SOURCE_DIRECTORY(anglescript MODEL_SRC)
 include_directories(thirdparty/)
+aux_source_directory(thirdparty/pystring MODEL_SRC)
 
 include_directories(/usr/local/include)
 include_directories(/usr/include)
+include_directories(/core/service/time)
 
 
 FILE(GLOB SCP_LIST ${CMAKE_CURRENT_SOURCE_DIR}/views/*.csp)
@@ -243,7 +252,7 @@ add_executable(jdragon ${SRC_DIR} ${WSCTL_SRC} ${WSCTL_SRC_CONTEXT} ${HTTPCTL_SR
 target_link_libraries(jdragon
   # ${CONN_LIB}
   # ${CORE_LIB}
-  libjewelcore2
+
   Threads::Threads
   ${CMAKE_DL_LIBS}
   ${_OPTIONAL_LIBS}
@@ -262,12 +271,11 @@ target_link_libraries(jdragon
   # Boost::timer
   # Poco::Foundation
   # Boost::disable_autolinking
-  # Boost::filesystem
   # angelscript
   # TBB::tbb
   # easyloggingpp
   #Wt::Wt Wt::Dbo Wt::FCGI Wt::HTTP
-  amqpcpp
+#  amqpcpp
   # units
   Angelscript::angelscript
   kangaru
@@ -278,8 +286,20 @@ target_link_libraries(jdragon
   Qt5::Xml
   Qt5::Sql
   # https://github.com/microsoft/vcpkg/issues/7205
-  msgpackc
-  msgpackc-cxx
-  msgpackc-static
+#  msgpackc
+#  msgpackc-cxx
+#  msgpackc-static
   taocpp::pegtl
+  protobuf::libprotoc protobuf::libprotobuf protobuf::libprotobuf-lite
+  range-v3
+  gRPC::gpr gRPC::grpc gRPC::grpc++
+  dgraph
+  libjewelcore2
 )
+#generate drpc for cpp:
+#pb --plugin=protoc-gen-grpc=/home/kapili3/k/cpp_stuff/vcpkg/installed/x64-linux/tools/grpc/grpc_cpp_plugin --grpc_out=./generated/ --proto_path=./protos/ api.proto
+#pb --cpp_out=./generated/ --proto_path=./protos/ api.proto
+
+#target_link_libraries(greeter_client PRIVATE c-ares::cares protobuf::libprotoc protobuf::libprotobuf protobuf::libprotobuf-lite gRPC::gpr gRPC::grpc++ -pthread)
+add_subdirectory(core/dgraph/ormtest)
+add_subdirectory(core/service/time)

@@ -78,8 +78,11 @@ AUX_SOURCE_DIRECTORY(./service/juser JEWEL_SRC)
 #AUX_SOURCE_DIRECTORY(./service/madmin/class JEWEL_SRC)
 #AUX_SOURCE_DIRECTORY(./service/madmin/modules/catalog JEWEL_SRC)
 
-AUX_SOURCE_DIRECTORY(./dgraph JEWEL_SRC)
-AUX_SOURCE_DIRECTORY(./dgraph/http JEWEL_SRC)
+
+
+include_directories(./service/)
+AUX_SOURCE_DIRECTORY(./service/ JEWEL_SRC)
+
 
 #AUX_SOURCE_DIRECTORY(./service/openproj/controllers JEWEL_SRC)
 #AUX_SOURCE_DIRECTORY(./service/openproj/controllers/concerns JEWEL_SRC)
@@ -216,6 +219,7 @@ include_directories(..)
 add_library(${PROJECT_NAME}
 #    STATIC
     SHARED
+    dgraph
     ${JEWEL_HDR}
     ${JEWEL_SRC}
     # ${JEWEL_SRC3}
@@ -359,3 +363,5 @@ target_link_libraries(${PROJECT_NAME}
 )
 
 #add_subdirectory(connection)
+#add_subdirectory(dgraph/ormtest)
+add_subdirectory(dgraph)

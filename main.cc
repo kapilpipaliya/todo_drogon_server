@@ -1,28 +1,26 @@
 #include <drogon/drogon.h>
-#include <boost/locale.hpp>
+// boost locale
+//#include <boost/locale.hpp>
 
-#include "core/dgraph/dgraphclient.h"
 #include "core/dgraph/dgraphclientmanger.h"
-#include "core/dgraph/dgraphclientstub.h"
-#include "core/dgraph/http/HttpClientManger.h"
+#include "core/dgraph/dgraphhttp/dgraphclient.h"
+#include "core/dgraph/dgraphhttp/dgraphclientstub.h"
+#include "core/dgraph/dgraphhttp/httpendpoint/HttpClientManger.h"
+#include "core/dgraph/orm/dgraphormstartup.h"
 
 #include <fplus/fplus.hpp>
-#include <iostream>
 
-#include <amqpcpp.h>
 #include "thirdparty/gcc_poison.h"
 
-#include <iostream>
-#include "thirdparty/kangaru.h"
+#include "core/dgraph/dgraphgrpc/dgraphclient.h"
 
-//#include "mainwindow.h"
-#include <QApplication>
+// Qt
+//#include <QApplication>
+//#include "gui/mainwinhigh.h"
+//#include "logmanager.h"
 
-#include "gui/mainhighscriptide.h"
-
-#include <iostream>
-#include <string>
-
+/*
+//pegtl
 #include <tao/pegtl.hpp>
 
 namespace pegtl = tao::pegtl;
@@ -63,11 +61,16 @@ struct action<name> {
 };
 
 }  // namespace hello
-//#include
-/**
+*/
+
+/*
+//----kgr
+//kgr
+//#include "thirdparty/kangaru.h"
+//
  * This example refect snippets of code found in the documentation section 1:
  * Services It explains how to branch containers and operate between them.
- */
+/
 
 // Camera is a user class.
 struct Camera {
@@ -101,16 +104,19 @@ struct SceneService
 // camera
 struct ScreenService
     : kgr::service<Screen, kgr::dependency<SceneService, CameraService>> {};
-
+*/
+/*
 int qInit() {
-  // https://stackoverflow.com/questions/1519885/defining-own-main-functions-arguments-argc-and-argv
+  //
+https://stackoverflow.com/questions/1519885/defining-own-main-functions-arguments-argc-and-argv
   char *argv[] = {"program name", "arg1", "arg2", nullptr};
   int argc = sizeof(argv) / sizeof(char *) - 1;
   QApplication a(argc, argv);
-  MainHighScriptIDe w;
-  w.show();
+  auto mainwin = new MainWinHigh;
+  mainwin->show();
+  qtglobapp = qApp;
   return a.exec();
-}
+}*/
 
 int main(int argc, char *argv[]) {
   /*
@@ -124,18 +130,23 @@ std::cout.imbue(std::locale());
 // Display a message using current system locale
 std::cout << boost::locale::translate("Hello World") << std::endl;
 */
+  /*pegtl grammer:
   std::string name;
   if (argc > 1) {
     pegtl::argv_input in(argv, 1);
     pegtl::parse<hello::grammar, hello::action>(in, name);
     std::cout << "Good bye, " << name << "!" << std::endl;
   }
+  */
   // This is great library:
   //  https://github.com/Dobiasd/FunctionalPlus
+  /*FunctionalPlus
   std::list<std::string> things = {"same old", "same old"};
   if (fplus::all_the_same(things))
     std::cout << "All things being equal." << std::endl;
+  */
   //----------------kgr-----------------------
+  /*
   kgr::container container;
 
   // We create two cameras.
@@ -156,20 +167,44 @@ std::cout << boost::locale::translate("Hello World") << std::endl;
   std::cout << "Is both scene the same? "
             << (&screen1.scene == &screen2.scene ? "yes" : "no") << '\n';
   std::cout.flush();
+*/
   //---------------end-----------------
 
   //---------qt------------------
   //  https://stackoverflow.com/questions/22289423/how-to-avoid-qt-app-exec-blocking-main-thread
-  std::thread my_thread(qInit);
-
+  // std::thread my_thread(qInit);
+  //
   //-----------end-----------
-  dgraph::HttpClientManager::createClient("1", "localhost", "8080", "");
+  /*host and port not obaying..on httpclient
+  dgraph::http::HttpClientManager::createClient("1", "localhost", "8080", "");
 
-  dgraph::DGraphClientStub clientStub("localhost:9080");
-  auto db = dgraph::DGraphClientManger::createDGraphClient("1", clientStub);
-  db.get()->debugMode = true;
+  dgraph::http::DGraphClientStub clientStub("localhost", 8080);
+  auto dbhttp = dgraph::DGraphClientManger::createDGraphClient("1", clientStub);
+  dbhttp.get()->debugMode = true;
+  */
 
+  auto dbgrpcclient =
+      dgraph::DGraphClientManger::createDGraphGrpcClient("1", "localhost:9080");
+
+  auto dborm = dgraph::DGraphClientManger::createDGraphOrm("1", "1");
+
+  /* Delete all using dgraph grpc client:
+  api::Operation op;
+  op.set_drop_all(true);
+  auto response = new api::Payload;
+
+  dbgrpcclient->alter(op, response);
+  std::cout << response->SerializeAsString() << std::endl;
+  delete response;
+  */
+
+  dgraph::orm::DGraphOrmStartup
+      dormStartup;  // register all schema on constructor
   // drogon::app().addListener("0.0.0.0",8300);
+  drogon::app().getLoop()->runAfter(4.0, []() {
+    // LogManager::sendLogMessage("hi");
+    /*mainwin->sendmsg();*/
+  });
   drogon::app().loadConfigFile("./config.json").run();
   std::cout.flush();
   return 0;

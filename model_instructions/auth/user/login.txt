@@ -1,0 +1,37 @@
+auth::user::Login
+
+--generate_request_proto
+syntax = "proto3";
+package timeservice;
+message LoginRequest {
+  string userid = 1;
+  string password = 2;
+  string refresh_token = 3;
+}
+--end
+--generate_response_proto
+syntax = "proto3";
+package timeservice;
+message LoginResponse {
+  enum ErrorStatus {
+    OK = 0;
+    TEMP_LOCKED = 1;
+    DISABLED = 2;
+    EXPIRED = 3;
+  }
+  ErrorStatus status = 1;
+  string token = 2;
+}
+--end
+
+--server_class
+
+
+--end
+
+
+--client_class
+filename:auth/login.svelte
+
+
+--end

@@ -1,6 +1,8 @@
 #include "query.h"
+
 #include <algorithm>
 #include <boost/algorithm/string/replace.hpp>
+
 #include "../sql/dba.h"
 #include "condformat.h"
 
@@ -239,6 +241,9 @@ std::string Query::buildInsQuery(nlohmann::json args) const {
           v = " ";
           // value += v + " ,";
         }
+      } else {
+        std::cout << key_ << " is not found on database";
+        std::cout.flush();
       }
     }
     // RETURNING
