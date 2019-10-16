@@ -1,0 +1,35 @@
+auth::user::Logout
+
+--generate_request_proto
+syntax = "proto3";
+package timeservice;
+message LogoutRequest {
+  string userid = 1;
+  string token = 2;
+}
+--end
+--generate_response_proto
+syntax = "proto3";
+package timeservice;
+message LogoutResponse {
+  enum ErrorStatus {
+    OK = 0;
+    TEMP_LOCKED = 1;
+    DISABLED = 2;
+    EXPIRED = 3;
+  }
+  ErrorStatus status = 1;
+}
+--end
+
+--server_class
+
+
+--end
+
+
+--client_class
+filename:auth/logout.svelte
+
+
+--end

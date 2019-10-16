@@ -1,15 +1,4 @@
-   auth::user::Login 
---dgraph_schema
- # alter
-myschema
- # alter_end
- # query
-myschema
- # query_end
- # mutation
-myschema
- # mutation_end
---end
+auth::user::Login
 
 --generate_request_proto
 syntax = "proto3";

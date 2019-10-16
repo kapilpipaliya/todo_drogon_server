@@ -1,0 +1,12 @@
+
+syntax = "proto3";
+package timeservice;
+message LogoutResponse {
+  enum ErrorStatus {
+    OK = 0;
+    TEMP_LOCKED = 1;
+    DISABLED = 2;
+    EXPIRED = 3;
+  }
+  ErrorStatus status = 1;
+}
