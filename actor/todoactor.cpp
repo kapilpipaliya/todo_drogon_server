@@ -4,8 +4,7 @@
 #include "inc/todoservices.h"
 #include "timeservicehandle.h"
 //#include "core/service/time/auth/user/login/Login.h"
-
-enum all_services { auth_user_Login };
+#include "./timeroutes.h"
 
 namespace superactor {
 namespace todoactor {
