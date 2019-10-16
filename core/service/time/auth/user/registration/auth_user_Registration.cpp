@@ -1,13 +1,19 @@
 #include "./auth_user_Registration.h"
 timeservice::auth::user::Registration::Registration(
-    int event1, int event2, const drogon::WebSocketConnectionPtr &wsConnPtr,
+    int event1_, int event2_, const drogon::WebSocketConnectionPtr &wsConnPtr_,
     std::shared_ptr<websocket::todo::TodoContext> context_,
-    nlohmann::json args)
-{}
-void timeservice::auth::user::Registration::run()
-{
-  // manual_part_run
-  // manual_part_run_end
+    std::string &&message_)
+    : TimeServiceBase(event1_, event2_, wsConnPtr_, context_,
+                      std::move(message_)) {}
+void timeservice::auth::user::Registration::run() {
+  // run
+  auto me = new timeservice::RegistrationRequest();
+  me->ParseFromString(message);
+  std::cout << "hi" << me->name() << std::endl;
+  std::cout << me->username() << std::endl;
+  std::cout << me->password() << std::endl;
+  std::cout.flush();
+  // run_end
 }
-  // manual_part
-  // manual_part_end
+// extend_class
+// extend_class_end

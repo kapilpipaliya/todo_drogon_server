@@ -11,11 +11,8 @@ TodoContext::TodoContext(const drogon::HttpRequestPtr &req,
 }
 
 void TodoContext::generateContext() {
-  try {
-  } catch (const std::exception &e) {
-    LOG_DEBUG << e.what();
-    return;
-  }
+  // get session from the session schema.
 }
+
 }  // namespace todo
 }  // namespace websocket

@@ -295,6 +295,7 @@ target_link_libraries(jdragon
   gRPC::gpr gRPC::grpc gRPC::grpc++
   dgraph
   libjewelcore2
+  time
 )
 #generate drpc for cpp:
 #pb --plugin=protoc-gen-grpc=/home/kapili3/k/cpp_stuff/vcpkg/installed/x64-linux/tools/grpc/grpc_cpp_plugin --grpc_out=./generated/ --proto_path=./protos/ api.proto

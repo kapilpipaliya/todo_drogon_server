@@ -1,10 +1,11 @@
 
-#include "todoactor.h"
+#include "./todoactor.h"
 
-#include "inc/todoservices.h"
-#include "timeservicehandle.h"
+#include "./inc/todoservices.h"
+#include "./timeservicehandle.h"
 //#include "core/service/time/auth/user/login/Login.h"
 #include "./timeroutes.h"
+#include "core/service/time/auth/user/registration/auth_user_Registration.h"
 
 namespace superactor {
 namespace todoactor {
@@ -33,7 +34,7 @@ void TodoActor::run(const drogon::WebSocketConnectionPtr &wsConnPtr,
                     std::string &&message,
                     const drogon::WebSocketMessageType &type) {
   switch (type) {
-    case drogon::WebSocketMessageType::Text: {
+    /*case drogon::WebSocketMessageType::Text: {
       try {
         auto valin = nlohmann::json::parse(message);
         if (valin.is_array()) {
@@ -52,9 +53,10 @@ void TodoActor::run(const drogon::WebSocketConnectionPtr &wsConnPtr,
         websocket::WsFns::sendJson(wsConnPtr, j);
       }
       break;
-    }
+    }*/
+    case drogon::WebSocketMessageType::Text:
     case drogon::WebSocketMessageType::Binary: {
-      auto result = handleBinaryMessage(wsConnPtr, message);
+      auto result = handleBinaryMessage(wsConnPtr, std::move(message));
       if (!result.is_null()) {
         websocket::WsFns::sendJson(wsConnPtr, result);
       }
@@ -72,7 +74,7 @@ void TodoActor::handleTextMessage(
   }
   auto contx = wsConnPtr->getContext<websocket::todo::TodoContext>();
   auto evt = in[0][0].get<int>();
-  if (evt == auth_user_Login) {
+  if (evt == auth_user_login) {
     // handleService<timeservice::auth::user::Login>(wsConnPtr, contx, in);
   }
   TimeServiceHandle t;
@@ -80,7 +82,7 @@ void TodoActor::handleTextMessage(
 }
 
 nlohmann::json TodoActor::handleBinaryMessage(
-    const drogon::WebSocketConnectionPtr &wsConnPtr, std::string &message) {
+    const drogon::WebSocketConnectionPtr &wsConnPtr, std::string &&message) {
   nlohmann::json event;
   try {
     auto contx = wsConnPtr->getContext<websocket::todo::TodoContext>();
@@ -99,16 +101,18 @@ nlohmann::json TodoActor::handleBinaryMessage(
     // remember that int8_t and uint8_t are 'fake' types. just aliases to char
     // and streams try to print chars as they were CHARS :D
     auto event1 = static_cast<int>(message.at(0));
+    // please note event2 will not be printed on console.
     auto event2 = static_cast<uint8_t>(message.at(1));
     message.erase(message.begin());
     message.erase(message.begin());
-    // auto me = new timeservice::Registration();
-    // me->ParseFromString(message);
-    std::cout << event1 << std::endl;
-    std::cout << event2 << std::endl;
-    // std::cout << me->username() << std::endl;
 
     // long c = contx->sessionId();
+
+    if (event1 == auth_user_registration) {
+      handleService<timeservice::auth::user::Registration>(
+          event1, event2, wsConnPtr, contx, std::move(message));
+    }
+
     auto sqlSession =
         "SELECT event FROM music.temp_file_meta where session_id = $1";
     auto clientPtr = drogon::app().getDbClient("sce");

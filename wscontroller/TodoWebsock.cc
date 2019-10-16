@@ -1,14 +1,12 @@
 #include "TodoWebsock.h"
 
 #include <unistd.h>
+
 #include <chrono>
 
 #include "../actor/caf.h"
-
-
 #include "../actor/mainactor.h"
 #include "../actor/mainactortype.h"
-
 #include "context/todocontext.h"
 namespace websocket {
 namespace todo {

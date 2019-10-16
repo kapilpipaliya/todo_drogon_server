@@ -27,12 +27,6 @@ DGraphOrmStartup::DGraphOrmStartup() {
            .token(Token::builder{}.exact(true).build())
            .build(),
        FieldProps::builder{}.name("password").type(TypesType::PASSWORD).build(),
-       FieldProps::builder{}.name("bio").type(TypesType::STRING).build(),
-       FieldProps::builder{}
-           .name("age")
-           .type(TypesType::INT)
-           .index(true)
-           .build(),
        FieldProps::builder{}
            .name("friend")
            .type(TypesType::UID)
@@ -44,16 +38,21 @@ DGraphOrmStartup::DGraphOrmStartup() {
            .name("avatar")
            .type(TypesType::UID)
            .model("media")
-           .reverse(true)  //.replace(true) not works
+           .replace(true)
            .build()}});
+  auto session = dgraphorm->model(Schema{"session",
+                                         {FieldProps::builder{}
+                                              .name("user")
+                                              .type(TypesType::UID)
+                                              .model("user")
+                                              .reverse(true)
+                                              .replace(true)
+                                              .build()}});
+
   auto post = dgraphorm->model(Schema{
       "post",
       {FieldProps::builder{}.name("title").type(TypesType::STRING).build(),
-       FieldProps::builder{}
-           .name("content")
-           .type(TypesType::STRING)
-
-           .build(),
+       FieldProps::builder{}.name("content").type(TypesType::STRING).build(),
        FieldProps::builder{}
            .name("author")
            .type(TypesType::UID)
@@ -64,7 +63,7 @@ DGraphOrmStartup::DGraphOrmStartup() {
            .name("banner")
            .type(TypesType::UID)
            .model("media")
-           //.replace(true)
+           .replace(true)
            .build()}});
   auto media = dgraphorm->model(Schema{
       "media",

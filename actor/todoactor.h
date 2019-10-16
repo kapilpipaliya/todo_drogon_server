@@ -2,7 +2,6 @@
 #define _TODOACTOR_H
 
 #include "caf/all.hpp"
-
 #include "context/todocontext.h"
 #include "json.hpp"
 namespace superactor {
@@ -20,14 +19,15 @@ class TodoActor : public caf::event_based_actor {
   void handleTextMessage(const drogon::WebSocketConnectionPtr& wsConnPtr,
                          const nlohmann::json& in);
   nlohmann::json handleBinaryMessage(
-      const drogon::WebSocketConnectionPtr& wsConnPtr, std::string& message);
+      const drogon::WebSocketConnectionPtr& wsConnPtr, std::string&& message);
 
   template <typename T>
-  void handleService(const drogon::WebSocketConnectionPtr& wsConnPtr,
+  void handleService(int event1, int event2,
+                     const drogon::WebSocketConnectionPtr& wsConnPtr,
                      std::shared_ptr<websocket::todo::TodoContext> contx,
-                     nlohmann::json in) {
+                     std::string&& message) {
     try {
-      T p{wsConnPtr, contx, in};
+      T p{event1, event2, wsConnPtr, contx, std::move(message)};
       p.run();
       // if (!r.is_null()) return r;
       // return nlohmann::json::array();
