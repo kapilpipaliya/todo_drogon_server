@@ -1,19 +1,18 @@
-auth::user::Login
+Menu
 
 --generate_request_proto
 syntax = "proto3";
 package timeservice;
-message RegistrationRequest {
-  string username = 1;
-  string password = 2;
+message MenuRequest {
+  string name = 1;
 }
 --end
 --generate_response_proto
 syntax = "proto3";
 package timeservice;
-message RegistrationResponse {
-  string username = 1;
-  string password = 2;
+message MenuResponse {
+  string name = 1;
+  string json = 2;
 }
 --end
 
@@ -24,7 +23,7 @@ message RegistrationResponse {
 
 
 --client_class
-filename:auth/kapil/Login.svelte
+filename:_components/Menu.svelte
 
 
 --end

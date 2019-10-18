@@ -1,0 +1,6 @@
+
+syntax = "proto3";
+package timeservice;
+message MenuRequest {
+  string name = 1;
+}

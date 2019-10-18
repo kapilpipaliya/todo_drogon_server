@@ -443,21 +443,28 @@ DGraphOrmStartup::DGraphOrmStartup() {
   auto menu = dgraphorm->model(dgraph::orm::Schema{
       "menu",
       {FieldProps::builder{}
+           .name("menu_name")
+           .type(TypesType::STRING)
+           .index(true)
+           .token(Token::builder{}.exact(true).build())
+           .build(),
+       FieldProps::builder{}
            .name("name")
            .type(TypesType::STRING)
            .index(true)
-           .token(Token::builder{}.hash(true).build())
+           //.token(Token::builder{}.hash(true).build())
            .build(),
        FieldProps::builder{}.name("path").type(TypesType::STRING).build(),
        FieldProps::builder{}.name("caption").type(TypesType::STRING).build(),
        FieldProps::builder{}.name("icon").type(TypesType::STRING).build(),
        FieldProps::builder{}.name("param").type(TypesType::STRING).build(),
        FieldProps::builder{}.name("help").type(TypesType::STRING).build(),
+       // FieldProps::builder{} .name("parent") .type(TypesType::UID)
+       // .model("menu") .reverse(true) .build(),
        FieldProps::builder{}
-           .name("parent")
+           .name("children")
            .type(TypesType::UID)
            .model("menu")
-           .reverse(true)
            .build(),
        FieldProps::builder{}
            .name("html")

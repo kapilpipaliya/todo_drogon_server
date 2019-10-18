@@ -1,0 +1,7 @@
+
+syntax = "proto3";
+package timeservice;
+message MenuResponse {
+  string name = 1;
+  string json = 2;
+}

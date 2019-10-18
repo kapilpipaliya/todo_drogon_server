@@ -22,6 +22,7 @@ AUX_SOURCE_DIRECTORY(./auth/user/login SRC)
 AUX_SOURCE_DIRECTORY(./auth/user/login/proto SRC)
 AUX_SOURCE_DIRECTORY(./auth/user/logout SRC)
 AUX_SOURCE_DIRECTORY(./auth/user/logout/proto SRC)
+AUX_SOURCE_DIRECTORY(./menu SRC)
 
 aux_source_directory(. SRC)
 aux_source_directory(../../../thirdparty/pystring SRC)

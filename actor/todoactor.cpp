@@ -6,7 +6,7 @@
 //#include "core/service/time/auth/user/login/Login.h"
 #include "./timeroutes.h"
 #include "core/service/time/auth/user/registration/auth_user_Registration.h"
-
+#include "core/service/time/menu/Menu.h"
 namespace superactor {
 namespace todoactor {
 /*
@@ -111,6 +111,10 @@ nlohmann::json TodoActor::handleBinaryMessage(
     if (event1 == auth_user_registration) {
       handleService<timeservice::auth::user::Registration>(
           event1, event2, wsConnPtr, contx, std::move(message));
+    }
+    if (event1 == menu) {
+      handleService<timeservice::Menu>(event1, event2, wsConnPtr, contx,
+                                       std::move(message));
     }
 
     auto sqlSession =
