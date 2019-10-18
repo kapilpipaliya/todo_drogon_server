@@ -69,12 +69,14 @@ enum RegistrationResponse_ErrorStatus : int {
   RegistrationResponse_ErrorStatus_OK = 0,
   RegistrationResponse_ErrorStatus_INVALID_USERNAME = 1,
   RegistrationResponse_ErrorStatus_WEAK_PASSWORD = 2,
+  RegistrationResponse_ErrorStatus_USERNAME_EXIST = 3,
+  RegistrationResponse_ErrorStatus_UNKNOWN_ERROR = 4,
   RegistrationResponse_ErrorStatus_RegistrationResponse_ErrorStatus_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   RegistrationResponse_ErrorStatus_RegistrationResponse_ErrorStatus_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool RegistrationResponse_ErrorStatus_IsValid(int value);
 constexpr RegistrationResponse_ErrorStatus RegistrationResponse_ErrorStatus_ErrorStatus_MIN = RegistrationResponse_ErrorStatus_OK;
-constexpr RegistrationResponse_ErrorStatus RegistrationResponse_ErrorStatus_ErrorStatus_MAX = RegistrationResponse_ErrorStatus_WEAK_PASSWORD;
+constexpr RegistrationResponse_ErrorStatus RegistrationResponse_ErrorStatus_ErrorStatus_MAX = RegistrationResponse_ErrorStatus_UNKNOWN_ERROR;
 constexpr int RegistrationResponse_ErrorStatus_ErrorStatus_ARRAYSIZE = RegistrationResponse_ErrorStatus_ErrorStatus_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* RegistrationResponse_ErrorStatus_descriptor();
@@ -203,6 +205,10 @@ class RegistrationResponse :
     RegistrationResponse_ErrorStatus_INVALID_USERNAME;
   static constexpr ErrorStatus WEAK_PASSWORD =
     RegistrationResponse_ErrorStatus_WEAK_PASSWORD;
+  static constexpr ErrorStatus USERNAME_EXIST =
+    RegistrationResponse_ErrorStatus_USERNAME_EXIST;
+  static constexpr ErrorStatus UNKNOWN_ERROR =
+    RegistrationResponse_ErrorStatus_UNKNOWN_ERROR;
   static inline bool ErrorStatus_IsValid(int value) {
     return RegistrationResponse_ErrorStatus_IsValid(value);
   }
@@ -232,6 +238,7 @@ class RegistrationResponse :
 
   enum : int {
     kTokenFieldNumber = 2,
+    kErrorMsgFieldNumber = 3,
     kStatusFieldNumber = 1,
   };
   // string token = 2;
@@ -250,6 +257,22 @@ class RegistrationResponse :
   std::string* _internal_mutable_token();
   public:
 
+  // string error_msg = 3;
+  void clear_error_msg();
+  const std::string& error_msg() const;
+  void set_error_msg(const std::string& value);
+  void set_error_msg(std::string&& value);
+  void set_error_msg(const char* value);
+  void set_error_msg(const char* value, size_t size);
+  std::string* mutable_error_msg();
+  std::string* release_error_msg();
+  void set_allocated_error_msg(std::string* error_msg);
+  private:
+  const std::string& _internal_error_msg() const;
+  void _internal_set_error_msg(const std::string& value);
+  std::string* _internal_mutable_error_msg();
+  public:
+
   // .timeservice.RegistrationResponse.ErrorStatus status = 1;
   void clear_status();
   ::timeservice::RegistrationResponse_ErrorStatus status() const;
@@ -265,6 +288,7 @@ class RegistrationResponse :
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr token_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr error_msg_;
   int status_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_time_2fauth_2fuser_2fregistration_2fproto_2fauth_5fuser_5fRegistrationResponse_2eproto;
@@ -358,6 +382,66 @@ inline void RegistrationResponse::set_allocated_token(std::string* token) {
   }
   token_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), token);
   // @@protoc_insertion_point(field_set_allocated:timeservice.RegistrationResponse.token)
+}
+
+// string error_msg = 3;
+inline void RegistrationResponse::clear_error_msg() {
+  error_msg_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline const std::string& RegistrationResponse::error_msg() const {
+  // @@protoc_insertion_point(field_get:timeservice.RegistrationResponse.error_msg)
+  return _internal_error_msg();
+}
+inline void RegistrationResponse::set_error_msg(const std::string& value) {
+  _internal_set_error_msg(value);
+  // @@protoc_insertion_point(field_set:timeservice.RegistrationResponse.error_msg)
+}
+inline std::string* RegistrationResponse::mutable_error_msg() {
+  // @@protoc_insertion_point(field_mutable:timeservice.RegistrationResponse.error_msg)
+  return _internal_mutable_error_msg();
+}
+inline const std::string& RegistrationResponse::_internal_error_msg() const {
+  return error_msg_.GetNoArena();
+}
+inline void RegistrationResponse::_internal_set_error_msg(const std::string& value) {
+  
+  error_msg_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value);
+}
+inline void RegistrationResponse::set_error_msg(std::string&& value) {
+  
+  error_msg_.SetNoArena(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:timeservice.RegistrationResponse.error_msg)
+}
+inline void RegistrationResponse::set_error_msg(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  error_msg_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:timeservice.RegistrationResponse.error_msg)
+}
+inline void RegistrationResponse::set_error_msg(const char* value, size_t size) {
+  
+  error_msg_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:timeservice.RegistrationResponse.error_msg)
+}
+inline std::string* RegistrationResponse::_internal_mutable_error_msg() {
+  
+  return error_msg_.MutableNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline std::string* RegistrationResponse::release_error_msg() {
+  // @@protoc_insertion_point(field_release:timeservice.RegistrationResponse.error_msg)
+  
+  return error_msg_.ReleaseNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline void RegistrationResponse::set_allocated_error_msg(std::string* error_msg) {
+  if (error_msg != nullptr) {
+    
+  } else {
+    
+  }
+  error_msg_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), error_msg);
+  // @@protoc_insertion_point(field_set_allocated:timeservice.RegistrationResponse.error_msg)
 }
 
 #ifdef __GNUC__

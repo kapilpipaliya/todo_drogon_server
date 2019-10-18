@@ -6,7 +6,10 @@ message RegistrationResponse {
      OK = 0;
      INVALID_USERNAME = 1;
      WEAK_PASSWORD= 2;
+      USERNAME_EXIST =3;
+      UNKNOWN_ERROR=4;
   }
   ErrorStatus status = 1;
   string token = 2;
+  string error_msg =3;
 }

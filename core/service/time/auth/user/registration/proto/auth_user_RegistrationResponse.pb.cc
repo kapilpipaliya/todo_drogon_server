@@ -46,6 +46,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_time_2fauth_2fuser_2fregistrat
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::timeservice::RegistrationResponse, status_),
   PROTOBUF_FIELD_OFFSET(::timeservice::RegistrationResponse, token_),
+  PROTOBUF_FIELD_OFFSET(::timeservice::RegistrationResponse, error_msg_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::timeservice::RegistrationResponse)},
@@ -58,11 +59,12 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 const char descriptor_table_protodef_time_2fauth_2fuser_2fregistration_2fproto_2fauth_5fuser_5fRegistrationResponse_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\nFtime/auth/user/registration/proto/auth"
   "_user_RegistrationResponse.proto\022\013timese"
-  "rvice\"\244\001\n\024RegistrationResponse\022=\n\006status"
+  "rvice\"\336\001\n\024RegistrationResponse\022=\n\006status"
   "\030\001 \001(\0162-.timeservice.RegistrationRespons"
-  "e.ErrorStatus\022\r\n\005token\030\002 \001(\t\">\n\013ErrorSta"
-  "tus\022\006\n\002OK\020\000\022\024\n\020INVALID_USERNAME\020\001\022\021\n\rWEA"
-  "K_PASSWORD\020\002b\006proto3"
+  "e.ErrorStatus\022\r\n\005token\030\002 \001(\t\022\021\n\terror_ms"
+  "g\030\003 \001(\t\"e\n\013ErrorStatus\022\006\n\002OK\020\000\022\024\n\020INVALI"
+  "D_USERNAME\020\001\022\021\n\rWEAK_PASSWORD\020\002\022\022\n\016USERN"
+  "AME_EXIST\020\003\022\021\n\rUNKNOWN_ERROR\020\004b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_time_2fauth_2fuser_2fregistration_2fproto_2fauth_5fuser_5fRegistrationResponse_2eproto_deps[1] = {
 };
@@ -72,7 +74,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_tim
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_time_2fauth_2fuser_2fregistration_2fproto_2fauth_5fuser_5fRegistrationResponse_2eproto_once;
 static bool descriptor_table_time_2fauth_2fuser_2fregistration_2fproto_2fauth_5fuser_5fRegistrationResponse_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_time_2fauth_2fuser_2fregistration_2fproto_2fauth_5fuser_5fRegistrationResponse_2eproto = {
-  &descriptor_table_time_2fauth_2fuser_2fregistration_2fproto_2fauth_5fuser_5fRegistrationResponse_2eproto_initialized, descriptor_table_protodef_time_2fauth_2fuser_2fregistration_2fproto_2fauth_5fuser_5fRegistrationResponse_2eproto, "time/auth/user/registration/proto/auth_user_RegistrationResponse.proto", 260,
+  &descriptor_table_time_2fauth_2fuser_2fregistration_2fproto_2fauth_5fuser_5fRegistrationResponse_2eproto_initialized, descriptor_table_protodef_time_2fauth_2fuser_2fregistration_2fproto_2fauth_5fuser_5fRegistrationResponse_2eproto, "time/auth/user/registration/proto/auth_user_RegistrationResponse.proto", 318,
   &descriptor_table_time_2fauth_2fuser_2fregistration_2fproto_2fauth_5fuser_5fRegistrationResponse_2eproto_once, descriptor_table_time_2fauth_2fuser_2fregistration_2fproto_2fauth_5fuser_5fRegistrationResponse_2eproto_sccs, descriptor_table_time_2fauth_2fuser_2fregistration_2fproto_2fauth_5fuser_5fRegistrationResponse_2eproto_deps, 1, 0,
   schemas, file_default_instances, TableStruct_time_2fauth_2fuser_2fregistration_2fproto_2fauth_5fuser_5fRegistrationResponse_2eproto::offsets,
   file_level_metadata_time_2fauth_2fuser_2fregistration_2fproto_2fauth_5fuser_5fRegistrationResponse_2eproto, 1, file_level_enum_descriptors_time_2fauth_2fuser_2fregistration_2fproto_2fauth_5fuser_5fRegistrationResponse_2eproto, file_level_service_descriptors_time_2fauth_2fuser_2fregistration_2fproto_2fauth_5fuser_5fRegistrationResponse_2eproto,
@@ -90,6 +92,8 @@ bool RegistrationResponse_ErrorStatus_IsValid(int value) {
     case 0:
     case 1:
     case 2:
+    case 3:
+    case 4:
       return true;
     default:
       return false;
@@ -100,6 +104,8 @@ bool RegistrationResponse_ErrorStatus_IsValid(int value) {
 constexpr RegistrationResponse_ErrorStatus RegistrationResponse::OK;
 constexpr RegistrationResponse_ErrorStatus RegistrationResponse::INVALID_USERNAME;
 constexpr RegistrationResponse_ErrorStatus RegistrationResponse::WEAK_PASSWORD;
+constexpr RegistrationResponse_ErrorStatus RegistrationResponse::USERNAME_EXIST;
+constexpr RegistrationResponse_ErrorStatus RegistrationResponse::UNKNOWN_ERROR;
 constexpr RegistrationResponse_ErrorStatus RegistrationResponse::ErrorStatus_MIN;
 constexpr RegistrationResponse_ErrorStatus RegistrationResponse::ErrorStatus_MAX;
 constexpr int RegistrationResponse::ErrorStatus_ARRAYSIZE;
@@ -126,6 +132,10 @@ RegistrationResponse::RegistrationResponse(const RegistrationResponse& from)
   if (!from._internal_token().empty()) {
     token_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.token_);
   }
+  error_msg_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_error_msg().empty()) {
+    error_msg_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.error_msg_);
+  }
   status_ = from.status_;
   // @@protoc_insertion_point(copy_constructor:timeservice.RegistrationResponse)
 }
@@ -133,6 +143,7 @@ RegistrationResponse::RegistrationResponse(const RegistrationResponse& from)
 void RegistrationResponse::SharedCtor() {
   ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_RegistrationResponse_time_2fauth_2fuser_2fregistration_2fproto_2fauth_5fuser_5fRegistrationResponse_2eproto.base);
   token_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  error_msg_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   status_ = 0;
 }
 
@@ -143,6 +154,7 @@ RegistrationResponse::~RegistrationResponse() {
 
 void RegistrationResponse::SharedDtor() {
   token_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  error_msg_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 void RegistrationResponse::SetCachedSize(int size) const {
@@ -161,6 +173,7 @@ void RegistrationResponse::Clear() {
   (void) cached_has_bits;
 
   token_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  error_msg_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   status_ = 0;
   _internal_metadata_.Clear();
 }
@@ -184,6 +197,13 @@ const char* RegistrationResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAM
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParserUTF8(_internal_mutable_token(), ptr, ctx, "timeservice.RegistrationResponse.token");
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // string error_msg = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParserUTF8(_internal_mutable_error_msg(), ptr, ctx, "timeservice.RegistrationResponse.error_msg");
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -230,6 +250,16 @@ failure:
         2, this->_internal_token(), target);
   }
 
+  // string error_msg = 3;
+  if (this->error_msg().size() > 0) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_error_msg().data(), static_cast<int>(this->_internal_error_msg().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "timeservice.RegistrationResponse.error_msg");
+    target = stream->WriteStringMaybeAliased(
+        3, this->_internal_error_msg(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields(), target, stream);
@@ -251,6 +281,13 @@ size_t RegistrationResponse::ByteSizeLong() const {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_token());
+  }
+
+  // string error_msg = 3;
+  if (this->error_msg().size() > 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_error_msg());
   }
 
   // .timeservice.RegistrationResponse.ErrorStatus status = 1;
@@ -294,6 +331,10 @@ void RegistrationResponse::MergeFrom(const RegistrationResponse& from) {
 
     token_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.token_);
   }
+  if (from.error_msg().size() > 0) {
+
+    error_msg_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.error_msg_);
+  }
   if (from.status() != 0) {
     _internal_set_status(from._internal_status());
   }
@@ -321,6 +362,8 @@ void RegistrationResponse::InternalSwap(RegistrationResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   token_.Swap(&other->token_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
+  error_msg_.Swap(&other->error_msg_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
   swap(status_, other->status_);
 }
