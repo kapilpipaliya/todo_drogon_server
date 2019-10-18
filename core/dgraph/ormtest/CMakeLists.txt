@@ -28,4 +28,6 @@ target_link_libraries(ormtest
     gRPC::gpr gRPC::grpc gRPC::grpc++
 #    folly.a
 #    folly
+time
+drogon
 )

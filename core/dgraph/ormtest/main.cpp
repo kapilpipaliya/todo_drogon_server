@@ -4,7 +4,7 @@
 #include "./dgraphclientmanger.h"
 #include "./example.h"
 #include "./test.h"
-#include "core/dgraph/orm/dgraphormstartup.h"
+#include "core/service/time/dgraphormstartup.h"
 
 int main(int argc, char *argv[]) {
   auto dbgrpcclient =
@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
   // Example a;
   // a.test();
 
-  dgraph::orm::DGraphOrmStartup
+  timeservice::seed::DGraphOrmStartup
       dormStartup;  // register all schema on constructor
 
   Test t;

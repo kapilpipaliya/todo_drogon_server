@@ -1,11 +1,13 @@
 #include "./dgraphormstartup.h"
 
-#include <string>
-
-#include "../dgraphclientmanger.h"
-#include "./model.h"
-namespace dgraph {
-namespace orm {
+#include "../../dgraph/dgraphclientmanger.h"
+#include "../../dgraph/orm/dgraphorm.h"
+#include "../../dgraph/orm/model.h"
+#include "../../dgraph/orm/schema.h"
+#include "../service/time/menu/menubase.h"
+using namespace dgraph::orm;
+namespace timeservice {
+namespace seed {
 DGraphOrmStartup::DGraphOrmStartup() {
   auto dgraphorm = dgraph::DGraphClientManger::getDGraphOrm("1");
 
@@ -89,7 +91,6 @@ DGraphOrmStartup::DGraphOrmStartup() {
            .name("user")
            .type(TypesType::UID)
            .model("user")
-           .index(true)
            .build(),
        FieldProps::builder{}
            .name("enum")
@@ -451,7 +452,7 @@ DGraphOrmStartup::DGraphOrmStartup() {
        FieldProps::builder{}
            .name("name")
            .type(TypesType::STRING)
-           .index(true)
+           //.index(true)
            //.token(Token::builder{}.hash(true).build())
            .build(),
        FieldProps::builder{}.name("path").type(TypesType::STRING).build(),
@@ -477,6 +478,11 @@ DGraphOrmStartup::DGraphOrmStartup() {
        FieldProps::builder{}.name("title").type(TypesType::STRING).build(),
        FieldProps::builder{}.name("class").type(TypesType::STRING).build(),
        FieldProps::builder{}.name("target").type(TypesType::STRING).build()}});
+
+  {
+    timeservice::MenuBase m;
+    m.seed_init_data();
+  }
 }
-}  // namespace orm
-}  // namespace dgraph
+}  // namespace seed
+}  // namespace timeservice

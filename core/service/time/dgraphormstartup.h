@@ -1,11 +1,10 @@
 #ifndef DGRAPHORMSTARTUP_H
 #define DGRAPHORMSTARTUP_H
 
-#include "./dgraphorm.h"
-#include "./schema.h"
 
-namespace dgraph {
-namespace orm {
+
+namespace timeservice {
+namespace seed {
 
 class DGraphOrmStartup {
  public:

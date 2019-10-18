@@ -2,10 +2,14 @@
 #include "core/service/time/timeservicebase.h"
 #include "./proto/MenuRequest.pb.h"
 #include "./proto/MenuResponse.pb.h"
+// inc
+#include "./menubase.h"
+// inc_end
 namespace timeservice
 {
 class Menu: public TimeServiceBase
 /*inh*/
+, public MenuBase
 /*inh_end*/
 {
   public:
@@ -15,7 +19,7 @@ class Menu: public TimeServiceBase
   void run();
   private:
   // extend_class
-      void create_menu(std::string type, std::string name, std::string path, std::string icon = "");
+
   // extend_class_end
 };
 }

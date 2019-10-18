@@ -31,8 +31,8 @@ void timeservice::auth::user::Registration::run() {
   auto u = user->create(dgraph::orm::Attributes{}
                             .s("name", msg->username())
                             .s("email", msg->username())
-                            .s("password", msg->password()),
-                        response);
+                            .s("password", msg->password())
+                            ,response);
   switch (u) {
     case dgraph::orm::success: {
       auto j = nlohmann::json::parse(response->json());
@@ -66,6 +66,7 @@ void timeservice::auth::user::Registration::run() {
       res->set_status(timeservice::RegistrationResponse::UNKNOWN_ERROR);
       res->set_error_msg(user->error_msg);
   }
+  delete response;
 
   sendmsg<timeservice::RegistrationResponse>(res);
   // run_end
