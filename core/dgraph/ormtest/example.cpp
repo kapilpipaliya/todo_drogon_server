@@ -129,7 +129,7 @@ void Example::test() {
       .s("bio", "Performance and load tester")
       .s("password", "p@ssw@rd");
   auto u1_ = user->create(a1_, response);
-  nlohmann::json u1j_ = nlohmann::json::parse(u1_);
+  nlohmann::json u1j_ = nlohmann::json::parse(response->json());
   auto u1 = u1j_["user"][0]["uid"].get<std::string>();
 
   Attributes a2__;
@@ -138,7 +138,7 @@ void Example::test() {
       .s("bio", "Performance and load tester1")
       .s("password", "p@ssw@rd1");
   auto a2___ = user->create(a2__, response);
-  nlohmann::json a2____ = nlohmann::json::parse(a2___);
+  nlohmann::json a2____ = nlohmann::json::parse(response->json());
   auto u2 = a2____["user"][0]["uid"].get<std::string>();
 
   // user->delete_(u1, response);
@@ -223,7 +223,7 @@ void Example::test() {
       .s("src",
          "https://miro.medium.com/max/3150/1*RJuEp_08DylEspADBgsHoQ.jpeg");
   auto m1__ = media->create(m1_, response);
-  nlohmann::json m1___ = nlohmann::json::parse(m1__);
+  nlohmann::json m1___ = nlohmann::json::parse(response->json());
   auto m1 = m1___["media"][0]["uid"].get<std::string>();
 
   media->method(MethodsType::has, "src", "", Params::builder{}.build_shared(),
@@ -246,7 +246,7 @@ void Example::test() {
       .s("content", "<p>Sample content</p>")
       .u("author", u1);
   auto p3__ = post->create(p3_, response);
-  nlohmann::json p3___ = nlohmann::json::parse(p3__);
+  nlohmann::json p3___ = nlohmann::json::parse(response->json());
   auto p1 = p3___["post"][0]["uid"].get<std::string>();
 
   Attributes p2_;
@@ -283,7 +283,7 @@ void Example::test() {
   Attributes m2_;
   m2_.s("type", "image").s("src", "myname.jpg");
   auto m2__ = media->create(m2_, response);
-  nlohmann::json m2___ = nlohmann::json::parse(m2__);
+  nlohmann::json m2___ = nlohmann::json::parse(response->json());
   auto m2 = m2___["media"][0]["uid"].get<std::string>();
 
   Attributes u6_;

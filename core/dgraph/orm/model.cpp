@@ -128,7 +128,7 @@ void Model::queryWithVars(QueryParams params, api::Response *response) {
   }
 }
 
-std::string Model::create(Attributes &attributes, api::Response *response) {
+error_type Model::create(Attributes &attributes, api::Response *response) {
   _check_attributes(schema.original, attributes, true);
   _parse_mutation(attributes, schema.name);
   return _create(attributes, response);
@@ -372,7 +372,7 @@ void Model::_parse_mutation(Attributes &attributes, std::string name) {
   }
 }
 
-std::string Model::_create(Attributes &attributes, api::Response *response) {
+error_type Model::_create(Attributes &attributes, api::Response *response) {
   auto _txn = dgraphClient->newTxn({});
 
   try {
@@ -386,8 +386,10 @@ std::string Model::_create(Attributes &attributes, api::Response *response) {
       auto txn_response = new api::TxnContext;
       _txn->discard(txn_response);
       delete txn_response;
-      throw std::runtime_error(std::string("[Unique Constraint] : ") +
-                               (_unique_check ? "true" : "false"));
+      error_msg = "[Unique Constraint] : ";
+      error_msg += (_unique_check ? "true" : "false");
+      // throw std::runtime_error(error_msg);
+      return unique_error;
     }
 
     mu.set_commit_now(true);
@@ -399,7 +401,7 @@ std::string Model::_create(Attributes &attributes, api::Response *response) {
     method(MethodsType::uid, _uid, "", Params::builder{}.build_shared(),
            response);
 
-    return response->json();
+    return success;
 
   } catch (std::exception &error) {
     auto txn_response = new api::TxnContext;

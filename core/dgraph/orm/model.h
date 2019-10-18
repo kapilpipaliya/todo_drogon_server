@@ -1,7 +1,15 @@
 #ifndef DGRAPHORMMODEL_H
 #define DGRAPHORMMODEL_H
 // TODO fix delete functions.
-// Todo fix uid_in function.
+// TODO fix update : when passed object.
+// Todo fix delete : when passed object
+// Todo fix delete : when passed object with some value set to null.
+// Todo fix relation function - useless?
+// Todo fix uid_in function. look at orm example but its not proper.
+/*
+on _create it check unique values.
+on _update it also should check for unique values.
+*/
 
 #include "../dgraph-js/generated/api.grpc.pb.h"
 #include "../dgraph-js/generated/api.pb.h"
@@ -16,6 +24,7 @@ namespace orm {
 class Model {
  public:
   Schema schema;
+  std::string error_msg;
 
   Model(Schema schema, std::map<std::string, Schema> &models,
         std::shared_ptr<dgraph::grpcclient::DgraphClient> dgraphClient);
@@ -23,7 +32,7 @@ class Model {
   bool checkPassword(std::string uid, std::string field, std::string password);
   void query(std::string query, api::Response *response);
   void queryWithVars(QueryParams params, api::Response *response);
-  std::string create(Attributes &attributes, api::Response *response);
+  error_type create(Attributes &attributes, api::Response *response);
   void update(const std::string &uid, Attributes &attributes,
               api::Response *response);
   // void delete_(nlohmann::json params, api::Response *response);
@@ -45,7 +54,7 @@ class Model {
   void _execute(std::string query, api::Response *response);
   bool _is_relation(std::string _key);
   void _parse_mutation(Attributes &attributes, std::string name);
-  std::string _create(Attributes &attributes, api::Response *response);
+  error_type _create(Attributes &attributes, api::Response *response);
   void _update(const std::string &uid, Attributes &attributes,
                api::Response *response);
   std::string get_del_nquads(const std::string &uid);

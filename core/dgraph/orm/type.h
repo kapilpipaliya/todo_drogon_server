@@ -9,6 +9,8 @@
 namespace dgraph {
 namespace orm {
 
+enum error_type { success, unique_error, password_error };
+
 // methods.ts
 enum class MethodsType : int {
   eq = 1,
