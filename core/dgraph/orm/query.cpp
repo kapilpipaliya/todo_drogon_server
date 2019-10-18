@@ -66,6 +66,8 @@ std::string Query::methodTypeToString(MethodsType type) {
       return "ge";
     case MethodsType::gt:
       return "gt";
+    case MethodsType::type:
+      return "type";
     default:
       return "define_enum";
   }
@@ -91,7 +93,8 @@ std::string Query::_where(MethodsType type, std::string field,
           fmt::format(s, methodTypeToString(type), name, field, func_value);
       break;
     }
-    case MethodsType::uid: {
+    case MethodsType::uid:
+    case MethodsType::type: {
       auto s = "(func: {0}({1}){{ORDER}}{{LIMIT}})";
       where_ = fmt::format(s, methodTypeToString(type), field);
       break;
@@ -329,8 +332,16 @@ std::string Query::_include(std::vector<IncludeBase> &include,
   }
   for (auto &relation : include) {
     if (relation.count) {
-      _inc +=
-          fmt::format("{0}: count({1}.{2})", relation.as, name, relation.name);
+      std::string s;
+      if (!relation.as.empty()) {
+        s += relation.as + ": ";
+      }
+      if (relation.name == "uid") {
+        s += "count(" + relation.name + ")";
+      } else {
+        s += "count(" + name + "." + relation.name + ")";
+      }
+      _inc += s;
       continue;
     }
     _inc += fmt::format("{0}: {1}.{2}", relation.as, name, relation.name);
