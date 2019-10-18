@@ -33,20 +33,21 @@ enum class MethodsType : int {
   ge,
   gt,
   match,  // Fuzzy matching
-  // min,max,sum,avg
-  // floor ceil ln exp sqrt
-  // since
-  // pow(a, b)
-  // logbase(a,b)
-  // cond(a, b, c)
-  // @groupby
-  // expand(_all_)
-  // @cascade
-  // @normalize
-  // @ignorereflex
-  // @facets
-  // shortest
-  // @recurse
+          // min,max,sum,avg
+          // floor ceil ln exp sqrt
+          // since
+          // pow(a, b)
+          // logbase(a,b)
+          // cond(a, b, c)
+          // @groupby
+          // expand(_all_)
+          // @cascade
+          // @normalize
+          // @ignorereflex
+          // @facets
+          // shortest
+          // @recurse
+  type
 
 };
 // types.ts
@@ -104,6 +105,7 @@ class AttributeBase {
 class Attributes {
  public:
   std::vector<std::pair<std::string, AttributeBase>> attrs;
+  bool no_attributes = false;
   Attributes& s(std::string name, std::string value);
   Attributes& i(std::string name, int value);
   Attributes& d(std::string name, double value);
@@ -111,9 +113,10 @@ class Attributes {
   //  Attributes& n(std::string name, NullVal value);
   Attributes& u(std::string name, std::string value);
   Attributes& u(std::string name, std::vector<std::string> value);
+  Attributes& no(bool value);
   std::vector<std::string> to_filter_value();
   std::string to_json();
-  std::string to_q();
+  std::string to_nquads(std::string type);
   std::string to_update_nquards(const std::string& uid);
 };
 enum filtertype { fltand = 1, fltor, fltnot };
@@ -328,6 +331,7 @@ class Params : public Base {
    public:
     builder& inc(IncludeBase value);
     builder& fil(Filter value);
+    builder& attributes(Attributes value);
     builder& ord(std::vector<std::pair<std::string, std::string>> value);
     builder& first(long value);
     builder& offset(long value);
@@ -343,6 +347,7 @@ class Params : public Base {
     long offset_ = 0;
     std::string after_;
     Filter filter_;
+    Attributes attributes_;
   };
 };
 

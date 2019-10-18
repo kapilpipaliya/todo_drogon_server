@@ -328,10 +328,10 @@ void Model::_execute(std::string query, api::Response *response) {
   }
 }
 
-void Model::method(MethodsType type, const std::string &field,
-                   const std::string &value,
-                   const std::shared_ptr<Params> params,
-                   api::Response *response) {
+error_type Model::method(MethodsType type, const std::string &field,
+                         const std::string &value,
+                         const std::shared_ptr<Params> params,
+                         api::Response *response) {
   /*if (type == MethodsType::uid || type == MethodsType::has) {
     // params = value;
     // value = field;
@@ -339,6 +339,7 @@ void Model::method(MethodsType type, const std::string &field,
   auto _params = _validate(schema.original, params);
   Query query(type, field, value, _params, schema.name);  //, _logger
   _execute(query.query, response);
+  return error_type::success;
 }
 
 bool Model::_is_relation(std::string _key) {
@@ -378,7 +379,7 @@ error_type Model::_create(Attributes &attributes, api::Response *response) {
   try {
     api::Mutation mu;
     // mu.set_set_json(attributes.to_json());
-    mu.set_set_nquads(attributes.to_q());
+    mu.set_set_nquads(attributes.to_nquads(schema.name));
 
     auto _unique_check = _check_unique_values(attributes, _txn, response);
 
@@ -593,33 +594,32 @@ std::shared_ptr<Params> Model::_validate(std::vector<FieldProps> original,
   //    params = std::make_shared<Params>(p);
   //  }
 
-  if (params->attributes.attrs.size() == 0) {
-    params->attributes = _all_attributes(original);
+  if (!params->attributes.no_attributes) {
+    if (params->attributes.attrs.size() == 0) {
+      params->attributes = _all_attributes(original);
+    }
+    //  auto _index = ranges::find(params->attributes, "uid");
+    auto _index = std::find_if(params->attributes.attrs.begin(),
+                               params->attributes.attrs.end(),
+                               [](std::pair<std::string, AttributeBase> &att) {
+                                 return att.first == "uid";
+                               });
+
+    if (_index != params->attributes.attrs.end()) {
+      params->attributes.attrs.erase(_index);
+    }
+
+    _check_attributes(original, params->attributes);
+
+    AttributeBase b;
+    b.type = TypesType::UID;
+    params->attributes.attrs.insert(params->attributes.attrs.begin(),
+                                    {"uid", b});
   }
-  //  auto _index = ranges::find(params->attributes, "uid");
-  auto _index = std::find_if(params->attributes.attrs.begin(),
-                             params->attributes.attrs.end(),
-                             [](std::pair<std::string, AttributeBase> &att) {
-                               return att.first == "uid";
-                             });
-
-  if (_index != params->attributes.attrs.end()) {
-    params->attributes.attrs.erase(_index);
-  }
-
-  _check_attributes(original, params->attributes);
-
-  AttributeBase b;
-  b.type = TypesType::UID;
-  params->attributes.attrs.insert(params->attributes.attrs.begin(), {"uid", b});
 
   if (params->include.size()) {
     for (auto &relation : params->include) {
-      // Todo!! Fix this
-      // if (typeof original[relation] == "undefined") {
-      // throw new Error("${schema.name} has no relation $ { relation }");
-      //}
-
+      if (relation.count) continue;
       std::string model;
       auto findit = ranges::find(original, relation.name, &FieldProps::name);
       if (findit == original.end()) {
@@ -631,6 +631,13 @@ std::shared_ptr<Params> Model::_validate(std::vector<FieldProps> original,
       relation.model = model;
 
       // relation.params must not be null
+      if (model.empty()) {
+        std::cout << "EMPTY MDOEL! "
+                     "FIX-------------------------------------FIND EXCACT "
+                     "PROBLEM AND REMOVE THIS BLOCK----------------- "
+                  << std::endl;
+        continue;
+      }
       _validate(models.at(model).original, relation.params);
     }
   }

@@ -39,7 +39,7 @@ class Model {
   void delete_(std::string uid, api::Response *response);
   void delete_(std::vector<std::string> &uid, api::Response *response);
 
-  void method(MethodsType type, const std::string &field,
+  error_type method(MethodsType type, const std::string &field,
               const std::string &value, const std::shared_ptr<Params> params,
               api::Response *response);
 

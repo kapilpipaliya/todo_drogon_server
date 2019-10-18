@@ -217,6 +217,11 @@ Params::builder &Params::builder::fil(Filter value) {
   return *this;
 }
 
+Params::builder &Params::builder::attributes(Attributes value) {
+  attributes_ = value;
+  return *this;
+}
+
 Params::builder &Params::builder::ord(
     std::vector<std::pair<std::string, std::string>> value) {
   order_ = value;
@@ -246,19 +251,20 @@ Params Params::builder::build() const {
   p.offset = offset_;
   p.after = after_;
   p.filter = filter_;
+  p.attributes = attributes_;
   return p;
 }
 
 std::shared_ptr<Params> Params::builder::build_shared() const {
-  Params p{};
-  p.include = include_;
-  p.order = order_;
-  p.first = first_;
-  p.offset = offset_;
-  p.after = after_;
-  p.filter = filter_;
-  // return std::make_shared<Params>(build());
-  return std::make_shared<Params>(p);
+  //  Params p{};
+  //  p.include = include_;
+  //  p.order = order_;
+  //  p.first = first_;
+  //  p.offset = offset_;
+  //  p.after = after_;
+  //  p.filter = filter_;
+  //  return std::make_shared<Params>(p);
+  return std::make_shared<Params>(build());
 }
 
 Attributes &Attributes::s(std::string name, std::string value) {
@@ -319,6 +325,11 @@ Attributes &Attributes::u(std::string name, std::vector<std::string> value) {
   return *this;
 }
 
+Attributes &Attributes::no(bool value) {
+  no_attributes = value;
+  return *this;
+}
+
 std::vector<std::string> Attributes::to_filter_value() {
   std::vector<std::string> s;
   for (auto &pair : attrs) {
@@ -360,10 +371,12 @@ std::string Attributes::to_json() {
   return s;
 }
 
-std::string Attributes::to_q() {
+std::string Attributes::to_nquads(std::string type) {
   // note schema name should be alread modified before running this function
   //_:blank-0 <name> "diggy" .
   std::string s = "\n";
+  //_:a <dgraph.type> "Pet" .
+  s += "_:blank-0 <dgraph.type> \"" + type + "\" .\n";
   for (auto &pair : attrs) {
     switch (pair.second.type) {
       case TypesType::INT:
