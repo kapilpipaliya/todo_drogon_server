@@ -1,5 +1,7 @@
 #include "./type.h"
 
+#include <iostream>
+
 namespace dgraph {
 namespace orm {
 Token::builder &Token::builder::term(bool value) {
@@ -267,6 +269,16 @@ std::shared_ptr<Params> Params::builder::build_shared() const {
   return std::make_shared<Params>(build());
 }
 
+Attributes &Attributes::key(std::string uid_key_) {
+  uid_key = uid_key_;
+  return *this;
+}
+
+Attributes &Attributes::type(std::string dgraph_type_) {
+  dgraph_type = dgraph_type_;
+  return *this;
+}
+
 Attributes &Attributes::s(std::string name, std::string value) {
   AttributeBase b;
   b.type = TypesType::STRING;
@@ -325,6 +337,38 @@ Attributes &Attributes::u(std::string name, std::vector<std::string> value) {
   return *this;
 }
 
+Attributes &Attributes::dt(std::string name, bool value) {
+  AttributeBase b;
+  b.type = TypesType::DATETIME;
+  b.dateTimevalue = value;
+  attrs.push_back({name, b});
+  return *this;
+}
+
+Attributes &Attributes::n(std::string dgraph_type_, std::string key_,
+                          Attributes value) {
+  AttributeBase b;
+  b.type = TypesType::INT;
+  value.dgraph_type = dgraph_type_;
+  value.uid_key = key_;
+  b.nested_attr = std::make_shared<Attributes>(value);
+  attrs.push_back({"", b});
+  return *this;
+}
+
+Attributes &Attributes::n(std::string link, std::string dgraph_type_,
+                          std::string key_, Attributes value) {
+  u(link, key_);
+
+  AttributeBase b;
+  b.type = TypesType::INT;
+  value.dgraph_type = dgraph_type_;
+  value.uid_key = key_;
+  b.nested_attr = std::make_shared<Attributes>(value);
+  attrs.push_back({"", b});
+  return *this;
+}
+
 Attributes &Attributes::no(bool value) {
   no_attributes = value;
   return *this;
@@ -333,7 +377,9 @@ Attributes &Attributes::no(bool value) {
 std::vector<std::string> Attributes::to_filter_value() {
   std::vector<std::string> s;
   for (auto &pair : attrs) {
-    s.push_back(pair.second.to_string());
+    auto &name = pair.first;
+    auto &value = pair.second;
+    s.push_back(value.to_string());
   }
   return s;
 }
@@ -342,26 +388,25 @@ std::string Attributes::to_json() {
   // note schema name should be alread modified before running this function
   std::string s = "{";
   for (auto &pair : attrs) {
-    switch (pair.second.type) {
+    auto &name = pair.first;
+    auto &value = pair.second;
+
+    switch (value.type) {
       case TypesType::INT:
-        s += "\"" + pair.first + "\": " + std::to_string(pair.second.intvalue);
+        s += "\"" + name + "\": " + std::to_string(value.intvalue);
         break;
       case TypesType::FLOAT:
-        s += "\"" + pair.first +
-             "\": " + std::to_string(pair.second.doublevalue);
+        s += "\"" + name + "\": " + std::to_string(value.doublevalue);
         break;
       case TypesType::BOOL:
-        s += "\"" + pair.first + "\": " + std::to_string(pair.second.boolvalue);
+        s += "\"" + name + "\": " + std::to_string(value.boolvalue);
         break;
       case TypesType::STRING:
-        s += "\"" + pair.first + "\": " + "\"" + pair.second.stringvalue + "\"";
+        s += "\"" + name + "\": " + "\"" + value.stringvalue + "\"";
         break;
       case TypesType::UID:
-        s += "\"" + pair.first + "\": " + "\"" + pair.second.stringvalue + "\"";
+        s += "\"" + name + "\": " + "\"" + value.stringvalue + "\"";
         break;
-        //      case TypesType::nulltype:
-        //        s += "\"" + pair.first + "\": null";
-        //        break;
     }
     s += ", ";
   }
@@ -371,72 +416,124 @@ std::string Attributes::to_json() {
   return s;
 }
 
-std::string Attributes::to_nquads(std::string type) {
+// this should consider nested_attr also (think about it)
+std::string Attributes::to_nquads() {
   // note schema name should be alread modified before running this function
   //_:blank-0 <name> "diggy" .
   std::string s = "\n";
+
   //_:a <dgraph.type> "Pet" .
-  s += "_:blank-0 <dgraph.type> \"" + type + "\" .\n";
-  for (auto &pair : attrs) {
-    switch (pair.second.type) {
-      case TypesType::INT:
-        s += "_:blank-0 <" + pair.first + "> " + "\"" +
-             std::to_string(pair.second.intvalue) + "\"" + "^^<xs:int>";
-        break;
-      case TypesType::FLOAT:
-        s += "_:blank-0 <" + pair.first + "> " + "\"" +
-             std::to_string(pair.second.doublevalue) + "\"" + "^^<xs:double>";
-        break;
-      case TypesType::BOOL:
-        s += "_:blank-0 <" + pair.first + "> " + "\"" +
-             std::to_string(pair.second.boolvalue) + "\"" + "^^<xs:boolean>";
-        break;
-      case TypesType::STRING:
-        s += "_:blank-0 <" + pair.first + "> " + "\"" +
-             pair.second.stringvalue + "\"" + "^^<xs:string>";
-        break;
-      case TypesType::UID:
-        s += "_:blank-0 <" + pair.first + "> " + "<" + pair.second.stringvalue +
-             ">";
-        break;
-        //      case TypesType::nulltype:
-        //        s += "_:blank-0 <" + pair.first + "> null";
-        //        break;
+  if (attrs.size() > 0) {
+    if (uid_key.empty()) {
+      std::cout << "Uid key must be provided to: " << dgraph_type << std::endl;
+    } else {
+      s += uid_key + " <dgraph.type> \"" + dgraph_type + "\" .\n";
     }
-    s += " .\n";
   }
+  // start looping map
+  for (auto &pair : attrs) {
+    auto &name = pair.first;
+    auto &value = pair.second;
+    if (value.nested_attr && value.nested_attr->attrs.size() > 0) {
+      s += value.nested_attr->to_nquads();
+    } else {
+      switch (value.type) {
+        case TypesType::INT:
+          s += uid_key + " <" + name + "> " + "\"" +
+               std::to_string(value.intvalue) + "\"" + "^^<xs:int>";
+          break;
+        case TypesType::FLOAT:
+          s += uid_key + " <" + name + "> " + "\"" +
+               std::to_string(value.doublevalue) + "\"" + "^^<xs:double>";
+          break;
+        case TypesType::BOOL:
+          s += uid_key + " <" + name + "> " + "\"" +
+               std::to_string(value.boolvalue) + "\"" + "^^<xs:boolean>";
+          break;
+        case TypesType::STRING:
+          s += uid_key + " <" + name + "> " + "\"" + value.stringvalue + "\"" +
+               "^^<xs:string>";
+          break;
+        case TypesType::UID:
+          s += uid_key + " <" + name + "> " + "<" + value.stringvalue + ">";
+          break;
+        case TypesType::DATETIME:
+          s += uid_key + " <" + name + "> " + "\"" + value.stringvalue + "\"" +
+               "^^<xs:dateTime>";
+          break;
+        case TypesType::PASSWORD:
+          s += uid_key + " <" + name + "> " + "\"" + value.stringvalue + "\"" +
+               "^^<xs:password>";
+          break;
+        case TypesType::GEO:
+          s += uid_key + " <" + name + "> " + "\"" + value.stringvalue + "\"" +
+               "^^<geo:geojson>";
+          break;
+      }
+      s += " .\n";
+    }
+
+    // if(value.nested_attr)
+  }
+  std::cout << s << std::endl;
   return s;
 }
+/*
+{
+    set {
+        _:b0 <menu.name> "M" .
+        _:b0 <dgraph.type> "menu" .
+        _:b0 <menu.path> "path" .
+        _:b0 <menu.children>  _:y .
+        _:b0 <menu.children>  _:z .
+        _:y <menu.name> "M1" .
+        _:y <dgraph.type> "menu" .
+        _:z <menu.name> "M2" .
+        _:z <dgraph.type> "menu" .
+    }
+}
+*/
 std::string Attributes::to_update_nquards(const std::string &uid) {
   // note schema name should be alread modified before running this function
   //<0x467ba0> <food> "taco" .
   //<0x467ba0> <rating> "tastes good" .
   std::string s = "\n";
   for (auto &pair : attrs) {
-    switch (pair.second.type) {
+    auto &name = pair.first;
+    auto &value = pair.second;
+
+    switch (value.type) {
       case TypesType::INT:
-        s += "<" + uid + "> <" + pair.first + "> " + "\"" +
-             std::to_string(pair.second.intvalue) + "\"" + "^^<xs:int>";
+        s += "<" + uid + "> <" + name + "> " + "\"" +
+             std::to_string(value.intvalue) + "\"" + "^^<xs:int>";
         break;
       case TypesType::FLOAT:
-        s += "<" + uid + "> <" + pair.first + "> " + "\"" +
-             std::to_string(pair.second.doublevalue) + "\"" + "^^<xs:double>";
+        s += "<" + uid + "> <" + name + "> " + "\"" +
+             std::to_string(value.doublevalue) + "\"" + "^^<xs:double>";
         break;
       case TypesType::BOOL:
-        s += "<" + uid + "> <" + pair.first + "> " + "\"" +
-             std::to_string(pair.second.boolvalue) + "\"" + "^^<xs:boolean>";
+        s += "<" + uid + "> <" + name + "> " + "\"" +
+             std::to_string(value.boolvalue) + "\"" + "^^<xs:boolean>";
         break;
       case TypesType::STRING:
-        s += "<" + uid + "> <" + pair.first + "> " + "\"" +
-             pair.second.stringvalue + "\"" + "^^<xs:string>";
+        s += "<" + uid + "> <" + name + "> " + "\"" + value.stringvalue + "\"" +
+             "^^<xs:string>";
         break;
       case TypesType::UID:
-        s += "<" + uid + "> <" + pair.first + "> " + "<" +
-             pair.second.stringvalue + ">";
+        s += "<" + uid + "> <" + name + "> " + "<" + value.stringvalue + ">";
         break;
-        //      case TypesType::nulltype:
-        //        s += "<" + uid + "> <" + pair.first + "> null";
-        //        break;
+      case TypesType::DATETIME:
+        s += "<" + uid + "> <" + name + "> " + "\"" + value.stringvalue + "\"" +
+             "^^<xs:dateTime";
+        break;
+      case TypesType::PASSWORD:
+        s += "<" + uid + "> <" + name + "> " + "\"" + value.stringvalue + "\"" +
+             "^^<xs:password";
+        break;
+      case TypesType::GEO:
+        s += "<" + uid + "> <" + name + "> " + "\"" + value.stringvalue + "\"" +
+             "^^<geo:geojson";
+        break;
     }
     s += " .\n";
   }

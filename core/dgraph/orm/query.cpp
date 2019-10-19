@@ -288,45 +288,6 @@ std::string Query::_include(std::vector<IncludeBase> &include,
                             const std::string &name) {
   std::string _inc = "";
 
-  /*if(!include.is_null()) {
-      return _inc;
-  }
-  std::vector<std::string> _keys;
-  for (auto &el : include.items()) {
-      _keys.push_back(el.key());
-  }
-
-  for (auto &relation : _keys) {
-      auto as = include[relation]["as"] ?
-  include[relation]["as"].get<std::string>() : relation;
-      if(include[relation]["count"]) {
-          _inc += fmt::format("{0}: count({1}.{2})", as, name, relation);
-          continue;
-      }
-
-      _inc += fmt::format("{0}: ${1}.${2}", as, name, relation);
-
-      auto _limit = _extras(include[relation]);
-      auto _order = _parse_order(include[relation].order);
-
-      if(include[relation].filter) {
-          _inc +=  "${this._parse_filter(include[relation].filter,
-  include[relation].model)}"
-      }
-
-      if(_limit) {
-          _inc += " (${_limit}) ";
-      }
-
-      if(_order) {
-          _inc += " (${_order})";
-      }
-
-      _inc += "{
-          ${this._attributes(include[relation].attributes,
-  include[relation].model)}
-      ${this._include(include[relation].include, include[relation].model)}
-  }"*/
   if (!include.size()) {
     return "";
   }
@@ -344,16 +305,13 @@ std::string Query::_include(std::vector<IncludeBase> &include,
       _inc += s;
       continue;
     }
-    _inc += fmt::format("{0}: {1}.{2}", relation.as, name, relation.name);
+    _inc += fmt::format("{0}: {1}.{2}",
+                        relation.as.empty() ? relation.as : relation.name, name,
+                        relation.name);
 
     auto _limit = _extras(relation.params);
     auto _order = _parse_order(relation.order, name);
 
-    /*
-    if(include[relation].filter) {
-        _inc +=  "${this._parse_filter(include[relation].filter,
-    include[relation].model)}"
-    }*/
     _inc += _parse_filter(relation.filter, relation.model);
 
     if (!_limit.empty()) {

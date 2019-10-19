@@ -1,3 +1,4 @@
+// TODO: parse_mutation function is empty?
 #include "./model.h"
 
 #include <fmt/format.h>
@@ -359,16 +360,24 @@ bool Model::_is_relation(std::string _key) {
 void Model::_parse_mutation(Attributes &attributes, std::string name) {
   for (auto &_att : attributes.attrs) {
     auto &key = _att.first;
-    auto &val = _att.second;
+    auto &value = _att.second;
 
-    key = name + "." + key;
-
-    if (_is_relation(key)) {
-      // it basically convert array to array of {uid: oxabc}
-      // TOdo fix this::
+    // check nested attributes too
+    if (value.nested_attr && value.nested_attr->attrs.size() > 0) {
+      auto find = models.find(value.nested_attr->dgraph_type);
+      assert(find != models.end());
+      _parse_mutation(*value.nested_attr.get(), find->second.name);
     } else {
-      // moved to top.
-      // key = name + "." + key;
+      // here is good part! it changes key to full name
+      key = name + "." + key;
+
+      if (_is_relation(key)) {
+        // it basically convert array to array of {uid: oxabc}
+        // TOdo fix this::
+      } else {
+        // moved to top.
+        // key = name + "." + key;
+      }
     }
   }
 }
@@ -379,7 +388,10 @@ error_type Model::_create(Attributes &attributes, api::Response *response) {
   try {
     api::Mutation mu;
     // mu.set_set_json(attributes.to_json());
-    mu.set_set_nquads(attributes.to_nquads(schema.name));
+    if (attributes.dgraph_type.empty()) {
+      attributes.dgraph_type = schema.name;
+    }
+    mu.set_set_nquads(attributes.to_nquads());
 
     auto _unique_check = _check_unique_values(attributes, _txn, response);
 
@@ -539,36 +551,42 @@ void Model::_check_attributes(std::vector<FieldProps> original,
   for (auto &attribute : attributes.attrs) {
     auto name = attribute.first;
     auto value = attribute.second;
-
-    std::string find_name;
-    auto findit = ranges::find(original, name, &FieldProps::name);
-    if (findit == original.end()) {
-      find_name = "";
+    // check nested attributes too
+    if (value.nested_attr && value.nested_attr->attrs.size() > 0) {
+      auto find = models.find(value.nested_attr->dgraph_type);
+      assert(find != models.end());
+      _check_attributes(find->second.original, *value.nested_attr.get(), true);
     } else {
-      find_name = findit->name;
-    }
-
-    auto langFound = [&name, &_lang_fields_]() {
-      std::vector<std::string> spilts;
-      pystring::split(name, spilts, "@");
-      if (spilts.size() > 0) {
-        auto with_out_lang = spilts.at(0);
-        auto _index = ranges::find(_lang_fields_, with_out_lang);
-        if (_index != ranges::end(_lang_fields_)) {
-          return true;
-        }
+      std::string find_name;
+      auto findit = ranges::find(original, name, &FieldProps::name);
+      if (findit == original.end()) {
+        find_name = "";
+      } else {
+        find_name = findit->name;
       }
-      return false;
-    };
 
-    if (pystring::find(name, "@") == -1 && find_name.empty()) {
-      throw std::runtime_error(schema.name + " has no attribute " +
-                               attribute.first);
-    } else if (pystring::find(name, "@") != -1 && !langFound()) {
-      throw std::runtime_error(
-          "${this.schema.name} has no lang property in ${attribute}");
+      auto langFound = [&name, &_lang_fields_]() {
+        std::vector<std::string> spilts;
+        pystring::split(name, spilts, "@");
+        if (spilts.size() > 0) {
+          auto with_out_lang = spilts.at(0);
+          auto _index = ranges::find(_lang_fields_, with_out_lang);
+          if (_index != ranges::end(_lang_fields_)) {
+            return true;
+          }
+        }
+        return false;
+      };
+
+      if (pystring::find(name, "@") == -1 && find_name.empty()) {
+        throw std::runtime_error(schema.name + " has no attribute " +
+                                 attribute.first);
+      } else if (pystring::find(name, "@") != -1 && !langFound()) {
+        throw std::runtime_error(
+            "${this.schema.name} has no lang property in ${attribute}");
+      }
+      // TODO FIX OTHER THREE CHECKS
     }
-    // TODO FIX OTHER THREE CHECKS
   }
 }
 

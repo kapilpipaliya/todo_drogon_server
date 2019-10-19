@@ -95,8 +95,8 @@ class AttributeBase {
   int intvalue = 0;
   double doublevalue = 0;
   bool boolvalue = false;
-  bool isNull = false;
-  // there is dateTime in dgraph
+  // bool isNull = false;
+  std::string dateTimevalue;
   std::string stringvalue;
   std::shared_ptr<Attributes> nested_attr;
   std::string to_string();
@@ -104,19 +104,26 @@ class AttributeBase {
 
 class Attributes {
  public:
+  std::string uid_key;
+  std::string dgraph_type;
   std::vector<std::pair<std::string, AttributeBase>> attrs;
   bool no_attributes = false;
+  Attributes& key(std::string uid_key_);
+  Attributes& type(std::string dgraph_type_);
   Attributes& s(std::string name, std::string value);
   Attributes& i(std::string name, int value);
   Attributes& d(std::string name, double value);
   Attributes& b(std::string name, bool value);
-  //  Attributes& n(std::string name, NullVal value);
   Attributes& u(std::string name, std::string value);
   Attributes& u(std::string name, std::vector<std::string> value);
+  Attributes& dt(std::string name, bool value);
+  Attributes& n(std::string dgraph_type_, std::string key_, Attributes value);
+  Attributes& n(std::string link, std::string dgraph_type_, std::string key_,
+                Attributes value);
   Attributes& no(bool value);
   std::vector<std::string> to_filter_value();
   std::string to_json();
-  std::string to_nquads(std::string type);
+  std::string to_nquads();
   std::string to_update_nquards(const std::string& uid);
 };
 enum filtertype { fltand = 1, fltor, fltnot };

@@ -28,8 +28,7 @@ std::shared_ptr<Model> DGraphOrm::newmodel(std::string name) {
   auto find = models.find(name);
   assert(find != models.end());
 
-  auto ptr =
-      std::make_shared<Model>(models.find(name)->second, models, dgraphClient);
+  auto ptr = std::make_shared<Model>(find->second, models, dgraphClient);
   return ptr;
 }
 
