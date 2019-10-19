@@ -38,16 +38,102 @@ Test::Test() {
   //      user->method(dgraph::orm::MethodsType::has, "uid", "",
   //                   dgraph::orm::Params::builder{}.build_shared(), response);
   //  std::cout << response->json() << std::endl;
-  user->method(MethodsType::type, "menu", "",
-               Params::builder{}
-                   .attributes(Attributes{}.no(true))
-                   .inc(IncludeBase::builder{}
-                            .name("uid")
-                            //.as("user_count")
-                            .count(true)
-                            //.attributes({"email"})
-                            .build())
-                   .build_shared(),
-               response);
-  std::cout << response->json() << std::endl;
+  // get count of a type:
+  {
+    user->method(MethodsType::type, "menu", "",
+                 Params::builder{}
+                     .attributes(Attributes{}.no(true))
+                     .inc(IncludeBase::builder{}
+                              .name("uid")
+                              //.as("user_count")
+                              .count(true)
+                              //.attributes({"email"})
+                              .build())
+                     .build_shared(),
+                 response);
+    std::cout << response->json() << std::endl;
+  }
+  /*// test nested menu saving:
+  {
+    using a = dgraph::orm::Attributes;
+    auto dgraphorm = dgraph::DGraphClientManger::getDGraphOrm("1");
+    auto menu = dgraphorm->newmodel("menu");
+    auto response = new api::Response;
+    {
+      // a.u("children", "_:m2");
+      auto m = a{}.key("_:m")
+                   .s("menu_name", "K")
+                   .s("name", "KName")
+                   .s("path", "KPath")
+                   .n("children", "menu", "_:m2",
+                      a{}.s("menu_name", "K1")
+                          .s("name", "KName1")
+                          .s("path", "KPath1"));
+      auto status = menu->create(m, response);
+
+      switch (status) {
+        case dgraph::orm::success: {
+          auto j = nlohmann::json::parse(response->json());
+          auto uid = j["menu"][0]["uid"].get<std::string>();
+          break;
+        }
+        case dgraph::orm::unique_error:
+          break;
+        default:
+          break;
+      }
+    }
+    delete response;
+  }*/
+  // get admin_menu in correct order:
+  /*
+{
+      menu (func: type(menu)) @filter(eq(menu.level, 0))  {
+        k: count(uid)
+        menu_name: menu.name
+                children: menu.children {
+          menu.name
+        }
+
 }
+}*/
+  {
+    auto dgraphorm = dgraph::DGraphClientManger::getDGraphOrm("1");
+    auto menu = dgraphorm->newmodel("menu");
+    auto status = menu->method(
+        dgraph::orm::MethodsType::eq, "menu_name", "admin_menu",
+        dgraph::orm::Params::builder{}
+            .fil(Filter::builder{}
+                     .add({FilterBase::builder{}
+                               .add({MethodsType::eq,
+                                     Attributes{}.i("level", 0)})
+                               .build()})
+                     .build())
+            .inc(IncludeBase::builder{}.name("children").as("children").build())
+            .build_shared(),
+        response);
+    std::cout << response->json() << std::endl;
+  }
+}
+/*
+ {
+      menu (func: eq(menu.menu_name, "admin_menu"))  @filter(NOT uid("0xeb8b"))
+ { uid # menu.menu_name name: menu.name # path: menu.path # caption:
+ menu.caption # icon: menu.icon # param: menu.param # help: menu.help
+        menu.children {
+          uid
+          menu.name
+          # menu.path
+        }
+        k: count(uid)
+      }
+    }*/
+/*
+      menu (func: eq(menu.menu_name, "admin_menu"))  @filter(NOT
+   eq(count(menu.children), 0))   { uid menu.menu_name name: menu.name path:
+   menu.path caption: menu.caption icon: menu.icon param: menu.param help:
+   menu.help menu.children { uid menu.name menu.path
+        }
+        k: count(uid)
+      }
+    }*/

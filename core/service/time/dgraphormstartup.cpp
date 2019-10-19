@@ -460,12 +460,18 @@ DGraphOrmStartup::DGraphOrmStartup() {
        FieldProps::builder{}.name("icon").type(TypesType::STRING).build(),
        FieldProps::builder{}.name("param").type(TypesType::STRING).build(),
        FieldProps::builder{}.name("help").type(TypesType::STRING).build(),
+       FieldProps::builder{}
+           .name("level")
+           .type(TypesType::INT)
+           .index(true)
+           .build(),
        // FieldProps::builder{} .name("parent") .type(TypesType::UID)
        // .model("menu") .reverse(true) .build(),
        FieldProps::builder{}
            .name("children")
            .type(TypesType::UID)
            .model("menu")
+           .list(true)
            .build(),
        FieldProps::builder{}
            .name("html")
