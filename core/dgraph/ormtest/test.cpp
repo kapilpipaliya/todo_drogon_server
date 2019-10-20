@@ -100,18 +100,23 @@ Test::Test() {
   {
     auto dgraphorm = dgraph::DGraphClientManger::getDGraphOrm("1");
     auto menu = dgraphorm->newmodel("menu");
-    auto status = menu->method(
-        dgraph::orm::MethodsType::eq, "menu_name", "admin_menu",
-        dgraph::orm::Params::builder{}
-            .fil(Filter::builder{}
-                     .add({FilterBase::builder{}
-                               .add({MethodsType::eq,
-                                     Attributes{}.i("level", 0)})
-                               .build()})
-                     .build())
-            .inc(IncludeBase::builder{}.name("children").as("children").build())
-            .build_shared(),
-        response);
+    auto status =
+        menu->method(dgraph::orm::MethodsType::eq, "menu_name", "admin_menu",
+                     dgraph::orm::Params::builder{}
+                         .fil(Filter::builder{}
+                                  .add({FilterBase::builder{}
+                                            .add({MethodsType::eq,
+                                                  Attributes{}.i("level", 0)})
+                                            .build()})
+                                  .build())
+                         .inc(IncludeBase::builder{}
+                                  .name("children")
+                                  .as("children")
+                                  .order({{"position", "asc"}})
+                                  .build())
+                         .ord({{"position", "asc"}})
+                         .build_shared(),
+                     response);
     std::cout << response->json() << std::endl;
   }
 }

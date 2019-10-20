@@ -459,6 +459,7 @@ DGraphOrmStartup::DGraphOrmStartup() {
        FieldProps::builder{}.name("caption").type(TypesType::STRING).build(),
        FieldProps::builder{}.name("icon").type(TypesType::STRING).build(),
        FieldProps::builder{}.name("param").type(TypesType::STRING).build(),
+       FieldProps::builder{}.name("position").type(TypesType::INT).build(),
        FieldProps::builder{}.name("help").type(TypesType::STRING).build(),
        FieldProps::builder{}
            .name("level")

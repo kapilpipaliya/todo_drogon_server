@@ -23,7 +23,7 @@ std::string timeservice::Menu::getMenu(std::string menu_name) {
   auto dgraphorm = dgraph::DGraphClientManger::getDGraphOrm("1");
   auto menu = dgraphorm->newmodel("menu");
   auto status = menu->method(
-      dgraph::orm::MethodsType::eq, "menu_name", "admin_menu",
+      dgraph::orm::MethodsType::eq, "menu_name", menu_name,
       dgraph::orm::Params::builder{}
           .fil(dgraph::orm::Filter::builder{}
                    .add({dgraph::orm::FilterBase::builder{}
@@ -34,7 +34,9 @@ std::string timeservice::Menu::getMenu(std::string menu_name) {
           .inc(dgraph::orm::IncludeBase::builder{}
                    .name("children")
                    .as("children")
+                   .order({{"position", "asc"}})
                    .build())
+          .ord({{"position", "asc"}})
           .build_shared(),
       response);
   auto json = response->json();
