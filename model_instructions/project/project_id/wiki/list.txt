@@ -1,0 +1,53 @@
+auth::user::Login
+
+--generate_request_proto
+syntax = "proto3";
+package timeservice;
+message RegistrationRequest {
+  string username = 1;
+  string password = 2;
+}
+--end
+--generate_response_proto
+syntax = "proto3";
+package timeservice;
+message RegistrationResponse {
+  string username = 1;
+  string password = 2;
+}
+--end
+
+--server_class
+
+
+--end
+
+
+--client_class
+filename:auth/kapil/Login.svelte
+
+
+--end
+
+information:
+
+
+                                   new_child_project_wiki GET            /projects/:project_id/wiki/:id/new(.:format)                                                                        wiki#new_child {:id=>/([^\/]+(?=\.markdown)|[^\/]+)/}
+                           wiki_diff_compare_project_wiki GET            /projects/:project_id/wiki/:id/diff/:version/vs/:version_from(.:format)                                             wiki#diff {:id=>/([^\/]+(?=\.markdown)|[^\/]+)/}
+                                   wiki_diff_project_wiki GET            /projects/:project_id/wiki/:id/diff(/:version)(.:format)                                                            wiki#diff {:id=>/([^\/]+(?=\.markdown)|[^\/]+)/}
+                               wiki_annotate_project_wiki GET            /projects/:project_id/wiki/:id/annotate/:version(.:format)                                                          wiki#annotate {:id=>/([^\/]+(?=\.markdown)|[^\/]+)/}
+                                         toc_project_wiki GET            /projects/:project_id/wiki/:id/toc(.:format)                                                                        wiki#index {:id=>/([^\/]+(?=\.markdown)|[^\/]+)/}
+                                      rename_project_wiki GET|PATCH      /projects/:project_id/wiki/:id/rename(.:format)                                                                     wiki#rename {:id=>/([^\/]+(?=\.markdown)|[^\/]+)/}
+                                 parent_page_project_wiki GET            /projects/:project_id/wiki/:id/parent_page(.:format)                                                                wiki#edit_parent_page {:id=>/([^\/]+(?=\.markdown)|[^\/]+)/}
+                                                          PATCH          /projects/:project_id/wiki/:id/parent_page(.:format)                                                                wiki#update_parent_page {:id=>/([^\/]+(?=\.markdown)|[^\/]+)/}
+                                     history_project_wiki GET            /projects/:project_id/wiki/:id/history(.:format)                                                                    wiki#history {:id=>/([^\/]+(?=\.markdown)|[^\/]+)/}
+                                     protect_project_wiki POST           /projects/:project_id/wiki/:id/protect(.:format)                                                                    wiki#protect {:id=>/([^\/]+(?=\.markdown)|[^\/]+)/}
+                       select_main_menu_item_project_wiki GET            /projects/:project_id/wiki/:id/select_main_menu_item(.:format)                                                      wiki_menu_items#select_main_menu_item {:id=>/([^\/]+(?=\.markdown)|[^\/]+)/}
+                      replace_main_menu_item_project_wiki POST           /projects/:project_id/wiki/:id/replace_main_menu_item(.:format)                                                     wiki_menu_items#replace_main_menu_item {:id=>/([^\/]+(?=\.markdown)|[^\/]+)/}
+                                         new_project_wiki GET            /projects/:project_id/wiki/new(.:format)                                                                            wiki#new
+                                        edit_project_wiki GET            /projects/:project_id/wiki/:id/edit(.:format)                                                                       wiki#edit {:id=>/([^\/]+(?=\.markdown)|[^\/]+)/}
+                                             project_wiki GET            /projects/:project_id/wiki/:id(.:format)                                                                            wiki#show {:id=>/([^\/]+(?=\.markdown)|[^\/]+)/}
+                                                          PATCH          /projects/:project_id/wiki/:id(.:format)                                                                            wiki#update {:id=>/([^\/]+(?=\.markdown)|[^\/]+)/}
+                                                          PUT            /projects/:project_id/wiki/:id(.:format)                                                                            wiki#update {:id=>/([^\/]+(?=\.markdown)|[^\/]+)/}
+                                                          DELETE         /projects/:project_id/wiki/:id(.:format)                                                                            wiki#destroy {:id=>/([^\/]+(?=\.markdown)|[^\/]+)/}
+                                                          GET            /projects/:project_id/wiki(.:format)                                                                                wiki#show
