@@ -130,6 +130,13 @@ void Model::queryWithVars(QueryParams params, api::Response *response) {
 }
 
 error_type Model::create(Attributes &attributes, api::Response *response) {
+  if (attributes.uid_key.empty()) {
+    std::runtime_error(
+        "uid_key must be provided to attributes when using create method.");
+  }
+  if (attributes.dgraph_type.empty()) {
+    attributes.dgraph_type = schema.name;
+  }
   _check_attributes(schema.original, attributes, true);
   _parse_mutation(attributes, schema.name);
   return _create(attributes, response);
@@ -388,9 +395,6 @@ error_type Model::_create(Attributes &attributes, api::Response *response) {
   try {
     api::Mutation mu;
     // mu.set_set_json(attributes.to_json());
-    if (attributes.dgraph_type.empty()) {
-      attributes.dgraph_type = schema.name;
-    }
     mu.set_set_nquads(attributes.to_nquads());
 
     auto _unique_check = _check_unique_values(attributes, _txn, response);

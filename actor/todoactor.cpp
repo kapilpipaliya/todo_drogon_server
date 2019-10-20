@@ -5,7 +5,9 @@
 #include "./timeservicehandle.h"
 //#include "core/service/time/auth/user/login/Login.h"
 #include "./timeroutes.h"
-#include "core/service/time/auth/user/registration/auth_user_Registration.h"
+#include "core/service/time/account/login/account_Login.h"
+#include "core/service/time/account/logout/account_Logout.h"
+#include "core/service/time/account/registration/account_Registration.h"
 #include "core/service/time/menu/Menu.h"
 namespace superactor {
 namespace todoactor {
@@ -74,7 +76,7 @@ void TodoActor::handleTextMessage(
   }
   auto contx = wsConnPtr->getContext<websocket::todo::TodoContext>();
   auto evt = in[0][0].get<int>();
-  if (evt == auth_user_login) {
+  if (evt == account_login) {
     // handleService<timeservice::auth::user::Login>(wsConnPtr, contx, in);
   }
   TimeServiceHandle t;
@@ -93,7 +95,6 @@ nlohmann::json TodoActor::handleBinaryMessage(
         source.erase(source.begin());
         source.erase(source.begin());
 
-
         unsigned char buffer[message.length()];
         //memcpy(buffer, message.data(), message.length());
         std::copy(message.begin(), message.end(), buffer);
@@ -106,11 +107,17 @@ nlohmann::json TodoActor::handleBinaryMessage(
     message.erase(message.begin());
     message.erase(message.begin());
 
-    // long c = contx->sessionId();
-
-    if (event1 == auth_user_registration) {
-      handleService<timeservice::auth::user::Registration>(
+    if (event1 == account_registration) {
+      handleService<timeservice::account::Registration>(
           event1, event2, wsConnPtr, contx, std::move(message));
+    }
+    if (event1 == account_login) {
+      handleService<timeservice::account::Login>(event1, event2, wsConnPtr,
+                                                 contx, std::move(message));
+    }
+    if (event1 == account_logout) {
+      handleService<timeservice::account::Logout>(event1, event2, wsConnPtr,
+                                                  contx, std::move(message));
     }
     if (event1 == menu) {
       handleService<timeservice::Menu>(event1, event2, wsConnPtr, contx,
