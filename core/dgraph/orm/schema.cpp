@@ -133,6 +133,9 @@ std::string Schema::prepareSchema(const FieldProps &options) {
       schema += " @index(" + tokenToString(options.token) + ") ";
     }
   }
+  if (options.unique) {
+    schema += "@upsert ";
+  }
   if (options.count) {
     schema += "@count ";
   }

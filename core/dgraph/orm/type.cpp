@@ -168,6 +168,11 @@ IncludeBase::builder &IncludeBase::builder::as(std::string value) {
   return *this;
 }
 
+IncludeBase::builder &IncludeBase::builder::var(std::string value) {
+  var_ = value;
+  return *this;
+}
+
 IncludeBase::builder &IncludeBase::builder::count(bool value) {
   count_ = value;
   return *this;
@@ -205,7 +210,7 @@ IncludeBase IncludeBase::builder::build() {
   if (!params_) {
     params_ = std::make_shared<Params>();
   }
-  return IncludeBase{name_,  as_,         count_,  params_,
+  return IncludeBase{name_,  as_,         var_,    count_, params_,
                      order_, attributes_, filter_, model_};
 }
 
@@ -269,17 +274,17 @@ std::shared_ptr<Params> Params::builder::build_shared() const {
   return std::make_shared<Params>(build());
 }
 
-Attributes &Attributes::key(std::string uid_key_) {
+Attributes &Attributes::key(const std::string &uid_key_) {
   uid_key = uid_key_;
   return *this;
 }
 
-Attributes &Attributes::type(std::string dgraph_type_) {
+Attributes &Attributes::type(const std::string &dgraph_type_) {
   dgraph_type = dgraph_type_;
   return *this;
 }
 
-Attributes &Attributes::s(std::string name, std::string value) {
+Attributes &Attributes::s(const std::string &name, const std::string &value) {
   AttributeBase b;
   b.type = TypesType::STRING;
   b.stringvalue = value;
@@ -287,7 +292,7 @@ Attributes &Attributes::s(std::string name, std::string value) {
   return *this;
 }
 
-Attributes &Attributes::i(std::string name, int value) {
+Attributes &Attributes::i(const std::string &name, int value) {
   AttributeBase b;
   b.type = TypesType::INT;
   b.intvalue = value;
@@ -295,7 +300,7 @@ Attributes &Attributes::i(std::string name, int value) {
   return *this;
 }
 
-Attributes &Attributes::d(std::string name, double value) {
+Attributes &Attributes::d(const std::string &name, double value) {
   AttributeBase b;
   b.type = TypesType::FLOAT;
   b.doublevalue = value;
@@ -303,7 +308,7 @@ Attributes &Attributes::d(std::string name, double value) {
   return *this;
 }
 
-Attributes &Attributes::b(std::string name, bool value) {
+Attributes &Attributes::b(const std::string &name, bool value) {
   AttributeBase b;
   b.type = TypesType::BOOL;
   b.boolvalue = value;
@@ -311,7 +316,7 @@ Attributes &Attributes::b(std::string name, bool value) {
   return *this;
 }
 // when insert / update we cant delete predicate. useless function:
-// Attributes &Attributes::n(std::string name, NullVal value) {
+// Attributes &Attributes::n(const std::string & name, NullVal value) {
 //  AttributeBase b;
 //  b.type = TypesType::nulltype;
 //  b.isNull = true;
@@ -319,7 +324,7 @@ Attributes &Attributes::b(std::string name, bool value) {
 //  return *this;
 //}
 
-Attributes &Attributes::u(std::string name, std::string value) {
+Attributes &Attributes::u(const std::string &name, const std::string &value) {
   AttributeBase b;
   b.type = TypesType::UID;
   b.stringvalue = value;
@@ -327,7 +332,8 @@ Attributes &Attributes::u(std::string name, std::string value) {
   return *this;
 }
 
-Attributes &Attributes::u(std::string name, std::vector<std::string> value) {
+Attributes &Attributes::u1(const std::string &name,
+                           std::vector<std::string> value) {
   for (auto &v : value) {
     AttributeBase b;
     b.type = TypesType::UID;
@@ -337,7 +343,7 @@ Attributes &Attributes::u(std::string name, std::vector<std::string> value) {
   return *this;
 }
 
-Attributes &Attributes::dt(std::string name, bool value) {
+Attributes &Attributes::dt(const std::string &name, bool value) {
   AttributeBase b;
   b.type = TypesType::DATETIME;
   b.dateTimevalue = value;
@@ -345,8 +351,18 @@ Attributes &Attributes::dt(std::string name, bool value) {
   return *this;
 }
 
-Attributes &Attributes::n(std::string dgraph_type_, std::string key_,
-                          Attributes value) {
+Attributes &Attributes::val(const std::string &name,
+                            const std::string &val_value) {
+  // AttributeBase b;
+  // b.type = TypesType::STRING;  //?
+  // b.val = val_value;
+  // attrs.push_back({name, b});
+  val_at_fun = val_value;
+  return *this;
+}
+
+Attributes &Attributes::n(const std::string &dgraph_type_,
+                          const std::string &key_, Attributes value) {
   AttributeBase b;
   b.type = TypesType::INT;
   value.dgraph_type = dgraph_type_;
@@ -356,8 +372,9 @@ Attributes &Attributes::n(std::string dgraph_type_, std::string key_,
   return *this;
 }
 
-Attributes &Attributes::n(std::string link, std::string dgraph_type_,
-                          std::string key_, Attributes value) {
+Attributes &Attributes::n(const std::string &link,
+                          const std::string &dgraph_type_,
+                          const std::string &key_, Attributes value) {
   u(link, key_);
 
   AttributeBase b;

@@ -9,26 +9,30 @@ namespace dgraph {
 namespace orm {
 Query::Query(MethodsType type, const std::string &field,
              const std::string &func_value, std::shared_ptr<Params> params,
-             const std::string &name)
+             const std::string &schema_name, const std::string &query_name,
+             const std::vector<std::string> &var_blocks)
     :  // name(name),
        // params(params),
        // type(type),
        // field(field),
        // value(value),
-      where(_where(type, field, func_value, name)),
-      query(_build(params, name)) {}
+      var_blocks(var_blocks),
+      where(_where(type, field, func_value, schema_name)),
+      query(_build(params, schema_name, query_name)) {}
 
 // If multiple constructor needed use builder pattern.
 Query::Query(MethodsType type, std::vector<std::string> field,
              const std::string &func_value, std::shared_ptr<Params> params,
-             const std::string &name)
+             const std::string &schema_name, const std::string &query_name,
+             const std::vector<std::string> &var_blocks)
     :  // name(name),
        // params(params),
        // type(type),
        // field(pystring::join(", ", field)),
        // value(value),
-      where(_where(type, pystring::join(", ", field), func_value, name)),
-      query(_build(params, name)) {
+      var_blocks(var_blocks),
+      where(_where(type, pystring::join(", ", field), func_value, schema_name)),
+      query(_build(params, schema_name, query_name)) {
   // only method type = uid needs multiple fields.
 }
 
@@ -68,6 +72,14 @@ std::string Query::methodTypeToString(MethodsType type) {
       return "gt";
     case MethodsType::type:
       return "type";
+    case MethodsType::min:
+      return "min";
+    case MethodsType::max:
+      return "max";
+    case MethodsType::sum:
+      return "sum";
+    case MethodsType::avg:
+      return "avg";
     default:
       return "define_enum";
   }
@@ -137,6 +149,10 @@ std::string Query::_filter1(FilterBase &base, const std::string &name) {
 
     if (method == MethodsType::has) {
       res.push_back(fmt::format("has({}.{})", name, key));
+    } else if (method == MethodsType::uid) {
+      res.push_back("uid(" + value + ")");
+    } else if (!field.val_at_fun.empty()) {
+      res.push_back("val(" + field.val_at_fun + ")");
     } else {
       res.push_back(fmt::format(
           "{0}({1}.{2}, {3})", methodTypeToString(method), name, key,
@@ -293,21 +309,30 @@ std::string Query::_include(std::vector<IncludeBase> &include,
   }
   for (auto &relation : include) {
     if (relation.count) {
-      std::string s;
-      if (!relation.as.empty()) {
-        s += relation.as + ": ";
-      }
-      if (relation.name == "uid") {
-        s += "count(" + relation.name + ")";
+      if (!relation.var.empty()) {
+        return relation.var + " as count(" + name + "." + relation.name + ")";
       } else {
-        s += "count(" + name + "." + relation.name + ")";
+        std::string s;
+        if (!relation.as.empty()) {
+          s += relation.as + ": ";
+        }
+        if (relation.name == "uid") {
+          s += "count(" + relation.name + ")";
+        } else {
+          s += "count(" + name + "." + relation.name + ")";
+        }
+        _inc += s;
       }
-      _inc += s;
       continue;
     }
-    _inc += fmt::format("{0}: {1}.{2}",
-                        relation.as.empty() ? relation.as : relation.name, name,
-                        relation.name);
+
+    if (!relation.var.empty()) {
+      _inc += fmt::format("{0} AS {1}.{2}", relation.var, name, relation.name);
+    } else {
+      _inc += fmt::format("{0}: {1}.{2}",
+                          relation.as.empty() ? relation.as : relation.name,
+                          name, relation.name);
+    }
 
     auto _limit = _extras(relation.params);
     auto _order = _parse_order(relation.order, name);
@@ -321,13 +346,23 @@ std::string Query::_include(std::vector<IncludeBase> &include,
     if (!_order.empty()) {
       _inc += " (" + _order + ")";
     }
-    _inc +=
-        fmt::format(R"({{
+    if (!relation.var.empty()) {
+      auto nest = _include(relation.params->include, relation.model);
+      if (!nest.empty()) {
+        _inc += fmt::format(R"({{
+        {}
+      }})",
+                            nest);
+      }
+    } else {
+      _inc +=
+          fmt::format(R"({{
         {}
         {}
       }})",
-                    _attributes(relation.params->attributes, relation.model),
-                    _include(relation.params->include, relation.model));
+                      _attributes(relation.params->attributes, relation.model),
+                      _include(relation.params->include, relation.model));
+    }
   }
 
   return _inc;
@@ -377,8 +412,9 @@ std::string Query::_parse_order(
 }
 
 std::string Query::_build(const std::shared_ptr<Params> &params,
-                          const std::string &name) {
-  auto _order = _parse_order(params->order, name);
+                          const std::string &schema_name,
+                          const std::string &query_name) {
+  auto _order = _parse_order(params->order, schema_name);
   auto _limit = _extras(params);
 
   if (!_order.empty()) {
@@ -388,26 +424,38 @@ std::string Query::_build(const std::shared_ptr<Params> &params,
   if (!_limit.empty()) {
     _limit = ", " + _limit;
   }
-  auto query_ = R"({{
+
+  auto s = pystring::replace(where, "{ORDER}", _order);
+  s = pystring::replace(s, "{LIMIT}", _limit);
+  auto f = _parse_filter(params->filter, schema_name);
+  auto a = _attributes(params->attributes, schema_name);
+  auto i = _include(params->include, schema_name);
+  std::string query_name_{query_name};
+  if (query_name.empty()) {
+    query_name_ = schema_name;
+  }
+  if (query_name == "var") {
+    auto query_ = R"(
       {0} {1} {2} {{
         {3}
         {4}
       }}
+  )";
+    auto query = fmt::format(query_, query_name_, s, f, a, i);
+    return query;
+  } else {
+    auto query_ = R"({{
+      {0}
+      {1} {2} {3} {{
+        {4}
+        {5}
+      }}
     }})";
-  auto s = pystring::replace(where, "{ORDER}", _order);
-  s = pystring::replace(s, "{LIMIT}", _limit);
-  auto f = _parse_filter(params->filter, name);
-  auto a = _attributes(params->attributes, name);
-  auto i = _include(params->include, name);
-  //  std::cout << "order+limit: " << s << std::endl;
-  //  std::cout << "parse_filter:" << f << std::endl;
-  //  std::cout << "attributes:" << a << std::endl;
-  //  std::cout << "include:" << i << std::endl;
-  auto query = fmt::format(query_, name, s, f, a, i);
-
-  // logger(query);
-
-  return query;
+    auto query = fmt::format(query_, pystring::join("", var_blocks),
+                             query_name_, s, f, a, i);
+    // logger(query);
+    return query;
+  }
 }
 
 }  // namespace orm

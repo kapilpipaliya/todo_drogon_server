@@ -255,6 +255,15 @@ void Model::delete_(std::vector<std::string> &uid, api::Response *response) {
   }
   _delete(q, response);
 }
+
+void Model::add_var_block(MethodsType type, const std::string &field,
+                          const std::string &value,
+                          const std::shared_ptr<Params> params) {
+  auto _params = _validate(schema.original, params);
+  Query query(type, field, value, _params, schema.name, "var", {});  //, _logger
+  std::cout << query.query << std::endl;
+  var_blocks.push_back(query.query);
+}
 /* why this is meaning less part in delete function on orm?
 void Model::delete_(std::vector<std::string> &uid, api::Response *response) {
   // let _params : {[index:string] : any} = {};
@@ -345,7 +354,8 @@ error_type Model::method(MethodsType type, const std::string &field,
     // value = field;
   }*/
   auto _params = _validate(schema.original, params);
-  Query query(type, field, value, _params, schema.name);  //, _logger
+  Query query(type, field, value, _params, schema.name, schema.name,
+              var_blocks);  //, _logger
   _execute(query.query, response);
   return error_type::success;
 }

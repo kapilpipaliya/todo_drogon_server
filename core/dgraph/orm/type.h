@@ -33,20 +33,23 @@ enum class MethodsType : int {
   ge,
   gt,
   match,  // Fuzzy matching
-          // min,max,sum,avg
-          // floor ceil ln exp sqrt
-          // since
-          // pow(a, b)
-          // logbase(a,b)
-          // cond(a, b, c)
-          // @groupby
-          // expand(_all_)
-          // @cascade
-          // @normalize
-          // @ignorereflex
-          // @facets
-          // shortest
-          // @recurse
+  min,
+  max,
+  sum,
+  avg,
+  // floor ceil ln exp sqrt
+  // since
+  // pow(a, b)
+  // logbase(a,b)
+  // cond(a, b, c)
+  // @groupby
+  // expand(_all_)
+  // @cascade
+  // @normalize
+  // @ignorereflex
+  // @facets
+  // shortest
+  // @recurse
   type
 
 };
@@ -95,6 +98,7 @@ class AttributeBase {
   int intvalue = 0;
   double doublevalue = 0;
   bool boolvalue = false;
+
   // bool isNull = false;
   std::string dateTimevalue;
   std::string stringvalue;
@@ -106,20 +110,23 @@ class Attributes {
  public:
   std::string uid_key;
   std::string dgraph_type;
+  std::string val_at_fun;
   std::vector<std::pair<std::string, AttributeBase>> attrs;
   bool no_attributes = false;
-  Attributes& key(std::string uid_key_);
-  Attributes& type(std::string dgraph_type_);
-  Attributes& s(std::string name, std::string value);
-  Attributes& i(std::string name, int value);
-  Attributes& d(std::string name, double value);
-  Attributes& b(std::string name, bool value);
-  Attributes& u(std::string name, std::string value);
-  Attributes& u(std::string name, std::vector<std::string> value);
-  Attributes& dt(std::string name, bool value);
-  Attributes& n(std::string dgraph_type_, std::string key_, Attributes value);
-  Attributes& n(std::string link, std::string dgraph_type_, std::string key_,
+  Attributes& key(const std::string& uid_key_);
+  Attributes& type(const std::string& dgraph_type_);
+  Attributes& s(const std::string& name, const std::string& value);
+  Attributes& i(const std::string& name, int value);
+  Attributes& d(const std::string& name, double value);
+  Attributes& b(const std::string& name, bool value);
+  Attributes& u(const std::string& name, const std::string& value);
+  Attributes& u1(const std::string& name, std::vector<std::string> value);
+  Attributes& dt(const std::string& name, bool value);
+  Attributes& val(const std::string& name, const std::string& val_value);
+  Attributes& n(const std::string& dgraph_type_, const std::string& key_,
                 Attributes value);
+  Attributes& n(const std::string& link, const std::string& dgraph_type_,
+                const std::string& key_, Attributes value);
   Attributes& no(bool value);
   std::vector<std::string> to_filter_value();
   std::string to_json();
@@ -300,6 +307,7 @@ class IncludeBase {
  public:
   std::string name;
   std::string as;
+  std::string var;
   bool count = false;
   std::shared_ptr<Params> params;
   std::vector<std::pair<std::string, std::string>> order;
@@ -310,6 +318,7 @@ class IncludeBase {
    public:
     builder& name(std::string value);
     builder& as(std::string value);
+    builder& var(std::string value);
     builder& count(bool value);
     builder& params(std::shared_ptr<Params> value);
     builder& order(std::vector<std::pair<std::string, std::string>> value);
@@ -322,6 +331,7 @@ class IncludeBase {
    private:
     std::string name_;
     std::string as_;
+    std::string var_;
     bool count_ = false;
     std::shared_ptr<Params> params_ = nullptr;
     std::vector<std::pair<std::string, std::string>> order_;

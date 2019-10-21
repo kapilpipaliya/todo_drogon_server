@@ -38,14 +38,19 @@ class Model {
   // void delete_(nlohmann::json params, api::Response *response);
   void delete_(std::string uid, api::Response *response);
   void delete_(std::vector<std::string> &uid, api::Response *response);
+  void add_var_block(MethodsType type, const std::string &field,
+                     const std::string &value,
+                     const std::shared_ptr<Params> params);
 
   error_type method(MethodsType type, const std::string &field,
-              const std::string &value, const std::shared_ptr<Params> params,
-              api::Response *response);
+                    const std::string &value,
+                    const std::shared_ptr<Params> params,
+                    api::Response *response);
 
  private:
   std::map<std::string, Schema> &models;
   std::shared_ptr<dgraph::grpcclient::DgraphClient> dgraphClient;
+  std::vector<std::string> var_blocks;
   // Connection connection;
   // function _logger;
 

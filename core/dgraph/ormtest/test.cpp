@@ -39,7 +39,7 @@ Test::Test() {
   //                   dgraph::orm::Params::builder{}.build_shared(), response);
   //  std::cout << response->json() << std::endl;
   // get count of a type:
-  {
+  /*{
     user->method(MethodsType::type, "menu", "",
                  Params::builder{}
                      .attributes(Attributes{}.no(true))
@@ -52,7 +52,7 @@ Test::Test() {
                      .build_shared(),
                  response);
     std::cout << response->json() << std::endl;
-  }
+  }*/
   /*// test nested menu saving:
   {
     using a = dgraph::orm::Attributes;
@@ -97,26 +97,79 @@ Test::Test() {
 
 }
 }*/
+  // Fetch menu
   {
     auto dgraphorm = dgraph::DGraphClientManger::getDGraphOrm("1");
     auto menu = dgraphorm->newmodel("menu");
-    auto status =
-        menu->method(dgraph::orm::MethodsType::eq, "menu_name", "admin_menu",
-                     dgraph::orm::Params::builder{}
-                         .fil(Filter::builder{}
-                                  .add({FilterBase::builder{}
-                                            .add({MethodsType::eq,
-                                                  Attributes{}.i("level", 0)})
-                                            .build()})
-                                  .build())
-                         .inc(IncludeBase::builder{}
-                                  .name("children")
-                                  .as("children")
-                                  .order({{"position", "asc"}})
-                                  .build())
-                         .ord({{"position", "asc"}})
-                         .build_shared(),
-                     response);
+    //    auto status =
+    //        menu->method(dgraph::orm::MethodsType::eq, "menu_name",
+    //        "admin_menu",
+    //                     dgraph::orm::Params::builder{}
+    //                         .fil(Filter::builder{}
+    //                                  .add({FilterBase::builder{}
+    //                                            .add({MethodsType::eq,
+    //                                                  Attributes{}.i("level",
+    //                                                  0)})
+    //                                            .build()})
+    //                                  .build())
+    //                         .inc(IncludeBase::builder{}
+    //                                  .name("children")
+    //                                  .as("children")
+    //                                  .order({{"position", "asc"}})
+    //                                  .build())
+    //                         .ord({{"position", "asc"}})
+    //                         .build_shared(),
+    //                     response);
+    //    std::cout << response->json() << std::endl;
+  }
+  {
+    // test var block
+    auto dgraphorm = dgraph::DGraphClientManger::getDGraphOrm("1");
+    auto menu = dgraphorm->newmodel("menu");
+    menu->add_var_block(
+        dgraph::orm::MethodsType::eq, "menu_name", "admin_menu",
+        dgraph::orm::Params::builder{}
+            .attributes(Attributes{}.no(true))
+            .fil(Filter::builder{}
+                     .add({FilterBase::builder{}
+                               .add({MethodsType::eq,
+                                     Attributes{}.i("level", 0)})
+                               .build()})
+                     .build())
+            .inc(IncludeBase::builder{}
+                     .name("children")
+                     .as("children")
+                     .var("A")
+                     .order({{"position", "asc"}})
+                     .params(Params::builder{}
+                                 .inc(IncludeBase::builder{}
+                                          .name("children")
+                                          .as("children")
+                                          .count(true)
+                                          .var("B")
+                                          .build())
+                                 .build_shared())
+                     .build())
+            .ord({{"position", "asc"}})
+            .build_shared());
+
+    auto status = menu->method(
+        dgraph::orm::MethodsType::eq, "menu_name", "admin_menu",
+        dgraph::orm::Params::builder{}
+            .fil(Filter::builder{}
+                     .add({FilterBase::builder{}
+                               .add({MethodsType::uid,
+                                     Attributes{}.u1("", {"A", "B"})})
+                               .build()})
+                     .build())
+            .inc(IncludeBase::builder{}
+                     .name("children")
+                     .as("children")
+                     .order({{"position", "asc"}})
+                     .build())
+            .ord({{"position", "asc"}})
+            .build_shared(),
+        response);
     std::cout << response->json() << std::endl;
   }
 }

@@ -1,9 +1,9 @@
 #ifndef DGRAPHORMQUERY_H
 #define DGRAPHORMQUERY_H
 #include <any>
-
 #include <string>
 #include <vector>
+
 #include "./type.h"
 namespace dgraph {
 namespace orm {
@@ -16,6 +16,7 @@ class Query {
   // std::string field;
   // std::string value;
   // function logger;
+  const std::vector<std::string> &var_blocks;
   std::string where;
 
   static std::string _where(MethodsType type, std::string field,
@@ -35,17 +36,20 @@ class Query {
       std::vector<std::pair<std::string, std::string> > &order,
       const std::string &name);
   std::string _build(const std::shared_ptr<Params> &params,
-                     const std::string &name);
+                     const std::string &schema_name,
+                     const std::string &query_name);
 
   static std::string methodTypeToString(MethodsType type);
 
  public:
   Query(MethodsType type, const std::string &field,
         const std::string &func_value, std::shared_ptr<Params> params,
-        const std::string &name);
+        const std::string &schema_name, const std::string &query_name,
+        const std::vector<std::string> &var_blocks);
   Query(MethodsType type, std::vector<std::string> field,
         const std::string &func_value, std::shared_ptr<Params> params,
-        const std::string &name);
+        const std::string &schema_name, const std::string &query_name,
+        const std::vector<std::string> &var_blocks);
   std::string query;
 };
 }  // namespace orm
