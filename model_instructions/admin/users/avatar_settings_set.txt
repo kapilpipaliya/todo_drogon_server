@@ -1,22 +1,15 @@
-admin::Role
+admin::AvatarSettingSet
 
---generate_request_proto
-syntax = "proto3";
-package timeservice;
-message RoleListRequest {
-}
---end
 --generate_response_proto
 syntax = "proto3";
 package timeservice;
-message RoleListResponse {
+message SetAvatarSettingResponse {
   enum ErrorStatus {
      OK = 0;
      UNAUTHORISED = 1;
   }
   ErrorStatus status = 1;
   string error_msg =2;
-  string json = 3;
 }
 --end
 
@@ -27,7 +20,7 @@ message RoleListResponse {
 
 
 --client_class
-filename:admin/roles/index.svelte
+filename:admin/avatars/index.svelte
 
 
 --end

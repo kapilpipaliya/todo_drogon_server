@@ -1,0 +1,8 @@
+admin::Dashboard
+
+
+--client_class
+filename:admin/index.svelte
+
+
+--end

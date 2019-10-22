@@ -1,0 +1,26 @@
+admin::workpackage::SetWorkflow
+
+--generate_response_proto
+syntax = "proto3";
+package timeservice;
+message SetWorkFlowResponse {
+  enum ErrorStatus {
+     OK = 0;
+     UNAUTHORISED = 1;
+  }
+    ErrorStatus status = 1;
+    string error_msg =2;
+}
+--end
+
+--server_class
+
+
+--end
+
+
+--client_class
+filename:admin/work_packages/workflows/index.svelte
+
+
+--end

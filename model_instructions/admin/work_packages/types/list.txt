@@ -1,15 +1,22 @@
-admin::Role
+admin::Tyoe
 
 --generate_request_proto
 syntax = "proto3";
 package timeservice;
-message RoleListRequest {
+message TypeListRequest {
+  enum Status {
+     ALL = 0;
+     ACTIVE = 1;
+     LOCKED = 2;
+  }
+  Status status = 1;
+  string name = 1;
 }
 --end
 --generate_response_proto
 syntax = "proto3";
 package timeservice;
-message RoleListResponse {
+message TypeListResponse {
   enum ErrorStatus {
      OK = 0;
      UNAUTHORISED = 1;
@@ -27,7 +34,7 @@ message RoleListResponse {
 
 
 --client_class
-filename:admin/roles/index.svelte
+filename:admin/work_packages/types/index.svelte
 
 
 --end

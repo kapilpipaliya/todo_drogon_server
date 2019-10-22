@@ -1,9 +1,8 @@
-account::Registration
-
+system::ProjectSettingSet
 --generate_request_proto
 syntax = "proto3";
 package timeservice;
-message RegistrationRequest {
+message DisplaySettingSetRequest {
   string name = 1;
   string username = 2;
   string password = 3;
@@ -12,7 +11,7 @@ message RegistrationRequest {
 --generate_response_proto
 syntax = "proto3";
 package timeservice;
-message RegistrationResponse {
+message DisplaySettingSetResponse {
   enum ErrorStatus {
      OK = 0;
      INVALID_USERNAME = 1;
@@ -25,15 +24,9 @@ message RegistrationResponse {
   string error_msg =3;
 }
 --end
-
 --server_class
 
-
 --end
-
-
 --client_class
-filename:account/register.svelte
-
-
+filename:admin/settings/display.svelte
 --end

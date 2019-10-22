@@ -1,0 +1,12 @@
+
+syntax = "proto3";
+package timeservice;
+message UserListRequest {
+  enum Status {
+     ALL = 0;
+     ACTIVE = 1;
+     LOCKED = 2;
+  }
+  Status status = 1;
+  string name = 2;
+}

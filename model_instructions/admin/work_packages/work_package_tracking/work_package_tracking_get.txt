@@ -1,0 +1,29 @@
+admin::WorkPackage
+
+--generate_request_proto
+syntax = "proto3";
+package timeservice;
+message GetWorkPackagesRequest {
+
+
+}
+--end
+--generate_response_proto
+syntax = "proto3";
+package timeservice;
+message GetWorkPackagesResponse {
+ bool allow_cross_project_relations;
+ bool allow_assignment_to_groups;
+ bool display_subproject_on_main_project;
+ bool user_current_date_as_start_date;
+ int calc_done_ratio_with;
+ int export_limit;
+ int default_highlighting_mode;
+}
+--end
+
+--server_class
+
+
+--end
+

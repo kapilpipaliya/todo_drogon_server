@@ -1,0 +1,12 @@
+
+syntax = "proto3";
+package timeservice;
+message UserListResponse {
+  enum ErrorStatus {
+     OK = 0;
+     UNAUTHORISED = 1;
+  }
+  ErrorStatus status = 1;
+  string error_msg =2;
+  string json = 3;
+}

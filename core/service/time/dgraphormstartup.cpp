@@ -10,16 +10,38 @@ namespace timeservice {
 namespace seed {
 DGraphOrmStartup::DGraphOrmStartup() {
   auto dgraphorm = dgraph::DGraphClientManger::getDGraphOrm("1");
-
-  auto user = dgraphorm->model(Schema{
+  // clang-format off
+  auto user = dgraphorm->model(dgraph::orm::Schema{"user", {
+            FieldProps::builder{}.name("login").type(TypesType::STRING).index(true).unique(true).token(Token::builder{}.exact(true).build()).build()
+           ,FieldProps::builder{}.name("password").type(TypesType::PASSWORD).build()
+           ,FieldProps::builder{}.name("firstname").type(TypesType::STRING).index(true).token(Token::builder{}.term(true).trigram(true).fulltext(true).build()).build()
+           ,FieldProps::builder{}.name("lastname").type(TypesType::STRING).index(true).token(Token::builder{}.exact(true).build()).build()
+           ,FieldProps::builder{}.name("mail").type(TypesType::STRING).index(true).unique(true).token(Token::builder{}.exact(true).build()).build()
+           ,FieldProps::builder{}.name("admin").type(TypesType::BOOL).build()
+           ,FieldProps::builder{}.name("status").type(TypesType::INT).build()
+           ,FieldProps::builder{}.name("last_login_on").type(TypesType::DATETIME).build()
+           ,FieldProps::builder{}.name("language").type(TypesType::STRING).build()
+           ,FieldProps::builder{}.name("auth_source_id").type(TypesType::INT).build()
+           ,FieldProps::builder{}.name("type").type(TypesType::STRING).build()
+           ,FieldProps::builder{}.name("identity_url").type(TypesType::STRING).build()
+           ,FieldProps::builder{}.name("mail_notification").type(TypesType::STRING).build()
+           ,FieldProps::builder{}.name("first_login").type(TypesType::BOOL).build()
+           ,FieldProps::builder{}.name("force_password_change").type(TypesType::BOOL).build()
+           ,FieldProps::builder{}.name("filed_login_count").type(TypesType::INT) .build()
+           ,FieldProps::builder{}.name("last_failed_login_on").type(TypesType::DATETIME).build()
+           ,FieldProps::builder{}.name("consented_at").type(TypesType::DATETIME).build()
+           ,FieldProps::builder{}.name("created").type(TypesType::DATETIME).build()
+           ,FieldProps::builder{}.name("updated").type(TypesType::DATETIME).build()
+    }});
+  // clang-format on
+  /*auto user1 = dgraphorm->model(Schema{
       "user",
       {FieldProps::builder{}
            .name("name")
            .type(TypesType::STRING)
            .index(true)
            .lang(true)
-           .token(
-               Token::builder{}.term(true).trigram(true).fulltext(true).build())
+           .token(Token::builder{}.term(true).trigram(true).fulltext(true).build())
            .build(),
        FieldProps::builder{}
            .name("email")
@@ -41,7 +63,7 @@ DGraphOrmStartup::DGraphOrmStartup() {
            .type(TypesType::UID)
            .model("media")
            .replace(true)
-           .build()}});
+           .build()}});*/
   auto session = dgraphorm->model(Schema{"session",
                                          {FieldProps::builder{}
                                               .name("user")

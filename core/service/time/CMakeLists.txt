@@ -23,7 +23,9 @@ AUX_SOURCE_DIRECTORY(./account/login/proto SRC)
 AUX_SOURCE_DIRECTORY(./account/logout SRC)
 AUX_SOURCE_DIRECTORY(./account/logout/proto SRC)
 
-
+AUX_SOURCE_DIRECTORY(./admin/user/user/list SRC)
+AUX_SOURCE_DIRECTORY(./admin/user/user/list/proto SRC)
+#auto_source_above
 AUX_SOURCE_DIRECTORY(./menu SRC)
 AUX_SOURCE_DIRECTORY(./menu/proto SRC)
 

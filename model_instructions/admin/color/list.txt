@@ -1,30 +1,32 @@
-auth::user::Login
-
+admin::ColorList
 --generate_request_proto
 syntax = "proto3";
 package timeservice;
-message RegistrationRequest {
-  string username = 1;
-  string password = 2;
+message ColorListRequest {
+  string name = 1;
+  string username = 2;
+  string password = 3;
 }
 --end
 --generate_response_proto
 syntax = "proto3";
 package timeservice;
-message RegistrationResponse {
-  string username = 1;
-  string password = 2;
+message ColorListResponse {
+  enum ErrorStatus {
+     OK = 0;
+     INVALID_USERNAME = 1;
+     WEAK_PASSWORD= 2;
+      USERNAME_EXIST =3;
+      UNKNOWN_ERROR=4;
+  }
+  ErrorStatus status = 1;
+  string token = 2;
+  string error_msg =3;
 }
 --end
-
 --server_class
 
-
 --end
-
-
 --client_class
-filename:auth/kapil/Login.svelte
-
-
+filename:admin/colors/list.svelte
 --end

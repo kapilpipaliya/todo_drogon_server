@@ -1,18 +1,8 @@
-account::Registration
-
---generate_request_proto
-syntax = "proto3";
-package timeservice;
-message RegistrationRequest {
-  string name = 1;
-  string username = 2;
-  string password = 3;
-}
---end
+system::IncomingEmailsSet
 --generate_response_proto
 syntax = "proto3";
 package timeservice;
-message RegistrationResponse {
+message IncommingEmailsSetResponse {
   enum ErrorStatus {
      OK = 0;
      INVALID_USERNAME = 1;
@@ -25,15 +15,9 @@ message RegistrationResponse {
   string error_msg =3;
 }
 --end
-
 --server_class
 
-
 --end
-
-
 --client_class
-filename:account/register.svelte
-
-
+filename:admin/settings/incoming_emails.svelte
 --end

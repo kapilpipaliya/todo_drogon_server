@@ -33,8 +33,8 @@ void timeservice::account::Registration::run() {
   auto response = new api::Response;
   auto u = user->create(dgraph::orm::Attributes{}
                             .key("_:u1")
-                            .s("name", msg->username())
-                            .s("email", msg->username())
+                            .s("firstname", msg->username())
+                            .s("login", msg->username())
                             .s("password", msg->password()),
                         response);
   switch (u) {

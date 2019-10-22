@@ -1,19 +1,22 @@
-auth::user::Login
+admin::Group
 
 --generate_request_proto
 syntax = "proto3";
 package timeservice;
-message RegistrationRequest {
-  string username = 1;
-  string password = 2;
+message GroupListRequest {
 }
 --end
 --generate_response_proto
 syntax = "proto3";
 package timeservice;
-message RegistrationResponse {
-  string username = 1;
-  string password = 2;
+message GroupListResponse {
+  enum ErrorStatus {
+     OK = 0;
+     UNAUTHORISED = 1;
+  }
+  ErrorStatus status = 1;
+  string error_msg =2;
+  string json = 3;
 }
 --end
 
@@ -24,7 +27,7 @@ message RegistrationResponse {
 
 
 --client_class
-filename:auth/kapil/Login.svelte
+filename:admin/groups/index.svelte
 
 
 --end

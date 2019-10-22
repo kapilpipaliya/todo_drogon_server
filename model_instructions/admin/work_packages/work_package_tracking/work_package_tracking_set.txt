@@ -1,0 +1,22 @@
+admin::SetWorkPackage
+
+
+--generate_response_proto
+syntax = "proto3";
+package timeservice;
+message SetWorkPackagesResponse {
+  string username = 1;
+}
+--end
+
+--server_class
+
+
+--end
+
+
+--client_class
+filename:admin/work_packages/work_package_tracking.svelte
+
+
+--end

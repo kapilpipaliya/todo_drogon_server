@@ -9,6 +9,8 @@
 #include "core/service/time/account/logout/account_Logout.h"
 #include "core/service/time/account/registration/account_Registration.h"
 #include "core/service/time/menu/Menu.h"
+#include "core/service/time/admin/user/user/list/admin_user_user_List.h"
+// auto_include_above
 namespace superactor {
 namespace todoactor {
 /*
@@ -106,24 +108,19 @@ nlohmann::json TodoActor::handleBinaryMessage(
     auto event2 = static_cast<uint8_t>(message.at(1));
     message.erase(message.begin());
     message.erase(message.begin());
+    // clang-format off
 
     if (event1 == account_registration) {
-      handleService<timeservice::account::Registration>(
-          event1, event2, wsConnPtr, contx, std::move(message));
+      handleService<timeservice::account::Registration>(event1, event2, wsConnPtr, contx, std::move(message));
     }
-    if (event1 == account_login) {
-      handleService<timeservice::account::Login>(event1, event2, wsConnPtr,
-                                                 contx, std::move(message));
-    }
-    if (event1 == account_logout) {
-      handleService<timeservice::account::Logout>(event1, event2, wsConnPtr,
-                                                  contx, std::move(message));
+    if (event1 == admin_user_user_list) {
+      handleService<timeservice::admin::user::user::List>(event1, event2, wsConnPtr, contx, std::move(message));
     }
     if (event1 == menu) {
-      handleService<timeservice::Menu>(event1, event2, wsConnPtr, contx,
-                                       std::move(message));
+      handleService<timeservice::Menu>(event1, event2, wsConnPtr, contx, std::move(message));
     }
-
+    // auto_event_above
+    // clang-format on
     auto sqlSession =
         "SELECT event FROM music.temp_file_meta where session_id = $1";
     auto clientPtr = drogon::app().getDbClient("sce");
