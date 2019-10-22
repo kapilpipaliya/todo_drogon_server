@@ -2,6 +2,7 @@
 
 #include <boost/algorithm/string/replace.hpp>
 #include <utility>
+
 #include "../../../sql/dba.h"
 #include "../../../strfns.h"
 #define ids2(s, array)                                 \
@@ -135,27 +136,37 @@ nlohmann::json Metal::upd(nlohmann::json event, nlohmann::json args) {
                              where
                              m.id = pm.metal_id and
                              pm.metal_id = $1
-                             returning pm.purity_id;
+                             returning pm.purity_id as purity_id;
                              )";
       auto pr = sql::Dba::writeInTrans(transPtr, pr_update,
                                        args[0]["id"].get<long>());
 
-      ids2(pr, id1)
-          // 2. purity
-          auto pr_update01 = R"(
+      std::string id1 = "{";
+      for (auto i : (pr)) {
+        id1 += std::to_string(i["purity_id"].as<long>()) + ",";
+      }
+      if ((pr).size() > 0) id1.pop_back();
+      id1 += "}";
+      // 2. purity
+      auto pr_update01 = R"(
                                update material.purity p
                                set (price) = row(p.purity * m.price / 100)
                                from material.metal m
                                where
                                m.id = p.metal_id and
                                p.metal_id = $1
-                               returning p.id;
+                               returning p.id as id;
                                )";
       auto pr0 = sql::Dba::writeInTrans(transPtr, pr_update01,
                                         args[0]["id"].get<long>());
-      ids2(pr, id2)
-          // 3. purity_tone
-          auto pr_update2 = R"(
+      std::string id2 = "{";
+      for (auto i : (pr)) {
+        id2 += std::to_string(i["id"].as<long>()) + ",";
+      }
+      if ((pr).size() > 0) id2.pop_back();
+      id2 += "}";
+      // 3. purity_tone
+      auto pr_update2 = R"(
                               update material.purity_tone pt
                               set (price) = row(
                               (select SUM(pm.price)

@@ -30,7 +30,7 @@ nlohmann::json JAdminActor::handleTextMessage(
 
     if constexpr (false) {
     }
-    /*
+
     REGISTER("auth", jewel::service::Auth)
     REGISTER("user", jewel::service::User)
     REGISTER("account_type", jewel::service::AccountType)
@@ -89,7 +89,7 @@ nlohmann::json JAdminActor::handleTextMessage(
     REGISTER("setting_type", jewel::service::SettingType)
     REGISTER("certified_by", jewel::service::CertifiedBy)
     REGISTER("policy", jewel::service::Policy)
-*/
+
     else {
       return nlohmann::json::array();
     }
