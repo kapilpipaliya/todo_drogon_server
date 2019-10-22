@@ -1,5 +1,4 @@
 #include "./admin_user_user_List.h"
-
 timeservice::admin::user::user::List::List(
     int event1_, int event2_, const drogon::WebSocketConnectionPtr &wsConnPtr_,
     std::shared_ptr<websocket::todo::TodoContext> context_,

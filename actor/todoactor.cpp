@@ -40,26 +40,6 @@ void TodoActor::run(const drogon::WebSocketConnectionPtr &wsConnPtr,
                     std::string &&message,
                     const drogon::WebSocketMessageType &type) {
   switch (type) {
-    /*case drogon::WebSocketMessageType::Text: {
-      try {
-        auto valin = nlohmann::json::parse(message);
-        if (valin.is_array()) {
-          for (const auto &i : valin) {
-            handleTextMessage(wsConnPtr, i);
-          }
-        } else {
-          nlohmann::json j = "Invalid Message only array handled: " + message;
-          websocket::WsFns::sendJson(wsConnPtr, j);
-        }
-      } catch (nlohmann::json::parse_error &e) {
-        LOG_DEBUG << "message: " << e.what();
-        LOG_DEBUG << "exception id: " << e.id;
-        LOG_DEBUG << "byte position of error:" << e.byte;
-        nlohmann::json j = std::string("cant parse json reason: ") + e.what();
-        websocket::WsFns::sendJson(wsConnPtr, j);
-      }
-      break;
-    }*/
     case drogon::WebSocketMessageType::Text:
     case drogon::WebSocketMessageType::Binary: {
       auto result = handleBinaryMessage(wsConnPtr, std::move(message));
@@ -71,20 +51,6 @@ void TodoActor::run(const drogon::WebSocketConnectionPtr &wsConnPtr,
     default:
       break;
   }
-}
-
-void TodoActor::handleTextMessage(
-    const drogon::WebSocketConnectionPtr &wsConnPtr, const nlohmann::json &in) {
-  if (!in.is_array() || !in[0].is_array() || !in[0][0].is_number()) {
-    LOG_DEBUG << "server_only_respond_number_on_event";
-  }
-  auto contx = wsConnPtr->getContext<websocket::todo::TodoContext>();
-  auto evt = in[0][0].get<int>();
-  if (evt == account_login) {
-    // handleService<timeservice::auth::user::Login>(wsConnPtr, contx, in);
-  }
-  TimeServiceHandle t;
-  t.runService(contx, in);
 }
 
 nlohmann::json TodoActor::handleBinaryMessage(
@@ -123,32 +89,6 @@ nlohmann::json TodoActor::handleBinaryMessage(
     }
     // auto_event_above
     // clang-format on
-    auto sqlSession =
-        "SELECT event FROM music.temp_file_meta where session_id = $1";
-    auto clientPtr = drogon::app().getDbClient("sce");
-    // auto r = clientPtr->execSqlSync(sqlSession, c);
-    /*if (!r.empty()) {
-      try {
-        event = nlohmann::json::parse(r[0]["event"].c_str());
-        // p.handleBinaryEvent creates new transaction.
-
-        if (event[0] == "song") {
-          //          todo::Song p{contx};
-          // auto r = p.handleBinaryEvent(event, 1, message);
-          // if (!r.is_null()) return r;
-          // temp:
-          nlohmann::json j;
-          return j;
-        }
-      } catch (nlohmann::json::parse_error &e) {
-        LOG_DEBUG << "message: " << e.what();
-        LOG_DEBUG << "exception id: " << e.id;
-        LOG_DEBUG << "byte position of error:" << e.byte;
-        nlohmann::json j =
-            std::string("cant parse json reason: ") + e.what() + event.dump();
-        websocket::WsFns::sendJson(wsConnPtr, j);
-      }
-    }*/
   } catch (const std::exception &e) {
     LOG_DEBUG << e.what();
     nlohmann::json jresult;

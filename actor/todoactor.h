@@ -16,8 +16,6 @@ class TodoActor : public caf::event_based_actor {
  private:
   void run(const drogon::WebSocketConnectionPtr& wsConnPtr,
            std::string&& message, const drogon::WebSocketMessageType& type);
-  void handleTextMessage(const drogon::WebSocketConnectionPtr& wsConnPtr,
-                         const nlohmann::json& in);
   nlohmann::json handleBinaryMessage(
       const drogon::WebSocketConnectionPtr& wsConnPtr, std::string&& message);
 
