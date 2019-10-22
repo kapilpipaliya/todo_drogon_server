@@ -1,7 +1,9 @@
 
 #include "todolistactor.h"
 
-#include "todolistservices.h"
+#include "context/todocontext.h"
+#include "mainactortype.h"
+#include "wsfns.h"
 namespace superactor {
 namespace todoactor {
 TodoListActor::TodoListActor(caf::actor_config &cfg)

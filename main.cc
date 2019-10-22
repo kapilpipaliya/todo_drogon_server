@@ -4,12 +4,12 @@
 
 #include <fplus/fplus.hpp>
 
-#include "core/dgraph/dgraphclientmanger.h"
-#include "core/dgraph/dgraphgrpc/dgraphclient.h"
-#include "core/dgraph/dgraphhttp/dgraphclient.h"
-#include "core/dgraph/dgraphhttp/dgraphclientstub.h"
-#include "core/dgraph/dgraphhttp/httpendpoint/HttpClientManger.h"
-#include "core/service/time/dgraphormstartup.h"
+#include "dgraph/dgraphclientmanger.h"
+#include "dgraph/dgraphgrpc/dgraphclient.h"
+#include "dgraph/dgraphhttp/dgraphclient.h"
+#include "dgraph/dgraphhttp/dgraphclientstub.h"
+#include "dgraph/dgraphhttp/httpendpoint/HttpClientManger.h"
+#include "service/time/dgraphormstartup.h"
 #include "thirdparty/gcc_poison.h"
 
 // Qt

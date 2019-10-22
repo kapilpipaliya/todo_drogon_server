@@ -1,5 +1,5 @@
 #include "madmincontext.h"
-#include "./core/sql/dba.h"
+//#include "./core/sql/dba.h"
 
 namespace websocket {
 namespace music {
@@ -21,7 +21,7 @@ std::tuple<long, long> MAdminContext::generateContext(
   }
   auto session_id = stol(c);
   auto sqlSession = "SELECT * FROM music.session where id = $1";
-  try {
+  /*try {
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
     auto r = sql::Dba::writeInTrans(transPtr, sqlSession, session_id);
@@ -33,13 +33,13 @@ std::tuple<long, long> MAdminContext::generateContext(
   } catch (const std::exception &e) {
     LOG_DEBUG << e.what();
     return {0, 0};
-  }
+  }*/
 }
 
 void MAdminContext::setUser() {
   if (!user_id) return;
 
-  try {
+  /*try {
     auto sqlSession = "SELECT * FROM music.user where id = $1";
     auto clientPtr = drogon::app().getDbClient("sce");
     auto transPtr = clientPtr->newTransaction();
@@ -50,7 +50,7 @@ void MAdminContext::setUser() {
     }
   } catch (const std::exception &e) {
     LOG_DEBUG << e.what();
-  }
+  }*/
 }
 }  // namespace music
 }  // namespace websocket

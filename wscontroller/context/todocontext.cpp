@@ -1,8 +1,8 @@
 #include "todocontext.h"
 
-#include "core/dgraph/dgraphclientmanger.h"
-#include "core/dgraph/orm/dgraphorm.h"
-#include "core/dgraph/orm/model.h"
+#include "dgraph/dgraphclientmanger.h"
+#include "dgraph/orm/dgraphorm.h"
+#include "dgraph/orm/model.h"
 
 namespace websocket {
 namespace todo {

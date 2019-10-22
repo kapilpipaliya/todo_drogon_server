@@ -3,7 +3,6 @@
 #include <chrono>
 
 #include "caf.h"
-#include "jadminactor.h"
 #include "json.hpp"
 #include "madminactor.h"
 #include "myactor.h"
@@ -80,20 +79,6 @@ void MainActor::passToUser(MainActorType actortype,
                            std::string &&message,
                            const drogon::WebSocketMessageType &type) {
   switch (actortype) {
-    case MainActorType::Jewel: {
-      auto it = actorMap.find(wsConnPtr);
-      if (it == actorMap.end()) {
-        caf::actor userActor = spawn<jewelactor::JAdminActor>();
-        monitor(userActor);  // this will send message when it down
-        request(userActor, caf::infinite, wsConnPtr, std::move(message), type);
-        actorMap.insert({wsConnPtr, userActor});
-      } else {
-        caf::actor userActor = it->second;
-        request(userActor, caf::infinite, wsConnPtr, std::move(message), type);
-      }
-
-      break;
-    }
     case MainActorType::Music: {
       auto it = actorMap.find(wsConnPtr);
       if (it == actorMap.end()) {

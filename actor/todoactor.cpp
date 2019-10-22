@@ -1,15 +1,17 @@
 
 #include "./todoactor.h"
 
-#include "./inc/todoservices.h"
 #include "./timeservicehandle.h"
-//#include "core/service/time/auth/user/login/Login.h"
+#include "context/todocontext.h"
+#include "mainactortype.h"
+#include "wsfns.h"
+//#include "service/time/auth/user/login/Login.h"
 #include "./timeroutes.h"
-#include "core/service/time/account/login/account_Login.h"
-#include "core/service/time/account/logout/account_Logout.h"
-#include "core/service/time/account/registration/account_Registration.h"
-#include "core/service/time/menu/Menu.h"
-#include "core/service/time/admin/user/user/list/admin_user_user_List.h"
+#include "service/time/account/login/account_Login.h"
+#include "service/time/account/logout/account_Logout.h"
+#include "service/time/account/registration/account_Registration.h"
+#include "service/time/admin/user/user/list/admin_user_user_List.h"
+#include "service/time/menu/Menu.h"
 // auto_include_above
 namespace superactor {
 namespace todoactor {

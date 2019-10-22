@@ -224,7 +224,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/thirdparty)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/gui)
 
-add_subdirectory(core)
+add_subdirectory(dgraph)
 #add_subdirectory(test)
 #include_directories("$ENV{HOME}/k/jewelApp/src")
 #find_library(CONN_LIB libjewelconnection HINT "$ENV{HOME}/k/build-jewelApp-Desktop_Qt_5_13_0_GCC_64bit-Debug/src/core/connection")
@@ -294,7 +294,6 @@ target_link_libraries(jdragon
   range-v3
   gRPC::gpr gRPC::grpc gRPC::grpc++
   dgraph
-  libjewelcore2
   time
 )
 #generate drpc for cpp:
@@ -302,5 +301,5 @@ target_link_libraries(jdragon
 #pb --cpp_out=./generated/ --proto_path=./protos/ api.proto
 
 #target_link_libraries(greeter_client PRIVATE c-ares::cares protobuf::libprotoc protobuf::libprotobuf protobuf::libprotobuf-lite gRPC::gpr gRPC::grpc++ -pthread)
-add_subdirectory(core/dgraph/ormtest)
-add_subdirectory(core/service/time)
+add_subdirectory(dgraph/ormtest)
+add_subdirectory(service/time)
