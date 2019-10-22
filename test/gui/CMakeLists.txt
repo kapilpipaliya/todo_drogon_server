@@ -3,9 +3,6 @@ project(gui_test)
 #set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules/)
 set(CMAKE_CXX_STANDARD 20)
 
-find_package(PostgreSQL)
-#find_package(libpqxx REQUIRED)
-
 #find_package (Jsoncpp REQUIRED)
 #find_package(folly)
 set(CMAKE_AUTOMOC ON)

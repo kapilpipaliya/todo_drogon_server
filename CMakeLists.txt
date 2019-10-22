@@ -256,29 +256,37 @@ target_link_libraries(jdragon
   Threads::Threads
   ${CMAKE_DL_LIBS}
   ${_OPTIONAL_LIBS}
+
   # ${UUID_LIBRARY}
+
   ZLIB::ZLIB
-#  ${DROGON_LIBRARIES}
+
   drogon
+
   ${CAF_LIBRARIES}
+
   Boost::filesystem
-  fmt::fmt
   Boost::locale
-  jsoncpp_lib
+  # Boost::timer
+  # Boost::disable_autolinking
+
+  # Poco::Foundation
+
+  fmt::fmt
+
   yaml-cpp
+
   # absl::strings
   # clang_flags
-  # Boost::timer
-  # Poco::Foundation
-  # Boost::disable_autolinking
   # angelscript
   # TBB::tbb
   # easyloggingpp
   #Wt::Wt Wt::Dbo Wt::FCGI Wt::HTTP
-#  amqpcpp
   # units
+
   Angelscript::angelscript
   kangaru
+
   Qt5::Core
   Qt5::Gui
   Qt5::Widgets
@@ -286,13 +294,15 @@ target_link_libraries(jdragon
   Qt5::Xml
   Qt5::Sql
   # https://github.com/microsoft/vcpkg/issues/7205
-#  msgpackc
-#  msgpackc-cxx
-#  msgpackc-static
+  #  msgpackc
+  #  msgpackc-cxx
+  #  msgpackc-static
+
   taocpp::pegtl
   protobuf::libprotoc protobuf::libprotobuf protobuf::libprotobuf-lite
   range-v3
   gRPC::gpr gRPC::grpc gRPC::grpc++
+
   dgraph
   time
 )
