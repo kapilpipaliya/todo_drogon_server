@@ -472,7 +472,12 @@ std::string Attributes::to_nquads() {
                "^^<xs:string>";
           break;
         case TypesType::UID:
-          s += uid_key + " <" + name + "> " + "<" + value.stringvalue + ">";
+          if (value.stringvalue.size() <= 2) {
+            s +=
+                uid_key + " <" + name + "> " + "uid(" + value.stringvalue + ")";
+          } else {
+            s += uid_key + " <" + name + "> " + "<" + value.stringvalue + ">";
+          }
           break;
         case TypesType::DATETIME:
           s += uid_key + " <" + name + "> " + "\"" + value.stringvalue + "\"" +

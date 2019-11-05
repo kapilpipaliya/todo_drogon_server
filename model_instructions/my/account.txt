@@ -1,28 +1,5 @@
 auth::user::Login
 
---generate_request_proto
-syntax = "proto3";
-package timeservice;
-message RegistrationRequest {
-  string username = 1;
-  string password = 2;
-}
---end
---generate_response_proto
-syntax = "proto3";
-package timeservice;
-message RegistrationResponse {
-  string username = 1;
-  string password = 2;
-}
---end
-
---server_class
-
-
---end
-
-
 --client_class
 filename:auth/kapil/Login.svelte
 

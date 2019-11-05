@@ -10,7 +10,7 @@ timeservice::admin::user::user::List::List(
 {}
 void timeservice::admin::user::user::List::run() {
   // run
-  auto msg = getmsg<timeservice::UserListRequest>();
+  /*auto msg = getmsg<timeservice::UserListRequest>();
   auto dgraphorm = dgraph::DGraphClientManger::getDGraphOrm("1");
   auto user = dgraphorm->newmodel("user");
   auto response = new api::Response;
@@ -20,7 +20,7 @@ void timeservice::admin::user::user::List::run() {
   auto res = new timeservice::UserListResponse();
 
   res->set_json(response->json());
-  sendmsg<timeservice::UserListResponse>(res);
+  sendmsg<timeservice::UserListResponse>(res);*/
   // run_end
 }
 // extend_class
